@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "4cb10f62-44e3-41b7-9a47-865fb5b7a05d",
+    "BadgeCode": "DEFAULT",
+    "DeviceCode": "70278",
+    "DamageDateTime": "2019-04-10T15:48:09",
+    "CantCode": 0,
+    "ColCode": 0,
+    "DamageSubCantId": 0,
+    "DescriptionDamageType": "Idraulico",
+    "DescriptionDamageSubType": "Generico",
+    "DamageHasAudio": true,
+    "DamageHasImage": false,
+    "MultimediaName": "125997896",
+    "DamageNote": "",
+    "Type": 0
+  }
+]

@@ -1,0 +1,217 @@
+/* Common */
+body {
+    color: black;
+
+    font-size: 11px;
+	padding: 0px; 
+	margin: 0px;
+}
+.BodyBackColor {
+	background-color:#EEEEF3;
+}
+a {
+    color: #5a9ddb;
+    text-decoration: underline;   
+}
+a:hover {
+    text-decoration: underline;   
+}
+a:visited {
+    color: #8684ed;
+    text-decoration: underline;   
+}
+div.PageContent 
+{
+    padding: 0px 0px 0px 0px;
+}
+/* Action Container Panel */
+.ACPanel 
+{
+	background: url('opacity50.png') repeat;
+	
+	padding: 2px 5px 2px 20px;
+	height: 25px;
+}	
+/* Main table */
+.Main {
+	background: white;
+}
+h1 {
+	color: Black;
+	
+	font-size: 200%;
+	font-family: Verdana;
+	font-weight: normal;
+	margin: 0px 0px 0px 0px;
+	padding: 0px;
+}
+/* Footer */
+.FooterCopyright {
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: right;
+	
+	color: #9D9DA9;
+}
+/* Dialog */
+body.Dialog {
+	background-color: White !important;
+}
+div.DialogPageContent {
+	margin: 0px;
+}
+div.Header {
+	width: 100%;
+	height: 80px;
+	margin: 0px;
+}
+.DialogContent {
+	background-color: White;
+	
+	height: 300px;
+}
+/* Error */
+.Error {
+	color: Black;
+}
+/* Links on dark background */
+.Footer .menuLinks_DevEx a,
+.Footer .menuLinks_DevEx a.dx,
+.Security .menuLinks_DevEx a,
+.Security .menuLinks_DevEx a.dx,
+.TabsContainer .menuLinks_DevEx a,
+.TabsContainer .menuLinks_DevEx a.dx,
+.Footer .menuLinks_DevEx a:visited,
+.Footer .menuLinks_DevEx a.dx:visited,
+.Security .menuLinks_DevEx a:visited,
+.Security .menuLinks_DevEx a.dx:visited,
+.TabsContainer .menuLinks_DevEx a:visited,
+.TabsContainer .menuLinks_DevEx a.dx:visited
+{
+}
+/* Controls customization */
+.dxgvControl_DevEx {
+	width: 100%;
+}
+.dxgvHeader_DevEx td {
+    white-space:normal;
+}
+.dxtcControl_DevEx,
+.dxtcLite_DevEx {
+    width: 100% !important;
+}
+.NavigationTabsActionContainer .dxtcControl_DevEx,
+.NavigationTabsActionContainer .dxtcLite_DevEx {
+	background: url('opacity50.png') repeat;
+}
+.NavigationTabsActionContainer .dxtcPageContent_DevEx,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-content {
+	padding-left: 18px;
+    border: none !important;
+}
+.NavigationTabsActionContainer .dxtcLeftIndentCell_DevEx div,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-leftIndent {
+	width: 15px !important;
+}
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-tab,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-activeTab
+{
+    margin-top: 4px !important;
+}
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-leftIndent,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-spacer,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-rightIndent,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-sbWrapper,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-sbIndent,
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-sbSpacer
+{
+	height: 25px;
+}
+.NavigationTabsActionContainer .dxtc-content .dxmLite_DevEx .menuLinks_DevEx
+{
+    padding-left: 22px !important;
+}
+.NavigationTabsActionContainer .dxtcLite_DevEx .dxtc-strip
+{
+    padding-top: 0px !important;
+} 
+.ACV .dxmVerticalMenuItemWithImage_DevEx
+{
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+/* NavigationHistory (NavigationHistoryActionContainer) */
+.NavigationHistoryLinks {
+	color: #86888D;
+	padding: 0px 0px 0px 2px;
+}
+.NavigationHistoryLinks a:hover {
+	text-decoration: underline;
+    color: #5a9ddb;
+}
+.NavigationHistoryLinks a, .NavigationHistoryLinks a:visited {
+	text-decoration: underline;
+    color: #5a9ddb;
+}
+.NavigationHistoryLinks a.Current, .NavigationHistoryLinks a.Current:hover, .NavigationHistoryLinks a.Current:visited {
+	text-decoration: none;
+	color: #86888D;
+}
+.Security .dxmMenuSeparator_DevEx,
+.Security .dxmLite_DevEx .dxm-separator {
+	padding: 0px 4px 0px 11px;
+}
+.TabsContainer .dxmMenuSeparator_DevEx,
+.TabsContainer .dxmLite_DevEx .dxm-separator  {
+	padding: 0px 10px 0px 16px;
+}
+.LayoutTabContainerWithNestedFrame > .Item:first-child > .NestedFrame > .ToolBarUpdatePanel > .ToolBar .dxmMenu_DevEx,
+.LayoutTabContainerWithNestedFrame > .Item:first-child > .NestedFrame > .ToolBarUpdatePanel > .ToolBar .dxmLite_DevEx .dxm-main {
+	border-top: 0px;
+}
+.LayoutTabContainerWithNestedFrame > .Item > .NestedFrame > .ToolBarUpdatePanel > .ToolBar .dxmMenu_DevEx, 
+.LayoutTabContainerWithNestedFrame > .Item > .NestedFrame > .ToolBarUpdatePanel > .ToolBar .dxmLite_DevEx .dxm-main
+{
+	border-left: 0px;
+	border-right: 0px;
+}
+.Layout .TabControlContent {
+	padding: 0px !important;
+}
+.Layout .TabControlContent > div {
+	padding: 0px !important;
+}
+.HorizontalTemplateHeader,
+.VerticalTemplateHeader,
+.Header {
+	background-color: #EEEEF3;
+}
+.RecordsNavigationContainer .menuLinks_DevEx {
+	padding-left: 8px;
+}
+.RecordsNavigationContainer .menuLinks_DevEx .dxmMenuItemWithImage_DevEx {
+	padding-left: 3px;
+}
+.RecordsNavigationContainer .dxmLite_DevEx .dxm-content,
+.RecordsNavigationContainer .dxmLite_DevEx .dxm-disabled.dxm-content
+{
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+}
+.EditModeActions .dxmLite_DevEx
+{
+	margin-right: 3px !important;
+}
+.Content .EditModeActions .dxmLite_DevEx
+{
+    margin-right: 2px !important;
+}
+.RecordsNavigationContainer .dxmLite_DevEx
+{
+    margin-right: 7px !important;
+}
+.ACH.MainToolbar .dxmLite_DevEx .dxm-main
+{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}

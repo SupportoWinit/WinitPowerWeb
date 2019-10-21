@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Come Gestire gli Export EXCEL CUSTOM</title>
+
+  
+</head><body style="margin-left: 0px; width: 1387px;">
+<a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>
+<h1>Come Gestire gli Export Excel CUSTOM</h1>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">Il Tasto
+di Export Excel Custom presente (opzionalmente) sulle varie Pages</span>
+viene gestito centralmente nella <span style="color: rgb(51, 51, 255); font-weight: bold;">GridMasterPage</span>
+<ul>
+
+  <li>che nella Page_Init attiva il relativo Tasto di <br>
+  </li>
+  <ul>
+    <li>se <br>
+    </li>
+  </ul>
+  <li>che gestisce la Scelta di un Modello di Export a Video</li>
+  <ul>
+    <li>con la <span style="color: rgb(51, 51, 255);">function <span style="font-weight: bold;">cmbExportXLSX_OnSelectedIndex</span>Changed(s,
+e)</span></li>
+    <ul>
+      <li>che richiama la routine <span style="color: rgb(51, 51, 255);"><span style="font-weight: bold;">cpExportLayout_Callback</span>(object
+sender, CallbackEventArgsBase e)</span></li>
+    </ul>
+  </ul>
+  <li>dalla routine <span style="color: rgb(51, 51, 255);"><span style="font-weight: bold;">BindExportLayoutCombo</span>(bool
+isSetToDefault = false)</span></li>
+  <ul>
+    <li>che lo abilita se esistono nella Tab&nbsp;<br>
+    </li>
+  </ul>
+  <li>dalla routine&nbsp; <span style="color: rgb(51, 51, 255);"><span style="font-weight: bold;">btnExportXLSX_Click</span>(object sender,
+EventArgs e)</span></li>
+  <ul>
+    <li>che richiama la <span style="color: rgb(51, 51, 255);"><span style="font-weight: bold;">ExportXLSXModule.ExportXLSX(</span>currentModel,
+items);</span></li>
+    <ul>
+      <li><span style="color: rgb(51, 51, 255);"><span style="color: black;">passandogli il Nome del Modello Excel da usare e
+i Record estratti</span><br>
+        </span></li>
+    </ul>
+  </ul>
+</ul>
+
+</body></html>

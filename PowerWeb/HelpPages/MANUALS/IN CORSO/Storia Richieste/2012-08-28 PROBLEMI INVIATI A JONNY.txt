@@ -1,0 +1,77 @@
+x JONNY
+
+Sono in ordine di priorità:
+
+A) La modifica fatta per visualizzare "n" messaggi nella riga sottostante ha però portato
+  al fatto che ADESSO accende SOOLO UN PALLINO ROSSO SUL PRIMO CAMPO CON UN ERRORE mentre 
+  prima Accendeva un PALLINO PER OGNI CAMPO ERRATO.
+  Sarebbe perfetto che desse sia l'elenco dei Campi sia accendesse comunque tutti i pallini 
+  vicino a tutti i campi con un errore per trovarli subito a Video.  
+	
+----------------------------------------------------------------------------------------
+B) Nella Pagina CANT Per qualche arcano motivo (sconosciuto) il Tasto di MODIFICA e di DELETE è abilitato
+  SOLO per il RECORD con Chiave 001 (ceh sembra essere un Record inserito manualmente) mentre su tutti gli
+  altri REcord sono DISABILITATI !!! E' come se quel Record fosse CORRETTO mentre TUTTI GLI ALTRI NO!!!
+	QUETO DIPENDE DAL FATTO CHE l?UTENTE aveva FILIALE 1.
+---------------------------------------------------------------------------------------------------
+C) Ci sono parecchi casi in cui NON funzionano correttamente i Campi di Apertura delle selezioni
+  legati ai Campi della DataGrid Principale. Dove sono gestiti e come??? per poterli sistemare
+--------------------------------------------------------------------------------------------
+D) Quando si muove un certo numero di campi per costruire la DataGrid principale
+  (vedi Cant,Col. Cli ecc ) dopo averne mossi un certo numero al fine di preparare una Visualizzazione
+  custom della DataGrid, succede spesso che esploda tutto come se si incasinasse mentre li sposti
+  non quando poi tenti di salvare u nuovo tipo di visualizzazione
+------------------------------------------------------------------------------------------
+
+				DOMANDE 
+
+- nel caso della Pagina dei CANTIERI non mi ricordo come bisogna fare
+per gestire ( ma non ricordo nemmeno se lo abbiamo fatto ma mi sembra di si)
+la Visualizzazione di un apposito TAB ASSISTITO quando la TIPOLOGIA_CAN è = "ASS"
+mentre lo stesso non deve essere visualizzato quando la Tipologia_CAN è <> "ASS"
+Lo stesso discorso vale poi anche per i Report che devono riportare o meno l'Area 
+realtiva ai Campi degli ASSISTITI quando il Record è relativo ad un Assistito invece
+che ad un Cantiere
+----------------------------------------------------------------------------------------
+- Nelle maschere con Template (CANT-COL,CLI ecc) il Campo DATAREGISTRAZIONE è correttamente
+  reso NON MODIFICABILE mentre nelle Maschere senza Template (FIL,RESP, ecc ecc) è modificabile
+  da parte dell'Utente Video. Sarebbe opportuno poter bloccare la modifica di determinati campi
+  anche per questo tipo di Pagine . Si può fare e come ??
+
+-----------------------------------------------------------------------------------------------
+- E' possibile e nel caso come si fa FARE SI' che la DATAGRID di Default (intesa come quella base
+  prevista da WINIT in base a quanto indicato nel codice aspx della pagine con l'Ordinamento e il
+  Visible False per i singoli campi definito nel codice) preveda anche un determinato CRITERIO DI
+  ORDINAMENTO e RAGGRUPPAMENTO DI BASE???
+   esempio: TABAUT sarebbe perfetto che si aprisse facendo vedere
+	2 SOLI Record Iniziali raggruppati quindi per GRUPPO_TAB 
+	    DECOD_SYS
+            DECOD_TAB
+	aprendo poi un secondo livello ad esempio per
+	    DECOD_TAB 
+		NOME_TABELLA1
+		Nome_TABELLA2
+		.............
+		Nome_TABELLAnnn
+	aprendo poi la singola Tabella per vedere il dettaglio dei Singoli Record di quella Tabella
+	    DECOD_TAB
+		Nome_Tabella5
+		    RECORD1
+	            RECORD2
+		    ...........
+		    RECORD nnn
+  Visto che la cosa è possibile creando una Visualizzazione Custom e memorizzandola penso che sia
+  possibile farlo ANCHE dentro nel Codice aspx per definirne una standard a prescindere da quelle 
+  custom aziendali e/o per Utente
+---------------------------------------------------------------------------------------------------
+
+- Quando si usa un valore String/Intero/Data per farci sopra dei test di validità
+   è meglio usare ????
+		Commonservice.nz(entity.xxxx) < 0 ecc
+	oppure 
+		if (String.IsNullOrEmpty(entity.xxxxxxxx ))
+
+	perchè in alcuni casi si è usato la COMMONSERVICE (Routine di Check ns)
+	e in altri casi (codice scritto da te ) si è invece usato la String.IsNullOrEmpty
+----------------------------------------------------------------------------------------		
+		

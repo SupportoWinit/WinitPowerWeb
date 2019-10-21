@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"><title>TR_TAB_GRIDLOOCHUP</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; TABELLA
+TAB_GRIDLOOKUP<br>
+</h1>
+<span style="font-weight: bold;">Contiene la struttura
+delle Colonne da visualizzare nei campi di LOOKUP.<br><br></span>Ogni GridLookUp è identificata da:<span style="font-weight: bold;"><br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; NomeRicerca&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+Nome del Campo Video a cui viene associata la relativa GridLoockUp&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Ordinamento &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; N°
+Colonna della GridLoockUp in cui visualizzare quel campo<br></span>eventualmente personalizzata per Singolo Utente<span style="font-weight: bold;"><br></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Utente_id &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;N° identificativo dell'Utente (SOLO per
+le GridLoockUp personalizzate dal singolo Utente)</span><br>cui sono associati "n" record (1 per ogni colonna che si vuole gestire in quella ComboBox) con<span style="font-weight: bold;"><br></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; NomeRisorsa &nbsp; &nbsp; &nbsp; &nbsp; Valore (in
+lingua) da mostrare come Intestazione della relativa Colonna
+&nbsp;della GridLoockUp</span><br><span style="font-weight: bold;">&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;NomeCampo &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+Nome del Campo da cui prelevare il Valore da Visualizzare nella
+relativa Colonna della GridLoockUp<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; NomeTab &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;Nome della Tabella da cui prelevare il Valore del Campo da
+Visualizzare nella relativa Colonna della GridLoockUp<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Nome_TabDecod &nbsp; Nome dell'EVENTUALE Sotto
+Tabella della TAB_DECOD (solo quando Nome Tab = TAB_DECOD)<br></span>per ognuno dei quali vanno definiti i seguenti FLAG di Comportamento<span style="font-weight: bold;"><br></span><span style="font-weight: bold;">CAMPO_DB &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;solo sul Singolo Campo il cui corrispondente
+Valore della riga selezionata va INSERITO COME VALORE nel Record per quel&nbsp;Campo di
+quella GridLookUp</span><span style="font-weight: bold;"><br>CAMPO_FILTRO&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;Indica se il Filtro sui valori della
+ComboBax sarà fatto su una Colonna diversa dalla 1° (default) e /o in
+Modo diverso da quello di Default (Contains)<br>CAMPO_NOTINLIST &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; Indica se il Campo Video accetta oppure no (default) dei valori
+ANCHE NON PREVISTI TRA I RECORD PROPOSTI NELLA COMBOBOX<br>CAMPO_LOCALIZZATO &nbsp; &nbsp; per i Campi
+&nbsp;il cui VALORE da MOSTRARE nella COLONNA della DataGridLookUp va
+TRADOTTO IN LINGUA<br>&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; es: SESSO, TIPO_DISTANZA,
+TIPO_NOTTURNO ecc ecc<br></span><span style="font-weight: bold;">CAMPO_SELEZIONATO &nbsp; &nbsp; sui&nbsp;Campi&nbsp;il cu
+corrispondenti Valori</span><span style="font-weight: bold;"> della riga selezionata</span><span style="font-weight: bold;"> vanno MOSTRATI COME VALORI nel
+Campo Videodi GridLookUp<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+Normalmente se se imposta solo 1 per riportare a Video il Singolo
+Valore della Rica/Colonna scelta<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Ne
+vanno impostati + di 1 quando si vogliono attivare le Ricerche Multiple
+su più colonne e non solo sulla 1° Colonna della GridLookUp</span><br><span style="font-weight: bold;">CAMPO_VIDEO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;su TUTTI i Campi da VISUALIZZARE COME COLONNE della
+DataGRidLookUp</span><br><span style="font-weight: bold;"></span><br><span style="font-weight: bold;">ESEMPIO: &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span>
+ <table style="border-collapse: collapse; width: 684pt;" border="0" cellpadding="0" cellspacing="0" width="910"><col style="width: 110pt;" width="146">
+ <col style="width: 72pt;" width="96">
+ <col style="width: 80pt;" width="106">
+ <col style="width: 155pt;" width="206">
+ <col style="width: 101pt;" width="135">
+ <col style="width: 70pt;" width="93">
+ <col style="width: 96pt;" width="128">
+ <tbody><tr style="height: 17.25pt;" height="23">
+  <td style="height: 17.25pt; width: 157px;" class="xl64" height="23">NOMERICERCA</td>
+  <td class="xl64" style="width: 75px;">UTENTE_Id</td>
+  <td class="xl64" style="width: 80pt;" width="106">&nbsp; &nbsp; ORDIN.</td>
+  <td class="xl64" style="width: 220px;">&nbsp;NOMERISORSA</td>
+  <td class="xl64" style="width: 130px;">NOMECAMPO</td>
+  <td class="xl64" style="width: 70pt;" width="93">NOMETAB</td>
+  <td class="xl64" style="width: 96pt;" width="128">NOMETAB_DECOD</td>
+ </tr>
+ 
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Cant_Id</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">0</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_CODICE_CANTIERE</td>
+  <td class="xl66" style="width: 130px;">Codice_Cantiere</td>
+  <td class="xl66" style="width: 70pt;" width="93">Cant</td>
+  <td class="xl66" style="width: 96pt;" width="128">NULL</td>
+ </tr>
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Cant_Id</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">1&nbsp;</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_DESCRIZIONE_CAN</td>
+  <td class="xl66" style="width: 130px;">Descrizione_Can</td>
+  <td class="xl66" style="width: 70pt;" width="93">Cant</td>
+  <td class="xl66" style="width: 96pt;" width="128">NULL</td>
+ </tr>
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Cant_Id</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">2</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_DISABILITAZIONE_CAN</td>
+  <td class="xl66" style="width: 130px;">DisAbilitazione_Can</td>
+  <td class="xl66" style="width: 70pt;" width="93">Cant</td>
+  <td class="xl66" style="width: 96pt;" width="128">NULL</td>
+ </tr>
+ 
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Tipo_Nota_Can_Note</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">0</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_CHIAVE_TAB</td>
+  <td class="xl66" style="width: 130px;">Chiave_Tab</td>
+  <td class="xl66" style="width: 70pt;" width="93">TAB_DECOD</td>
+  <td class="xl66" style="width: 96pt;" width="128">TIPO_NOTA</td>
+ </tr>
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Tipo_Nota_Can_Note</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">1</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_DECODIFICA_TAB</td>
+  <td class="xl66" style="width: 130px;">Decodifica_Tab</td>
+  <td class="xl66" style="width: 70pt;" width="93">TAB_DECOD</td>
+  <td class="xl66" style="width: 96pt;" width="128">TIPO_NOTA</td>
+ </tr></tbody></table><span style="font-weight: bold;"></span><span style="font-weight: bold;"><br></span><span style="font-weight: bold;"><span style="text-decoration: underline; color: red;">Questa
+TABELLA viene Gestita&nbsp;ESCLUSIVAMENTE da WINIT e NON DEVE MAI ESSERE
+MODIFICATA DA NESSUN UTENTE/CLIENTE</span><br>
+</span><br>
+Le Chiavi del Record : &nbsp;<a href="#Tab_GridLookup_Id">Tab_GridLoockUp_id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)
+<br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Tab_GridLookup_Id">Tab_GridLoockUp_id </a>(<span style="font-weight: bold; color: red;">Chiave</span>)
+&nbsp;, <br>
+I Campi con Default &nbsp; :&nbsp; <br>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<table style="text-align: left; width: 1131px; height: 132px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 238px;"><span style="font-weight: bold;"><a name="Tab_GridLookup_Id"></a>
+</span><span style="text-decoration: underline; font-weight: bold;">Tab_GridLookup_Id</span><span style="text-decoration: underline; font-weight: bold;"></span>
+</td>
+<td style="vertical-align: top; width: 109px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a><br>
+</td>
+<td style="vertical-align: top; width: 1051px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;del Singolo
+Record dei Campi che costituiscono le GridLoockUp</span></span></span>
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span>
+</td>
+</tr>
+<tr>
+<td><span style="font-weight: bold;"><a name="Campo_Db"></a>&nbsp;</span><span style="text-decoration: underline; font-weight: bold;">Campo_Db</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+<td>&nbsp;Indica che il Valore di quella Colonna&nbsp;   <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>
+della GridLoockUp è quello che va INSERITO nel DataBase come Valore del
+Campo, quando viene selezionata una delle righe della GridLoockUpa lui
+associata. <span style="text-decoration: underline; font-weight: bold; color: rgb(102, 51, 51);">PUO' ESSERE DIVERSO da quello (vedi <a href="#Campo_Selezionato">Campo_Selezionato</a>)
+che invece Viene Visualizzato a Video per il Medesimo Campo in quei
+casi (specialmente riferiti a Campi da Validare in TAB_DECOD, per i
+quali si vuole visualizzarne a video la relativa Decodifica , ma poi
+occorre inserirne come Valore del Campo del DB la relativa Chiave</span>.<br>Può assumere i seguenti Valori:<br>
+<ul><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+il Valore di questa colonna va inserito nel corrispondente Campo Video&nbsp;
+&nbsp;&nbsp; </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Non è questa la Colonna da cui prendere il Valore da inserire a video (valore di Default)</li></ul><span style="font-weight: bold; text-decoration: underline; color: rgb(102, 51, 51);">Per ogni GridLoochUp DEVE ESSERCI SOLO un Campo_DB valorizzato a TRUE. </span>mentre è possibile impostare a True più di un <a href="#Campo_Selezionato">Campo_Selezionato</a> per visualizzare nel Campo Video anche più di un Valore della Riga selezionata</td>
+</tr>
+<tr><td><span style="font-weight: bold;"><a name="Campo_Filtro"></a> &nbsp;</span><span style="font-weight: bold; text-decoration: underline;">Campo_Filtro</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td><td>Indica
+quale Colonna della ComboBox va usata come Campo di Filtro e il
+relativo Tipo di Filtro da applicare o meno alla ComboBox legata al
+corrispondente Campo <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span><span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span> della GridLoockUp . <br><span style="font-weight: bold; color: red;">DEVE ESSERCI SOLO UN RECORD X RICERCA&nbsp;DIVERSO DA 0 </span>per
+indicare che si vuole eseguire un Filtro su quella Colonna invece che
+sulla 1° Colonna o che si vuole usare un Filtro &lt;&gt; Contains
+(default) anche per la 1° Colonna<br><span style="font-weight: bold; text-decoration: underline; color: rgb(102, 51, 51);">Per ogni GridLoochUp DEVE ESSERCI SOLO un Campo_FILTRO valorizzato &lt;&gt; 0</span><br>Può assumere i seguenti Valori:<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"> (Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0)</span><ul><li>0 = Filtro Standard (viene applicato alla 1° Colonna della Combobox in modalità Contains)</li><li>1 = Filtro Inizia Con&nbsp;applicato alla corrispondente Colonna della ComboBox a cui è associato</li><li>2 = Filtro Contains applicato alla corrispondente Colonna della ComboBox a cui è associato</li></ul></td></tr><tr>
+<td><a name="Campo_Localizzato"></a> <span style="font-weight: bold; text-decoration: underline;">Campo_Localizzato</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+<td>&nbsp;Indica se il Nome di quella&nbsp;Colonna  <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span><span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span> della GridLoockUp (Vedi <a href="#Nome_Risorsa">Nome_Risorsa</a>) va cercato o meno nelle Risorse di Sistema per gestirne la relativa Traduzione. In questo caso diventa OBBLIGATORIO il <a href="#Nome_Risorsa">Nome_Risorsa</a>.<br>Può assumere i seguenti Valori: (<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE)</span>
+<ul><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+la Descrizione della Colonna va cercata nelle Risorse in Lingua </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Indica di visualizzare direttamente come Descrizione della Colonna il Valore del Campo <a href="#Nome_Risorsa">Nome_Risorsa</a> senza cercarlo fra le Risorse di Sistema</li></ul><span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span></td>
+</tr>
+<tr><td><span style="font-weight: bold;"><a name="Campo_NotInList"></a>&nbsp;</span><span style="font-weight: bold; text-decoration: underline;">Campo_NotInList</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td><td>Indica<span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio&nbsp;</span>
+che per quel Campo Video su cui viene applicata la relativa ComboBox
+(Nome Ricerca) è possibile o meno inserire un Valore anche NON presente
+nella Lista dei Valori previsti.<br><span style="font-weight: bold; text-decoration: underline; color: rgb(102, 51, 51);">Per ogni GridLoochUp DEVE ESSERCI SOLO un Campo_NotInList valorizzato &lt;&gt; False</span><br>Può assumere i seguenti Valori: (<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE)</span>
+<ul><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indica che nel Campo a
+Video si possono inserire ANCHE VALORI&nbsp; non presenti nella ComoBox
+</li><li>FALSO (False)&nbsp;&nbsp;&nbsp;
+Indica che nel Campo a Video si possono inserire SOLO VALORI non presenti nella ComoBox</li></ul></td></tr><tr>
+<td><a name="Campo_Selezionato"></a> <span style="font-weight: bold; text-decoration: underline;">Campo_Selezionato</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+<td>Indica se il Valore di quella Colonna&nbsp;  <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio&nbsp;</span>
+della GridLoockUp è quello che va VISUALIZZATO come Valore del Campo,
+quando viene selezionata una delle righe della GridLoockUpa lui
+associata. <span style="text-decoration: underline; font-weight: bold; color: rgb(102, 51, 51);">PUO' ESSERE DIVERSO da quello (vedi <a href="#Campo_Db">Campo_DB</a>)
+che invece indica se il valore di questa colonna va INSERITO NEL DB per il Medesimo Campo in quei
+casi (specialmente riferiti a Campi da Validare in TAB_DECOD, per i
+quali si vuole visualizzarne a video la relativa Decodifica , ma poi
+occorre inserirne come Valore del Campo del DB la relativa Chiave</span>.<br>Può&nbsp;assumere i seguenti Valori: (<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE)</span>
+<ul><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indica che
+il Valore di questa colonna va visualizzato nel corrispondente Campo Video&nbsp;
+&nbsp; </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;Indica che
+il Valore di questa colonna NON va inserito nel corrispondente Campo Video&nbsp;
+&nbsp;</li></ul>Normalmente
+per ogni GridLoockUp ci sarà SOLO un Campo Selezionato = True, salvo
+quei casi particolari in cui si volesse visualizzare nel Campo Video a
+cui è associata quella GridLocckUp PIU' Valori della Riga Scelta (
+esempio: se si vuole VISUALIZZARE nel Campo a Video COMUNE DI NASCITA
+sia il Comune sia la Provnicia è possibile farlo ricordandosi però di
+Impostare a FALSE il corrispondente CAMPO_DB della Collana della
+Provincia in quanto nel DB per il Campo Video COMUNE va inserito SOLO
+il Valore del COMUNE e NON anche quello della Provincia anche se
+presente nel campo visualizzato a&nbsp;Video.</td>
+</tr>
+<tr>
+<td><a name="Campo_Video"></a> <span style="font-weight: bold; text-decoration: underline;">Campo_Video</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+<td>Indica se la corrispondente Colonna della GridLoockUp  <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span> viene/NON viene visualizzata a Video.<br>Può&nbsp;assumere i seguenti Valori: (<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE))</span>
+<ul><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questa Colonna viene visualizzata nella&nbsp;GridLoockUp&nbsp;
+&nbsp;&nbsp; </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indica che
+questa Colonna NON viene visualizzata nella&nbsp;GridLoockUp&nbsp;</li></ul></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 238px;"><span style="font-weight: bold;"><a name="NomeCampo"></a>
+<span style="text-decoration: underline;">NomeCampo</span></span><br>
+</td>
+<td style="vertical-align: top; width: 109px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(50)</a></td>
+<td style="vertical-align: top;">Nome del Campo <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span> il cui Valore va visualizzato nella corrispondente colonna della&nbsp;GridLoockUp .<br><span style="color: rgb(102, 51, 51); font-weight: bold;">Viene controllato che abbia una Lunghezza &lt;= 50 caratteri. e che sia uno dei Campi della Tabella indicata nel campo <a href="#NomeTab">NomeTab</a>.</span><span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 238px;"><span style="font-weight: bold;"><a name="NomeRicerca"></a>
+<span style="text-decoration: underline;">NomeRicerca</span><br>
+</span><span style="text-decoration: underline; font-weight: bold;"></span></td>
+<td style="vertical-align: top; text-align: center; width: 109px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)<br>
+</td>
+<td style="vertical-align: top; width: 1051px;">Nome
+della GridLoockUp  <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span> che deve essere uguale al NOME DEL CAMPO VIDEO cui è associata la GridLoockUp. <span style="color: rgb(102, 51, 51); font-weight: bold;">Viene controllato che abbia una Lunghezza &lt;= 50 caratteri.</span><span style="color: rgb(153, 51, 0);"></span>
+</td>
+</tr>
+<tr>
+<td><a name="Nome_Risorsa"></a> <span style="font-weight: bold; text-decoration: underline;">Nome_Risorsa</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(50)</a></td>
+<td>Nome della Risorsa&nbsp;da cui prendere il Nome (in lingua) del
+Campo da Visualizzare come intestazione della corrispondente colonna
+della GridLoockUp.&nbsp;<span style="color: rgb(102, 51, 51);"><span style="font-weight: bold;">Viene controllato che abbia una Lunghezza &lt;= 50 caratteri.</span><br></span><span style="text-decoration: underline;">&nbsp;<span style="font-weight: bold; color: rgb(102, 51, 51);">Diventa CAMPO OBBLIGATORIO</span><span style="color: rgb(102, 51, 51);"> quando il valore di <a href="#Campo_Localizzato">Campo Localizzato</a> è TRUE</span></span><span style="color: rgb(102, 51, 51);">. <span style="font-weight: bold; color: red;">AGGIUNGERE VERIFICA DELL'ESISTENZA NELLE RISORSE DELLA RISORSA INDICATA</span></span></td>
+</tr>
+<tr>
+<td><a name="NomeTab"></a> <span style="font-weight: bold; text-decoration: underline;">NomeTab</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(50)</a></td>
+<td>Nome della Tabella   <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio </span>da cui prendere il Valore da Visualizzare.&nbsp;<span style="color: rgb(102, 51, 51); font-weight: bold;">Viene
+controllato che abbia una Lunghezza &lt;= 50 caratteri e che
+corrisponda ad una Entity presente nel Dominio gestito dal sistema</span></td>
+</tr><tr><td><a name="NomeTab_Decod"></a> <span style="font-weight: bold; text-decoration: underline;">NomeTab_Decod</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(50)</a></td><td>Nome dell'eventuale Tab_Decod da cui prendere il Valore da Visualizzare <span style="font-weight: bold; text-decoration: underline; color: rgb(102, 51, 51);">Se inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri.<br>Quando
+il Nome_Tab è uguale a DECOD_SYS e/o DECOD_TAB viene controllato che
+venga inserito e che sia una delle Tabelle previste in TAB_DECOD. Negli
+altri casi è NULL</span></td></tr><tr><td><a name="Ordinamento"></a> <span style="font-weight: bold; text-decoration: underline;">Ordinamento</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">INT</a></td><td>N° di Colonna ( da 0 a n)  <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>&nbsp;&nbsp;in cui si vuole visualizzare a video quel Campo nella Griglia di LocckUp</td></tr><tr><td><a name="Utenti_Id"></a> <span style="font-weight: bold; text-decoration: underline;">Utenti_Id</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">INT</a></td><td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo Univoco </span></span></span>&nbsp;d<span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">el
+Singolo Utente</span></span></span> a cui è
+associata la relativa Struttura della GridLocckUp da visualizzare per il campo &nbsp;<span style="font-weight: bold; text-decoration: underline; color: rgb(102, 51, 51);">Se inserito</span> <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">viene controllato che
+esista come Chiave nella Tabella</span> &nbsp;<a href="_TR_UTENTI.html">Utenti</a></span><span style="text-decoration: underline;"></span></td></tr><tr>
+      <td style="vertical-align: top;"><a name="Width"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Width</span><br>
+      </td>
+      <td style="vertical-align: top;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(10)</a></td>
+      <td style="vertical-align: top;">Indica la Larghezza (in Px o in
+%) della Singola Colonna della ComboBox cui si riferisce permettendo
+cos' di Allargare/Restringere le Singole Colonna della Singola ComboBox in base alla larghezza prevista per il relativo Contenuto<br>
+      </td>
+    </tr>
+
+</tbody>
+</table>
+<br><span style="text-decoration: underline; color: red;"><br><br></span>
+
+<span style="text-decoration: underline; font-weight: bold;"></span>
+</body></html>

@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6AC9482C-845F-457D-9B6B-0E542C4371E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Exports</RootNamespace>
+    <AssemblyName>Exports</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BingMapsRESTToolkit, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BingMapsRESTToolkit.1.0.8\lib\net45\BingMapsRESTToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v14.1.Core, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Excel, Version=2.1.2.3, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.2.1.2.3\lib\net45\Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Westwind.Utilities, Version=2.68.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Westwind.Utilities.2.68\lib\net45\Westwind.Utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExcelToolBox.cs" />
+    <Compile Include="ExportContext.cs" />
+    <Compile Include="ExportExcelCustom\ExcelToolbox.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAec.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\Export06.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\Export17.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAlitalia.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreBudget.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP_1003.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportImporti.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportHoursReport.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportRegSemplice.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoSimple.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimple.cs" />
+    <Compile Include="ExportExcelCustom\IExportExcelCustom.cs" />
+    <Compile Include="ExportExcelGeneric\ExportExcelGenericCant.cs" />
+    <Compile Include="ExportExcelGeneric\ExportExcelGenericParam.cs" />
+    <Compile Include="ExportExcelGeneric\ExportExcelGenericReg_V.cs" />
+    <Compile Include="ExportExcelGeneric\Formatter\ExportExcellGeneric_HeaderFormatter.cs" />
+    <Compile Include="ExcelColumnEnum.cs" />
+    <Compile Include="ExportExcelSpecialized\Activity\ExportExcellActivity_ColCodiceTypeFormatter.cs" />
+    <Compile Include="ExportExcelSpecialized\Activity\ExportExcellActivity_RegHHMMSSFineFontColorFormatter.cs" />
+    <Compile Include="ExportExcelSpecialized\Activity\ExportExcellActivity_RegKmTypeFormatter.cs" />
+    <Compile Include="ExportExcelSpecialized\Activity\ExportExcellActivity_RegHHMMSSInizioFontColorFormatter.cs" />
+    <Compile Include="ExportExcelSpecialized\Cant_V\ExportExcelSpecializedCant_V.cs" />
+    <Compile Include="ExportExcelSpecialized\Activity\ExportExcelSpecializedActivity.cs" />
+    <Compile Include="ExportExcelSpecialized\Cartellino\CartellinoCantiereExcel.cs" />
+    <Compile Include="ExportExcelSpecialized\ExtendedReg_V\ExportExcelSpecializedExtendedReg_V.cs" />
+    <Compile Include="ExportExcelGeneric\ExportExcelGeneric.cs" />
+    <Compile Include="ExportExcelGeneric\ExportExcelGenericCantV.cs" />
+    <Compile Include="ExportExcelSpecialized\TimeSheetCol\ExportExcelSpecializedTimeSheetCol.cs" />
+    <Compile Include="ExportExcelSpecialized\TimeSheetCol\ExportExcelSpecializedTimeSheetColFormatter.cs">
+      <DependentUpon>ExportExcelSpecializedTimeSheetCol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExportTxtCustom\ExportPagheLombarda.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtCG2.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtCG2Annuale.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtSCS.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtZucchetti.cs" />
+    <Compile Include="ExportTxtCustom\IExportTxtCustom.cs" />
+    <Compile Include="IExport.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TxtToolBox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj">
+      <Project>{02c65754-6580-4484-8b58-a7ca4ca51434}</Project>
+      <Name>Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{65651ce2-12b7-40b7-a32b-95256fe3b547}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{eeeef105-26cd-4dd5-8fbc-4ed94e840a9b}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jszip.js" />
+    <Content Include="Scripts\jszip.min.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

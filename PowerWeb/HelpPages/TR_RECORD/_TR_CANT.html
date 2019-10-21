@@ -1,0 +1,2849 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_CANT</title>
+  
+  <style type="text/css">
+ul
+{ margin-top: 0; margin-bottom: 0;
+}
+  </style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1><span style="font-weight: bold;"><span style="font-family: Bell MT;"></span></span><span style="font-weight: bold;"><span style="font-family: Bell MT;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+TABELLA
+CANTIERI</span></span></h1>
+<span style="font-weight: bold;">Contiene i Dati
+Anagrafici sia dei <span style="text-decoration: underline;">Cantieri</span>
+sia degli <span style="text-decoration: underline;">Assistiti</span>
+ovvero dei <span style="text-decoration: underline;">LUOGHI
+FISICI dove avviene una
+presenza da registrare.</span></span><br>
+<span style="font-weight: bold;"><br>
+</span>Segnaliamo subito che mentre molti dei campi sono COMUNI
+sia ai Record
+che riguardano veri e propri Cantieri Fisici sia a quelli che
+identificano invece i Singoli Assistiti (eventualmente gestiti dagli
+Utenti che si occupano di Assistenza Domiciliare) ci sono una serie di
+campi che vengono gestiti SOLO per i Record che riguardano dei Singoli
+Assistiti e NON vengono . viceversa, gestiti per i Record che
+riguardano i Cantieri Fisici.<br>
+<br>
+Le Chiavi del Record :&nbsp; <a href="#Cant_Id">Cant_Id</a>
+&nbsp;(<span style="font-weight: bold; text-decoration: underline; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; : <a href="#Cant_Id">Cant_Id</a>
+(<span style="font-weight: bold; color: red;">Chiave</span>)&nbsp;
+<a href="#Codice_Cantiere">Codice_Cantiere</a>
+, <a href="#Cli_id">Cli_id</a> , <a href="#Data_Registrazione_Can">Data_Registrazione_Can</a>
+, <a href="#DataOraUltimaModifica_Can">DataOraUltimaModifica_Can</a>,<a href="_TR_CANT.html#Descrizione_Can"> Descrizione_Can</a>
+,&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Se <a href="#Tipologia_Can">Tipologia_Can</a>
+= ASS : anche <a href="#Cognome_Assistito_Can">Cognome_Assistito_Can</a>
+, <a href="#Nome_Assistito_Can">Nome_Assistito_Can</a><br>
+I Campi con Default &nbsp; &nbsp; : <a href="_TR_CANT.html#Data_Registrazione_Can">Data_Registrazione_Can&nbsp;</a>
+, <a href="_TR_CANT.html#DataOraUltimaModifica_Can">DataOraUltimaModifica_Can</a>
+, <a href="#DisAbilitazione_Can">Disabilitazione_Can</a>
+(False) ,&nbsp; <a href="#FlagCambioGiornoRil_Can">FlagCambioGiornoRil_Can</a>
+(False) <a href="#Mensa_Can">, Mensa_Can</a>
+(False) ,&nbsp; <a href="#Singola_Reg">Singola_Re</a>g
+(False) <br>
+<br>
+I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%
+&nbsp;<a name="I_Campi_di_Default_della_DATAGRID_MASTER"></a><br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;10 -<a href="_TR_CANT.html#Tipologia_Can">Tipologia_Can</a> (5%) / 20-<a href="#Cant_Id">Cant_Id</a> (10%) / 30-<a href="#Descrizione_Can">Descrizione_Can</a>
+(15%) / 40-<a href="#Provincia_Can">Provincia_Can</a> (5%) / 50-<a href="#Cap_Can">Cap_Can</a> (5%) / 60-<a href="#Luogo_Can">Luogo_Can</a>
+(15%) / 70-<a href="#Indirizzo_Can">Indirizzo_Can</a>&nbsp; (20%) / <br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; 80- VUOTO / 90-Codice_Cliente
+(10%) /&nbsp;100 - VUOTO / 110-<a href="#DisAbilitazione_Can">Disabilitazione_Can</a>
+(5%)
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="background-color: silver; color: white; text-align: center; font-weight: bold; width: 140px; text-decoration: underline;">NOME
+DEL CAMPO NEL DB</td>
+      <td style="background-color: silver; color: white; text-align: center; font-weight: bold; width: 129px; text-decoration: underline;">TIPO
+CAMPO</td>
+      <td style="background-color: silver; color: white; text-align: center; font-weight: bold; width: 828px; text-decoration: underline;">DESCRIZIONE
+DEL CAMPO</td>
+      <td style="background-color: silver; text-align: center;"><span style="color: white;">CHECK</span></td>
+      <td style="background-color: silver; color: white; text-align: center; text-decoration: underline; width: 60px;">TAB</td>
+      <td style="text-align: center; background-color: silver; width: 61px;"><span style="font-weight: bold; color: white;">COMBO</span></td>
+    </tr>
+    <tr>
+      <td style="width: 140px;"><span style="font-weight: bold;"><a name="Cant_Id"></a> </span><span style="font-weight: bold; text-decoration: underline;">Cant_Id</span></td>
+      <td style="text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="width: 828px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;del
+Singolo Cantiere/Assistito</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun
+Controllo specifico</span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="color: white;"> </span><span style="background-color: white;"><span style="background-color: red;"></span></span></span></span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Arrot_Durata_Can"></a><span style="font-weight: bold; text-decoration: underline;">Arrot_Durata_Can</span>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Minuti
+di Tolleranza da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative x Durata (<span style="color: rgb(153, 102, 51);">se attivato
+nel Campo</span> <a href="#Metodo_Arrotondamento_Can">Metodo_Arrotondamento_Can</a>)&nbsp;
+delle Ore Figurative sulla base&nbsp; <a href="#Tipo_Arrotondamento_Can">Tipo_Arrotondamento_Can.</a>
+indicato.<span style="color: rgb(153, 102, 51);"> S<span style="color: rgb(153, 51, 0);">e inserito viene controllato
+che sia &lt;=60 e MAGGIORE della corripondente</span></span> <a href="#Soglia_Durata_Can">Soglia_Durata_Can</a><br>
+Questo valore,
+anche se presente, <span style="font-weight: bold; text-decoration: underline;"><br>
+      </span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.Arrot_Durata_Col.html"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Arrot_Durata_Col</span></a></li>
+        <li>&nbsp;mentre viene utilizzato per i soli Cantieri
+che lo hanno impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.Arrot_Durata.html"><span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Arrot_Durata</span></a>
+in Scheda Parametri.</li>
+      </ul>
+      </td>
+      <td style="text-align: center; background-color: white;"><span style="color: black;">OK</span></td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Canone_Mensile_Fascia1_Can"></a><span style="text-decoration: underline; font-weight: bold;">Canone_Mensile_Fascia1_Can</span>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Canone
+Mensile da
+utilizzare per gli Utenti di Fascia-1 nel
+SOLO Calcolo Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span></td>
+      <td style="text-align: center;"><span style="color: black;">Libero</span></td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Canone_Mensile_Fascia2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Canone_Mensile_Fascia2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Canone
+Mensile da
+utilizzare per gli Utenti di Fascia-2 nel
+SOLO Calcolo Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span></td>
+      <td style="text-align: center;"><span style="color: black;">Libero</span></td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Cap_Can"></a><span style="text-decoration: underline; font-weight: bold;">Cap_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">CAP
+del Comune in
+cui è ubicato il Cantiere o la Residenza dell'Assistito Può essere
+inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandolo fra i Cap presenti nella Tab COMUNI
+associati ai relativi Comuni</li>
+        <li>proposto in automatico in base al <a href="#Luogo_Can">Luogo_Can</a>
+e/o <a href="#Codice_Luogo_Residenza_Can">Codice_Luogo_Residenza_Can</a>
+inseriti</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 15 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True, allora viene
+anche controllato che esista nella Tabella COMUNI</span><br>
+      <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Cap"></a>Viene
+utilizzato dalle Funzioni GPS come Parametro per
+l'eventuale
+Ricerca della <a href="#LatitudineGps_Can">Latitudine</a>
+e <a href="#LongitudineGps_Can">Longitudine</a>
+partendo dall'Indirizzo
+completo (<a href="#Nazione_Can">Nazione_Can</a>, <a href="#Luogo_Can">Luogo_Can</a>,
+      <a href="#Indirizzo_Can">Indirizzo_Can</a>)&nbsp; del
+Cantiere/Assistito</td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Cap_Nascita_Can"></a><span style="text-decoration: underline; font-weight: bold;">&nbsp;Cap_Nascita_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">CAP
+del Comune di Nascita&nbsp;dell'Assistito Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandolo fra i Cap presenti nella Tab COMUNI
+associati ai relativi Comuni</li>
+        <li>proposto in automatico in base al <a href="#Luogo_Nascita_Can">Luogo_Nascita_Can</a> e/o <a href="#Codice_Luogo_Nascita_Can">Codice_Luogo_Nascita_Can</a> inseriti</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 15 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella COMUNI</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Cap">&nbsp;</a><span style="text-decoration: underline; font-weight: bold;">Diventa
+un Campo OBBLIGATORIO per il Calcolo/verifica del Codice Fiscale in
+quanto viene utilizzato per recuperarne il relativo Codice&nbsp;</span>
+      <ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="width: 140px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Cli_id"></a>Cli_Id</span></td>
+      <td style="text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="width: 828px;">Codice del
+Cliente<span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span><span style="color: black;"> </span>al quale è associato
+questo Cantiere/Assistito. <span style="color: rgb(153, 51, 0);">Se
+inserito, v</span><span style="color: rgb(153, 51, 0);">iene
+controllato che il Codice Cliente inserito esista nella corrispondente</span>
+      <a href="../TR_CLI/_TR_CLI.html">Tabella CLI.</a><br>
+      <span style="text-decoration: underline;">Nel caso
+in cui NON si
+voglia
+gestire l'assegnazione dei Singoli Cantieri/Assistiti al relativo
+Cliente di Appartenenza</span>
+, occorre comunque creare almeno un Codic Cliente ed associare TUTTI i
+Cantieri/assistiti a quello stesso ed unico Codice Cliente creato a
+tale scopo.</td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Cod_Fisc_Can"></a><span style="text-decoration: underline; font-weight: bold;">Cod_Fisc_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(16)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Codice
+Fiscale di
+un Assistito.<span style="text-decoration: underline; font-weight: bold;"></span>Deve
+avere il formato AAA-BBB-nnCnn_DnnnE e e può essere <br>
+      <ul>
+        <li>Inserito Manualmente - In quasto caso <span style="color: rgb(102, 51, 0); font-weight: bold;">viene solo
+verificato
+il
+rispetto del Formato previsto ma non la sua correttezza</span> rispetto
+agli
+altri dati anagrafici<br>
+        </li>
+        <li>Calcolato dal Sistema - In questo caso devono essere
+stati
+inseriti anche </li>
+        <ul>
+          <li>il Cognome e Nome dell'Assistito che devono essere
+stati
+inseriti nel campo <a href="#Descrizione_Can">DESCRIZIONE_C</a><a href="TR_CANT.Abb.html#Descrizione_Can">AN</a>
+separati dal caattere
+"_"</li>
+        </ul>
+        <ul>
+          <li>la Data di Nascita dell'Assistito (<a href="#Data_Nascita_Can">DATA_NASCITA_CAN</a>)</li>
+        </ul>
+        <ul>
+          <li>il Codice Catastale del Comune di Nascita
+dell'Assistito (<a href="#Codice_Nascita_Luogo_Can">CODICE_NASCITA_LUOGO_CAN</a>)</li>
+        </ul>
+        <li>senza i quali il sistema NON può eseguire il
+Calcolo/verifica del
+Codice Fiscale fornito</li>
+      </ul>
+      <span style="text-decoration: underline; font-weight: bold; color: rgb(102, 51, 0);">Se
+fornito
+&lt;&gt; da blank</span><span style="font-weight: bold; color: rgb(102, 51, 0);">
+viene controllato che abbia una Lunghezza &lt;= 16 caratteri e che
+abbia un formato del Tipo LLLLLLNNLNNLNNNL e quando sono forniti anche
+i Dati
+necessari al relativi Calcolo allora viene segnalato :</span><br>
+      <ul>
+        <li>se manca uno dei Dati necessari al suo calcolo</li>
+        <li>se il Calcolo fornisce un Codice Fiscale diverso da
+quello imputato</li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="width: 140px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Cantiere"></a>Codice_Cantiere</span></td>
+      <td style="text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)</td>
+      <td style="width: 828px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Codice
+Interno Univoco </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">assegnato
+dalla
+Singola&nbsp;Azienda </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">a
+quello specifico
+Cantiere/Assistito</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;">&nbsp; </span></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span> <span style="color: rgb(153, 51, 0);">Viene
+Automaticamente riempito con Blanks a SX per allinearlo a DX e viene
+controllato che sia UNIVOCO in questa Tabella</span> &nbsp;<span style="color: rgb(153, 51, 0);">e che abbia una&nbsp;Lunghezza &lt;=
+20 caratteri </span><br>
+Per gestire correttamente un
+Ordinamento corretto dei Record in base al valore del Campo Codice
+Cantiere occorre che: <br>
+      <ul>
+        <li>i Codici NUMERICI (costituiti solo da Numeri) vengano
+inseriti
+allineati a Destra e SENZA GLI ZERI NON SIGNIFICATIVI DAVANTI</li>
+        <li>i Codici ALFANUMERICI (ovvero quelli che NON
+contengono solo Numeri)
+vengano inseriti allineati a SX e riempiti dei necessari caratteri
+blanks a destra</li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="text-decoration: underline;" name="Codice_Luogo_Nascita_Can"></a><span style="font-weight: bold; text-decoration: underline;">Codice_Luogo_Nascita_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Codice
+Catastale
+del Comune di Nascita di un Assistito Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandolo fra i Codici_Luoghi presenti nella Tab
+COMUNI associati ai relativi Comuni</li>
+        <li>proposto in automatico in base al <a href="_TR_CANT.html#Luogo_Nascita_Can">Luogo_Nascita_Can</a> inserito</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 20 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella COMUNI</span><br>
+      <span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"><span style="color: black;"></span></span></span>
+      <span style="text-decoration: underline; font-weight: bold;"></span>
+      <ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Codice_Luogo_Residenza_Can"></a><span style="font-weight: bold; text-decoration: underline;">Codice_Luogo_Residenza_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Codice
+Catastale
+del Comune di Residenza di un Assistito Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandolo fra i Codici_Luoghi presenti nella Tab
+COMUNI associati ai relativi Comuni</li>
+        <li>proposto in automatico in base al <a href="#Luogo_Can">Luogo_Can</a>
+inserito</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 20 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella COMUNI</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni"></a><span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"><span style="color: black;"></span></span></span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Codice_Voucher_Can"></a><span style="font-weight: bold; text-decoration: underline;">Codice_Voucher_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Codice
+Voucher <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<span style="color: rgb(153, 51, 0);">NViene
+controllato che abbia una Lunghezza &lt;= 50 caratteri.</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><span style="font-weight: bold;"></span><span style="font-weight: bold;"><a name="Cognome_Assistito_Can"></a></span><span style="font-weight: bold; text-decoration: underline;">Cognome_Assistito_Can</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Cognome
+Assistito. <span style="background-color: red;">Diventa
+OBBLIGATORIO <span style="background-color: white;">se </span><a style="background-color: white;" href="#Tipologia_Can">TIPOLOGIA_CAN</a><span style="background-color: white;">=ASS</span></span>
+per
+poter Calcolare/Verificare il <a href="TR_CANT.Abb.html#Cod_Fisc_Can">Codice
+Fiscale</a>
+dell'Assistito.<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri </span><br>
+Il Valore viene AUTOMATICAMENTE INSERITO nel Campo <a href="#Descrizione_Can">Descrizione_Can</a> assieme al <a href="#Nome_Assistito_Can">Nome_Assistito_Can</a>. (separati
+da uno SPAZIO VUOTO) </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Contributo_Disabili_Fascia1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Contributo_Disabili_Fascia1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Importo
+dell'eventuale Contributo Disabili da
+utilizzare per gli Utenti di Fascia-1 nel SOLO Calcolo Fatture. <span style="color: rgb(153, 51, 0);">Nessun controllo specifico</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Contributo_Disabili_Fascia2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Contributo_Disabili_Fascia2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Importo
+dell'eventuale Contributo Disabili da utilizzare per gli Utenti
+di Fascia-2 nel SOLO Calcolo Fatture. <span style="color: rgb(153, 51, 0);">Nessun controllo specifico</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Costo_Mezzora_Prescuola_Can"></a><span style="text-decoration: underline; font-weight: bold;">Costo_Mezzora_Prescuola_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Importo
+dell'eventuale Costo della Mezz'Ora di PreScuola da
+utilizzare nel SOLO Calcolo Fatture. <span style="color: rgb(153, 51, 0);">Nessun controllo specifico</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Costo_Orario_Can"></a><span style="font-weight: bold; text-decoration: underline;">Costo_Orario_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Importo
+del Costo
+Orario associato al Singolo
+Cantiere/Assistito utilizzato SOLO in alcune STAMPE PERSONALIZZATE.<span style="color: rgb(153, 51, 0);"> Nessun controllo specifico</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Isee_Can"></a><span style="text-decoration: underline; font-weight: bold;">Data_Isee_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Data
+Isee
+assegnabile ad un Cantiere/Assistito <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. Vedi relativo <a href="#Nr_Isee_Can">#Nr_Isee_Can</a>
+abbinabile. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Nascita_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Nascita_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; background-color: white; width: 828px;">Data
+di Nascita
+di un Assistito. <span style="background-color: red;"><span style="background-color: white;">Serve</span><span style="background-color: white;"></span></span>
+per
+poter Calcolare/Verificare il <a href="TR_CANT.Abb.html#Cod_Fisc_Can">Codice
+Fiscale</a>
+dell'Assistito. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Fine_1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Fine_1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; color: rgb(153, 51, 0); width: 828px;"><span style="color: black;">Data di Fine
+Rapporto con questo Cantiere/Assistito indicante l'eventuale
+Data in cui è stato CHIUSO questo Cantiere o è terminato il Rapporto di
+Assistenza verso questo Assistito</span>. Se viene inserita
+assieme alla <a href="#Data_Rapporto_Inizio_1_Can">Data_Rapporto_Inizio_1_Can</a>
+allora viene controllato che la Data di Fine sia &lt;= alla
+Data&nbsp; di Inizio</td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Fine_2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Fine_2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Seconda <a href="TR_CANT.Abb.html#Data_Rapporto_Fine_Can">Data
+di Fine
+Rapporto</a> <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Inizio_2_Can">Data_Rapporto_Inizio_2_Can</a><span style="color: rgb(153, 51, 0);"> allora viene
+controllato che la Data di Fine sia &lt;= alla Data&nbsp; di
+Inizio</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Fine_3_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Fine_3_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Terza <a href="TR_CANT.Abb.html#Data_Rapporto_Fine_2_Can">Data
+di Fine
+Rapporto</a> <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Inizio_3_Can">Data_Rapporto_Inizio_3_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Fine_4_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Fine_4_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Quarta <a href="TR_CANT.Abb.html#Data_Rapporto_Fine_3_Can">Data
+di Fine
+Rapporto</a>&nbsp; <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Inizio_4_Can">Data_Rapporto_Inizio_4_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Fine_5_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Fine_5_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Quinta <a href="TR_CANT.Abb.html#Data_Rapporto_Fine_4_Can">Data
+di Fine
+Rapporto</a>&nbsp; <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Inizio_5_Can">Data_Rapporto_Inizio_5_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Inizio_1_Can"></a><span style="text-decoration: underline; font-weight: bold;">Data_Rapporto_Inizio_1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Data
+di Inizio
+Rapporto con questo Cantiere/Assistito indicante
+l'eventuale Data in cui è stato APERTO questo Cantiere o è iniziato il
+Rapporto di Assistenza verso questo Assistito.<span style="color: rgb(153, 51, 0);">Se viene inserita assieme
+alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Fine_1_CAn">Data_Rapporto_Fine_1_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Inizio sia &gt;= alla Data di Fine<br>
+      </span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Inizio_2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Inizio_2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Seconda <a href="TR_CANT.Abb.html#Data_Rapporto_Inizio_Can">Data
+di Inizio
+Rapporto</a> <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Fine_2_CAn">Data_Rapporto_Fine_2_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Inizio sia &gt;= alla Data di Fine</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Data_Rapporto_Inizio_3_Can"></a>Data_Rapporto_Inizio_3_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top; width: 828px;">Terza <a href="TR_CANT.Abb.html#Data_Rapporto_Inizio_Can">Data
+di Inizio
+Rapporto</a> <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Fine_3_CAn">Data_Rapporto_Fine_3_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Inizio sia &gt;= alla Data di Fine</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Inizio_4_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Inizio_4_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a> </td>
+      <td style="vertical-align: top; width: 828px;">Quarta <a href="TR_CANT.Abb.html#Data_Rapporto_Inizio_Can">Data
+di Inizio
+Rapporto</a> <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Fine_4_CAn">Data_Rapporto_Fine_4_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Inizio sia &gt;= alla Data di Fine</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Rapporto_Inizio_5_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Rapporto_Inizio_5_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a> </td>
+      <td style="vertical-align: top; width: 828px;">Quinta <a href="TR_CANT.Abb.html#Data_Rapporto_Inizio_Can">Data
+di Inizio
+Rapporto</a> <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<span style="color: rgb(153, 51, 0);">Se
+viene inserita assieme alla&nbsp;</span><a href="_TR_CANT.html#Data_Rapporto_Fine_5_CAn">Data_Rapporto_Fine_5_Can</a><span style="color: rgb(153, 51, 0);"> allora viene controllato
+che la Data di Inizio sia &gt;= alla Data di Fine</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Data_Registrazione_Can"></a><span style="font-weight: bold; text-decoration: underline;">Data_Registrazione_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLDATETIME">SMALLDATETIME</a> </td>
+      <td style="vertical-align: top; width: 828px;">Data
+ed Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>in
+cui PER la PRIMA VOLTA è stato inserito questo Cantiere/Assistito. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span>.&nbsp; <span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span> </span>(Vedi anche<a href="TR_CANT.DataOraUltimaModifica_Can.html">
+DataOraUltimaModifica</a>) . <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(255, 102, 0); font-weight: bold;"></span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">DATE </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="DataOraUltimaModifica_Can"></a><span style="font-weight: bold; text-decoration: underline;">DataOraUltimaModifica_Can</span>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLDATETIME">SMALLDATETIME</a> </td>
+      <td style="vertical-align: top; width: 828px;">Data
+ed Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica effetuata su quel Record)</span>. <span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="TR_CANT.html#DataOraUltimaModifica">
+Data_Registrazione_Can</a>). <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">DATE </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="DataVarGps_Can"></a><span style="font-weight: bold; text-decoration: underline;">DataVarGps_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLDATETIME">SMALLDATETIME</a> </td>
+      <td style="vertical-align: top; width: 828px;">Data
+ed Ora in
+cui PER
+l'ULTIMA VOLTA sono state modificate le Coordinate GPS (Latitudine e
+Longitudine di questo Cantiere). <br>
+Viene Impostata AUTOMATICAMENTE dal
+Sistema e <span style="color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti del Sistema</span> (Vedi anche<a href="TR_CANT.html#DataOraUltimaModifica">
+Data_Registrazione_Can</a>). <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">DATE </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Descrizione_Can"></a><span style="font-weight: bold; text-decoration: underline;">Descrizione_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;"><span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span>Descrizione
+del Cantiere <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span> che permette, al di là
+del suo Codice, di identificare un determinato Cantiere.<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri </span><br>
+      <span style="font-weight: bold; text-decoration: underline; color: red;">NOTA
+BENE</span> : nel caso di un Assistito (<a href="#Tipologia_Can">Tipologia_Can</a>
+= "Ass") viene
+AUTOMATICAMENTE riempito dal sistema come segue:<br>
+      <ul>
+        <li>il <a href="#Cognome_Assistito_Can">Cognome
+dell'Assistito</a></li>
+        <ul>
+          <li>separati da un CARATTERE BLANK</li>
+        </ul>
+        <li><a href="#Nome_Assistito_Can">Il Nome
+dell'Assistito</a></li>
+      </ul>
+per mantenerla allineata a tali informazioni.&nbsp;<span style="color: rgb(153, 51, 0);"></span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="DisAbilitazione_Can"></a><span style="font-weight: bold; text-decoration: underline;">DisAbilitazione_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Stato
+del
+Cantiere/Assistito che indica se il relativo
+Cantiere/Assistito è da considerare Disabilitato o meno. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE)</span><br>
+Un
+Cantiere/Assistito anche se disabilitato può essere comunque utilizzato
+dal resto del sistema e<span style="color: rgb(153, 51, 0);">
+può assumere i seguenti Valori:</span><br>
+      <ul style="margin-left: 40px;">
+        <li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo record NON è più ATTIVO e NON va più utilizzato
+&nbsp;&nbsp; <br>
+        </li>
+        <li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(255, 102, 0);">&nbsp;</span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(255, 102, 0);"></span>Indica lo
+stato Normale del Record&nbsp;&nbsp;&nbsp; <br>
+        </li>
+      </ul>
+Viene utilizzato solo per permettere di escludere automaticamente i
+Cantieri/Assistiti Disabilitati dalla visualizzazione della Lista dei
+Cantieri/Assistiti proposta in apertura della Gestione delle Schede
+Cantieri/Assistiti se è attivato il relativi Campo </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">CECK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Durata_Max_Gruppo_Notte_Ril_Can"></a><span style="text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_Notte_Ril<br>
+_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Ore/Minuti
+da Aggiungere all'ULTIMA TIMBRATURA DI ENTRATA DEL GIORNO per CERCARE
+OLTRE LA MEZZANOTTE la PRIMA TIMBRATURA o oltre la Mezzanotte o oltre
+l'ultima timbratura di
+Entrata ( in base al valore indicato nel campo <a href="#FlagCambioGiornoRil_Can"><span style="font-weight: bold; text-decoration: underline;">FlagCambioGiornoRil_Can</span></a><span style="font-weight: bold;"> ).</span> La Durata
+Massima Gruppi Notte (oltre la Mezzanotte) <span style="text-decoration: underline; font-weight: bold;">è
+alternativa</span> alla <a href="#Pausa_Gruppo_Notte_Can">Pausa
+Gruppi Notte</a>.
+Serve per impedire di prendere come Timbratura di Chiusura dopo la
+Mezzonotte una Timbratura che invece è relativa all'Entrata effettuata
+nel Giorno Successivo in quanto avvenuta troppo oltre la Mezzanotte o
+oltre l'Ultima Timbratura di Entrata effettuata prima della Mezzonotte.<br>
+      <span style="font-weight: bold; color: rgb(102, 51, 51);">Non
+sono previsti specifici Controlli</span><br>
+      <span style="color: black;">Questo valore,
+se presente,&nbsp;</span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_Notte</span>
+in Scheda Parametri</li>
+      </ul>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Gruppo_Notte_Ril_Col</span>
+          <br>
+        </li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista.<br>
+Vedere anche <a href="#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a>,&nbsp;
+      <a href="#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a>
+, <a href="#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Durata_Max_Gruppo_Ril_Can"></a><span style="text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_Ril_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+Massima in
+Ore/Minuti della Somma delle Timbrature di E/U effettuate nello stesso
+Giorno eseguite presso questo
+Cantiere/Assistito. Serve per BLOCCARE TUTTE le Timbrature di E/U per i
+Giorni in cui il Totale delle Ore Lavorate supera quanto previsto
+probabilmente dovuto ad un probabile errato accoppiamento fra Entrata
+ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.<span style="color: rgb(153, 51, 0);"> </span><br>
+      <span style="color: rgb(102, 51, 0); font-weight: bold;">Questo
+valore,
+se presente, &nbsp;</span><span style="color: rgb(102, 51, 0); font-weight: bold;">viene controllato
+che sia Maggiore</span><span style="color: rgb(102, 51, 0); font-weight: bold;">/Uguale della </span><a href="_TR_CANT.html#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a> <span style="font-weight: bold; color: rgb(102, 51, 51);">e Maggiore/Uguale
+alla</span> <a href="#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a><span style="color: red; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_RIL</span>
+in Scheda Parametri. </li>
+      </ul>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Gruppo_Ril_Col</span>
+        </li>
+      </ul>
+&nbsp;L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Giornaliera prevista. Vedere anche <a href="TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a>,&nbsp;
+      <a href="TR_CANT.AAA.html#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a>&nbsp;<span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span> <a href="TR_CANT.AAA.html#Durata_Max_Gruppo_Notte_Ril_Can">Durata_Max_Gruppo_Notte_Ril
+_Can</a> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Durata_Max_Ril_Can"></a><span style="font-weight: bold; text-decoration: underline;">Durata_Max_Ril_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+Massima in
+Ore/Minuti della Singola Timbratura di E/U eseguita presso questo
+Cantiere/Assistito. Serve per BLOCCARE le Singole Timbrature di E/U che
+hanno una eventuale
+Durata Maggiore di quanto previsto dovuta ad un probabile errato
+accoppiamento fra Entrata ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita. <span style="color: rgb(153, 51, 0);"></span><br>
+      <span style="color: rgb(102, 51, 0); font-weight: bold;">Questo
+valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale
+della </span><a href="#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a> <span style="font-weight: bold; color: rgb(102, 51, 51);">e Minore/Uguale
+alla</span> <a href="#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a><span style="color: rgb(102, 51, 0); font-weight: bold;"> </span><span style="color: rgb(102, 51, 0);"></span><span style="color: rgb(153, 51, 0); font-weight: bold;"></span><span style="color: red; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_Notte</span>
+in Scheda Parametri. </li>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Ril_Can</span></li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista. Vedere anche <a href="TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a>,&nbsp;
+      <a href="#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a>&nbsp;<span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span> <a href="#Durata_Max_Gruppo_Notte_Ril_Can">Durata_Max_Gruppo_Notte_Ril
+_Can</a></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Durata_Min_Ril_Can"></a><span style="text-decoration: underline; font-weight: bold;">Durata_Min_Ril_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+Minima in
+Ore/Minuti della Singola Timbratura di E/U eseguita presso questo
+Cantiere/Assistito. Serve per BLOCCARE le Singole Timbrature di E/U che
+hanno una eventuale
+Durata Nessun controllo specifico di quanto previsto dovuta ad un
+probabile errato
+accoppiamento fra Entrata ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita. <span style="color: rgb(153, 51, 0);"></span><br>
+      <span style="color: rgb(102, 51, 0); font-weight: bold;">Questo
+valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della </span><a href="#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a> <span style="font-weight: bold; color: rgb(102, 51, 51);">e Minore/Uguale
+alla</span> <a href="_TR_CANT.html#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a><span style="color: red; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_Notte</span>
+in Scheda Parametri.&nbsp;</li>
+      </ul>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Min_Ril_Can</span></a></li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista. Vedere anche <a href="TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a>,&nbsp;
+      <a href="TR_CANT.AAA.html#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a>&nbsp;<span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span> <a href="TR_CANT.AAA.html#Durata_Max_Gruppo_Notte_Ril_Can">Durata_Max_Gruppo_Notte_Ril
+_Can</a></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Fax_1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Fax_1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">1°
+Numero di FAX <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri </span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Fax_1_Rif_Can"></a><span style="font-weight: bold; text-decoration: underline;">Fax_1_Rif_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">Riferimento <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 1° Numero di FAX
+associabile a questo Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri </span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Fax_2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Fax_2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">2°
+Numero di FAX <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Fax_2_Rif_Can"></a><span style="font-weight: bold; text-decoration: underline;">Fax_2_Rif_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>50)</td>
+      <td style="vertical-align: top; width: 828px;">Riferimento <span style="font-weight: bold; text-decoration: underline; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 2° Numero di FAX associabile a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Filiale_Can"></a><span style="font-weight: bold; text-decoration: underline;">Fil_Id</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a> </td>
+      <td style="vertical-align: top; width: 828px;">N°Identificativo
+della Filiale
+cui appartiene&nbsp;questo
+Cantiere/Assistito. <span style="color: rgb(153, 51, 0);">Se
+inserito viene verificato che esista nella
+Tabella FIL</span><span style="color: rgb(153, 51, 0);"></span>.&nbsp;
+Se la Struttura
+Aziendale è
+particolarmente ampia e si vogliono poi suddividere e selezionare i
+Cantieri/Assistiti appartenenti ad una determinata Filiale conviene
+inserire
+questo dato nell'Anagrafica Cantieri/Assistiti in quanto poi il Codice
+Filiale
+viene poi usato in tutte le Stampe per permettere di selezionare i
+Cantieri/Assistiti in base al Codice della Filiale di Appartenenza.<br>
+      <span style="font-weight: bold; text-decoration: underline;">Nel caso dei Record relativi alla ATTIVITA'</span> (Campo <a href="#Tipologia_Can">Tipologia_Can</a> = <span style="font-weight: bold; color: red;">"ASS</span>") <span style="text-decoration: underline;">viene controllato che NON venga mai assegnata una Filiale alle Attività </span>in quanto la Filiale delle Attività DIPENDE DAL CANTIERE SULLE QUALI SONO STATE ESEGUITE LE RELATIVE ATTIVITA'!!!<br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline; color: red;">NOTA
+BENE </span>: Quando in SK UTENTI ad un determinato UTENTE di
+Power Web viene
+anche
+assegnato un <a href="../TR_UTENTI/TR_UTENTI.AAA.html#Codice_Filiale_Utente">Codice
+Filiale di Appartenenza</a>,
+e nella Scheda Parametri è stato impostatoa True il Flag
+Dominio_Visualizzazione e/o il Flga Dominio_Manutenzione,&nbsp;/allora,
+per questo utente,
+in tutte le Maschere e Report di Power Web, vengono AUTOMATICAMENTE
+selezionati dal sistema IN SOLA VISUALIZZAZIONE e/o ANCHE IN MODIFICA
+TUTTI E SOLO I DATI che appartengono ai
+Cantieri/Assistiti&nbsp; che appartengono alla stessa Filiale
+assegnata all'Utente che si è collegato a Power.</li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Flag_Entrata_Can"></a><span style="font-weight: bold; text-decoration: underline;">Flag_Entrata_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR<span style="color: black;">(1)</span></a></td>
+      <td style="vertical-align: top; width: 828px;">Metodo
+di
+Gestione dell'eventuale <a href="#Limite_Entrata_can">Limite
+Ora di
+Entrata</a> impostata per questo Cantiere. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 1 caratteri</span><span style="color: rgb(153, 51, 0);"> e&nbsp;che esista in TAB_DECOD con
+Gruppo_Tab=<span style="font-weight: bold;">Decod_SYS</span> e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_Entrata">Flag_Entrata
+.</a><br>
+      <span style="font-weight: bold; text-decoration: underline;">Al
+momento può
+assumere SOLO i seguenti Valori.</span><br>
+      <ul>
+        <li>Blank&nbsp; = -La Gestione del Limite Ora Entrata NON è
+attivo - <br>
+        </li>
+        <li>A&nbsp;= TD_AGG_IN_RICALCOLO_ORE_FIG</li>
+        <ul>
+          <li>&nbsp;Attiva l'Applicazione Automatica del Limite di
+Ora di
+Entrata durante il Calcolo delle Ore Figurative.</li>
+        </ul>
+        <li>S = TD_SEGNALA_BLOCCA_IN_VERIFICA_INPUT</li>
+        <ul>
+          <li>&nbsp;- Attiva la Segnalazione con relativo Blocco
+durante
+l'Elaborazione delle Timbrature ricevute che hanno una Entrata
+effettuata prima dell'Ora impostata come Limite Ora di Entrata.<br>
+          </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Flag_NON_Esportare_Can"></a><span style="font-weight: bold; text-decoration: underline;">Flag_NON_Esportare_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Blocco
+Esportazione delle Rilevazioni
+di questo Cantiere da parte del programma di Export delle
+Rilevazioni. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=<span style="font-weight: bold;">Decod_SYS</span> e Nome_Tab</span>=<span style="text-decoration: underline;"> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_NON_Esportare">Flag_Non_Esportare</a></span>
+.<br>
+      <span style="font-weight: bold; text-decoration: underline;">Al
+momento può assumere SOLO i
+seguenti Valori:</span><br>
+      <ul>
+        <li>0 = TD_SI_EXPORT&nbsp;</li>
+        <ul>
+          <li>Valore di Default che
+indica lo stato Normale del Record &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+        </ul>
+        <li>1 = TD_NO_EXPORT</li>
+        <ul>
+          <li>Indica che
+le Timbrature di questo Cantiere/Assistito NON vengono esportate dal
+sistema&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="FlagGps_Can"></a><span style="font-weight: bold; text-decoration: underline;">FlagGps_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Stato
+della
+Gestione GPS di questo Cantiere/Assistito.Indica prima di tutto se la
+gestione del GPS è abilitata o meno per questo Cantiere/Assistito ed il
+relativo Status nei confronti della Gestione GPS. <span style="text-decoration: underline; background-color: white;">Viene
+Impostato AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.<span style="color: black;"> </span></span></span><span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 1 caratteri</span><span style="color: rgb(153, 51, 0);"> e&nbsp;</span><span style="color: rgb(204, 51, 204);"><span style="color: rgb(153, 51, 0);">che
+esista nella TAB_DECOD con Gruppo_Tab=<span style="font-weight: bold;">Decod_SYS</span>
+e
+Nome_Tab=</span></span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_Gps_Can">Flag_Gps_Can</a>.<br>
+      <span style="font-weight: bold; text-decoration: underline;">Al
+momento può assumere&nbsp;SOLO i seguenti Valori::</span>
+      <ul>
+        <li>0 = TD_COORD_GPS_DA_NON_ASSEGNARE</li>
+        <ul>
+          <li>Gestione GPS NON abilitata per questo
+Cantiere/Assistito</li>
+        </ul>
+        <li>1 = TD_COORD_GPS_ASSEGNATE</li>
+        <ul>
+          <li>Il Cantiere/Assistito ha le Coordinate GPS
+(Latitudine
+e Longitudine) assegnate</li>
+        </ul>
+        <li>4 = TD_COORD_GPS_SOVRAPPOSTE</li>
+        <ul>
+          <li>Il Cantiere/assistito ha le Coordinate Gps
+(Latitudine/Longitudine) assegnate che si sovrappongono a quelle di un
+altro Cantiere/Assistito.</li>
+        </ul>
+        <li>5 = TD_COORD_GPS_NON_TROVATE</li>
+        <ul>
+          <li>Il Sistema NON è stato in grado di assegnare a
+questo
+Cantiere/Assistito le Coordinate GPS (Latitudine e Longitudine)</li>
+        </ul>
+        <li>9 = TD_COORD_GPS_DA_ASSEGNARE</li>
+        <ul>
+          <li>Il Cantiere/Assistito è abilitato alla Gestione
+GPS ma
+non ha ancora le Coordinate GPS (Latitudine e Longitudine)<br>
+          </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Gestione_Can"></a><span style="font-weight: bold; text-decoration: underline;">Gestione_Can </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+      </td>
+      <td style="vertical-align: top; background-color: red; width: 828px;">Utilizzato
+solo in SCHEDA ATTIVITA'.<span style="background-color: white;">&nbsp;</span><span style="color: rgb(153, 51, 0); background-color: white;">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 10 caratteri
+&nbsp; </span><span style="color: rgb(204, 51, 204);"><span style="color: rgb(153, 51, 0);"></span></span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;"><br>
+      </td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Indirizzo_Can"></a><span style="text-decoration: underline; font-weight: bold;">Indirizzo_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Indirizzo
+in cui
+è ubicato questo
+Cantiere/Assistito che può essere assegnato manualmente o ,
+eventualmente, ottenuto dalla Latitudine e Longitudine tramite il
+Modulo GPS.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri</span>
+      </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="LatitudineGps_Can"></a><span style="font-weight: bold; text-decoration: underline;">LatitudineGps_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Latitudine
+espressa in xxxxxx della posizione del Cantiere che viene normalmente
+ottenuta tramite il Modulo GPS.<span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Limite_Entrata_Can"></a><span style="text-decoration: underline; font-weight: bold;">Limite_Entrata_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#DATETIME">TIME(0)</a>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Ora e
+Minuto prima del
+quale NON vengono considerati i minuti di anticipo rispetto all'Orario
+di Entrata previsto per questo Cantiere/Assistito applicato in base al
+valore impostato del Campo <a href="#Flag_Entrata_Can">Flag_Entrata_Can.
+      <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span></a> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Limite_Inizio_Notte_Can"></a><span style="text-decoration: underline; font-weight: bold;">Limite_Inizio_Notte_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#DATETIME">TIME(0)</a></td>
+      <td style="vertical-align: top; background-color: red; width: 828px;"><span style="color: rgb(153, 51, 0);">Nessun controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Livello_Assistito_Can"></a><span style="font-weight: bold; text-decoration: underline;">Livello_Assistito_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Livello <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo <span style="color: rgb(153, 51, 0);">Se
+inserito, viene controllato che&nbsp;</span><span style="color: rgb(153, 51, 0); background-color: white;"> che abbia
+una Lunghezza &lt;= 20 caratteri &nbsp;e che</span><span style="color: rgb(153, 51, 0);"> esista nella TAB_DECOD con
+Gruppo_Tab=
+Decod_Tab Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Livello_Can">Livello_Can</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="LongitudineGps_Can"></a><span style="font-weight: bold; text-decoration: underline;">LongitudineGps_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Longitudine
+espressa in xxxxxx della posizione del Cantiere che viene normalmente
+ottenuta tramite il Modulo GPS.<span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Luogo_Can"></a><span style="font-weight: bold; text-decoration: underline;">Luogo_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Comune
+in cui è ubicato questo
+Cantiere o di Residenza dell'Assistito.Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandolo fra i&nbsp;Luoghi presenti nella Tab
+COMUNI&nbsp;</li>
+        <li>proposto in automatico in base al <a href="#Codice_Luogo_Residenza_Can">Codice_Luogo_Residenza_Can</a>
+inserito</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella COMUNI.</span><br>
+Quando viene selezionato dall'Elenco dei Comuni proposto a video,
+allora provvede <span style="text-decoration: underline;">AUTOMATICAMENTE
+a
+caricareanche&nbsp; i corrispondenti valori nei campi da lui dipendenti:</span><br>
+      <ul>
+        <li><a href="_TR_CANT.html#Provincia_Can">Provincia_Can</a></li>
+        <li><a href="_TR_CANT.html#Cap_Can">Cap_Can</a></li>
+        <li><a href="_TR_CANT.html#Codice_Residenza_Luogo_Can">Codice_Residenza_Luogo_Can</a><br>
+        </li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="width: 140px;"><a name="Luogo_Nascita_Can"></a><span style="font-weight: bold; text-decoration: underline;">Luogo_Nascita_Can</span></td>
+      <td style="text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="width: 828px;">Comune
+di Nascita di un Assistito. Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandolo fra i&nbsp;Luoghi presenti nella Tab
+COMUNI&nbsp;</li>
+        <li>proposto in automatico in base al <a href="#Codice_Luogo_Nascita_Can">Codice_Luogo_Nascita_Can</a> inserito</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella COMUNI.</span><br>
+Quando viene selezionato dall'Elenco dei Comuni proposto a video,
+allora provvede <span style="text-decoration: underline;">AUTOMATICAMENTE
+a
+caricareanche&nbsp; i corrispondenti valori nei campi da lui dipendenti:</span>
+      <ul>
+        <li><a href="_TR_CANT.html#Nascita_Provincia_Can">Nascita_Provincia_Can</a></li>
+        <li><a href="_TR_CANT.html#Cap_Nascita_Luogo_Can">Cap_Nascita_Luogo_Can</a></li>
+        <li><a href="_TR_CANT.html#Codice_Nascita_Luogo_Can">Codice_Nascita_Luogo_Can</a></li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Mensa_Can"></a><span style="text-decoration: underline; font-weight: bold;">Mensa_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="../I%20Formati%20dei%20Campi.htmll#BIT">BIT</a> </td>
+      <td style="vertical-align: top; background-color: white; color: black; width: 828px;">Presenza
+della Mensa e/o Fornitura del Servizio Pasti per questo Assistito <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. (<span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE)<br>
+      </span><span style="color: rgb(153, 51, 0);">Può
+assumere i seguenti valori</span><span style="color: rgb(255, 102, 0); font-weight: bold;"><br>
+      </span>
+      <ul>
+        <li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Indica la
+Presenza di
+Mensa presso quel Cantiere o la Fornitura Pasti nel caso di un Assistito<br>
+        </li>
+        <li>FALSO
+(False)&nbsp; -&nbsp; Indica la NON Presenza di Mensa presso
+quel
+Cantiere o la NON Fornitura Pasti nel caso di un Assistito</li>
+      </ul>
+      <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><br>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">CHECK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Metodo_Arrotondamento_Can"></a><span style="font-weight: bold; text-decoration: underline;">Metodo_Arrotondamento_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Metodo
+di Arrotondamento da utilizzare
+nel Calcolo delle Ore Figurative per questo Cantiere/Assisto salvo per
+eventuali Collaboratori. <span style="color: rgb(153, 51, 0);">Se
+inserito, viene controllato che esista nella TAB_DECOD con Gruppo_Tab=
+Decod_<span style="font-weight: bold;">SYS</span> e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Metodo_Arrotondamento">Metodo_Arrotondamento</a>.
+      <span style="font-weight: bold; text-decoration: underline;">Può
+quindi assumere SOLO i seguenti valori:</span><a style="font-weight: bold; text-decoration: underline;" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Metodo_Arrotondamento">&nbsp;</a>
+      <ul>
+        <li>0 = TD_ARROT_STANDARD</li>
+        <ul>
+          <li>Vedi eventuali Parametri impostati in Scheda
+Parametri</li>
+        </ul>
+        <li>1 = TD_ARROT_DURATA</li>
+        <ul>
+          <li>TD_ARROT_STANDARDArrotondamento per Durata&nbsp; (vedi <a href="#Tipo_Arrotondamento_Can">Tipo Arrotondamento_Can</a>)</li>
+        </ul>
+        <li>2 = TD_ARROT_EU</li>
+        <ul>
+          <li>Arrotondamento per Entrata/Uscita</li>
+        </ul>
+        <li>3 = x Durata Personalizzata con Tolleranza&nbsp;
+su Orario
+Previsto</li>
+        <li>9 = Escludi comunque questo Cantiere/Assistito dagli
+Arrotondamenti eventualmenti impostati in modo Generale in Scheda
+Parametri</li>
+      </ul>
+Viene utilizzato per i soli Cantieri che lo hanno impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento"><span style="text-decoration: underline;">Metodo_Arrotondamento</span></a>
+in Scheda Parametri.
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="TR_CANT.Abb.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Minuti_Tolleranza_Col</span></a>&nbsp;
+        </li>
+      </ul>
+      <ul>
+      </ul>
+L'Arrotondamento per Durata viene applicato SOLO dal Programma di
+Calcolo Ore Figurative mentre l'Arrotondamento per Entrata/Uscita viene
+applicato sia immediatamente per Singola Rilevazione sia
+successivamente dal programma di Calcolo delle Ore Figurative<br>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Minuti_Tolleranza_Can"></a><span style="font-weight: bold; text-decoration: underline;">Minuti_Tolleranza_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Minuti
+di Tolleranza da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative alle
+Timbrature di Entrata. Deve essere MAGGIORE della corripondente <a href="#Soglia_Arrot_Fig_Can">Soglia_Arrot_Fig_Can</a>.<br>
+      <span style="color: rgb(153, 102, 51); font-weight: bold;">Se
+inserito
+viene controllato che sia &lt;=60 e &gt;= della corripondente</span> <a href="#Soglia_Arrot_Fig_Can">Soglia_Arrot_Fig_Can</a>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Default_Minuti_Tolleranza">Default_Minuti_Tolleranza</a>
+in Scheda Parametri.</li>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="TR_CANT.Abb.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Minuti_Tolleranza_Col</span></a>&nbsp;
+        </li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Minuti_Tolleranza_F_Can"></a><span style="text-decoration: underline; font-weight: bold;">Minuti_Tolleranza_F_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Minuti
+di Tolleranza da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative alle
+Timbrature di Uscita. Deve essere MAGGIORE della corripondente <a href="TR_CANT.Abb.html#Soglia_Arrot_Fig_F_Can">Soglia_Arrot_Fig_F_Can</a>.<br>
+      <span style="color: rgb(153, 102, 51); font-weight: bold;">Se
+inserito
+viene controllato che sia &lt;=60 e &gt;= della corripondente</span> <a href="TR_CANT.Abb.html#Soglia_Arrot_Fig_F_Can">Soglia_Arrot_Fig_F_Can</a>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Default_Minuti_Tolleranza_F">Default_Minuti_Tolleranza_F</a>
+in Scheda Parametri. </li>
+        <li><span style="text-decoration: underline; font-weight: bold;">MA
+NON viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="TR_CANT.Abb.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; color: rgb(51, 102, 255); font-weight: bold;">Minuti_Tolleranza_F_Col</span></a></li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Nazione_Can"></a><span style="font-weight: bold; text-decoration: underline;">Nazione_Can </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Nazione
+in cui è ubicato un
+Cantiere o di Residenza di un Assistito. <span style="color: rgb(153, 51, 0);">Se inserita,</span><span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri
+&nbsp;e</span><span style="color: rgb(153, 51, 0);"> che esista nella
+TAB_DECOD con Gruppo_Tab=Decod_Tab e
+Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Prov">Sigla_Nazioni</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">UBI</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><span style="font-weight: bold;"><a name="Nazione_Nascita_Can"></a></span><span style="font-weight: bold; text-decoration: underline;">Nazione_Nascita_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Nazione
+di Nascita di un Assistito. <span style="color: rgb(153, 51, 0);">Se
+inserita, </span><span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50
+caratteri&nbsp;</span><span style="color: rgb(153, 51, 0);">e che
+esista nella TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab=</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Prov">Sigla_Nazioni</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><span style="font-weight: bold;"><a name="Nome_Assistito_Can"></a><span style="text-decoration: underline;">Nome_Assistito_Can</span></span><br>
+      </td>
+      <td style="vertical-align: top; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Nome
+Assistito.<span style="background-color: red;"><span style="background-color: white;">Se </span><a style="background-color: white;" href="_TR_CANT.html#Tipologia_Can">TIPOLOGIA_CAN</a><span style="background-color: white;">=ASS</span></span> e se inserito
+permette di poter Calcolare/Verificare il <a href="TR_CANT.Abb.html#Cod_Fisc_Can">Codice
+Fiscale</a>
+dell'Assistito.&nbsp;Il Valore viene AUTOMATICAMENTE INSERITO nel Campo
+      <a href="_TR_CANT.html#Descrizione_Can">Descrizione_Can</a>
+assieme al <a href="_TR_CANT.html#Nome_Assistito_Can">Nome_Assistito_Can</a>.
+(separati da uno SPAZIO VUOTO).&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri </span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><span style="font-weight: bold;"><a name="Note_Can"></a><span style="text-decoration: underline;">Note_Can</span></span><br>
+      </td>
+      <td style="vertical-align: top; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Nota
+associata alla
+Scheda Anagrafica del Singolo Cantiere.Vedi anche Note del Cantiere x
+Data. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">NOTE</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Nr_Isee_Can"></a><span style="font-weight: bold; text-decoration: underline;">Nr_Isee_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">N°Identificativo
+(Isee) libero
+abbinato a questo Cantiere/Assistito. Vedi eventuale relativa <a href="#Data_Isee_Can">Data_Isee</a> abbinata.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 50 caratteri </span>
+      </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_Bimbi_Fascia_Can"></a><span style="font-weight: bold; text-decoration: underline;">Numero_Bimbi_Fascia_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture.<span style="color: rgb(153, 51, 0);">
+Nessun controllo specifico</span><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);"></span><span style="color: rgb(153, 102, 51);"></span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_GG_Lavorativi"></a><span style="font-weight: bold; text-decoration: underline;">Numero_GG_Lavorativi</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a></td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che sia &lt;= 31</span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_Utenti_Fascia1_Can"></a><span style="text-decoration: underline; font-weight: bold;">Numero_Utenti_Fascia1_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a></td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_Utenti_Fascia2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Numero_Utenti_Fascia2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_Utenti_Prescuola_Can"></a><span style="text-decoration: underline; font-weight: bold;">Numero_Utenti_Prescuola_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_Utenti_Postscuola_1Mezzora_Can"></a><span style="text-decoration: underline; font-weight: bold;">Numero_Utenti_Postscuola_<br>
+1Mezzora_Can </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a></td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Numero_Utenti_Postscuola_2Mezzora_Can"></a><span style="text-decoration: underline; font-weight: bold;">Numero_Utenti_Postscuola_2<br>
+Mezzora_Can </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Campo
+utlizzato solo dal Modulo
+Gestione Fatture. <span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span><br>
+      <span style="text-decoration: underline; font-weight: bold;"></span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">IMP</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Ore_Massime_Can"></a><span style="text-decoration: underline; font-weight: bold;">Ore_Massime_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Totale
+delle Ore Massime Mensili/Settimanali <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<span style="color: rgb(153, 51, 0);">Nessun
+controllo specifico</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Percentuale_Can"></a><span style="font-weight: bold; text-decoration: underline;">Percentuale_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a> </td>
+      <td style="vertical-align: top; width: 828px;">Percentuale
+di Suddivisione dei Servizi Prestati a questo Cantiere/Assistito <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo salvo il fatto che viene utilizzato SOLO
+per <br>
+      <ul>
+        <li>Export Excel COISS</li>
+        <li>Export Excel x Giorgi per calcolare la Suddivisione
+Percentuale delle Ore Prestate</li>
+      </ul>
+      <span style="font-weight: bold; color: red;">INSERIRE
+CONTROLLO CHE SIA MINORE DI 100,00 oppure MODIFICARE MASCHERA INPUT</span>
+      </td>
+      <td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Percentuale_Servizio_1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Percentuale_Servizio_1_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a> </td>
+      <td style="vertical-align: top; width: 828px;">Percentuale
+di Suddivisione dei Servizi Prestati <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo salvo il fatto che viene utilizzato SOLO
+per
+      <ul>
+        <li>Export Excel COISS</li>
+        <li>Export Excel x Giorgi per calcolare la Suddivisione
+Percentuale delle Ore Prestate</li>
+      </ul>
+      <span style="font-weight: bold; color: red;">INSERIRE
+CONTROLLO CHE SIA MINORE DI 100,00 oppure MODIFICARE MASCHERA INPUT</span>
+      </td>
+      <td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Percentuale_Servizio_2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Percentuale_Servizio_2_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a> </td>
+      <td style="vertical-align: top; width: 828px;">Percentuale
+di Suddivisione dei Servizi Prestati <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<br>
+      <span style="font-weight: bold; color: red;">INSERIRE
+CONTROLLO CHE SIA MINORE DI 100,00 oppure MODIFICARE MASCHERA INPUT</span><br>
+      </td>
+      <td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Percentuale_Servizio_3_Can"></a><span style="font-weight: bold; text-decoration: underline;">Percentuale_Servizio_3_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a> </td>
+      <td style="vertical-align: top; width: 828px;">Percentuale
+di Suddivisione dei Servizi Prestati. <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<br>
+      <span style="font-weight: bold; color: red;">INSERIRE
+CONTROLLO CHE SIA MINORE DI 100,00 oppure MODIFICARE MASCHERA INPUT</span><br>
+      </td>
+      <td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Percentuale_Servizio_4_Can"></a><span style="font-weight: bold; text-decoration: underline;">Percentuale_Servizio_4_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a> </td>
+      <td style="vertical-align: top; width: 828px;">Percentuale
+di Suddivisione dei Servizi Prestati. <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<br>
+      <span style="font-weight: bold; color: red;">INSERIRE
+CONTROLLO CHE SIA MINORE DI 100,00 oppure MODIFICARE MASCHERA INPUT</span><br>
+      </td>
+      <td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Percentuale_Servizio_5_Can"></a><span style="font-weight: bold; text-decoration: underline;">Percentuale_Servizio_5_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a> </td>
+      <td style="vertical-align: top; width: 828px;">Percentuale
+di Suddivisione dei Servizi Prestati. <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.<br>
+      <span style="font-weight: bold; color: red;">INSERIRE
+CONTROLLO CHE SIA MINORE DI 100,00 oppure MODIFICARE MASCHERA INPUT</span><br>
+      </td>
+      <td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Provincia_Can"></a><span style="font-weight: bold; text-decoration: underline;">Provincia_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Sigla
+della Provincia in cui è ubicato questo Cantiere o di Residenza di un
+Assistito.Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandola fra le Province presenti nella Tab PROV&nbsp;</li>
+        <li>proposto in automatico in base al <a href="#Luogo_Can">Luogo_Can</a>
+e/o al&nbsp; <a href="_TR_CANT.html#Codice_Luogo_Residenza_Can">Codice_Luogo_Residenza_Can</a>
+inserito</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 4 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella PROV.</span><span style="color: rgb(153, 51, 0);"></span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Provincia_Nascita_Can"></a><span style="font-weight: bold; text-decoration: underline;">Provincia_Nascita_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Sigla
+della Provinciadi Nascita di un
+Assistito.Può essere inserito in modo<br>
+      <ul>
+        <li>manuale</li>
+        <li>selezionandola fra le Province presenti nella Tab PROV&nbsp;</li>
+        <li>proposto in automatico in base al <a href="_TR_CANT.html#Luogo_Can">Luogo_Can</a> e/o al&nbsp; <a href="_TR_CANT.html#Codice_Luogo_Residenza_Can">Codice_Luogo_Residenza_Can</a>
+inserito</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza &lt;= 4 caratteri e
+, nel caso in cui&nbsp;il Flag Ctrl_Tab_Comuni della Tabella PARAM sia
+True,
+allora viene
+anche controllato che esista nella Tabella PROV.</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province"></a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="RaggioGps_Can"></a><span style="font-weight: bold; text-decoration: underline;">RaggioGps_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Raggio
+in Metri assegnato a questo
+Cantiere/Assistito per calcolare il Cerchio con Centro la Latidtudine e
+Longitudine di questo Cantiere/Assistito entro il quale le successive
+Timbrature GPS sono considerate come appartenenti a questo specifico
+Cantiere/Assistito. <span style="color: rgb(153, 51, 0);">Non
+viene eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="width: 140px;"><span style="font-weight: bold;"><a name="Raggruppamento1_Can"></a> </span><span style="font-weight: bold; text-decoration: underline;">Raggruppamento1_Can</span></td>
+      <td style="text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="width: 828px;">Campo di Raggruppamento1
+dei Cantieri a Disposizione dei Clienti per uso libero.<span style="color: rgb(153, 51, 0);"> </span> <span style="color: rgb(153, 51, 0);">Se inserito , viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri e&nbsp;che&nbsp;</span><span style="color: rgb(153, 51, 0);">esista nellla Tabella TAB_DECOD con
+Gruppo_Tab= Decod_Tab e
+Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Raggruppamento-1"><span style="text-decoration: underline;">Raggruppamento1</span></a><span style="color: rgb(153, 51, 0);"></span></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="width: 140px;"><span style="font-weight: bold;"><a name="Raggruppamento2_Can_"></a> </span><span style="font-weight: bold; text-decoration: underline;">Raggruppamento2_Can</span></td>
+      <td style="text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="width: 828px;">Campo di Raggruppamento2
+dei Cantieri a Disposizione dei Clienti per uso libero.<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri e che </span><span style="color: rgb(153, 51, 0);">esista nellla Tabella TAB_DECOD con
+Gruppo_Tab= Decod_Tab e
+Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Raggruppamento-1"><span style="text-decoration: underline;">Raggruppamento2</span></a></td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Residenza_Interno_Can"></a><span style="font-weight: bold; text-decoration: underline;">Residenza_Interno_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>10)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">N°
+dell'Interno dell'Indirizzo di
+Residenza di un Assistito..<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Residenza_Localita_Can"></a><span style="font-weight: bold; text-decoration: underline;">Residenza_Localita_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Località
+di Residenza di un Assistito.<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Sesso_Can"></a><span style="font-weight: bold; text-decoration: underline;">Sesso_Can </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Sesso
+di un Assistito e <span style="text-decoration: underline;">diventa
+NECESSARIO nel caso in cui si voglia Calcolare/verificare la
+correttezza del Codice Fiscale dell'Assistito</span>.
+NON viene Gestito per i
+Cantieri. <span style="color: rgb(153, 51, 0);">Se
+inserita, viene controllato </span><span style="color: rgb(153, 51, 0);">che </span><span style="color: rgb(153, 51, 0);">abbia una Lunghezza &lt;= 20 caratteri
+e </span><span style="color: rgb(153, 51, 0);">che esista nella
+TAB_DECOD con
+Gruppo_Tab=Decod_<span style="font-weight: bold;">SYS</span> e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sesso">Sesso</a>.
+      <br>
+      <span style="font-weight: bold; text-decoration: underline;">Può
+quindi assumere SOLO i seguenti valori:</span><br>
+      <ul>
+        <li>TD_FEMMINA</li>
+        <li>TD_MASCHIO</li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ASS</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Singola_Reg"></a><span style="font-weight: bold; text-decoration: underline;">Singola_Reg </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Abilita
+Gestione Passaggi ovvero
+identifica i Cantieri/Assistiti presso i quali le relative Timbrature
+vengono trattate Singolarmente (Timbratura di Passaggio) invece che
+come Timbrature di Entrata/Uscita. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE).<br>
+      </span>Nel caso venga abilitato per questo
+Cantiere/Assistito (Valore=VERO) allora ogni Singola Timbratura viene
+caricata nella Tabella PASS invece che nella Tabella RIL accoppiata
+alla corrispondente Timbratura di Uscita.<span style="color: rgb(153, 51, 0);"></span><span style="color: rgb(153, 51, 0);">Può assumere SOLO i seguenti
+valori</span><br>
+      <ul>
+        <li>VERO (True) . Le Timbrature vengono trattate
+SINGOLARMENTE <br>
+        </li>
+        <li>FALSO (False) Le Timbrature vengono trattate a Coppie
+(Entrata/Uscita)</li>
+      </ul><span style="text-decoration: underline; font-weight: bold;">
+NOTA BENE</span> : il Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Abilita_Pas">Abilita_Pas&nbsp;</a>
+della Tab <a href="_TR_PARAM.html">Param</a> deve essere = 1 (Abilitata) altrimenti NON è possibile attivare questo campo a True<span style="font-weight: bold; text-decoration: underline;"></span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">CHECK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Soglia_Arrot_Fig_Can"></a><span style="font-weight: bold; text-decoration: underline;">Soglia_Arrot_Fig_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Soglia
+di Arrotondamento in Minuti da
+applicare durante il Calcolo degli Arrotondamenti delle Ore Figurative
+alle Timbrature di Entrata. Va usata in abbinamento con il Valore del
+Campo <a href="#Minuti_Tolleranza_Can">Minuti_Tolleranza_Can</a>
+e deve essere MINORE degli stessi<br>
+      <span style="color: rgb(153, 51, 0);">Se inserito
+viene controllato che sia &lt;=60 e &lt;= della corripondente</span> <a href="_TR_CANT.html#Minuti_Tolleranza_Can">Minuti_Tolleranza_Can.</a>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Soglia_Arrot_Fig</span>
+in Scheda Parametri</li>
+        <li>&nbsp;<span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Arrot_Fig</span>
+        </li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARRA</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Soglia_Arrot_Fig_F_Can"></a><span style="font-weight: bold; text-decoration: underline;">Soglia_Arrot_Fig_F_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Soglia
+di Arrotondamento in Minuti da
+applicare durante il Calcolo degli Arrotondamenti delle Ore Figurative
+alle Timbrature di Uscita. Va usata in abbinamento con il Valore del
+Campo <a href="#Minuti_Tolleranza_F_Can">Minuti_Tolleranza_F_Can</a>
+e deve essere MINORE degli stessi<br>
+      <span style="color: rgb(153, 51, 0);">Se inserito
+viene controllato che sia &lt;=60 e &lt;= della corripondente</span> <a href="_TR_CANT.html#Minuti_Tolleranza_F_Can">Minuti_Tolleranza_F_Can.</a><br>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Soglia_Arrot_Fig_F</span>
+in Scheda Parametri</li>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Arrot_Fig</span></li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Soglia_Durata_Can"></a><span style="font-weight: bold; text-decoration: underline;">Soglia_Durata_Can
+      </span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 828px;">Minuti
+della Soglia di Arrotondamento in Minuti da
+applicare assieme ai Minuti di <a href="#Arrot_Durata_Can">Arrot_Durata_Can</a>
+durante il Calcolo degli Arrotondamenti x Durata (se attivato
+nel Campo <a href="#Metodo_Arrotondamento_Can">Metodo_Arrotondamento_Can</a>)&nbsp;
+delle Ore Figurative sulla base&nbsp; <a href="#Tipo_Arrotondamento_Can">Tipo_Arrotondamento_Can.</a>
+indicato.<br>
+      <span style="color: rgb(153, 102, 51);"><span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia &lt;=60 e &lt;= della corripondent</span>e</span> <a href="#Arrot_Durata_Can">Arrot_Durata_Can</a><br>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Soglia_Durata</span>
+in Scheda Parametri&nbsp;</li>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Durata_Col</span></li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">1°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_1_Rif_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_1_Rif_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50</td>
+      <td style="vertical-align: top; width: 828px;">Riferimento <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 1° Numero
+di Telefono
+associabile a questo Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">2°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_2_Rif_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_2_Rif_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">Riferimento <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 2° Numero
+di Telefono
+associabile a questo Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_3_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_3_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">3°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_3_Rif_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_3_Rif_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">Riferimento&nbsp; <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 3° Numero
+di Telefono
+associabile a questo Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_4_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_4_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">4°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Telefono_4_Rif_Can"></a><span style="font-weight: bold; text-decoration: underline;">Telefono_4_Rif_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+      <td style="vertical-align: top; width: 828px;">Riferimento <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 4° Numero
+di Telefono
+associabile questo Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 50 caratteri</span></td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TELFAX</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Tipo_Arrotondamento_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Arrotondamento_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">INT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+di Arrotondamento da applicare
+nel caso di Calcolo delle Ore Figurative in base alla Durata. <span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab = Decod_<span style="font-weight: bold;">SYS</span> e
+Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Arrotondamento">Tipo_Arrotondamento</a>&nbsp;
+. <br>
+      <span style="text-decoration: underline; font-weight: bold;">Può
+assumere SOLO i seguenti Valori:</span><br>
+      <ul>
+        <li>&nbsp; 0 = TD_TIPO_ARROTONDAMENTO_STANDARD_DESC</li>
+        <ul>
+          <li>Arrotondamento Standard Durata
+Giornaliera in base alla <a href="#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+        <li>&nbsp; 1 =
+TD_TIPO_ARROTONDAMENTO_NO_DURATA_MINORE_SOGLIA_DESC</li>
+        <ul>
+          <li>NON arrotonda se hanno DURATA
+&lt;= della <a href="#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+        <li>&nbsp; 2 =
+TD_TIPO_ARROTONDAMENTO_NO_DURATA_MAGGIORE_SOGLIA_DESC</li>
+        <ul>
+          <li>NON arrotonda se hanno DURATA
+&gt;&nbsp;&nbsp; della <a href="#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+        <li>&nbsp; 3 = TD_TIPO_ARROTONDAMENTO_SINGOLA_REG_X_SOGLIA_DESC</li>
+        <ul>
+          <li>Arrotonda la Durata della SINGOLA
+Rilevazione in base alla <a href="#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+      </ul>
+SE INSERITO: <br>
+      <ul>
+        <li>viene utilizzato per i soli Cantieri che lo hanno
+impostato al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Tipo_Arrotondamento"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Tipo_Arrotondamento</span></a>
+in Scheda Parametri</li>
+        <li><span style="font-weight: bold; text-decoration: underline;">MA
+NON viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Tipo_Arrotondamento_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Tipo_Arrotondamento_Col</span></a></li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">ARR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Calcolo_Viaggi_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Calcolo_Viaggi_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;"><span style="text-decoration: line-through;">Metodo
+usato per Definire/Calcolare i
+KM dei Viaggi per questo Cantiere/Assistito. </span><span style="color: rgb(153, 51, 0); text-decoration: line-through;">Se
+inserito viene
+controllato che abbia una Lunghezza &lt;= 1 caratteri e che&nbsp;esista
+nella TAB_DECOD con Gruppo_Tab=Decod_<span style="font-weight: bold;">SYS</span>
+e
+Nome_Tab</span><span style="text-decoration: line-through;">=</span><a style="text-decoration: line-through;" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Calcolo_Viaggi_Cant">Tipo_Calcolo_Viaggi_Can</a><span style="text-decoration: line-through;">
+e </span><span style="text-decoration: underline line-through; font-weight: bold;">può
+assumere SOLO i seguenti valori</span><br style="text-decoration: line-through;">
+      <ul style="text-decoration: line-through;">
+        <li>0&nbsp;&nbsp; TD_NO_CALCOLO</li>
+        <ul>
+          <li>Nessun Calcolo<br>
+          </li>
+        </ul>
+        <li>1&nbsp;&nbsp; TD_CALCOLO_X_COD_CANTIERE</li>
+        <ul>
+          <li>Calcolo in base al Codice
+Cantiere</li>
+        </ul>
+        <li>2&nbsp;&nbsp; TD_CALCOLO_X_COMUNE</li>
+        <ul>
+          <li>Calcolo in base al Comune del
+Cantiere<br>
+          </li>
+        </ul>
+        <li>3&nbsp;&nbsp; TD_CALCOLO_X_CANTIERE</li>
+        <ul>
+          <li>Calcolo in base al Cantiere</li>
+        </ul>
+      </ul>
+      <span style="text-decoration: line-through;">&nbsp;che possono
+essere
+Definiti/Calcolati in base ai Dati contenuti nella Tab_DIST la cui
+Chiave dipende dal Metodo indicato</span> </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Cantiere_Can"></a><span style="text-decoration: underline; font-weight: bold;">Tipo_Cantiere_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10) </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Cantiere assegnato a questo
+Cantiere/Assistito.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri</span><span style="color: rgb(153, 51, 0);">
+e che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Cantiere">Tipo_Can</a><br>
+      <span style="text-decoration: underline line-through;">Può essere
+liberamente utilizzato SALVO PER I
+SEGUENTI VALORI CHE HANNO UN PRECISO SIGNIFICATO:</span>
+      <ul style="text-decoration: line-through;">
+        <li><b style="">= ONL -&nbsp; <u>Viene
+usato nel Controllo
+Import
+RIL</u> </b>per indicare di caricare le RIL fatte su un
+Cantiere con
+questo
+tipo Cantiere nella Tabella <b style=""><u>RIL_NOLAV</u></b>
+invece che nella normale Tabella RIL<b style="">= MAG</b><span style="">&nbsp;
+          </span><b style=""><u>Viene
+usato nel Calcolo Ore
+Viaggio Personalizzato x ACEA</u></b> (cliente
+Interfacciato = 5) per
+verificare che la Prima e l&#8217;Ultima Timbratura del Giorno siano state
+fatte sul
+Cantiere con Tipo_Cantiere=MAG altrimenti viene segnalato errore.</li>
+        <li><b style="">= CMN - <u>Viene
+usato nel Calcolo Ore
+Viaggio Personalizzata per KCS</u></b> (cliente
+Interfacciato =13) per
+creare
+una RILdi 1 Minuto (con Tipo Motivazione = CMN) a fronte delle
+Timbrature di
+Passaggio fatte su un Cantiere con questo Tipo. Queste Ril vengono pi
+CANCELLATE al termine del Calcolo o subito prima di iniziarne uno
+nuovo. </li>
+        <li><b style="">=<span style="">&nbsp;&nbsp;&nbsp; </span>1<span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp; </span><u>Viene
+usato nel Ricalcolo Ore Figurative
+Personalizzato per
+COOP2001</u> </b>(cliente interfacciato = <span style="">&nbsp;</span>4)
+per trattare SOLO le Ril eseguite sui
+Cantieri con questo Tipo Cantiere</li>
+        <li><b style="">= PR/PRN <u>Viene
+usato nella Routine
+&#8220;TabFoglioPresenza&#8221;
+usata negli Export 5 </u></b>(ExportRilxFoglioPresenza) <b style=""><u>e
+7</u></b> (ExportRilDettxCantExcel) per trattare TUTTE LE
+eventuali RIL fatte su un Cantiere con uno di questi due tipi Cantiere
+come se
+avessero TUTTE la MOTIVAZIONE &#8220;PR&#8221; o &#8220;PRN&#8221;</li>
+        <li><b style="">= FAT <u>Viene usato
+come Default nel
+Calcolo Fatture</u></b> (Pianeta Azzurro) ma NON è un
+valore poi usato
+in modo
+particolare.</li>
+        <li><b style="">= PROD <u>Viene usato
+nella Routine
+TabCartellino del Modulo Export Excel Cartellino </u></b>Dipendente<span style="">&nbsp; </span>per forzare il Tipo
+Contratto = 1 in tutte le
+Ril fatte sui Cantieri con Tipo Cantiere = PROD.</li>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Interv_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Interv_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+      </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Intervento <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+inserito </span><span style="color: rgb(153, 51, 0);">Se inserito,
+viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri</span><span style="color: rgb(153, 51, 0);">
+e&nbsp;che
+esista nella Tab_Decod&nbsp; Gruppo_Tab= DECOD_TAB e con Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Intervento">Tipo_Intervento</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Servizio_1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Servizio_1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10) </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Servizio-1 associato a questo Cantiere/Assistito.<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri </span><span style="color: rgb(153, 51, 0);">e che
+esista nella TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Servizio_Can">Tipo_Servizio_Can</a><br>
+      <span style="text-decoration: underline;">Viene
+utilizzato in alcune elaborazioni personalizzato con i seguenti
+Valori/Significati:</span>
+      <ul>
+        <li><b style="">PAU <u>viene
+utilizzato nel Calcolo delle
+Ore Pausa ESPLICITE durante i Viaggi</u> </b>nel senso che
+le Ore delle
+Timbrature caricate come ONL (Ore NON Lavorate) nella Tabella RIL_NOLAV
+in
+quanto eseguite su un cantiere con Tipo_Cantiere=ONL&#8221; vengono poi
+eventualmente
+SOTTRATTE dalle Ore Viaggio se il Cantiere sul quale sono state
+eseguite ha
+anche il TIPOSERVIZIO = PAU.<b style=""> <o:p></o:p></b></li>
+        <li><b style="">TMA <u>viene
+utilizzato nel Programma che
+elabora il File di Input Fisico delle Timbrature</u> </b>(purchè
+sia stato
+abilitato in Scheda Parametri il Falg di Abilitazione Gestione Mancati
+Accessi)
+per creare AUTOMATICAMENTE una RIL aggiungendo 5&#8217; (Minuti) alla
+Timbratura
+Singola Fatta su questo Cantiere.</li>
+        <li><b style="">SAD/ADI/SAP/SADH <u>viene
+utilizzato nella
+Routine di Stampa Etichette</u> </b>per stampare per il
+Cliente con
+NOME_APPLICAZIONE =&#8221;CREMONA SOLIDALE&#8221; delle etichette personalizzate.
+In
+particolare viene utilizzato dai Moduli: </li>
+        <ul>
+          <li><span style="font-family: Symbol;" lang="EN-US"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span><span lang="EN-US">EXPORT
+EXCEL COISS
+(&#8220;CompilaFoglioAdadi&#8221;)<o:p></o:p></span></li>
+        </ul>
+        <ul>
+          <li><span style="font-family: Symbol;" lang="EN-US"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span><span style="" lang="EN-US">EXPORT
+EXCEL COISS ANZADI
+(&#8220;ExportRilExcelCoiss_Anzadi&#8221;) <o:p></o:p></span></li>
+        </ul>
+        <ul>
+          <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span>EXPORT EXCEL COISS
+SAD (&#8220;ScriviFoglioPresOpe&#8221; e
+&#8220;ScriviFoglioSudOneri e &#8220;ScriviFoglioPresTip&#8221;</li>
+        </ul>
+        <ul>
+          <li><span style="font-family: Symbol;" lang="EN-US"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span><span style="" lang="EN-US">EXPORT
+EXCEL EXPORT ASSISTITI
+CREMONA (&#8220;ExportAssistiti&#8221; e &#8220;ScrivoExcelExportAssistiti&#8221;)<o:p></o:p></span></li>
+        </ul>
+        <ul>
+          <li><span style="font-family: Symbol;" lang="EN-US"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span><span style="" lang="EN-US">EXPORT
+EXCEL EXPORT ASSISTITI STANDARD
+(&#8220;ExportAssistitiStandard&#8221; e &#8220;ScrivoExcelExportAssistitiStandard&#8221;)<o:p></o:p></span></li>
+        </ul>
+        <ul>
+          <li><span style="font-family: Symbol;" lang="EN-US"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span><span style="" lang="EN-US">EXPORT
+EXCEL EXPORT DETT RIL (
+&#8220;ExportDettRilsuExcel&#8221;)<o:p></o:p></span></li>
+        </ul>
+        <ul>
+          <li><span style="font-family: Symbol;" lang="EN-US"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;
+            </span></span></span><span style="" lang="EN-US">EXPORT
+EXCEL TIPO RAPPORTO
+(&#8220;ExportTipoRapporto&#8221;)<o:p></o:p></span></li>
+        </ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Servizio_2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Servizio_2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(10)</a></td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Servizio-2 <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo.&nbsp;<span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri</span><span style="color: rgb(153, 51, 0);">
+e che
+esista nella TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Servizio_Can">Tipo_Servizio_Can</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Servizio_3_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Servizio_3_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10) </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Servizio-3<span style="color: rgb(51, 204, 0);"> </span><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri e</span><span style="color: rgb(153, 51, 0);"> che
+esista nella TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Servizio_Can">Tipo_Servizio_Can</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Servizio_4_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Servizio_4_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10) </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Servizio-4 <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito <span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;"></span>in
+quanto NON Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri e</span><span style="color: rgb(153, 51, 0);"> che
+esista nella TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Servizio_Can">Tipo_Servizio_Can</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="Tipo_Servizio_5_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Servizio_5_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10) </td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+Servizio-5 <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 204, 0);">liberamente
+associabile</span> a questo Cantiere/Assistito in quanto NON
+Utilizzato in NESSUN Calcolo. <span style="color: rgb(153, 51, 0);">Se
+inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri</span><span style="color: rgb(153, 51, 0);">
+e che
+esista nella TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Servizio_Can">Tipo_Servizio_Can</a>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">SERV</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Tipologia_Can"></a><span style="font-weight: bold; text-decoration: underline;">Tipologia_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10) </td>
+      <td style="vertical-align: top; width: 828px;">Indica la Tipologia
+del Record.&nbsp;<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri e che esista nella TAB_DECOD con
+Tab_Group=DECOD_<span style="font-weight: bold;">SYS</span> e Tab_Nome=</span><span style="color: rgb(204, 102, 0);"></span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipologia_Cantiere">Tipologia_Cantiere</a>.&nbsp;
+Viene utilizzato dal sistema.<br>
+      <span style="text-decoration: underline; font-weight: bold;">Può
+quindi assumere SOLO i seguenti valori predefiniti</span><br>
+      <ul>
+        <li><span style="font-weight: bold;">Blanks</span>&nbsp;
+(valore di Deaful) identifica i Record che identificano i Cantieri
+Fisici</li>
+        <li><span style="font-weight: bold;">ASS</span>
+:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+identifica i Record che identificano gli Assistiti</li>
+        <ul>
+          <li>in questo caso diventano OBBLIGATORI anche i
+seguenti campi che vengono inseriti Automaticamente come <a href="#Descrizione_Can">Descrizione_Can</a></li>
+          <ul>
+            <li><a href="#Cognome_Assistito_Can">Cognome_Assistito_Can</a></li>
+            <li>separati da un Blank<br>
+            </li>
+            <li><a href="#Tipologia_Can">Nome_Assistito_Can</a></li>
+          </ul>
+        </ul>
+        <li><span style="font-weight: bold;">ATT</span>
+: &nbsp; &nbsp; &nbsp; identifica i Record che identificano
+le Attività svolte presso i Cantieri/Assistiti</li>
+        <ul>
+          <li>La Tipologia_Can NON può essere impostata = ATT se il campo <a href="_TR_PARAM.html#Abilita_Att">Abilita_Att</a> della Tab. <a href="_TR_PARAM.html">Param</a> è diverso da TRUE (Gestione Attività NON abilitata)</li>
+        </ul>
+
+      </ul><br>
+<span style="font-weight: bold; text-decoration: underline;">NOTA BENE:</span> <span style="text-decoration: underline;">l'eventuale MODIFICA da Cantiere/Assistito ad Attività e viceversa</span>
+comporta la RIELABORAZIONE di Tutte le Registrazioni presenti nella
+Tabella REG per quel Id Cantieire/Assistito/Attività in quanto vanno
+eventualmente trattate in modo diverso a prima<br>
+      <ul>
+        <li>Viene ricavata la Data MINIMA e MASSIMA delle Registrazioni presenti nella Tab <a href="_TR_REG.html">REG</a> x quel Cantiere/Assitito/Attività</li>
+        <li>Viene controllato che la DATA MINIMA SIA MAGGIORE della <a href="_TR_PARAM.html#DATA%20BLOCCO">DATA BLOCCO</a> presente in <a href="_TR_PARAM.html">PARAM</a></li>
+        <ul>
+          <li><span style="text-decoration: underline;">in caso contrario la Modifica NON è eseguibile fino a quando </span><br>
+          </li>
+          <ul>
+            <li>NON viene riportata INDIETRO la Data Blocco ad una Data Antecedente alla Prima REG esistente <br>
+            </li>
+            <ul>
+              <li>per quel Cantiere/Assistito/Attività che si sta modificando</li>
+            </ul>
+          </ul>
+        </ul>
+        <ul>
+          <li>in caso positivo</li>
+          <ul>
+            <li>provvede a registrare le Due Date (MIN/MAX) nella tabella PENDING_ELAB</li>
+            <ul>
+              <li>in modo che alla prossima ELABORAZIONE BATCH <br>
+              </li>
+              <ul>
+                <li>le cose vengano sistemate automaticamente<br>
+                </li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+&nbsp;<br>
+
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">GEN</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a name="TipoNotturno_Can"></a><span style="font-weight: bold; text-decoration: underline;">TipoNotturno_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT<span style="color: black;"></span></a></td>
+      <td style="vertical-align: top; width: 828px;">Tipo
+di Notturno applicato a quel Cantiere/Assistito. Indica come Gestire la
+ricerca della Timbratura di Uscita quando è Abilitata la Gestione del
+Notturno e l'ULTIMA ENTRATA DEL GIORNO è avvenuta PRIMA DELLA
+MEZZANOTTE. Il Sistema ricerca la Timbratura di CHIUSURA purchè rientri
+entro i Minuti indicati nel Campo <a href="#Durata_Max_Gruppo_Notte_Ril_Can">Durata_Max_Gruppo_Notte_Ril_Col</a>
+.<span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che
+esista nella TAB_DECOD con Gruppo_Tab=Decod_<span style="font-weight: bold;">SYS</span> e Nome_Tab =<span style="font-weight: bold;"> </span><a style="color: rgb(51, 51, 255);" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Notturno">Tipo_Notturno&nbsp;
+      </a><span style="color: black; font-weight: bold; text-decoration: underline;">e
+può assumere SOLO i seguenti Valori</span><br>
+      </span>
+      <ul>
+        <li>Blank/0 = TD_DOPO_MEZZANOTTE</li>
+        <ul>
+          <li>oltre la Mezzanotte <br>
+          </li>
+        </ul>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1&nbsp;&nbsp;&nbsp;&nbsp; = TD_DOPO_ULTIMA_REG</li>
+        <ul>
+          <li>oltre l'ultima timbratura
+di
+Entrata</li>
+        </ul>
+      </ul>
+      </td>
+      <td style="text-align: center;">OK</td>
+      <td style="text-align: center; width: 60px;">PAR</td>
+      <td style="text-align: center; width: 61px;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno1_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno1_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 1° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente
+COOPSERVICE&nbsp;
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;) </li>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG<o:p> <br>
+          </o:p></li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno2_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno2_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 2° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">&nbsp;·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;)</li>
+        <li>&nbsp;<span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno3_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno3_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 3° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">&nbsp;·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;)</li>
+        <li>&nbsp;<span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno4_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno4_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 4° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">&nbsp;·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;)</li>
+        <li>&nbsp;<span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG </li>
+      </ul>
+      </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno5_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno5_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 5° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;) </li>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno6_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno6_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 6° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;)</li>
+        <li>&nbsp;<span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno7_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno7_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 7° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;)</li>
+        <li>&nbsp;<span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno8_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno8_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 8° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente
+COOPSERVICE
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;) <br>
+        </li>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno9_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno9_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 9° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;) <br>
+        </li>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 140px;"><a style="font-weight: bold; text-decoration: underline;" name="Turno10_Can"></a><span style="font-weight: bold; text-decoration: underline;">Turno10_Can</span></td>
+      <td style="vertical-align: top; text-align: center; width: 129px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 828px;">Durata
+del 10° Turno<span style="font-weight: bold;"> </span><span style="color: rgb(51, 204, 0); text-decoration: underline; font-weight: bold;">liberamente
+associabile</span>
+a questo Cantiere/Assistito in quanto NON Utilizzato in NESSUN Calcolo
+salvo il fatto che viene utilizzato per il SOLO r il Cliente COOPSERVICE<br>
+      <ul>
+        <li><span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>INTERFACCIA
+COMPLETAMENTO REGISTRAZIONI COOPSERVICE (&#8220;Carica_Turni&#8221;)</li>
+        <li>&nbsp;<span style="font-family: Symbol;"><span style="">·<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span></span></span>Maschera
+MANUTINPUTFISICOGG</li>
+      </ul>
+      <span style="color: rgb(153, 51, 0);">Non viene
+eseguito nessun particolare controllo</span> </td>
+      <td style="text-align: center;">Libero</td>
+      <td style="text-align: center; width: 60px;">TURNI</td>
+      <td style="text-align: center; width: 61px;">DATE
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Zona_Can"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Zona_Can</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)</td>
+      <td style="vertical-align: top;">Codice della Zona assegnata a quel Cantiere/Assistito.&nbsp; <span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che </span><span style="color: rgb(153, 51, 0);">abbia una
+Lunghezza &lt;= 10 caratteri e che esista nella TAB_DECOD con
+Tab_Group=DECOD_<span style="font-weight: bold;">TAB</span> e Tab_Nome=</span><span style="color: rgb(204, 102, 0);"></span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipologia_Cantiere">Zona_Can</a>. Viene utilizzata come possibile Chiave dei Record della Tabella TAB_DISTANZE che hanno identificativo = "Z"<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; width: 140px;"><br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      </td>
+      <td style="vertical-align: top; width: 129px;"><br>
+      </td>
+      <td style="vertical-align: top; width: 828px;"><br>
+      </td>
+      <td style="text-align: center;"><br>
+      </td>
+      <td style="text-align: center; width: 60px;"><br>
+      </td>
+      <td style="width: 61px;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span>
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span>&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+&nbsp;
+<span style="font-weight: bold; text-decoration: underline;"></span><br style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold; text-decoration: underline;"></span>
+<br>
+<br>
+</body></html>

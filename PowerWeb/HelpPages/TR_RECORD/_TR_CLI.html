@@ -1,0 +1,677 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_CLI/title&gt;</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head>
+<body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; TABELLA
+CLI<br>
+</h1>
+<span style="font-weight: bold;">Contiene i Dati
+Anagrafici dei Clienti
+<span style="text-decoration: underline;"></span><span style="text-decoration: underline;"></span><span style="text-decoration: underline;"> </span></span>che
+vengono poi associati ai Singoli Cantieri/Assistiti presenti nella
+Tabella CANT per permettere di Raggruppare gli eventuali
+Cantieri/Assistiti per Singolo Cantiere.<br>
+<br>
+Le Chiavi del Record :&nbsp; <a href="#Cli_Id">Cli_id</a>
+<span style="color: red; text-decoration: underline; font-weight: bold;">(Automatica)</span><br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Cli_Id">Cli_id</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">Chiave</span>),&nbsp;
+<a href="#Codice_Cliente">Codice_Cliente</a>
+, <a href="#Cognome_Cli">Cognome_Cli</a>
+,&nbsp; <a href="#Nome_Cli">Nome_Cli</a>&nbsp;
+<br>
+I Campi con Default &nbsp; &nbsp; : <a href="#Data_Registrazione_Cli">Data_Registrazione_Cli&nbsp;</a>
+, <a href="#DataOraUltimaModifica_Cli">DataOraUltimaModifica_Cli</a>
+, <a href="#DisAbilitazione_Cli">Disabilitazione_Cli</a>
+(False)&nbsp;&nbsp; <br><br>I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;1-<a href="#Codice_Cliente">Codice_Cliente</a> (10%) / 2-<a href="../TR_CANT/_TR_CANT.html#Descrizione_Can">CognomeNome_Cli</a> (20%) /&nbsp;3-<a href="../TR_CANT/_TR_CANT.html#Provincia_Can">Residenza_Provincia_Cli</a> (5%) / 4-<a href="../TR_CANT/_TR_CANT.html#Cap_Can">Residenza_Cap_Cli</a> (5%) / 5-<a href="../TR_CANT/_TR_CANT.html#Luogo_Can">Residenza_Luogo_Cli</a> (15%) / 6 -<a href="../TR_CANT/_TR_CANT.html#Indirizzo_Can"> Residenza_Indirizzo_Can</a>&nbsp; (15%) / 7-<a href="#Fil_Id"> Fil_id </a>&nbsp;(10%)&nbsp; / 8-VUOTO /&nbsp;10-<a href="../TR_CANT/_TR_CANT.html#Tipologia_Can"> Valuta_Cli</a><span style="text-decoration: underline;"> </span>(5%) / 11-<a href="../TR_CANT/_TR_CANT.html#DisAbilitazione_Can">Disabilitazione_Cli</a> (5%))&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr><td style="font-weight: bold; text-align: center; color: white; background-color: silver;">NOME DEL CAMPO</td><td style="font-weight: bold; text-align: center; color: white; background-color: silver;">TIPO CAMPO</td><td style="font-weight: bold; text-align: center; color: white; background-color: silver;">DESCRIZIONE DEL CAMPO</td><td style="background-color: silver;"><span style="color: white;">CTRL</span></td><td style="font-weight: bold; text-align: center; color: white; background-color: silver;">TAB</td><td style="font-weight: bold; text-align: center; color: white; background-color: silver;">COMBO</td></tr><tr>
+<td><span style="font-weight: bold;"><a name="Cli_Id"></a> </span><span style="font-weight: bold; text-decoration: underline;">Cli_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+<td style="width: 830px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;del
+Singolo Cliente</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Banca_Descrizione_Cli"></a> Banca_Descrizione_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Descrizione
+della Banca Associata al Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span><span style="color: rgb(153, 51, 0);"></span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Banca_IBAN_Cli"></a> Banca_IBAN_Cli</span></td>
+<td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(40)</td>
+<td style="vertical-align: top; width: 830px;">Codice IBAN
+Bancario Associato al Cliente. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia uno dei 2 seguenti formati<br>
+</span>
+<ul>
+<li>AA-n-B-nnnnn-nnnnn-nnnnnnnnnnnn</li>
+<li>AA-n_B-nnnnn-nnnnn-CCnnnnnnnnn<br>
+</li>
+</ul>
+</td><td style="text-align: center;">Formato</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a style="font-weight: bold; text-decoration: underline;" name="Codice_Cliente"></a><span style="font-weight: bold; text-decoration: underline;">
+Cod_Cliente</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)
+</td>
+<td style="vertical-align: top; width: 830px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> Codice Interno
+Univoco&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">assegnato dalla
+Singola&nbsp;Azienda</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> a quello specifico Cliente</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> </span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio&nbsp;</span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;</span></span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">Viene Automaticamente
+riempito con Blanks a SX per allinearlo a DX</span><span style="font-weight: bold;"> </span><span style="color: rgb(153, 51, 0); font-weight: bold;">e che sia UNIVOCO</span><br>
+Per gestire correttamente un
+Ordinamento corretto dei Record in base al valore del Campo Codice
+Cliente occorre che: <br>
+<ul>
+<li>I Codici NUMERICI (costituiti solo da Numeri) vengano
+inseriti
+allineati a Destra e SENZA GLI ZERI NON SIGNIFICATIVI DAVANTI</li>
+<li>i Codici ALFANUMERICI(ovvero quelli che NON
+contengono solo Numeri)
+vengano inseriti allineati a SX e riempiti dei necessari caratteri
+blanks a destra</li>
+</ul>
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Ditta_Cli"></a> Codice_Ditta_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+Identificativo Diita Cliente <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span>
+</td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Fiscale_Cli"></a> Codice_Fiscale_Cli</span>
+</td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(16)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+Fiscale di
+questo Cliente. <span style="text-decoration: underline;">Se
+fornito &lt;&gt; da blank</span> <span style="font-weight: bold; color: rgb(153, 51, 0);">viene
+controllato SOLO che sia FORMALMENTE ESATTO</span> in quanto non sono previsti
+i necessari Dati per poterlo Generare/Controllare come Valdio</td><td style="text-align: center;">Formato</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Cognome_Cli"></a> Cognome_Cli</span> </td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Cognome
+del Cliente (se Persona Fisica) e/o 1° Parte della Ragione Sociale del
+Cliente (se Soggetto Fiscale) &nbsp; <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio - </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Rapporto_Fine_Cli"></a>
+Data_Rapporto_Fine_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+<td style="vertical-align: top; width: 830px;">Data
+Fine Rapporto con questo Cliente. Non viene utilizzata da nessuna
+procedura standard di Power. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se
+inserito assieme alla</span> </span><span style="color: rgb(153, 102, 51);"><a href="_TR_CLI.html#Data_Rapporto_Inizio_Cli">Data_Rapporto_Inizio_Cli</a>&nbsp;
+</span><span style="color: rgb(153, 102, 51);"><span style="font-weight: bold; color: rgb(153, 51, 0);">allora
+viene controllato che sia MAGGIORE della</span> <a href="#Data_Rapporto_Inizio_Cli">Data_Rapporto_Inizio_C</a>li
+<span style="font-weight: bold; color: rgb(153, 51, 0);">(se anch'essa è stata inserita)</span></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Rapporto_Inizio_Cli"></a>
+Data_Rapporto_Inizio_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+<td style="vertical-align: top; width: 830px;">Data
+Inizio Rapporto con questo Cliente. Non viene utilizzata da nessuna
+procedura standard di Power.<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se
+inserito assieme alla</span> </span><span style="color: rgb(153, 102, 51);"><a href="_TR_CLI.html#Data_Rapporto_Fine_Cli">Data_Rapporto_Fine_Cli</a>&nbsp;
+</span><span style="color: rgb(153, 102, 51);"><span style="font-weight: bold; color: rgb(153, 51, 0);">allora
+viene controllato che sia MAGGIORE della</span> <a href="_TR_CLI.html#Data_Rapporto_Fine_Cli">Data_Rapporto_Fine_Cli</a>
+<span style="font-weight: bold; color: rgb(153, 51, 0);">(se anch'essa è stata inserita)</span></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Registrazione_Cli"></a>
+Data_Registrazione_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">SMALLDATETIME</a><br>
+</td>
+<td style="vertical-align: top; width: 830px;">Data
+e Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio -</span></span>
+in
+cui PER la PRIMA VOLTA è stato inserito questo Cliente. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento di quel Record)</span>.<span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">Nessun Controllo specifico</span></span><br>
+&nbsp;<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span> </span>(Vedi anche<a href="#DataOraUtimaModifica"> DataOraUltimaModifica</a>)<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">-</span></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="DataOraUltimaModifica_Cli"></a>
+DataOraUtimaModifica_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">SMALLDATETIME</a>
+</td>
+<td style="vertical-align: top; width: 830px;">Data
+ed Ora&nbsp; <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>&nbsp;
+in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica effetuata su quel Record)</span>.<span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="#Data_Registrazione_Cli"> Data_Registrazione_Cli</a>)&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="DisAbilitazione_Cli"></a> DisAbilitazione_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 830px;">Stato
+del Cliente che indica se il relativo
+Collaboratore è da considerare Disabilitato o meno.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE</span><br>
+Un
+Cliente anche se disabilitato può essere comunque utilizzato
+dal resto del sistema e può assumere i seguenti Valori:<br>
+<ul>
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo record NON è più ATTIVO e NON va più utilizzato
+&nbsp;&nbsp; </li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale del Record</li>
+</ul>
+Viene utilizzato solo per permettere di escludere
+automaticamente i Clienti Disabilitati dalla visualizzazione
+della Lista dei Clienti proposta in apertura della Gestione delle
+Schede Clienti se è attivato il relativi Campo </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Cap_Cli"></a> Domicilio_Cap_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Cap
+del Comune di Domicilio di questo Cliente <span style="font-weight: bold; text-decoration: underline;">assegnato
+dal Sistema in modo automatico in base al </span><a href="#Domicilio_Luogo_Cli">Domicilio_Luogo_Cli</a><span style="font-weight: bold; text-decoration: underline;"><a href="#Domicilio_Luogo_Cli"> </a></span>del Cliente, prelevandolo dal Campo ASSOCIATO-1 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<a href="#Domicilio_Luogo_Cli"> Domicilio_Luogo_Cli</a>&nbsp;
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.<span style="color: black;">&nbsp;</span></span></span>. <span style="color: rgb(153, 102, 51);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito
+viene controllato che esista in TAB_DECOD con Gruppo_tab=Decod_Tab e
+Nome_Tab</span>=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#SIGLA_CAP">Sigla_Cap</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Indirizzo_Cli"></a>
+Domicilio_Indirizzo_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Indirizzo
+e N° di Domicilio di questo Cliente.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun Controllo specifico</span>
+</td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Luogo_Cli"></a> Domicilio_Luogo_Cli </span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Comune
+del Comune di Domicilio di questo Cliente. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab= Decod_Sys
+Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a>&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">
+nel
+Campo:DESCRIZIONE_TAB </span>. Quando viene inserito provvede <span style="text-decoration: underline;">AUTOMATICAMENTE a
+caricare i corrispondenti valori nei campi da lui dipendenti:</span><br>
+<ul>
+<li><a href="#Domicilio_Cap_Cli">Domicilio_Cap_Cli</a></li>
+<li><a href="#Domicilio_Provincia_Cli">Domicilio_Provincia_Cli</a></li></ul>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Provincia_Cli"></a>
+Domicilio_Provincia_Cli</span> </td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Sigla
+della Provincia del Comune di Domicilio di questo Collaboratore  <span style="font-weight: bold; text-decoration: underline;">assegnata
+dal Sistema in modo automatico in base al </span><span style="text-decoration: underline;"><a href="_TR_CLI.html#Domicilio_Luogo_Cli">Domicilio_Luogo_Cli </a></span>del Cliente, prelevandolo dal Campo ASSOCIATO-2 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<a href="_TR_CLI.html#Domicilio_Luogo_Cli"> Domicilio_Luogo_Cli</a>. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito viene controllato che esista in TAB_DECOD con
+Grupp_tab=Decod_Tab e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province">Sigla_Province</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Nazione_Cli"></a> Domicilio_Nazione_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Sigla
+della Nazione del Luogo di Domicilio di questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito
+viene controllato che esista in TAB_DECOD con Gruppo_tab=Decod_Tab e
+Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#SIGLA_NAZIONI">Sigla_Nazioni</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fax_1_Cli"></a> Fax_1_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">1°
+Numero di FAX
+associabile a questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fax_1_Rif_Cli"></a> Fax_1_Rif_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 1° Numero di FAX
+associabile a questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fax_2_Cli"></a> Fax_2_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">2°
+Numero di FAX
+associabile a questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fax_2_Rif_Cli"></a> Fax_2_Rif_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 2° Numero di FAX
+associabile a questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fil_Id"></a> Fil_Id</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+Filiale
+assegnabile a questo
+Cliente. <span style="color: rgb(153, 102, 51);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito viene verificato che esista nella
+Tab_Decod con Gruppo_Tab_Decon_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Filiali">Filiali</a>.</span>&nbsp;
+Se la Struttura
+Aziendale è
+particolarmente ampia e si vogliono poi suddividere e selezionare i
+Clienti appartenenti ad una determinata Filiale conviene inserire
+questo dato nell'Anagrafica Cliente in quanto poi il Codice Filiale
+viene poi usato in tutte le Stampe per permettere di selezionare i
+Clienti in base al Codice della Filiale di Appartenenza.<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline; color: red;">NOTA
+BENE </span>: Quando in SK UTENTI ad un determinato UTENTE di
+Power-2011 viene
+anche
+assegnato un <a href="../TR_UTENTI/TR_UTENTI.AAA.html#Codice_Filiale_Utente">Codice
+Filiale di Appartenenza</a>, allora, per questo 'utente,
+in tutte le Maschere e Report di Power-2011, vengono AUTOMATICAMENTE
+selezionati dal sistema TUTTI E SOLO I DATI che appartengono ai
+Clienti ( ed Collaboratori ed ai ai Cantieri/Assistiti) che
+appartengono alla stessa Filiale
+assegnata all'Utente che si è collegato a Power</li>
+</ul>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Lingua_Cli"></a> Lingua_Cli</span> </td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR<span style="color: black;">(5)</span></a></td>
+<td style="vertical-align: top; width: 830px;">Codice
+della Lingua associata a questo Cliente. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se esiste viene
+controllato che esista nella TAB_DECOD con Gruppo_tab=Decod_Tab
+e&nbsp; Tab_Nome=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Lingue">Lingue</a><br>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Nome_Cli"></a> Nome_Cli</span> </td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">&nbsp;Nome
+del Cliente <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>
+se Persona Fisica) e/o 2° Parte della Ragione Sociale del Cliente (se
+Soggetto Fiscale) .<span style="color: rgb(153, 51, 0); font-style: italic;">Nessun
+Controllo specifico</span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span></span></span></span></td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Note_Cli"></a> Note_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Note
+Descrittive <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabili</span>&nbsp;
+a questo Cantiere/Assistito. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">NOTE</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_1Mese_Escl_Cli"></a>Pagamento_1Mese_Escl_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+1° Mese Escluso dal Pagamento per questo Cliente (es: 8 esclude
+Agosto). <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito viene controllato che sia &lt;= 12</span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_2Mese_Escl_Cli"></a>
+Pagamento_2Mese_Escl_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+2° Mese Escluso dal Pagamento per questo Cliente (es: 12 esclude
+Dicembre). <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito viene controllato che sia &lt;= 12.</span><span style="color: rgb(153, 102, 51);"></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_Codice_Cli"></a> Pagamento_Codice_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+Pagamento associato a questo Cliente.<span style="font-weight: bold; color: rgb(153, 51, 0);"> </span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esiste in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span>=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Pagamento">Tipo_Pagamento</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_GF_Cli"></a> Pagamento_GF_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(2)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Codice
+Tipo Decorrenza Calcolo Scadenza Pagamento associata a questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito viene
+controllato che assuma SOLO i </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+prefissati</span><span style="color: rgb(153, 51, 0); font-weight: bold;">
+:</span>
+<ul>
+<li>Blank/0 = Data Fattura</li>
+<li>&nbsp;&nbsp;&nbsp;
+2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Fine Mese</li></ul>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_GG_Cli"></a> Pagamento_GG_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 830px;">N°
+del Giorno Fisso di Pagamento associato a questo Cliente (es: 10 al 10
+del mese).&nbsp;<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se
+inserito viene controllato che sia &lt;= 3</span>1</span><span style="color: rgb(153, 102, 51);"></span>. Il Fine
+Mese fisso viene gestito con il Campo <a href="#Pagamento_GF_Cli">Pagamento_GF_Cli</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_Intervallo_Cli"></a>
+Pagamento_Intervallo_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; background-color: white; width: 830px;">Intervallo
+Fisso in GG fra le Rate di Pagamento associate al Codice Pagamento di
+questo Cliente. (es: 30&nbsp; oppure 60 oppure 90&nbsp; ecc). <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito viene
+controllato che sia &lt;= 240 pari a 8 Rate da 30 GG ciascuna</span><span style="color: white; background-color: rgb(153, 51, 0);"> </span><span style="color: rgb(153, 102, 51); background-color: rgb(153, 51, 0);"></span><span style="text-decoration: underline;"></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_Rate_Cli"></a> Pagamento_Rate_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 830px;">N°
+delle Rate di Pagamento associate al Codice Pagamento di questo
+Cliente&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia &lt;= 10</span><span style="color: rgb(153, 102, 51);"></span> </td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Pagamento_Sconto_Cli"></a> Pagamento_Sconto_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a><br>
+</td>
+<td style="vertical-align: top; width: 830px;">% di
+Sconto associato al Codice Pagamento di questo Cliente<span style="color: rgb(153, 102, 51);">. </span><span style="color: red; font-weight: bold; text-decoration: underline;">VA
+INSERITO CONTROLLO CHE SIA &lt;= 100,00 O MODIFICATA LA MASCHERA DI INPUT</span><span style="color: rgb(153, 102, 51);"></span> </td><td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="Partita_Iva_Cli"></a> <span style="font-weight: bold; text-decoration: underline;">Partita_Iva_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">N°
+Partita IVA di questo Cliente. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che abbia una Lunghezza UGUALE a 11 e che
+sia valido formalmente</span>.&nbsp; <span style="color: red; font-weight: bold; text-decoration: underline;">VA
+EVENTUALMENTE MODIFICATO per GESTIRE LA PARTITA IVA COMUNITARIA !</span><br>
+</td><td style="text-align: center;"><span style="font-weight: bold; color: red;">????</span></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Cap_Cli"></a> Residenza_Cap_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">CAP
+del Comune di Residenza di questo Cliente <span style="font-weight: bold; text-decoration: underline;">assegnato
+dal Sistema in modo automatico in base al </span><a href="_TR_CLI.html#Domicilio_Luogo_Cli">Domicilio_Luogo_Cli</a><span style="font-weight: bold; text-decoration: underline;"><a href="_TR_CLI.html#Domicilio_Luogo_Cli"> </a></span>del Cliente, prelevandolo dal Campo ASSOCIATO-1 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<a href="_TR_CLI.html#Domicilio_Luogo_Cli"> Domicilio_Luogo_Cli</a>&nbsp;
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.<span style="color: black;">&nbsp;</span></span></span> <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito
+viene controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e
+Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#SIGLA_CAP">Sigla_Cap</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Indirizzo_Cli"></a>
+Residenza_Indirizzo_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Indirizzo
+di Residenza di questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span>
+</td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Luogo_Cli"></a> Residenza_Luogo_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Comune
+di Residenza di questo Cliente.&nbsp; <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab= Decod_Tab
+Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a>&nbsp;
+<span style="color: rgb(153, 51, 0); font-weight: bold;">nel
+Campo: DESCRIZIONE_TAB</span> . Quando viene inserito provvede <span style="text-decoration: underline;">AUTOMATICAMENTE a
+caricare i corrispondenti valori nei campi da lui dipendenti:</span><br>
+<ul>
+<li><a href="#Residenza_Cap_Cli">Residenza_Cap_Cli</a></li>
+<li><a href="#Residenza_Provincia_Cli">Residenza_Provincia_Cli</a></li>
+</ul>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Nazione_Cli"></a> Residenza_Nazione_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Sigla
+delle Nazione del Comune di Residenza di questo Cliente. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito
+viene controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e
+Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#SIGLA_NAZIONI">Sigla_Nazioni</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Provincia_Cli"></a>
+Residenza_Provincia_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+</td>
+<td style="vertical-align: top; width: 830px;">Sigla
+delle Provincia del Comune di Residenza di questo Cliente. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito viene controllato che esista in TAB_DECOD con
+Grupp_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province">Sigla_Province</a>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_1_Cli"></a> Telefono_1_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">1°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cliente.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_1_Rif_Cli"></a> Telefono_1_Rif_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 1° Numero
+di Telefono
+associabile a questo Cliente.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_2_Cli"></a> Telefono_2_Cli</span>
+</td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">2°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cliente.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_2_Rif_CLi"></a> Telefono_2_Rif_CLi</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 2° Numero
+di Telefono
+associabile a questo Cliente.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_3_Cli"></a> Telefono_3_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">3°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cliente.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_3_Rif_Cli"></a> Telefono_3_Rif_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 3° Numero
+di Telefono
+associabile a questo Cliente.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Telefono_4_Cli"></a> Telefono_4_Cli</span>
+</td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">4°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Cliente.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_4_Rif_Cli"></a> Telefono_4_Rif_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 830px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 4° Numero
+di Telefono
+associabile a questo Cliente.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun
+controllo specifico.</span><span style="color: rgb(153, 51, 0);"></span> </td><td style="text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 61px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="text-decoration: underline; font-weight: bold;"><a name="Valuta_Cli"></a> Valuta_Cli</span></td>
+<td style="vertical-align: top; text-align: center; width: 147px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(5)</td>
+<td style="vertical-align: top; width: 830px;">Sigla
+della Valuta associata a questo Cliente. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Tab_Nome=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Valute">Valute</a><br>
+</td><td style="text-align: center;">OK</td><td style="width: 60px; text-align: center;">COM</td><td style="width: 61px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</td>
+<td style="vertical-align: top;"><br>
+</td>
+<td style="vertical-align: top; width: 830px;"><br>
+</td><td style="text-align: center;"></td><td style="width: 60px;"></td><td style="width: 61px;"></td>
+</tr>
+</tbody>
+</table>
+<br>
+</body></html>

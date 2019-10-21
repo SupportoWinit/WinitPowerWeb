@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>DOVE ABILITARE/DISABILITARE I TASTI DI EXPORT EXCEL/PDF</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE ABILITARE/DISABILITARE TASTI FUNZIONALI delle Singole PAGINE<br>
+</h1>
+
+Per Dis_Attivare gli eventuali Tasti Funzionali delle Singole Pagine che in quella specifica Pagina NON vanno gestiti <br>
+<ul>
+  <li>occorre inserire nella Singola Pagina la Routine</li>
+  <ul>
+    <li><span style="font-weight: bold; color: red;">gvCant</span>.<span style="font-weight: bold; color: rgb(51, 51, 255);">CommandButtonInitialize</span></li>
+  </ul>
+  <li>che richiama nella <span style="color: rgb(204, 51, 204); font-weight: bold; text-decoration: underline;">GridMasterPage</span> la seguente Routine<br>
+  </li>
+  <ul>
+    <li><span style="color: rgb(51, 51, 255);">public void </span><span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(204, 51, 204);">GridView_CommandButtonInitialize</span></span><span style="color: rgb(51, 51, 255);"><span style="color: rgb(204, 51, 204);"></span>(object sender, ASPxGridViewCommandButtonEventArgs e)</span></li>
+    <li><span style="color: rgb(51, 204, 0); font-weight: bold;">//Disabilita i Tasti Funzionali delle Righe delle Griglie in base alla Pagina da cui viene chiamata</span></li>
+    <ul>
+      <li><span style="font-weight: bold;"> se si tratta di Righe VIAGGIO</span> ---&gt; Disabilita il Tasto di MODIFICA <br>
+      </li>
+      <li><span style="font-weight: bold;">Disabilita i Tasti di INS/DEL/MOD in base alle Autorizzazioni </span><br>
+      </li>
+      <ul>
+        <li>dell'UTENTE</li>
+        <li>della FUNZIONE</li>
+        <li>dell'UTENTE/FUNZIONE&nbsp;&nbsp;</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

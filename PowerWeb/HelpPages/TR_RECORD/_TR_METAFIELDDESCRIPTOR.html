@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_METAFIELDDESCRIPTOR</title>
+  
+
+  
+  
+  <style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+  </style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA
+MTAFIELDDESCRIPTOR<br>
+</h1>
+
+<span style="font-weight: bold;">Contiene le Struttura dei
+Dati caricati direttamente dal dataBase tramite le Viste Logiche</span><br>
+
+<br>
+
+Le Chiavi del Record :&nbsp; <a href="#MetaFieldDescriptor_Id">MetaFieldDescriptorId</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+
+I Campi Obbligatori&nbsp;&nbsp; :&nbsp; <a href="#MetaFieldDescriptor_Id">MetaFiledDescriptorId</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">Chiave</span>)
+, <a href="../TR_METADESCRIPTOR/_TR_METADESCRIPTOR.html#EntityType">EntityType</a><br>
+
+I Campi con Default &nbsp; :&nbsp; Nessuno<span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+<br>
+
+<br>
+
+Al momento vengono gestite solo le seguenti Tabelle tramite Viste
+Logiche ad Hoc<br>
+
+<table>
+
+  <tbody>
+    <tr>
+      <td style="text-align: center; font-weight: bold;">MetaDescriptorId</td>
+      <td style="text-align: center; font-weight: bold;">EntityType</td>
+      <td style="text-align: center; font-weight: bold;">Significato</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">CANT<br>
+      </td>
+      <td>Vista Logica utilizzata nella pagina CANT<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">2</td>
+      <td style="text-align: center;">COL<br>
+      </td>
+      <td>Vista Logica utilizzata nella pagina COL</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">3</td>
+      <td style="text-align: center;">REGV<br>
+      </td>
+      <td>Vista Logica utilizzata nella pagina REGV<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">4<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">REGVM<br>
+      </td>
+      <td style="vertical-align: top;">Vista Logica utilizzata nella
+pagina REGVM</td>
+    </tr>
+  </tbody>
+</table>
+
+&nbsp;&nbsp; <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+
+<br>
+
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+<td style="vertical-align: top; width: 223px;"><a name="MetaFieldDescriptor_Id"></a> <span style="font-weight: bold; text-decoration: underline;">MetaFieldDescriptorId</span></td><td style="text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td><td style="width: 894px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;della Singola
+Riga di Menù</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun
+Controllo specifico</span></td></tr>
+    <tr>
+      <td style="vertical-align: top; width: 223px;"><a name="MetaDescriptorId"></a> <span style="font-weight: bold; text-decoration: underline;">MetaDescriptorId</span><br>
+      <br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top; width: 894px;">N° identificativo della Vista Logica a cui appartengono i relativi Campi.  <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">. &nbsp;&nbsp;</span></span></span>&nbsp; Viene contralloto che esista nella Tabella <a href="../TR_METADESCRIPTOR/_TR_METADESCRIPTOR.html">MetaDescriptor</a><span style="text-decoration: underline; background-color: white;">
+      </span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 223px;"><a name="FieldName"></a> <span style="text-decoration: underline; font-weight: bold;">FieldName</span><br>
+      </td>
+      <td style="vertical-align: top; width: 144px; text-align: center;"><a href="../_AA_I%20Formati%20dei%20Campi.html#NVARCHAR"><span style="text-decoration: underline;">NVARCHAR(MAX)</span></a><br>
+      </td>
+      <td style="vertical-align: top; width: 894px;">Nome del Campo della relativa Vista Logica cui si riferiscono i Dati di questo Record.&nbsp;
+Nessun Controllo specifico ma deve essere inserito manualmente in modo
+corretto così come è stato definito nella relativa struttura di quella
+Vista Logica cui si riferisce.e  <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 223px;"><a name="GridViewDataType"></a> <span style="font-weight: bold; text-decoration: underline;">GridViewDataType</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top; width: 894px;">Tipo di Campo di quella Vista da visualizzare nella DataGrid Principale e nella Parte di EDIT.<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio </span></span><br>
+Può assumere i seguenti valori<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">0&nbsp; = DataText</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<span style="font-weight: bold;"> &nbsp; &nbsp; [Campi DB definiti NVarChar]</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp; = DataCheck</span>&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&nbsp; &nbsp;&nbsp; [Campi DB definiti Bit]</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp; = DataDate</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; <span style="font-weight: bold;">[Campi DB definiti Date e/o SmallDateTime]</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+3&nbsp; = DataTime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; [Campi DB definiti Time(x)]</span><br style="font-weight: bold;">
+      <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp; = DataComboBox</span>&nbsp; <span style="font-weight: bold;">[Campi DB definiti NVarChar e/o Int gestiti poi a Video con ComboBox]</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> 5&nbsp; = DataSpin</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">[Campi DB definiti Numerici (Int,Double, Float)]</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 223px;"><a name="IsAvailable">&nbsp;</a><span style="font-weight: bold; text-decoration: underline;">IsAvailable</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#BIT">BIT</a></td>
+      <td style="vertical-align: top; width: 894px;">Definisce se quel campo di quella Vista è Disponibile o meno nell'Elenco dei Campi usabili.(Mascherina di Customization)&nbsp;  <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> <br>
+Può assumere i seguenti valori:<br>
+&nbsp;&nbsp;&nbsp;&nbsp; TRUE&nbsp;&nbsp; = significa che quel campo viene mostrato nella DataGrid Principale<br>
+&nbsp;&nbsp;&nbsp;&nbsp; FALSE = significa che quel campo NON viene mostrato nella DataGrid Principale<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 223px;"><a name="IsVisible"></a>&nbsp;<span style="font-weight: bold; text-decoration: underline;"> IsVisible</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#BIT">BIT</a></td>
+      <td style="vertical-align: top; width: 894px;">Definisce se quel campo di quella Vista è visibile o meno nella DataGrid Principale  <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> <br>
+
+Può assumere i seguenti valori:<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; TRUE&nbsp;&nbsp; = significa che quel campo viene mostrato nella DataGrid Principale<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; FALSE = significa che quel campo NON viene mostrato nella DataGrid Principale</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 223px;"><a name="IsVibile_EditFormSettings"></a> <span style="font-weight: bold; text-decoration: underline;">IsVibile_EditFormSettings</span><br>
+      </td>
+      <td style="vertical-align: top; width: 144px; text-align: center;"><a href="I%20Formati%20dei%20Camp.html#BIT">BIT</a></td>
+      <td style="vertical-align: top; width: 894px;">Definisce se quel campo di quella Vista è visibile o meno nella parte di EDIT <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> <br>
+
+
+Può assumere i seguenti valori:<br>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; TRUE&nbsp;&nbsp; = significa che quel campo viene mostrato nella parte di EDIT<br>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; FALSE = significa che quel campo NON viene mostrato nella parte di EDIT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="IsReadOnly"></a><span style="font-weight: bold;"> <span style="text-decoration: underline;">IsReadOnly</span></span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#BIT">BIT</a></td>
+      <td style="vertical-align: top; width: 894px;">Definisce se quel campo di quella Vista è MODIFICABILE o meno nella parte di EDIT <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> <br>
+
+
+
+Può assumere i seguenti valori:<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; TRUE&nbsp;&nbsp; = significa che quel campo è MODIFICABILE nella parte di EDIT<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; FALSE = significa che quel campo NON è MODIFICABILE nella parte di EDIT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="VisibleIndex"></a> <span style="font-weight: bold; text-decoration: underline;">VisibleIndex</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top; width: 894px;">Definisce la posizione della Data Grid Principale in cui verrà visualizzato quel Campo<br>
+</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Width"></a> <span style="font-weight: bold; text-decoration: underline;">Width</span><br>
+      </td>
+      <td style="vertical-align: top; width: 144px; text-align: center;"><a href="../_AA_I%20Formati%20dei%20Campi.html#NVARCHAR"><span style="text-decoration: underline;">NVARCHAR(MAX)</span></a></td>
+      <td style="vertical-align: top; width: 894px;">Grandezza in percentuale di quel Campo di quella Vista nella Data Grid Principale<br>
+NOTA BENE : va inserita nel seguente formato XX% (con il simbolo di % dopo la misura della Grandezza)<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;"><a name="Mask"></a> </span><span style="font-weight: bold; text-decoration: underline;">Mask</span><br>
+      </td>
+      <td style="vertical-align: top; width: 144px; text-align: center;"><a href="../_AA_I%20Formati%20dei%20Campi.html#NVARCHAR"><span style="text-decoration: underline;">NVARCHAR(MAX)</span></a></td>
+      <td style="vertical-align: top; width: 894px; text-align: left;">Eventuale Maschera di proposta di Inserimento/Modifica <span style="font-weight: bold; text-decoration: underline;">per i soli campi di DATATEXT </span>(valore 0 in <a href="_TR_METAFIELDDESCRIPTOR.html#GridViewDataType">GridViewDataType</a><span style="font-weight: bold;">)&nbsp; </span>da usare per visualizzare quel Campo di quella Vista nella parte di EDIT. <br>
+Vedi anche <a href="#IncludeLiterals">IncludeLiterals</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="IncludeLiterals"></a> <span style="font-weight: bold; text-decoration: underline;">IncludeLiterals</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Definisce <span style="text-decoration: underline; font-weight: bold;">per i soli Campi di DATATEXT</span> (valore 0 in <a href="_TR_METAFIELDDESCRIPTOR.html#GridViewDataType">GridViewDataType</a><span style="font-weight: bold;">) </span>quali caratteri includere nel salvataggio del valore inserito in quel campo (vedi documentazione DevExpress (<a href="http://documentation.devexpress.com/#AspNet/DevExpressWebASPxEditorsMaskSettings_IncludeLiteralstopic">http://documentation.devexpress.com/#AspNet/DevExpressWebASPxEditorsMaskSettings_IncludeLiteralstopic</a>):  <br>
+Può assumere i seguenti valori: <br>
+&nbsp; &nbsp; &nbsp; &nbsp;
+All&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 1&nbsp; Salva nel campo del DB TUTTI I caratteri specificati nell'eventuale <a href="#Mask">MASK</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+None&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= 2&nbsp; Salva nel campo del DB SOLO i caratteri inseriti a video dall'Utente (non quelli della MASK)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DecimalSymbol = 3&nbsp; Salva nel campo del DB ANCHE i simboli dei
+decimali della MASK<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="DisplayFormatString"></a> <span style="font-weight: bold; text-decoration: underline;">DisplayFormatString</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="../_AA_I%20Formati%20dei%20Campi.html#NVARCHAR"><span style="text-decoration: underline;">NVARCHAR(MAX)</span></a></td>
+      <td style="vertical-align: top;">Definisce <span style="text-decoration: underline; font-weight: bold;">per i soli Campi di DATADATE</span> <span style="text-decoration: underline; font-weight: bold;"></span> (valore 2 in <a href="_TR_METAFIELDDESCRIPTOR.html#GridViewDataType">GridViewDataType</a><span style="font-weight: bold;">) </span>il Formato di EDIT di quel Campo di quella Vista  . <br>
+Può assumere i seguenti Valori:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0&nbsp;
+Visualizza il Campo come DATA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DateTime&nbsp; = 1&nbsp; Visualizza il Campo come DATA E ORA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 2&nbsp;&nbsp;
+Visualizza il Campo come ORA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Custom&nbsp;&nbsp;&nbsp;&nbsp; = 3&nbsp;&nbsp; Visualizza il Campo in
+Modo CUSTOM (NON gestita)<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="HorizontalAlign"></a> <span style="font-weight: bold; text-decoration: underline;">HorizontalAlign</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Definisce il Tipo di Allineamento ORIZZONTALE di quel Campo di quella Vista. <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> <br>
+Può assumere i seguenti VAlori<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NotSet &nbsp;&nbsp; = 0&nbsp; Il Campo non viene allineato orizzontalmente<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Left&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 1&nbsp; Il Campo viene
+allineato a SINISTRA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Center&nbsp;&nbsp;&nbsp; = 2&nbsp; Il Campo viene allineato al CENTRO<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Right&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 3&nbsp; Il Campo viene allineato a DESTRA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Justify&nbsp;&nbsp;&nbsp;&nbsp; = 4&nbsp; Il Campo viene GIUSTIFICATO<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="EditFormat"></a> <span style="font-weight: bold; text-decoration: underline;">EditFormat</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Definisce<span style="text-decoration: underline; font-weight: bold;"> per i soli Campi di DATADATE</span> (valore 2 in <a href="#GridViewDataType">GridViewDataType</a><span style="font-weight: bold;">) </span>come viene FORMATTATO quel Campo di quella Vista  <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> <br>
+Può assuemre i seguenti valori:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DateTime = 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Custom&nbsp;&nbsp;&nbsp; = 3<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="DecimalPlaces"></a> <span style="font-weight: bold; text-decoration: underline;">DecimalPlaces</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Camp.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Definisce <span style="text-decoration: underline; font-weight: bold;">per i soli Campi di DATASPIN</span> (valore 2 in <a href="_TR_METAFIELDDESCRIPTOR.html#GridViewDataType">GridViewDataType</a><span style="font-weight: bold;">) </span>il Numero di Decimali per quel Campo di quella Vista <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio&nbsp;</span></span> </td>
+    </tr>
+
+    
+    
+    
+    
+  </tbody>
+</table>
+
+&nbsp;
+<br>
+
+<br>
+
+</body></html>

@@ -1,0 +1,573 @@
+.dxWeb_rpHeaderTopLeftCorner_DevEx,
+.dxWeb_rpHeaderTopRightCorner_DevEx,
+.dxWeb_rpBottomLeftCorner_DevEx,
+.dxWeb_rpBottomRightCorner_DevEx,
+.dxWeb_rpTopLeftCorner_DevEx,
+.dxWeb_rpTopRightCorner_DevEx,
+.dxWeb_rpGroupBoxBottomLeftCorner_DevEx,
+.dxWeb_rpGroupBoxBottomRightCorner_DevEx,
+.dxWeb_rpGroupBoxTopLeftCorner_DevEx,
+.dxWeb_rpGroupBoxTopRightCorner_DevEx,
+.dxWeb_mHorizontalPopOut_DevEx,
+.dxWeb_mVerticalPopOut_DevEx,
+.dxWeb_mVerticalPopOutRtl_DevEx,
+.dxWeb_mSubMenuItem_DevEx,
+.dxWeb_mSubMenuItemChecked_DevEx,
+.dxWeb_mScrollUp_DevEx,
+.dxWeb_mScrollDown_DevEx,
+.dxWeb_tcScrollLeft_DevEx,
+.dxWeb_tcScrollRight_DevEx,
+.dxWeb_tcScrollLeftHover_DevEx,
+.dxWeb_tcScrollRightHover_DevEx,
+.dxWeb_tcScrollLeftPressed_DevEx,
+.dxWeb_tcScrollRightPressed_DevEx,
+.dxWeb_tcScrollLeftDisabled_DevEx,
+.dxWeb_tcScrollRightDisabled_DevEx,
+.dxWeb_nbCollapse_DevEx,
+.dxWeb_nbExpand_DevEx,
+.dxWeb_splVSeparator_DevEx,
+.dxWeb_splVSeparatorHover_DevEx,
+.dxWeb_splHSeparator_DevEx,
+.dxWeb_splHSeparatorHover_DevEx,
+.dxWeb_splVCollapseBackwardButton_DevEx,
+.dxWeb_splVCollapseBackwardButtonHover_DevEx,
+.dxWeb_splHCollapseBackwardButton_DevEx,
+.dxWeb_splHCollapseBackwardButtonHover_DevEx,
+.dxWeb_splVCollapseForwardButton_DevEx,
+.dxWeb_splVCollapseForwardButtonHover_DevEx,
+.dxWeb_splHCollapseForwardButton_DevEx,
+.dxWeb_splHCollapseForwardButtonHover_DevEx,
+.dxWeb_pcCloseButton_DevEx,
+.dxWeb_pcSizeGrip_DevEx,
+.dxWeb_pcSizeGripRtl_DevEx,
+.dxWeb_pAll_DevEx,
+.dxWeb_pAllDisabled_DevEx,
+.dxWeb_pPrev_DevEx,
+.dxWeb_pPrevDisabled_DevEx,
+.dxWeb_pNext_DevEx,
+.dxWeb_pNextDisabled_DevEx,
+.dxWeb_pLast_DevEx,
+.dxWeb_pLastDisabled_DevEx,
+.dxWeb_pFirst_DevEx,
+.dxWeb_pFirstDisabled_DevEx,
+.dxWeb_tvColBtn_DevEx,
+.dxWeb_tvColBtnRtl_DevEx,
+.dxWeb_tvExpBtn_DevEx,
+.dxWeb_tvExpBtnRtl_DevEx,
+.dxWeb_ncBackToTop_DevEx,
+.dxWeb_smBullet_DevEx,
+.dxWeb_tiBackToTop_DevEx,
+.dxWeb_fmFolder_DevEx,
+.dxWeb_fmFolderLocked_DevEx,
+.dxWeb_fmCreateButton_DevEx,
+.dxWeb_fmMoveButton_DevEx,
+.dxWeb_fmRenameButton_DevEx,
+.dxWeb_fmDeleteButton_DevEx,
+.dxWeb_fmRefreshButton_DevEx,
+.dxWeb_fmDwnlButton_DevEx,
+.dxWeb_fmCreateButtonDisabled_DevEx,
+.dxWeb_fmMoveButtonDisabled_DevEx,
+.dxWeb_fmRenameButtonDisabled_DevEx,
+.dxWeb_fmDeleteButtonDisabled_DevEx,
+.dxWeb_fmRefreshButtonDisabled_DevEx,
+.dxWeb_fmDwnlButtonDisabled_DevEx,
+.dxWeb_ucClearButton_DevEx,
+.dxWeb_ucClearButtonDisabled_DevEx { 
+    background-image: url('sprite.png');
+    -background-image: url('sprite.gif'); /* for IE6 */
+    background-repeat: no-repeat;
+    background-color: transparent;
+    display:block;
+}
+.dxWeb_mScrollUp_DevEx, .dxWeb_mScrollDown_DevEx
+{
+	margin: auto;
+}
+.dxWeb_ncBackToTop_DevEx,
+.dxWeb_pAll_DevEx,
+.dxWeb_pAllDisabled_DevEx,
+.dxWeb_pPrev_DevEx,
+.dxWeb_pPrevDisabled_DevEx,
+.dxWeb_pNext_DevEx,
+.dxWeb_pNextDisabled_DevEx,
+.dxWeb_pLast_DevEx,
+.dxWeb_pLastDisabled_DevEx,
+.dxWeb_pFirst_DevEx,
+.dxWeb_pFirstDisabled_DevEx,
+.dxWeb_smBullet_DevEx,
+.dxWeb_tiBackToTop_DevEx
+{
+	display:inline;
+}
+
+.dxWeb_edtCheckBoxChecked_DevEx,
+.dxWeb_edtCheckBoxUnchecked_DevEx,
+.dxWeb_edtCheckBoxGrayed_DevEx,
+.dxWeb_edtCheckBoxCheckedDisabled_DevEx,
+.dxWeb_edtCheckBoxUncheckedDisabled_DevEx,
+.dxWeb_edtCheckBoxGrayedDisabled_DevEx {
+	background-image: url('sprite.png');
+    -background-image: url('sprite.gif'); /* for IE6 */
+    background-repeat: no-repeat;
+    background-color: transparent;
+	width: 15px;
+    height: 15px;
+}
+
+.dxWeb_edtCheckBoxUnchecked_DevEx {
+	background-position: -140px -73px;
+}
+.dxWeb_edtCheckBoxChecked_DevEx {
+	background-position: -140px -88px; 
+}
+.dxWeb_edtCheckBoxGrayed_DevEx {
+	background-position: -140px -103px;
+}
+.dxWeb_edtCheckBoxUncheckedDisabled_DevEx {
+	background-position: -140px -118px;
+}
+.dxWeb_edtCheckBoxCheckedDisabled_DevEx {
+	background-position: -140px -133px;
+}
+.dxWeb_edtCheckBoxGrayedDisabled_DevEx {
+	background-position: -140px -148px;
+}
+
+.dxWeb_rpHeaderTopLeftCorner_DevEx {
+    background-position: -76px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpHeaderTopRightCorner_DevEx {
+    background-position: -84px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpBottomLeftCorner_DevEx {
+    background-position: -57px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpBottomRightCorner_DevEx {
+    background-position: -65px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpTopLeftCorner_DevEx {
+    background-position: -38px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpTopRightCorner_DevEx {
+    background-position: -46px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpGroupBoxBottomLeftCorner_DevEx {
+    background-position: -19px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpGroupBoxBottomRightCorner_DevEx {
+    background-position: -27px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpGroupBoxTopLeftCorner_DevEx {
+    background-position: 0px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_rpGroupBoxTopRightCorner_DevEx {
+    background-position: -8px -90px;
+    width: 5px;
+    height: 5px;
+}
+
+.dxWeb_mHorizontalPopOut_DevEx {
+    background-position: -92px -40px;
+    width: 7px;
+    height: 4px;
+}
+
+.dxWeb_mVerticalPopOut_DevEx {
+    background-position: -101px -40px;
+    width: 4px;
+    height: 7px;
+}
+
+.dxWeb_mVerticalPopOutRtl_DevEx {
+    background-position: -106px -40px;
+    width: 4px;
+    height: 7px;
+}
+
+.dxWeb_mSubMenuItem_DevEx {
+    background-position: -63px -40px;
+    width: 13px;
+    height: 13px;
+}
+
+.dxWeb_mSubMenuItemChecked_DevEx {
+    background-position: -77px -40px;
+    width: 13px;
+    height: 13px;
+}
+
+.dxWeb_mScrollUp_DevEx {
+    background-position: -75px -59px;
+    width: 18px;
+    height: 18px;
+}
+
+.dxWeb_mScrollDown_DevEx {
+    background-position: -94px -59px;
+    width: 18px;
+    height: 18px;
+}
+
+.dxWeb_tcScrollLeft_DevEx {
+	background-position: -116px 0px;
+    width: 19px;
+    height: 15px;
+}
+
+.dxWeb_tcScrollRight_DevEx {
+	background-position: -137px 0px;
+    width: 19px;
+    height: 15px;
+}
+
+.dxWeb_tcScrollLeftHover_DevEx {
+	background-position: -116px -16px;
+    width: 19px;
+    height: 15px;
+}
+.dxWeb_tcScrollRightHover_DevEx {
+	background-position: -137px -16px;
+    width: 19px;
+    height: 15px;
+}
+
+.dxWeb_tcScrollLeftPressed_DevEx {
+	background-position: -116px -32px;
+    width: 19px;
+    height: 15px;
+}
+.dxWeb_tcScrollRightPressed_DevEx {
+	background-position: -137px -32px;
+    width: 19px;
+    height: 15px;
+}
+
+.dxWeb_tcScrollLeftDisabled_DevEx {
+	background-position: -116px -48px;
+    width: 19px;
+    height: 15px;
+}
+.dxWeb_tcScrollRightDisabled_DevEx  {
+	background-position: -137px -48px;
+    width: 19px;
+    height: 15px;
+}
+
+.dxWeb_nbCollapse_DevEx {
+    background-position: -101px 0px;
+    width: 13px;
+    height: 15px;
+}
+
+.dxWeb_nbExpand_DevEx {
+    background-position: -101px -16px;
+    width: 13px;
+    height: 15px;
+}
+
+.dxWeb_splVSeparator_DevEx {
+    background-position: -18px -59px;
+    width: 6px;
+    height: 22px;
+}
+
+.dxWeb_splVSeparatorHover_DevEx {
+    background-position: -25px -59px;
+    width: 6px;
+    height: 22px;
+}
+
+.dxWeb_splHSeparator_DevEx {
+    background-position: -33px -59px;
+    width: 23px;
+    height: 6px;
+}
+
+.dxWeb_splHSeparatorHover_DevEx {
+    background-position: -33px -66px;
+    width: 23px;
+    height: 6px;
+}
+
+.dxWeb_splVCollapseBackwardButton_DevEx {
+    background-position: 0px -73px;
+    width: 6px;
+    height: 7px;
+}
+
+.dxWeb_splVCollapseBackwardButtonHover_DevEx {
+    background-position: 0px -81px;
+    width: 6px;
+    height: 7px;
+}
+
+.dxWeb_splHCollapseBackwardButton_DevEx {
+    background-position: 0px -59px;
+    width: 7px;
+    height: 6px;
+}
+
+.dxWeb_splHCollapseBackwardButtonHover_DevEx {
+    background-position: 0px -66px;
+    width: 7px;
+    height: 6px;
+}
+
+.dxWeb_splVCollapseForwardButton_DevEx {
+    background-position: -8px -73px;
+    width: 6px;
+    height: 7px;
+}
+
+.dxWeb_splVCollapseForwardButtonHover_DevEx {
+    background-position: -8px -81px;
+    width: 6px;
+    height: 7px;
+}
+
+.dxWeb_splHCollapseForwardButton_DevEx {
+    background-position: -9px -59px;
+    width: 7px;
+    height: 6px;
+}
+
+.dxWeb_splHCollapseForwardButtonHover_DevEx {
+    background-position: -9px -66px;
+    width: 7px;
+    height: 6px;
+}
+
+.dxWeb_pcCloseButton_DevEx {
+    background-position: 0px -40px;
+    width: 29px;
+    height: 15px;
+}
+
+.dxWeb_pcSizeGrip_DevEx {
+    background-position: -34px -40px;
+    width: 13px;
+    height: 13px;
+}
+
+.dxWeb_pcSizeGripRtl_DevEx {
+    background-position: -48px -40px;
+    width: 13px;
+    height: 13px;
+}
+
+.dxWeb_pAll_DevEx {
+    background-position: 0px 0px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pAllDisabled_DevEx {
+    background-position: 0px -20px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pPrev_DevEx {
+    background-position: -60px 0px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pPrevDisabled_DevEx {
+    background-position: -60px -20px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pNext_DevEx {
+    background-position: -80px 0px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pNextDisabled_DevEx {
+    background-position: -80px -20px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pLast_DevEx {
+    background-position: -40px 0px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pLastDisabled_DevEx {
+    background-position: -40px -20px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pFirst_DevEx {
+    background-position: -20px 0px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_pFirstDisabled_DevEx {
+    background-position: -20px -20px;
+    width: 19px;
+    height: 18px;
+}
+
+.dxWeb_tvColBtn_DevEx {
+	background-position: -19px -98px;
+    width: 17px;
+    height: 17px;
+}
+.dxWeb_tvColBtnRtl_DevEx {
+	background-position: -57px -98px;
+    width: 17px;
+    height: 17px;
+}
+
+.dxWeb_tvExpBtn_DevEx {
+    background-position: 0px -98px;
+    width: 17px;
+    height: 17px;
+}
+.dxWeb_tvExpBtnRtl_DevEx {
+	background-position: -38px -98px;
+    width: 17px;
+    height: 17px;
+}
+
+.dxWeb_ncBackToTop_DevEx {
+    background-position: -58px -59px;
+    width: 15px;
+    height: 15px;
+}
+.dxWeb_smBullet_DevEx {
+    background-position: -33px -75px;
+    width: 8px;
+    height: 13px;
+}
+.dxWeb_tiBackToTop_DevEx {
+    background-position: -58px -59px;
+    width: 15px;
+    height: 15px;
+}
+
+.dxWeb_fmFolder_DevEx {
+	background-position: 0px -123px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmFolderLocked_DevEx {
+	background-position: -20px -123px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmCreateButton_DevEx {
+	background-position: -40px -123px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmRenameButton_DevEx {
+	background-position: -60px -123px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmMoveButton_DevEx {
+	background-position: -80px -123px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmDeleteButton_DevEx {
+	background-position: -100px -123px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmRefreshButton_DevEx {
+	background-position: -120px -123px;
+    width: 16px;
+    height: 16px;
+}
+.dxWeb_fmDwnlButton_DevEx {
+	background-position: 0px -147px;
+    width: 16px;
+    height: 16px;
+}
+.dxWeb_fmDwnlButtonDisabled_DevEx {
+	background-position: -20px -147px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmCreateButtonDisabled_DevEx {
+	background-position: -40px -147px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmRenameButtonDisabled_DevEx {
+	background-position: -60px -147px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmMoveButtonDisabled_DevEx {
+	background-position: -80px -147px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmDeleteButtonDisabled_DevEx {
+	background-position: -100px -147px;
+    width: 16px;
+    height: 16px;
+}
+
+.dxWeb_fmRefreshButtonDisabled_DevEx {
+	background-position: -120px -147px;
+    width: 16px;
+    height: 16px;
+}
+.dxWeb_ucClearButton_DevEx {
+    background-position: -100px -123px;
+    width: 16px;
+    height: 16px;
+}
+.dxWeb_ucClearButtonDisabled_DevEx {
+    background-position: -100px -147px;
+    width: 16px;
+    height: 16px;
+}

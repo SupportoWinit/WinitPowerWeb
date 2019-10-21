@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_MENU</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head>
+<body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA
+MENU<br>
+</h1>
+<span style="font-weight: bold;">Contiene le Struttura dei
+Menù
+di Navigazione in Power-2011</span> <br>
+<br>
+Le Chiavi del Record :&nbsp; <a href="#Menu_Id">Menu_id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; :&nbsp; <a href="#Menu_Id">Menu_Id</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">Chiave</span>)
+, <a href="#Menu_Tipo_Id">Menu_Tipo_Id</a>,&nbsp; <a href="#Testo">Testo </a><br>
+I Campi con Default &nbsp; :&nbsp; Nessuno<span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+<br><br>Esempio di Struttura del 1° livello del Menù = 1<br><table><tbody><tr><td style="text-align: center; font-weight: bold;">Menù_id</td><td style="text-align: center; font-weight: bold;">Menu_Tipo_id</td><td style="text-align: center; font-weight: bold;">Parent_Id</td><td style="text-align: center; font-weight: bold;">Tab_Funz_Id</td><td style="text-align: center; font-weight: bold;">Testo</td></tr><tr><td>1</td><td>1</td><td>NULL</td><td>NULL</td><td>MENU_GROUP_FUNZIONI_BASE</td></tr><tr><td>2</td><td>1</td><td>1</td><td>NULL</td><td>MENU_GROUP_ANAGRAFICHE</td></tr><tr><td>3</td><td>1</td><td>2</td><td>1</td><td>MENU_FRMCOLLABORATORI_TEXT</td></tr></tbody></table>&nbsp;&nbsp; <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<br>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top;"><a name="Menu_Id"></a> <span style="font-weight: bold; text-decoration: underline;">Menu_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">INT</a></td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;della Singola
+Riga di Menù</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="Menu_Tipo_Id"></a> <span style="font-weight: bold; text-decoration: underline;">Menu_Tipo_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">INT</a></td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> Codice Interno Univoco </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">assegnato&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">a quello Specifico
+Menù&nbsp;</span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;">&nbsp; </span></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span>
+.<span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">per idetificare tutte le
+singole voci che compongono la struttura di quello specifico Menù. </span></span></span><span style="color: rgb(153, 51, 0);">Viene controllato che esista
+nella Tabella MENU_TIPO.</span><span style="font-weight: bold; color: rgb(204, 102, 204);"></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="Parent_Id"></a> <span style="text-decoration: underline; font-weight: bold;">Parent_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">INT</a></td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo del
+Record Padre&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">a cui appartiene quella
+specifica Voce di Sotto_Menù </span></span></span>.<span style="font-weight: bold;"> </span><span style="color: rgb(153, 102, 51);"><span style="font-weight: bold;">Nel caso sia l'Intestazione di un
+Nuovo Menù e/o Sotto_Menù contiene il valore NULL. </span>Se
+diverso da Null, viene controllato che esista come elemento di questa
+Tabella con il Medesimo Menu_Tipo_Id</span>.<br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="Tab_Funz_Id"></a> <span style="font-weight: bold; text-decoration: underline;">Tab_Funz_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">INT</a></td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo della
+Funzione</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">associata a quella Voce di
+Menù</span></span></span><span style="font-weight: bold;">.&nbsp;</span><span style="color: rgb(153, 102, 51);"><span style="font-weight: bold;">Nel caso sia l'Intestazione di un
+Nuovo Menù e/o Sotto_Menù contiene il valore NULL. </span>Se
+diverso da Null, viene controllato che esista come elemento della
+Tabella FUNZ.</span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 175px;"><span style="font-weight: bold;"><a name="Testo"></a></span><span style="text-decoration: underline; font-weight: bold;">Testo</span></td>
+<td style="vertical-align: top; text-align: center; width: 144px;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">NVARCHAR</a>(Max)<br>
+</td>
+<td style="vertical-align: top; width: 1030px;"><span style="color: rgb(0, 0, 153);"><span style="background-color: red;"><span style="background-color: white;"></span></span></span><span style="color: rgb(0, 0, 153);"><span style="background-color: red;"><span style="background-color: white;"><span style="color: black;">Descrizione del Menù/Sotto-Menù e/o
+Funzione&nbsp; </span></span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span><span style="color: rgb(0, 0, 153);"><span style="background-color: red;"><span style="background-color: white;"><span style="color: black;"> che viene visualizzata per quella
+Voce di Menù/Sotto_funzione e/o Funzione. <span style="color: rgb(102, 51, 51); font-weight: bold;">Va
+inserito il Nome della Risorsa con cui viene gestita la Descrizione di
+quel Menù/Sotto-Menù e/o Funzione.</span><span style="color: rgb(102, 51, 51);">Deve esistere tra le
+Risorse in Lingua di Power_Web. (es: MENU_GROUP_FUNZIONI_BASE,
+MENU_GROUP_ANAGRAFICHE,...., MENU_FRMUNITAPORTATILI_TEXT,
+MENU_FRMUNITAFISSE_TEXT ecc ecc) . Nel caso in cui la Risorsa non venga
+trovata verrà mostrato il valore inserito senza tradurlo.</span></span></span></span></span>
+</td>
+</tr>
+</tbody>
+</table>
+&nbsp;
+<br>
+<br>
+</body></html>

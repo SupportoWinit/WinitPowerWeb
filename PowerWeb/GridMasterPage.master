@@ -1,0 +1,806 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GridMasterPage.master.cs" Inherits="PowerWeb.GridMasterPage" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxCallbackPanel" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxEditors" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.ASPxTreeList.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxTreeList" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxPopupControl" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxClasses" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxTabControl" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxPanel" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxCallback" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxTimer" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxLoadingPanel"  TagPrefix="dx"%>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <link href='DX.ashx?cssfile=Styles/jquery.contextMenu.css' rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+
+        function ApplyFilter(fieldName, dde) {
+            if (dde.GetText() != "")
+                grid.AutoFilterByColumn(fieldName, dde.GetText());
+        }
+
+        function SynchronizeListBoxValues(dropDown, args, column) {
+            listBox.UnselectAll();
+            var texts = dropDown.GetText().split(textSeparator);
+            var values = GetValuesByTexts(texts, listBox);
+            listBox.SelectValues(values);
+            UpdateText(checkListBox);  // for remove non-existing texts
+        }
+
+        var textSeparator = ";";
+
+        function OnListBoxSelectionChanged(listBox, args) {
+            UpdateText(listBox);
+        }
+
+        function UpdateText(listBox) {
+            var selectedItems = listBox.GetSelectedItems();
+            checkListBox.SetText(GetSelectedItemsText(selectedItems));
+        }
+
+        function GetSelectedItemsText(items) {
+            var texts = [];
+            for (var i = 0; i < items.length; i++)
+                if (items[i].index != 0)
+                    texts.push(items[i].text);
+            return texts.join(textSeparator);
+        }
+
+        function GetValuesByTexts(texts, checkListBox) {
+            var actualValues = [];
+            var value = "";
+            for (var i = 0; i < texts.length; i++) {
+                value = GetValueByText(texts[i], checkListBox);
+                if (value != null)
+                    actualValues.push(value);
+            }
+            return actualValues;
+        }
+
+        function btnCustomizeColumns_Click(s, e) {
+
+            if (grid.IsCustomizationWindowVisible())
+                grid.HideCustomizationWindow();
+            else
+                grid.ShowCustomizationWindow();
+
+            try {
+                if (grid2.IsCustomizationWindowVisible())
+                    grid2.HideCustomizationWindow();
+                else
+                    grid2.ShowCustomizationWindow();
+
+                if (grid3.IsCustomizationWindowVisible())
+                    grid3.HideCustomizationWindow();
+                else
+                    grid3.ShowCustomizationWindow();
+
+            } catch (e) {
+                // silenziamento dell'errore in caso di mancata presenza grid2 e grid3
+            }
+
+            UpdateButtonText();
+        }
+
+        function grid_OnCustomizationWindowCloseUp(s, e) {
+            UpdateButtonText();
+        }
+
+        function UpdateButtonText() {
+            var text = grid.IsCustomizationWindowVisible() ? "Hide" : "Show";
+            text += " Customization Window";
+            btnCustomizeColumns.SetText(text);
+        }
+
+        function grid_OnInit(s, e) {
+            AttachContextmenu();
+            //setVisiblePrintButton();
+        }
+
+        function setVisiblePrintButton() {
+            var currGrid = ASPxClientGridView.Cast(grid);
+            var isVisible = currGrid.GetVisibleRowsOnPage() > 0;
+
+            if (typeof btnPrint != 'undefined') {
+                btnPrint.SetVisible(isVisible);
+            }
+            if (typeof btnExportXLSX != 'undefined') {
+                btnExportXLSX.SetVisible(isVisible);
+            }
+        }
+
+        function grid_OnEndCallback(s, e) {
+            AttachContextmenu();
+        }
+
+        function getCurrentPage() {
+            var sPath = window.location.pathname;
+            var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+            return sPage;
+        }
+
+        function getCurrentPageNoExtNoPage(contextMenu) {
+            var sPage = getCurrentPage();
+            var pageName = sPage.substr(0, sPage.lastIndexOf('Page'));
+
+            if (pageName == 'Reg_VM' && contextMenu == true)
+                pageName = 'Reg_V';
+            return pageName;
+        }
+
+        function redirectOnHelpPage() {
+            window.open(getBaseURL() + 'HelpPages/PAGES/_' + getCurrentPageNoExtNoPage(false) + '_PAGE.html', '_blank');
+        }
+
+        function getBaseURL() {
+            return location.protocol + "//" + location.hostname + (location.port && ":" + location.port) + "/";
+        }
+
+        function AttachContextmenu() {
+            jQuery.contextMenu({
+                selector: '.myHelp',
+                callback: function (key, options) {
+                    if (key == "help") {
+                        var currentId = jQuery(this).attr('id');
+                        window.open(getBaseURL() + 'HelpPages/TR_RECORD/_TR_' + getCurrentPageNoExtNoPage(true) + '.html#' + currentId, '_blank')
+                    }
+                },
+
+                items: {
+                    "help": { name: "Help", icon: "help" },
+                    "sep1": "---------",
+                    "quit": { name: "Quit", icon: "quit" }
+                }
+            });
+        }
+
+        function cmbLayout_OnSelectedIndexChanged(s, e) {
+            var t = cmbLayout.GetSelectedItem();
+            if (t == null) {
+                cpLayout.PerformCallback('save');
+            } else {
+                cpLayout.PerformCallback(t.value);
+            }
+        }
+
+        function cmbExportXLSX_OnSelectedIndexChanged(s, e)
+            //Quando viene scelto un Nuovo Modello di Export Excel richiama la GridMasterPage
+        {
+            var t = cmbExportXLSXLayout.GetSelectedItem();
+            if (t != null) {
+                cpExportLayout.PerformCallback(t.value);
+            }
+
+        }
+
+        function cmbPrintLayout_OnSelectedIndexChanged(s, e) {
+
+            var t = cmbPrintLayout.GetSelectedItem();
+            if (t == null) {
+                cpPrintLayout.PerformCallback('save');
+            } else {
+                cpPrintLayout.PerformCallback(t.value);
+            }
+        }
+
+        function OnCpLayoutEndCallback(s, e) {
+            if (s.cpErrorTitle !== "" && s.cpErrorMessage !== "")
+                DisplayDialogError(s.cpErrorTitle, s.cpErrorMessage);
+            if (grid.cpName == "gvRegV" && cbAutoSync.GetChecked())
+                scRegVPanel.PerformCallback();
+
+            // verifica gestione dei filtri della griglia in fase di ricarica del layout
+            var currentGrid = ASPxClientGridView.Cast(grid);
+            var filterValid = currentGrid.cpIsFilterValid;
+            if (currentGrid.cpIsFilterValid == false && currentGrid.cpFilterError != "") {
+                DisplayDialogInfo('Power', currentGrid.cpFilterError);
+                currentGrid.cpIsFilterValid = !currentGrid.cpIsFilterValid;
+            }
+
+            try {
+                var btn = ASPxClientButton.Cast('btnPopulateGrid');
+                if (btn.cpNewText != "" && btn.cpNewText != undefined) {
+                    btn.SetText(btn.cpNewText);
+                    btn.cpNewText = undefined;
+                }
+            } catch (e) {
+
+            }
+        }
+
+        function onResultConfirm2(result) {
+            if (result)
+                currentAction();
+        }
+
+        function onResultConfirm1(result) {
+            if (result) {
+                if (currentIsToConfirm2)
+                    DisplayJConfirm("Power", currentConfirm2, onResultConfirm2)
+                else currentAction();
+            }
+        }
+
+        var currentAction;
+        var currentConfirm2;
+        var currentIsToConfirm2;
+
+        function OnCustomNewTemplateButtonClick(s, e) {
+
+            var doAction = true;
+
+            var currentBtn = ASPxClientButton.Cast(s);
+
+            var currentGrid = ASPxClientGridView.Cast(grid);
+
+            currentAction = function () { currentGrid.UpdateEdit(); }
+            currentConfirm2 = currentGrid.cpConfirmAdd2;
+            currentIsToConfirm2 = currentGrid.cpIsConfirmAdd2;
+
+            if (currentGrid.cpIsConfirmAdd)
+                DisplayJConfirm("Power", currentGrid.cpConfirmAdd, onResultConfirm1)
+            else currentAction();
+        }
+
+        function OnCustomEditTemplateButtonClick(s, e) {
+
+            var doAction = true;
+
+            var currentBtn = ASPxClientButton.Cast(s);
+
+            var currentGrid = ASPxClientGridView.Cast(grid);
+
+            currentAction = function () { currentGrid.UpdateEdit(); }
+            currentConfirm2 = currentGrid.cpConfirmMod2;
+            currentIsToConfirm2 = currentGrid.cpIsConfirmMod2;
+
+            if (currentGrid.cpIsConfirmMod)
+                DisplayJConfirm("Power", currentGrid.cpConfirmMod, onResultConfirm1);
+            else currentAction();
+        }
+
+        function OnCustomCancelTemplateButtonClick(s, e, gridInstanceName) {
+
+            var currentGrid = ASPxClientGridView.Cast(grid);
+            currentGrid.CancelEdit();
+            cResetIsReadOnly.PerformCallback(gridInstanceName);
+        }
+
+        function OnCustomCancelTemplateButtonDetailClick(s, e, gridInstanceName) {
+
+            var currentGrid = ASPxClientGridView.Cast(detailGrid);
+            currentGrid.CancelEdit();
+            cResetIsReadOnly.PerformCallback(gridInstanceName);
+        }
+
+        function OnCustomNewTemplateButtonDetailClick(s, e) {
+
+            var doAction = true;
+
+            var currentBtn = ASPxClientButton.Cast(s);
+
+            var currentGrid = ASPxClientGridView.Cast(detailGrid);
+
+            currentAction = function () { currentGrid.UpdateEdit(); }
+            currentConfirm2 = currentGrid.cpConfirmAdd2;
+            currentIsToConfirm2 = currentGrid.cpIsConfirmAdd2;
+
+            if (currentGrid.cpIsConfirmAdd)
+                DisplayJConfirm("Power", currentGrid.cpConfirmAdd, onResultConfirm1)
+            else currentAction();
+        }
+
+        function OnCustomEditTemplateButtonDetailClick(s, e) {
+
+            var doAction = true;
+
+            var currentBtn = ASPxClientButton.Cast(s);
+
+            var currentGrid = ASPxClientGridView.Cast(detailGrid);
+
+            currentAction = function () { currentGrid.UpdateEdit(); }
+            currentConfirm2 = currentGrid.cpConfirmMod2;
+            currentIsToConfirm2 = currentGrid.cpIsConfirmMod2;
+
+            if (currentGrid.cpIsConfirmMod)
+                DisplayJConfirm("Power", currentGrid.cpConfirmMod, onResultConfirm1)
+            else currentAction();
+        }
+
+        function OnCustomRefreshButtonDetailClick(s, e) {
+            var currentGrid = ASPxClientGridView.Cast(detailGrid);
+            doCustomRefreshButtonClick(currentGrid);
+        }
+
+        function OnCustomRefreshButtonClick(s, e) {
+            var currentGrid = ASPxClientGridView.Cast(grid);
+            doCustomRefreshButtonClick(currentGrid);
+        }
+
+        function doCustomRefreshButtonClick(currentGrid) {
+
+            currentGrid = ASPxClientGridView.Cast(currentGrid);
+
+            var fisE = currentGrid.GetEditValue("Data_Ora_Fis_E");
+            var fisU = currentGrid.GetEditValue("Data_Ora_Fis_U");
+
+            var length = "0000";
+
+            if (fisU != null && fisE != null) {
+
+                var hourDiff;
+                var minuteDiff;
+
+                var backwards = false;
+
+                if (fisU > fisE) {
+                    hourDiff = fisU.getHours() - fisE.getHours();
+                    minuteDiff = fisU.getMinutes() - fisE.getMinutes();
+                } else {
+                    hourDiff = (24 - fisE.getHours()) + fisU.getHours();
+                    minuteDiff = (0 - fisE.getMinutes()) + fisU.getMinutes();
+
+                    backwards = true;
+                }
+
+                length = getTimeSpanStringFromDateDiff(hourDiff, minuteDiff, backwards);
+            }
+
+            currentGrid.SetEditValue("Durata_Fis_HH_S", length);
+
+
+            currentGrid.SetEditValue("Registrazione_Stato_Reg", null);
+            currentGrid.SetEditValue("Registrazione_Tipo_Reg", null);
+            currentGrid.SetEditValue("Tipo_Modifica", null);
+            currentGrid.SetEditValue("RiferimentoRRN_Att", null);
+            currentGrid.SetEditValue("Durata_Fig_HH_S", null);
+            currentGrid.SetEditValue("Data_Ora_Fig_E", null);
+            currentGrid.SetEditValue("Data_Ora_Fig_U", null);
+
+            currentGrid.GetEditor("Registrazione_Stato_Reg").SetVisible(false);
+            currentGrid.GetEditor("Registrazione_Tipo_Reg").SetVisible(false);
+            currentGrid.GetEditor("Tipo_Modifica").SetVisible(false);
+            currentGrid.GetEditor("RiferimentoRRN_Att").SetVisible(false);
+            currentGrid.GetEditor("Durata_Fig_HH_S").SetVisible(false);
+            currentGrid.GetEditor("Data_Ora_Fig_E").SetVisible(false);
+            currentGrid.GetEditor("Data_Ora_Fig_U").SetVisible(false);
+        }
+
+        function getTimeSpanStringFromDateDiff(hourDiff, minuteDiff, backwards) {
+            var length = "";
+
+            if (minuteDiff < 0) {
+                hourDiff--;
+
+                minuteDiff = 60 + minuteDiff;
+            }
+
+            if (hourDiff < 10)
+                length = "0" + hourDiff;
+            else length = "" + hourDiff;
+            if (minuteDiff < 10)
+                length += "0" + minuteDiff;
+            else length += "" + minuteDiff;
+
+            return length;
+        }
+
+        function OnCustomButtonClick(s, e) {
+
+            var currentGrid = ASPxClientGridView.Cast(s);
+
+            var doAction = true;
+
+            if (e.buttonID == 'add') {
+                currentGrid.AddNewRow();
+            }
+
+            if (e.buttonID == 'addClone') {
+                cpCommand.PerformCallback("addClone|" + e.visibleIndex);
+            }
+
+            if (e.buttonID == 'delete') {
+
+                currentAction = function () { currentGrid.DeleteRow(e.visibleIndex); }
+                currentConfirm2 = currentGrid.cpConfirmDel2;
+                currentIsToConfirm2 = currentGrid.cpIsConfirmDel2;
+
+                if (currentGrid.cpIsConfirmDel)
+                    DisplayJConfirm("Power", currentGrid.cpConfirmDel, onResultConfirm1)
+                else currentAction();
+            }
+
+            if (e.buttonID == 'view') {
+                cpCommand.PerformCallback("view|" + e.visibleIndex);
+            }
+
+            if (e.buttonID == 'editMultiRow') {
+                OnCustomMultiEditButtonClick(s, e);
+            }
+
+            if (e.buttonID == 'editSingleRow') {
+                OnCustomSingleEditButtonClick(s, e);
+            }
+
+            if (e.buttonID == 'addCloneMulti') {
+                OnCustomAddCloneMultiButtonClick(s, e);
+            }
+        }
+
+        function OnCustomButtonDetailClick(s, e) {
+
+            var currentGrid = ASPxClientGridView.Cast(detailGrid);
+
+            var doAction = true;
+
+            if (e.buttonID == 'add') {
+                currentGrid.AddNewRow();
+            }
+
+            if (e.buttonID == 'addClone') {
+                cpCommand.PerformCallback("addClone|" + e.visibleIndex + "|" + currentGrid.name);
+            }
+
+            if (e.buttonID == 'delete') {
+
+                currentAction = function () { currentGrid.DeleteRow(e.visibleIndex); }
+                currentConfirm2 = currentGrid.cpConfirmDel2;
+                currentIsToConfirm2 = currentGrid.cpIsConfirmDel2;
+
+                if (currentGrid.cpIsConfirmDel)
+                    DisplayJConfirm("Power", currentGrid.cpConfirmDel, onResultConfirm1)
+                else currentAction();
+            }
+
+            if (e.buttonID == 'view') {
+                cpCommand.PerformCallback("view|" + e.visibleIndex + "|" + currentGrid.name);
+            }
+        }
+
+        function cbxExpandAll_OnCheckedChanged(s, e) {
+            var currentCbx = ASPxClientCheckBox.Cast(s);
+            var currentGrid = ASPxClientGridView.Cast(grid);
+            if (currentCbx.GetChecked())
+                currentGrid.ExpandAll();
+            else
+                currentGrid.CollapseAll();
+        }
+
+        function OnGridTimeSpanValidation(s, e) {
+            var checkValid = true;
+            if (e.value != null) {
+                if (e.value.toString().length == 4) {
+                    var hours = e.value.toString().substr(0, 2).trim();
+                    var minutes = e.value.toString().substr(2, 2).trim();
+                    if (hours.length == 2 && minutes.length == 2) {
+                        if ((parseInt(hours) <= 24) && (parseInt(minutes) <= 59)) {
+                            checkValid = true;
+                        } else checkValid = false;
+                    } else checkValid = false;
+                } else if (e.value.toString().length == 0) {
+                    checkValid = true;
+                } else {
+                    checkValid = false;
+                }
+            }
+            e.isValid = checkValid;
+        }
+
+        function onCustomEditButtonComboBoxClick(s, e) {
+            var combo = ASPxClientComboBox.Cast(s);
+            combo.SetText(" ");
+            combo.ShowDropDown();
+            combo.SetSelectedItem(null);
+            combo.SetSelectedIndex(-1);
+            combo.PerformCallback();
+
+        }
+
+        function batchCallback(parameter) {
+            var currGrid = ASPxClientGridView.Cast(grid);
+            if (parameter == 'update')
+                currGrid.UpdateEdit();
+            else if (parameter == 'cancel')
+                currGrid.CancelEdit();
+        }
+
+        function checkExportRecord() {
+            var currGrid = ASPxClientGridView.Cast(grid);
+
+            var rowNumber = currGrid.GetVisibleRowsOnPage() * currGrid.GetPageCount();
+
+            if (rowNumber > 1000) {
+                alert('Non è possibile effettuare questa operazione con più di 1000 record!');
+                return false;
+            } else
+                return true;
+        }
+
+        function cPingLoadingPanel_OnCallbackComplete(s, e) {
+            if (e.result != null) {
+                if (e.result == "True") {
+                    tPingLoadingPanel.SetEnabled(false);
+                    lpLoading.Hide();
+                }
+            }
+        }
+
+        function tPingLoadingPanel_OnTick(s, e) {
+            cPingLoadingPanel.PerformCallback();
+        }
+
+        function viewLoadingPanel(s, e) {
+            tPingLoadingPanel.SetEnabled(true);
+            lpLoading.Show();
+        }
+
+        function btnShowMap_OnEndCallback(s, e) {
+            var currentGrid = ASPxClientGridView.Cast(grid);
+            var filterValid = currentGrid.cpIsFilterValid;
+            alert(currentGrid.cpFilterError);
+            if (currentGrid.cpIsFilterValid == false && currentGrid.cpFilterError != "") {
+                DisplayDialogInfo('Power', currentGrid.cpFilterError);
+                currentGrid.cpIsFilterValid = !currentGrid.cpIsFilterValid;
+            }
+        }
+
+    </script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <div style="clear: both">
+        <dx:ASPxCallbackPanel ID="cpLayout" runat="server" Width="100%" ClientInstanceName="cpLayout"
+            OnCallback="cpLayout_Callback" ClientSideEvents-EndCallback="OnCpLayoutEndCallback">
+            <ClientSideEvents EndCallback="OnCpLayoutEndCallback"></ClientSideEvents>
+            <PanelCollection>
+                <dx:PanelContent ID="PanelContent2" runat="server" SupportsDisabledAttribute="True">
+                    <dx:ASPxComboBox ID="cmbLayout" runat="server" ShowImageInEditBox="true" CssClass="layoutSelector" Width="500px"
+                        AutoPostBack="false" DropDownStyle="DropDown" ClientInstanceName="cmbLayout">
+                        <ClientSideEvents SelectedIndexChanged="cmbLayout_OnSelectedIndexChanged" />
+                    </dx:ASPxComboBox>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnSaveLayout" runat="server" CssClass="layoutSelector" AutoPostBack="false">
+                        <ClientSideEvents Click="function(s, e) {cpLayout.PerformCallback('save');}" />
+                        <Image Url="~/Icons/Save/Save.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnDeleteLayout" ClientInstanceName="btnDeleteLayout" runat="server" CssClass="layoutSelector" AutoPostBack="false" OnCustomJSProperties="btnDeleteLayout_OnCustomJSProperties">
+                        <ClientSideEvents Click="function(s, e) {DisplayJConfirm('Power', btnDeleteLayout.cpMessage, function (r) { if(r){cpLayout.PerformCallback('delete'); }});}" />
+                        <Image Url="~/Icons/Delete/Delete.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ClientInstanceName="btnPopulateGrid" ID="btnPopulateGrid" runat="server" CssClass="layoutSelector" AutoPostBack="false">
+                        <ClientSideEvents Click="function(s, e) {cpLayout.PerformCallback('populate'); datasourcePopulated = !datasourcePopulated;}" />
+                    </dx:ASPxButton>
+                    <div id="cbBatchModeDiv">
+                        <dx:ASPxCheckBox ID="cbBatchMode" ClientInstanceName="cbBatchMode" runat="server" AutoPostBack="false" Text="Modifica diretta" Checked="false">
+                            <ClientSideEvents CheckedChanged="function(s, e) {cpLayout.PerformCallback('editMode');}" />
+                        </dx:ASPxCheckBox>
+                    </div>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnHelp" runat="server" CssClass="headerButtons" AutoPostBack="false">
+                        <ClientSideEvents Click="function(s, e) {redirectOnHelpPage();}" />
+                        <Image Url="~/Icons/Help/Help.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnCustomizeColumns" ClientInstanceName="btnCustomizeColumns"
+                        CssClass="headerButtons" runat="server" AutoPostBack="false">
+                        <ClientSideEvents Click="btnCustomizeColumns_Click" />
+                        <Image Url="~/Icons/Customize Column/Customize Column.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnPrint" ClientInstanceName="btnPrint" runat="server" AutoPostBack="false" CssClass="headerButtons">
+                        <ClientSideEvents Click="function(s,e){ cpPrintLayout.PerformCallback('-2'); }" />
+                        <Image Url="~/Icons/Print/Print.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnPrintPdf" ClientInstanceName="btnPrintPdf" runat="server" OnClick="btnPrintPdf_Click" ClientSideEvents-Click="function (s, e) { e.processOnServer = checkExportRecord(); }" CssClass="headerButtons"
+                        AutoPostBack="false">
+                        <ClientSideEvents Click="function (s, e) { e.processOnServer = checkExportRecord(); }"></ClientSideEvents>
+
+                        <Image Url="~/Icons/PDF/PDF.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnPrintXlsx" ClientInstanceName="btnPrintXlsx" runat="server" CssClass="headerButtons" 
+                        AutoPostBack="False" OnClick="btnPrintXlsx_Click" ClientSideEvents-Click="function (s, e) { e.processOnServer = checkExportRecord(); }">
+                        <ClientSideEvents Click="function (s, e) { e.processOnServer = checkExportRecord(); }"></ClientSideEvents>
+
+                        <Image Url="~/Icons/XLSX/XLSX.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnExportXLSX" ClientInstanceName="btnExportXLSX" runat="server" CssClass="headerButtons" Text="Export"
+                        AutoPostBack="false">
+                        <ClientSideEvents Click="function(s,e){ cpExportLayout.PerformCallback('-2'); }" />
+                        <Image Url="~/Icons/XLSX/XLSX.png">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnShowMap" runat="server" CssClass="headerButtons"
+                        AutoPostBack="false" Visible="false" ClientSideEvents-EndCallback="btnShowMap_OnEndCallback">
+                        <Image Url="~/Icons/BingMap/BingMap.png" Height="16" Width="16">
+                        </Image>
+                    </dx:ASPxButton>
+                    <dx:ASPxCheckBox ID="cbxExpandAll" runat="server" ClientInstanceName="cbxExpandAll" CssClass="headerButtons">
+                        <ClientSideEvents CheckedChanged="cbxExpandAll_OnCheckedChanged"></ClientSideEvents>
+                    </dx:ASPxCheckBox>
+                    <dx:ASPxLabel ID="lblExpandAll" runat="server" CssClass="headerButtons" AssociatedControlID="cbxExpandAll"></dx:ASPxLabel>
+                    <dx:ASPxPopupControl ID="pcPrintOptions" runat="server" Height="400px" PopupElementID="btnPrint"
+                        Width="600px" HeaderText="Print popup" ClientInstanceName="ClientPopupControl"
+                        OnLoad="pcPrintOptions_Load" CloseAction="OuterMouseClick">
+                        <HeaderTemplate>
+                            <dx:ASPxButton UseSubmitBehavior="false" ID="btnPrintReport" runat="server" Text="Print Report" AutoPostBack="false"
+                                ClientInstanceName="btnPrintReport" OnClick="btnPrintReport_Click">
+                                <ClientSideEvents Click="viewLoadingPanel" />
+                            </dx:ASPxButton>
+                        </HeaderTemplate>
+                        <ContentCollection>
+                            <dx:PopupControlContentControl runat="server" SupportsDisabledAttribute="True">
+                                <dx:ASPxCallbackPanel ID="cpPrintLayout" runat="server" Width="100%" ClientInstanceName="cpPrintLayout"
+                                    OnCallback="cpPrintLayout_Callback">
+                                    <PanelCollection>
+                                        <dx:PanelContent ID="PanelContent3" runat="server" SupportsDisabledAttribute="True">
+                                            <div style="clear: both">
+                                                <dx:ASPxComboBox ID="cmbPrintLayout" runat="server" Width="440px" ClientInstanceName="cmbPrintLayout"
+                                                    CssClass="layoutSelector" ShowImageInEditBox="true" AutoPostBack="false" DropDownStyle="DropDown">
+                                                    <ClientSideEvents SelectedIndexChanged="cmbPrintLayout_OnSelectedIndexChanged" />
+                                                </dx:ASPxComboBox>
+                                                <dx:ASPxButton ID="btnSavePrintLayout" runat="server" CssClass="layoutSelector" AutoPostBack="False"
+                                                    ClientInstanceName="btnSavePrintLayout">
+                                                    <ClientSideEvents Click="function(s, e) {cpPrintLayout.PerformCallback('save');}" />
+                                                    <Image Url="~/Icons/Save/Save.png">
+                                                    </Image>
+                                                </dx:ASPxButton>
+                                                <dx:ASPxButton UseSubmitBehavior="false" ID="btnDeletePrintLayout" runat="server" CssClass="layoutSelector "
+                                                    AutoPostBack="false" ClientInstanceName="btnDeletePrintLayout" OnCustomJSProperties="btnDeletePrintLayout_OnCustomJSProperties">
+                                                    <ClientSideEvents Click="function(s, e) {DisplayJConfirm('Power', btnDeleteLayout.cpMessage, function (r) { if(r){cpPrintLayout.PerformCallback('delete'); }});}" />
+                                                    <Image Url="~/Icons/Delete/Delete.png">
+                                                    </Image>
+                                                </dx:ASPxButton>
+                                            </div>
+                                            <div style="clear: both">
+                                                <dx:ASPxLabel ID="lblPrintCover" runat="server" Text="ASPxLabel" AssociatedControlID="cbxPrintCover"></dx:ASPxLabel>
+                                                <dx:ASPxCheckBox ID="cbxPrintCover" runat="server" ClientInstanceName="cbxPrintCover" Checked="false"></dx:ASPxCheckBox>
+                                            </div>
+                                            <dx:ASPxPageControl ID="pcPrint" runat="server" ActiveTabIndex="2" Width="100%">
+                                                <TabPages>
+                                                    <dx:TabPage Text="Tab selection" Name="tabSelection">
+                                                        <ContentCollection>
+                                                            <dx:ContentControl runat="server" SupportsDisabledAttribute="True">
+                                                                <dx:ASPxListBox ID="lbPrintOptions" runat="server" ClientInstanceName="lbPrintOptions"
+                                                                    SelectionMode="CheckColumn" Width="100%" Height="250">
+                                                                </dx:ASPxListBox>
+                                                            </dx:ContentControl>
+                                                        </ContentCollection>
+                                                    </dx:TabPage>
+                                                    <dx:TabPage Text="Custom" Visible="False" Name="tabCustom">
+                                                        <ContentCollection>
+                                                            <dx:ContentControl runat="server" SupportsDisabledAttribute="True">
+                                                            </dx:ContentControl>
+                                                        </ContentCollection>
+                                                    </dx:TabPage>
+                                                    <dx:TabPage Text="Grouping" Name="tabGrouping">
+                                                        <ContentCollection>
+                                                            <dx:ContentControl runat="server" SupportsDisabledAttribute="True">
+                                                                <dx:ASPxTreeList ID="tlGrouping" runat="server" AutoGenerateColumns="False" OnHtmlRowPrepared="tlGrouping_HtmlRowPrepared"
+                                                                    KeyFieldName="Id" OnNodeUpdating="tlGrouping_NodeUpdating" ParentFieldName="ParentId"
+                                                                    Width="100%" OnProcessDragNode="tlGrouping_ProcessDragNode" ClientInstanceName="tlGrouping">
+                                                                    <Columns>
+                                                                        <dx:TreeListTextColumn FieldName="Id" ShowInCustomizationForm="True" Visible="False"
+                                                                            VisibleIndex="0">
+                                                                        </dx:TreeListTextColumn>
+                                                                        <dx:TreeListTextColumn FieldName="Caption" ReadOnly="True" ShowInCustomizationForm="True"
+                                                                            VisibleIndex="1">
+                                                                        </dx:TreeListTextColumn>
+                                                                        <dx:TreeListCheckColumn FieldName="IsSkipPage" ShowInCustomizationForm="True" VisibleIndex="2">
+                                                                            <DataCellTemplate>
+                                                                                <dx:ASPxCheckBox Width="100%" ID="cbIsSkipPage" runat="server" Value='<%# Eval("IsSkipPage") %>'  />
+                                                                            </DataCellTemplate>
+                                                                        </dx:TreeListCheckColumn>
+                                                                        <dx:TreeListCheckColumn FieldName="RepeatEveryPage" ShowInCustomizationForm="True" VisibleIndex="2">
+                                                                            <DataCellTemplate>
+                                                                                <dx:ASPxCheckBox Width="100%" ID="cbRepeatEveryPage" runat="server" Value='<%# Eval("RepeatEveryPage") %>' />
+                                                                            </DataCellTemplate>
+                                                                        </dx:TreeListCheckColumn>
+                                                                    </Columns>
+                                                                    <SettingsEditing AllowNodeDragDrop="True" />
+                                                                </dx:ASPxTreeList>
+                                                            </dx:ContentControl>
+                                                        </ContentCollection>
+                                                    </dx:TabPage>
+                                                </TabPages>
+                                            </dx:ASPxPageControl>
+                                        </dx:PanelContent>
+                                    </PanelCollection>
+                                </dx:ASPxCallbackPanel>
+                            </dx:PopupControlContentControl>
+                        </ContentCollection>
+                        <FooterTemplate>
+                        </FooterTemplate>
+                    </dx:ASPxPopupControl>
+                    <dx:ASPxPopupControl ID="pcExportXLSXOptions" runat="server" Height="400px" PopupElementID="btnExportXLSX"
+                        Width="600px" HeaderText="Export Popup" ClientInstanceName="ExportPopupControl" CloseAction="OuterMouseClick"
+                        OnLoad="pcExportXLSXOptions_Load">
+                        <HeaderTemplate>
+                            <dx:ASPxButton UseSubmitBehavior="false" ID="btnExportXLSXLaunch" runat="server" Text="Launch Export" AutoPostBack="False"
+                                ClientInstanceName="btnExportXLSXLaunch" OnClick="btnExportXLSX_Click">
+                                <ClientSideEvents Click="viewLoadingPanel" />
+                            </dx:ASPxButton>
+                        </HeaderTemplate>
+                        <ContentCollection>
+                            <dx:PopupControlContentControl runat="server" SupportsDisabledAttribute="True">
+                                <dx:ASPxCallbackPanel ID="cpExportLayout" runat="server" Width="100%" ClientInstanceName="cpExportLayout"
+                                    OnCallback="cpExportLayout_Callback">
+                                    <PanelCollection>
+                                        <dx:PanelContent ID="PanelContent4" runat="server" SupportsDisabledAttribute="True">
+                                            <div style="clear: both">
+                                                <dx:ASPxComboBox ID="cmbExportXLSXLayout" runat="server" Width="440px" ClientInstanceName="cmbExportXLSXLayout"
+                                                    CssClass="layoutSelector" AutoPostBack="false" DropDownStyle="DropDownList">
+                                                    <ClientSideEvents SelectedIndexChanged="cmbExportXLSX_OnSelectedIndexChanged" />
+                                                </dx:ASPxComboBox>
+                                            </div>
+                                            <dx:ASPxPageControl ID="pcExportXLSX" runat="server" ActiveTabIndex="0" Width="100%">
+                                                <TabPages>
+                                                    <dx:TabPage Name="tabSelection" Text="Tab selection">
+                                                        <ContentCollection>
+                                                            <dx:ContentControl runat="server" SupportsDisabledAttribute="True">
+                                                                <dx:ASPxListBox ID="lbExportXLSXOption" runat="server" ClientInstanceName="lbExportXLSXOption" Height="250px" SelectionMode="CheckColumn" Width="100%">
+                                                                </dx:ASPxListBox>
+                                                            </dx:ContentControl>
+                                                        </ContentCollection>
+                                                    </dx:TabPage>
+
+                                                    <dx:TabPage Name="tabCustom" Text="Custom" Visible="false">
+                                                        <ContentCollection>
+                                                            <dx:ContentControl runat="server" SupportsDisabledAttribute="True">
+                                                            </dx:ContentControl>
+                                                        </ContentCollection>
+                                                    </dx:TabPage>
+                                                </TabPages>
+                                            </dx:ASPxPageControl>
+                                        </dx:PanelContent>
+                                    </PanelCollection>
+                                </dx:ASPxCallbackPanel>
+                            </dx:PopupControlContentControl>
+                        </ContentCollection>
+                        <FooterTemplate>
+                        </FooterTemplate>
+                    </dx:ASPxPopupControl>
+                    <dx:ASPxCallbackPanel ID="cpCommand" runat="server" Width="100%" ClientInstanceName="cpCommand" OnCallback="cpCommand_Callback">
+                        <PanelCollection>
+                            <dx:PanelContent ID="PanelContent1" runat="server" SupportsDisabledAttribute="True">
+                                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                                </asp:ContentPlaceHolder>
+                                <div style="clear: both; margin-top: 10px; float: left" id="bottomBtnDiv">
+                                    <dx:ASPxButton ID="btnUndo" ClientInstanceName="btnUndo" runat="server" AutoPostBack="False" CssClass="headerButtons" EnableTheming="false" EnableDefaultAppearance="false" Paddings-Padding="10px" RenderMode="Link">
+                                        <Image Url="~/Icons/Undo/Undo.png">
+                                        </Image>
+                                        <ClientSideEvents Click="function(s, e) { batchCallback('cancel'); } " />
+
+                                        <Paddings Padding="10px"></Paddings>
+                                    </dx:ASPxButton>
+                                    <dx:ASPxButton ID="btnUpdate" ClientInstanceName="btnUpdate" runat="server" AutoPostBack="False" CssClass="headerButtons" EnableTheming="false" EnableDefaultAppearance="false" Paddings-Padding="10px" RenderMode="Link">
+                                        <Image Url="~/Icons/Check/Check.png">
+                                        </Image>
+                                        <ClientSideEvents Click="function(s, e) {batchCallback('update');  } " />
+
+                                        <Paddings Padding="10px"></Paddings>
+                                    </dx:ASPxButton>
+                                </div>
+
+                            </dx:PanelContent>
+                        </PanelCollection>
+                    </dx:ASPxCallbackPanel>
+
+                </dx:PanelContent>
+            </PanelCollection>
+        </dx:ASPxCallbackPanel>
+    </div>
+
+    <dx:ASPxCallback ID="cResetIsReadOnly" ClientInstanceName="cResetIsReadOnly" runat="server" OnCallback="cResetIsReadOnly_Callback"></dx:ASPxCallback>
+    <dx:ASPxCallback ID="cPingLoadingPanel" ClientInstanceName="cPingLoadingPanel" runat="server" OnCallback="cPingLoadingPanel_Callback">
+        <ClientSideEvents CallbackComplete="cPingLoadingPanel_OnCallbackComplete" />
+    </dx:ASPxCallback>
+    <dx:ASPxTimer ID="tPingLoadingPanel" ClientInstanceName="tPingLoadingPanel" runat="server" Enabled="false" Interval="500">
+        <ClientSideEvents Tick="tPingLoadingPanel_OnTick" />
+    </dx:ASPxTimer>
+    <dx:ASPxLoadingPanel ID="lpLoading" runat="server" ClientInstanceName="lpLoading" Modal="True">
+    </dx:ASPxLoadingPanel>
+</asp:Content>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>SQL - La Connessione</title></head><body><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a> <br>
+<h1 style="margin-left: 21.55pt; text-indent: -21.55pt;"><span style="font-size: 16pt;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span></span><span style="font-size: 16pt;">LA CONNESSIONE A SQL</span><span style="font-size: 16pt;"><o:p></o:p></span></h1>
+
+Al momento il DB è installato sul SERVER&nbsp;<br>
+
+<br>
+
+I Parametri di Connessione sono&nbsp; i seguenti :<br><br><img style="width: 420px; height: 309px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/Connessione%20Sql%20SERVER.PNG"><br>
+
+<br>
+
+<br><br><br><br>&nbsp; &nbsp;oppure 192.168.1.1\SQLEXPRESS2008<br><br><br><br><br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Password
+: Winit2002<br><br><br><br><br><br><br><br>Nel caso in cui si volesse utilizzare una COPIA LOCALE installata sul PC LOCALE <br>allora i Parametri di Connessione sono:<br><br><img style="width: 419px; height: 311px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/Connessione%20Sql%20SERVER.PNG"><br>
+
+<br><br><br><br><br><br><br><br><br>&nbsp; &nbsp; &nbsp; Password
+: Winit2002<br><br><br><br><br><br><br>in questo caso occorre modificare il contenuto html della <span style="text-decoration: underline;">Pagina <span style="font-weight: bold;">WEB.config</span></span><br><br>verificare se esiste ed<span style="font-weight: bold; text-decoration: underline;"> EVENTUALMENTE DISATTIVARE la prima riga</span><br>&lt;!--add
+name="PowerWebEntities" connectionString="Integrated
+Security=SSPI;Persist Security Info=False;Initial Catalog=Power;Data
+Source=." /&gt;--&gt;<br>uindi <span style="font-weight: bold; text-decoration: underline;">disattivare la riga di connessione standard</span><br>&lt;add
+name="PowerWebEntities" connectionString="Data
+Source=192.168.1.1\SQLEXPRESS2008;Initial Catalog=Power;Persist
+Security Info=True;User
+ID=sa;Password=Winit2002;MultipleActiveResultSets=True"/&gt;<br>aggiungendoci all'inizio:i <span style="font-weight: bold; color: red;">&lt;!--</span> e in fondo <span style="font-weight: bold; color: red;">--&gt;</span> e cambiandola in :<br><span style="font-weight: bold; color: red;">&lt;!--</span>&lt;add name="PowerWebEntities" connectionString="Data
+Source=192.168.1.1\SQLEXPRESS2008;Initial Catalog=Power;Persist
+Security Info=True;User
+ID=sa;Password=Winit2002;MultipleActiveResultSets=True"/&gt;<span style="font-weight: bold; color: red;">--&gt;</span><br>
+
+e <span style="text-decoration: underline; font-weight: bold;">riattivare /aggiungere se manca) la riga di connessione locale</span><br><span style="font-weight: bold; color: red;">&lt;!--</span>&lt;add
+name="PowerWebEntities" connectionString="Data
+Source=MASSIMO-PC\SQLEXPRESS;Initial Catalog=Power;Persist Security
+Info=True;User ID=sa;Password=Winit2002;MultipleActiveResultSets=True"
+/&gt;<span style="font-weight: bold; color: red;">--&gt;</span><br>togliendo da davanti &lt;!-- e dal fondo --&gt; e cambiandola quindi in<br><span style="font-weight: bold; color: red;"></span>&lt;add
+name="PowerWebEntities" connectionString="Data
+Source=MASSIMO-PC\SQLEXPRESS;Initial Catalog=Power;Persist Security
+Info=True;User ID=sa;Password=Winit2002;MultipleActiveResultSets=True"
+/&gt;<span style="font-weight: bold; color: red;"></span><br><br>
+
+</body></html>

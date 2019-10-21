@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_TAB_ORARI</title>
+  
+
+  
+  
+  <style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+  </style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; TABELLA TAB_ORARI<br>
+</h1>
+
+<span style="font-weight: bold;">Contiene i Tipi Orari associabili ai Collaboratori</span><br>
+
+<br>
+
+Le Chiavi del Record :&nbsp; <a href="#RRN">RRN</a><br>
+
+I Campi Obbligatori&nbsp;&nbsp; :&nbsp; <a href="#RRN">RRN</a>, <a href="#Tipo_Orario">Tipo_Orario</a>, <a href="#Data_Inizio_Validita_Orario">Data_Inizio_Validita_Orario</a>, <a href="#Sequenza_Orario">Sequenza_Orario</a>,<a href="#Inizio_Orario"> Inizio_Orario</a>,<a href="#Fine_Orario"> Fine_Orario</a><br>
+
+<h3 style="text-decoration: underline; text-align: center;">I CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+
+    
+    
+    
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Codice_Cantiere_Tab_Orari"></a> Codice_Cantiere_Tab_Orari</span><br>
+      </td>
+      <td style="vertical-align: top;">VARCHAR(20)<br>
+      </td>
+      <td style="vertical-align: top;">Codice del Cantiere
+(facoltativo) per il quale vale questo Orario . Se inserito viene
+controllato che esista come Codice Cantiere nella <a href="../TR_CANT/_TR_CANT.html">Tabella CANT</a><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;">&nbsp;<a name="Data_Inizio_Validita_Orario_Tab_Orari"></a>Data_Inizio_Validita_Orario_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">DATE<br>
+      </td>
+      <td style="vertical-align: top; width: 982px;">Data da
+cui decorre la Validita <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span> di questo <a href="#Tipo_Orario_Col">Tipo Orario</a>.
+Viene controllato che sia UN LUNEDI'. Questo Orario è valido fino al successivo Orario presente per lo stesso <a href="#Tipo_Orario">Tipo_Orario</a> ma con Data Inizio Validità Successiva.<span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span></span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;"><a name="DisAbilitazione_Orario_Tab_Orari"></a> DisAbilitazione_Orario_Tab_Orari</span> </td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BIT<br>
+      </td>
+      <td style="vertical-align: top; width: 982px;">Stato dell'Orario che indica se
+questo Orario è da considerare Disabilitato o meno e può assumere i
+seguenti valori:.<br>
+
+
+      
+      
+      <ul style="margin-left: 40px;">
+<li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Orario NON è più ATTIVO ed è quindi da considerarsi Annullato anche se NON Cancellato Fisicamente<br>
+        </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica lo stato Normale dell'Orario</li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Dom_Tab_Orari"></a> Dom_Tab_Orari</span><br>
+</td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+</td>
+      <td style="vertical-align: top; width: 982px;">Indica se
+l'Orario di Inizio e di Fine è valido e quindi applicato alle Domenica
+ovvero se i Collaboratori ai quali è assegnato questo Orario lavorano
+alla Domenica con questo Orario e può assumere i
+seguenti valori:.<br>
+      <ul style="margin-left: 40px;">
+<li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Orario NON è APPLICATO alle Domeniche<br>
+        </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che questo Orario è APPLICATO alle Domeniche<br>
+</li>
+      </ul>
+</td>
+    </tr>
+    
+    
+    <tr>
+<td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;">&nbsp;<a name="HHMM_FINE_NOTTURNO_TAB_ORARI"></a>HHMM_Fine_Notturno_Tab_Orari</span></td><td style="vertical-align: top; text-align: center; width: 102px;">TIME(0)</td><td style="vertical-align: top;">Ora e Minuto di Fine <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span> di questo Orario , che sarà applicato SOLO ai corrispondenti Giorni ATTIVATI ( <a href="_TR_COL_ORARIO.html#Lunedi">Lunedì</a>, <a href="_TR_COL_ORARIO.html#Martedi">Martedì</a>, <a href="_TR_COL_ORARIO.html#Mercoledi">Mercoledì</a>', <a href="_TR_COL_ORARIO.html#Giovedi">Giovedì</a>, <a href="_TR_COL_ORARIO.html#Venerdi">Venerdì</a>, <a href="_TR_COL_ORARIO.html#Sabato">Sabato</a>, <a href="_TR_COL_ORARIO.html#Domenica">Domenica</a>) a partire dalla corrispondente <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a> Indicata (fino all'entrata in vigore di un Nuovo Orario a partire dalla Successiva <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a>)</td></tr>
+<tr>
+<td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;">&nbsp;<a name="HHMM_FINE_TAB_ORARI"></a>HHMM_Fine_Tab_Orari</span></td><td style="vertical-align: top; text-align: center; width: 102px;">TIME(0)</td><td style="vertical-align: top;">Ora e Minuto di Fine <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span> di questo Orario , che sarà applicato SOLO ai corrispondenti Giorni ATTIVATI ( <a href="_TR_COL_ORARIO.html#Lunedi">Lunedì</a>, <a href="_TR_COL_ORARIO.html#Martedi">Martedì</a>, <a href="_TR_COL_ORARIO.html#Mercoledi">Mercoledì</a>', <a href="_TR_COL_ORARIO.html#Giovedi">Giovedì</a>, <a href="_TR_COL_ORARIO.html#Venerdi">Venerdì</a>, <a href="_TR_COL_ORARIO.html#Sabato">Sabato</a>, <a href="_TR_COL_ORARIO.html#Domenica">Domenica</a>) a partire dalla corrispondente <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a> Indicata (fino all'entrata in vigore di un Nuovo Orario a partire dalla Successiva <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a>)</td></tr>
+    <tr>
+<td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;">&nbsp;<a name="HHMM_Inizio_Notturno_Tab_Orari"></a>HHMM_Inizio_Notturno_Tab_Orari</span></td><td style="vertical-align: top; text-align: center; width: 102px;">TIME(0)<br>
+      </td><td style="vertical-align: top;">Ora e Minuto di Inizio <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span> del Notturno di questo Orario , <span style="text-decoration: underline; font-weight: bold;"></span>che sarà applicato SOLO ai corrispondenti Giorni ATTIVATI ( <a href="_TR_COL_ORARIO.html#Lunedi">Lunedì</a>, <a href="_TR_COL_ORARIO.html#Martedi">Martedì</a>, <a href="_TR_COL_ORARIO.html#Mercoledi">Mercoledì</a>', <a href="_TR_COL_ORARIO.html#Giovedi">Giovedì</a>, <a href="_TR_COL_ORARIO.html#Venerdi">Venerdì</a>, <a href="_TR_COL_ORARIO.html#Sabato">Sabato</a>, <a href="_TR_COL_ORARIO.html#Domenica">Domenica</a>) a partire dalla corrispondente <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a> Indicata (fino all'entrata in vigore di un Nuovo Orario a partire dalla Successiva <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a>)</td></tr>
+<tr>
+<td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;">&nbsp;<a name="HHMM_Inizio_Tab_Orari"></a>HHMM_Inizio_Tab_Orari</span></td><td style="vertical-align: top; text-align: center; width: 102px;">TIME(0)<br>
+      </td><td style="vertical-align: top;">Ora e Minuto di Inizio <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span> di questo Orario , <span style="text-decoration: underline; font-weight: bold;"></span>che sarà applicato SOLO ai corrispondenti Giorni ATTIVATI ( <a href="_TR_COL_ORARIO.html#Lunedi">Lunedì</a>, <a href="_TR_COL_ORARIO.html#Martedi">Martedì</a>, <a href="_TR_COL_ORARIO.html#Mercoledi">Mercoledì</a>', <a href="_TR_COL_ORARIO.html#Giovedi">Giovedì</a>, <a href="_TR_COL_ORARIO.html#Venerdi">Venerdì</a>, <a href="_TR_COL_ORARIO.html#Sabato">Sabato</a>, <a href="_TR_COL_ORARIO.html#Domenica">Domenica</a>) a partire dalla corrispondente <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a> Indicata (fino all'entrata in vigore di un Nuovo Orario a partire dalla Successiva <a href="_TR_COL_ORARIO.html#Data_Inizio_Validita_Col_Orario">Data di Inizio Validità</a>)</td></tr>
+<tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="Lun_Tab_Orari"></a>Lun_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+</td>
+      <td style="vertical-align: top; background-color: white; width: 982px;">Indica
+se l'orario è valido e quindi applicato al Lunedì ovvero se i
+Collaboratori ai quali è assegnato questo Orario lavorano al Lunedì con
+questo Orario e può assumere i
+seguenti valori:.
+      <ul style="margin-left: 40px;">
+<li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Collaboratori lavorano al Lunedì con questo Orario 
+        </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che i Collaboratori con questo Orario associato NON lavorano al Lunedì<br>
+</li>
+      </ul>
+</td>
+    </tr>
+    
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="Mar_Tab_Orari"></a>Mar_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+</td>
+      <td style="vertical-align: top; width: 982px;">Indica se
+l'orario è valido e quindi applicato al Martedì ovvero se i
+Collaboratori ai quali è assegnato questo Orario lavorano al Martedì
+con questo Orario e può assumere i
+seguenti valori:.
+      <ul style="margin-left: 40px;">
+        <li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Collaboratori lavorano al Martedì con questo Orario 
+        </li>
+        <li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che i Collaboratori con questo Orario associato NON lavorano al Martedì</li>
+      </ul>
+</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="Mer_Tab_Orari"></a>Mer_Tab_orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+</td>
+      <td style="vertical-align: top; width: 982px;">Indica se
+l'orario è valido e quindi applicato al Mercoledì ovvero se i
+Collaboratori ai quali è assegnato questo Orario lavorano al Mercoledì
+con questo Orario e può assumere i
+seguenti valori:.<br>
+      <ul style="margin-left: 40px;">
+        <li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Collaboratori lavorano al Mercoledì con questo Orario 
+        </li>
+        <li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che i Collaboratori con questo Orario associato NON lavorano al Mercoledì</li>
+      </ul>
+</td>
+    </tr><tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="Gio_Tab_Orari"></a>Gio_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+      </td>
+      <td style="vertical-align: top;">Indica
+se l'orario è valido e quindi applicato al Giovedì ovvero se i
+Collaboratori ai quali è assegnato questo Orario lavorano al Giovedì
+con questo Orario e può assumere i
+seguenti valori:.<br>
+      <ul style="margin-left: 40px;">
+<li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Collaboratori lavorano al Giovedì con questo Orario 
+        </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che i Collaboratori con questo Orario associato NON lavorano al Giovedì</li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+<td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="RRN"></a>RRN</span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 102px;">INT<br>
+</td>
+<td style="vertical-align: top;"><span style="color: black; background-color: white;">N° Progressivo&nbsp;</span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"> </span><span style="color: white; background-color: red;">CAMPO CHIAVE</span><span style="background-color: red;"> -</span></span> </span></span><span style="color: black; background-color: white;">&nbsp; dei Tipi Orari presenti nel sistema. </span><span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.</span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="color: white; background-color: red;"></span><span style="background-color: red;"></span></span></span></span></td>
+    </tr>
+
+    
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="Sab_Tab_Orari"></a> Sab_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+      </td>
+      <td style="vertical-align: top;">Indica
+se l'orario è valido e quindi applicato al Sabato ovvero se i
+Collaboratori ai quali è assegnato questo Orario lavorano al Sabato con
+questo Orario e può assumere i
+seguenti valori:.<br>
+      <ul style="margin-left: 40px;">
+<li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Collaboratori lavorano al Sabato con questo Orario 
+        </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che i Collaboratori con questo Orario associato NON lavorano al Sabato</li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;"><a name="N_Seq_Tab_Orari"></a> N_Seq_Tab_Orari</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">TINYINT<br>
+      </td>
+      <td style="vertical-align: top;">N° di Sequenza <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span>
+di questo Orario. La Sequenza = 1 è OBBLIGATORIA. Permette, a parità di
+Tipo_Orario e Data_Inizio_Validità_Orario, di gestire eventuali
+Sequenza Settimanale Ripetitive, a partire dalla Data_Inizio_Validità.
+Il Sistema, a partire dalla Data di Inizio Validità Orario e per questo
+Tipo_Orario, applica in Ordine di Sequenza gli Orari Settimanali
+Previsti fino alla Sequenza più alta, dopo di chè ricomincia dala
+Seuqneza = 1 e così via fino alla prossima Data di Inizio Validità
+successiva.<br>
+      </td>
+    </tr>
+    
+<tr>
+      <td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tipo_Orario_Tab_Orari"></a> Tipo_Orario_Tab_Orari</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">NVARCHAR(10)<br>
+      </td>
+      <td style="vertical-align: top;">Codice del Tipo Orari <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio</span></span>. Viene controllato che esista in TAB_DECOD con Tab_Nome= <a href="../../../HELP%20TECNICO/Specifiche%20Tecniche%20POWER-S/Tabelle%20Decodifica%20Elenco.html#Tipo_Orario">Tipo_Orario</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 295px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tipo_Pausa_Tab_Orari"></a> Tipo_Pausa_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">NVARCHAR(2)<br>
+      </td>
+      <td style="vertical-align: top;">Codice del Tipo di Pausa
+associata a questo Tipo Orario per questo Collaboratore. Se inserito
+viene controllato che esista in Tab_Decod con Tab_Nome=Tipo_Pausa_Orario<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Tolleranza_Tab_Orari"></a><span style="font-weight: bold; text-decoration: underline;"> Tolleranza_Tab_Orari</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">TIME(0)<br>
+      </td>
+      <td style="vertical-align: top;">HHMM di Tollereanza accettata per questo Tipo di Orario.<br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; width: 295px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="Ven_Tab_Orari"></a>Ven_Tab_Orari</span></td>
+      <td style="vertical-align: top; text-align: center; width: 102px;">BOOL<br>
+      </td>
+      <td style="vertical-align: top;">Indica
+se l'orario è valido e quindi applicato al Venerdì ovvero se i
+Collaboratori ai quali è assegnato questo Orario lavorano al Venerdì
+con questo Orario e può assumere i
+seguenti valori:.<br>
+      <ul style="margin-left: 40px;">
+<li>VERO (True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Collaboratori lavorano al Venerdì con questo Orario 
+        </li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp; Valore di Default che
+indica che i Collaboratori con questo Orario associato NON lavorano al Venerdì</li>
+      </ul>
+      </td>
+    </tr>
+
+</tbody>
+</table><br>
+
+<span style="text-decoration: line-through;"><br>
+</span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span>
+</span></span>
+</body></html>

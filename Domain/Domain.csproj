@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EEEEF105-26CD-4DD5-8FBC-4ED94E840A9B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Domain</RootNamespace>
+    <AssemblyName>Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BingMapsRESTToolkit, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BingMapsRESTToolkit.1.0.8\lib\net45\BingMapsRESTToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel, Version=2.1.2.3, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.2.1.2.3\lib\net45\Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Westwind.Utilities">
+      <HintPath>..\packages\Westwind.Utilities.1.230\lib\net40\Westwind.Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aut_Str.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cant.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cant_Fil_V.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cant_Note.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cant_V.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cant_Var.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cli.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col_Cant_Orario.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col_Monte_Minuti.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col_Note.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col_Resp_V.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col_V.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Col_Var.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Damage.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exceptions\RowDeletingException.cs" />
+    <Compile Include="Extensions\ActivityItem.cs" />
+    <Compile Include="Extensions\Cant.cs" />
+    <Compile Include="Extensions\Cant_V.cs" />
+    <Compile Include="Extensions\Col.cs" />
+    <Compile Include="Extensions\Cli.cs" />
+    <Compile Include="Extensions\Col_V.cs" />
+    <Compile Include="Extensions\Resp.cs" />
+    <Compile Include="Extensions\Fil.cs" />
+    <Compile Include="Extensions\Tab_Orari_Tipo.cs" />
+    <Compile Include="Extensions\Timesheet.cs" />
+    <Compile Include="Extensions\Utenti_Resp.cs" />
+    <Compile Include="Extensions\Utenti_Fil.cs" />
+    <Compile Include="Extensions\Tab_Comuni.cs" />
+    <Compile Include="Extensions\Tab_Dist.cs" />
+    <Compile Include="Extensions\Tab_GridLookup.cs" />
+    <Compile Include="Extensions\Pru.cs" />
+    <Compile Include="Extensions\Fru.cs" />
+    <Compile Include="Extensions\Tab_Orari.cs" />
+    <Compile Include="Extensions\Pru_Col.cs" />
+    <Compile Include="Extensions\Fru_Cant.cs" />
+    <Compile Include="Extensions\Tab_Aut.cs" />
+    <Compile Include="Extensions\Reg_V.cs" />
+    <Compile Include="Extensions\Param.cs" />
+    <Compile Include="Extensions\Reg.cs" />
+    <Compile Include="Extensions\Tab_Decod.cs" />
+    <Compile Include="Extensions\Utenti.cs" />
+    <Compile Include="Fil.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Fru.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Fru_Cant.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Lingue.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Menu.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Menu_Tipo.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MetaDescriptor.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MetaFieldDescriptor.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Param.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PendingElab.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PowerWebContext.cs" />
+    <Compile Include="PowerWebEntitiesGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pru.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pru_Col.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Reg.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Reg_Stored.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Reg_V.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Resources.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Resp.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Aut.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Cap.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Chk_Imp.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Comuni.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Damage.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_DataGrid.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Decod.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Dist.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_EditFormTemplate.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Excel_Model.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Festivi.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Funz.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_GridLookup.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Messaggi.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Orari.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Orari_Tipo.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Prov.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Report.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Report_Group.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tab_Report_Order.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Timesheet.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utenti.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utenti_Fil.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utenti_History.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utenti_Resp.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Versioni.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PowerWebEntitiesGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PowerWebEntitiesGenerator.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{65651ce2-12b7-40b7-a32b-95256fe3b547}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jszip.js" />
+    <Content Include="Scripts\jszip.min.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

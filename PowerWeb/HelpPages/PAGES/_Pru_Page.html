@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Pru_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (PRU) di Gestione delle Schede Anagrafiche delle Unità Portatili
+(MLCxxx e/o BADGE)</span>
+</h1>
+
+Questa pagina permette l'Inserimento, la Modifica, la
+Cancellazione ( a determinate condizioni) di una Apparecchiatura Portatile (normalmente un COMxxx Fisso oppure un TAG) per il
+quale si
+vogliono poi gestire le
+relative Associazioni ai Corrispondenti Cantieri/Assistiti a cui ogni
+Singola Unità Portatile è assegnata a partire da una determinata Data
+di Inizio Abilitazione.<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">
+
+Questa pagina è di Tipo MASTER</span> (senza Dettaglio) e quindi si rimanda la relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della relativa struttura di Funzionamento.</li><li><span style="text-decoration: underline; font-weight: bold;">Gestisce il&nbsp;</span><span style="text-decoration: underline; font-weight: bold;">Tasto di ON/OFF</span> in base alla parametrizzazione inserita nel campo <a href="../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">PopulateBtnVisible</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">TAB_FUNZ</a></li><li><span style="text-decoration: underline; font-weight: bold;">Gestisce la Modalità di EDIT diretta dalla Griglia</span> in base alla parametrizzazione inserita nel campo<a href="../TR_RECORD/_TR_TAB_FUNZ.html#Dflt_Grid_Edit_Mode"> Dflt_Grid_Edit_Mode</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">Tab_Funz</a><span style="font-weight: bold; text-decoration: underline;"><br>
+    </span></li>
+</ul>
+
+
+
+<span style="text-decoration: underline;">Una Unità Portatile , nel
+tempo, può essere assegnata a diversi Collaboratorii</span>
+, come ad
+esempio capita quando un Collaboratore al quale era stata fornita
+(e
+quindi associata) una determinata Unità Portatile (quali un determinato
+COMxxx Fisso piuttosto che un TAG RFID) cessa la propria attività
+presso l'Azienda e quindi l'Unità Portatile che gli era stata fornita
+viene ritirata e quindi SUCCESSIVAMENTE fornita ad un Altro
+Cantiere/Assistito (e quindi asscoiata a partire dalla nuova data in
+cui
+viene consegnata al Nuovo Cantiere/Assistito).<br>
+<br>
+Per la relativa Gestione delle Associazioni delle Unità Fisse ai Singoli Cantierei/Assistiti si veda il Manuale <span style="font-weight: bold; color: red;">Come Assegnare/DisAssegnare una Unità Portatile ad un Cantiere/Assistito</span>.<br>
+<br>
+Da questa pagina è possibile eseguire l'<span style="text-decoration: underline; font-weight: bold;">INSERIMENTO AUTOMATICO DELLE NUOVE UNITA' FISSE</span><br>
+<ul>
+  <li>importandone il Relativo Codice e/o Matricola DIRETTAMENTE da un File TXT</li>
+  <ul>
+    <li>vedi Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Importare%20le%20Matricole%20delle%20Unit%C3%A0%28Fisse%20e-o%20Portatili%29/Come%20Importare%20le%20Matricole%20delle%20Unit%C3%A0%20%28Fisse%20e_o%20Portatili%29.html"> Come Importare le Matricole delle Unità (Fisse e/o Portatili) </a> <br>
+    </li>
+  </ul>
+
+</ul>
+che normalmente viene inviato da WINIT quando una Azienda riceve delle Nuove Unità Fisse<br>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;">Ogni Unità Portatile è identificata da un Codice Univoco</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;">nel
+caso dei COMxxx Fissi </span><br>
+  </li>
+  <ul>
+    <li>il Codice è rappresentato dalla Matricola assegnata al COMxxx
+Fissoe</li>
+  </ul>
+  <li style="text-decoration: underline;">nel caso
+dei TAG Fissi</li>
+  <ul>
+    <li>il Codice è rappresentato dal Codice RFID a lui associato<br>
+    </li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Per comodità Ogni Unità Portatile è anche identificabile dalla propria Matricola</span> (codice
+di 5 Cifre Numeriche) liberamente assegnabili da parte della Singola
+Azienda anche se <br>
+
+<ul>
+
+  <li>si consiglia di utilizzare come Matricola (che viene verificato essere UNIVOCA nella tabella FRU)<br>
+</li>
+  <ul>
+    <li><span style="text-decoration: underline;">nel
+caso dei COMxxx Fissi</span> <br>
+    </li>
+    <ul>
+      <li>la Matricola conviene impostarla uguale al Codice che a sua
+volta è rappresentato dalla Matricola assegnata al COMxxx Fisso</li>
+    </ul>
+    <li style="text-decoration: underline;">nel caso
+dei TAG Fissi</li>
+    <ul>
+      <li>la Matricola conviene impostarla uguale al Serial Number
+prestampato sul Singolo TAG<br>
+      </li>
+    </ul>
+  </ul>
+</ul>
+
+<dl>
+
+  <dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire una Unità Portatile sono i seguenti:</u></b></dt>
+</dl>
+
+<ul>
+
+  <li><a href="../TR_RECORD/_TR_FRU.html#Codice_FRU">UN
+CODICE&nbsp; </a><span style=""><a href="../TR_RECORD/_TR_FRU.html#Codice_FRU">UNITA' Portatile</a>
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(Massimo di 20 caratteri Alfanumerici allienati Automaticamente a Destra con riempimento a Sinistra dei necessari Space)<br>
+ </li><li><a href="../TR_RECORD/_TR_FRU.html#Data_Registrazione_Fru">LA
+DATA 1° REGISTRAZIONE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+  <li><a href="../TR_RECORD/_TR_FRU.html#DataOraUltimaModifica_Fru">DATA/ORA
+ULTIMA MODIFICA</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+</ul>
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">La
+Maschera di Gestione delle Unità Fisse
+prevede la gestione dei propri Dati Anagrafici suddividendoli per
+comodità in due TAB</span><br>
+
+<ul>
+
+  <li style="font-weight: bold;">Generali</li>
+  <li style="font-weight: bold;">Note</li>
+</ul>
+Una volta scelta e/o Impostata la Modalità di
+Visualizzazione/Ricerca/Raggruppamento/Ordinamento delle Unità
+Fisse che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista
+delle Unità Fisse che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+<br>
+<span style="font-weight: bold;"><span style="text-decoration: underline;">
+Per il significato</span> </span><br>
+
+
+<ul>
+<li>dei singoli Tasti&nbsp; presenti nella Testata della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li><li>dei singoli Campi&nbsp; presenti nella pagina si
+rimanda al documento che descrive i campi del <a href="../TR_RECORD/_TR_FRU.html">Tracciato Record della Tabella FRU</a></li>
+</ul>
+
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Comportamenti
+Specifici per la Pagina FRU</span><br>
+
+<br>
+
+<span style="text-decoration: underline;">Rispetto al comportamento
+Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina
+FRU</span> <span style="text-decoration: underline;">ci sono alcuni
+comportamenti particolari che vale la pena di Segnalare</span>
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline; color: black;">AREA
+FILTRI CUSTOM</li>
+  <ul>
+    <li>vengono impostati i FILTRI CUSTOM di PERIODO sui seguenti Campi</li>
+    <ul>
+      <li><a href="../TR_RECORD/_TR_FRU.html#Data_Registrazione_Fru">Data_Registrazione_Pru</a></li>
+      <li><a href="../TR_RECORD/_TR_FRU.html#DataOraUltimaModifica_Fru">DataOraUltimaModifica_Pru</a></li>
+</ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span><span style="font-weight: bold; text-decoration: underline;">Per come Modificare</span> <br>
+
+<ul>
+
+  <li>i Campi (Colonne) da visualizzare nella Griglia Master si rimanda
+la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master</a></li>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>i Filtri dei Campi (Colonne) della Griglia Master o della Griglia
+di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>i Singoli Record visualizzati per gestire
+l'Inserimento/Modifica/Cancellazione/Consultazione <br>
+  </li>
+  <ul>
+    <li>si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>&nbsp;&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio)</a></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-weight: bold;">&nbsp; </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o di Dettaglio)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista delle Unità Portatili<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+<dl>
+
+</dl>
+
+<span style="font-weight: bold; text-decoration: underline;">I singoli
+TAB come pure i Singoli Campi dei Singoli TAB possono essere resi
+VISIBILI/INVISIBILI.</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;a Livello Generale </span></span>(visibili/invisibili
+quindi per TUTTI gli Utenti Collegati)</li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">a Livello di Singolo Utente </span></span>(visibili/invisibili
+quindi per quello SPECIFICO Utente collegato)</li>
+</ul>
+
+(vedi relativo <span style="color: red;">Manuale
+Abilitazione/Disabilitazione TAB/CAMPI</span>) in
+modo da permettere ad ogni Azienda di poter decidere quanti e quali
+Dati si intendono gestire a livello Anagrafico per i propri
+Cantiere/Assistiti/Attività secondo le proprie necessità.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+</body></html>

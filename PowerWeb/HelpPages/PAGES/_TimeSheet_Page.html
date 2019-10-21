@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Utenti_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (TimeSheet) di Gestione de Cartellino Presenza</span>
+</h1>
+Questa pagina permette la Consultazione del Cartellino Presenza dei
+Collaboratori selezionati relativamente al Periodo (ANNO/MESE)
+selezionato<br><br>
+<span style="text-decoration: underline; font-weight: bold;">La Parte SUPERIORE di questa Pagina</span><br>
+<ul>
+  <li>In cui vengono mostrati i Collaboratori esistenti nella Tabella COL del DataBase</li>
+  <ul>
+    <li>è di Tipo MASTER (senza Dettaglio)</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>vedi relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> .</li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li>ed in particolare si rimanda al Manuale di <a href="_Col_Page.html">Gestione della Pagina della Scheda Collaboratori</a><br>
+        </li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<span style="text-decoration: underline; font-weight: bold;">La Parte INFERIORE di questa Pagina</span><br>
+<ul>
+  <li>in cui vengono mostrati i Cartellini <br>
+  </li>
+  <ul>
+    <li>di Tutti i Collaboratori selezionati dall'elenco mostrato enlla parte Superiore</li>
+    <ul>
+      <li>relativi al Periodo (SSAA/MM) scelto dall'Utente nel corrispondente campo PERIODO della Pagina</li>
+    </ul>
+    <li>che&nbsp; nella propria Scheda Anagrafica<br>
+    </li>
+    <ul>
+      <ul>
+        <li>NON abbiano impostato <a href="../TR_RECORD/_TR_COL.html#Data_Disponibilit%E0_Inizio_Col">NESSUNA DATA di ASSUNZIONE</a></li>
+      </ul>
+      <li>oppure</li>
+      <ul>
+        <li>Abbiano Impostato <a href="../TR_RECORD/_TR_COL.html#Data_Disponibilit%E0_Inizio_Col">UNA DATA DI ASSUNZIONE</a> &lt;= Data di Inizio del Periodo Richiesto</li>
+      </ul>
+      <li>e</li>
+      <ul>
+        <li>NON abbiano impostato <a href="../TR_RECORD/_TR_COL.html#Data_Disponibilit%E0_Fine_Col">NESSUNA DATA di LICENZIAMENTO</a></li>
+      </ul>
+      <li>oppure</li>
+      <ul>
+        <li>Abbiano Impostata <a href="../TR_RECORD/_TR_COL.html#Data_Disponibilit%E0_Fine_Col">UNA DATA DI LICENZIAMENTO</a> &gt;= Data di Fine del periodo Richeisto<br>
+        </li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Comportamenti
+Specifici per la Pagina CARTELLINO</span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="text-decoration: underline;">Rispetto al comportamento
+Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina CARTELLINO</span><span style="text-decoration: underline;"><span style="font-weight: bold;"> </span>ci sono alcuni comportamenti
+particolari che vale la pena di Segnalare</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;">AREA
+FILTRI CUSTOM</li>
+  <ul>
+    <li>vengono impostati i FILTRI CUSTOM di PERIODO sui seguenti Campi</li>
+    <ul>
+      <ul>
+        <li><a href="../TR_RECORD/_TR_UTENTI.html#Data_Registrazione_Utente">Data_Registrazione_Utente</a></li>
+        <li><a href="../TR_RECORD/_TR_UTENTI.html#DataOraUltimaModifica_Utente">DataOraUltimaModifica_Utente</a></li></ul>
+    </ul>
+  </ul></ul>
+
+<span style="font-weight: bold; text-decoration: underline;">Per il
+Significato </span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; dei singoli Tasti&nbsp; presenti nella Testata
+della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Per come
+Modificare</span><br>
+
+<ul>
+
+  <li>&nbsp;i Campi (Colonne) da visualizzare nella Griglia Master <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="mailto:../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a></li>
+  </ul>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb)</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio<br>
+  </li>
+  <ul>
+    <li>&nbsp;si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb</a></li>
+  </ul>
+  <li>i Filtri sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare i Filtri della Griglia Master o di Dettaglio di una Pagina
+di
+PowerWeb</a></li>
+  </ul>
+  <li>un Record della Griglia Master per effettuarne</li>
+  <ul>
+    <li>l'Inserimento/Modifica/Cancellazione/Consultazione del Singoli
+Record visualizzatoi</li>
+    <ul>
+      <li>&nbsp;si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+    </ul>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>
+&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>&nbsp;&nbsp; (vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o della Griglia di Dettaglio
+di una Pagina di
+PowerWeb)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei Clienti nell'<a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html#AREA_H">Area
+H dello Schema della pagina Standard di PowerWeb</a><br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+Una volta scelta la Modalità di Visualizzazione/Ricerca dei
+Clienti che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista dei
+Cantieri/assistiti/Attività che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span><span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+:<br>
+
+&nbsp;nel caso in cui nella Tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAMETRI</a> sia stato ATTIVATO il
+campo <a href="../TR_RECORD/_TR_PARAM.html#File_Col_Var">File_Col_Var</a>
+allora il sistema&nbsp;<span style="text-decoration: underline; font-weight: bold;"></span>, ad
+ogni INSERIMENTO/VARIAZIONE/CANCELLAZIONE di un Record della Scheda
+Collaboratori , <span style="text-decoration: underline; font-weight: bold;">GESTISCE
+IN MANIERA AUTOMATICA LA SCRITTURA&nbsp; DI UN RECORD DI BACKUP</span>
+nella corrispondente Tab CANT_VAR del Record CANT, consultabile poi
+tramite l'apposito Funzione di Consultazione delle Variazioni
+delle Schede Anagrafiche Collaboratori<br>
+
+<dl>
+
+</dl>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+</body></html>

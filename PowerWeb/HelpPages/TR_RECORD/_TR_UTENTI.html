@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_UTENTI</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; TABELLA
+UTENTI<br>
+</h1>
+<span style="font-weight: bold;">Contiene gli Utenti </span><span style="font-weight: bold;">ed i relativi i Dati Anagrafici </span><span style="font-weight: bold;">abilitati ad utilizzare
+POWER-2011.</span><br>
+<br>
+Le Chiavi del Record :&nbsp; <a href="#Utenti_Id">Utenti_Id</a> (<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Utenti_Id">Utenti_Id</a> (<span style="font-weight: bold; color: red;">Chiave</span>)
+,&nbsp; <a href="#Codice_Utente">Codice_Utente</a>
+,<a href="_TR_UTENTI.html#Data_Registrazione_Utente">Data_Registrazione_Utente</a>,
+<a href="#Pwd_Utente">Psw_Utente</a>, <br>
+I Campi con Default &nbsp; :&nbsp; <a href="_TR_UTENTI.html#Data_Registrazione_Utente">Data_Registrazione_Ute</a><a href="_TR_UTENTI.html#Data_Registrazione_Utente">nte</a>
+, <a href="_TR_UTENTI.html#DataOraUltimaModifica_Utente">DataOraUltimaModifica_Uten</a>te<span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; </span></span><a href="#Disabilitazione_Utente">Disabilitazione_Utente</a>
+(False) , <a href="#Lingua_Utente">Lingua_Utente</a>
+(default) , <a href="#Nome_Menu_Utente">Nome_Menu_Utente </a>(default)
+, <a href="#TipoMenu_Utente">TipoMenu_Utente</a>
+(0) ,<br><br>I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;1-<a href="#Codice_Utente">Codice_Utente</a> (10%) / 2-<a href="#Liv_Utente">Liv_Utente</a> (5%) /&nbsp;3-<a href="#Menu_Tipo_id">Menù_Tipo_Id</a> (15%) / 4-<a href="#Lingua_Utente">Lingua_Utente</a> (5%) / 5- <a href="#Data_Registrazione_Utente">Data_Registrazione_Utente</a> (10%) / 6-<a href="#DataOraUltimaModifica_Utente">DataOraUltimaModifica-Utente</a><span style="text-decoration: underline;"></span>(15%) / &nbsp;7 - VUOTO / 8 - VUOTO / 9 - VUOTO 7 10 - VUOTO / 11-<a href="#Disabilitazione_Utente">Disabilitazione_Utente</a> (5%)&nbsp; / 12 - <a href="#Note_Utente">Note_Utente</a> (25%) &nbsp;&nbsp; &nbsp;<br><br><ul><li><span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span> : per IMPEDIRE che un UTENTE (DIVERSO DA UN ADMIN con LIVELLO &lt;10) possa INSERIRE e/o CANCELLARE un ALTRO UTENTE</li><ul><ul><ul><ul><li>occorre VERIFICARE SEMPRE che sia stato inserito nela TAB_AUT</li><ul><li>un Record intestato alla FUNZIONE UTENTI con LIVELLO INS/MOD = 10</li></ul></ul><li>OCCORRE
+INOLTRE che sia PRESENTE per ogni UTENTE (presente nella tab UTENTI) un Record
+di TAB_AUT intestato al relativo Utente e con Funz_id = NULL</li></ul></ul></ul></ul>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3><table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2"><tbody><tr><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 228px;">NOME DEL CAMPO</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 125px;">TIPO CAMPO</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 860px;">DESCRIZIONE DEL CAMPO</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 60px;">TAB</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 60px;">TIPO</td></tr></tbody></table>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td><a name="Utenti_Id"></a> <span style="text-decoration: underline; font-weight: bold;">Utenti_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT"><span style="text-decoration: underline;">INT</span></a></td>
+<td style="width: 834px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;del
+Singolo Utente</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span></td><td style="width: 60px; text-align: center;">NO</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Utente"></a> Codice_Utente</span></td>
+<td style="vertical-align: top; text-align: center; width: 124px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 834px;"><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Codice Univoco&nbsp;</span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> identificativo del
+Singolo Utente abilitato ad utilizzare Power.<br>
+</span></span></span></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><span style="text-decoration: underline;"><a name="Data_Registrazione_Utente"></a> <span style="font-weight: bold;">Data_Registrazione_Utente</span></span></td>
+<td style="vertical-align: top; text-align: center; width: 124px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a><br>
+</td>
+<td style="vertical-align: top; width: 834px;">Data
+ed Ora <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Campo Obbligatorio -</span></span>
+in
+cui PER la PRIMA VOLTA è stato inserito questo Utente. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span>.<span style="color: rgb(153, 51, 0);">Nessun particolare Controllo</span><br>
+&nbsp;<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span> </span>(Vedi anche<a href="#DataOraUltimaModifica_Utente">
+DataOraUltimaModifica</a>) . <span style="color: rgb(153, 51, 0);"></span><br>
+</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><span style="font-weight: bold;"><a name="DataOraUltimaModifica_Utente"></a> </span><span style="text-decoration: underline; font-weight: bold;">DataOraUltimaModifica_Utente</span><br>
+</td>
+<td style="vertical-align: top; width: 124px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top; width: 834px;">Data ed Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(255, 102, 0); font-weight: bold;"> </span><span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica fatta su quel Record)</span>. <span style="color: rgb(153, 51, 0);">Nessun particolare Controllo</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="#Data_Registrazione_Utente"> Data_Registrazione_Ute</a>)</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><span style="font-weight: bold;"><a name="Disabilitazione_Utente"></a> </span><span style="text-decoration: underline; font-weight: bold;">Disabilitazione_Utente</span></td>
+<td style="vertical-align: top; text-align: center; width: 124px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 834px;">Stato
+dell'Utente <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE </span>che
+indica se
+questo Utente è da considerare Disabilitato o meno e <span style="color: rgb(153, 51, 0);">può assumere SOLO i
+seguenti valori:.</span><br>
+<ul style="margin-left: 40px;">
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Utente NON è più ATTIVO e NON può più collegaris a Power
+&nbsp; <br>
+</li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale dell'Utente&nbsp; <br>
+</li>
+</ul>
+Un Utente se disabilitato NON può più accedere a Power.</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr><td><a name="Fil_Inclusive"></a> <span style="font-weight: bold; text-decoration: underline;">Fil_Inclusive</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td><td>Flag
+che indica se l'elenco delle Filiali associate a questo Utente nella
+Tab. UTENTI_FIL è da considerarsi Inclusivo/Esclusivo e <span style="color: rgb(153, 51, 0);">può assumere SOLO i
+seguenti valori:.</span><br>
+<ul style="margin-left: 40px;"><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+le Filiali elencate in Utenti_Fil sono da considerarsi INCLUSE per il relativo Utente<br>
+</li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+le Filiali elencate in Utenti_Fil sono da considerarsi ESCLUSE per il relativo Utente&nbsp; </li></ul></td><td style="text-align: center;">GEN</td><td style="text-align: center;">CHK</td></tr><tr>
+<td style="vertical-align: top; width: 255px;"><span style="font-weight: bold;"><a name="Lingua_Utente"></a></span><span style="font-weight: bold; text-decoration: underline;">Lingue_Id</span><br>
+</td>
+<td style="vertical-align: top; width: 124px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a><br>
+</td>
+<td style="vertical-align: top; width: 834px;">N°
+Identificativo della Lingua associata a questo
+Utente. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">="default"
+. </span>Serve per poter eventualmente gestire per questo
+specifico Utente una
+specifica Lingua a prescindere da quella di Default del Sistema.<span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista nella TABELLA&nbsp;</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Lingue">Lingue</a>
+<ul>
+</ul>
+</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><span style="font-weight: bold;"><a name="Liv_Utente"></a>
+</span><span style="text-decoration: underline; font-weight: bold;">Liv_Utente</span></td>
+<td style="vertical-align: top; text-align: center; width: 124px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TYNINT</a>
+</td>
+<td style="vertical-align: top; width: 834px;">Livello
+(da 1 a 12) <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Campo Obbligatorio -</span></span>
+assegnato a
+quell'Utente.&nbsp;<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(255, 102, 0); font-weight: bold;"></span>Può
+assumere i seguenti <span style="text-decoration: underline;">valori
+prefissat</span>i:
+<ul>
+<li>I
+Livelli PARI (2,4,6,8) indicano che l'Utente è Abilitato ad utilizzare
+tutte le Funzioni di Livello INFERIORE a quello a lui Assegnato<br>
+</li>
+<li>i Livelli DISPARI (1,3,5,7,9) indicano che l'Utente è
+disabilitato adutilizzare tutte le Funzioni di Livello SUPERIORE a
+quello a lui Assegnato</li>
+<li>i Livelli &lt;= 6 NON POSSONO</li>
+<ul>
+<li>Gestire le Schede di Altri Utenti</li>
+<li>Aumentarsi il Livello oltre il 6</li>
+<li>Cambiarsi il proprio Tipo di Menù di Lancio</li>
+<li>Cambiarsi il Codice Filiale</li>
+<li>Cambiarsi il Flag_Resp_Utente<br>
+</li>
+</ul>
+<li>il livello 10 è assegnabile SOLO all'Utente con
+Codice = ADMIN!!</li>
+</ul>
+<span style="font-weight: bold; color: red;"></span><span style="font-weight: bold; text-decoration: underline;">Un Utente con Livello &lt; 10</span> può modificare SOLO SE STESSO e NON PUO' comunque modificarsi il Livello.<br><span style="text-decoration: underline; font-weight: bold;">Un Utente con Livello 10</span> può modificare TUTTI GLI ALTRI UTENTI ma può modificarsi il proprio LIvello solo fra 9 e 10.<br><span style="text-decoration: underline; font-weight: bold;">Un Utente con Livello 12</span> corrispondete ad un UTENTE WINIT e può fare TUTTO SU TUTTI (compreso i livelli 10)<br>
+</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Menu_Tipo_id"></a> Menu_Tipo_ID</span></td>
+<td style="vertical-align: top; text-align: center; width: 124px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+</td>
+<td style="vertical-align: top; width: 834px;">Identificativo
+del Menù eventualmente associato a questo Utente nella <a href="#Lingua_Utente">Lingua_Utente</a> eventualmente
+associata a questo Utente che viene attivato
+automaticamente al momento del Collegamento a Power. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">="default"
+</span><span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che esista nella TAB MENU</span> <br>
+<ul>
+<li>Se non inserito
+viene automaticamente utilizzato il Menù con Tipo_Menu="DEFAULT"</li>
+</ul>
+</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td><span style="font-weight: bold; text-decoration: underline;"><a name="Note_Utente"></a> Note_Utente</span></td>
+<td><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+<td style="width: 834px;">Note <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabili</span> a questo Utente. <span style="color: rgb(153, 51, 0);">Nessun Particolare Controllo</span></td><td style="width: 60px; text-align: center;">NOTE</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td><a name="PasswordHash"></a> <span style="font-weight: bold; text-decoration: underline;">PasswordHash</span></td>
+<td><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+<td style="width: 834px;">Password Criptata associata all'Utente <span style="color: red; font-style: italic; text-decoration: underline;">NOTA BENE : IN VARIAZIONE VA SEMPRE REINSERITA ANCHE LA PASSWORD !!</span></td><td style="width: 60px; text-align: center;">NO</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr><td><a name="Resp_Inclusive"></a> <span style="font-weight: bold; text-decoration: underline;">Resp_Inclusive</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td><td>Flag che indica se l'elenco dei Responsabili associati a questo Utente
+nella Tab. UTENTI_RESP è da considerarsi Inclusivo/Esclusivo e <span style="color: rgb(153, 51, 0);">può assumere SOLO i
+seguenti valori:.</span><br>
+<ul style="margin-left: 40px;"><li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+i Responsabili elencati in Utenti_Resp sono da considerarsi INCLUSI per il relativo Utente<br>
+</li><li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indica che
+i Responsabili elencati in Utenti_Resp sono da considerarsi ESCLUSI per il relativo Utente&nbsp; </li></ul></td><td style="text-align: center;">GEN</td><td style="text-align: center;">CHK</td></tr><tr>
+<td><a name="SaltKey_Utente"></a> <span style="font-weight: bold; text-decoration: underline;">SaltKey_Utente</span></td>
+<td><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+<td style="width: 834px;">Salt di Generazione della Password Utente</td><td style="width: 60px; text-align: center;">NO</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="TipoMenu_Utente"></a> <span style="text-decoration: underline; font-weight: bold;">TipoMenu_Utente</span><br>
+</td>
+<td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TYNINT</a><br>
+</td>
+<td style="vertical-align: top; width: 834px;"> <span style="font-weight: bold; background-color: red;">ATTUALMENTE NON USATO </span>Indica quale Tipo
+diGestione dei Menù&nbsp;<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(255, 102, 0); font-weight: bold;"> </span>è
+associato a quell'Utente. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0</span>.
+<span style="color: rgb(153, 51, 0);">Se inserito
+viene controllato che esista nella TAB_DECOD con Gruppo_Tab=Decod_Sys e
+Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#TipoMenu"><span style="text-decoration: underline;">TipoMenu</span></a>
+e può assumere SOLO i seguenti valori<br style="background-color: red;">
+<ul>
+<li>0= Carica Menu a Tendina e Menù a Treeview (Chiuso)</li>
+<li>1= Carica SOLO Menù Tendina</li>
+<li>2= Carica SOLO Menù a Treview
+(Chiuso)&nbsp;&nbsp; ????<br>
+</li>
+<li>3= Carica SOLO Menù a Treview
+(Chiuso)&nbsp;&nbsp; ????<br>
+</li>
+<li>4= Carica Menu a Tendina + Menu a Treeview Aperto</li>
+</ul>
+<br>
+</td><td style="width: 60px; text-align: center;">NO</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Versioni_Id"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Versioni_Id</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top;">N°
+Identificativo della Versione associata a questo
+Utente. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">="default"
+. </span>Serve
+per poter eventualmente gestire per questo
+specifico Utente una
+specifica Versione in Lingua per la quale verranno gestite SOLO le
+ECCEZIONI RISPETTO ALLA VERSIONE 0 (senza dover quindi copiare tutte le
+Definizioni in Limngua MA SOLO QUELLE CHE SI VOGLIONO GESTIRE IN MODO
+DIVERSO ripsetto alla versione BAse) <br>
+Esempio : Caso dei CANTIERI che diventano ASSISTITI nella Versione per
+l'Assistenza Domiciliare!!! senza dover duplicare Tutte le Costanti in
+Lingua gestite in Resources.<br>
+      <span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista nella TABELLA <a href="_TR_VERSIONI.html"><span style="text-decoration: underline;">VERSIONI</span></a></span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Lingue"></a></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+<td style="vertical-align: top; width: 255px;"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</td>
+<td style="vertical-align: top; width: 124px;"><br>
+</td>
+<td style="vertical-align: top; width: 834px;"><br>
+</td><td style="width: 60px; text-align: center;"><br>
+</td><td style="width: 60px; text-align: center;"><br>
+</td>
+</tr>
+</tbody>
+</table>
+</body></html>

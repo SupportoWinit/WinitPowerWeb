@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>PAGINA LANCIO REPORT</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1 style="margin-left: 21.55pt; text-indent: -21.55pt;"><span style="font-size: 16pt; text-decoration: underline;"><span style="">PAGINA <span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span>LANCIO
+REPORT</span></h1>
+<h1 style="margin-left: 21.55pt; text-indent: -21.55pt;"><span style="font-size: 16pt; text-decoration: underline;">PAGINA LANCIO REPORT DALLE SINGOLE MASCHERE</span></h1>
+<ul>
+</ul>
+La Pagina di Lancio dei Report dalle Singole Maschere&nbsp;viene gestita in<br>
+<ul style="font-weight: bold;">
+<li>PowerWeb</li>
+<ul>
+<li>GridMaterPage.Master</li></ul></ul><img style="float: left; width: 799px; height: 436px;" alt="" src="../IMMAGINI%20HELP%20TECNICO/PAGINA%20LANCIO%20REPORT%20DA%20MASCHERA.PNG"><ul><ul><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></ul></ul><br>Le Liste dei Campi di Grouping e di Sorting vengono gestite nelle Routines<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span style="font-weight: bold;">private List&lt;OrderingTreeListItem&gt; OrderingTreeData</span><br><br><span style="font-weight: bold;">1) I CAMPI DI GROUPING</span><br><br>La
+Lista dei Campi utilizzabili come criteri di RAGGRUPPAMENTO viene
+gestita dalla Routine presente nella Power/Web\GridMaterPage.Master<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> private List&lt;GroupingTreeListItem&gt; GroupingTreeData&nbsp;</span>
+&nbsp;&nbsp;&nbsp; &nbsp;<br>che li prende in base a quanto definito inpresa da <ul><li style="font-weight: bold;">PowerWeb</li><ul><li style="font-weight: bold;">Modules</li><ul><li><span style="font-weight: bold;">(NomeTabella)Modules</span>&nbsp;&nbsp;
+(la stessa che viene usata per mostrare i Campi di Sorting e&nbsp;nella corrispondente maschera di dettaglio)&nbsp;&nbsp;</li></ul></ul></ul>La
+lista dei Campi viene restituita ORDINATA in base al valore restituito
+nella CAPTION (ovvero in base al Nome del Campo in LINGUA) <br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Id = i,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Field
+= fieldList[i],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Caption
+= CommonService.GetLocalizedLabel(fieldList[i], ResourceTypeEnum.Field),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ParentId
+= -1<br>Alla fine viene aggiunta una Riga Specifica di ROOT con ID=-2 in modo che vada in testa alla Lista dei Campi&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Id = -2,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;Field = "Root",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;Caption = CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold;">STR_CRITERIO_RAGGRUPPAMENTO</span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; ParentId = -1,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; IsInGrouping = true,<br><br><span style="font-weight: bold;">1) I CAMPI DI SORTING</span><br><br>La Lista dei Campi utilizzabili come criteri di RAGGRUPPAMENTO viene
+gestita dalla Routine presente nella Power/Web\GridMaterPage.Master<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;</span> <span style="font-weight: bold;">private List&lt;OrderingTreeListItem&gt; OrderingTreeData</span> &nbsp;<br>che li prende in base a quanto definito inpresa da <ul><li style="font-weight: bold;">PowerWeb</li><ul><li style="font-weight: bold;">Modules</li><ul><li><span style="font-weight: bold;">(NomeTabella)Modules</span>&nbsp;&nbsp;
+(la stessa che viene usata per mostrare i Campi di Sorting e nella
+corrispondente maschera di dettaglio)&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;
+</li></ul></ul></ul>La lista dei Campi viene restituita ORDINATA in base al valore
+restituito nella CAPTION (ovvero in base al Nome del Campo in LINGUA)<br>itemTreeListFromSession.Add(new
+OrderingTreeListItem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Id = i,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Field = fieldList[i],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Caption = CommonService.GetLocalizedLabel(fieldList[i],
+ResourceTypeEnum.Field),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ParentId = -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Alla fine viene aggiunta una Riga Specifica di ROOT con ID=-2 in modo che vada in testa alla Lista dei Campi&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Id = -2,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Field = "Root",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Caption =
+CommonService.GetLocalizedString(PowerWebResources.STR_CRITERIO_ORDINAMENTO),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ParentId = -1,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+IsInOrdering = true,<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>La Lista &nbsp;dei Campi viene restituita ORDINATA per il Valore
+della corrispondente CAPTION (ovvero per il valore in LINGUA del Campo)</body></html>

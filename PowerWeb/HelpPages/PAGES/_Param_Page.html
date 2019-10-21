@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Param_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (PARAM) di Gestione della Scheda Parametri</span>
+</h1>
+
+<span style="text-decoration: underline; font-weight: bold;">Questa
+pagina permette SOLO la Modifica dei Parametri generali da utilizzare
+in PowerWeb</span> in quanto esiste un Unico Record Parametri
+(all'interno della tabella PARAM) che non può nè essere Inserito nè
+Cancellato per cui nella relativa parte di Edit i Tasti di ADD e di
+DELETE sono automaticamente disabilitati a prescindere dalle
+Autorizzazioni dei Singoli Utenti.<br>
+<br>
+In questa tabella viene gestita la <a href="../TR_RECORD/_TR_PARAM.html#PublicKey">Password</a> fornita per quel'Azienda dalla Winit dalla quale ne viene ricavata la relativa <a href="../TR_RECORD/_TR_PARAM.html#ActivationDate">DATA DI SCADENZA</a> che impedisce l'Uso di PowerWeb una volta scaduta rispetto alla data corrente.<br>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;"></span>Questa
+pagina è di Tipo MASTER (senza Dettaglio) e quindi si rimanda la
+relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della
+relativa struttura di Funzionamento.<br>
+<br>
+In particolare in questa Pagina vengono gestiti i Parametri relativi ai<br>
+<ul>
+  <li>Criteri Generali di Controllo sulle Registrazioni (Vedi Manuale <span style="color: red;">Come Gestire i Controlli sulle Registrazioni di PowerW</span>eb)<br>
+  </li>
+  <li>Criteri Generali di Arrotondamento (vedi Manuale <span style="color: red;">Come Gestire gli Arrotondamenti in PowerWeb</span>)</li>
+  <li>Criteri Generali di Calcolo dei Viaggi (Vedi Manuale <span style="color: red;">Come Gestire i Viaggi in PowerWeb</span>)</li>
+  <li>Criteri Generali di Calcolo del Monte Ore x Collaboratore <br style="color: red;">
+  </li>
+  <li><span style="color: red;"><span style="color: black;">Criteri
+Generali di Applicazione degli eventuali Filtri x Filiale dei Cantiere
+e/o per Responsabile dei Collaboratori (Vedi Manuale</span> Come Gestire i Filtri x Filiale/Responsabile in PowerWe</span>b)</li>
+  <li>Crieri di Attivazione Controlli&nbsp; e Log Variazioni<br>
+  </li>
+  <li>Criteri di Impostazione dei Default &nbsp;  <br>
+
+
+  </li>
+</ul>
+<dl>
+
+  <dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire una Unità Fissa sono i seguenti:</u></b></dt>
+</dl>
+
+<ul>
+
+  <li><a href="../TR_RECORD/_TR_PARAM.html#CompanyName">NOME
+DELL'AZIENDA&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Ragione Sociale dell'Azienda cui appartengono i Dati del DataBase
+collegato in questo momento<span> </span><br>
+  </li>
+  <ul>
+    <li><a href="../TR_RECORD/_TR_PARAM.html#RowsPerPage">DEFAULT N°
+RIGHE DA VISUALIZZARE PER PAGINA</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span>Il Valore impostato x Default può poi essere modificato
+TEMPORANEAMENTE dal Singolo Utente sulla Singola Pagina visualizzata
+&nbsp;&nbsp;</span></li>
+    <li><a href="../TR_RECORD/_TR_PARAM.html#ComboboxRowsPerPage">N°
+RIGHE DA VISUALIZZARE x COMBOBOX</a><span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; Indica il N° delle Righe da Mostrare nelle Singole ComboBox
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+    <li><span><a href="../TR_RECORD/_TR_PARAM.html#Mesi_Validita_Reg">N°
+MESI DI VALIDITA' REGISTRAZIONI</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica il N° di Mesi oltre i quali le Registrazioni troppo VECCHIE NON
+vengono più IMPORTATE</span></li>
+    <li><a href="../TR_RECORD/_TR_COL.HTML#Data_Registrazione_Col">LA
+DATA 1° REGISTRAZIONE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile) </li>
+  </ul>
+  <ul>
+    <li><a href="../TR_RECORD/_TR_FRU.html#DataOraUltimaModifica_Fru">DATA/ORA
+ULTIMA MODIFICA</a><a href="../TR_RECORD/_TR_COL.HTML#Data_Registrazione_Col"></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+  </ul>
+</ul>
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">La
+Maschera di Gestione dei Parametri
+prevede la gestione dei propri Dati Anagrafici suddividendoli per
+comodità nei seguenti Tab</span><br>
+
+<ul>
+
+  <li style="font-weight: bold;">Generali</li>
+  <li style="font-weight: bold;">Parametri</li>
+  <li style="font-weight: bold;">Arrotondamenti</li>
+  <li style="font-weight: bold;">Viaggi e Pause</li>
+</ul>
+Essendo gestito un SOLO RECORD PARAMETRI NON ha senso gestirne le
+diverse Modalità di Ricerca/Raggruppamento/Ordinamento dei Parametri
+che si intendono gestire e quindi NON viene gestito (diversamente da
+quanto avviene per le Schede Master) il tasto di di ON/OFF per
+attivarne la lettura dal DataBase in quanto la lettura avviene
+AUTOMATICAMENTE quando viene aperta la Pagina<br>
+
+<br>
+
+<span style="font-weight: bold;"><span style="text-decoration: underline;">
+Per il significato</span> </span><br>
+
+<ul>
+
+  <li>dei singoli Tasti&nbsp; presenti nella Testata della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+  <li>dei singoli Campi&nbsp; presenti nella pagina si
+rimanda al documento che descrive i campi del <a href="../TR_RECORD/_TR_PARAM.html">Tracciato Record della Tabella PARAM</a></li>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Comportamenti
+Specifici per la Pagina PARAM</span><br>
+
+<br>
+
+<span style="text-decoration: underline;">Rispetto al comportamento
+Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina
+PARAM</span> <span style="text-decoration: underline;">ci sono alcuni
+comportamenti particolari che vale la pena di Segnalare</span>
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline; color: black;">AREA
+CAMBIO DATA BLOCCO</li>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">Impostando una NUOVA DATA BLOCCO</span></li>
+    <ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">viene impedito di MODIFICARE tutte le Registrazioni con DATA &lt;= Alla Nuova Data Blocco</span></li>
+      <ul>
+        <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">nel caso poi sia settato &lt;&gt; 0 il <a href="../TR_RECORD/_TR_PARAM.html#Flag_Monte_Ore">Flag_Monte_Ore</a> della tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a><br>
+</span></li>
+        <ul>
+          <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">vengono anche AGGIORNATI i Saldi Totali e Mensili espressi in Minuti</span></li>
+          <ul>
+            <li>a livello di Totale</li>
+            <ul>
+<li>nel campo <a href="../TR_RECORD/_TR_COL.html#Monte_Minuti">Monte_Minuti</a> della Tabella <a href="../TR_RECORD/_TR_COL.html">COL</a></li>
+            </ul>
+            <li>a Livello di Singolo ANNO <br>
+            </li>
+            <ul>
+              <li>per i 12 Campi Mensili <a href="../TR_RECORD/_TR_COL_MONTE_MINUTI.html#M01_Col_Monte_Minuti">Mxx_Col_Monte_Minuti</a> della Tabella <a href="../TR_RECORD/_TR_COL_MONTE_MINUTI.html">COL_MONTE_MINUT</a>I</li>
+            </ul>
+          </ul>
+</ul>
+        <li>quando <span style="font-weight: normal;">il <a href="../TR_RECORD/_TR_PARAM.html#Flag_Monte_Ore">Flag_Monte_Ore</a> della tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a> = 1 (INCLUDE)<br>
+          </span></li>
+        <ul>
+          <li><span style="font-weight: normal;">il calcolo viene attivato SOLO per i Collaboratori</span></li>
+          <ul>
+            <li><span style="font-weight: normal;">che h</span>anno il proprio <a href="../TR_RECORD/_TR_COL.html#Flag_Monte_ore">Flag Monte Ore</a> settato = True</li>
+          </ul>
+        </ul>
+        <li>quando <span style="font-weight: normal;">il <a href="../TR_RECORD/_TR_PARAM.html#Flag_Monte_Ore">Flag_Monte_Ore</a> della tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a> = 2 (EXCLUDE)<br>
+  </span></li>
+        <ul>
+<li><span style="font-weight: normal;">il calcolo viene attivato PER TUTTI I Collaboratori</span></li><ul><li><span style="font-weight: normal;">ESCLUSI quelli che h</span>anno il proprio <a href="../TR_RECORD/_TR_COL.html#Flag_Monte_ore">Flag Monte Ore</a> settato = True</li></ul>
+        </ul>
+        <ul>
+
+          <ul></ul>
+        
+        </ul>
+
+      </ul>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; text-decoration: underline; color: black;">AREA
+IMPORT DATI DA DATABASE ACCESS di POWER e/o COMO08</li>
+  <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: normal;">Impostando/Selezionando il Nome del DataBase Access (normalmente Tabelle Power.mdb) in cui si trovano i Dati da Importare</span></li>
+    <ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">e premendo il Tasto di LANCIO IMPORT DA DATABASE POWER</span></li>
+      <ul>
+        <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">sia nel caso degli Utenti Power sia nel caso degli Utenti COMO08</span></li>
+        <ul>
+          <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">ne vengono importati i realtivi Dati nel nuovo DataBase utilizzato da PowerWeb</span></li>
+          <ul>
+            <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">vedere relativo Manuale <span style="color: red;">Come Effettuare l?import dal DataBase Access in PowerWeb</span></span></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: red;"><span style="color: black;">che verrà eventualmente eseguito in Modo personalizzato in base all'eventuale Valore del Campo</span> <br>
+      </span></span></li>
+  </ul>
+  <li style="font-weight: bold; text-decoration: underline; color: black;">AREA IMPORT LOGO AZIENDALE</li>
+  <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: normal;">Impostando/Selezionando il Nome del File che contiere il Logo (in formato) che verrà registrato nel Campo </span><span style="font-weight: normal;"> <a href="../TR_RECORD/_TR_PARAM.html#CompanyLogo">CompanyLogo</a> della tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a></span></li>
+    <ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">che verrà poi utilizzato da PowerWeb al posto del Logo Standard della Winit</span></li>
+      <ul>
+        <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">sia a Video sia nei Report<br>
+</span></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<ul>
+
+  <ul></ul>
+</ul>
+
+<span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span><span style="font-weight: bold; text-decoration: underline;">Per come
+Modificare</span> <br>
+
+<ul>
+
+  <li>i Campi (Colonne) da visualizzare nella Griglia Master si rimanda
+la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master</a></li><li>i Singoli Record visualizzati per gestire
+l'Inserimento/Modifica/Cancellazione/Consultazione <br>
+  </li>
+  <ul>
+    <li>si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span>
+
+<dl>
+
+</dl>
+
+<span style="font-weight: bold; text-decoration: underline;">I singoli
+TAB come pure i Singoli Campi dei Singoli TAB possono essere resi
+VISIBILI/INVISIBILI.</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;a Livello Generale </span></span>(visibili/invisibili
+quindi per TUTTI gli Utenti Collegati)</li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">a Livello di Singolo Utente </span></span>(visibili/invisibili
+quindi per quello SPECIFICO Utente collegato)</li>
+</ul>
+
+(vedi relativo <span style="color: red;">Manuale
+Abilitazione/Disabilitazione TAB/CAMPI</span>) in
+modo da permettere ad ogni Azienda di poter decidere quanti e quali
+Dati si intendono gestire a livello Anagrafico per i propri
+Cantiere/Assistiti/Attività secondo le proprie necessità.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+</body></html>

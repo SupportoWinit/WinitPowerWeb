@@ -1,0 +1,972 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+<style><endnote><head>
+<style></style>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>LA CREAZIONE DI UNA NUOVA FORM - CODICE C## del MODULO</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+<h1><span style="font-size: 16pt; text-decoration: underline;"></span><a name="CREAZIONE_DI_UNA_NUOVA_FORM_Codice_C"></a>CREAZIONE
+DI UNA NUOVA FORM (Codice C## del Modulo)</h1>
+<span style="color: rgb(0, 0, 153); font-weight: bold;"></span><span style="font-weight: bold;"></span>Dopo avere creato <br>
+<span>&nbsp;&nbsp;&nbsp; 1) </span><a style="color: rgb(51, 102, 255);" href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM.html#REPOSITORY"><span style="font-weight: bold; text-decoration: underline;">REPOSITORY</span></a><br style="color: black;"><span style="color: black;">
+&nbsp;&nbsp; &nbsp;</span><span style="font-weight: bold; color: black;">2)&nbsp;</span><a style="color: rgb(51, 102, 255);" href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM.html#REPOMANAGER"><span style="font-weight: bold; text-decoration: underline;">REPOMANAGER</span></a><br style="color: black;"><span style="color: black;">
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-weight: bold; color: black;">3)</span><span style="color: black;">
+</span><a style="color: rgb(51, 102, 255);" href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM.html#INFRASTRUCTURE"><span style="font-weight: bold; text-decoration: underline;">INFRASTRUCTURE</span></a><br>&nbsp;&nbsp; <span style="font-weight: bold;">&nbsp;</span><span style="font-weight: bold; color: rgb(204, 51, 204);">4)&nbsp;</span><a href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM%20-%20CODICE%20ASCX%20del%20MODULO.html"><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 102, 255);">MODULES</span> </a>&nbsp;per quanto riguarda la Parte di Codice ascx<br>
+<br>
+occorre gestire la parte relativa al<span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);"> CODICE C##
+</span>del XXXXModule.ASCX.CS</span><br><br>&nbsp;&nbsp;&nbsp; &nbsp;<span style="font-weight: bold; color: rgb(204, 51, 204);"> </span><span style="font-weight: bold; text-decoration: underline;"><span style="color: rgb(204, 51, 204);">MODULES</span><br>
+</span>
+<ul><li style="font-weight: bold; color: rgb(51, 0, 153);">SOLUTION</li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);">MODULES</li></ul></ul></ul><ul><li style="font-weight: bold; color: black;"><span style="font-weight: bold;">La struttura della Modulo.ascx.cs è la
+seguente</span></li></ul><ul>
+  <li style="font-weight: bold; color: rgb(51, 204, 0);"><span style="font-weight: bold;">// DEFINIZIONI&nbsp;</span></li>
+  <ul>
+<li style="color: black;">Definire per tutte le
+entità che verranno trattate nel Modulo il relativo <span style="font-weight: bold; color: rgb(51, 0, 153);">_XXXXStub</span></li><ul style="color: rgb(51, 0, 153);"><li>private <span style="color: red;"><span style="font-weight: bold;">Cant
+_cant</span>Stub;</span></li><li>private <span style="font-weight: bold; color: red;">Cant_Note</span> <span style="font-weight: bold; color: red;">_cantNote</span>Stub;</li><li> private <span style="font-weight: bold; color: red;">Utenti</span> <span style="font-weight: bold; color: red;">_utenti</span>Stub;</li><li>private <span style="font-weight: bold; color: red;">Tab_Decod</span> <span style="font-weight: bold; color: red;">_tabDecod</span>Stub;</li><li style="font-weight: bold;">...... comprese
+quelle usate nelle COMBOBOX!!!<span style="font-weight: bold;"></span></li></ul><li style="color: black; font-weight: bold;"><span style="font-weight: normal;">Definire la </span>KEYFILED
+NAME</li><ul><li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153); font-weight: normal;">const
+String <span style="color: red;"><span style="color: rgb(51, 0, 153);">KEYFIELDNAME</span> </span>=
+"<span style="font-weight: bold; color: red;">Cant_Id</span>";</span><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ul><li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153); font-weight: normal;"><span style="color: black;">Definire la&nbsp;</span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: black;">DETAILKEYFIELDNAME &nbsp; (se
+esiste)</span><br>
+</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: bold;"></span><span style="color: rgb(51, 0, 153); font-weight: normal;">const
+String <span style="color: rgb(51, 0, 153);">DETAILKEYFIELDNAME</span>
+= "<span style="color: red; font-weight: bold;">Cant_Note_Id</span>";</span></li></ul>
+  </ul>
+<ul>
+    <li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153); font-weight: normal;">public
+List&lt;XXXXX&gt; XXXXXXs &nbsp; <span style="font-weight: bold; color: black;">UNA LISTA per OGNI
+COMBOBOX della DATAGRID di DETTAGLIO che ne prevede una</span></span></li>
+    <li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153); font-weight: normal;">....ecc
+ecc. <br>
+</span></li>
+</ul>
+  <li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: normal;"><span style="color: rgb(51, 51, 255);">public</span> </span><span style="color: rgb(204, 51, 204); font-weight: normal;"><span style="color: rgb(51, 51, 255);">override ASPxGridView GridView</span></span><span style="color: rgb(204, 51, 204); font-weight: bold;"> </span><span style="text-decoration: underline; color: rgb(204, 51, 204);">GridView</span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 204, 0);">//
+Routine di Definizione della DATAGRID MASTER</li>
+    <ul style="color: rgb(51, 0, 153);">
+<li>get</li>
+    </ul>
+    <ul style="color: rgb(51, 0, 153);">
+<li>&nbsp;&nbsp; {</li>
+    </ul>
+    <ul style="color: rgb(51, 0, 153);">
+<ul><li>return gv<span style="font-weight: bold; color: red;">Cant_Note</span>;</li></ul>
+    </ul>
+    <ul style="color: rgb(51, 0, 153);">
+<li>&nbsp; &nbsp; }</li>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; color: black;">NEL
+CASO IN CUI CI SIA DA GESTIRE UNA DATA GRID DI DETTAGLIO <span style="text-decoration: underline; color: red;">CON TAB</span></li>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153); font-weight: normal;">&nbsp;public
+</span><span style="color: rgb(51, 51, 255); font-weight: normal;">override ASPxGridView
+</span><span style="text-decoration: underline; color: rgb(204, 51, 204);">GridViewDetail</span></li>
+    <ul style="color: rgb(51, 204, 0);">
+      <li style="font-weight: bold;">&nbsp;//
+Routine di Definizione della DATAGRID DETTAGLIO</li>
+    </ul>
+    <ul>
+<ul style="color: rgb(51, 0, 153);"><li>get</li></ul><ul style="color: rgb(51, 0, 153);"><li>
+&nbsp; {</li></ul>
+    </ul>
+    <ul style="color: rgb(51, 0, 153);">
+<ul><ul><li>&nbsp;return<span style="font-weight: bold; color: red;"> gvCant_Fru</span>.FindDetailRowTemplateControl(0, "<span style="font-weight: bold; color: red;">gvCant_Fru</span>_Detail") as ASPxGridView;</li></ul></ul><ul><li>&nbsp;
+&nbsp;}</li></ul>
+    </ul>
+    <li style="font-weight: bold; color: black;">ALTRIMENTI se LA DATAGRID DI DETTAGLIO NON HA TAB<br>
+    </li>
+    <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;public
+</span><span style="color: rgb(51, 51, 255); font-weight: normal;">ASPxGridView</span><span style="text-decoration: underline; color: rgb(204, 51, 204);">
+GridViewDetail</span></li>
+    </ul>
+    <ul>
+<ul><li style="color: rgb(51, 0, 153);">get</li><li style="color: rgb(51, 0, 153);">&nbsp;
+{</li><ul style="color: rgb(51, 0, 153);"><li>return null;</li></ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: normal;">&nbsp; &nbsp;}</span><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ul>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: black;">NEL CASO IN CUI CI
+SIA DA GESTIRE UN TEMPLATE CON TAB per la DataGrid MASTER
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br style="font-weight: normal; color: rgb(51, 0, 153);">
+  </li>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;public
+<span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">PowerFormTemplate</span></span><span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">
+      </span>EditFormTemplate <br>
+      </span></span></li>
+<ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Routine di Caricamento del TEMPLATE della DATAGRID MASTER <br>
+        </span></li>
+      <ul>
+<li style="color: rgb(51, 0, 153);">get</li><li style="color: rgb(51, 0, 153);">&nbsp;
+&nbsp;{</li><ul style="color: rgb(51, 0, 153);"><li>PowerFormTemplate template =
+PowerWebContext.GetFromSession&lt;PowerFormTemplate&gt;("PowerFormTemplate_"
++ GridView.ID);</li><ul><li>if (template == null)</li><li>&nbsp; &nbsp;{</li><ul><li>var templateDic =
+EditDictionaryManager.GetEditDictionary<span style="font-weight: bold; color: red;">Cant</span>();</li></ul><ul><li>template = new PowerFormTemplate(this,
+templateDic, true, false);<br>
+</li><li>PowerWebContext.SetToSession&lt;PowerFormTemplate&gt;("PowerFormTemplate_"
++ GridView.ID, template);</li></ul><li>&nbsp; &nbsp;}</li></ul><li>return template;</li></ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;
+&nbsp; }&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+      </ul>
+</ul>
+  </ul>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"></span>ALTRIMENTI <span style="text-decoration: underline;">se NON C'E'</span> un TEMPLATE a TAB ASSOCIATO ALLA DATAGRID MASTER<span style="font-weight: normal;"></span></li>
+    <ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;public
+<span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">PowerFormTemplate</span></span><span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">
+  </span>EditFormTemplate <br>
+  </span></span></li>
+      <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Routine di Caricamento del TEMPLATE della DATAGRID MASTER</span></li>
+      </ul>
+      <ul>
+        <ul>
+          <li style="color: rgb(51, 0, 153);"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;</span>get</li>
+        </ul>
+        <ul>
+          <li style="color: rgb(51, 0, 153);">&nbsp;
+{</li>
+        </ul>
+        <ul style="color: rgb(51, 0, 153);">
+          <ul>
+            <li>return null;</li>
+          </ul>
+        </ul>
+        <ul>
+          <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: normal;">&nbsp; &nbsp;}</span><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;&nbsp; <br>
+</span></li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<ul>
+<li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);">--------------------------------------------------------------------------------
+&nbsp; DEFINIZIONE DEI TAB (se
+esistono)---------------------------------------------------------------------------------</span></span></li><li style="font-weight: bold; color: black;"><span style="font-weight: bold;">Definizione
+della Struttura a TAB (se esistono)</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: bold;">Nel &nbsp;caso in cui la
+Pagina sia gestita con un TEMPLATE a TAB allora la relativa struttura
+viene gestita in</span></li><ul style="color: rgb(51, 0, 153);"><li style="font-weight: bold;"><span style="font-weight: bold;">POWER WEB</span></li><ul><li style="font-weight: bold;"><span style="font-weight: bold;">MODULES</span></li><ul><li style="font-weight: bold;"><span style="font-weight: bold;">EDITDICTIONARYMANAGER</span></li></ul></ul></ul><li style="font-weight: bold; color: black;"><span style="font-weight: bold;">in questo Modulo specifico vi è
+una Routine per ogni Modulo che Gestisce un Template a TAB</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: bold;"><span style="color: rgb(51, 0, 153);">public static
+Dictionary&lt;TabPageExtended,
+List&lt;TabPageItemExtended&gt;&gt; GetEditDictionaryCant()</span><br>
+</span></li></ul><ul><ul><li style="color: black;">all'interno del quale
+c'è una Definizione per Ogni TAB</li><ul><li style="color: black;"><span style="font-weight: bold; color: rgb(51, 0, 153);">List&lt;TabPageItemExtended&gt;
+<span style="color: red;">NomeTAB</span>List
+= new List&lt;TabPageItemExtended&gt;();</span></li></ul><ul><li style="color: black;">con la lista dei Campi
+che verranno mostrati nelle Righe/Colonne Previste&nbsp;</li><ul><li style="color: black;">&nbsp;<span style="font-weight: bold; color: red;">NomeTab</span>List.Add(new
+TabPageItemExtended(CommonService.GetPropertyName(() =&gt;
+fake.Codice_Utente)));</li></ul></ul></ul></ul><ul><ul><li style="font-weight: bold; color: black;"><span style="font-weight: bold;">per inserire una Cella Vuota in
+una Riga/Colonna basta inserire nella relativa posizione dell'elenco
+dei campi</span></li></ul></ul><ul><ul><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;">XXXXXXX.Add(new
+TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));</span></li></ul></ul></ul><li style="color: black; font-weight: bold;">l'impostazione
+del Nome del TAB e della Relativa Traduzione in Lingua dipende dai
+parametri</li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;">Name = "Generali",</span></li><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;">Caption =
+PowerWebResources.STR_GENERALE,</span></li></ul><li style="color: black; font-weight: bold;">&nbsp;l'impostazione
+del Numero delle Colonne del Singolo TAB dipende dalla impostazione del
+parametro</li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;">Columns = 2,</span></li></ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">il
+Numero dei Campi elencati deve essere un MULTIPLO del N° delle Colonne
+indicate nel parametro COLUMNS</span></span></li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">se
+Columns= 2</span></span></li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">i
+Campi devono essere un multiplo di 2</span></span></li></ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">se
+Columns = 3</span></span></li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">i
+Campi devono essere un Multiplo di 3</span></span></li></ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">se
+i Campi non bastano ad averne in numero sufficiente per avere il
+multiplo richiesto</span></span></li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><span style="color: black;">INSERIRE
+DEI CAMPI VUOTI per arrivare al Numero Multiplo corretto</span></span></li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;">XXXXXXX.Add(new
+TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));</span></li><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold;"><br></span></li></ul></ul></ul></ul><li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);">--------------------------------------------------------------------------------
+&nbsp; FINE DEFINIZIONE DEI TAB (se
+esistono)---------------------------------------------------------------------------------</span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: black;">NEL CASO IN CUI CI
+SIA DA GESTIRE UN TEMPLATE CON TAB per la DataGrid di DETTAGLIO
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;public
+<span style="color: rgb(51, 51, 255);">PowerFormTemplate
+</span><span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">EditFormTemplate <br>
+      </span></span></li>
+    <ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Routine di Caricamento del TEMPLATE della DATAGRID DI DETTAGLIO</span></li>
+    </ul>
+    <ul>
+      <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;get</span></li><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;&nbsp; {</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"></span><span style="font-weight: normal; color: rgb(51, 0, 153);">PowerFormTemplate
+template =
+PowerWebContext.GetFromSession&lt;PowerFormTemplate&gt;(String.Format("PowerFormTemplate_{0}_Detail",
+GridView.ID));</span></li><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp; if (template == null)</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"></span><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp; {</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"></span><span style="font-weight: normal; color: rgb(51, 0, 153);"> var templateDic = EditDictionaryManager.GetEditDictionary<span style="font-weight: bold; color: red;">Cant_Note()</span>;</span></li><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"> template = new PowerFormTemplate(this, templateDic);</span></li><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"></span><span style="font-weight: normal; color: rgb(51, 0, 153);">template.IsDetail = true;</span></li><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"> PowerWebContext.SetToSession&lt;PowerFormTemplate&gt;(String.Format("PowerFormTemplate_{0}_Detail", GridView.ID), template);</span></li></ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"> }</span></li></ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"> return template;</span></li></ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;&nbsp; }</span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="text-decoration: underline; font-weight: bold; color: black;">NEL CASO IN CUI NON CI SIA DA GESTIRE IL TEMPLATE per la DATAGRID di DETTAGLIO</span></span></li>
+  </ul>
+  <ul>
+    <ul>
+      <li style="font-weight: bold; color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="color: black;">&nbsp;<span style="color: rgb(51, 51, 255);">get </span><br style="color: rgb(51, 51, 255);">
+        </span></span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">{ <br>
+        </span></li>
+      <ul style="color: rgb(51, 51, 255);">
+        <li style="font-weight: bold;"><span style="font-weight: normal;">return null; <br>
+          </span></li>
+      </ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">}</span></li>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(204, 51, 204);">-----------------------INIZIO CASO IN CUI VENGA GESTITO IL CARICAMENTO VIA META FIELD DESCRIPTO</span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);">R&nbsp; --------------------</span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);">&nbsp;<span style="color: rgb(51, 51, 255);">public ICollection&lt;MetaFieldDescriptor&gt; <span style="font-weight: bold; color: rgb(204, 51, 204);">MetaFieldDescriptors</span></span></span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Caricamento della Struttura dei Meta Filed Descriptor da gestire&nbsp;</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">{</span></span></span></li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">get</span></span></span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">{</span></span></span></li>
+      <ul>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">ICollection&lt;MetaFieldDescriptor&gt;
+metaFieldDescriptors =
+PowerWebContext.GetFromSession&lt;ICollection&lt;MetaFieldDescriptor&gt;&gt;("MetaFieldDescriptors_"
++ GridView.ID);</span></span></span></li>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">if (metaFieldDescriptors == null)</span></span></span></li>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Se i MetaFiledDescriptor non sono già caricati in Sessione allora li legge dal DB</span><br>
+          </span></span></span></li>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">{</span></span></span></li>
+        <ul>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(51, 204, 0);">//Legge dalla Tabella MetaDescriptor il Tipo di Record da leggere</span><br>
+            <span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span></li>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">var
+metaDescriptor = RepoManager.MetaDescriptorRepo.Find(md =&gt;
+md.EntityType == "Cant", md =&gt; md.MetaFieldDescriptor,
+true).ToList().First();</span></span></span></li>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">if (metaDescriptor != null)</span></span></span></li>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="color: rgb(51, 204, 0); font-weight: bold;">//Se
+il Tipo di MetaFiled cercato esiste nella Tabella MetaFiled allora
+legge i corrispodnenti Dati nella Tabella MetaFieldDescriptor</span><br>
+            </span></span></span></li>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">{</span></span></span></li>
+          <ul>
+            <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span><span style="color: rgb(51, 51, 255);"> metaFieldDescriptors = metaDescriptor.MetaFieldDescriptor.OrderBy(mfd =&gt; mfd.VisibleIndex).ToList();</span></span></span></li>
+            <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Carica i MetaFieldDescriptor letti in Sessione</span><br>
+              </span></span></span></li>
+            <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">PowerWebContext.SetToSession&lt;ICollection&lt;MetaFieldDescriptor&gt;&gt;("MetaFieldDescriptors_"
++ GridView.ID, metaFieldDescriptors);</span></span></span></li>
+          </ul>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> }</span></span></span></li>
+        </ul>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Restituisce l'elenco dei MetaFiledDescriptor </span><br>
+          </span></span></span></li>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> return metaFieldDescriptors;</span></span></span></li>
+      </ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">}</span></span></span></li>
+    </ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> } <br>
+      </span></span></span></li>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">protected void <span style="font-weight: bold; color: rgb(204, 51, 204);">Page_Load</span>(object sender, EventArgs e)</span></span></span><br>
+
+    <span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</span></span></span></li>
+  <ul>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 255, 51);">//VUOTA</span></span></span></span></li>
+    </ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">}</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><br>
+      <span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span><span style="color: rgb(51, 51, 255);"></span></span></span></li>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">protected void <span style="font-weight: bold; color: rgb(204, 51, 204);">Page_Init</span>(object sender, EventArgs e)</span></span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Inizializzazione della Pagina con i META FIELD DESCRIPTOR</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold; color: rgb(51, 204, 0);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> {</span></span></span></li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">CommonServiceWeb.GenerateGridColumns(GridView, MetaFieldDescriptors);</span></span></span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Chiamata della Routine di Caricamento della LABEL della DATAGRID</span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> CommonServiceWeb.FillGridLabels(EntityType, GridView);</span></span></span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Chiamata della Routine di Caricamento dellaCOMBOBOXES della DATAGRID</span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> CommonServiceWeb.FillComboboxes(gvCol);</span></span></span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">if (!Page.IsCallback &amp;&amp; !Page.IsPostBack)</span></span></span></li>
+      <ul>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> ResetSession();</span></span></span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> } <br>
+      </span></span></span></li>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">&nbsp;  <br>
+    </span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">protected void <span style="font-weight: bold; color: rgb(204, 51, 204);">gvCol_DataBinding</span>(object sender, EventArgs e)</span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 255, 51);">//Routine di DataB Bind con i META FIELD DESCRIPTOR</span></span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">{</span></span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">gvCol.KeyFieldName = KEYFIELDNAME;</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">LinqServerModeDataSource serverMode = new LinqServerModeDataSource();</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">serverMode.ContextTypeName = "PowerWebEntities.Data";</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">serverMode.TableName = "Col_V";</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">GridView.DataSource = serverMode;</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">serverMode.Selecting += linq_Selecting;</span></span></span></li>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> }</span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><br>
+    </span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">void <span style="font-weight: bold; color: rgb(204, 51, 204);">linq_Selecting</span>(object sender, LinqServerModeDataSourceSelectEventArgs e)</span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Lettura Dati via Linq</span></span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">{</span></span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">e.KeyExpression = KEYFIELDNAME;</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">IQueryable&lt;Col_V&gt; currQueryable = Enumerable.Empty&lt;Col_V&gt;().AsQueryable();</span></span></span></li>
+    <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">if (IsToPopulateGrid)</span></span></span></li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">currQueryable = RepoManager.Col_VRepo.DbSet.AsNoTracking().Where(RepoManager.Col_VRepo.Filter).AsQueryable();</span></span></span></li>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">e.QueryableSource = currQueryable;</span></span></span></li>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> }</span></span></span><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);">&nbsp;&nbsp; <br>
+    </span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><br>
+    <span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"></span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);">p<span style="font-weight: normal;">rivate</span> <span style="font-weight: bold; color: rgb(204, 51, 204);">Type _entityType</span> = <span style="font-weight: normal;">typeof(</span><span style="color: red;">Col</span><span style="font-weight: normal;">);<span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"> <br>
+    </span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="color: rgb(51, 51, 255);"><span style="color: rgb(51, 255, 51); font-weight: bold;">//Occorre AGGIUNGERE anche questa DEFINIZIONE dell'ENTITA' da USARE</span></span></span></span></li>
+  <li style="font-weight: bold; color: black;"><br>
+<span style="color: rgb(51, 0, 153);"></span></li>
+  <li style="font-weight: bold; color: black;"><br>
+    <span style="color: rgb(51, 0, 153);"></span></li>
+  <li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153);"></span><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">public Type </span><span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">EntityType</span></span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Routine di Definizione dell'ENTITA'&nbsp;PRINCIPALE usata nella DataGrid MASTER</span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">{</span></li>
+  <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">get { return typeof(</span><span style="font-weight: bold; color: red;">Cant</span><span style="color: rgb(51, 0, 153);">); }</span></span></li>
+  </ul>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">}</span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">---------------------- FINE CASO IN CUI VENGA GESTITO IL CARICAMENTO VIA META FIELD DESCRIPTOR ----------------------</span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><br>
+<span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span></span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">---------------------- INIZIO CASO IN CUI NON VENGA GESTITO IL CARICAMENTO VIA META FELD DESCRIPTOR -------------------</span></span></span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">protected void</span> </span><span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">Page_Init</span><span style="font-weight: normal; color: rgb(51, 0, 153);">(object sender, EventArgs e)</span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Routine di Caricamento della PAGINA INIZIALE</span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">{</span></li>
+<ul>
+      
+    <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: normal;">if (!Page.IsCallback &amp;&amp; !Page.IsPostBack)</span></li>
+    <ul style="color: rgb(51, 0, 153);">
+<li style="font-weight: bold;"><span style="font-weight: normal;"></span><span style="font-weight: normal;">ResetSession();</span></li>
+    </ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Chiamata della Routine di Caricamento della LABEL della DATAGRID</span></li>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);"> CommonServiceWeb.FillGridLabels(typeof(</span><span style="font-weight: bold; color: red;">Cant</span>), <span style="color: rgb(51, 0, 153);">gv</span><span style="font-weight: bold; color: red;">Cant_Note</span>);</span></li>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Chiamata della Routine di Caricamento dellaCOMBOBOXES della DATAGRID</span></li>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">CommonServiceWeb.FillComboboxes(gv</span><span style="font-weight: bold; color: red;">Cant_Note</span>);</span></li>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Chiamata della Routine di Caricamenta dei Dati nella DataGrid MASTER</span></li>
+    <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: normal;"> BindGrid();</span></li>
+
+    </ul>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;">}</span></li>
+
+  
+  <li style="color: black;"><span style="color: rgb(51, 0, 153);">private void</span> <span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">BindGrid</span>()</li>
+<ul>
+    
+    
+      
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//
+Routine di Caricamento dei Dati nella DataGrid MASTER</span></li>
+
+    
+    
+    <li style="color: black;"><span style="font-weight: bold; text-decoration: underline;">NEL CASO DI ACCESSO VIA DATASOURCE ( <span style="color: rgb(51, 51, 255);">con EntityFrameWork SENZA TASTO DI ON/OFF</span>)</span><br>
+      </li>
+<ul>
+      
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Impostazione della Chiave della DataGrid&nbsp;MASTER</span></li>
+
+        
+      <ul>
+
+          <li style="color: black;"><span style="color: rgb(51, 0, 153);">gv</span><span style="color: red; font-weight: bold;">Cant</span><span style="color: rgb(51, 0, 153);">.KeyFieldName = KEYFIELDNAME;</span></li>
+          <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Caricamento del Data Source con RepoManager (GetAll o altro , order by ecc)</span></li>
+          <li style="color: black;"><span style="color: rgb(51, 0, 153);"> gv</span><span style="font-weight: bold; color: red;">Cant</span>.<span style="color: rgb(51, 0, 153);">DataSource = RepoManager</span>.<span style="font-weight: bold; color: red;">CantRepo</span><span style="color: rgb(51, 0, 153);">.GetAll();</span></li>
+          <li style="color: rgb(51, 0, 153);"> if (!Page.IsPostBack &amp;&amp; !Page.IsCallback)</li>
+          <ul>
+<li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Eventuale RICARICAMENTO DELLA DATAGRID</span></li>
+          </ul>
+          <ul>
+<li style="color: black;"> gv<span style="font-weight: bold; color: red;">Cant</span>.<span style="color: rgb(51, 0, 153);">DataBind();</span></li>
+          
+
+          </ul>
+        
+      </ul>
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline; color: red;">nel Codice C#</span></span></li>
+      <ul>
+        <li style="color: black;"><span style="font-weight: bold; text-decoration: underline;">VA ELIMINATA LA ROUTINE PAGE_LOAD</span><br>
+          <span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline; color: red;"></span></span></li>
+      </ul>
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline; color: red;">nle Codice HTML di quel Modulo<br>
+  </span></span></li>
+      <ul>
+<li style="color: black;"><span style="font-weight: bold; text-decoration: underline;">VA ANCHE AGGIUNTO l'EVENTO</span></li><ul style="color: rgb(204, 51, 204);"><li><span style="font-weight: bold; text-decoration: underline;">OnDataBinding="gvResp_DataBinding"</span></li></ul>
+      </ul>
+
+      
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline; color: red;">nel DATABASE <br>
+          </span></span></li>
+
+      <ul>
+        
+        <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline; color: red;"><span style="color: black;">VA ANCHE IMPOSTATO A</span> FALSE<span style="color: black;"> il Campo</span><a href="../../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible"> PopulateBtnVisible</a> della <a href="../../TR_RECORD/_TR_TAB_FUNZ.html">TAB-FUNZ</a></span></span></li>
+
+        
+        <ul>
+          <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline; color: red;"><span style="color: rgb(204, 51, 204);">PER RENDERE NON VISIBLE IL TASTO DI ON/OFF </span><br>
+          </span></span></li>
+        </ul>
+
+        
+        <ul style="color: black;">
+          <ul>
+            <li>(che risulta Attivato per Tutte le PAGES nella GRIDPAGEMASTER)</li>
+          </ul>
+        </ul>
+</ul>
+      <span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+      </span></span>
+
+
+
+      </ul>
+    <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="font-weight: bold; text-decoration: underline;"><span style="color: black;">NEL CASO DI ACCESSO DIRETTO VIA SQ</span>L (con Gestione del TASTO DI ON/OFF)<br>
+</span></span></li>
+    <ul>
+
+      
+        
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: red;">gvCant</span>.KeyFieldName = KEYFIELDNAME;</span></span></li>
+
+        
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="color: rgb(51, 51, 255);">IQueryable&lt;<span style="font-weight: bold; color: red;">Cant</span>&gt; currDataSource = Enumerable.Empty&lt;<span style="font-weight: bold; color: red;">Cant</span>&gt;().AsQueryable();</span></span></li>
+
+        
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="color: rgb(51, 51, 255);">if (IsToPopulateGrid)</span></span></li>
+
+        
+      <ul>
+
+          <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="color: rgb(51, 51, 255);">currDataSource = RepoManager.<span style="font-weight: bold; color: red;">Cant</span>Repo.GetAll(true).AsQueryable();</span></span></li>
+        
+      </ul>
+
+        
+      <li style="color: black;"><span style="color: rgb(51, 0, 153);"><span style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: red;">gvCant</span>DataSource = currDataSource;</span><span style="font-weight: bold; text-decoration: underline;"><br>
+          </span></span></li>
+
+      
+      
+      <li style="color: black;"><span style="text-decoration: underline; font-weight: bold;">OCCORRE AGGIUNGERE ANCHE LA ROUTINE DI DATA BIND dei DATI</span></li>
+      <li style="color: black;"><span style="color: rgb(51, 51, 255);">protected void</span> <span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">gvCli_DataBinding</span>(object sender, EventArgs e)</li>
+<ul>
+        
+        
+        
+        <li style="color: black;"><span style="color: rgb(51, 51, 255);">{</span></li>
+        <ul>
+          <li style="color: black;"><span style="color: rgb(51, 51, 255);">BindGrid();</span></li>
+        </ul>
+        <li style="color: black;"><span style="color: rgb(51, 51, 255);">}</span><span style="text-decoration: underline; font-weight: bold;"></span></li>
+
+      </ul>
+    
+    </ul>
+
+  </ul>
+  <li style="color: black;"><span style="font-weight: bold;">NEL CASO
+IN CUI CI SIA DA GESTIRE IL CARICAMENTO DEI DATI NELLA DATAGRID DI
+DETTAGLIO ( SE NON C'E' DETAIL NON C'E' NEMMENO QUESTA ROUTINE)</span></li>
+  <ul>
+    <li style="color: black;"><span style="color: rgb(51, 0, 153);">&nbsp;private void</span> <span style="font-weight: bold; color: red;"><span style="text-decoration: underline; color: rgb(204, 51, 204);">BindDetailGrid</span><span style="color: rgb(51, 0, 153);">(</span></span><span style="color: rgb(51, 0, 153);">ASPxGridView gvDetails)</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Routine di Caricamento DATI nella DataGrid di DETTAGLIO</span></li>
+      <li style="color: black;">{</li>
+      <ul>
+<li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Memorizzazione dela Chiave del Record Master selezionato</span></li><li style="color: black;"><span style="color: rgb(51, 0, 153);"> int</span> <span style="font-weight: bold; color: red;">cantId </span><span style="color: rgb(51, 0, 153);">= Convert.ToInt32(gvDetails.GetMasterRowKeyValue());</span></li><li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Impostazione della Chiave della DataGrid DETAIL</span></li><li style="color: rgb(51, 0, 153);"> gvDetails.KeyFieldName = DETAILKEYFIELDNAME;</li><li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Caricamento del Data Source con i Dati del Record selezionato nella Grid Master con RepoManager (GetAll o altro , order by ecc)</span></li><li style="color: black;"><span style="color: rgb(51, 0, 153);">gvDetails.DataSource = RepoManager.</span><span style="font-weight: bold; color: red;">Cant_Note</span><span style="color: rgb(51, 0, 153);">Repo.Find(cn =&gt;
+cn</span>.<span style="font-weight: bold; color: red;">Cant_Id</span> == <span style="font-weight: bold; color: red;">cantId</span>).<span style="color: rgb(51, 0, 153);">OrderByDescending(cn =&gt;
+cn</span>.<span style="font-weight: bold; color: red;">Data_Nota_Can_Note</span>)<span style="color: rgb(51, 0, 153);">.ToList();</span></li>
+      </ul>
+      <li style="color: black;">&nbsp;}</li></ul></ul>
+</ul>
+
+<ul>
+  <li style="color: black;"><span style="text-decoration: underline; font-weight: bold;">DEFINIZIONE DELL'ENTITA' PRINCIPALE</span><br>
+  </li>
+  <ul>
+<li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Routine di Definizione dell'ENTITA'&nbsp;PRINCIPALE usata nella DataGrid MASTER</span></li><ul><li style="font-weight: bold; color: black;"><span style="color: rgb(51, 0, 153);">&nbsp;</span><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">public Type </span><span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">EntityType</span></span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal;">{</span></li><ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">get { return typeof(</span><span style="font-weight: bold; color: red;">Cant</span><span style="color: rgb(51, 0, 153);">); }</span></span></li></ul></ul><ul><li style="font-weight: bold; color: black;"><span style="font-weight: normal;">}</span></li></ul></ul>
+  </ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;"><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">---------------------- FINE CASO IN CUI NON VENGA GESTITO IL CARICAMENTO VIA META FIELD DESCRIPTOR --------------</span></span></span></li>
+  <li style="font-weight: bold; color: black;"><br>
+<span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);"></span></span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);">--------------------------------------------------------------------------------
+&nbsp;DEFINIZIONE SOLO X FORM <span style="text-decoration: underline;">SENZA DETAIL</span>---------------------------------------------------------------------------------</span></span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">protected void</span> <span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">gv<span style="color: red;">Fil</span>_InitNewRow</span><span style="color: rgb(51, 0, 153);">(object sender, ASPxDataInitNewRowEventArgs e)</span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Definizione della Inizializzazione di una Nuova Riga (<span style="text-decoration: underline;">SOLO x le Form SENZA DETAIL</span> altrimenti NON c'è questa Routine ma le 2 seguenti)</span></li>
+  </ul>
+  <ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;"> {</span></li>
+    <ul>
+<li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">ASPxGridView grid = sender as ASPxGridView;</span></li><li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">if (grid != null)</span></li><li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">{</span></li><li style="color: rgb(51, 0, 153);"><span style="font-weight: bold; color: rgb(51, 204, 0);">Inizializzaza il NUOVO Record&nbsp; (</span><span style="color: rgb(51, 0, 153);">init</span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con i Valori di Default del Repository</span></li><ul><li style="font-weight: bold;"><span style="font-weight: normal;"></span><span style="font-weight: normal;"><span style="font-weight: bold; color: red;">Fil</span> <span style="color: rgb(51, 51, 255);">init</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);"> = RepoManager.</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);">Repo.Init();</span></span></li></ul><li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento dei NUOVI VALORI INSERITI A VIDEO nella struttura del RECORD in uso (</span>init<span style="font-weight: bold; color: red;">Fil)</span></li><ul><li style="font-weight: bold;"><span style="font-weight: normal;"><span style="color: rgb(51, 51, 255);">CommonServiceWeb.FillGridProperties(init</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);">, e.NewValues);</span></span></li></ul><li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Inizializzazione del Record in uso&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);">con i Valori del Record Selezionato (per gli Inserimenti da Record Selezionato</span></li><ul style="color: rgb(51, 51, 255);"><li style="font-weight: bold;"><span style="font-weight: normal;">CommonServiceWeb.FillGridClonedProperties(Page, grid, e.NewValues);</span></li></ul><li style="font-weight: bold;"><span style="font-weight: normal;">}</span></li>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">}</span></li>
+  </ul>
+  <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 51, 255);">protected void</span> <span style="text-decoration: underline; color: rgb(204, 51, 204);">gv<span style="color: red;">Fil_Row</span>Validating</span><span style="font-weight: normal; color: rgb(51, 51, 255);">(object sender, ASPxDataValidationEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Validazione delle Riga MASTER che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form SENZA DETAIL</span> altrimenti NON c'è questa Routine ma la DETAIL_Row_Validating)</span></li>
+  </ul>
+  <ul>
+    <li style="color: rgb(51, 51, 255);">{</li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 204, 0);">Dichiara la Struttura del Nuovo Record Vuoto</span><span style="color: red; font-weight: bold;"></span></li>
+      <ul>
+<li><span style="color: red; font-weight: bold;">Fil</span><span style="font-weight: bold;"> </span><span style="color: rgb(51, 51, 255);">new</span><span style="color: red; font-weight: bold;">Fil</span><span style="font-weight: bold; color: rgb(51, 51, 255);"> </span><span style="color: rgb(51, 51, 255);">= new</span><span style="color: red;"> <span style="font-weight: bold;">Fil</span></span>();</li>
+      </ul>
+      <li><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dei NUOVI VALORI INSERITI A VIDEO&nbsp;</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;"><span style="color: rgb(51, 51, 255);">CommonServiceWeb.FillEntityProperties(new</span><span style="font-weight: bold; color: red;">Fil</span>,<span style="color: rgb(51, 51, 255);"> e.NewValues);</span></span></li>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">della Chiave PRINCIPALE</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;"><span style="color: rgb(51, 51, 255);">CommonServiceWeb.FillEntityKey(new</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);">, e.Keys, KEYFIELDNAME);</span></span></li>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Settaggio del Nuovo Record (</span><span style="color: rgb(51, 0, 153); font-weight: normal;">new</span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con gli eventuali Dati da Impostare PRIMA Di un ADD/UPDATE</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;"><span style="color: rgb(51, 51, 255);">RepoManager.</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);">Repo.SetEntityBeforeAddOrUpdate(new</span><span style="font-weight: bold; color: red;">Fil</span>);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Check del corrispondente Repository per i Dati del Nuovo Record (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Fil)</span></li>
+      <ul>
+<li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">CommonServiceWeb.AddValidationErrors(</span></li><li style="font-weight: bold;"><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 51, 255);">RepoManager.</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);">Repo.Check(new</span><span style="font-weight: bold; color: red;">Fil</span>,<span style="color: rgb(51, 51, 255);"> e.IsNewRow), e.Errors, </span><span style="font-weight: bold; color: red;">gvFil,</span><span style="color: rgb(51, 51, 255);"> typeof(</span><span style="font-weight: bold; color: red;">Fil</span><span style="color: rgb(51, 51, 255);">Module));</span></span></li>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Gestisce l'eventuale presenza di Errori restituiti nel Dictionary della Check del Repository</span></li>
+      <ul>
+<li style="font-weight: bold; color: rgb(51, 51, 255);"><span style="font-weight: normal;">if (e.HasErrors)</span></li><li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">eventuale emissione a video dell'elenco degli errori riscontrati dalla Check</span></li><ul style="color: rgb(51, 51, 255);"><li style="font-weight: bold;"><span style="font-weight: normal;">e.RowError = CommonServiceWeb.GetValidationErrorString(e.Errors);</span></li></ul>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><span style="color: rgb(51, 51, 255);"> }</span><span style="font-weight: normal;"></span></li>
+  </ul>
+  <li style="font-weight: bold;"><span style="font-weight: normal;">protected void</span> <span style="text-decoration: underline; color: rgb(204, 51, 204);">gv<span style="color: red;">Cant_Row</span>Inserting</span><span style="font-weight: normal;">(object sender, ASPxDataInsertingEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di INSERIMENTO delle Riga MASTER che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form SENZA DETAIL</span> altrimenti NON c'è questa Routine ma la DETAIL_Row_Inserting)</span></li>
+  </ul>
+  <ul>
+    <li style="font-weight: bold;">{</li>
+  </ul>
+  <ul>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Scrittura nel LOG del messaggio che informa quando&nbsp;quel record è stato inserito da quell'Utente</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);"></span><span style="font-weight: normal; color: rgb(51, 51, 255);"> _log.Info(String.Format("</span><span style="color: red; font-weight: bold;">FIL</span><span style="font-weight: normal; color: rgb(51, 51, 255);">-Row Inserting by {0}", PowerWebContext.Current.User.<span style="font-weight: bold; color: red;">Codice_Filiale</span>));</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Crea la Struttura Vuota del Nuovo Record (</span><span style="color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);">Ini</span></span><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);">t<span style="color: red;">Fil</span></span>)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"></span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="color: red;">Fil</span><span style="font-weight: normal;"> <span style="color: rgb(51, 51, 255);">init</span></span><span style="color: red;">Fil</span> <span style="font-weight: normal;">= new</span> <span style="color: red;">Fil</span><span style="font-weight: normal;">();</span></li>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">init</span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dei NUOVI VALORI INSERITI A VIDEO&nbsp;</span></li>
+      <ul>
+<li><span style="color: rgb(51, 51, 255);">CommonServiceWeb.FillEntityProperties(init</span><span style="color: red; font-weight: bold;">Fil</span>, <span style="color: rgb(51, 51, 255);">e.NewValues);</span></li>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Settaggio del Nuovo Record (</span><span style="color: rgb(51, 0, 153);">init</span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con gli eventuali Dati da Impostare PRIMA Di un ADD/UPDATE</span></li>
+      <ul>
+<li><span style="color: rgb(51, 51, 255);">RepoManager.</span><span style="color: red; font-weight: bold;">Fil</span><span style="color: rgb(51, 51, 255);">Repo.SetEntityBeforeAddOrUpdate(init</span><span style="color: red; font-weight: bold;">Fil</span>);</li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Funzione di ADD del Repository (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">.<span style="font-weight: bold; color: red;">Fil) </span></span><span style="font-weight: bold; color: rgb(51, 204, 0);">per il Nuovo Record (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">init<span style="font-weight: bold; color: red;">Fil)&nbsp;</span></span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;"><span style="color: rgb(51, 51, 255);">RepoManager</span>.</span><span style="color: red;">Fil</span><span style="font-weight: normal; color: rgb(51, 51, 255);">Repo.Add(init</span><span style="color: red;">Fil</span><span style="font-weight: normal; color: rgb(51, 51, 255);">, true);&nbsp;&nbsp;</span></li><li style="color: rgb(51, 51, 255);">e.Cancel = true;</li><li style="color: rgb(51, 51, 255);"><span style="font-weight: bold; color: red;">gvFil</span>.CancelEdit();</li><li style="color: rgb(51, 51, 255);">BindGrid();</li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">}&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+  </ul>
+  <li>protected void <span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">gv<span style="color: red;">Fil_Row</span>Updating</span>(object sender, ASPxDataUpdatingEventArgs e)</li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di AGGIORNAMENTO delle Riga MASTER che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form SENZA DETAIL</span> altrimenti NON c'è questa Routine ma la DETAIL_Row_Updating)</span></li>
+  </ul>
+  <ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">{</span></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Scrittura nel LOG del messaggio che informa quando&nbsp;quel record è stato inserito da quell'Utente</span><span style="font-weight: bold; color: rgb(51, 204, 0);"></span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">_log.Info(String.Format("<span style="font-weight: bold; color: red;">FIL</span>-Row Updating by {0}", PowerWebContext.Current.User.Codice_Utente));</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza </span>(<span style="color: rgb(51, 0, 153);">currentId</span>)<span style="font-weight: bold; color: red;">&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> la Chiave del Record selezionato nella Data Grid Di DETAIL</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">var currentId = Convert.ToInt32(e.Keys[gv<span style="font-weight: bold; color: red;">Fil</span>.KeyFieldName]);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> nella Struttura del Record Corrente </span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (</span>current<span style="font-weight: bold; color: red;">Fil</span><span style="font-weight: bold; color: red;"></span><span style="font-weight: bold; color: rgb(51, 204, 0);">)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> i Dati del Record corrente</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;"><span style="font-weight: bold; color: red;">Fil</span> current<span style="font-weight: bold; color: red;">Fil</span> = RepoManager.<span style="font-weight: bold; color: red;">Fil</span>Repo.Single(u =&gt; u.<span style="font-weight: bold; color: red;">Fil</span>_Id == currentId);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">current</span><span style="font-weight: bold; color: red;">Fil</span><span style="font-weight: bold; color: red;">) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dei NUOVI VALORI INSERITI A VIDEO&nbsp;</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">CommonServiceWeb.FillEntityProperties(current<span style="font-weight: bold; color: red;">Fil</span>, e.NewValues);</span></li>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Settaggio del Nuovo Record (</span><span style="color: rgb(51, 0, 153); font-weight: normal;">current</span><span style="color: red; font-weight: normal;"></span><span style="font-weight: bold; color: red;">Fil) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con gli eventuali Dati da Impostare PRIMA Di un ADD/UPDATE</span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">RepoManager.<span style="font-weight: bold; color: red;">Fil</span>Repo.SetEntityBeforeAddOrUpdate(current<span style="font-weight: bold; color: red;">Fil</span>);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Aggiorna il Record nel DataBase</span><span style="font-weight: bold; color: rgb(51, 204, 0);"></span></li>
+      <ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">RepoManager.<span style="font-weight: bold; color: red;">Fil</span>Repo.SaveChanges();</span></li><li style="font-weight: bold;"><span style="font-weight: normal;">e.Cancel = true;</span></li><li style="font-weight: bold;"><span style="font-weight: normal;">gv<span style="font-weight: bold; color: red;">Fil</span>.CancelEdit();</span></li><li style="font-weight: bold;"><span style="font-weight: normal;">BindGrid();</span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">}</span></li>
+  </ul>
+  <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">protected void <span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">gv<span style="color: red;">Fil</span>_RowDeleting</span>(object sender, ASPxDataDeletingEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di CANCELLAZIONE della Riga MASTER che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form SENZA DETAIL</span> altrimenti NON c'è questa Routine ma la DETAIL_Row_DELETEING)</span></li>
+  </ul>
+  <ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">{</span></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Scrittura nel LOG del messaggio che informa quando&nbsp;quel record è stato inserito da quell'Utente&nbsp;</span><span style="font-weight: normal; color: rgb(51, 0, 153);"></span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">_log.Info(String.Format("<span style="font-weight: bold; color: red;">FIL</span>-Row Deleting by {0}", PowerWebContext.Current.User.Codice_Utente));</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza </span>(<span style="color: rgb(51, 0, 153);">currentId</span>)<span style="font-weight: bold; color: red;">&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> la Chiave del Record selezionato nella Data Grid MASTER</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">var currentId = Convert.ToInt32(e.Keys[gv<span style="font-weight: bold; color: red;">Fil</span>.KeyFieldName]);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> nella Struttura del Record Corrente </span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (</span>current<span style="font-weight: bold; color: red;">Fil</span><span style="font-weight: bold; color: red;"></span><span style="font-weight: bold; color: rgb(51, 204, 0);">)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> i Dati del Record corrente</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Fil</span> current<span style="font-weight: bold; color: red;">Fil</span> = RepoManager.<span style="font-weight: bold; color: red;">Fil</span>Repo.Single(u =&gt; u.<span style="font-weight: bold; color: red;">Fil</span>_Id == currentId);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Funzione di DEL del Repository (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">.<span style="font-weight: bold; color: red;">Fil) </span></span><span style="font-weight: bold; color: rgb(51, 204, 0);">per il&nbsp;Record Corrente (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">current<span style="font-weight: bold; color: red;">Fil)&nbsp;</span></span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">RepoManager.<span style="font-weight: bold; color: red;">Fil</span>Repo.Delete(current<span style="font-weight: bold; color: red;">Fil</span>, true);</span></li>
+        <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">e.Cancel = true;</span></li>
+        <li style="font-weight: bold;"><span style="font-weight: normal; color: rgb(51, 0, 153);">BindGrid();</span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">}&nbsp;</span><br></span></li>
+  </ul>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);">--------------------------------------------------------------------------------
+&nbsp;FINE DEFINIZIONE SOLO X FORM <span style="text-decoration: underline;">SENZA DETAIL</span>---------------------------------------------------------------------------------</span></span></li>
+  <ul>
+    <ul>
+<li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);"><br></span></span></li>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);">--------------------------------------------------------------------------------
+&nbsp;DEFINIZIONE SOLO X FORM <span style="text-decoration: underline;">CON DETAIL</span>---------------------------------------------------------------------------------</span></span></li>
+  <li style="font-weight: bold; color: black;"><span style="font-weight: normal;"><span style="color: rgb(51, 0, 153);">protected void gv</span><span style="font-weight: bold; text-decoration: underline; color: red;">Cant_Note</span>_<span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">Detail_Init</span><span style="color: rgb(51, 0, 153);">(object sender, EventArgs e)</span></span></li>
+  <ul>
+    <li style="font-weight: bold; color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Definizione della Inizializzazione della Detail&nbsp; (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine)</span><span style="font-weight: normal;"> <br>
+</span></li>
+  </ul>
+  <ul>
+    <li style="font-weight: bold;"><span style="font-weight: bold;">{</span></li>
+    <ul>
+      <li>ASPxGridView gvDetail = (ASPxGridView)sender;</li>
+      <li>if (gvDetail != null)</li>
+      <ul>
+<li>gvDetail.Templates.EditForm = EditDetailFormTemplate;</li>
+      </ul>
+    </ul>
+    <li>&nbsp; }</li>
+  </ul>
+  <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"></span><span style="color: rgb(51, 0, 153);">protected void gv</span><span style="font-weight: bold; color: red;">Cant_Note</span>_<span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">Detail_InitNewRow</span><span style="color: rgb(51, 0, 153);">(object sender, DevExpress.Web.Data.ASPxDataInitNewRowEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Definizione della Inizializzazione di una Nuova Riga (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine ma la Init_New_Row)</span></li>
+  </ul>
+  <ul>
+    <li style="color: rgb(51, 0, 153);">{</li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);">ASPxGridView grid = sender as ASPxGridView;</li>
+      <li style="color: rgb(51, 0, 153);">if (grid != null)</li>
+      <li style="color: rgb(51, 0, 153);">{</li>
+      <li style="color: rgb(51, 0, 153);"><span style="font-weight: bold; color: rgb(51, 204, 0);">Inizializzaza il NUOVO Record&nbsp; (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con i Valori di Default del Repository</span></li>
+      <ul>
+<li style="color: black;"><span style="font-weight: bold; color: red;">Cant_Note</span> <span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note</span> <span style="color: rgb(51, 0, 153);">= RepoManager</span>.<span style="font-weight: bold; color: red;">Cant_Note</span><span style="color: rgb(51, 0, 153);">Repo.Init();</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento dei NUOVI VALORI INSERITI A VIDEO nella struttura del RECORD in uso (</span>new<span style="font-weight: bold; color: red;">Cant_Note)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"></span></li>
+      <ul>
+<li style="color: black;"><span style="color: rgb(51, 0, 153);">CommonServiceWeb.FillGridProperties(new</span><span style="font-weight: bold; color: red;">Cant_Note</span><span style="color: rgb(51, 0, 153);">, e.NewValues);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Inizializzazione del Record in uso (</span>new<span style="font-weight: bold; color: red;">Cant_Note)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> con i Valori del Record Selezionato (per gli Inserimenti da Record Selezionato</span></li>
+      <ul>
+<li style="color: rgb(51, 0, 153);">CommonServiceWeb.FillGridClonedProperties(Page, grid, e.NewValues);</li>
+      </ul>
+      <li style="color: rgb(51, 0, 153);">}</li>
+    </ul>
+    <li style="color: rgb(51, 0, 153);">&nbsp;&nbsp; }</li>
+  </ul>
+  <li style="color: black;"><span style="color: rgb(51, 0, 153);">&nbsp;protected void gv</span><span style="font-weight: bold; color: red;">Cant_Note</span>_<span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">Detail_RowValidating</span><span style="color: rgb(51, 0, 153);">(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di VALIDAZIONE delle Riga di DETTAGLIO che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine ma la&nbsp;Row_Validating)</span></li>
+  </ul>
+  <ul>
+    <li style="color: rgb(51, 0, 153);">{</li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);">ASPxGridView gvDetails = sender as ASPxGridView;</li>
+      <li style="color: rgb(51, 0, 153);">if (gvDetails != null)</li>
+      <li style="color: rgb(51, 0, 153);">{</li>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Inizializzazione del Record in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con i Valori di Default del Repository</span></li>
+      <ul>
+<li style="color: black;"><span style="font-weight: bold; color: red;">Cant_Note</span> <span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note</span> <span style="color: rgb(51, 0, 153);">= RepoManager</span><span style="font-weight: bold; color: red;">.Cant_Note</span><span style="color: rgb(51, 0, 153);">Repo.Init();</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza (</span><span style="font-weight: bold; color: red;">cantId)&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> la Chiave del Record selezionato nella Data Grid Master</span></li>
+      <ul>
+<li style="color: black;"><span style="color: rgb(51, 0, 153);">int </span><span style="font-weight: bold; color: red;">cantId</span> = <span style="color: rgb(51, 0, 153);">Convert.ToInt32(gvDetails.GetMasterRowKeyValue());</span></li>
+      </ul>
+      <li style="color: black;"><span style="color: rgb(51, 204, 0);"><span style="font-weight: bold;">Inizializza la Chiave del Record in uso</span> </span>(new<span style="font-weight: bold; color: red;">Cant_Note) </span><span style="color: rgb(51, 204, 0);"><span style="font-weight: bold;">con la Chiave</span> (</span><span style="font-weight: bold; color: red;">cantId) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">del Record selezionato nella DataGrid Master</span></li>
+      <ul>
+<li style="color: black;"><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note</span>.<span style="font-weight: bold; color: red;">Cant_Id </span>= <span style="font-weight: bold; color: red;">cantId</span>;</li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dei NUOVI VALORI INSERITI A VIDEO&nbsp;</span><span style="font-weight: bold; color: red;"></span></li>
+      <ul>
+<li style="color: black;"><span style="color: rgb(51, 0, 153);">CommonServiceWeb.FillEntityProperties(new</span><span style="font-weight: bold; color: red;">Cant_Note</span><span style="color: rgb(51, 0, 153);">, e.NewValues);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">della Chiave PRINCIPALE</span><span style="font-weight: bold; color: red;"></span></li>
+      <ul>
+<li style="color: black;"><span style="color: rgb(51, 0, 153);">CommonServiceWeb.FillEntityKey(new</span><span style="font-weight: bold; color: red;">Cant_Note</span><span style="color: rgb(51, 0, 153);">, e.Keys, KEYFIELDNAME);</span></li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Settaggio del Nuovo Record (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con gli eventuali Dati da Impostare PRIMA Di un ADD/UPDATE </span></li>
+      <ul>
+<li style="color: black;"><span style="color: rgb(51, 0, 153);">RepoManager.</span><span style="font-weight: bold; color: red;">Cant_Note</span><span style="color: rgb(51, 0, 153);">Repo.SetEntityBeforeAddOrUpdate(new</span><span style="font-weight: bold; color: red;">Cant_Note</span>);</li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Check del corrispondente Repository per i Dati del Nuovo Record (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note)</span></li>
+      <ul>
+<li style="color: rgb(51, 0, 153);">CommonServiceWeb.AddValidationErrors(RepoManager<span style="font-weight: bold;">.<span style="color: red;">Cant_Note</span></span>Repo.Check(new<span style="font-weight: bold; color: red;">Cant_Note</span>, e.IsNewRow), e.Errors, gvDetails, typeof(<span style="font-weight: bold; color: red;">Cant_Note</span>Module));</li>
+      </ul>
+      <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Gestisce l'eventuale presenza di Errori restituiti nel Dictionary della Check del Repository</span></li>
+      <ul>
+<li style="color: rgb(51, 0, 153);">if (e.HasErrors)</li><li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">eventuale emissione a video dell'elenco degli errori riscontrati dalla Check</span></li><ul style="color: rgb(51, 0, 153);"><li>e..RowError = CommonServiceWeb.GetValidationErrorString(e.Errors);</li></ul>
+      </ul>
+      <li style="color: rgb(51, 0, 153);"> }</li>
+    </ul>
+    <li style="color: rgb(51, 0, 153);">}</li>
+  </ul>
+  <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">protected void<span style="text-decoration: underline; font-weight: bold;"> <span style="color: rgb(204, 51, 204);">gv</span></span><span style="color: red; text-decoration: underline; font-weight: bold;">Cant_Note</span><span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">_Detail_RowInserting</span>(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di INSERIMENTO delle Riga di DETTAGLIO che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine ma la&nbsp;Row_Validating)</span></li>
+  </ul>
+  <ul>
+    <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">{</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">ASPxGridView gvDetail = (ASPxGridView)sender;</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Scrittura nel LOG del messaggio che informa quando&nbsp;quel record è stato inserito da quell'Utente&nbsp;</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">_log.Info(String.Format("<span style="font-weight: bold; color: red;">CANT_NOTE</span>-Row Inserting by {0}", PowerWebContext.Current.User.Codice_Utente));</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza (</span><span style="font-weight: bold; color: red;">cantId)&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> la Chiave del Record selezionato nella Data Grid Master</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">int <span style="font-weight: bold; color: red;">cantId</span> = Convert.ToInt32(gvDetail.GetMasterRowKeyValue());</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza (</span><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">utenteId</span></span><span style="font-weight: bold; color: red;">)&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> il Codice Utente che sta Inserendo quel Record prendendolo dal Contesto</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">int <span style="font-weight: bold; color: red;">utenteId</span> = Convert.ToInt32(e.NewValues[CommonService.GetPropertyName(() =&gt; _utentiStub.Utenti_Id)]);</span></li>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><br></span></li>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Cant</span> <span style="font-weight: bold; color: red;">currentCant</span> = RepoManager.<span style="font-weight: bold; color: red;">Cant</span>Repo.SingleOrDefault(c =&gt; c.Cant_Id == cantId);</span></li>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><br></span></li>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Utenti</span> current<span style="font-weight: bold; color: red;">Utente</span> = RepoManager.<span style="font-weight: bold; color: red;">Utenti</span>Repo.SingleOrDefault(u =&gt; u.Utenti_Id == utenteId);</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Inizializzazione del Record in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con i Valori di Default del Repository</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Cant_Note</span> new<span style="font-weight: bold; color: red;">Cant_Note</span> = RepoManager.<span style="font-weight: bold; color: red;">Cant_Note</span>Repo.Init();</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dei NUOVI VALORI INSERITI A VIDEO&nbsp;</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">CommonServiceWeb.FillEntityProperties(new<span style="font-weight: bold; color: red;">Cant_Note</span>, e.NewValues);</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Settaggio del Nuovo Record (</span><span style="color: rgb(51, 0, 153);">new</span><span style="font-weight: bold; color: red;">Cant_Note) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con gli eventuali Dati da Impostare PRIMA Di un ADD/UPDATE</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">RepoManager.Cant_NoteRepo.SetEntityBeforeAddOrUpdate(newCant_Note);</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Imposta l'Id&nbsp;(</span><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Cant_Id</span>) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">del Cantiere del Nuovo Record (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">new<span style="font-weight: bold; color: red;">Cant_Note)</span></span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">new<span style="font-weight: bold; color: red;">Cant_Note</span>.<span style="font-weight: bold; color: red;">Cant_Id</span> = <span style="font-weight: bold; color: red;">cantId</span>;</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Imposta l'Id (</span><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Utenti_Id</span>) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dell'Utente del Nuovo Record (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">new<span style="font-weight: bold; color: red;">Cant_Note)</span></span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">new<span style="font-weight: bold; color: red;">Cant_Note</span>.<span style="font-weight: bold; color: red;">Utenti_Id</span> = <span style="font-weight: bold; color: red;">utenteId</span>;</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Funzione di ADD del Repository (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">.<span style="font-weight: bold; color: red;">Cant_Note) </span></span><span style="font-weight: bold; color: rgb(51, 204, 0);">per il Nuovo Record (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">new<span style="font-weight: bold; color: red;">Cant_Note)&nbsp;</span></span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">RepoManager.<span style="font-weight: bold; color: red;">Cant_Note</span>Repo.Add(new<span style="font-weight: bold; color: red;">Cant_Note</span>, true);</span></li>
+      <ul>
+        <ul>
+<ul><li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">e.Cancel = true;</span></li><li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">gvDetail.CancelEdit();</span></li><li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">BindDetailGrid(gvDetail);</span></li></ul>
+        </ul>
+      </ul>
+    </ul>
+    <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+  </ul>
+  <li style="color: rgb(51, 0, 153);">protected void <span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">gv<span style="color: red;">Cant_Note</span>_Detail_RowUpdating</span>(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)</li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di AGGIORNAMENTO delle Riga di DETTAGLIO che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine ma la&nbsp;Row_Updating)</span></li>
+  </ul>
+  <ul>
+    <li style="color: rgb(51, 0, 153);">{</li>
+    <li style="color: rgb(51, 0, 153);"><span style="font-weight: bold; color: rgb(51, 204, 0);">Scrittura nel LOG del messaggio che informa quando&nbsp;quel record è stato inserito da quell'Utente&nbsp;</span></li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);"><span style="font-weight: bold; color: rgb(51, 204, 0);"></span>_log.Info(String.Format("<span style="font-weight: bold; color: red;">CANT_NOTE</span>-Row Updating by {0}", PowerWebContext.Current.User.Codice_Utente));</li>
+      <li style="color: rgb(51, 0, 153);">ASPxGridView gvDetail = (ASPxGridView)sender;</li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza </span>(<span style="color: rgb(51, 0, 153);">currentId</span>)<span style="font-weight: bold; color: red;">&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> la Chiave del Record selezionato nella Data Grid Di DETAIL</span></li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);">var currentId = Convert.ToInt32(e.Keys[gvDetail.KeyFieldName]);</li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> nella Struttura del Record Corrente </span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (</span>current<span style="font-weight: bold; color: red;">CantNote</span><span style="font-weight: bold; color: red;"></span><span style="font-weight: bold; color: rgb(51, 204, 0);">)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> i Dati del Record corrente</span></li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Cant_Note</span> current<span style="font-weight: bold; color: red;">CantNote</span> = RepoManager.<span style="font-weight: bold; color: red;">Cant_Note</span>Repo.Single(cn =&gt; cn.<span style="font-weight: bold; color: red;">Cant_Note_Id</span> == currentId);</li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Caricamento </span><span style="font-weight: bold; color: rgb(51, 204, 0);">nella struttura del RECORD in uso (</span><span style="color: rgb(51, 0, 153);">current</span><span style="font-weight: bold; color: red;">CantNote</span><span style="font-weight: bold; color: red;">) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">dei NUOVI VALORI INSERITI A VIDEO&nbsp;</span></li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);">CommonServiceWeb.FillEntityProperties(current<span style="font-weight: bold; color: red;">CantNote</span>, e.NewValues);</li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Routine di Settaggio del&nbsp;Record Corrente&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"></span><span style="color: rgb(51, 0, 153);">current</span><span style="font-weight: bold; color: red;">CantNote</span><span style="font-weight: bold; color: red;"></span>);<span style="font-weight: bold; color: red;">) </span><span style="font-weight: bold; color: rgb(51, 204, 0);">con gli eventuali Dati da Impostare PRIMA Di un ADD/UPDATE</span></li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);">RepoManager<span style="font-weight: bold; color: red;">.Cant_Note</span>Repo.SetEntityBeforeAddOrUpdate(<span style="font-weight: bold; color: rgb(51, 204, 0);"></span><span style="color: rgb(51, 0, 153);">current</span><span style="font-weight: bold; color: red;">CantNote</span><span style="font-weight: bold; color: red;"></span>);</li>
+    </ul>
+    <li style="color: rgb(51, 0, 153);"><span style="font-weight: bold; color: rgb(51, 204, 0);">Aggiorna il Record nel DataBase</span></li>
+    <ul>
+      <li style="color: rgb(51, 0, 153);">RepoManager.<span style="font-weight: bold; color: red;">Cant_Note</span>Repo.SaveChanges();</li>
+      <li style="color: rgb(51, 0, 153);">e.Cancel = true;</li>
+      <li style="color: rgb(51, 0, 153);">gvDetail.CancelEdit();</li>
+      <li style="color: rgb(51, 0, 153);">BindDetailGrid(gvDetail);</li>
+    </ul>
+    <li style="color: black;"> }<span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="color: rgb(51, 0, 153);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li>
+  </ul>
+  <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">&nbsp;protected void <span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">gv<span style="color: red;">Cant_Note</span>_Detail_RowDeleting</span>(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e)</span></li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di CANCELLAZIONE delle Riga di DETTAGLIO che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine ma la&nbsp;Row_Updating)</span></li>
+  </ul>
+  <ul>
+    <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">{</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">ASPxGridView gvDetail = (ASPxGridView)sender;</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Scrittura nel LOG del messaggio che informa quando&nbsp;quel record è stato inserito da quell'Utente&nbsp;</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">_log.Info(String.Format("<span style="font-weight: bold; color: red;">CANT_NOTE</span>-Row Deleting by {0}", PowerWebContext.Current.User.Codice_Utente));</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza </span>(<span style="color: rgb(51, 0, 153);">currentId</span>)<span style="font-weight: bold; color: red;">&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> la Chiave del Record selezionato nella Data Grid Di DETAIL</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">var currentId = Convert.ToInt32(e.Keys[gvDetail.KeyFieldName]);</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Recupera e Memorizza</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> nella Struttura del Record Corrente </span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (</span>current<span style="font-weight: bold; color: red;">CantNote</span><span style="font-weight: bold; color: red;"></span><span style="font-weight: bold; color: rgb(51, 204, 0);">)</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> i Dati del Record corrente</span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: red;">Cant_Note</span> current<span style="font-weight: bold; color: red;">CantNote</span> = RepoManager.<span style="font-weight: bold; color: red;">Cant_Note</span>Repo.Single(cn =&gt; cn.<span style="font-weight: bold; color: red;">Cant_Note_Id</span> == currentId);</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">Richiama la Funzione di DEL del Repository (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">.<span style="font-weight: bold; color: red;">Cant_Note) </span></span><span style="font-weight: bold; color: rgb(51, 204, 0);">per il&nbsp;Record Corrente (</span><span style="font-weight: normal; color: rgb(51, 0, 153);">current<span style="font-weight: bold; color: red;">Cant_Note)&nbsp;</span></span></li>
+    <ul>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">RepoManager.<span style="font-weight: bold; color: red;">Cant_Note</span>Repo.Delete(current<span style="font-weight: bold; color: red;">CantNote</span>, true);</span></li>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">e.Cancel = true;</span></li>
+      <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">BindDetailGrid(gvDetail);</span></li>
+    </ul>
+    <li style="color: black;"><span style="font-weight: normal; color: rgb(51, 0, 153);">}</span></li>
+  </ul>
+  <li>protected void <span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">gv<span style="color: red;">Cant_Note</span>_Detail_BeforePerformDataSelect</span>(object sender, EventArgs e)</li>
+  <ul>
+    <li style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine di Caricamento Label e ComboBoxes nella Riga di DETTAGLIO che si sta Trattando&nbsp;</span><span style="font-weight: bold; color: rgb(51, 204, 0);"> (<span style="text-decoration: underline;">SOLO x le Form CON DETAIL</span> altrimenti NON c'è questa Routine ma la&nbsp;Row_Updating)</span></li>
+  </ul>
+  <ul>
+    <li> {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+    <ul>
+      <li><span style="color: rgb(51, 0, 153);"> ASPxGridView gvDetails = sender as ASPxGridView;</span></li>
+      <li><span style="color: rgb(51, 0, 153);">if (gvDetails != null)</span></li>
+      <li><span style="color: rgb(51, 0, 153);">{</span></li>
+      <ul>
+<li><span style="color: rgb(51, 0, 153);">CommonServiceWeb.FillGridLabels(typeof(<span style="font-weight: bold; color: red;">Cant_Note</span>), gvDetails);</span></li>
+      </ul>
+      <ul>
+<li><span style="color: rgb(51, 0, 153);">CommonServiceWeb.FillComboboxes(gvDetails);</span></li><li><span style="color: rgb(51, 0, 153);">CommonServiceWeb.InitDetailGrid(Page, gvDetails);</span></li><li><span style="color: rgb(51, 0, 153);">BindDetailGrid(gvDetails);</span></li>
+      </ul>
+      <li><span style="color: rgb(51, 0, 153);"> }</span></li>
+    </ul>
+    <li><span style="color: rgb(51, 0, 153);"> }<span style="font-weight: bold;"></span></span></li>
+  </ul>
+  <li><span style="color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);">protected void <span style="text-decoration: underline; color: rgb(204, 51, 204);"></span></span></span><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);"><span style="text-decoration: underline; color: rgb(204, 51, 204);">gvCant_Note_DetailRowExpandedChanged</span></span></span><span style="color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);"><span style="text-decoration: underline; color: rgb(204, 51, 204);"></span>(object sender, ASPxGridViewDetailRowEventArgs e)</span></span></li>
+  <ul>
+    <li><span style="font-weight: bold; color: rgb(51, 204, 0);">//Routine per IMPEDIRE il Caricamento se la DataGrid di Dettaglio è ESPANSA</span></li>
+  </ul>
+  <ul>
+    <li><span style="color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);">{</span></span></li>
+    <ul>
+      <li><span style="color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);"></span><span style="color: rgb(51, 0, 153);">if (!e.Expanded)</span></span></li>
+<ul>
+        <li><span style="color: rgb(51, 204, 0);"></span><span style="color: rgb(51, 204, 0);"></span><span style="color: rgb(51, 204, 0);"><span style="color: rgb(51, 0, 153);">GridView.DataBind();</span></span></li>
+<li><span style="color: rgb(51, 0, 153);"> }</span></li></ul>
+    
+    </ul>
+
+  
+  </ul>
+
+</ul>
+<span style="color: rgb(51, 0, 153);"></span><ul style="color: rgb(51, 0, 153);">
+  <li><span style="font-weight: bold;">--------------------------------------------------------------------------------
+&nbsp;FINE DEFINIZIONE SOLO X FORM <span style="text-decoration: underline;">CON DETAIL</span>---------------------------------------------------------------------------------</span><span style="font-weight: bold;"></span><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+  <li><span style="font-weight: normal;">protected void <span style="font-weight: bold; color: rgb(204, 51, 204);">gvCli</span>_CommandButtonInitialize(object sender, ASPxGridViewCommandButtonEventArgs e)</span></li>
+  <li style="color: rgb(51, 204, 0);"><span style="font-weight: normal;"><span style="font-weight: bold;">//Richiama
+la Routine della GridPageMaster che Abilita/Disabilita i Tasti di
+INS/MOD/DEL in base agli eventuali Filtri x FILIALE (se attivato
+DOMINIOMANUTENZIONE in PARAM)</span></span></li>
+  <li><span style="font-weight: normal;">{</span></li>
+  <ul>
+    <li><span style="font-weight: normal;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Esegue solo il richiamo della Routine</span><br>
+      </span></li>
+  </ul>
+  <li><span style="font-weight: normal;">}</span></li>
+  <li><br>
+    <span style="font-weight: normal;"></span></li>
+  <li>public override void <span style="font-weight: bold; color: rgb(204, 51, 204);">HeaderFilterFillItems</span>(object sender, ASPxGridViewHeaderFilterEventArgs e)</li>
+  <li><span style="font-weight: bold; color: rgb(51, 204, 0);">//Gestione Filtri CUSTOM x i Campi DATA (va comunque definita vuota se non ce ne sono)</span></li>
+  <li>{</li>
+  <ul>
+    <li>if (e.Column.FieldName == CommonService.GetPropertyName(() =&gt; _cliStub.Data_Registrazione_Cli) ||</li>
+    <ul>
+      <li>e.Column.FieldName == .................................................................)</li>
+      <ul>
+        <li>CommonServiceWeb.GridHeaderFilterFillItems(e);<span style="font-weight: normal;"></span></li>
+      </ul>
+    </ul>
+  </ul>
+  <li><span style="font-weight: normal;">}</span></li>
+  <li><span style="font-weight: normal;"><br>
+    </span></li>
+  <li><span style="font-weight: normal;">public <span style="font-weight: bold; color: rgb(204, 51, 204);">ExtXtraReport GetReport</span>(Tab_Report
+report, List&lt;TabPageExtended&gt; selectedTabs,
+List&lt;GroupingTreeListItem&gt; groups, List&lt;object&gt; items,
+DevExpress.Web.ASPxPanel.ASPxPanel customOptionsPanel = null)</span></li>
+  <li><span style="font-weight: normal;"><span style="font-weight: bold; color: rgb(51, 204, 0);">//Richiamo Pagina di Gestione degli eventuali Report di quella Page</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List&lt;<span style="font-weight: bold; color: red;">Cli</span>&gt; <span style="font-weight: bold; color: red;">clis</span> = CommonService.ConvertTo&lt;<span style="font-weight: bold; color: red;">Cl</span>i&gt;(items);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 51, 255);">XR</span><span style="font-weight: bold; color: red;">Cli</span> <span style="font-weight: bold; color: red;">cli</span>Report = new XR<span style="font-weight: bold; color: red;">Cli</span>(<span style="font-weight: bold; color: red;">clis</span>, CommonServiceWeb.ConvertTabPageExtendedToString(selectedTabs));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return new ExtXtraReport { Report = <span style="font-weight: bold; color: red;">cli</span>Report, PictureBox = <span style="font-weight: bold; color: red;">cli</span>Report.CompanyLogo };<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></li>
+  <li><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;  <br>
+    </span></li>
+  <li><span style="font-weight: normal;">public <span style="font-weight: bold; color: rgb(204, 51, 204);">log4net.ILog Log</span></span></li>
+  <li style="font-weight: bold; color: rgb(51, 204, 0);"><span style="font-weight: normal;">//Richiamo della Gestione del LOG della pagina</span></li>
+  <li><span style="font-weight: normal;">{</span></li>
+  <ul>
+    <li><span style="font-weight: normal;">get { return _log;</span><br>
+      <span style="font-weight: normal;"></span></li>
+  </ul>
+  <li><span style="font-weight: normal;">}</span></li>
+  <li><br>
+    <span style="font-weight: normal;"></span><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br></span></li>
+</ul><br style="font-weight: bold; color: rgb(51, 0, 153);">
+<ul style="font-weight: bold; color: rgb(51, 0, 153);">
+</ul>
+<span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;&nbsp;</span></body></html>

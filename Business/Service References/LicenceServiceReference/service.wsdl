@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LicenceService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/LicenceServiceLibrary" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ILicenceService_GetActivation_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetActivation" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetActivation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetActivationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_SetUpdateData_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetUpdateData" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_SetUpdateData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetUpdateDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_UpdateExpirationDate_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateExpirationDate" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_UpdateExpirationDate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateExpirationDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_AddNewScheduledOperation_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewScheduledOperation" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_AddNewScheduledOperation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewScheduledOperationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetScheduleDatas_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetScheduleDatas" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetScheduleDatas_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetScheduleDatasResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_RemoveScheduleData_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveScheduleData" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_RemoveScheduleData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveScheduleDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetModulesActivation_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetModulesActivation" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetModulesActivation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetModulesActivationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_UploadRegFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadRegFiles" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_UploadRegFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadRegFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetLicenceExpiredAndInExpiration_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLicenceExpiredAndInExpiration" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetLicenceExpiredAndInExpiration_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLicenceExpiredAndInExpirationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_UpdateWinitUserPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateWinitUserPassword" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_UpdateWinitUserPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateWinitUserPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetWinitUserPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWinitUserPassword" />
+  </wsdl:message>
+  <wsdl:message name="ILicenceService_GetWinitUserPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWinitUserPasswordResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ILicenceService">
+    <wsdl:operation name="GetActivation">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/GetActivation" message="tns:ILicenceService_GetActivation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/GetActivationResponse" message="tns:ILicenceService_GetActivation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetUpdateData">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/SetUpdateData" message="tns:ILicenceService_SetUpdateData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/SetUpdateDataResponse" message="tns:ILicenceService_SetUpdateData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpirationDate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/UpdateExpirationDate" message="tns:ILicenceService_UpdateExpirationDate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/UpdateExpirationDateResponse" message="tns:ILicenceService_UpdateExpirationDate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddNewScheduledOperation">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/AddNewScheduledOperation" message="tns:ILicenceService_AddNewScheduledOperation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/AddNewScheduledOperationResponse" message="tns:ILicenceService_AddNewScheduledOperation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetScheduleDatas">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/GetScheduleDatas" message="tns:ILicenceService_GetScheduleDatas_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/GetScheduleDatasResponse" message="tns:ILicenceService_GetScheduleDatas_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveScheduleData">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/RemoveScheduleData" message="tns:ILicenceService_RemoveScheduleData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/RemoveScheduleDataResponse" message="tns:ILicenceService_RemoveScheduleData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetModulesActivation">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/GetModulesActivation" message="tns:ILicenceService_GetModulesActivation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/GetModulesActivationResponse" message="tns:ILicenceService_GetModulesActivation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadRegFiles">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/UploadRegFiles" message="tns:ILicenceService_UploadRegFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/UploadRegFilesResponse" message="tns:ILicenceService_UploadRegFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLicenceExpiredAndInExpiration">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/GetLicenceExpiredAndInExpiration" message="tns:ILicenceService_GetLicenceExpiredAndInExpiration_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/GetLicenceExpiredAndInExpirationResponse" message="tns:ILicenceService_GetLicenceExpiredAndInExpiration_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWinitUserPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/UpdateWinitUserPassword" message="tns:ILicenceService_UpdateWinitUserPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/UpdateWinitUserPasswordResponse" message="tns:ILicenceService_UpdateWinitUserPassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWinitUserPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILicenceService/GetWinitUserPassword" message="tns:ILicenceService_GetWinitUserPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILicenceService/GetWinitUserPasswordResponse" message="tns:ILicenceService_GetWinitUserPassword_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ILicenceService" type="tns:ILicenceService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetActivation">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/GetActivation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetUpdateData">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/SetUpdateData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpirationDate">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/UpdateExpirationDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNewScheduledOperation">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/AddNewScheduledOperation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetScheduleDatas">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/GetScheduleDatas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveScheduleData">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/RemoveScheduleData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetModulesActivation">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/GetModulesActivation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadRegFiles">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/UploadRegFiles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLicenceExpiredAndInExpiration">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/GetLicenceExpiredAndInExpiration" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWinitUserPassword">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/UpdateWinitUserPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWinitUserPassword">
+      <soap:operation soapAction="http://tempuri.org/ILicenceService/GetWinitUserPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LicenceService">
+    <wsdl:port name="BasicHttpBinding_ILicenceService" binding="tns:BasicHttpBinding_ILicenceService">
+      <soap:address location="http://localhost:8733/Design_Time_Addresses/LicenceServiceLibrary/LicenceService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

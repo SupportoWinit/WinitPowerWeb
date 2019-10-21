@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_FIL</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head>
+<body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA FIL<br>
+</h1>
+<span style="font-weight: bold;">Contiene i Dati
+Anagrafici delle Filiali <span style="text-decoration: underline;"></span>che
+vengono
+eventualmente associate ai Singoli Cantieri </span><br>
+<br>
+Le Chiavi del Record : &nbsp;<a href="#Fil_Id"> Fil_id</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Fil_Id">Fil_id</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">Chiave</span>),&nbsp;
+<a href="#Codice_Filiale">Codice_Filiale</a>, <a href="#Descrizione_Fil_">Descrizione_Fil</a>, &nbsp; <a href="#Data_Registrazione_FIL">Data_Registrazione_Fil</a>,
+<a href="#DataOraUltimaModifica_FIL">DataOraUltimaModifica</a><a href="#DataOraUltimaModifica_FRU">_Fil</a> , <a href="_TR_FIL.html#Descrizione_Fil_">Descrizione_Fil</a><br>I Campi con Default &nbsp; :&nbsp;<a href="#DisAbilitazione_FRU">&nbsp;</a><a href="#Data_Registrazione_FIL">Data_Registrazione_Fru&nbsp;</a>
+, <a href="#DataOraUltimaModifica_FIL">DataOraUltimaModifica_Fru</a>
+,<a href="#DisAbilitazione_FIL"> Disabilitazione_Fru</a>
+(False)&nbsp; <br>&nbsp;&nbsp;
+&nbsp;&nbsp; <br>I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;10-<a href="#Codice_Filiale">Codice_Filiale</a> (10%) / 20-<a href="#Descrizione_Fil_">Descrizione_Fil</a> (20%)&nbsp; / 80 -<a href="#Data_Registrazione_FIL">Data_Registrazione_Fil</a><span style="text-decoration: underline;"> </span>(10%) / 90 - <a href="#DataOraUltimaModifica_FIL">DataOraUltimaModifica_Fil</a> (15%) / 110-<a href="../TR_CANT/_TR_CANT.html#DisAbilitazione_Can">Disabilitazione_Cli</a> (5%) / 120 - <a href="#Note_Fil">Note_Fil</a> (30%)&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3><table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2"><tbody><tr><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 237px;">NOME
+DEL CAMPO NEL DB</td><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 99px;">TIPO
+CAMPO</td><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 881px;">DESCRIZIONE
+DEL CAMPO</td><td style="width: 39px; background-color: silver;"><span style="color: white;">CTRL</span></td><td style="text-align: center; background-color: silver; width: 60px;"><span style="font-weight: bold; color: white;">COMBO</span></td></tr></tbody></table>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="font-weight: bold;"></span><span style="font-weight: bold;"><a name="Fil_Id"></a>
+</span><span style="text-decoration: underline; font-weight: bold;">Fil_Id</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a><br>
+</td>
+<td style="vertical-align: top; width: 869px;">&nbsp;N°
+Univoco&nbsp;<span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;</span></span></span>
+Identificativo della Filiale associabile ad un Cantiere<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"> Obbligatorio&nbsp;<span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;"></span></span></span></span>.&nbsp;<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span><span style="color: rgb(153, 51, 0);"></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td><td style="width: 38px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><span style="font-weight: bold;"><a name="Codice_Filiale"></a> </span><span style="font-weight: bold; text-decoration: underline;">Codice_Filiale</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(20)</a></td>
+<td style="width: 869px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> Codice Interno Univoco
+assegnato dalla Singola&nbsp;Azienda per identificare quella
+specifica Filiale</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;">&nbsp; </span></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span>
+<span style="font-weight: bold; color: rgb(153, 102, 51);">Viene
+Automaticamente riempito con Blanks a SX per allinearlo a DX e viene controllato che sia UNIVOCO.<span style="background-color: red;"><span style="background-color: white;"></span></span></span><br>
+Per gestire correttamente un
+Ordinamento corretto dei Record in base al valore del Campo Codice
+Filiale occorre che: <br>
+<ul>
+<li>i Codici NUMERICI (costituiti solo da Numeri) vengano
+inseriti
+allineati a Destra e SENZA GLI ZERI NON SIGNIFICATIVI DAVANTI</li>
+<li>i Codici ALFANUMERICI (ovvero quelli che NON
+contengono solo Numeri)
+vengano inseriti allineati a SX e riempiti dei necessari caratteri
+blanks a destra</li>
+</ul>
+</td><td style="width: 38px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="font-weight: bold;"><a name="Data_Registrazione_FIL"></a> </span><span style="text-decoration: underline; font-weight: bold;">Data_Registrazione_FIL</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top; width: 869px;">Data
+e Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio -</span></span>
+in
+cui PER la PRIMA VOLTA è stato inserita questa Filiale <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span> <span style="font-weight: bold; color: rgb(153, 102, 51);">Nessun Controllo Specifico</span><br>
+<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema </span><span style="color: black;">(Vedi
+anche <a href="#DataOraUltimaModifica_FRU">DataOraUltimaModifica_FRU</a>)</span></span>Note <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabili</span> a questo Utente. <span style="color: rgb(153, 51, 0);">Nessun Particolare Controllo</span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span></td><td style="width: 38px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="DataOraUltimaModifica_FIL"></a>DataOraUltimaModifica_FIL</span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a><br>
+</td>
+<td style="vertical-align: top; width: 869px;">Data ed Ora <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio&nbsp;</span></span>
+in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica fatta su quel Record)</span> <span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="#Data_Registrazione_FRU"> Data_Registrazione_FRU</a>)</td><td style="width: 38px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr><td><a name="Descrizione_Fil_"></a> <span style="font-weight: bold;">Descrizione_Fil </span></td><td><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(50)</a></td><td style="width: 869px;">Descrizione della Filiale <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio &nbsp;&nbsp;</span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo Specifico salvo il fatto che sia indicato</span></td><td style="width: 38px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">TEXT</td></tr><tr>
+<td style="vertical-align: top; width: 226px;"><span style="font-weight: bold;"><a name="DisAbilitazione_FIL"></a>
+</span><span style="text-decoration: underline; font-weight: bold;">DisAbilitazione_FIL</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 869px;">Stato
+della Filiale che indica se la relativa Filiale è da considerare
+Disabilitata o meno. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">==False.
+</span>UnaFiliale anche se disabilitata può essere
+comunque utilizzata
+dal resto del sistema e <span style="color: rgb(153, 51, 0);">può
+assumere i seguenti Valori:</span><br>
+<ul>
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo record NON è più ATTIVO e NON va più utilizzato
+&nbsp;&nbsp; </li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale del Record</li>
+</ul>
+Viene utilizzato solo per permettere di escludere
+automaticamente le Filaili dalla visualizzazione
+della Lista delleFiliali proposta in apertura della Gestione delle
+Filiali se è attivato il relativi Campo </td><td style="width: 38px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr><td><span style="font-weight: bold;"><a name="Note_Fil"></a> <span style="text-decoration: underline;">Note_Fil</span></span></td><td><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(Max)</a></td><td style="width: 869px;">Note <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabili</span> a questo Utente.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo Specifico</span></td><td style="width: 38px; text-align: center;">OK</td><td style="text-align: center;">TEXT</td></tr><tr>
+<td style="vertical-align: top; width: 226px;"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</td>
+<td style="vertical-align: top; width: 119px;"><br>
+</td>
+<td style="vertical-align: top; width: 869px;"><br>
+</td><td style="width: 38px; text-align: center;"></td><td style="width: 60px; text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<span style="text-decoration: line-through;">&nbsp;</span><br>
+<br>
+</body></html>

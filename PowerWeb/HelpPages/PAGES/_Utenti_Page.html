@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Utenti_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (UTENTI) di Gestione delle Schede Anagrafiche degli Utenti</span>
+</h1>
+
+Questa pagina permette l'Inserimento, la Modifica, la
+Cancellazione ( a determinate condizioni) di ogni Utente abilitato ad
+utilizzare PowerWeb con i relativi eventuali Settaggi (Password&nbsp;
+ecc ecc)<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">
+
+Questa pagina è di Tipo MASTER</span> (senza Dettaglio) e quindi si rimanda la relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della relativa struttura di Funzionamento.</li><li><span style="text-decoration: underline; font-weight: bold;">Gestisce il&nbsp;</span><span style="text-decoration: underline; font-weight: bold;">Tasto di ON/OFF</span> in base alla parametrizzazione inserita nel campo <a href="../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">PopulateBtnVisible</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">TAB_FUNZ</a></li><li><span style="text-decoration: underline; font-weight: bold;">Gestisce la Modalità di EDIT diretta dalla Griglia</span> in base alla parametrizzazione inserita nel campo<a href="../TR_RECORD/_TR_TAB_FUNZ.html#Dflt_Grid_Edit_Mode"> Dflt_Grid_Edit_Mode</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">Tab_Funz</a><span style="font-weight: bold; text-decoration: underline;"><br>
+    </span></li>
+</ul>
+
+
+
+
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">NOTA BENE<br>
+</span></span>
+<ul>
+
+  <li><span style="font-weight: bold;">quando viene inserito nel sistema un Nuovo Utente nella Tabella </span><a style="font-weight: bold;" href="../TR_RECORD/_TR_UTENTI.html">Utenti</a><br>
+  </li>
+  <ul>
+    <li>allora viene inserito AUTOMATICAMENTE anche un Nuovo Record
+nella Tabella <a href="../TR_RECORD/_TR_TAB_AUT.html">TAB_AUT</a></li>
+    <ul>
+      <li>vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20le%20Abilitazioni%20Utente_Funzione/Come%20Gestire%20le%20Abilitazioni%20Utente_Funzione.html">Come
+Gestire le Autorizzazioni per Utente/Funzione</a></li>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold;">il Livello assegnato all'Utente è registrato nel RECORD della tabella TAB_AUT </span>con<br>
+  </li>
+  <ul>
+    <li>Chiave Utente = al Codice Utente</li>
+    <li>Chiave Funzione = Null</li>
+    
+  </ul>
+  <li><span style="font-weight: bold; color: red;">NON è MAI possibile Inserire un Utente con un Livello &gt; 10 (Utente Admin)<br>
+</span></li>
+  <li><span style="font-weight: bold; color: red;">Gli Utenti con Livello = 12 (Utenti Winit)<br>
+</span></li>
+  <ul>
+    <li><span style="font-weight: bold; color: red;">possono modificare i Dati (livello compreso) degli Altri Utenti</span></li>
+  </ul>
+  <li><span style="font-weight: bold; color: red;">Gli Utenti con Livello 10 (Utenti Admin)<br>
+</span></li>
+  <ul>
+    <li><span style="font-weight: bold; color: red;">possono modificare i Dati (livello compreso ma solo fino a Livello &lt;=10) <br>
+</span></li>
+    <ul>
+      <li><span style="font-weight: bold; color: red;">degli Altri Utenti con livello &lt;=10<br>
+        </span></li>
+    </ul>
+  </ul>
+
+  <li style="font-weight: bold;">per Modificare una Scheda Anagrafica Utente</li>
+  <ul>
+    <li>occorre inserire NUOVAMENTE la relativa Password</li>
+    <ul>
+      <li>se inserita Uguale allora rimane quella</li>
+      <li>altrimenti viene modificata con la Nuova Password</li>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold;">Ad ogni Utente è associato il relativo</span><br>
+  </li>
+  <ul>
+    <li><span style="text-decoration: underline;">Codice Lingua</span> (Vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20le%20Lingue%20e%20le%20Versioni%20in%20PowerWeb/Come%20Gestire%20le%20Lingue%20e%20le%20Versioni%20in%20PowerWeb.html">Come Gestire le Lingue e le Versioni in PowerWeb</a><span style="color: black;">)</span></li>
+    <ul>
+      <li><span style="color: black;">assieme al <a href="../TR_RECORD/_TR_UTENTI.html#Versioni_id">Codice Versione</a> indica in che Lingua e con quale Versione vanno cercate tutte le Nomenclature di PowerWeb nella tabella <a href="../TR_RECORD/_TR_RESOURCES.html">Resources</a><br>
+</span></li>
+    </ul>
+
+    
+    <li><span style="text-decoration: underline;">Codice Versione</span> (Vedi Manuale&nbsp; <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20le%20Lingue%20e%20le%20Versioni%20in%20PowerWeb/Come%20Gestire%20le%20Lingue%20e%20le%20Versioni%20in%20PowerWeb.html">Come Gestire le Ligue e le Versioni in PowerWeb</a><span style="color: black;">)</span></li>
+    <ul>
+      <li><span style="color: black;"></span> <span style="color: black;">assieme al <a href="../TR_RECORD/_TR_UTENTI.html#Lingue_id">Codice Lingua</a> indica in che Lingua e con quale Versione vanno cercate tutte le Nomenclature di PowerWeb nella tabella <a href="../TR_RECORD/_TR_RESOURCES.html">Resources</a></span><span style="color: red;"></span></li>
+    </ul>
+
+
+    <li><span style="text-decoration: underline;">Codice Menù</span>&nbsp; (Vedi Manuale <span style="color: red;">Come Gestire i Menù di PowerWeb</span>)</li>
+    <ul>
+      <li>in base al quale per quell'Utente gli viene proposta quella determinata Struttura di Menù<br>
+      </li>
+    </ul>
+
+    
+    <li><span style="text-decoration: underline;">Flag Modalità di Attivazione Filtri x Filiale</span> (<span style="color: red;"><span style="color: black;">Vedi Manuale </span>Come Gestire i Filtri per Filiale sui Cantieri/Assistiti</span>)</li>
+    <li><span style="text-decoration: underline;">Flag Modalità di Attivazione Filtri x Responsabile</span> (<span style="color: red;">Vedi Manuale Come Gestire i Filtri per Responsabile sui Collaboratori</span>)</li>
+    <li><span style="text-decoration: underline;">Codice Collaboratore a lui Associato</span> (Vedi Manuale <span style="color: red;">Come Autorizzare i Collaboratori ad accedere alle proprie Timbrature</span>)</li>
+    <li><span style="text-decoration: underline;">Attivazione Messaggi di Richiesta Conferma in Ins e/o Mod e/o Del</span><br>
+    </li>
+
+    
+    <ul>
+      <li>è possibile indicare se per quel determinato Utente<br>
+    </li>
+      <ul>
+
+      <li>si vuole che venga o meno richiesta una conferma</li>
+    
+      </ul>
+      <ul>
+
+        <li>singola</li>
+        <li>doppia&nbsp;</li>
+      
+      </ul>
+      <li>
+
+da parte dell&#8217;utente <span style="text-decoration: underline;">prima di inserire
+e/o modificare e/o cancellare</span> i relativi dati<o:p></o:p></li>
+      <ul>
+        <li>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20le%20Abilitazioni%20Utente_Funzione/Come%20Gestire%20le%20Abilitazioni%20Utente_Funzione.html">Come Gestire le Abilitazioni per Utente/Funzione</a><br>
+        </li>
+      </ul>
+    </ul>
+
+    
+    <ul>
+      
+      
+      <ul>
+        
+      </ul>
+    </ul>
+</ul></ul><o:p>
+</o:p>
+<ul>
+  <ul>
+
+  
+  </ul>
+
+
+</ul>
+
+
+<span style="text-decoration: underline; font-weight: bold;"></span>
+<dl>
+
+  <dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire un Utente sono i seguenti:</u></b></dt>
+</dl>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><a href="../TR_RECORD/_TR_UTENTI.html#Codice_utente">UN CODICE
+UTENTE&nbsp;</a> &nbsp;</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>(Massimo di 20 caratteri Alfanumerici) </li>
+  <li><a href="../TR_RECORD/_TR_UTENTI.html#PasswordHash">LA RELATIVA PASSWORD&nbsp;</a>
+    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>(Criptata)</li>
+  <li><a href="../TR_RECORD/_TR_UTENTI.html#Data_Registrazione_Utente">LA
+DATA 1° REGISTRAZIONE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+  <li><a href="../TR_RECORD/_TR_UTENTI.html##DataOraUltimaModifica_Utente">DATA/ORA
+ULTIMA MODIFICA</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+</ul>
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<span style="font-weight: bold; text-decoration: underline;"><br>
+<br>
+Comportamenti
+Specifici per la Pagina UTENTI</span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="text-decoration: underline;">Rispetto al comportamento
+Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina
+UTENTI</span><span style="text-decoration: underline;"><span style="font-weight: bold;"> </span>ci sono alcuni comportamenti
+particolari che vale la pena di Segnalare</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;">AREA
+FILTRI CUSTOM</li>
+  <ul>
+    <li>vengono impostati i FILTRI CUSTOM di PERIODO sui seguenti Campi</li>
+    <ul>
+      <ul>
+        <li><a href="../TR_RECORD/_TR_UTENTI.html#Data_Registrazione_Utente">Data_Registrazione_Utente</a></li>
+        <li><a href="../TR_RECORD/_TR_UTENTI.html#DataOraUltimaModifica_Utente">DataOraUltimaModifica_Utente</a></li></ul>
+    </ul>
+  </ul>
+  <li style="text-decoration: underline; font-weight: bold;">AREA
+GESTIONE EDIT</li>
+  <ul>
+    <li style="font-weight: bold;">MODIFICA di un Record Utente</li>
+  </ul>
+  <ul>
+    <ul>
+      <li style="text-decoration: underline;">Quando si modifica il
+Livello attribuito a quell'Utente</li>
+      <ul>
+        
+        <li>il Livello viene AUTOMATICAMENTE registrato nella Tabella TAB_AUT sul record creato Automaticamente con</li>
+        <ul>
+          <li>Chiave Utente = al Codice Utente</li>
+          <li>Chiave Funzione = Null</li>
+        </ul>
+
+      </ul></ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">La
+Maschera di Gestione dell'Anagrafica Utenti
+prevede la gestione dei propri Dati Anagrafici suddividendoli per
+comodità in più TAB</span><br>
+
+
+<ul>
+<li style="font-weight: bold;">Generali</li><li style="font-weight: bold;">Note</li>
+</ul>
+<span style="font-weight: bold; text-decoration: underline;">I singoli
+TAB come pure i Singoli Campi dei Singoli TAB possono essere resi
+VISIBILI/INVISIBILI.</span><br>
+
+
+<ul>
+<li><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;a Livello Generale </span></span>(visibili/invisibili
+quindi per TUTTI gli Utenti Collegati)</li><li><span style="text-decoration: underline;"><span style="font-weight: bold;">a Livello di Singolo Utente </span></span>(visibili/invisibili
+quindi per quello SPECIFICO Utente collegato)</li>
+</ul>
+
+
+(vedi relativo <span style="color: red;">Manuale
+Abilitazione/Disabilitazione TAB/CAMPI</span>) in
+modo da permettere ad ogni Azienda di poter decidere quanti e quali
+Dati si intendono gestire a livello Anagrafico per i propri
+Collaboratori secondo le proprie necessità<br>
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">Per il
+Significato </span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; dei singoli Tasti&nbsp; presenti nella Testata
+della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Per come
+Modificare</span><br>
+
+<ul>
+
+  <li>&nbsp;i Campi (Colonne) da visualizzare nella Griglia Master <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="mailto:../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a></li>
+  </ul>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb)</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio<br>
+  </li>
+  <ul>
+    <li>&nbsp;si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb</a></li>
+  </ul>
+  <li>i Filtri sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare i Filtri della Griglia Master o di Dettaglio di una Pagina
+di
+PowerWeb</a></li>
+  </ul>
+  <li>un Record della Griglia Master per effettuarne</li>
+  <ul>
+    <li>l'Inserimento/Modifica/Cancellazione/Consultazione del Singoli
+Record visualizzatoi</li>
+    <ul>
+      <li>&nbsp;si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+    </ul>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>
+&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>&nbsp;&nbsp; (vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o della Griglia di Dettaglio
+di una Pagina di
+PowerWeb)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei Clienti nell'<a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html#AREA_H">Area
+H dello Schema della pagina Standard di PowerWeb</a><br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+Una volta scelta la Modalità di Visualizzazione/Ricerca dei
+Clienti che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista dei
+Cantieri/assistiti/Attività che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span><span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+:<br>
+
+&nbsp;nel caso in cui nella Tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAMETRI</a> sia stato ATTIVATO il
+campo <a href="../TR_RECORD/_TR_PARAM.html#File_Col_Var">File_Col_Var</a>
+allora il sistema&nbsp;<span style="text-decoration: underline; font-weight: bold;"></span>, ad
+ogni INSERIMENTO/VARIAZIONE/CANCELLAZIONE di un Record della Scheda
+Collaboratori , <span style="text-decoration: underline; font-weight: bold;">GESTISCE
+IN MANIERA AUTOMATICA LA SCRITTURA&nbsp; DI UN RECORD DI BACKUP</span>
+nella corrispondente Tab CANT_VAR del Record CANT, consultabile poi
+tramite l'apposito Funzione di Consultazione delle Variazioni
+delle Schede Anagrafiche Collaboratori<br>
+
+<dl>
+
+</dl>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+</body></html>

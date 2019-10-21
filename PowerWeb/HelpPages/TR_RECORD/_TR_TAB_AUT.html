@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_TAB_AUT</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head>
+<body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA
+TAB_AUT<br>
+</h1>
+<span style="font-weight: bold;">Contiene le
+Autorizzazioni concesse
+per Utente e/o Funzione e/o
+Utente/Funzione per abilitare/disabilitare l'utilizzo delle Singole
+Funzioni da parte dei Singoli Utenti nelle diverse modalità (INS , MOD
+, DEL , VIS) previste dalla Funzione stessa. Contiene inoltre
+l'indicazione in merito alla eventuale emissione del
+Primo e/o del Secondo Messaggio di Avvertimento in fase di Ins e/o Mod
+e/o Del di un Record all'interno di una Funzione.<br>
+</span><br>
+Le Chiavi del Record : &nbsp;<a href="#Aut_Id">Aut_id </a>(<span style="font-weight: bold; color: red;">Automatica</span>) <br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Aut_Id">Aut_id</a> (<span style="font-weight: bold; color: red;">Chiave</span>) &nbsp;<span style="font-weight: bold; color: red;"></span><a href="#Data_Registrazione_Aut">Data_Registrazione_Aut </a>,
+<a href="#DataOraUltimaModifica_Aut">DataOraUltimaModifica_Aut</a><br>
+I Campi con Default &nbsp; :&nbsp; <a href="#Data_Registrazione_Aut">Data_Registrazione_Aut&nbsp;</a>
+, <a href="#DataOraUltimaModifica_Aut">DataOraUltimaModifica_Aut</a>
+&nbsp; <br><br>I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;10 -&nbsp;<a href="#Utenti_Id">Utenti_Id</a> (10%) / 20-<a href="#Tab_Funz_Id">Tab_Funz_Id </a>(20%) / &nbsp;50 - <a href="#Funz_Aut">Funz_Aut</a> &nbsp;(5%) / 60 - <a href="#Mod_Aut">Mod_Aut</a> (5%) / 70 - <a href="#Ins_Aut">Ins_Aut</a> (5%) / 80 - <a href="#Del_Aut">Del_Aut</a> (5%) / 100 - <a href="#MsgMod1_Aut">MsgMod1_Au</a>t (5%)&nbsp;/ 110 - <a href="#MsgMod2_Aut">MsgMod2_Aut</a> (5%) / 120 - <a href="#MsgIns1_Aut">MsgIns1_Aut</a> (5%)&nbsp;/ 130 - <a href="#MsgIns2_Aut">MsgIns2_Au</a>t (5%)&nbsp;/ 140 - <a href="#MsgDel1_Aut">MsgDel1_Aut</a> (5%)&nbsp;/ 150 - <a href="#MsgDel2_Aut">MsgDel2_Aut</a> (5%)&nbsp;/ 200 -<a href="#Nome_Pannello_Aut">Nome_Pannello_Aut</a>&nbsp; (20%)<br><br><ul><li><span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span> : per IMPEDIRE che un UTENTE (DIVERSO DA UN ADMIN con LIVELLO &lt;10) possa INSERIRE e/o CANCELLARE un ALTRO UTENTE</li><ul><ul><ul><ul><li>occorre VERIFICARE SEMPRE che sia stato inserito nela TAB_AUT</li><ul><li>un Record intestato alla FUNZIONE UTENTI con LIVELLO INS/MOD = 10</li></ul></ul></ul><li>&nbsp;OCCORRE
+che sia PRESENTE per ogni UTENTE (presente nella tab UTENTI) un Record
+di TAB_AUT intestato al relativo Utente e con Funz_id = NULL</li></ul></ul></ul> 
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3><table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2"><tbody><tr><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 227px;">NOME
+DEL CAMPO NEL DB</td><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 111px;">TIPO
+CAMPO</td><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 816px;">DESCRIZIONE
+DEL CAMPO</td><td style="width: 39px; background-color: silver;"><span style="color: white;">CTRL</span></td><td style="width: 60px; background-color: silver; text-align: center;"><span style="font-weight: bold; color: white;">TAB</span></td><td style="text-align: center; background-color: silver; text-decoration: underline; width: 61px;"><span style="font-weight: bold; color: white;">COMBO</span></td></tr></tbody></table>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td><a name="Aut_Id"></a> <span style="text-decoration: underline; font-weight: bold;">Aut_Id</span></td>
+<td style="text-align: center;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#INT"><br></a></td>
+<td style="width: 812px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;del
+Singolo Redord di Autorizzazione</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+di </span><span style="background-color: white;">un Utente e/o di una Funzione e/o di un Utente/Funzione. </span><span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span></td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">NO</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+
+
+
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="font-weight: bold;"><a name="Data_Registrazione_Aut"></a>
+Data_Registrazione_Aut</span><br>
+</td>
+<td style="vertical-align: top; width: 102px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a><br>
+</td>
+<td style="vertical-align: top; width: 812px;">Data ed Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>in
+cui PER la PRIMA VOLTA è stato inserito questo Record. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span><br>
+&nbsp;<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span> </span>(Vedi anche<a href="#DataOraUltimaModifica_Aut"> DataOraUltimaModifica</a>)
+<br>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="font-weight: bold;"><a name="DataOraUltimaModifica_Aut"></a>
+DataOraUltimaModifica_Aut</span><br>
+</td>
+<td style="vertical-align: top; width: 102px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a></td>
+<td style="vertical-align: top; width: 812px;">Data ed Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span>in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica effetuata su quel Record)</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="#Data_Registrazione_Aut"> Data_Registrazione</a>)</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Del_Aut"></a> Del_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a><br>
+</td>
+<td style="vertical-align: top; width: 812px;">Livello
+(da 0/Blank a 9) di
+Autorizzazione&nbsp; per la Cancellazione <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 </span><span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia compreso fra 0 e 9</span><br>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Funz_Aut"></a> Funz_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Livello
+(da 0/Blank a 9) di
+Autorizzazione&nbsp; per l'Utilizzo della Funzione <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">= 0</span><span style="color: rgb(153, 51, 0);"> Se inserito viene
+controllato che sia compreso fra 0 e 9</span> </td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Ins_Aut"></a> Ins_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Livello
+(da 0/Blank a 9) di
+Autorizzazione per l'Inserimento <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 </span><span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia compreso fra 0 e 9</span> </td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Mod_Aut"></a> Mod_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Livello
+(da 0/Blank a 9) di
+Autorizzazione per la Modifica <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 </span><span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia compreso fra 0 e 9</span> </td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="MsgDel1_Aut"></a>MsgDel1_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Emissione
+del 1°
+Messaggio di Avvertimento quando viene premuto il Tasto SALVA (nelle
+Maschere che lo prevedono) PRIMA di eseguire una Cancellazione.<br>
+<span style="color: rgb(153, 51, 0);">Se inserito
+viene controllato che sia compreso fra 0 e 1</span>
+<ul>
+<li>&nbsp;0 = Nessun Messaggio&nbsp; <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">(Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">)</span></li>
+<li><span style="color: rgb(255, 102, 0); font-weight: bold;"></span>&nbsp;1
+= Viene emesso un PRIMO Messaggio
+di Avvertimento <br>
+</li>
+</ul>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="font-weight: bold; text-decoration: underline;"><a name="MsgDel2_Aut"></a>MsgDel2_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Emissione
+del 2°
+Messaggio di Avvertimento dopo aver risposto in modo affermativo al 1°
+Messaggio quando viene premuto il Tasto SALVA (nelle Maschere che lo
+prevedono) PRIMA di eseguire una Cancellazione. <span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia compreso fra 0 e 1</span>
+<ul>
+<li>&nbsp;0 = Nessun Messaggio <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">(Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">)</span></li>
+<li>&nbsp;1 = Viene emesso un SECONDO Messaggio
+di Avvertimento<br>
+</li>
+</ul>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="MsgIns1_Aut"></a>MsgIns1_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Emissione
+del 1°
+Messaggio di Avvertimento quando viene premuto il Tasto SALVA (nelle
+Maschere che lo prevedono) PRIMA di eseguire un Inserimento. <span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia compreso fra 0 e 1</span>
+<ul>
+<li>&nbsp;0 = Nessun Messaggio <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">(Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">)</span></li>
+<li>&nbsp;1 = Viene emesso un PRIMO Messaggio
+di Avvertimento </li>
+</ul>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="MsgIns2_Aut"></a> MsgIns2_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Emissione
+del 2°
+Messaggio di Avvertimento dopo aver risposto in modo affermativo al 1°
+Messaggio quando viene
+premuto il Tasto SALVA (nelle Maschere che lo prevedono) PRIMA di
+eseguire un Inserimento. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che sia compreso fra 0 e 1.<br>
+</span>
+<ul>
+<li>&nbsp;0 = Nessun Messaggio <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">(Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">)</span></li>
+<li>&nbsp;1 = Viene emesso un SECONDO Messaggio
+di Avvertimento </li>
+</ul>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="MsgMod1_Aut"></a>MsgMod1_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Emissione
+del 1°
+Messaggio di Avvertimento quando viene premuto il Tasto SALVA (nelle
+Maschere che lo prevedono) PRIMA di eseguire una Modifica. <span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia compreso fra 0 e 1&nbsp;</span>
+<ul>
+<li>&nbsp;0 = Nessun Messaggio <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">(Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">)</span></li>
+<li>&nbsp;1 = Viene emesso un PRIMO Messaggio
+di Avvertimento </li>
+</ul>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="MsgMod2_Aut"></a> MsgMod2_Aut</span></td>
+<td style="vertical-align: top; text-align: center; width: 102px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+<td style="vertical-align: top; width: 812px;">Emissione
+del 2°
+Messaggio di Avvertimento dopo aver risposto in modo affermativo al 1°
+Messaggio quando viene
+premuto il Tasto SALVA (nelle Maschere che lo prevedono) PRIMA di
+eseguire una Modifica. <span style="color: rgb(153, 51, 0);">Se
+inserito viene controllato che sia compreso fra 0 e 1<br>
+</span>
+<ul>
+<li>&nbsp;0 = Nessun Messaggio <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">(Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">)</span></li>
+<li>&nbsp;1 = Viene emesso un SECONDO Messaggio
+di Avvertimento </li>
+</ul>
+</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr><tr><td><a name="Nome_Pannello_Aut"></a> <span style="font-weight: bold; text-decoration: underline;">Nome_Pannello_Aut</span></td><td><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#INT">NVARCHAR(10)</a></td><td style="width: 812px;">Nome
+dell'eventuale PANNELLO (Scheda/Tab) della Pagina per il quale valgono
+le relative Autorizzazioni. I Nomi dei Vari Pannelli (SCHEDE/TAB) sono
+quelli usati dal Programma Power Web per identificare e gestire i
+Singoli Pannelli delle Pagine a Scheda.</td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td></tr><tr><td style="text-align: left;"><a name="Utenti_Id"></a> <span style="text-decoration: underline; font-weight: bold;">Utenti_Id</span></td><td style="text-align: center;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#INT">INT</a></td><td style="width: 812px;">N° Identificativo dell'Utente da Abilitare/Disabilitare. <span style="color: rgb(153, 51, 0);">Viene controllato che il
+Record venga inserito o con il</span> <a href="_TR_TAB_AUT.html#Codice_Utente_Aut">Codice Utente</a> <span style="color: rgb(153, 51, 0);">o con il Codice Funzione o
+con Entrambi</span>. <span style="color: rgb(102, 51, 51);">Nel caso in cui sia valorizzato allora viene anche controllato che esista nela Tabella UTENTI.</span></td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td></tr><tr><td><span style="text-decoration: underline; font-weight: bold;"><a name="Tab_Funz_Id"></a> Tab_Funz_Id</span></td><td style="text-align: center;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#INT">INT</a></td><td style="width: 812px;">N° Identificativo della
+Funzione da Abilitare/Disabilitare. <span style="color: rgb(153, 51, 0);">Viene controllato che il
+Record venga inserito o con il</span> <a href="_TR_TAB_AUT.html#Codice_Utente_Aut">Codice Utente</a> <span style="color: rgb(153, 51, 0);">o con il Codice Funzione o
+con Entrambi</span>. <span style="color: rgb(102, 51, 51);">Nel caso in cui sia valorizzato allora viene anche controllato che esista nela Tabella FUNZ.</span></td><td style="width: 39px;"></td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td></tr>
+</tbody>
+</table>
+<span style="text-decoration: underline; font-weight: bold;"></span>
+</body></html>

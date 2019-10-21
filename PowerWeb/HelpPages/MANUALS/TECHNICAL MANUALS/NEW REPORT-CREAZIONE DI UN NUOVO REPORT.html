@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>LA CREAZIONE DI UN NUOVO REPORT</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style="font-size: 16pt; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span>CREAZIONE
+DI UN NUOVO REPORT<br>
+</h1>
+
+&nbsp;<span style="text-decoration: underline; font-weight: bold;">L'Attivazione della Visualizzazione a Video del TASTO DI STAMPA sulle diverse Pagine di Lancio</span> avviene in base al Fatto che venga Trovato/Non Trovato<br>&nbsp;&nbsp;&nbsp; nella TAB_REPORT un Record corrispondente ali valori di<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; CLASSE REPORT&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NOME DATA GRID<br>della Maschera di Lancio .<br><br><span style="text-decoration: underline; font-weight: bold;">L'Abilitazione viene gestita in</span><br><ul><li><span style="color: rgb(51, 0, 153);">POWER WEB</span></li><ul><li style="color: rgb(51, 0, 153);">GridMasterPage</li></ul><ul><ul><li><span style="color: rgb(51, 0, 153);">PageInit &nbsp; &nbsp;&nbsp;&nbsp;</span></li><ul><li><span style="color: rgb(51, 0, 153);">&nbsp;Tab_Report currentReport = RepoManager.TabReportRepo.FirstOrDefault(trr =&gt; trr.Nome_DataGrid == GridView.ID);</span></li><ul><li><span style="color: rgb(51, 0, 153);">if (currentReport != null)</span></li></ul><ul><ul><li><span style="color: rgb(51, 0, 153);">btnPrint.Visible = true;</span></li></ul></ul></ul></ul></ul></ul><span style="text-decoration: underline; font-weight: bold;">L'Attivazione della Visualizzazione a Video del TASTO DI STAMPA sulle diverse Pagine di Lancio</span> avviene in base al Fatto che venga Trovato/Non Trovato<br>&nbsp;&nbsp;&nbsp; nella TAB_REPORT un Record corrispondente ali valori di<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; CLASSE REPORT&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NOME DATA GRID<br>della Maschera di Lancio .<br><span style="font-weight: bold; text-decoration: underline;">Il Caricamento dei Parametri di Stampa avviene nella&nbsp;</span>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<ul><li><span style="color: rgb(51, 0, 153);">POWER WEB</span></li><ul><li style="color: rgb(51, 0, 153);">GridMasterPage</li><ul><li style="color: rgb(51, 0, 153);"> LoadPrintLayout</li></ul></ul></ul><h2>------------------------------------------------------------------------------------------------------------------------------------------------------------------</h2><ul><li><h2>Aprire <span style="color: rgb(51, 0, 153);">Reports</span></h2>
+</li>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">Copiare NomeNuovoReport</span> da un NomeVecchioReport con un
+Layout simile a quello che si vuole creare</li>
+<ul>
+<li>CTRL+C su <span style="font-weight: bold; color: rgb(51, 0, 153);">XRNomeVecchioReport.cs</span></li>
+<li>CTRL+V su REPORTS</li>
+</ul>
+<li><span style="font-weight: bold; text-decoration: underline;">Cambiare il Nome</span> da <span style="font-weight: bold; color: rgb(51, 0, 153);">XRNomeVecchioReport_Copia.cs</span>
+in <span style="font-weight: bold; color: rgb(51, 0, 153);">XRNomeNuovoReport.cs</span></li>
+<li>Cliccare con Tasto Dx del Mouse su <span style="font-weight: bold; color: rgb(51, 0, 153);">XRNomeNuovoReport.cs</span></li>
+<ul>
+<li>scegliere opzione VISUALIZZA CODICE</li>
+<ul>
+<li style="text-decoration: underline; font-weight: bold;">sostituire i <span style="color: red;">Vecchi Riferimenti</span>
+con i Nuovi</li>
+<ul>
+<li>public partial class <span style="color: red; font-weight: bold;">XRNomeVecchioRiferimento</span>
+: DevExpress.XtraReports.UI.XtraReport<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public<span style="color: red; font-weight: bold;">&nbsp;</span><span style="color: red; font-weight: bold;">XRNomeVecchioRiferimento()</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+InitializeComponent();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+public<span style="font-weight: bold;"> </span><span style="color: red; font-weight: bold;">NomeVecchioRiferimento</span>(List&lt;<span style="color: red; font-weight: bold;">NomeVecchioRiferimento</span>&gt;<span style="color: red; font-weight: bold;">NomeVecchioRiferimento</span>,
+List&lt;String&gt; sections = null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+: this()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DataSource =<span style="color: red; font-weight: bold;">NomeVecchioRiferimento</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (sections != null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CommonServiceReport.DisableSections(this, sections);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; }</li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">Aprire il Designer del Nuovo Report</span> (<span style="font-weight: bold; color: rgb(51, 0, 153);">XRNomeNuovoReport.Designer.cs</span>)</li>
+<ul>
+<li style="font-weight: bold; text-decoration: underline;">Sostiture Vecchi Riferimenti</li>
+<ul>
+<li>namespace Reports<br>
+{<br>
+&nbsp; partial class <span style="font-weight: bold; color: red;">XRNomeVecchioReport</span></li><li><span style="font-weight: bold; color: red;">..........................</span></li>
+</ul>
+</ul></ul></ul><ul><ul>
+<li><span style="font-weight: bold; text-decoration: underline;">Aprire il Nuovo Report</span> (<span style="font-weight: bold; color: rgb(51, 0, 153);">XRNomeNuovoReport.cs</span>)</li>
+<ul>
+<li>Cliccare con Tasto DX del Mouse sulla Freccetta in alto
+a SX del Report</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>Scegliere opzione PROPERTIES</li>
+<ul>
+<li>Cambiare il Nome del Report da XRNomeVecchio a
+XRNomeNuovoReport</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<li>Cliccare sulla Freccetta in alto a SX del Report</li>
+<ul>
+<li>premere sul PushBotton del campo DATASOURCE&nbsp;</li>
+<ul>
+<li>scegliere l'opzione PROJECT OPTIONS</li>
+<ul>
+<li>Scegliere l'opzione DOMAIN { }</li>
+<ul>
+<li>Sceglire la Tabella del DataBase da cui partire</li>
+</ul>
+</ul>
+</ul>
+</ul>
+<li>Cancellare il Vecchio DataSource (perchè adesso ce ne
+sarebbero due!!!</li><li>Modificare i Nomi delle&nbsp;Etichette e dei Campi aprendo la Field List</li><ul><li>Dalla BARRA COMANDI GENERALI (prima riga in alto)</li><ul><li>selezionare <span style="text-decoration: underline; font-weight: bold;">XTraReports</span></li><ul><li>selezionare <span style="text-decoration: underline; font-weight: bold;">FIELD_LIST<br></span></li></ul></ul></ul>
+<li>Modificare i Nomi delle ETICHETTE</li>
+<ul>
+<li>AGGIUNGI PARAMETRI x le Etichette</li>
+</ul>
+<li>Modificare i Nomi dei FILEDS</li><ul><li>Seleziona Nomi Campi x i Campi</li></ul>
+</ul></ul></ul>------------------------------------------------------------------------------------------------------------------------------------------------------------------<ul><li><h2>Aprire&nbsp;<span style="color: rgb(51, 0, 153);">POWER_WEB</span></h2></li><ul><li><h3><span style="color: rgb(51, 0, 153);">Aprire <span style="text-decoration: underline;">MODULES</span><br></span></h3></li></ul><ul><ul><li><span style="font-weight: bold; color: red;"><span style="color: black; text-decoration: underline;">Aprire il Codice del Modulo di Lancio del Report</span></span></li><ul><li><span style="font-weight: bold;"><span style="color: rgb(51, 0, 153);">NomeModuloLancioReport</span>.<span style="text-decoration: underline;">ascx</span></span></li><ul><li><span style="font-weight: bold; color: red;"><span style="color: rgb(51, 0, 153);">NomeModuloLancioReport.<span style="text-decoration: underline;">ascx.cs</span></span><span style="color: black; text-decoration: underline;"></span></span></li><ul><li><span style="color: red;"><span style="color: black;">Verificare che ci siano</span></span></li><ul style="font-weight: bold; color: red;"><li>USING COMMON:</li><li>USING REPORTS;</li></ul><li><span style="color: red;"><span style="color: black;">Aggiungere nel codice le necessarie istruzioni per il lancio</span></span><span style="font-weight: bold; color: red;"><span style="color: black; text-decoration: underline;"></span></span></li><ul><li><span style="color: red;"><span style="color: black;">namespace PowerWeb.Modules<br>{<br>&nbsp;&nbsp;&nbsp; public partial class&nbsp;<span style="font-weight: bold; color: red;"></span></span></span><span style="font-weight: bold; color: red;">NomeModuloLancioReport</span><span style="color: red;"><span style="color: black;"><span style="font-weight: bold; color: black;">Module</span> : BaseModule, IGridModule,<span style="font-weight: bold; color: red;"> IPrintModule</span></span></span></li><ul><li><span style="color: red;"><span style="color: black;"><span style="font-weight: bold; color: red;">Cliccare &nbsp;su IprintModule x attivare lo Using relativo<br></span></span></span></li></ul></ul></ul><ul><li><span style="color: red;"><span style="color: black;">Copiare da un altro Modulo simile la Routine e sostituire i Valori Vecchi con i Nuovi</span></span></li><ul><li><span style="color: red;"><span style="color: black;">public
+ExtXtraReport GetReport(Tab_Report report, List&lt;TabPageExtended&gt;
+selectedTabs, List&lt;GroupingTreeListItem&gt; groups,
+List&lt;object&gt; items, DevExpress.Web.ASPxPanel.ASPxPanel
+customOptionsPanel</span></span></li></ul></ul></ul></ul></ul></ul></ul><span style="color: red;"><span style="color: black;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; </span></span>{<br>&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List&lt;<span style="font-weight: bold; color: red;">Cant</span>&gt; <span style="font-weight: bold; color: red;">cants</span> = CommonService.ConvertTo&lt;<span style="color: red; font-weight: bold;">Cant</span>&gt;(items);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; XR<span style="font-weight: bold; color: red;">Cant_Fru</span> <span style="font-weight: bold; color: red;">cantFrusReport</span> = new <span style="font-weight: bold; color: red;">XRCant_Fru</span>(<span style="font-weight: bold; color: red;">cants</span>);<br><span style="font-weight: bold; color: red;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Cliccare su XRCant_Fru x attivare
+lo Using</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; return new ExtXtraReport { Report = <span style="font-weight: bold; color: red;">cantFrusReport</span>, PictureBox = <span style="font-weight: bold; color: red;">cantFrus</span>Report.CompanyLogo };&nbsp;&nbsp; <br><span style="color: red;"></span><ul style="margin-left: 40px;"><li><h3><span style="color: rgb(51, 0, 153);">Aprire <span style="text-decoration: underline;">PAGES</span></span></h3></li></ul><ul><ul><ul><li><span style="font-weight: bold; color: red;"><span style="color: black; text-decoration: underline;">Aprire il Codice della Pagina di Lancio del Report</span></span></li></ul></ul></ul><ul><ul><ul style="color: rgb(51, 0, 153);"><ul><li><span style="font-weight: bold;">NomePaginaLancioReport.<span style="text-decoration: underline;">aspx</span></span></li><ul><li><span style="font-weight: bold;"><span style="text-decoration: underline;">NomePaginaLancioReport.aspx.cs<br></span></span></li></ul></ul></ul></ul></ul><ul><ul><ul><ul><ul><li><span style="color: red;"><span style="color: black;">Aggiungere nel codice le necessarie istruzioni per il lancio</span></span><span style="font-weight: bold; color: red;"><span style="color: black; text-decoration: underline;"></span></span></li></ul></ul></ul><ul><ul><ul><ul><li><span style="color: red;"><span style="color: black;">namespace PowerWeb.Pages<br>{<br>&nbsp;&nbsp;&nbsp; public partial class Col_Pru : BasePage, IGridPage, <span style="font-weight: bold; text-decoration: underline; color: red;">IPrintPage</span><br><br><span style="font-weight: bold; color: red;"></span></span></span></li></ul></ul></ul><ul><ul><li><span style="color: red;"><span style="color: black;"><span style="font-weight: bold; color: red;">Cliccare per attivare lo Using relativo<br></span></span></span></li></ul></ul></ul></ul></ul><ul><ul><ul><ul><ul><li><span style="color: red;"><span style="color: black;">Copiare da un altro Modulo simile la Routine e sostituire i Valori Vecchi con i Nuovi</span></span></li></ul></ul></ul></ul><ul><ul><ul><ul><ul><li><span style="color: red;"><span style="color: black;">public IPrintModule PrintModule<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { return mdl<span style="font-weight: bold; color: red;">Col_Pru</span>Module; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></span></li></ul></ul></ul></ul></ul></ul>------------------------------------------------------------------------------------------------------------------------------------------------------------------<ul><li><h2>Aprire <span style="color: rgb(51, 0, 153);">DATA BASE SQL</span></h2></li><ul><li style="text-decoration: underline; font-weight: bold;">Aggiungere nel DataBase SQL un Nuovo Record in TAB_REPORT</li></ul><ul><ul><li>Aprire il DataBase SQL</li><ul><li>Selezionare TAB_REPORT</li><ul><li>Fare Click con Tasto DX del Mouse su TAB_REPORT</li><ul><li>Cliccare su opzione MODIFICA PRIME XXXXX RIGHE</li><ul><li>Copiare da un Record esistente un Nuovo Record
+con il NomeNuoveReport</li><li>Cambiare il valore del Campo CALSSEREPORT inserendoci quello della Tabella PRINCIPALE da cui parte</li><li>Cambiare il valore del Campo NOMEDATAGRID
+inserendoci quello della Nuova DataGrid del Report</li><ul><li>gvXXXX</li></ul><li>Cambiare il valore del Campo NOMERISORSA
+inserendoci quello del Nuovo Report</li><ul><li>RPT_NOME_REPORT_NomeNuovoReport</li><li>Verificare che esista la risorsa usata in</li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);">COMMON</li><ul><li><span style="font-weight: bold; color: rgb(51, 0, 153);">PowerWebResources.resx</span></li></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul>
+</body></html>

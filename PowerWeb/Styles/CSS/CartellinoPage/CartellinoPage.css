@@ -1,0 +1,90 @@
+﻿
+.fit {
+    border: 1px solid #a2abb3;
+    padding: 1% 0.5%;
+    border-radius: 3px;
+    margin: 0.5% !important;
+}
+
+.fitNoBorders {
+    margin-top: 2%;
+    margin-bottom:2%;
+    margin-left:0.5%;
+    margin-right:0.5%;
+}
+
+.labelText {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-style: normal;
+    margin: 0.5% !important;
+}
+
+#groupRowText {
+    margin-top:0.3%;
+    font-size:medium;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-style: normal;
+}
+
+.buttonCont {
+    text-align: center !important;
+}
+
+.dx-button-text {
+    display: inline !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    text-align: left !important;
+}
+
+.olClass{
+    color: black;
+    background-color: #e6f7ff;
+}
+
+.motClass{
+    color: black;
+    background-color: white;
+}
+
+.mRettClass{
+    color: black;
+    background-color: #ffd1b3 ;
+}
+
+.autoRettClass{
+    color: black;
+    background-color: #ffc2b3;
+}
+
+.totalClass{
+    color: black;
+    background-color: #ffffdf;
+}
+
+.deltaClass{
+    color: black;
+    background-color: #ffeaea;
+}
+
+.pianoClass{
+    color: black;
+    background-color: #ffffdf;
+}
+.totalCell {
+    color: black;
+    background-color: #f1faf1;
+    font-weight: bold;
+}
+.weekendCell {
+    color: black;
+    background-color: #efefef;
+}
+
+.dropDownBox{
+
+    float:right;
+    width: 50%;
+
+}

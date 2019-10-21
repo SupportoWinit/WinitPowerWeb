@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Dove Gestire i Tasti Custom di UPDATE/UNDO/REFRESH</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>Dove Gestire i Tasti Custom di UPDATE/UNDO/REFRESH<br>
+</h1>
+
+<span style="font-weight: bold; text-decoration: underline;">I tasti di
+UPDATE e di UNDO</span> sono definiti e gestiti in Modo CUSTOM
+per Tutte le Pagine di EDIT delle MASTERGRID&nbsp; e/o DETAILGRID<br>
+
+mentre <span style="font-weight: bold; text-decoration: underline;">il
+Tasto di REFRESH</span> è (per adesso) gestito e abilitato SOLO per le
+specifiche Griglie GVREG_V e GVREG_VM.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">Il Tasto
+di Refresh permette in particolare di Gestire </span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-weight: bold;">dei
+Calcoli </span>(basati sui dati disponibili a Video)</li>
+  <ul>
+    <li>es: per le GvReg_V e GvReg_VM esegue il ricalcolo della Durata
+Fisica della Registrazione </li>
+  </ul>
+  <li>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-weight: bold;">di
+Cambiare/Annullare i Valori dei Campi a Video</span> (basandosi solo
+sui valori dei campi disponibili a Video)</li>
+  <ul>
+    <li>es: per le Gvreg_V e GvReg_VM azzera i valori dei Campi che in
+caso di Modifica dei Dati a Video non sono più validi<br>
+    </li>
+  </ul>
+  <li>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; <span style="font-weight: bold;">di
+NON Mostrare + determinati Campi</span> dopo il Refresh</li>
+  <ul>
+    <li>es: per le GvReg_V e GvReg_VM ELIMINA DALLA PAGINA VIDEO i
+campi i cui valori in caso di Modifica dei dati a Video non sono più
+validi<br>
+    </li>
+  </ul>
+</ul>
+
+Ad ogni Tasto e in base al fatto che sia una masterGrid o una
+DetailGrid vengono anche associati degli eventi CUSTOM al Click e in
+particolare<br>
+
+vengono associati i seguenti eventi Custom<br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;"> Tasto di <span style="color: red;">UPDATE</span></li>
+  <ul>
+    <li>NUOVA RIGA (Inserimento)<br>
+    </li>
+    <ul>
+      <li>MasterGrid</li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">New</span>TemplateButtonClick<br>
+          </span></span></span></span></span></li>
+      </ul>
+      <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="color: black;">DetailGrid</span><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);"> &nbsp;&nbsp;</span> <br>
+        </span></span></span></span></li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">New</span>TemplateButton<span style="text-decoration: underline;">Detail</span>Click</span></span></span></span></span></li>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <li>RIGA ESISTENTE (Aggiornamento)<br>
+    </li>
+    <ul>
+      <li>MasterGrid</li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">Edit</span>TemplateButtonClick<br>
+          </span></span></span></span></span></li>
+      </ul>
+      <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="color: black;">DetailGrid</span><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);"> &nbsp;&nbsp;</span> <br>
+        </span></span></span></span></li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">Edit</span>TemplateButton<span style="text-decoration: underline;">Detail</span>Click</span></span></span></span></span></li>
+      </ul>
+    </ul>
+  </ul>
+  <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);"><br>
+    </span></span></span></span></span></li>
+  <li><span style="font-weight: bold;">Tasto di </span><span style="color: red;"><span style="font-weight: bold;">UPDATE (UNDO)</span><br>
+    </span></li>
+  <ul>
+    <ul>
+      <li>MasterGrid</li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">Cancel</span>TemplateButtonClick<br>
+          </span></span></span></span></span></li>
+      </ul>
+      <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="color: black;">DetailGrid</span><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);"> &nbsp;&nbsp;</span> <br>
+        </span></span></span></span></li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">Cancel</span>TemplateButton<span style="text-decoration: underline;">Detail</span>Click</span></span></span></span></span></li>
+      </ul>
+    </ul>
+  </ul>
+  <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);"><br>
+    </span></span></span></span></span></li>
+  <li><span style="font-weight: bold;">Tasto di </span><span style="color: red;"><span style="font-weight: bold;">REFRESH (x Adesso
+SOLO x GVREG_V e/o GVREG_VM)</span></span></li>
+  <ul>
+    <ul>
+      <li>MasterGrid</li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">Refresh</span>TemplateButtonClick<br>
+          </span></span></span></span></span></li>
+      </ul>
+      <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="color: black;">DetailGrid</span><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);"> &nbsp;&nbsp;</span> <br>
+        </span></span></span></span></li>
+      <ul>
+        <li><span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;"><span style="font-weight: bold; color: rgb(51, 204, 0);"><span style="color: rgb(0, 0, 153);">OnCustom<span style="text-decoration: underline;">Refresh</span>TemplateButton<span style="text-decoration: underline;">Detail</span>Click</span></span></span></span></span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <br>
+        </li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+La definizione dei Tasti CUSTOM viene gestita in<br>
+
+<br>
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">POWERWEB</span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;
+MODULES</span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; PowerFormTemplate.cs<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; public void
+InstantiateIn(Control container)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+...........................<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; #region
+BUTTONS DIV<br>
+<span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; //In questa Region vengono definiti i Bottoni
+CUSTOM di UPDATE E DI UNDO per tutte le Pagine (al posto di Update e
+Undo Standard)<br>
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // e (per ora) SOLO x le
+GVREG_V e GVREG_VM viene definito il tasto CUSTOM DI REFRESH&nbsp; <br>
+<span style="color: black;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; ..........................</span> &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;</span> &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; <br>
+</span>
+<ol>
+
+  <li><span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);">&nbsp; </span></span><span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"></span></span><span style="color: black;"><span style="font-weight: bold; text-decoration: underline; color: red;">ASPxButton
+btnUpdate</span> = new ASPxButton();</span><br style="color: black;">
+  </li>
+</ol>
+
+<span style="color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"><span style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span>...........................................<br>
+
+<ol start="2">
+
+  <li>&nbsp;<span style="font-weight: bold; text-decoration: underline; color: red;">ASPxButton
+btnCancel</span> = new ASPxButton();</li>
+</ol>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...........................................<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; if (currentContainer != null &amp;&amp;
+currentContainer.Grid != null &amp;&amp;
+(currentContainer.Grid.ID.ToUpper() == <span style="text-decoration: underline; font-weight: bold; color: red;">"GVREGV"</span>
+|| currentContainer.Grid.ID.ToUpper() ==<span style="text-decoration: underline; font-weight: bold; color: red;">
+"GVREGVM"</span>)&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <br style="font-weight: bold; color: rgb(51, 204, 0);">
+
+<ol start="3">
+
+  <li><span style="font-weight: bold; text-decoration: underline; color: red;">ASPxButton
+btnRefresh </span>= new ASPxButton()</li>
+</ol>
+
+&nbsp;&nbsp;&nbsp; ................................................<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: rgb(0, 153, 0);"></span><br>
+
+La gestione degli EVENTI CUSTOM associati al Click dei Tasti CUSTOM
+viene fatta nella GridMasterPage.master all'interno della quale sono
+gestiti i vari eventi associati ai tasti Custom <br>
+
+con l'eventuale emissione dei vari Messaggi di 1° e/o di 2° Richiesta
+di Conferma (differenti per il caso di INS o di UPDATE) se ne è stata
+attivata la relativa gestione per quell'Utente/Funzione.<br>
+
+<br>
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">POWERWEB</span><br style="font-weight: bold; color: rgb(51, 51, 255);">
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;
+GRIDMASTERPAGE.master</span><span style="font-weight: bold; color: rgb(51, 51, 255);"><br>
+&nbsp;&nbsp;&nbsp; ...............................................<br>
+</span>
+<ol>
+
+  <li><span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;
+function OnCustom<span style="color: red; text-decoration: underline;">New</span>TemplateButtonClick(s,
+e) </span></li>
+</ol>
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(0, 153, 0);"> /*Gestisce il Clik sul Tasto di UPDATE
+nel caso <span style="text-decoration: underline;">di INSERIMENTO di
+una NUOVA RIGA</span> di una <span style="text-decoration: underline;">MasterGrid</span>*/</span></span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+.................................<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*Esegue l'UPDATE
+su una NUOVA RIGA*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentAction = function () { currentGrid.<span style="font-weight: bold; text-decoration: underline;">UpdateEdit</span>();
+}<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*Gestisce
+l'eventuale 1° Messaggio di Conferma sull'Insert*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+current<span style="color: black;">Confirm2</span> =
+currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Add2</span>;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*Gestisce
+l'eventuale 2° Messaggio di Conferma sull'Insert*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentIsToConfirm2 = currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Add2</span>;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Add</span>)<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;
+/*Emette la Windows di Richiesta Conferma (quando gestito Messaggio di
+Conferma)</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DisplayJConfirm("Power", currentGrid.cpConfirm<span style="color: red; font-weight: bold;">Add</span>, onResultConfirm1)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+currentAction(); &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+
+<ol start="2">
+
+  <li><span style="font-weight: bold; color: rgb(0, 0, 153);">function
+OnCustom<span style="color: red;">New</span>TemplateButton<span style="color: red;">Detail</span>Click(s, e) {</span></li>
+</ol>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"> /*Gestisce il Clik sul Tasto di UPDATE
+nel caso <span style="text-decoration: underline;">di INSERIMENTO di
+una NUOVA RIGA</span> di una <span style="text-decoration: underline;">DetailGrid</span>*/</span></span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-----------------------<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentAction = function () { currentGrid.<span style="text-decoration: underline; font-weight: bold;">UpdateEdit</span>();
+}<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*Gestisce
+l'eventuale 1° Messaggio di Conferma sull'Insert*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentConfirm2 = currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Add2</span>;<br>
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; /*Gestisce l'eventuale 2°
+Messaggio di Conferma sull'Insert*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentIsToConfirm2 = currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Add2</span>;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Add</span>)<br>
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; /*Emette la Windows di Richiesta
+Conferma (quando gestito Messaggio di Conferma)</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DisplayJConfirm("Power", currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Add</span>, onResultConfirm1)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+currentAction();<br style="color: black;">
+
+<ol start="3">
+
+  <li><span style="color: rgb(51, 51, 255);"><span style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 0, 153);">&nbsp; function
+OnCustom<span style="color: red; text-decoration: underline;">Edit</span>TemplateButtonClick(s,
+e) { &nbsp;&nbsp; </span></span></span></li>
+</ol>
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);">
+</span>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"> /*Gestisce il Clik sul Tasto di UPDATE
+nel caso di <span style="text-decoration: underline;">MODIFICA di una
+RIGA ESISTENTE</span> di una <span style="text-decoration: underline;">MasterGrid</span>*/</span></span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+....................................<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*Esegue l'UPDATE
+su una NUOVA RIGA*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentAction = function () { currentGrid.<span style="font-weight: bold;">UpdateEdit</span>(); }<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*Gestisce
+l'eventuale 1° Messaggio di Conferma sulla Modifica*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentConfirm2 = currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Mod2</span>;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*Gestisce
+l'eventuale 2° Messaggio di Conferma sulla Modifica*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentIsToConfirm2 = currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Mod2</span>;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Mod</span>)<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;
+/*Emette la Windows di Richiesta Conferma (quando gestito Messaggio di
+Conferma)</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DisplayJConfirm("Power", currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Mod</span>, onResultConfirm1)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+currentAction();<br>
+
+<br>
+
+<ol start="4">
+
+  <li><span style="font-weight: bold; color: rgb(0, 0, 153);">function
+OnCustomEditTemplateButtonDetailClick(s, e) {</span></li>
+</ol>
+
+<span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+/*Gestisce il Clik sul Tasto di UPDATE nel caso di <span style="text-decoration: underline;">MODIFICA di una RIGA ESISTENTE</span>
+di una <span style="text-decoration: underline;">DetailGrid</span>*/</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+-------------------------------------------<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentAction = function () { currentGrid.<span style="font-weight: bold;">UpdateEdit</span>(); }<br>
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; /*Gestisce l'eventuale 1°
+Messaggio di Conferma sull'Insert*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentConfirm2 = currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Mod2</span>;<br>
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; /*Gestisce l'eventuale 2°
+Messaggio di Conferma sulla Modifica*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentIsToConfirm2 = currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Mod2</span>;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(currentGrid.cpIsConfirm<span style="font-weight: bold; color: red;">Mod</span>)<br>
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; /*Emette la Windows di Richiesta
+Conferma (quando gestito Messaggio di Conferma)</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DisplayJConfirm("Power", currentGrid.cpConfirm<span style="font-weight: bold; color: red;">Mod</span>, onResultConfirm1)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+currentAction();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+
+<ol start="3">
+
+  <li><span style="font-weight: bold; color: rgb(0, 0, 153);">&nbsp;&nbsp;&nbsp;
+function OnCustom<span style="color: red;">Cancel</span>TemplateButtonClick(s,
+e, gridInstanceName) {</span></li>
+</ol>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: rgb(0, 153, 0);"> &nbsp;&nbsp; /*Gestisce il Clik sul
+Tasto di <span style="text-decoration: underline;">CANCEL (UNDO) nella
+parte di Edit</span> di una <span style="text-decoration: underline;">MasterGrid</span>*/*/</span></span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+...........................................<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*Cancella l'Edit
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.<span style="font-weight: bold; color: red;">CancelEdit</span>();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cResetIsReadOnly.PerformCallback(gridInstanceName);<br>
+
+<ol style="font-weight: bold; color: rgb(0, 0, 153);" start="4">
+
+  <li>&nbsp;function OnCustom<span style="color: red;">Cancel</span>TemplateButton<span style="color: red;">Detail</span>Click(s, e, gridInstanceName) {</li>
+</ol>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*Gestisce il Clik
+sul Tasto di <span style="text-decoration: underline;">CANCEL (UNDO)
+nella parte di Edit</span> di una <span style="text-decoration: underline;">DetailGrid</span>*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-----------------------------------<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*Cancella l'Edit*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.<span style="font-weight: bold; color: red;">CancelEdit</span>();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+cResetIsReadOnly.PerformCallback(gridInstanceName);<br>
+
+<br>
+
+<ol>
+
+  <li><span style="font-weight: bold;">function
+OnCustomRefreshButtonClick(s, e) {</span></li>
+</ol>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*Gestisce il Clik
+sul Tasto di REFRSH nella parte di Edit di una DetailGrid*/<br>
+</span>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+var currentGrid = ASPxClientGridView.Cast(<span style="font-weight: bold; text-decoration: underline; color: red;">grid</span>);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+doCustomRefreshButtonClick(currentGrid);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+
+<ol start="6">
+
+  <li><span style="font-weight: bold; color: rgb(0, 0, 153);">&nbsp;function
+OnCustomRefreshButtonDetailClick(s, e) {</span></li>
+</ol>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp; /*Gestisce il
+Clik sul Tasto di REFRSH nella parte di Edit di una DetailGrid*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var
+currentGrid = ASPxClientGridView.Cast(<span style="font-weight: bold; color: red;">detailGrid</span>);<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">/*esegue la Routine
+che fa i Calcoli e nasconde i Campi che non si vogliono + visualizzare
+dopo il REFRESH*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+doCustomRefreshButtonClick(currentGrid);<br>
+
+<br>
+
+<ol start="7">
+
+  <li><span style="font-weight: bold; color: rgb(0, 0, 153);">function
+doCustomRefreshButtonClick(currentGrid) {</span></li>
+</ol>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*esegue le
+operazioni richieste dalla pressione del Tasto di Refresh</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> AL MOMENTO VIENE
+GESTITO SOLO per le GVREG_V e GVREG_VM</span><br style="font-weight: bold; color: rgb(0, 153, 0);">
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Per le quali esegue il RICALCOLO DELLA DURATA FISICA (tenendo conto
+della possibilità che l'Uscita sia &lt; dell'Entrata (Notturno)</span><br style="font-weight: bold; color: rgb(0, 153, 0);">
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SE IN FUTURO IL TASTO DI REFRESH VERRA' ATTIVATO ANCHE SU ALTRE PAGINE</span><br style="font-weight: bold; color: rgb(0, 153, 0);">
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BASTERA' AGGIUNGERE UN IF SUL NOME DELLA GRID CHE SI STA TRATTANDO*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid = ASPxClientGridView.Cast(currentGrid);<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 153, 0);">//Ricalcolo a Video
+della Durata Fisica</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var
+fisE = currentGrid.GetEditValue("Data_Ora_Fis_E");<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var
+fisU = currentGrid.GetEditValue("Data_Ora_Fis_U");<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var
+length = "0000";<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+(fisU != null &amp;&amp; fisE != null) {<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+var hourDiff;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+var minuteDiff;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+var backwards = false;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (fisU &gt; fisE) {<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+hourDiff = fisU.getHours() - fisE.getHours();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+minuteDiff = fisU.getMinutes() - fisE.getMinutes();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+} else {<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+hourDiff = (24 - fisE.getHours()) + fisU.getHours();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+minuteDiff = (0 - fisE.getMinutes()) + fisU.getMinutes();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+backwards = true;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+length = getTimeSpanStringFromDateDiff(hourDiff, minuteDiff, backwards);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp; /*ANNULLA I
+VALORI DEI CAMPI I CUI VALORI SARANNO POI RICALCOLATI</span><br style="font-weight: bold; color: rgb(0, 153, 0);">
+
+<span style="font-weight: bold; color: rgb(0, 153, 0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+QUESTA PARTE E' STATA LASCIATA x DOCUMENATZIONE in quanto poi gli
+Stessi CAMPI VENGONO ELIMINTAI DAL VIDEO*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Durata_Fis_HH_S", length);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Registrazione_Stato_Reg", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Registrazione_Tipo_Reg", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Tipo_Modifica", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("RiferimentoRRN_Att", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Durata_Fig_HH_S", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Data_Ora_Fig_E", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.SetEditValue("Data_Ora_Fig_U", null);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 153, 0);"> /*Elimina dalla
+Pagina Video i CAMPI che non devono + essere mostrati in quanto i loro
+valori verranno ricalcolati*/</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("Registrazione_Stato_Reg").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("Registrazione_Tipo_Reg").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("Tipo_Modifica").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("RiferimentoRRN_Att").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("Durata_Fig_HH_S").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("Data_Ora_Fig_E").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentGrid.GetEditor("Data_Ora_Fig_U").SetVisible(false);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

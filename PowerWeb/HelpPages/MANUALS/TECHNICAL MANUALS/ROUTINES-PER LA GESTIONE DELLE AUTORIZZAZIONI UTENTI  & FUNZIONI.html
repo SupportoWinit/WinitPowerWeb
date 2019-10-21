@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>DOVE VENGONO GESTITE LE AUTORIZZAZIONI UTENTE/FUNZIONE</title>
+
+  
+</head><body style="margin-left: 0px; width: 1387px;">
+<a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE VENGONO GESTITE LE AUTORIZZAZIONI UTENTE/FUNZIONE<br>
+</h1>
+
+Quando viene selezionata dalle Voci di Menù una qualsiasi Funzione, il
+sistema provvede a richiamare<br>
+
+dalla <span style="font-weight: bold; text-decoration: underline;">GridMasterPage.master.cs</span>
+la Routine <span style="font-weight: bold; text-decoration: underline;"><span style="color: rgb(51, 51, 255);">public Tab_Aut CurrentPageTabAut</span><br>
+</span>
+<ul>
+
+  <li>che SOLO nel caso in cui la Variabile <span style="text-decoration: underline;">currentPageTabAut sia NULL <br>
+    </span></li>
+  <ul>
+    <li><span style="text-decoration: underline;">provvede una volta x
+tutte a recuperare dalla TAB_AUT</span></li>
+    <ul>
+      <li>il Record<span style="text-decoration: underline;"> con
+Chiave UTENET/FUNZIONE</span></li>
+      <ul>
+        <li>se NON lo trova cerca</li>
+        <ul>
+          <li><span style="text-decoration: underline;">il REcord con
+Chiave FUNZ</span></li>
+          <ul>
+            <li>se non lo trova cerca<span style="text-decoration: underline;"><br>
+              </span></li>
+            <ul>
+              <li><span style="text-decoration: underline;">il Record
+con Chiave CLIENTE</span></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+dopo di chè richiama sempre dalla <span style="font-weight: bold; text-decoration: underline;">GridMasterPage.master.cs</span><span style="text-decoration: underline;"></span> la<span style="font-weight: bold; text-decoration: underline;"> </span>routine
+<span style="text-decoration: underline; font-weight: bold; color: rgb(51, 51, 255);">GridView_CommandButtonInitialize</span><br>
+
+<ul>
+
+  <li>si occupa di</li>
+  <ul>
+    <li>rendere VISIBILI/INVISIBILI i tasti di</li>
+    <ul>
+      <li>INSERISCI</li>
+      <li>MODIFICA</li>
+      <li>CANCELLA</li>
+    </ul>
+    <li>Verificare&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    </li>
+  </ul>
+</ul>
+
+dopo di chè sempre nella <span style="font-weight: bold; text-decoration: underline;">GridMasterPage.master.cs</span><span style="text-decoration: underline;"></span> la<span style="font-weight: bold; text-decoration: underline;"> </span>routine
+<span style="color: rgb(51, 51, 255); font-weight: bold; text-decoration: underline;">GridView_CustomJSProperties</span><br>
+
+<ul>
+
+  <li>che sempre e SOLO SOLO nel caso in cui la Variabile <span style="text-decoration: underline;">currentPageTabAut sia NULL</span> </li>
+  <ul>
+    <li>provvede ad inizializzare il fatto se devoo essere emessi o meno</li>
+    <ul>
+      <li>gli eventuali Messaggi di Avvertimento (1° e/o 2° Messaggio)</li>
+      <ul>
+        <li>per i casi di</li>
+        <ul>
+          <li>INSERIMENTO</li>
+          <li>MODIFCA</li>
+          <ul>
+            <li>CANCELLAZIONE</li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+&nbsp;<br>
+
+<br>
+</body></html>

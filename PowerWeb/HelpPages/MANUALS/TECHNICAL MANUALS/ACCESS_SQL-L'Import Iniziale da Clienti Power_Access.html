@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>L'IMPORT INIZIALE DA POWER/ACCESS a POWERWEB/SQL</title>
+
+  
+</head><body style="margin-left: 0px; width: 1387px;">
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>L'IMPORT INIZIALE DA POWER/ACCESS a POWERWEB/SQL</h1>
+
+<span class="">&nbsp;L'import dal precedente DataBase
+Access vale sia per gli Utenti <span style="font-weight: bold; text-decoration: underline;"><br>
+</span></span>
+<ul>
+
+  <li><span class=""><span style="font-weight: bold; text-decoration: underline;">POWER</span></span></li>
+  <li><span class=""><span style="font-weight: bold; text-decoration: underline;">COMO08</span></span></li>
+</ul>
+
+<span class="">La differenza principale sta nel fatto che </span><span class="">vengono imporati nella Tab. REG di POWERWEB</span>
+<ul>
+
+  <li><span class="">x gli Utenti POWER</span></li>
+  <ul>
+    <li><span class="">&nbsp;i Record presenti
+nella Tab. RIL di POWER ACCESS</span></li>
+  </ul>
+  <li><span class="">x gli Utenti COMO08</span></li>
+  <ul>
+    <li><span class="">i Record presenti nella Tab.
+REG_FIS di POWER Access</span></li>
+  </ul>
+</ul>
+
+Il sistema di caricamento dei Dati da Access a Sql presuppone quindi
+che
+<ul>
+
+  <li>Quando vengono trovati dei Record nella Tab. RIL del DataBase
+Access
+che si sta importando,&nbsp;si presuppone che si tratti di un
+Cliente POWER e quindi gli eventuali&nbsp;Record presenti nella
+Tab. REG_FIS vengono ignorati in quanto si presuppone che siano rimasti
+in questa Tab dopo la loro conversione in RIL.</li>
+</ul>
+
+<ul>
+
+  <li>Viceversa quando NON vengono trovati dei Record nella Tab. RIL
+del
+DataBase Access che si sta importando, si presuppone che si tratti di
+un Cliente COMO08 e quindi vengono invece importati nella Tab.REG di
+POWERWEB i record presenti nella sola Tab. REG_FIS.</li>
+</ul>
+
+<h1>PARTE LOGICA<br>
+</h1>
+
+<ul style="font-weight: bold;">
+
+  <li><big><big><span style="text-decoration: underline;">GESTIONE
+FILIALI/RESPONSABIL</span>I</big></big></li>
+</ul>
+
+Poichè la gestione delle FILIALI e dei RESPONSABILI è stata cambiata in
+POWERWEB, al momento del Lancio occorre indicare al sistema
+&nbsp;come si vogliono gestire le Filiali ed i Responsabili.<br>
+
+In particolare occorre stabilire se il Cliente USAVA la logica delle
+Filiali e dei Responsabili in Access <br>
+
+<ul>
+
+  <li><span style="font-weight: bold;">CON SOLO UN FINE STATISTICO
+(come per la maggior parte dei Clienti ACCESS)<br>
+    </span></li>
+  <ul>
+    <li>significa che l'eventuale Codice Filiale e Responsabile <span style="text-decoration: underline; font-weight: bold;">NON
+vengono usati per FILTRARE</span> i Cantieri ed i Collaboratori
+per Filiale/Responsabile e quindi</li>
+    <ul>
+      <li style="font-weight: bold; text-decoration: underline;">Per la
+Tab. FIL</li>
+      <ul>
+        <li>i valori vengono caricati nella <span style="text-decoration: underline;">Tab_Decod / RAGGRUPPAMENTO</span>-1</li>
+      </ul>
+      <li style="font-weight: bold; text-decoration: underline;">Per la
+Tab. RESP</li>
+      <ul>
+        <li>i valori vengono caricati nella Tab_Decod / RAGGRUPPAMENTO-2</li>
+      </ul>
+      <li style="font-weight: bold; text-decoration: underline;">Per
+la Tab. CANT</li>
+      <ul>
+        <li>il Valore della Filiale</li>
+        <ul>
+          <li>&nbsp;viene spostato nel Campo RAGGRUPPAMENTO-1
+del Record di quel Cantiere</li>
+          <li>viene caricato nella Tabella FIL</li>
+        </ul>
+      </ul>
+      <ul>
+        <li>il Valore del RESPONSABILE</li>
+        <ul>
+          <li>&nbsp;viene spostato nel Campo RAGGRUPPAMENTO-2</li>
+          <li>viene caricato nella Tab RESP</li>
+        </ul>
+      </ul>
+      <li style="font-weight: bold; text-decoration: underline;">Per
+la Tab. COL</li>
+      <ul>
+        <li>il Valore della Filiale</li>
+        <ul>
+          <li>viene spostato nel Campo RAGGRUPPAMENTO-1
+del Record di quel Cantiere</li>
+        </ul>
+      </ul>
+      <ul>
+        <li>il Valore del RESPONSABILE</li>
+        <ul>
+          <li>&nbsp;viene spostato nel Campo RAGGRUPPAMENTO-2</li>
+          <li><br>
+          </li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold;">CON IL FINE DI FILTRARE
+AUTOMATICAMENTE I CANTIERI E/O I COLLABORATORI in base all'Utente
+Collegato<br>
+    </span></li>
+  <ul>
+    <li>significa che l'eventuale Codice Filiale e
+Responsabile&nbsp;<span style="text-decoration: underline; font-weight: bold;">vengono
+usati da quel cliente per FILTRARE</span> i Cantieri e/o i
+Collaboratori per Filiale e/o Responsabile.</li>
+    <li>occorre gestire la conversione in base al significato
+dato dal SIngolo Cliente al valore inserito nel Campo
+Filiale/Responsabile dei Cant e/o dei COL</li>
+    <ul>
+      <li style="font-weight: bold; text-decoration: underline;">CLIENTE
+MOSAICO</li>
+      <ul>
+        <li style="font-weight: bold; text-decoration: underline;">per
+la Tab. FIL</li>
+        <ul>
+          <li>i valori vengono caricati nella <span style="text-decoration: underline;">Tab_FIL</span></li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">Per
+la Tab. RESP</li>
+        <ul>
+          <li style="font-weight: bold; text-decoration: underline;">i
+valori vengono</li>
+        </ul>
+      </ul>
+      <ul>
+        <li style="font-weight: bold; text-decoration: underline;">Per
+la TAB. CANT</li>
+        <ul>
+          <li style="text-decoration: underline;">UTILIZZA il Codice
+Filiale del CANTIERE per FILTRARE i Record Cantiere x Filiale</li>
+        </ul>
+        <ul>
+          <ul>
+            <li style="font-weight: bold; text-decoration: underline;"><span style="font-weight: normal;">Il Codice Filiale del Cantiere viene
+caricato nel campo Filiale del Record CANT di POWER WEB</span></li>
+            <li style="font-weight: bold; text-decoration: underline;"><span style="font-weight: normal;">la Tabella Filiali <br>
+              </span></li>
+          </ul>
+        </ul>
+      </ul>
+      <ul>
+        <li style="font-weight: bold; text-decoration: underline;"><span style="font-weight: normal;">UTILIZZA il</span></li>
+      </ul>
+    </ul>
+  </ul>
+  <br>
+  <li style="font-weight: bold;"><big><big><span style="text-decoration: underline;">GESTIONE PASSAGGI/ATTIVITA'</span></big></big></li>
+  <ul>
+    <li><span style="font-weight: bold; text-decoration: underline;">Verificare
+se il Cliente del quale si stanno per importare i Dati da ACCESS a SQL
+usava o meno</span></li>
+    <ul>
+      <li><span style="font-weight: bold; text-decoration: underline;">I
+PASSAGGI<br>
+        </span></li>
+    </ul>
+    <ul>
+      <ul>
+        <li>Attualmente esistono le seguenti Versioni di Import</li>
+      </ul>
+      <ul>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">STD</span></li>
+        </ul>
+        <ul>
+          <ul>
+            <li>PASS (Access) ----------&gt; &nbsp;PASS (SQL)</li>
+          </ul>
+        </ul>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">MOSAICO</span></li>
+        </ul>
+        <ul>
+          <ul>
+            <li>PASS (Access) -----------&gt; REG / ATT (SQL)<span style="font-weight: bold; text-decoration: underline;"><br>
+              </span></li>
+          </ul>
+        </ul>
+      </ul>
+      <li><span style="font-weight: bold; text-decoration: underline;">Verificare
+che TUTTI I RECORD della Tabella PASS (Access) abbiano</span></li>
+      <ul>
+        <li>&nbsp;il Codice_Collaboratore e il Codice _Cantiere<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <ul>
+    <li><span style="font-weight: bold; text-decoration: underline;">Verificare
+se il Cliente del quale si stanno per importare i Dati da ACCESS a SQL
+usava o meno</span></li>
+    <ul>
+      <li><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">LE ATTIVITA'</span></li>
+    </ul>
+    <ul>
+      <li>Attualmente esistono le seguenti Versioni di Import</li>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">STD</span></li>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">PASS (Access)
+----------&gt; &nbsp;PASS (SQL)</span></li>
+        </ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">MOSAICO</span></li>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">PASS (Access)
+-----------&gt; REG / ATT (SQL)</span></li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<h1>PARTE OPERATIVA<span style="font-weight: bold;"></span></h1>
+
+<ul>
+
+  <li>Applicare alla Tabelle Access del Cliente un <span style="font-weight: bold; text-decoration: underline;">UPGRADE</span>
+almeno <span style="font-weight: bold; text-decoration: underline;">SUPERIORE
+al&nbsp;207D</span></li>
+  <ul>
+    <li>serve per aggiungere alle eventuali Tabelle Access che non lo
+avevavno il RRN necessario per l'eventuale rielaborazione dei soli
+Record Errati registrati nella Tab-Check_impor<span style="font-weight: bold; text-decoration: underline;">t</span></li>
+  </ul>
+  <li>Creare in SQL un NUOVO DATABASE per quel Cliente copiandolo da
+POWER<br>
+  </li>
+  <ul>
+    <li>PowerNomeCliente</li>
+  </ul>
+  <ul>
+    <li>modificare la query <span style="font-weight: bold; text-decoration: underline;">SqlSvuotaDb.sql
+      </span><span style="font-weight: bold; text-decoration: underline;"></span>
+presente nella Cartella&nbsp;</li>
+    <ul>
+      <li>\\192.168.1.1\winit\AAA_AREA_SVILUPPO_SW\SW
+APPLICATIVO\PowerWeb\AAA-QuerySql</li>
+    </ul>
+    <li>sostituendo il Nome Standard del DB da pulire (Power) con il
+Nome del DB creato per quel Cliente (PowerNOMECLIENTE)la query di
+Pulizia del DATABASE <br>
+    </li>
+    <ul>
+      <ul>
+        <ul>
+          <li>SqlSvuotaDb.sql</li>
+        </ul>
+      </ul>
+    </ul>
+    <ul>
+      <li>Use Power<span style="font-weight: bold; color: red; text-decoration: underline;">NOMECLIENTE</span><br>
+GO<br>
+Delete from Reg<br>
+Delete from Utenti_Fil<br>
+Delete from Utenti_Resp<br>
+Delete from Fru_Cant<br>
+Delete from Pru_Col<br>
+Delete from Cant_Var<br>
+Delete from Cant_Note <br>
+Delete from Cant<br>
+Delete From Cli<br>
+Delete from Col_Monte_Minuti<br>
+Delete from Col_Note<br>
+Delete from Col_Var<br>
+Delete from Col<br>
+Delete from Fru<br>
+Delete from Pru<br>
+Delete from Resp<br>
+Delete from Fil<br>
+Delete from Tab_Chk_Imp</li>
+      <li>Delete from TAB_DECOD Where Gruppo_TAB = "DECOD_TAB" And
+(NOME_TAB &lt;&gt; "LINGUE" and Nome_Tab &lt;&gt; "VALUTE")<br>
+      </li>
+      <li>UPDATE PARAM SET Data_Blocco_Reg = NULL</li>
+    </ul>
+    <li>questa query contiene le istruzioni con cui vengono ripulite <br>
+    </li>
+    <ul>
+      <li>SOLO le Tabelle nelle quali verranno poi importati i Dati</li>
+      <li>Tutte le TAB_DECOD ad esclusione delle Tabelle LINGUE E VALUTE</li>
+      <ul>
+        <li>che devono normalmente contenere i rispsttivi valori di
+default</li>
+        <ul>
+          <li>Tabella VALUTE</li>
+          <ul>
+            <li>Chiave = EURO</li>
+            <li>Chiave = LIT</li>
+          </ul>
+          <li>Tabella LINGUE</li>
+          <ul>
+            <li>Chiave = ITA</li>
+          </ul>
+        </ul>
+      </ul>
+      <li>Imposta a NULL la Data Blocco<br>
+      </li>
+    </ul>
+    <li>Lanciare la suddetta Quey di Pulizia del DB SQL in cui si
+stanno per importare i Record da ACCESS<br>
+    </li>
+  </ul>
+  <li><span style="font-weight: bold; text-decoration: underline;"><br>
+    </span></li>
+  <li>PULIRE I LOG in</li>
+  <ul>
+    <li><span style="font-weight: bold;">..\ PowerWeb \ PowerWeb \
+PowerWeb \ Log</span></li>
+  </ul>
+  <li><span style="font-weight: bold;">Impostare in Power Web la
+corretta stringa di Connessione con il DB SQL creato per quel cliente</span></li>
+  <ul>
+    <li><span style="font-weight: bold;">WebConnection.config</span></li>
+    <ul>
+      <li><span style="font-weight: bold;">&lt;add
+name="PowerWebEntities" connectionString="Data
+Source=UTENTE-PC\SQLEXPRESS2012;Initial Catalog=Power<span style="text-decoration: underline; color: red;">NOMECLIENTE</span>;Persist
+Security Info=True;User
+ID=sa;Password=Winit2002;MultipleActiveResultSets=True" /&gt;<br>
+        </span></li>
+    </ul>
+  </ul>
+  <li>Lanciare POWER WEB con Utente ADMIN<br>
+  </li>
+  <ul>
+    <li>IMPOSTARE nella Scheda parametri di PowerWeb IL TIPO DI IMPORT
+DA USARE</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>0 = STANDARD</li>
+    </ul>
+    <ul>
+      <li>1 = MOSAICO</li>
+    </ul>
+    <ul>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">MOSAICO</span></li>
+      </ul>
+      <ul>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">FIL_CAN
+di CANT (Access</span><span style="text-decoration: underline;"></span>)
+-------&gt; <span style="font-weight: bold; text-decoration: underline;">FIL_CAN
+di CANT (SQL)</span></li>
+        </ul>
+      </ul>
+      <ul>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">RESP_COL
+di COL (Access) --------&gt; RESP_COL di COL (SQL)</span></li>
+        </ul>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline;">PASS (Access)
+-----------&gt; REG / ATT (SQL)</span></li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold; text-decoration: underline;">verificare
+il LOG di esecuzione<br>
+    </span></li>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="font-weight: bold; text-decoration: underline;">NOTA BENE:</span><br>
+
+<ul>
+
+  <li>&nbsp;Potrebbero
+esserci casi in cui dei Valori presenti sui RECORD ACCESS di POWER che
+dovrebbero esistere ANCHE nei corrispondenti record della TAB_DECOD di
+ACCESS poi risultino non esistennti</li>
+  <li>in questo caso occorre verificare con il Cliente&nbsp;</li>
+  <ul>
+    <li>se
+è un errore il fatto che NON esistono i valori in TAB_DECOD (nel qual
+caso occorre che vengano preventivamente inseriti nella TAB_DECOD di
+ACCESS con al relativa Decodifica</li>
+    <li>se invece sono valori VECCHI
+e NON più USATI allora eseguire una apposita QUERY DI ABBLENCAMENTO sui
+RECORD ACCESS che li contengono.</li>
+  </ul>
+</ul>
+
+<ul>
+
+</ul>
+
+</body></html>

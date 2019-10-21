@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_FRU</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA FRU<br>
+</h1>
+<span style="font-weight: bold;">Contiene i Dati
+Anagrafici delle Unità
+Fisse <span style="text-decoration: underline;"></span>che
+vengono
+installate sui Cantieri e/o presso gli A<span style="text-decoration: underline;">SSISTITI</span>
+ovvero
+sui <span style="text-decoration: underline;">LUOGHI
+FISICI dove
+avviene una Presenza da registrar</span>e.</span><br>
+<br>
+Le Chiavi del Record :&nbsp;<a href="#Fru_Id"> Fru_id</a>
+(<span style="color: red; font-weight: bold;">Automatica</span>)<br>
+I Campi Obbligatori &nbsp; : &nbsp;<a href="#Fru_Id">Fru_id</a>&nbsp;<a href="#Fru_Id"> </a>(<span style="font-weight: bold; color: red;">Chiave</span>)
+, <a href="#Codice_FRU">Codice_Fru</a> , <a href="#Data_Registrazione_FRU">Data_Registrazione_Fru</a>,
+<a href="#DataOraUltimaModifica_FRU">DataOraUltimaModifica</a><a href="#DataOraUltimaModifica_FRU">_Fru</a> <br>
+I Campi con Default &nbsp; :&nbsp;<a href="#DisAbilitazione_FRU"> </a><a href="#Data_Registrazione_FRU">Data_Registrazione_Fru&nbsp;</a>
+, <a href="#DataOraUltimaModifica_FRU">DataOraUltimaModifica_Fru</a>&nbsp;
+, <a href="#DisAbilitazione_FRU">Disabilitazione_Fru</a>
+(False) ,&nbsp; <a href="#Singola_Reg_Fru">Singola_Reg</a>
+(False) ,&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; <br><br>I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;1-<a href="#Codice_FRU">Codice_Fru</a> (10%) / 2-<a href="#N_Serie_FRU">N_Serie_Fru</a> (10%) /&nbsp;3-<a href="#Singola_Reg_Fru">Singola_Reg_Fru</a> (5%) / 4 - VUOTO / 5- <a href="#Data_Registrazione_FRU">Data_Registrazione_Fru</a> (10%) / 6-<a href="#DataOraUltimaModifica_FRU"> DataOraUltimaModifica</a><span style="text-decoration: underline;"> </span>(15%) / &nbsp;7 - VUOTO / 8 - VUOTO / 9 - VUOTO 7 10 - VUOTO / 11-<a href="#DisAbilitazione_FRU">Disabilitazione_Fru</a> (5%) / 12 - <a href="#Note_Fru">Note_Fru</a> (35%)&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3><table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2"><tbody><tr><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 228px;">NOME DEL CAMPO</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 125px;">TIPO CAMPO</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 814px;">DESCRIZIONE DEL CAMPO</td><td style="width: 39px;">CTRL</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 60px;">TAB</td><td style="text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; color: white; width: 60px;">TIPO</td></tr></tbody></table>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+
+<tr><td><span style="font-weight: bold; text-decoration: underline;"><a name="Fru_Id"></a> Fru_Id</span></td><td style="text-align: center;"><a href="../TR_PRU/I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td><td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;della Singola
+Unità Fissae</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="text-align: center;">OK</td><td style="text-align: center;">NO</td><td style="text-align: center;">TEXT</td></tr><tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_FRU"></a>Codice_FRU</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(</a>10)<br>
+</td>
+<td style="vertical-align: top; width: 795px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> Codice Interno Univoco </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">assegnato da WINIT </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">a quella Specifica Unità
+Fissa (Tag e/o Cless)&nbsp;</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;">&nbsp; </span></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span>.&nbsp;<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Viene Automaticamente
+riempito con Blanks a SX per allinearlo a DX</span>.</span> <span style="font-weight: bold; color: rgb(204, 102, 204);">VA
+SEMPRE INSERITA UGUALE AL CODICE RIPORTATO SULLA SINGOLA UNITA' FISSA
+ASSEGNATO DA WINIT. <span style="color: black;">Viene controllato che NON esista già nè in PRU ma nemmeno in FRU.</span></span><span style="color: rgb(153, 51, 0);"></span>
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Registrazione_FRU"></a>Data_Registrazione_FRU</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top; width: 795px;">Data
+e Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio -</span></span>
+in
+cui PER la PRIMA VOLTA è stato inserita questa Unità Fissa. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span> <span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema </span><span style="color: black;">(Vedi
+anche <a href="#DataOraUltimaModifica_FRU">DataOraUltimaModifica_FRU</a>)</span>
+</span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="DataOraUltimaModifica_FRU"></a>DataOraUltimaModifica_FRU</span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a><br>
+</td>
+<td style="vertical-align: top; width: 795px;">Data ed Ora <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio&nbsp;</span></span>
+in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica fatta su quel Record)</span> <span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="#Data_Registrazione_FRU"> Data_Registrazione_FRU</a>)</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="DisAbilitazione_FRU"></a>DisAbilitazione_FRU</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 795px;">Stato
+dell'Unità Fissa che indica se la relativa
+Unità Fissa è da considerare Disabilitata o meno. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">==False.
+</span>Una Unità Fissa anche se disabilitata può essere
+comunque utilizzata
+dal resto del sistema e <span style="color: rgb(153, 51, 0);">può
+assumere i seguenti Valori:</span><br>
+<ul>
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo record NON è più ATTIVO e NON va più utilizzato
+&nbsp;&nbsp; </li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale del Record</li>
+</ul>
+Viene utilizzato solo per permettere di escludere
+automaticamente le Unità Fisse Disabilitate dalla visualizzazione
+della Lista delle Unità Fisse proposta in apertura della Gestione delle
+Schede Unità Fisse se è attivato il relativi Campo </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="N_Serie_FRU"></a> N_Serie_FRU</span> </td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(</a>(10)<br>
+</td>
+<td style="vertical-align: top; width: 795px;">Codice
+<span style="text-decoration: underline; font-weight: bold;">Univoco</span>
+identificativo del N° di Serie associato a questa Unità Fissae (<span style="font-weight: bold; text-decoration: underline; color: red;">ex
+N°Serie di MATR_FRU</span>) . <span style="color: rgb(153, 51, 0); font-weight: bold;">Viene Automaticamente
+riempito con Blanks a SX per allinearlo a DX e </span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;"><span style="text-decoration: underline;">nel
+caso in cui NON venga inserito</span> viene Automaticamente impostato dal
+sistema UGUALE al Codice_FRU</span>.<span style="font-weight: bold; color: rgb(153, 51, 0);"> In ogni caso viene controllato che NON e</span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">sista
+già associato ad un'altro Codice_FRU diverso da quello per il quale lo
+si sta inserendo. </span><span style="font-weight: bold; color: rgb(204, 102, 204);"><span style="color: black;">Viene anche controllato che NON esista già nemmeno in PRU</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Note_Fru"></a>Note_Fru</span> </td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR(</a>(Max)<br>
+</td>
+<td style="vertical-align: top; width: 795px;">Note
+Descrittive <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 204, 0);">liberamente
+associabili</span>&nbsp;
+a questa Unità Fissa. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo Specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">NOTE</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Singola_Reg_Fru"></a>Singola_Reg_Fru</span></td>
+<td style="vertical-align: top; text-align: center; width: 119px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 795px;">Abilita
+Gestione
+Passaggi per questa Unità Fissa ovvero identifica le Unità Fisse le cui
+Timbrature
+vengono trattate Singolarmente (Timbratura di Passaggio) invece che
+come Timbrature di Entrata/Uscita.&nbsp;<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(255, 102, 0); font-weight: bold;"> </span>Nel
+caso venga abilitato per questa
+Unità Fissa (Valore=VERO) allora ogni Singola Timbratura viene
+identificata come un PASS e NON VIENE ABBINATA ALLE ALTRE TIMBRATURE.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">==False.
+<span style="color: rgb(153, 51, 0);">Può assumere
+SOLO i seguenti Valori:</span></span>
+<ul>
+<li>VERO (True) . Le Timbrature vengono trattate
+SINGOLARMENTE <br>
+</li>
+<li>FALSO (False) Le Timbrature vengono trattate a Coppie
+(Entrata/Uscita)</li>
+</ul>
+NOTA BENE : il Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Abilita_Pas">Abilita_Pas&nbsp;</a>
+in Scheda Parametri deve essere = 1 (Abilitata) altrimenti la Gestione
+Passaggi per Unità Fissa NON viene Gestita</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 226px;"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</td>
+<td style="vertical-align: top; width: 119px;"><br>
+</td>
+<td style="vertical-align: top; width: 795px;"><br>
+</td><td style="width: 39px;"><br>
+</td><td style="width: 60px; text-align: center;"><br>
+</td><td style="width: 60px; text-align: center;"><br>
+</td>
+</tr>
+</tbody>
+</table>
+<span style="text-decoration: line-through;">&nbsp;</span><br>
+<br>
+</body></html>

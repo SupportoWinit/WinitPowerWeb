@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Menu - La Struttura</title></head><body>
+<a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style="font-size: 16pt; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span></span>LA
+GESTIONE DEI MENU'</h1>
+
+
+
+<p class="MsoNormal">POWERWEB può gestire più Tipi di Menu (definiti
+nella Tabella&nbsp;MENU_TIPO) per ognuno dei quali la relativa
+struttura è definita nella Tabella MENU &nbsp;</p><p class="MsoNormal">Il Tipo di Menù da utilizzare è associate al Singolo Utente tramite il campo Menu_Tipo_ID presente nella Tabella UTENTI.<br>Il Tipo di Visualizzazione del Menù</p><ul>
+
+  <li><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><b style=""><span style=""></span>1 = a Discesa</b></li>
+  <li><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><b><span style=""> </span><span style="text-decoration: line-through;">2 = a TreeView</span><o:p></o:p></b></li>
+</ul>è associato al Singolo Utente tramite il Campo TipoMenu_Utente presente nella Tabella UTENTI<p class="MsoNormal">La Struttura Generale della Gestione delle Voci di Menù è quindi la seguente:</p><ul><li><span style="font-weight: bold;">Tabella UTENTI</span> (Fornisce il Tipo Menù associato all'Utente che ha eseguito il LOGIN)</li><ul><li>Campo : Menu_Tipo_ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</li><ul><li><span style="font-weight: bold;">Tabella MENU_TIPO</span> (Fornisce la Descrizione del Menù&nbsp;associato all'Utente che ha eseguito il LOGIN)</li><ul><li>Campo : Nome_Risorsa_Menu_Tipo</li></ul><li><span style="font-weight: bold;">Tabella MENU</span>
+(Fornisce la Lista delle Voci di Menù con la relativa Descrizione
+associate al Tipo Menù associato all'Utente che ha eseguito il LOGIN)</li><ul><li>Campo : Testo</li><li>Campo : Tab_Nome_Funz</li><ul><li><span style="font-weight: bold;">Tabella FUNZ</span> (Fornisce il percorso in base la quale aprire la Pagina Aspx associata alla relativa Funzione del Menù</li></ul></ul></ul></ul></ul><p class="MsoNormal"><span style="text-decoration: underline; font-weight: bold;">La Struttura della Tabella MENU</span> (contiene l'elenco strutturato delle Voci di Menù organizzate per Tipo_Menù) prevede quanto segue</p>
+
+<ul>
+
+  <li><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span></span><span style="font-weight: bold;">Menu_Id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>N° progressivo dei Record della Tabella (Gestito Automaticamente dal Sistema)</li><li><span style="font-weight: bold;">Menu_Tipo_Id</span>&nbsp; &nbsp; &nbsp; <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Per
+permettere di avere Strutture Personalizzate dei Menù x
+Cli/Applic/ecc</li><ul><li>Deve esistere come Chiave della Tabella <span style="font-weight: bold;">MENU_TIPO</span></li></ul>
+  <li><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-weight: bold;">Testo</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;Descrizione da Visualizzare a Video</li><ul><li><span style="text-decoration: underline;">va Impostata a:</span><br>
+    </li></ul><ul><ul><li><span style="font-weight: bold;">MENU</span>_<span style="color: red; font-weight: bold;">NomePagina</span><span style="font-weight: bold;">_TEXT &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (se si tratta di una FORM)</span></li></ul><ul><li><span style="font-weight: bold;">MENU_GROUP_NomeGruppo &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; (se si tratta del Nome di un Gruppo di Voci)</span></li><li>
+
+per<span style="font-weight: bold; text-decoration: underline;">
+permettere di gestirne poi la Traduzione AUTOMATICA in Lingua</span>
+utilizzando la Gestione Standard in Lingua tramite le Risorse.<br>
+</li></ul></ul><li><span style="font-weight: bold;">Parent_ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>Contiene il Menu_ID a cui appartiene quella Voce di Menù</li><ul><li>Il Primo NODO di ogni Tipo di Menù deve essere impostato a NULL</li></ul><li><span style="font-weight: bold;">Tab_Funz_Id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>Contiene il Tab_Funz_Id&nbsp;</li><ul><li>deve esistere come Chiave della Tabella <span style="font-weight: bold;">&nbsp;TAB_FUNZ</span></li></ul><ul><li>Il Primo NODO di ogni Gruppo&nbsp;deve essere impostato a NULL<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;</span></li></ul></ul><span style="font-weight: bold; text-decoration: underline;">La Struttura della Tabella MENU_TIPO</span> (contiene la decodifica dei diversi Tipi di Menù associabili ad un Utente) prevede quanto segue<br><ul><li><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span></span><span style="font-weight: bold;"></span><span style="font-weight: bold;">Menu_Tipo_Id</span>&nbsp; &nbsp; &nbsp; <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;N° progressivo dei
+Record della Tabella (Gestito Automaticamente dal Sistema)&nbsp;</li><ul><ul><ul><ul><ul><li>&nbsp; Identifica il Tipo Menù (Per ogni Tipo di Menù esiste la corrispondente struttura di Voci di Menù in Tabella Menu)</li></ul></ul></ul></ul></ul><li><span style="font-weight: bold;">Nome_Risorsa_Menu_Tipo &nbsp; &nbsp; </span>Descrizione del Tipo di Menù<span style="font-weight: bold;"></span></li><ul><li><span style="font-weight: bold;">va impostata a:</span></li><ul><li><span style="font-weight: bold;">MENU_TIPO_xxxx
+&nbsp; &nbsp; (se si tratta del Nome di un Gruppo di Voci)</span></li><li>
+
+per<span style="font-weight: bold; text-decoration: underline;">
+permettere di gestirne poi la Traduzione AUTOMATICA in Lingua</span>
+utilizzando la Gestione Standard in Lingua tramite le Risorse.</li></ul></ul></ul><span style="font-weight: bold;">La Struttura della Tabella FUNZ</span> (contiene l'elenco delle Funzioni previste nel sistema e agganciabili come Vovi di un qualisasi Menù) prevede quanto segue:<br><ul><li><span style="font-weight: bold;">Tab_Funz_Id</span>&nbsp; &nbsp; &nbsp; <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;N° progressivo della
+Funzionei Record della Tabella (Gestito Automaticamente dal Sistema)</li><li><span style="font-weight: bold;">Nome_Funz</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;Descrizione della Funzione da visualizzare a
+video nelle Pagine e nelle righe dei Menù</li><li><span style="font-weight: bold;">Link</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;Percorso in base al quale viene identificata la Pagina da Aprire
+da Menù come descritto in PowerWeb</li><ul><li>~/Pages/Anagraph/Col.aspx</li><li>~/Pages/Param.aspx</li></ul></ul>A momento del <span style="font-weight: bold; text-decoration: underline;">Collegamento da
+parte di ogni Utente ne viene aperto automaticamente il Menù</span> che ha<br>
+
+<ul>
+
+  <li>Menu_Tipo_Id&nbsp; (della Tab.Menu)&nbsp;= TipoMenu_Utente del Record Utente&nbsp;&nbsp;</li><ul><li><span style="text-decoration: line-through;">&nbsp;(se l'Utente NON ha
+associato uno specifico Nome Menù allora viene associato al Nome Menù =
+"default")</span><br>
+  </li></ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline line-through;">Il&nbsp;Menu_Tipo = 1 </span><br style="text-decoration: line-through;">
+
+<ul style="text-decoration: line-through;">
+
+  <li><span style="font-weight: bold;">NON è CANCELLABILE</span> <br>
+  </li>
+  <li><span style="font-weight: bold;">per essere MODIFICATO</span> <br>
+  </li>
+  <ul>
+    <li><span style="font-weight: bold;">OCCORRE FORNIRE UNA APPOSITA
+PASSWORD</span><span style="text-decoration: underline;"> <br>
+      </span></li>
+  </ul>
+</ul><span style="text-decoration: line-through;">
+
+in quanto viene gestito da WINIT e fornito UGUALE per TUTTI gli Utenti
+ed aggiornato ad ogni rilascio di una nuova Release</span><br>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;">La
+Gestione IN LINGUA delle Voci&nbsp;</span> dei Menù avviene tramite
+la normale Gestione in Lingua tramite la Struttura inserita nelle
+RISORSE DI SISTEMA e prevede che vengano caricate :<br>
+
+<ul>
+
+  <li>una Risorsa per Ogni valore inserito nel Campo Testo della Tabella MENU &nbsp;</li>
+  <ul>
+    <li>con NOME RISORSA = MENU_(Nome della Pagina) &nbsp;per le Voci di Menù che fanno riferimento alle Specifiche Pagine&nbsp;</li>
+  </ul><ul><li>con NOME RISORSA = MENU_GROUP_(Nome del Gruppo di Voci) per le Voci di Menù che Raggruppano delle Pagine</li><li>con NOME RISORSA = MENU_TIPO_xxxx (</li></ul>
+</ul>
+
+La Struttura e Composizione dei diversi Menù (compresa quella del
+Menù di Default) vengono gestiti tramite la Funzione di Gestione Menù a
+cui si rimanda.<br>
+
+<br>
+
+</body></html>

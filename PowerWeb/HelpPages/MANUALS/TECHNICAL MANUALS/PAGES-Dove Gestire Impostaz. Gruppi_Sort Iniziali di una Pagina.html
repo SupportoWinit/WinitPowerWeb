@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>DOVE IMPOSTARE I GRUPPI/SORT INIZIALI DI UNA PAGINA</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE IMPOSTARE I GRUPPI/SORT INIZIALI DI UNA PAGINA</h1>
+
+Nel caso in cui si voglia che la DataGrid INIZIALE di una Form venga
+proposta <br>
+
+&nbsp;&nbsp;&nbsp; RAGGRUPPATA<br>
+
+e/o <br>
+
+&nbsp;&nbsp;&nbsp; ORDINATA<br>
+
+in base ad uno o pèiù campi della DataGrid stessa occorre inserire in<br>
+
+<ul style="font-weight: bold; color: rgb(0, 0, 153);">
+
+  <li>POWERWEB</li>
+  <ul>
+    <li>MODULES</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>xxxMODULE.ascx.cs</li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li>routine BINDGRID</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span>private
+void BindGrid()<br>
+
+&nbsp;&nbsp;&nbsp; {<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+gvTab_Decods.KeyFieldName = KEYFIELDNAME;<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+gvTab_Decods.DataSource = RepoManager.TabDecodRepo.GetAll();<br>
+
+le seguenti righe di codice <span style="text-decoration: underline;"><span style="font-weight: bold;">:</span></span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!Page.IsPostBack
+&amp;&amp; !Page.IsCallback)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: red;">gvXXXX</span>.ClearSort();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration: underline; color: rgb(0, 153, 0);">
+//CREA RAGGRUPPAMENTO PER L'ELENCO DELLE COLONNE INDICATE</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: red;">gvXXXX</span>.GroupBy(<span style="font-weight: bold; color: red;">gvXXXX</span>.Columns[CommonService.GetPropertyName(()
+=&gt; _<span style="font-weight: bold; color: red;">NOMETABELLA</span>Stub.<span style="font-weight: bold; color: red;">NOMECAMPO-1</span>)]);<br>
+
+&nbsp;&nbsp;&nbsp; .....................................<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: red;">gvXXXX</span>.GroupBy(<span style="font-weight: bold; color: red;">gvXXXX</span>.Columns[CommonService.GetPropertyName(()
+=&gt; _<span style="font-weight: bold; color: red;">NOMETABELLA</span>Stub.<span style="font-weight: bold; color: red;">NOMECAMPO-n</span>)]);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="text-decoration: underline; color: rgb(0, 153, 0);">//CREA
+ORDINAMENTO PER L'ELENCO DELLE COLONNE INDICATE</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<span style="font-weight: bold; color: red;">gvXXXX</span>.Columns[CommonService.GetPropertyName(()
+=&gt; _<span style="font-weight: bold; color: red;">NOMETABELLA</span>Stub.<span style="font-weight: bold; color: red;">NOMECAMPO-1</span>)]
+as GridViewDataColumn).SortAscending();<br>
+
+&nbsp;&nbsp;&nbsp; ....................................<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<span style="font-weight: bold; color: red;">gvXXXX</span>.Columns[CommonService.GetPropertyName(()
+=&gt; _<span style="font-weight: bold; color: red;">NOMETABELLA</span>Stub.<span style="font-weight: bold; color: red;">NOMECAMPO-n</span>)]
+as GridViewDataColumn).SortAscending();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+gv<span style="font-weight: bold; color: red;">XXXX</span>.DataBind();<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+<br>
+</span></span><br>
+
+<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+</span></span>
+</body></html>

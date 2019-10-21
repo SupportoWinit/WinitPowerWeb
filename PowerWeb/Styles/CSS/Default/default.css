@@ -1,0 +1,15 @@
+﻿    /* --> PIALLA IL CSS DI DEFAULT DEL BROWSER */
+html, body { 
+    margin: 0px;
+    padding: 0px;
+    border: 0px; 
+    font: 1em/1.25 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font: 1em/1.25 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+    /* PIALLA IL CSS DI DEFAULT DEL BROWSER <-- */

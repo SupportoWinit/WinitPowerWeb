@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Tab_Check_Imp</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (TAB_CHECK_IMP) di Gestione dello Stato di Avanzamento
+dell'Import da ACCESS</span></h1>
+Questa pagina prevede la Visualizzazione dei Record contenuti nella
+Tabella TabChk_Import in cui sono contenuti i Record che indicano per
+ogni Tabella il risultato del relativo Import da Access<br>
+<ul>
+<li>inserendoci per ogni Tabella Trattata un RECORD con Nome_Tabella_CHK_Import = NOME TABELLA TRATTATA<br>
+    </li><ul><li>con il relativo Campo STATO_RECORD = TRUE</li><ul><li>quando TUTTI i Relativi Record trattati per quella Tabella</li><ul><li>sono risultati caricati REGOLARMENTE nel DB SQL di POWERWEB<br>
+          </li></ul></ul></ul><li>inserendo per ogni RECORD per il quale PowerWeb ha riscontrato
+degli ERRORI che ne impediscono il Caricamento nel DB SQL di POWERWEB
+con<br>
+    </li><ul><li>Nome_Tabella_CHK_Import = NOME TABELLA TRATTATA</li><li>Chiave_Record_Tab_Check_Imp = RRN del Record ACCESS riscontrato errato</li><li>Stato_Record = False</li></ul>
+</ul>
+
+Questa pagina è di Tipo MASTER (senza Dettaglio) e quindi si rimanda la
+relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della
+relativa struttura di Funzionamento<br>
+<ul>
+  <li>anche se in questa particolare PAGINA <br>
+  </li>
+  <ul>
+    <li>è stato abilitato solo il TASTO DI DELETE <br>
+    </li>
+    <ul>
+      <li>(per permettere l'eventuale Cancellazione dei Record nel caso si volesse ripartire da ZERO)</li>
+    </ul>
+  </ul>
+  <li style="text-decoration: underline; font-weight: bold;">altrimenti va usata SOLO per verificare</li>
+  <ul>
+    <li>quali Tabelle sono state REGOLARMENTE CARICATE</li>
+    <ul>
+      <li>&nbsp;e così pure TUTTI i Relativi Record<br>
+      </li>
+    </ul>
+    <li>quali Tabelle NON sono state Regolarmente Caricate</li>
+    <ul>
+      <li>con l'elenco delle Chiavi dei Record Scartati<br>
+      </li>
+    </ul>
+  </ul>
+</ul>
+<span style="text-decoration: underline; font-weight: bold;">Si RACCOMANDA DI NON MODIFICARE LA STRUTTURA DI QUESTA PAGINA</span> <br>
+<ul>
+  <li>in quanto la Vista di Default organizza già i risultati dell'Import da Access</li>
+  <ul>
+    <li>Raggruppati per</li>
+    <ul>
+      <li>STATO DEL RECORD = FALSE (Elenco dei Record Errati per Tabella)<br>
+      </li>
+      <ul>
+        <li>NOME TABELLA xxxxxxx</li>
+        <ul>
+          <li>per ognuna delle quali vengono poi visualizzati</li>
+          <ul>
+            <li>TUTTI LE CHIAVI dei Record Scartati in quanto riscontrati NON Corretti</li>
+            <ul>
+              <li>e che saranno gli UNICI ad essere rielaborati dal prossimo IMPORT da ACCESS</li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <li>STATO RECORD = TRUE (Elenco delle Tabelle per le quali sono stati caricati REGOLARMENTE TUTTI I RECORD)</li>
+      <ul>
+        <li>NOME TABELLA xxxxxx</li>
+        <ul>
+          <li>che NON verranno più rielaborate dal prossimo IMPORT ACCESS</li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<span style="text-decoration: underline; font-weight: bold;">L'IMPORT da ACCESS si considera TERMINATO REGOLARMENTE&nbsp; qunado TUTTE LE TABELLE sono nello STATO = TRUE</span><br>
+.<br>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="text-decoration: underline;"></span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+</body></html>

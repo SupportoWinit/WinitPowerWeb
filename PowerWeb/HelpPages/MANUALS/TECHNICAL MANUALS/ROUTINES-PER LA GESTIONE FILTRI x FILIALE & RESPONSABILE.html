@@ -1,0 +1,392 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>LE ROUTINES DI GESTIONE DEI FILTRI x FILIALE AND RESPONSABILE</title>
+
+  
+</head><body style="margin-left: 0px; width: 1387px;">
+<a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>LE ROUTINES DI GESTIONE FILTRI X FILIALE (CANT) <span style="color: red; text-decoration: underline;">AND</span>
+RESPONSABILE (COL)</h1>
+
+Per i clienti che dovessero avere la necessità di ABILITARE o MENO i
+propri SINGOLI UTENTI (definiti nella tabella Utenti) alla<br>
+
+<ul>
+
+  <li>VISUALIZZAZIONE </li>
+  <li>MANUTENZIONE</li>
+</ul>
+
+dei soli<br>
+
+<ul>
+
+  <li>CANTIERI</li>
+  <li>COLLABORATORI</li>
+</ul>
+
+a loro assegnati e di tutte le relative informazioni ad essi collegate <br>
+
+<ul>
+
+  <li>ASSOCIAZIONI ALLE UNITA' (Fisse/Portatili)</li>
+  <li>NOTE</li>
+  <li>STORICO VARIAZIONI</li>
+  <li>REGISTRAZIONI</li>
+</ul>
+
+si è stabilito di Gestire<span style="font-weight: bold;"> nella
+TABELLA <a href="../../TR_RECORD/_TR_PARAM.html">PARAM</a></span> un
+Flag <a href="../../TR_RECORD/_TR_PARAM.html#DomainFilter"><span style="text-decoration: underline; font-weight: bold;">DomainFilter</span></a><br>
+
+<ul>
+
+  <li>0 = NESSUNA GESTIONE nè per Filiale nè per Responsabile&nbsp;</li>
+  <li>1&nbsp;= GESTIONE x FILIALE <br>
+  </li>
+  <li>2 = GESTIONE x COLLABORATORE<br>
+  </li>
+  <li>3 = GESTIONE x FILIALE <span style="text-decoration: underline; font-weight: bold;">AND</span> x
+RESPONSABILE</li>
+</ul>
+
+Per identificare i Cantieri legati ad una speciale Filiale ed i
+Collaboratori legati ad uno specifico Responsabile :<br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">sulla
+TABELLA <a href="../../TR_RECORD/_TR_CANT.html">CANTIERE</a></span> </li>
+  <ul>
+    <li>&nbsp;&nbsp;&nbsp; è stato inserito un apposito Campo <a href="../../TR_RECORD/_TR_CANT.html#Filiale_Can"><span style="font-weight: bold;">Filiale_Can</span></a></li>
+    <ul>
+      <li><a href="../../TR_RECORD/_TR_CANT.html#Filiale_Can"><span style="text-decoration: underline; font-weight: bold;"></span></a>dove
+va inserito un Codice Filiale esistente come ID nella tabella <a style="font-weight: bold;" href="../../TR_RECORD/_TR_FIL.html">FIL</a></li>
+      <li>oppure non va inserito nulla per i Cantieri che tutti possono
+gestire<br>
+      </li>
+    </ul>
+  </ul>
+  <li>&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> sulla TABELLA
+    <a href="../../TR_RECORD/_TR_COL.html">COLLABORATORI&nbsp;</a></span></li>
+  <ul>
+    <li>è stato inserito un apposito campo <a href="../../TR_RECORD/_TR_COL.html#Responsabile_Col"><span style="font-weight: bold;">Responsabile_Col</span></a></li>
+    <ul>
+      <li>dove va inserito un Codice Filiale esistente come ID nella
+tabella <a style="font-weight: bold;" href="../../TR_RECORD/_TR_RESP.html">RESP</a></li>
+      <li>oppure non va inserito nulla per i Cantieri che tutti possono
+gestire</li>
+    </ul>
+  </ul>
+</ul>
+
+Per gestire gli elenchi delle Filiali e/o dei Responsabili associati ad
+un determinato Utente sono state create due tabelle:
+<ul>
+
+  <li><span style="font-weight: bold;">la Tabella <a href="../../TR_RECORD/_TR_UTENTI_FIL.html">UTENTI_FIL</a></span>&nbsp;
+che contiene l'elenco delle&nbsp;Filiali legate ad uno specifico UTENTE
+    <br>
+  </li>
+  <ul>
+    <li>gestite poi secondo il Criterio INCLUSIVO/ESCLUSIVO <br>
+    </li>
+    <ul>
+      <li>in base la valore assunto dal Campo <a href="../../TR_RECORD/_TR_UTENTI.html#Fil_Inclusive"><span style="font-weight: bold; text-decoration: underline;">Fil_Inclusive</span></a>
+della tabella <a style="font-weight: bold;" href="../../TR_RECORD/_TR_UTENTI.html">UTENTI</a><br>
+      </li>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold;">la Tabella <a href="../../TR_RECORD/_TR_UTENTI_RESP.html">UTENTI_RESP</a></span>&nbsp;
+che contiene l'elenco dei Responsabili legati ad uno specifico UTENTE <br>
+  </li>
+  <ul>
+    <li>gestite poi secondo il Criterio INCLUSIVO/ESCLUSIVO </li>
+  </ul>
+  <ul>
+    <ul>
+      <li>in base la valore assunto dal Campo <a href="../../TR_RECORD/_TR_UTENTI.html#Resp_Inclusive"><span style="font-weight: bold; text-decoration: underline;">Resp_Inclusive</span></a>
+della tabella <a style="font-weight: bold;" href="../../TR_RECORD/_TR_UTENTI.html">UTENTI</a></li>
+    </ul>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline;"><span style="font-weight: bold;">NOTA
+BENE : </span>A prescindere dall'attivazione o meno del Dominio:</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;">I Cantieri&nbsp;</span>
+e le relative informazioni che dipendono da quei Cantieri&nbsp;<span style="text-decoration: underline;">che hanno la FILIALE = BLANK</span>&nbsp;</li>
+  <ul>
+    <li>vengono comunque&nbsp;visti da TUTTI gli UTENTI (con/senza
+Filiale Assegnata)</li>
+  </ul>
+  <li><span style="text-decoration: underline;">I
+Collaboratori&nbsp;</span>e le relative informazioni che dipendono da
+quei Cantieri&nbsp;<span style="text-decoration: underline;"></span><span style="text-decoration: underline;">che hanno il RESPONSABILE &nbsp;=
+BLANK</span></li>
+  <ul>
+    <li><span style="text-decoration: underline;"></span>&nbsp;vengono
+comunque&nbsp;visti da TUTTI gli UTENTI (con/senza Responsabile
+Assegnato)</li>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">Nel caso
+in cui il relativo Dominio NON SIA ATTIVATO <br>
+</span>
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">valore
+0 del Campo</span> <a href="../../TR_RECORD/_TR_PARAM.html#DomainFilter"><span style="text-decoration: underline;">DomainFilter</span> <span style="color: black;">della TABELLA </span></a><a style="font-weight: bold;" href="../../TR_RECORD/_TR_PARAM.html">PARAM</a><span style="font-weight: bold; text-decoration: underline;"></span> <a href="../../TR_RECORD/_TR_PARAM.html#DomainFilter"><span style="font-weight: bold;"></span></a></li>
+  <ul>
+    <li>allora
+la Gestione viene DISATTIVATA</li>
+    <ul>
+      <li>la Filiale del Cantiere e il
+Responsabile del Collaboratore NON filtrano più i Record anche se
+inserite sugli Utenti e/o sui Cantieri e/o sui Collaboratori</li>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">Nel caso
+in cui il relativo Dominio SIA ATTIVATO x FILIALE <br>
+</span>
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">valore 1 del
+Campo</span> <a href="../../TR_RECORD/_TR_PARAM.html#DomainFilter"><span style="text-decoration: underline;">DomainFilter</span> <span style="color: black;">della TABELLA </span></a><a style="font-weight: bold;" href="../../TR_RECORD/_TR_PARAM.html">PARAM</a><span style="font-weight: bold; text-decoration: underline;"></span> </li>
+  <ul>
+    <li>significa che vengo resi disponibile a quell'Utente</li>
+  </ul>
+  <ul>
+    <li>&nbsp;i Record relativi&nbsp;</li>
+  </ul>
+  <ul>
+    <ul>
+      <li><span style="text-decoration: underline; font-weight: bold;">ai
+SOLI CANTIERI</span> &nbsp;che hanno</li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li><a href="../../TR_RECORD/_TR_CANT.html#FIL_ID">Fil_iD</a>
+della Tabella <a href="../../TR_RECORD/_TR_CANT.html">CANT</a> = NULL</li>
+      </ul>
+      <ul>
+        <li><a href="../../TR_RECORD/_TR_CANT.html#FIL_ID">Fil_id</a><span style="text-decoration: underline;"> </span>della Tabella <a href="../../TR_RECORD/_TR_CANT.html">CANT</a> = Ad uno
+degli&nbsp;UTENTI_FIL_ID presenti per quell'Utente nei Record della
+Tabella UTENTI_FIL</li>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <li>relativi <br>
+    </li>
+    <ul>
+      <li><span style="font-weight: bold; text-decoration: underline;">a
+TUTTI I Collaboratori</span> che Vi hanno lavorato<span style="text-decoration: underline; font-weight: bold;"></span></li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li><span style="text-decoration: underline; font-weight: bold;">a
+prescindere dal Codice Responsabile assegnato sui Collaboratori<br>
+          </span></li>
+      </ul>
+      <ul>
+        <ul>
+          <li><span style="text-decoration: underline; font-weight: bold;">(in quanto NON
+attivata la relativa Gestione x Responsabile)</span></li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">Nel caso
+in cui il relativo Dominio SIA ATTIVATO x RESPONSABILE <br>
+</span>
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">valore 2 del
+Campo</span> <a href="../../TR_RECORD/_TR_PARAM.html#DomainFilter"><span style="text-decoration: underline;">DomainFilter</span> <span style="color: black;">della TABELLA </span></a><a style="font-weight: bold;" href="../../TR_RECORD/_TR_PARAM.html">PARAM</a><span style="font-weight: bold; text-decoration: underline;"></span> <br>
+  </li>
+  <ul>
+    <li>significa che vengo resi disponibile a quell'Utente</li>
+  </ul>
+  <ul>
+    <li>&nbsp;i Record relativi <br>
+    </li>
+    <ul>
+      <li><span style="font-weight: bold; text-decoration: underline;">a
+TUTTI I Cantieri </span>dove hanno lavorato<span style="text-decoration: underline; font-weight: bold;"></span></li>
+    </ul>
+    <ul>
+      <ul>
+        <li><span style="text-decoration: underline; font-weight: bold;">a
+prescindere dal Codice Filiale assegnato sui Cantieri<br>
+          </span></li>
+      </ul>
+      <ul>
+        <ul>
+          <li><span style="text-decoration: underline; font-weight: bold;">(in quanto NON
+attivata la relativa Gestione x Filiale)</span></li>
+        </ul>
+      </ul>
+    </ul>
+    <li><span style="text-decoration: underline; font-weight: bold;">relativi<br>
+      </span></li>
+    <ul>
+      <li><span style="text-decoration: underline; font-weight: bold;">ai
+SOLI COLLABORARORI</span>&nbsp; che hanno</li>
+      <ul>
+        <li><a href="../../TR_RECORD/_TR_COL.html#Resp_id">Resp_id</a>
+della Tabella <a href="../../TR_RECORD/_TR_COL.html">COL</a> = NULL</li>
+        <li><a href="../../TR_RECORD/_TR_COL.html#Resp_id">Resp_id</a>
+della Tabella <a href="../../TR_RECORD/_TR_COL.html">COL</a> = Ad uno
+degli&nbsp;UTENTI_RESP_ID presenti per quell'Utente nei Record della
+Tabella UTENTI_RESP</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">Nel caso
+in cui il relativo Dominio SIA ATTIVATO x FILIALE <span style="color: red;">AND </span>RESPONSABILE <br>
+</span>
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">valore 3 del
+Campo</span> <a href="../../TR_RECORD/_TR_PARAM.html#DomainFilter"><span style="text-decoration: underline;">DomainFilter</span> <span style="color: black;">della TABELLA </span></a><a style="font-weight: bold;" href="../../TR_RECORD/_TR_PARAM.html">PARAM</a><span style="font-weight: bold; text-decoration: underline;"></span> <br>
+  </li>
+  <ul>
+    <li>significa che vengo resi disponibile a quell'Utente</li>
+  </ul>
+  <ul>
+    <li>&nbsp;i Record relativi <br>
+    </li>
+    <ul>
+      <li><span style="text-decoration: underline; font-weight: bold;">ai
+SOLI CANTIERI</span> &nbsp;che hanno</li>
+    </ul>
+    <ul>
+      <ul>
+        <li><a href="../../TR_RECORD/_TR_CANT.html#FIL_ID">Fil_iD</a>
+della Tabella <a href="../../TR_RECORD/_TR_CANT.html">CANT</a> = NULL</li>
+      </ul>
+      <ul>
+        <li><a href="../../TR_RECORD/_TR_CANT.html#FIL_ID">Fil_id</a><span style="text-decoration: underline;"> </span>della Tabella <a href="../../TR_RECORD/_TR_CANT.html">CANT</a> = Ad uno
+degli&nbsp;UTENTI_FIL_ID presenti per quell'Utente nei Record della
+Tabella UTENTI_FIL</li>
+      </ul>
+    </ul>
+    <li><span style="text-decoration: underline; font-weight: bold;">relativi<br>
+      </span></li>
+    <ul>
+      <li><span style="text-decoration: underline; font-weight: bold;">ai
+SOLI COLLABORARORI</span>&nbsp; che hanno</li>
+      <ul>
+        <li><a href="../../TR_RECORD/_TR_COL.html#Resp_id">Resp_id</a>
+della Tabella <a href="../../TR_RECORD/_TR_COL.html">COL</a> = NULL</li>
+        <li><a href="../../TR_RECORD/_TR_COL.html#Resp_id">Resp_id</a>
+della Tabella <a href="../../TR_RECORD/_TR_COL.html">COL</a> = Ad uno
+degli&nbsp;UTENTI_RESP_ID presenti per quell'Utente nei Record della
+Tabella UTENTI_RESP</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+: la Gestione dei Record disponibili avviene in <span style="font-weight: bold; text-decoration: underline;">"AND"</span>
+&nbsp;ciò significa in particolare che <br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;">Se SONO
+ATTIVATI I FILTRI SIA X FILIALE SIA X RESPONSABILE</li>
+  <ul>
+    <li>un Utente <br>
+    </li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Visualizzare/Modificare SOLO i Record ANAGRAFICI <br>
+      </li>
+      <ul>
+        <li>dei Cantieri
+appartenenti alle proprie Filiali o con Filiale = NULL</li>
+      </ul>
+      <li>Visualizzare/Modificare SOLO i Record ANAGRAFICI</li>
+      <ul>
+        <li>dei
+Collaboratori appartenenti ai propri Responsabili o con Filiale = NULL</li>
+      </ul>
+      <li>Visualizzare/Modificare
+SOLO i Record delle Note , delle Associazioni, delle Variazioni</li>
+      <ul>
+        <li>relativi ai Cantieri appartenenti alle proprie Filiali o
+con Filiale = NULL</li>
+      </ul>
+      <li>Visualizzare/Modificare
+SOLO i Record delle Note, delle Associazioni , delle Variazioni</li>
+      <ul>
+        <li>relative ai Collaboratori appartenenti ai propri
+Responsabili o con
+Responsabile = NULL</li>
+      </ul>
+      <li>Visualizzare/Modificare TUTTI i RECORD
+delle Registrazioni</li>
+      <ul>
+        <li>relative ai SOLI Cantieri&nbsp;appartenenti alle proprie
+Filiali o con Filiale = NULL</li>
+      </ul>
+      <ul>
+        <li>relative AI SOLI
+Collaboratori appartenenti ai propri Responsabili&nbsp;o con
+Responsabile = NULL</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold;">Le Routine che si occupano di Gestire
+i Filtri x Filiale e x Resposnabile sono </span>:<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<ul>
+
+  <ul>
+    <ul>
+      <li><span style="font-weight: bold; text-decoration: underline;"></span><br>
+</li>
+    </ul>
+    <ul>
+      <ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<br>
+
+<br>
+</body></html>

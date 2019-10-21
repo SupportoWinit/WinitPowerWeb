@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Dove Gestire Abilitaz./DisAbilitaz. TASTO ON/OFF nelle Singole Pages</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>Dove Gestire Abilitaz./DisAbilitaz. TASTO ON/OFF nelle Singole Pages</h1>
+
+<br>
+
+La Struttura Standard delle Pagine con Griglia Master prevede la
+possibilità di&nbsp; gestire o meno un apposito TASTO DI ON/OFF tramite
+il quale al momento del caricamento iniziale della Pagina i Record
+relativi NON vengono letti dal DB e quindi NON vengono nemmeno
+visualizzati fino a quando l'Utente non decide di aver impostato tutti
+gli eventuali Filtri/Ordinamenti/Raggruppamenti che voleva impostare e
+SOLO QUANDO VIENE IMPOSTATO = ON il relativo tasto di ON/OOF, i record
+vengono realmente letti dal DB e mostrati a Video.<br>
+
+<ul>
+
+  <li style="text-decoration: underline; font-weight: bold;">NON TUTTE
+LE PAGINE hanno al loro interno la Parte di Codice necessaria per
+gestire il TASTO di ON/OFF</li>
+  <ul>
+    <li>ma il Tasto di ON/OFF è gestito CENTRALMENTE nella
+GridMasterPage</li>
+    <ul>
+      <li>e quindi verrebbe sempre mostrato a Video</li>
+    </ul>
+  </ul>
+  <li style="text-decoration: underline; font-weight: bold;">PER
+RENDERE NON VISIBILE il Tasto di ON/OFF</li>
+  <ul>
+    <li>per le PAGINE nelle quali NON è implementata la relativa
+Gestione del Tasto di ON/OFF</li>
+  </ul>
+  <li style="text-decoration: underline; font-weight: bold;">occorre
+IMPOSTARE il Campo <a href="../../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">PopulateBtnVisible</a> = FALSE della Tabella <a href="../../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">TAB_FUNZ</a></li>
+  <ul>
+    <li>per le Pagine per le quali NON si deve mostrare il Tasto di
+ON/OFF</li>
+  </ul>
+</ul>
+
+Il Codice che si occupa di renderlo NON visible si trova in <br>
+
+<ul>
+
+  <li style="color: rgb(51, 51, 255);"><span style="text-decoration: underline; font-weight: bold;">GridMasterPage</span></li>
+  <ul style="color: rgb(51, 51, 255); font-weight: bold;">
+    <li>protected void Page_Load(object sender, EventArgs e)</li>
+    <li>..........</li>
+    <li> if (CurrentPageTabFunz != null &amp;&amp;
+CurrentPageTabFunz.PopulateBtnVisible)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+GridPage.GridModule.IsToPopulateGrid = false;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+btnPopulateGrid.Visible = false;</li>
+    <li>..............&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    </li>
+  </ul>
+</ul>
+
+<br>
+
+<br>
+</body></html>

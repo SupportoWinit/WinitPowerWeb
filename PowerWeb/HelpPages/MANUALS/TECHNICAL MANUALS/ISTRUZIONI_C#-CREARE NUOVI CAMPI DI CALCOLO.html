@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>LA CREAZIONE DI NUOVI CAMPI DI CALCOLO</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style="font-size: 16pt; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span>CREAZIONE
+DI NUOVI CAMPI DI CALCOLO</h1>
+Può capitare (ad esempio nelle Pagine
+PRU_COL,Fru_Cant,Cant_Fru-Col_Pru, Cant_Note,Col_Note ecc ecc ) nelle
+quali<br>
+viene mostrata nella DataGRid principale la Lista di TUTTI I CANTIERI
+e/o TUTTI i COLLABORATORI e/o TUTTE le<br>
+Unità Fisse e/o TUTTE LE Unità Portatili che sia comodo avere una
+colonna che segnali :<br>
+<br>
+<span style="font-weight: bold;">QUALI DI QUESTI RECORD
+DELLA DATAGRID PRINCIPALE HANNO/NON HANNO POI DEI RECORD DI DETTAGLIO</span><br>
+<br>
+Per fare ciò, senza aggiungere inutili campi sul Record del DB che deve
+poi essere mantenuto aggiornato, si è deciso di utilizzare<br>
+dei campi aggiuntivi di calcolo che devono poi essere comunque visti
+come una ESTENSIONE LOCALE del Record del DataBase.<br>
+<br>
+Per fare ciò basta aggiungere in<span style="font-weight: bold;"><br>
+</span>
+<ul>
+<li><span style="font-weight: bold;">&nbsp;&nbsp;
+&nbsp;<span style="color: rgb(51, 0, 153);">DOMAIN</span></span></li>
+<ul>
+<li style="color: rgb(51, 0, 153);"><span style="font-weight: bold;">EXTENSIONS</span></li>
+<ul>
+<li style="color: rgb(51, 0, 153);"><span style="font-weight: bold;">NOME TABELLA DB</span></li>
+<ul>
+<li style="color: rgb(51, 0, 153);"><span style="font-weight: bold;">es CANT.cs<br>
+</span></li>
+</ul>
+</ul>
+</ul>
+<li style="color: black;"><span style="font-weight: bold;">nella quale scrivere le seguenti
+istruzioni</span><br>
+</li>
+<ul>
+<li style="color: rgb(51, 0, 153);"><span style="color: black;">public bool <span style="font-weight: bold; color: red;">HasFru_Cant</span></span><br style="color: black;">
+<span style="color: black;">&nbsp;&nbsp;&nbsp;
+{</span><br style="color: black;">
+<span style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+get { return Fru_Cant.Count &gt; 0; }</span><br style="color: black;">
+<span style="color: black;">&nbsp;&nbsp;&nbsp;
+}</span><span style="font-weight: bold;"></span></li>
+<li style="color: rgb(51, 0, 153);"><span style="color: black;">public bool <span style="font-weight: bold; color: red;">HasNote_Cant</span></span><br style="color: black;">
+<span style="color: black;">&nbsp;&nbsp;&nbsp;
+{</span><br style="color: black;">
+<span style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+get { return Cant_Note.Count &gt; 0; }</span><br style="color: black;">
+<span style="color: black;">&nbsp;&nbsp;&nbsp;
+}&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-weight: bold;"><br>
+</span></li>
+</ul>
+</ul>
+</body></html>

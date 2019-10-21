@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>COME RIPRISTINARE/CREARE UN DATA BASE DALLA COPIA DI BACKUP</title>
+
+  
+</head><body style="margin-left: 0px; width: 1387px;">
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a> <span style="font-weight: bold; text-decoration: underline;"><br>
+</span>
+<h1><small>COME RIPRISTINARE/CREARE UN DATA BASE DALLA COPIA DI BACKUP</small></h1>
+
+<span style="font-weight: bold; text-decoration: underline;">E'
+possibile&nbsp;CREARE UN DATABASE</span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; partendo dalla COPIA DI BACKUP di POWER&nbsp;</li>
+  <ul>
+    <li>anche creandone uno con un Nome Diverso</li>
+  </ul>
+  <li>&nbsp;&nbsp;&nbsp; partendo dallo SCRIPT di Generazione del
+DataBase</li>
+  <ul>
+    <li>anche creandone uno con un Nome Diverso</li>
+  </ul>
+</ul>
+
+<ul style="font-weight: bold;">
+
+  <li>Aprire SQLSERVER</li>
+  <ul>
+    <li>se si vuole RICREARE UN&nbsp;DataBase ESISTENTE DALLA COPIA DI
+BACKUP</li>
+    <ul>
+      <li>cliccare su DataBase</li>
+      <ul>
+        <li>cliccare con il Tasto DX sul Nome del dataBase da ELIMINARE</li>
+        <ul>
+          <li>scegliere l'opzione CANCELLA</li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <li>se si vuole CREARE un NUOVO DataBase DA UN DATA BASE ESISTENTE
+DALLA COPIA DI BACKUP</li>
+    <ul>
+      <li>Cliccare con tasto DX su DataBase</li>
+    </ul>
+    <ul>
+      <ul>
+        <li>Scegliere RIPRISTINA DATABASE</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<img style="border: 2px solid ; width: 883px; height: 452px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/Ripristina%20DataBase-Generale.PNG">&nbsp;&nbsp;<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; Scegliere coma ORIGINE ---&gt; POWER<br>
+
+<br>
+
+&nbsp; <br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; Inserire il Nome del Nuovo DataBase da Creare<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; Lasciare imporstato di Ripristinare dall'Ultimo
+Backup<br>
+
+<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; Lasciare selezionate le opzioni<br>
+
+&nbsp;&nbsp;&nbsp; - Ripristina da Power Completo<br>
+
+&nbsp;&nbsp;&nbsp; - Ripristina da Power Differenziale<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<img style="border: 2px solid ; width: 1078px; height: 314px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/Ripristina%20DataBase-File.PNG"><br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; <br>
+
+<br>
+
+&nbsp;<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+Espandere la Colonna di RIPRISTINA COME &nbsp;e<span style="text-decoration: underline;"> CAMBIARE il NOME DEI DUE FILES</span>
+con il Nome del NUOVO DATABASE che si sta creando.<br>
+
+<h1 style="margin-left: 21.55pt; text-indent: -21.55pt;"><span style="font-size: 16pt;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 16pt; text-decoration: underline;">RIGENERAZIONE
+COMPLETA DEL DATA BASE DA UNO SCRIPT</span></h1>
+
+Quando si deve ricreare l'intero DATABASE partendo dallo Script che ne
+contiene <br>
+
+tutta la relativa Struttura occorre:<br>
+
+<ul>
+
+  <li>COLLEGARSI AL GESTORE SQL</li>
+  <ul>
+    <li>CANCELLARE LA PRECEDENTE VERSIONE DI POWER</li>
+    <ul>
+      <li>Tasto DX</li>
+      <li>ELIMINA</li>
+      <li>Premere CONFERMA</li>
+    </ul>
+    <li>CREARE IL NUOVO DATABASE</li>
+    <ul>
+      <li>es. POWER e/o POWERNEW</li>
+    </ul>
+  </ul>
+  <ul>
+    <li>APRIRE LO SCRIPT SQL RICEVUTO</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Cancellare TUTTE le PRIME RIGHEdalla Riga</li>
+      <ul>
+        <li>USE [master]<br>
+GO<br>
+/****** Object:&nbsp; Database [Power]&nbsp;&nbsp;&nbsp; Script Date:
+08/08/2012 09.22.08 ******/</li>
+      </ul>
+      <li>Alla riga</li>
+      <ul>
+        <li>EXEC sys.sp_db_vardecimal_storage_format N'Power', N'ON'<br>
+GO</li>
+      </ul>
+      <li>Nel caso si voglia RICREARE il DATA BASE POWER</li>
+      <ul>
+        <li>Lasciando quindi le righe dalla:</li>
+      </ul>
+      <ul>
+        <ul>
+          <li>USE [Power]<br>
+GO<br>
+/****** Object:&nbsp; Table [dbo].[Cant]&nbsp;&nbsp;&nbsp; Script Date:
+08/08/2012 09.22.08 ******/</li>
+        </ul>
+      </ul>
+      <li>Nel caso si voglia RICREARE un NUOVO DATABASE</li>
+      <ul>
+        <li>Modificare&nbsp;la righe:</li>
+        <ul>
+          <li>USE [Power] in USE [NOME NUOVO DATABASE]</li>
+        </ul>
+        <li>Lasciando invariate tutte le righe suguenti</li>
+        <ul>
+          <li>GO<br>
+/****** Object:&nbsp; Table [dbo].[Cant]&nbsp;&nbsp;&nbsp; Script Date:
+08/08/2012 09.22.08 ******/</li>
+        </ul>
+      </ul>
+    </ul>
+    <li>Lanciare la QUERY di Creazione</li>
+  </ul>
+</ul>
+
+<br>
+
+<br>
+
+</body></html>

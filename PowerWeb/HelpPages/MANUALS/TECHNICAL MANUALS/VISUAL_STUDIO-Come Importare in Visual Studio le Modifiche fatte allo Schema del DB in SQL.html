@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>ALLINEAMENTO SCHEMA DB VISUALSTUDIO CON DB SQL</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style="font-size: 16pt; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span>ALLINEAMENTO
+SCHEMA DB IN VISUALSTUDIO da DB SQL</h1>
+Ogni volta che si aggiorna la Struttura del DATABASE SQL<br>
+<ul>
+<li>Inserimento di una nuovaTabella</li>
+<li>Aggiunta/Cancellazione/Modifica di un Campo di una Tabella</li>
+<li>Aggiunta/Cancellazione/Modifica di una Relazione fra le
+Tabelle</li>
+<li>ecc. eccc.</li>
+</ul>
+occorre ANCHE allineare la relativa struttura all'interno del progetto
+di Visual Studio che si trova in<br>
+<ul>
+<li>&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(51, 0, 153);">DATA</span></li>
+<ul>
+<li style="font-weight: bold; color: rgb(51, 0, 153);">PowerWebModel.edmx</li>
+</ul>
+</ul>
+<ul style="font-weight: bold;">
+<li>Fare doppio click su&nbsp;PowerWebModel.edmx</li>
+<li>Compare lo Schema del DataBase</li>
+<ul>
+<li>Premere il Tasto SX del Mouse su punto vuoto dello Schema</li>
+<li>Premere F4</li>
+<ul>
+<li>Si apre una Finestra PROPRIETA'</li>
+</ul>
+<ul>
+<ul>
+<li>Selezionare la/e&nbsp;Entità con il/i Nome/i
+della/a Tabella/e da CANCELLARE e Re-IMPORTARE</li>
+<ul>
+<li>Premere il TASTO DI CANC per eliminare la/e
+Tabella/e da Re-importare</li>
+</ul>
+</ul>
+</ul>
+<li>Premere il Tasto DX del Mouse su un punto vuoto dello
+schema</li>
+<li>Selezionare AGGIORNA MODELLO DA DATABASE</li>
+<ul>
+<li>Checcare il CheckBox delle TABELLE</li>
+<li>Premere il + della Voce Tabelle</li>
+<ul>
+<li>Selezionare la/e Tabella/e da Re-Importare</li>
+<li><span style="text-decoration: underline; color: red;">DESELEZIONARE</span>
+SEMPRE la Voce <span style="text-decoration: underline; color: red;">sysdiagrams</span>
+(dbo)</li>
+<li>Lasciare NON Checcato il Flag Rendi Plurali/Singolari
+i nomi degli Oggetti generati</li>
+<li>Lasciare Checcato Includi Colonne di chiavi esterne
+al modello</li>
+<ul>
+<li>Premere Fine</li>
+</ul>
+</ul>
+</ul>
+<li><span style="color: red;">PREMERE L'ICONA DI
+SALVA sulla Barra Comandi</span>&nbsp;del <span style="color: rgb(51, 0, 153);">PowerWebModel.edmx</span>&nbsp;</li>
+</ul>
+<li>Aprire con Doppio Click&nbsp;</li>
+<ul>
+<li style="color: rgb(51, 0, 153); font-weight: bold;">DATA</li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;">PowerWebEntityGeneratorModel.Context.tt</span></li>
+<ul>
+<li style="font-weight: normal; color: black;">cliccare
+sul codice con il mouse</li>
+</ul>
+<ul>
+<li><span style="color: red;">PREMERE
+L'ICONA DI SALVA sulla Barra Comandi</span> del&nbsp;<span style="color: rgb(51, 0, 153); font-weight: bold;">PowerWebEntityGeneratorModel.Context.tt</span></li>
+</ul>
+</ul>
+</ul>
+<li style="color: black;"><span style="font-weight: bold;">Aprire con Doppio Click</span></li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;">DOMAIN</span></li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;">PowerWebEntityGeneratorModel.tt</span></li>
+<ul>
+<li style="font-weight: normal; color: black;">cliccare
+sul codice con il mouse</li>
+</ul>
+<ul>
+<li><span style="color: red;">PREMERE
+L'ICONA DI SALVA sulla Barra Comandi</span> del&nbsp;<span style="color: rgb(51, 0, 153); font-weight: bold;">PowerWebEntityGeneratorModel.tt</span></li>
+<li><span style="color: rgb(51, 0, 153); font-weight: normal;"><span style="color: black;">Confermare la volontà di aggiornare la
+Struttura della/e Tabella/e mostrata/e</span></span><span style="color: rgb(51, 0, 153); font-weight: bold;"></span></li>
+</ul>
+</ul>
+</ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;"><span style="color: black;">Verificare che l'Allineamento sia
+stato eseguito correttamente</span></span></li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;">DOMAIN</span></li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;"><span style="color: black;">Cliccare sul + di </span>PowerWebEntityGeneratorModel.tt</span></li>
+<ul>
+<li style="color: black;"><span style="font-weight: bold;">Verificare che la Tabella da
+Allineare sia presente nell'elenco mostrato</span></li>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;"><span style="color: black;">Aprire Codice della Tabella da
+Allineare</span></span></li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;"><span style="color: black;">Espandere la Region delle PRIMITIVE
+PROPRIETIES (se chiusa)</span></span></li>
+<ul>
+<li><span style="color: rgb(51, 0, 153); font-weight: bold;"><span style="color: black;">Verificare che i Nomi/Tipi dei vari
+Campi corrispondono alle Modifiche fatte nel Db SQL<br>
+</span></span></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+&nbsp;&nbsp;&nbsp; &nbsp;<br>
+</body></html>

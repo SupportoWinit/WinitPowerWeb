@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>PUBBLICAZIONE PROGETTO SU WEB</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a> 
+<h1>PUBBLICAZIONE PROGETTO SU WEB</h1>
+Quando si vuole "pubblicare" sul WEB la nuova versione del progetto POWER WEB occorre esguire i seguenti passi:<br><br><ul><li>Aprire Visual Studio</li><ul><li>scegliere il progetto PowerWeb</li><ul><li>dalla finestre di Esplora Soluzioni scegliere</li><ul><li>POWERWEB</li><ul><li>cliccare con Tasto DX del Mouse</li><ul><li>Scegliere PUBBLICA</li></ul></ul></ul></ul></ul><li>compare la seguente Maschera</li></ul><img style="border: 2px solid ; width: 721px; height: 307px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/PubblicaProgetto-Profilo.PNG"><br>&nbsp;&nbsp;<span style="font-weight: bold; text-decoration: underline;">Scegliere PROFILO</span><span style="font-weight: bold;"></span><br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; Se viene già proposto il Profilo <span style="font-weight: bold; text-decoration: underline;">TestVersion </span><br>&nbsp;&nbsp;&nbsp; lasciare il Profilo proposto.<br>&nbsp;&nbsp;&nbsp; Altrimenti scegliere (se esiste) il Profilo TestVersion<br>&nbsp;&nbsp;&nbsp; Altrimenti (se none siste) creare il Profilo TestVersion<br><br><br><br><br><br><br><br><br><br><img style="border: 2px solid ; width: 725px; height: 305px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/PubblicaProgetto-Connessione.PNG"><br>&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; text-decoration: underline;">Scegliere CONNESSIONE</span><br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; Se viene già proposto il Metodo <span style="font-weight: bold; text-decoration: underline;">File system</span> <br>&nbsp;&nbsp;&nbsp; lasciare il Metodo proposto.<br>&nbsp;&nbsp;&nbsp; Altrimenti scegliere il Metodo File system&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; Se viene già proposto il <span style="text-decoration: underline; font-weight: bold;">Percorso di Destinazione</span><br>&nbsp;&nbsp;&nbsp; - Inserire un percorso LOCALE Temporaneo (se su PC PERSONALE)<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - C:\Massimo\Power_Web\Deploy\<br>oppure direttamente quello della pubblicazione FINALE (se su SERVER WINIT)<br>&nbsp;&nbsp;&nbsp; \\192.168.1.1\winit\AAA_AREA_SVILUPPO_SW\SW APPLICATIVO\<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; PowerWeb\PowerWeb (versione utilizzata da IIS)\PowerWeb\PowerWeb<br>&nbsp;&nbsp;&nbsp; lasciare il percorso proposto altrimenti scegliere questo percorso<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; URL di Destinazione : NON inserire NULLA<br><br><br><img style="border: 2px solid ; width: 727px; height: 321px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/PubblicaProgetto-Impostazioni.PNG"><br>&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; text-decoration: underline;">Scegliere IMPOSTAZIONI</span><span style="font-weight: bold;"></span><br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; Se viene già proposto ila Configurazione <span style="font-weight: bold; text-decoration: underline;">RELEASE<br>&nbsp;</span>&nbsp;&nbsp;&nbsp; lasciarela Configurazione&nbsp;proposta<br>&nbsp;&nbsp;&nbsp; Altrimenti sceglierela Connessione RELEASE<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; Lasciare ON il Flag di Eliminazione tutti i files esistenti prima<br><br><br><br>&nbsp;&nbsp;&nbsp; <br><br><br><br><br><img style="border: 2px solid ; float: left; width: 729px; height: 90px;" alt="" src="../IMMAGINI%20HELP%20TECNICO/PubblicaProgetto-Tasti.PNG"><br><br>&nbsp;&nbsp;&nbsp; Premere il Tasto di<span style="font-weight: bold; text-decoration: underline;"> PUBBLICA</span><br><br><br><br>Attendere che finisca e poi se si era inserito un PERCORSO LOCALE TEMPORANEO<br>&nbsp;&nbsp;&nbsp; aprire la Cartella in cui lo si è creato<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  es: <span style="font-weight: bold;">C:\Massimo\Power_Web</span><br>
+&nbsp;&nbsp;&nbsp; se su SERVER <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; es:<span style="font-weight: bold;">C:\Massimo\Power_Web</span> e copiare l'intera cartella nella Cartella<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; \\192.168.1.1\winit\AAA_AREA_SVILUPPO_SW\SW
+APPLICATIVO\PowerWeb\PowerWeb (versione utilizzata da
+IIS)\PowerWeb\PowerWeb<br>Se invece lo sie ra già creato nella Cartella di Destinazione NON SERVE FARE NULLA.<br>
+<h1>1) CASO SERVER ARCODA</h1>
+
+<ul>
+  <li>PRIMA DI COLLEGARSI ALS ERVER ARCODA</li>
+  <li>Aprire la Cartella Locale</li>
+  <ul>
+    <li><span style="font-weight: bold;">C:\Massimo\Power_Web</span></li>
+    <ul>
+      <li>Aprire la Cartella DEPLOY</li>
+      <ul>
+        <li>Cancellare i due Files con</li>
+        <ul>
+          <li><span style="font-weight: bold;">Web.Config</span></li>
+          <li><span style="font-weight: bold;">WebConnection.Config<br>
+            </span></li>
+        </ul>
+        <li>per evitare di copiarle poi sostituendole a quelle giuste che sono già sul Server Arcoda per ogni Ambiente</li>
+      </ul>
+      <li style="font-weight: bold;">Copiare dalla Cartella</li>
+      <ul>
+        <li>PowerWeb</li>
+        <ul>
+          <li>PowerWeb</li>
+          <ul>
+            <li>Bin</li>
+            <ul>
+              <li>Le Cartelle delle Lingue</li>
+              <ul>
+                <li>DE</li>
+                <li>.......</li>
+                <li>IT</li>
+                <li>.....</li>
+                <li>RU</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <li style="font-weight: bold;">nella Cartella DEPLOY</li>
+      <ul>
+        <li>BIN</li>
+      </ul>
+
+      
+      <li><span style="font-weight: bold;">Chiudere la Cartella DEPLOY</span></li>
+
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <li>ZIPPARLA ( in ZIP non /Zip e/o Rar !!!!)</li>
+    </ul>
+  </ul>
+  <li>Collegarsi al Sito ARCODA con l'Icona relativa (Arcoda.rdp)</li>
+  <li><span style="text-decoration: underline;">SUL SITO ARCODA</span><br>
+  </li>
+  <ul>
+    <li>Se sul DeskTop di Arcoda NON c'è l'Icona COMPUTER</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>premere START</li>
+    </ul>
+    <ul>
+      <ul>
+        <li>Cliccare su Computer (in alto a Dx)</li>
+      </ul>
+    </ul>
+    <li>Aprire Computer</li>
+    <ul>
+      <li>si apre una Maschera con l'elenco dei Dischi Locali e Remoti</li>
+      <ul>
+        <li>selezionare C on UTENTE-PC (è il dsico C del PC di MAX)</li>
+      </ul>
+      <ul>
+        <ul>
+          <li>selezionare la Cartella <span style="font-weight: bold;">C:\Massimo\Power_Web\DEPLOY.ZIP</span></li>
+          <li><span style="font-weight: bold;">c</span>opiarlasul DeskTop del Server Arcoda</li>
+          <li>procedere a UNZIPPARLA</li>
+          <ul>
+            <li>selezionare la Cartella Zippata con Tasto DX del Mouse</li>
+            <ul>
+              <li>selezionare opzione <span style="font-weight: bold;">EXTRACT ALL</span></li>
+            </ul>
+          </ul>
+          <li><span style="font-weight: bold;"><span style="text-decoration: underline;">NOTA</span> : </span><span style="text-decoration: underline;">se serve ZIPPARE UNA CARTELLA e/O UN FILE</span></li>
+          <ul>
+            <li>cliccare sulla Cartella/file interessata con tasto DX del Mouse</li>
+            <ul>
+              <li>selezionare opzione SEND TO<br>
+              </li>
+            </ul>
+            <ul>
+              <ul>
+                <li>selezionare opzione COMPRESSED FILE (zip)<span style="font-weight: bold;"><br>
+                  </span></li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li>nel caso in cui si debbano anche aggiornare Dati dei DATABASE <br>
+        </li>
+      </ul>
+    </ul>
+    <ul>
+      <ul>
+        <ul>
+          <li>selezionare la Cartella <span style="font-weight: bold;">C:\Massimo\Power_Web\AAA-Script</span></li>
+          <li>selezionare la Cartella <span style="font-weight: bold;">C:\Massimo\Power_Web\AAA-QuerySql</span></li>
+        </ul>
+        <li><span style="font-weight: bold;">se sono particolarmente GROSSI allora ZIPPARLI prime (sempre con ZIP)<br>
+          </span></li>
+        <li>copiare i file interessati sul DeskTop del Server Arcoda<span style="font-weight: bold;"></span></li>
+      </ul>
+    </ul>
+    <li>Se sul DeskTop di <span style="font-weight: bold;">Arcoda NON c'è l'icona ISS MANAGER</span></li>
+    <ul>
+      <li>premere START</li>
+      <ul>
+        <li>inserire IIS in cerca e attivare la ricerca</li>
+        <li>cliccare su PROGRAMS e INTERNET INFORMATION SYSTEMS (IIS .........)</li>
+      </ul>
+    </ul>
+    <li>si apre la relativa Maschera di Gestione</li>
+    <li>cliccare sul + davanti alla voce <span style="font-weight: bold;">WWW-WINIT(WINIT/WinIt)</span></li>
+    <li>cliccare sulla stessa Voce (dopo averla aperta) con il TASTO DX del Mouse</li>
+    <ul>
+      <li>selezionare STOP per fermare il funzionamento dei SITI</li>
+    </ul>
+    <li>cliccare sul + davanti alla Voce <span style="font-weight: bold;">Sites</span></li>
+    <ul>
+      <li>cliccare sul + davanti alla Voce <span style="font-weight: bold;">Power</span></li>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">per ogni Ambiente presente</span> (PowerComo/PowerCompleto/PowerDemo/PowerIntermedio ecc ecc)</li>
+        <ul>
+          <li>cliccare sulla corrispondente Voce con il Tasto dx e ripetere le seguenti operazioni</li>
+          <ul>
+            <li>si apre una maschera di opzioni</li>
+            <ul>
+              <li>selezionare EXPLORE</li>
+              <ul>
+                <li>si apre una maschera di dettaglio</li>
+                <ul>
+                  <li>NON SELEZIONARE i due Files</li>
+                  <ul>
+                    <li><span style="font-weight: bold;">Web.Config</span></li>
+                  </ul>
+                  <ul>
+                    <li><span style="font-weight: bold;">WebConnection.Config (può non esserci)<br>
+</span></li>
+                  </ul>
+                  <li>CANCELLARE tutti gli Altri Filese e Cartelle presenti<br>
+                  </li>
+                </ul>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+    <ul>
+      <ul>
+        <ul>
+          <li>aprire la cartella DEPLOY e selezionare tutte le Cartelle e Files&nbsp;</li>
+          <ul>
+            <li><span style="font-weight: bold;">ad ESCLUSIONE di </span>(se ci sono ma non dovrebbero esserci perchè dovrebbero essere stati cancellati quando si è creata la Cartella)</li>
+            <ul>
+              <li><span style="font-weight: bold;">Web.Config</span></li>
+            </ul>
+            <ul>
+              <li><span style="font-weight: bold;">WebConnection.Config</span></li>
+            </ul>
+            <li>perchè vanno lasciate per ogni ambiente le pre-esistenti!!!<span style="font-weight: bold;"></span></li>
+          </ul>
+        </ul>
+        <li>Ripete la sequenza per ogni Ambiente</li>
+      </ul>
+    </ul>
+    <li>Applicare gli eventuali SCRIPT e/ QUERY ai vari Database usando poi Sql Manager per farlo<br>
+    </li>
+    <li>alla fine tornare a cliccare con il Tasto DX del Mouse sulla Voce <span style="font-weight: bold;">WWW-WINIT(WINIT/WinIt)</span></li>
+    <ul>
+      <li>selezionare l'opzione START per riavviare il Sito<span style="font-weight: bold;"></span></li>
+    </ul>
+    <li>Chiudere IIS<span style="font-weight: bold;"></span></li>
+    <li><span style="font-weight: bold;">Provare il funzionamento dei vari Siti Arcoda</span></li>
+  </ul>
+</ul>
+<br>
+<h1>2)CASO SERVER WINIT</h1>
+<h1>VERIFICARE CHE SIA ATTIVO IL SERVIZIO SUL SERVER</h1>
+<ul>
+  <li>Collegarsi al SERVER (anche in remoto).</li>
+  <ul>
+    <li>Premere START</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Inserire IIS in CERCA e attivare la ricerca</li>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li>Cliccare su </li>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <li>&nbsp;&nbsp;&nbsp; GESTIONE INTERNET INFORMATION SYSTEM</li>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <li>si apre una Maschera di Gestione </li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li>Cliccare su</li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li>WINITSERVER/WinitServer/Administrator)</li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>SITI</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>verificare che il sito creato come PROFILO al Pto.1&nbsp;(<span style="font-weight: bold; text-decoration: underline;">TestVersion )</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>risulti AVVIATO</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>in caso contrario procedere ad AVVIARLO</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>cliccare con il Tasto DX sul Sito che non risulta avviato</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>cliccare su Gestisci Sito Web</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>&nbsp;scegliere il tasto di RIAVVIA</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<h1>TESTARE FUNZIONAMENTO PROGETTO PUBBLICATO</h1>Aprire un Browser Internet e digitare &nbsp;//192.168.1.1<br>Si deve aprire la Maschera di Gestione Iniziale di POWER WEB<br>&nbsp;&nbsp;&nbsp; <br><br><br><br><br><br><br><br><br><br><br><br> <span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

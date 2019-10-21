@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_TAB_FUNZ</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA
+TAB_FUNZ<br>
+</h1>
+<span style="font-weight: bold;">Contiene i Nomi delle
+Funzioni e il corrispondente link al programma da lanciare quando si
+seleziona quella funzione da un Menù.<br><br><span style="text-decoration: underline; color: red;">Questa TABELLA viene Gestita ESCLUSIVAMENTE da WINIT e NON DEVE MAI ESSERE MODIFICATA DA NESSUN UTENTE/CLIENTE</span><br>
+</span><br>
+Le Chiavi del Record : &nbsp;<a href="#Tab_Funz_id">Tab_Funz_id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)
+<br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Tab_Funz_id">Tab_Funz_id </a>(<span style="font-weight: bold; color: red;">Chiave</span>)
+&nbsp;, <br>
+I Campi con Default &nbsp; :&nbsp; NESSUNO<br>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3><table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2"><tbody><tr><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 237px;">NOME
+DEL CAMPO NEL DB</td><td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 99px;">TIPO
+CAMPO</td><td style="color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 882px; background-color: silver;">DESCRIZIONE
+DEL CAMPO</td><td style="width: 38px; background-color: silver;"><span style="color: white;">CTRL</span></td><td style="text-align: center; background-color: silver; text-decoration: underline; width: 61px;"><span style="font-weight: bold; color: white;">COMBO</span></td></tr></tbody></table>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 238px;"><span style="font-weight: bold;"><a name="Tab_Funz_id"></a> </span><span style="text-decoration: underline; font-weight: bold;">Tab_Funz_id</span><span style="text-decoration: underline; font-weight: bold;"></span>
+</td>
+<td style="vertical-align: top; width: 109px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a><br>
+</td>
+<td style="vertical-align: top; width: 879px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;della
+Singola Funzione utilizzabile come Voce di un Menù</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span>
+</td><td style="width: 41px; text-align: center;">Autom</td><td style="width: 62px; text-align: center;">TEXT</td>
+</tr>
+
+
+<tr>
+<td style="vertical-align: top; width: 238px;"><span style="font-weight: bold;"><a name="Link"></a>
+<span style="text-decoration: underline;">Link</span></span><br>
+</td>
+<td style="vertical-align: top; width: 109px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(max)</a></td>
+<td style="vertical-align: top; width: 879px;">Nome della Pagina Aspx che viene lanciata&nbsp; <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span> quando si seleziona la corrispondente Voce di un Menù che è associata a quel <a href="#Tab_Funz_id">Tab_Funz_id</a>.</td><td style="width: 41px; text-align: center;">OK</td><td style="width: 62px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 238px;"><span style="font-weight: bold;"><a name="Tab_Funz_Nome"></a> </span><span style="text-decoration: underline; font-weight: bold;">Tab_Funz_Nome</span></td>
+<td style="vertical-align: top; text-align: center; width: 109px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)<br>
+</td>
+<td style="vertical-align: top; width: 879px;">Nome
+della Risorsa  <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio </span>di Power Web che contiene la&nbsp;corrispondente Descrizione in Lingua della Funzione. <span style="color: rgb(153, 51, 0);">Viene controllato che NON esista duplicata. <span style="font-weight: bold;">Deve esistere fra le Risorse di Power_Web</span>.
+Se NON dovesse esistere, per qualla funzione, verrà mostrato
+direttamente il Nome della Risorsa caricato in questo Campo per
+segnalare che quella Risorsa NON è stata ancora inserita nel sistema</span>
+</td><td style="width: 41px; text-align: center;">OK</td><td style="width: 62px; text-align: center;">TEXT</td>
+</tr><tr>
+      <td style="vertical-align: top;"><a name="PopulateBtnVisible"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">PopulateBtnVisible</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">BIT</a></td>
+      <td style="vertical-align: top;">Indica se è Attivato o meno il Tasto di ON/OFF in quella Funzione<span style="font-weight: bold;"> </span>ovvero
+se è Attivata o meno la possibilità di NON CARICARE i RECORD nella
+Griglia MASTER quando si apre la Pagina (Valore=OFF) fino a quando NON
+si attiva il TASTO (Valore=ON) e solo a questo punto i Record vengono
+letti dal DataBase ordinati e/o raggruppati&nbsp; e/o filtrati in base
+ai parametri impostati per quella Griglia. <span style="font-weight: bold;">.</span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Valore di DEFAULT = FALSE. </span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se esiste viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab=Decod_SYS
+e&nbsp; Tab_Nome =</span><span style="color: rgb(153, 51, 0);"></span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Lingue"></a><span style="color: rgb(153, 51, 0);">&nbsp; </span><a href="_TR_TAB_DECOD_ELENCO_DECOD_SYS.html#PopulateBtnVisible">PopulateBtnVisible</a>.<span style="font-weight: bold; text-decoration: underline;"> </span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Può assumere i seguenti valori:<br>
+      </span></span>
+      <ul>
+        <li>0&nbsp;&nbsp; : Indica che per quella Funzione NON è ATTIVA la Gestione del Tasto di ON/OFF</li>
+        <ul>
+          <li>le Pagine vengono attivate automaticamente in ON e il Tasto di ON/OFF NON è Visibile<br>
+          </li>
+        </ul>
+
+        <li>1&nbsp; :&nbsp; Indica che per quella Funzione è ATTIVATA la Gestione del Tasto di ON/OFF in ON per Default ma è poi settabile in ON/OFF dall'Utente</li>
+        <ul>
+          <li>le Pagine vengono attivate automaticamente in ON e il Tasto di ON/OFF è Visibile</li>
+        </ul>
+        <li>2 :&nbsp;&nbsp; Indica che per quella Funzione è ATTIVATA la Gestione del Tasto di ON/OFF in OFF per Default ma è poi settabile in ON/OFF dall'Utente</li>
+        <ul>
+          <li>le Pagine vengono attivate automaticamente in ON e il Tasto di ON/OFF è Visibile</li>
+        </ul>
+
+      </ul>
+      
+      <span style="text-decoration: underline; font-weight: bold;">TUTTE le SINGOLE modifiche dei parametri di</span>
+      <ul>
+        <ul>
+          <li>Ordinamento</li>
+          <li>Filtro</li>
+          <li>Selezione</li>
+          <ul>
+            <li><span style="text-decoration: underline;">se il Tasto è settato = ON </span><br>
+            </li>
+            <ul>
+              <li>comportano l'IMMEDIATA RILETTURA dei Record dal DataBase</li>
+              <li>e il ricaricamento dei Records letti nella Griglia Master<br>
+              </li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <ul style="text-decoration: underline;">
+        <ul>
+          <ul>
+            <li>se si rimette il Tasto = OFF</li>
+            <ul>
+              <li>i Record NON vengono riletti ad ogni SINGOLA Modifica</li>
+              <ul>
+                <li>ma SOLO quando si rimette a ON il Tasto di ON/OFF</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span> : <br>
+
+La Gestione del Tasto di ON/OFF comporta che quella Funzione A LIVELLO
+DI CODICE ne gestisca le relative funzionalità per cui il settaggio di
+questo campo dipende da come la Funzione è stata SCRITTA a Livello di
+Codice<br>
+
+Attualmente le Funzioni (Pagine) che prevedono la Gestione del tasto di ON/OFF sono le seguenti:<br>
+      <ul>
+        <li><a href="../PAGES/_Cli_Page.html">CLI</a></li>
+        <li><a href="../PAGES/_Cant_Page.html">CANT</a></li>
+        <li><a href="../PAGES/_Cant_Note_Page.html">CANT_NOTE</a></li>
+        <li><a href="../PAGES/_Col_Page.html">COL</a></li>
+        <li><a href="../PAGES/_Col_Note_Page.html">COL_NOTE</a></li>
+        <li><a href="../PAGES/_Fru_Page.html">FRU</a></li>
+        <li><a href="../PAGES/_Fru_Cant_Page.html">FRU_CANT</a></li>
+        <li><a href="../PAGES/_Pru_Page.html">PRU</a></li>
+        <li><a href="../PAGES/_Pru_Col_Page.html">PRU_COL</a></li>
+        <li>REG</li>
+        <li>REGV<br>
+        </li>
+      </ul>
+      <br>
+      </td>
+      <td style="vertical-align: top;">CANT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr><tr>
+      <td style="vertical-align: top;"><a name="Dflt_Grid_Edit_Mode"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Dflt_Grid_Edit_Mode</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td>
+      <td style="vertical-align: top;">Modalità di Default proposta a
+video per la Gestione dell'Edit per questa Funzione. L'utente può
+modificarlo TEMPORANEAMENTE ad ogni Visualizzazione della
+corrispodnente Pagina di EDIT decidendo di volta in volta se vuole
+gestire l'EDIT DIRETTO dalla Griglia stessa dei Campi della Griglia
+(Caso = 1) oppure se vuole gestire l?EDIT NORMALE tramire i Tasti di
+INS/MOD/DEL/VIS. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Valore di DEFAULT = 0 </span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se esiste viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab=Decod_SYS
+e&nbsp; Tab_Nome =</span><span style="color: rgb(153, 51, 0);"></span><span style="color: rgb(153, 51, 0);">&nbsp; </span><a href="_TR_TAB_DECOD_ELENCO_DECOD_SYS.html#Dflt_Grid_Edit_Mode">Dflt_Grid_Edit_Mode</a>.<span style="font-weight: bold; text-decoration: underline;"> </span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Può assumere i seguenti valori:</span></span>
+      
+      <ul>
+<li>0&nbsp;&nbsp;&nbsp; :&nbsp; Indica che per default quella Funzione è NON E' ATTIVATA la Modalità di EDIT DIRETTO</li>
+        <ul>
+          
+          <ul>
+            <li>vengono mostrati e gestiti SOLO i normali tasti di INS/MOD/DEL/VIS<br>
+          </li>
+          </ul>
+
+        </ul>
+<li>1 &nbsp; &nbsp; : Indica che per default quella Funzione è ATTIVATA per Default la Modalità di EDIT DIRETTO</li>
+        <ul>
+          
+          <ul>
+            <li>le Pagine vengono attivate automaticamente in Modalità EDIT DIRETTO ma è poi deselezionabile dall'Utente</li>
+          </ul>
+
+          
+          <ul>
+            <ul>
+              <li>la Griglia è INIZIALMENTE EDITABILE DIRETTAMENTE x RIGA</li>
+              <li>I Tasti di EDIT di RIga sono INIZIALMENTE Nascosti</li>
+            </ul>
+          </ul>
+
+        </ul>
+        <li>2&nbsp;&nbsp;&nbsp;&nbsp; :Indica che per default quella Funzione NON E' ATTIVATA per Default la Modalità di EDIT DIRETTO
+          <ul>
+<li>le Pagine vengono attivate automaticamente in Modalità Normale ma è poi selezionabile dall'Utente</li>
+          </ul>
+          <ul>
+<ul><li>la Griglia è NON E' INIZIALMENTE EDITABILE DIRETTAMENTE x RIGA</li><li>I Tasti di EDIT di Riga sono INIZIALMENTE Visibili</li></ul>
+          </ul>
+        </li>
+
+      </ul>
+      </td>
+      <td style="vertical-align: top;">
+      </td>
+      <td style="vertical-align: top;">
+      </td>
+    </tr>
+
+
+
+</tbody>
+</table>
+<span style="text-decoration: underline; font-weight: bold;"></span>
+</body></html>

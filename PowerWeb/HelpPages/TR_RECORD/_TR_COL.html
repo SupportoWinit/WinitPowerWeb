@@ -1,0 +1,2221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_COL</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; TABELLA COL<br>
+</h1>
+<span style="font-weight: bold;">Contiene i Dati
+Anagrafici dei
+Collaboratori</span><br>
+<br>
+Le Chiavi del Record : &nbsp;<a href="#Col_Id">Col_id</a>
+&nbsp;(<span style="font-weight: bold; text-decoration: underline; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; : <a href="#Col_Id">&nbsp;Col_Id</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">CHIAVE</span>),&nbsp;
+<a href="#Codice_Collaboratore">Codice_Collaboratore</a>
+, <a href="#Cognome_Col">Cognome_Col</a>
+,&nbsp; <a href="#Nome_Col">Nome_Col</a>
+, <a href="#Data_Registrazione_Col">Data_Registrazione_Col</a>
+, <a href="#DataOraUltimaModifica_Col">DataOraUltimaModifica</a>
+<br>
+I Campi con Default &nbsp; :&nbsp; <a href="#Assegni_Famigliari_Col">Assegni_Familiari_Col</a>
+(False) , <a href="#Automunito_Col">Automunito_Col</a>
+(False),&nbsp;<a href="#Data_Registrazione_Col">Data_Registrazione_Can&nbsp;</a>
+, <a href="#DataOraUltimaModifica_Col">DataOraUltimaModifica_Can</a>,&nbsp;
+<a href="#Disabile_Col">Disabile_Col</a>
+(False)&nbsp;<a href="#DisAbilitazione_Col">
+Disabilitazione_Col</a> (False) ,&nbsp; <a href="#FlagCambioGiornoRil_Col">FlagCambioGiornoRil_Col</a>
+(False), <a href="#NottAbi_Col">NottAbi_Col</a>
+(False) ,&nbsp; <a href="#Singola_Reg">Singola_Reg</a>
+(False) , <a href="#Straniero_CEE_Col">Straniero_Cee_Col</a>
+(False), <a href="#Straniero_Col">Straniero_Col</a>
+(False)<br><br>I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>10-<a href="_TR_COL.html#Col_Id">Col_id</a> (20%) / 20 - CognomeNome_Col ( 15%) / 30 - <a href="#Residenza_Provincia_Col">Residenza_Provincia_Col</a> (5%) /  40 - <a href="#Residenza_Cap_Col"><span style="text-decoration: underline;">Residenza</span></a><a href="#Residenza_Cap_Col">_Cap_Col</a><a href="#Residenza_Cap_Col"> </a>(5%)&nbsp;/ 50 -<a href="#Residenza_Luogo_Col"> </a><a href="#Residenza_Luogo_Col">Residenza_Luogo_Col</a><a href="#Residenza_Luogo_Col"> </a>(15)&nbsp;/ 60-<a href="_TR_COL.html#Sesso_Col">Sesso_Col</a> (5%) / 80 -<a href="_TR_COL.html#Matricola_Col"> Matricola_Col</a>&nbsp; (5%) / 90-<a href="_TR_COL.html#Resp_Id"> Resp_id </a>&nbsp;(10%) / 100-<a href="_TR_COL.html#Singola_Reg"> Singola_Reg</a><span style="text-decoration: underline;"> </span>&nbsp;(5%) / 110-<a href="_TR_COL.html#DisAbilitazione_Col">Disabilitazione_Col</a> (5%)&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<br>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr><td style="font-weight: bold; color: white; background-color: silver; text-align: center; width: 280px;">NOME DEL CAMPO</td><td style="font-weight: bold; color: white; background-color: silver; text-align: center; width: 127px;">TIPO CAMPO</td><td style="font-weight: bold; color: white; background-color: silver; text-align: center; width: 665px;">DESCRIZIONE DEL CAMPO</td><td style="width: 39px; background-color: silver;"><span style="color: white;">CTRL</span></td><td style="font-weight: bold; color: white; background-color: silver; text-align: center;">TAB</td><td style="font-weight: bold; color: white; background-color: silver; text-align: center;">TIPO</td></tr><tr>
+<td style="width: 280px;"><span style="font-weight: bold;"><a name="Col_Id"></a> </span><span style="font-weight: bold; text-decoration: underline;">Col_Id</span></td>
+<td style="text-align: center; width: 127px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+<td style="width: 665px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;del
+Singolo Collaboratore</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Arrot_Durata_Col"></a> Arrot_Durata_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Minuti
+di Tolleranza da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative x Durata
+(se attivato
+nel Campo </span><a style="text-decoration: line-through;" href="../TR_CANT/TR_CANT.Abb.html#Metodo_Arrotondamento_Can">Metodo_Arrotondamento_Col</a><span style="text-decoration: line-through;">)&nbsp;
+delle Ore Figurative sulla base&nbsp; </span><a style="text-decoration: line-through;" href="../TR_CANT/TR_CANT.Abb.html#Tipo_Arrotondamento_Can">Tipo_Arrotondamento_Col.</a><span style="text-decoration: line-through;">
+indicato. </span><span style="font-weight: bold; color: rgb(153, 51, 0); text-decoration: line-through;">Se inserito viene controllato
+che sia &lt;=60 e MAGGIORE della corripondente</span><span style="text-decoration: line-through;">&nbsp;</span><a style="text-decoration: line-through;" href="#Soglia_Durata_Col">Soglia_Durata_Col</a><span style="text-decoration: line-through;">.</span><span style="font-weight: bold; text-decoration: underline line-through;"> </span>
+<ul>
+<li style="text-decoration: line-through;"><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato (se diverso da NULL e quindi anche se 0) SOLO per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Arrot_Durata_Col</span>
+</li>
+<li style="text-decoration: line-through;">ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di&nbsp;<a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a>.diverso da NULL in Scheda Cantieri<br>
+</li>
+        <li><span style="text-decoration: line-through;">altrimenti viene usato quello della Scheda Parametri</span><br>
+        </li>
+</ul><span style="font-weight: bold; color: red; text-decoration: underline;"></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="ArrotF_Col"></a> ArrotF_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Minuti
+di Tolleranza da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative alle
+Timbrature di Entrata.<span style="color: rgb(153, 51, 0);">
+<span style="font-weight: bold;">Se inserito viene controllato che sia &lt;= 60 </span></span><span style="color: rgb(153, 102, 51);"><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">e MAGGIORE della
+corripondente</span> </span></span><a href="_TR_COL.html#SogliaF_Col">SogliaF_Col</a>.
+      <ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato (se diverso da NULL e quindi anche se 0) SOLO per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica Collaboratore&nbsp;</li>
+<ul>
+<li>al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Default_Minuti_Tolleranza">Default_Minuti_Tolleranza</a>
+eventualmente inserito in Scheda Parametri <br>
+</li>
+          <li>ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di <a href="../TR_CANT/TR_CANT.AAA.html#Minuti_Tolleranza_F_Can">Minuti_Tolleranza_F_Can </a>diverso da NULL in Scheda Cantieri</li>
+          <li>altrimenti viene usato quello della Scheda Parametri<br>
+
+          </li>
+
+</ul>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="ArrotI_Col"></a> ArrotI_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Minuti
+di Tolleranza da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative alle
+Timbrature di Uscita.&nbsp;<span style="color: rgb(153, 51, 0);">
+<span style="font-weight: bold;">Se inserito viene controllato che sia &lt;= 60 e MAGGIORE della
+corrispondente</span> </span><a href="TR_COL.AAA.html#SogliaI_Col">SogliaI_Col</a><span style="color: rgb(153, 51, 0);">&nbsp;</span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato (se diverso da NULL e quindi anche se 0) SOLO per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica Collaboratore&nbsp;</li>
+<ul>
+<li>al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Default_Minuti_Tolleranza_F">Default_Minuti_Tolleranza_F</a>
+eventualmente inserito in Scheda Parametri <br>
+</li>
+          <li>ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di <a href="../TR_CANT/TR_CANT.AAA.html#Minuti_Tolleranza_Can">Minuti_Tolleranza_Can </a>diverso da NULL in Scheda Cantieri</li>
+          <li>altrimenti viene usato quello della Scheda Parametri</li>
+
+</ul>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Assegni_Famigliari_Col"></a>
+Assegni_Famigliari_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Diritto
+agli Assegni Famigliari per questo Collaboratore. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE </span><span style="color: rgb(153, 51, 0); font-weight: bold;">Può assumere SOLO i seguenti
+Valori:</span><br>
+<ul>
+<li>VERO (True) - il Collaboratore ha diritto agli
+Assegni Famigliari dal <a href="#Assegni_Famigliari_Inizio_Col">Assegni_Famigliari_Inizio_Col</a>&nbsp;
+al <a href="#Assegni_Famigliari_Fine_Col">Assegni_Famigliari_Fine_Col</a><br>
+</li>
+<li>FALSO (False)&nbsp; -&nbsp; il Collaboratore
+NON ha diritto agli Assegni Famigliari&nbsp; </li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Assegni_Famigliari_Fine_Col"></a>
+Assegni_Famigliari_Fine_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+Inizio del <a href="#Assegni_Famigliari_Col">Diritto agli
+Assegni Famigliari</a> per i Collaboratori abilitati. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se viene inserita assieme
+alla</span> </span><a href="#Assegni_Famigliari_Inizio_Col">Assegni_Famigliari_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Assegni_Famigliari_Inizio_Col"></a>
+Assegni_Famigliari_Inizio_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+Fine al <a href="TR_COL.AAA.html#Assegni_Famigliari_Col">Diritto
+agli Assegni Famigliari</a> per i Collaboratori abilitati.<span style="font-weight: bold; color: rgb(153, 51, 0);"> </span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se viene inserita assieme
+alla</span> </span><a style="font-weight: bold; color: rgb(153, 51, 0);" href="_TR_COL.html#Assegni_Famigliari_Fine_Col">Assegni_Famigliari_Fine_Col</a><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);"> </span>allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Automunito_Col"></a> Automunito_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Disponibilità
+di Automezzo da parte di questo Collaboratore. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE.<span style="color: rgb(153, 51, 0);"> Può assumere SOLO i seguenti
+valori</span></span>
+<ul>
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Collaboratore è dotato di proprio Automezzo</li>
+</ul>
+<ul>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Collaboratore NON è dotato di proprio Automezzo</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Cant_Id"></a> Cant_Id</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">N°
+Identificativo del&nbsp;Cantiere di Appartenenza
+Anagrafica assegnato a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;"></span><span style="font-weight: bold;"></span> Un
+collaboratore può
+comunque effettuare Timbrature anche su altri Cantieri diversi da
+quello eventualmente assegnatogli in Scheda Anagrafica. Serve per
+identificare le Ore eventualmente NON effettuate sul proprio Cantiere
+di Anagrafica.<br>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Collaboratore"></a> Codice_Collaboratore</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> Codice Interno
+Univoco&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">assegnato dalla
+Singola&nbsp;Azienda</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> a quello specifico
+Collaboratore</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;">&nbsp; </span></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span>&nbsp;<span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">Viene
+Automaticamente riempito con NULLs a SX per allinearlo a DX e che sia UNIVOCO</span></span><br>
+Per gestire correttamente un
+Ordinamento corretto dei Record in base al valore del Campo Codice
+Collaboratore occorre che: <br>
+<ul>
+<li>i Codici NUMERICI (costituiti solo da Numeri) vengano
+inseriti
+allineati a Destra e SENZA GLI ZERI NON SIGNIFICATIVI DAVANTI</li>
+<li>i Codici ALFANUMERICI (ovvero quelli che NON
+contengono solo Numeri)
+vengano inseriti allineati a SX e riempiti dei necessari caratteri NULLs a destra</li>
+</ul>
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Codice_Domicilio_Luogo_Col"></a>
+Codice_Domicilio_Luogo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+Catastale
+del Comune di Domiciliazione di un
+Collaboratore<span style="text-decoration: underline; font-weight: bold;">
+assegnato dal Sistema in modo automatico in base al <a href="#Domicilio_Luogo_Col">Luogo di Domicilio</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">&nbsp;</a>
+del Collaboratore prelevandolo dal Campo CHIAVE della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="#Domicilio_Luogo_Col">Domicilio_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.<span style="color: black;"> </span></span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Codice_Fiscale_Col"></a> Codice_Fiscale_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(16)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+Fiscale di
+questo Collaboratore. Deve avere il formato AAA-BBB-nnCnn_DnnnE e e può
+essere <br>
+<ul>
+<li>Inserito Manualmente - <span style="font-weight: bold; color: rgb(153, 51, 0);">In questo caso veine solo
+verificato
+il
+rispetto del Formato previsto</span> ma non la sua corettezza rispetto agli
+altri dati anagrafici<br>
+</li>
+<li>Calcolato dal Sistema - <span style="font-weight: bold; color: rgb(153, 51, 0);">In questo caso devono essere
+stati
+inseriti anche</span> </li>
+<ul>
+<li>il Cognome e Nome del Collaboratore che devono
+essere stati
+inseriti nei Campi <a href="#Cognome_Col">COGNOME_COL</a>
+e <a href="#Nome_Col">NOME_COL</a><br>
+</li>
+</ul>
+<ul>
+<li>la Data di Nascita dell'Assistito (<a href="#Nascita_Data_Col">NASCITA_DATA_COL</a>)</li>
+</ul>
+<ul>
+<li>il Codice Catastale del Comune di Nascita
+dell'Assistito (<a href="#Codice_Nascita_Luogo_Col">CODICE_NASCITA_LUOGO_COL</a>)</li>
+</ul>
+<li>senza i quali il sistema NON può eseguire il
+Calcolo/verifica del
+Codice Fiscale fornito</li>
+</ul>
+<span style="text-decoration: underline;">Se fornito
+&lt;&gt; da NULL</span>
+viene controllato che sia FORMALMENTE ESATTO e se sono forniti anche i
+Dati necessari al relativi Calcolo allora viene segnalato :<br>
+<ul>
+<li>se manca uno dei Dati necessari al suo calcolo</li>
+<li>se il Calcolo fornisce un Codice Fiscale diverso da
+quello imputato</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">Formato</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Codice_Iban_Col"></a> Codice_Iban_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(40)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+IBAN di questo Collaboratore. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se
+inserito viene controllato che abbia uno dei 2 seguenti formati</span><br>
+</span>
+<ul>
+<li>AA-n-B-nnnnn-nnnnn-nnnnnnnnnnnn</li>
+<li>AA-n_B-nnnnn-nnnnn-CCnnnnnnnnn<br>
+</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">Formato</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Nascita_Luogo_Col"></a>
+Codice_Nascita_Luogo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+Catastale
+del Comune di Nascita di un
+Collaboratore<span style="text-decoration: underline; font-weight: bold;">
+assegnato dal Sistema in modo automatico in base al <a href="#Nascita_Luogo_Col">Luogo di Nascita</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">&nbsp;</a>
+del Collaboratore prelevandolo dal Campo CHIAVE della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="#Nascita_Luogo_Col">Nascita_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.<span style="color: black;"> </span></span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Codice_Residenza_Luogo_Col"></a>
+Codice_Residenza_Luogo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+Catastale
+del Comune di Residenza di un
+Collaboratore<span style="text-decoration: underline; font-weight: bold;">
+assegnato dal Sistema in modo automatico in base al <a href="#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo Chiave della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.<span style="color: black;"> </span></span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a><span style="text-decoration: underline; font-weight: bold;"></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Cognome_Col"></a> Cognome_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Cognome
+del Collaboratore&nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>
+<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo Specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Disponibilita_Fine_Col"></a>
+Data_Disponibilità_Fine_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+Fine Rapporto con questo Collaboratore oltre la quale NON vengono più considerate le Ore Previste da Orario..<span style="font-weight: bold; color: rgb(153, 51, 0);"> </span><span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="#Data_Disponibilita_Inizio_Col">Data_Disponibilità_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span><span style="color: rgb(153, 102, 51); font-weight: bold;"></span>&nbsp;
+Viene gestista dalla Gestione Scadenze.</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Disponibilita_Inizio_Col"></a>Data_Disponibilità_Inizio_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+Inizio Rapporto con questo Collaboratore prima della quale NON Vengono considerate le Ore Previste da Orario. .<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Data_Disponibilita_Fine_Col">Data_Disponibilità_Fine_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span><span style="color: rgb(153, 102, 51);"></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Registrazione_Col"></a>
+Data_Registrazione_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+e Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio -</span></span>
+in
+cui PER la PRIMA VOLTA è stato inserito questo Collaboratore. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+&nbsp;<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span> </span>(Vedi anche<a href="../TR_CANT/TR_CANT.html#DataOraUltimaModifica">
+DataOraUltimaModifica</a>)<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- <span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span></span></span></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Data_Sorv_San_Col"></a> Data_Sorv_San_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+Scadenza entro cui va rinnovata la Visita della Sorveglianza Sanitaria
+per questo Collaboratore. Viene gestista dalla Gestione Scadenze.<br>
+</td><td style="width: 39px; text-align: center;"><br>
+</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="DataOraUltimaModifica_Col"></a>
+DataOraUltimaModifica_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+ed Ora&nbsp; <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>&nbsp;
+in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record. <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica fatta su quel Record)</span>.<span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="#Data_Registrazione_Col"> Data_Registrazione_Col</a>)&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span></span></span></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Disabile_Col"></a> Disabile_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Status
+di Disabile attivato per questo Collaboratore. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE. </span><span style="color: rgb(153, 51, 0); font-weight: bold;">Può assumere SOLO i seguenti
+Valori:</span>
+<ul style="margin-left: 40px;">
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Collaboratore ha lo status di Disabile<br>
+</li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo Collaboratore NON ha lo status di Disabile</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline;"><a name="DisAbilitazione_Col"></a><span style="font-weight: bold;"> DisAbilitazione_Col</span></span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Stato
+del Collaboratore che indica se il relativo
+Collaboratore è da considerare Disabilitato o meno.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE</span><br>
+Un
+Collaboratore anche se disabilitato può essere comunque utilizzato
+dal resto del sistema e <span style="color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(153, 51, 0); font-weight: bold;">Può assumere SOLO i seguenti
+Valori:</span>
+<ul>
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questo record NON è più ATTIVO e NON va più utilizzato
+&nbsp;&nbsp; </li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale del Record</li>
+</ul>
+Viene utilizzato solo per permettere di escludere
+automaticamente i Collaboratori Disabilitati dalla visualizzazione
+della Lista dei Collaboratori proposta in apertura della Gestione delle
+Schede Collaboratori se è attivato il relativi Campo <br>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Domicilio_Cap_Col"></a> Domicilio_Cap_Col</span>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Cap
+del Comune di Domicilio di questo Collaboratore.<span style="text-decoration: underline; font-weight: bold;">assegnato dal Sistema in modo automatico in base al <a href="_TR_COL.html#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo ASSOCIATO-1 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="_TR_COL.html#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.</span></span> <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Cap">Sigla_Cap</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Indirizzo_Col"></a>
+Domicilio_Indirizzo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Indirizzo
+e N° di Domicilio di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+inseribile. </span><span style="color: rgb(255, 102, 0); font-weight: bold;"></span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span>
+</td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline;"><a name="Domicilio_Interno_Col"></a><span style="font-weight: bold;"> Domicilio_Interno_Col</span></span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">N° di
+Interno relativo all'Indirizoo di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+inseribile.&nbsp;</span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span> </td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Domicilio_Localita_Col"></a>
+Domicilio_Localita_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Località
+del Comune di Domicilio di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+inseribile.&nbsp;</span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span> </td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Domicilio_Luogo_Col"></a> Domicilio_Luogo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Comune
+di Domicilio di questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab= Decod_Tab
+Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a>&nbsp;
+<span style="font-weight: bold; color: rgb(153, 51, 0);">nel
+Campo DECODIFICA_TAB</span><br>
+Quando viene inserito provvede <span style="text-decoration: underline;">AUTOMATICAMENTE a
+caricare i corrispondenti valori nei campi da lui dipendenti:</span><br>
+<ul>
+<li><a href="#Codice_Domicilio_Luogo_Col">Codice_Domicilio_Luogo_Col</a> preso dal campo CHIAVE della Tabella COMUNI</li><li><a href="_TR_COL.html#Domicilio_Cap_Col">Domicilio_Cap_Col</a> preso dal campo ASSOCIATO-1 della Tabella COMUNI</li><li><a href="_TR_COL.html#Domicilio_Provincia_Col">Domicilio_Provincia_Col</a> preso dal campo ASSOCIATO-2 della Tabella COMUNI</li>
+
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Domicilio_Provincia_Col"></a>
+Domicilio_Provincia_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Provincia
+del Comune di Domicilio di questo Collaboratore.<span style="text-decoration: underline; font-weight: bold;">assegnato dal Sistema in modo automatico in base al <a href="_TR_COL.html#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo ASSOCIATO-2 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="_TR_COL.html#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.</span></span> .<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province">Sigla_Province</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IND</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Durata_Max_Gruppo_Notte_Ril_Col"></a> Durata_Max_Gruppo_Notte_Ril_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Ore/Minuti
+da Aggiungere all'ULTIMA TIMBRATURA DI ENTRATA DEL GIORNO per
+CERCARE OLTRE LA MEZZANOTTE la PRIMA TIMBRATURA o oltre la Mezzanotte o
+oltre l'ultima timbratura di
+Entrata ( in base al valore indicato nel campo <a href="../TR_CANT/TR_CANT.AAA.html#FlagCambioGiornoRil_Can"><span style="font-weight: bold; text-decoration: underline;">FlagCambioGiornoRil_Col</span></a><span style="font-weight: bold;"> ).</span> La Durata
+Massima Gruppi Notte (oltre la Mezzanotte) <span style="text-decoration: underline; font-weight: bold;">è
+alternativa</span> alla <a href="../TR_CANT/TR_CANT.AAA.html#Pausa_Gruppo_Notte_Can">Pausa
+Gruppi Notte</a>.
+Serve per impedire di prendere come Timbratura di Chiusura dopo la
+Mezzonotte una Timbratura che invece è relativa all'Entrata effettuata
+nel Giorno Successivo in quanto avvenuta troppo oltre la Mezzanotte o
+oltre l'Ultima Timbratura di Entrata effettuata prima della Mezzonotte.<span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">Nessun Controllo Particolare</span></span><span style="color: red; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"></span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato </span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">SOLO per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica Collaboratore al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Durata_Max_Gruppo_Ril">Durata_Max_Gruppo_Ril</a>
+eventualmente inserito in Scheda Parametri <br>
+</li>
+<li>ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di&nbsp;<a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can">Durata_Max_Gruppo_Ril_Can</a>.
+<br>
+</li>
+</ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista.<br>
+Vedere anche <a href="TR_COL.AAA.html#Durata_Max_Gruppo_Ril_Col">Durata_Max_Gruppo_Ril_Col</a>,&nbsp;
+<a href="TR_COL.AAA.html#Durata_Max_Ril_Col">Durata_Max_Ril_Col</a>
+, <a href="TR_COL.AAA.html#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a><span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche </span><a href="TR_COL.AAA.html#Durata_Max_Gruppo_Notte_Ril_Col">Durata_Max_Gruppo_Notte_Ril_Col</a><br>
+<br>
+</td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Durata_Max_Gruppo_Ril_Col"></a>
+Durata_Max_Gruppo_Ril_Col</span> </td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Durata
+Massima in Ore/Minuti della Somma delle Timbrature di E/U effettuate
+nello stesso
+Giorno eseguite presso questo
+Collaboratore. Serve per BLOCCARE TUTTE le Timbrature di E/U per i
+Giorni in cui il Totale delle Ore Lavorate supera quanto previsto
+probabilmente dovuto ad un probabile errato accoppiamento fra Entrata
+ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.<span style="font-weight: bold; color: rgb(153, 51, 0);"> </span><span style="color: red; font-weight: bold;"><span style="color: rgb(153, 102, 51);"><span style="color: rgb(153, 51, 0);">Se inserito viene controllato che sia Maggiore/Uguale alla</span>&nbsp;</span></span>Durata_Max_Ril_Col<span style="color: red; font-weight: bold;"><span style="color: rgb(153, 102, 51);"> </span></span><span style="color: rgb(153, 51, 0);">e sia Maggiore/Uguale della</span><span style="color: red; font-weight: bold;"><span style="color: rgb(153, 102, 51);">&nbsp;</span></span>Durata_Max_Ril_Col<span style="color: red; font-weight: bold;"><span style="color: rgb(153, 102, 51);"></span></span><span style="color: red; font-weight: bold;"><span style="color: rgb(153, 102, 51);"></span> &nbsp; &nbsp;</span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato SOLO per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica Collaboratore al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_RIL</span>
+in Scheda Parametri. </li>
+</ul>
+&nbsp;L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Giornaliera prevista. Vedere anche <a href="TR_COL.AAA.html#Durata_Max_Gruppo_Ril_Col">Durata_Max_Gruppo_Ril_Col</a>,&nbsp;
+<a href="TR_COL.AAA.html#Durata_Max_Ril_Col">Durata_Max_Ril_Col</a>
+,<a href="TR_COL.AAA.html#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a><span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span> <a href="TR_COL.AAA.html#Durata_Max_Gruppo_Notte_Ril_Col">Durata_Max_Gruppo_Notte_Ril_Col</a><br>
+<a href="#Durata_Min_Ril_Col"><span style="font-weight: bold;"><span style="color: black;"></span></span></a></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Durata_Max_Ril_Col"></a> Durata_Max_Ril_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Durata
+Massima in
+Ore/Minuti della Singola Timbratura di E/U eseguita da questo
+Collaboratore. Serve per BLOCCARE le Singole Timbrature di E/U che
+hanno una eventuale
+Durata Maggiore di quanto previsto dovuta ad un probabile errato
+accoppiamento fra Entrata ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.&nbsp;<span style="color: rgb(153, 51, 0);">&nbsp;</span><span style="color: rgb(102, 51, 0); font-weight: bold;">
+<span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale della</span> </span><a href="#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a> <span style="font-weight: bold; color: rgb(153, 51, 0);">e Minore/Uguale alla</span>&nbsp;<a href="#Durata_Max_Gruppo_Ril_Col">Durata_Max_Gruppo_Ril_Col</a><span style="color: red; font-weight: bold;"></span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">_viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica Collaboratore al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <a href="TR_COL.AAA.html#Durata_Max_Ril_Col">Durata_Max_Ril</a>
+eventualmente inserito in Scheda Parametri ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di&nbsp;<a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a><span style="font-weight: bold;"></span><a href="../TR_CANT/TR_CANT.AAA.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a></li>
+</ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista. Vedere anche&nbsp;<a href="TR_COL.AAA.html#Durata_Max_Gruppo_Ril_Col">Durata_Max_Gruppo_Ril_Col</a>
+, <a href="TR_COL.AAA.html#Durata_Max_Ril_Col">Durata_Max_Ril_Col</a>
+, <a href="TR_COL.AAA.html#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a><span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span>&nbsp;<a href="TR_COL.AAA.html#Durata_Max_Gruppo_Notte_Ril_Col">Durata_Max_Gruppo_Notte_Ril_Col</a></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Durata_Min_Ril_Col"></a> Durata_Min_Ril_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Durata
+Minima in
+Ore/Minuti della Singola Timbratura di E/U eseguita da questo
+Collaboratore. Serve per BLOCCARE le Singole Timbrature di E/U che
+hanno una eventuale
+Durata Minore di quanto previsto dovuta ad un probabile errato
+accoppiamento fra Entrata ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.&nbsp;<span style="color: rgb(153, 51, 0);"> </span><span style="color: rgb(153, 51, 0);"></span><span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">
+Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della</span>&nbsp;</span><a href="#Durata_Max_Ril_Col">Durata_Max_Ril_Col</a> <span style="font-weight: bold; color: rgb(153, 51, 0);">e Minore/Uguale alla</span>&nbsp;<a href="#Durata_Max_Gruppo_Ril_Col">Durata_Max_Gruppo_Ril_Col</a>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica Collaboratore al
+posto dell'eventuale valore definito come default nel&nbsp; Campo <span style="color: rgb(51, 51, 255); text-decoration: underline;">Durata_Max_Ril</span>
+eventualmente inserito in Scheda Parametri ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di <a href="../TR_CANT/TR_CANT.AAA.#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a><span style="font-weight: bold;"></span><a href="../TR_CANT/TR_CANT.AAA.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a></li>
+</ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista. Vedere anche&nbsp;<a href="TR_COL.AAA.html#Durata_Max_Gruppo_Ril_Col">Durata_Max_Gruppo_Ril_Col</a>
+, <a href="TR_COL.AAA.html#Durata_Max_Ril_Col">Durata_Max_Ril_Col</a>
+, <a href="TR_COL.AAA.html#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a><span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span>&nbsp;<a href="TR_COL.AAA.html#Durata_Max_Gruppo_Notte_Ril_Col">Durata_Max_Gruppo_Notte_Ril_Col</a></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"> <span style="text-decoration: underline; font-weight: bold;"><a name="Durata_Pausa_Col"></a> Durata_Pausa_Col</span>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Durata
+della Pausa in Ore/Minuti da sottrarre automaticamente (se indicata)
+durante la Generazione delle Ore Viaggio che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzata per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Durata_Pausa"><span style="text-decoration: underline;">Durata_Pausa</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Durata_Pausa"><span style="text-decoration: underline;">Durata_Pausa</span></a>
+eventualmente inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0); font-weight: bold;"> Nessun
+Controllo Specifico</span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Fascia_Ore_Viaggi_1_Fine_COL"></a>
+Fascia_Ore_Viaggi_1_Fine_COL</span> </td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Fine della 1°
+Fascia entro la quale viene abilitata per questo Collaboratore la
+Generazione delle Ore Viaggio che rientrano in questa Fascia che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzata per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_1_Fine"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_1_Fine</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_1_Fine">Fascia_Ore_Viaggio_1_Fine</a>
+eventualmente inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="#Fascia_Ore_Viaggi_1_Inizio_COL">Fascia_Ore_Viaggi_1_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fascia_Ore_Viaggi_1_Inizio_COL"></a>Fascia_Ore_Viaggi_1_Inizio_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Inizio della 1° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia che<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzata per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_1_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_1_Inizio</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_1_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_1_Inizio</span></a>
+eventualmente
+inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_1_Fine_COL">Fascia_Ore_Viaggi_1_Fine_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fascia_Ore_Viaggi_2_Fine_COL"></a>
+Fascia_Ore_Viaggi_2_Fine_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Fine della 2° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzata per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_2_Fine"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_2_Fine</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_2_Fine">Fascia_Ore_Viaggio_2_Fine</a>
+eventualmente inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_2_Inizio_COL">Fascia_Ore_Viaggi_2_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Fascia_Ore_Viaggi_2_Inizio_COL"></a>Fascia_Ore_Viaggi_2_Inizio_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Inizio della 2° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp;&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_2_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_2_Inizio</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_2_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_2_Inizio</span></a>
+eventualmente
+inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_2_Fine_COL">Fascia_Ore_Viaggi_2_Fine_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fascia_Ore_Viaggi_3_Fine_COL"></a>
+Fascia_Ore_Viaggi_3_Fine_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Fine della 3° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp;&nbsp;&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_3_Fine"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_3_Fine</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_3_Fine">Fascia_Ore_Viaggio_3_Fine</a>
+eventualmente inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_3_Inizio_COL">Fascia_Ore_Viaggi_3_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fascia_Ore_Viaggi_3_Inizio_COL"></a>Fascia_Ore_Viaggi_3_Inizio_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Inizio della 3° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia mentre <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">per
+gli
+eventuali Collaboratori </span>che NON hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_3_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_3_Inizio</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_3_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_3_Inizio</span></a>
+eventualmente
+inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_3_Fine_COL">Fascia_Ore_Viaggi_3_Fine_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fascia_Ore_Viaggi_4_Fine_COL"></a>
+Fascia_Ore_Viaggi_4_Fine_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Fine della 4° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp;&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_4_Fine"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_4_Fine</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_4_Fine">Fascia_Ore_Viaggio_4_Fine</a>
+eventualmente inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_4_Inizio_COL">Fascia_Ore_Viaggi_4_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Fascia_Ore_Viaggi_4_Inizio_COL"></a>Fascia_Ore_Viaggi_4_Inizio_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Inizio della 4° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia mentre <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">per
+gli
+eventuali Collaboratori </span>che NON hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_4_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_4_Inizio</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_4_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_4_Inizio</span></a>
+eventualmente
+inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_4_Fine_COL">Fascia_Ore_Viaggi_4_Fine_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> <span style="font-weight: bold; color: red;"> </span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"> <span style="font-weight: bold; text-decoration: underline;"><a name="Fascia_Ore_Viaggi_5_Fine_COL"></a>
+Fascia_Ore_Viaggi_5_Fine_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Fine della 5° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia che <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_5_Fine"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_5_Fine</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_5_Fine">Fascia_Ore_Viaggio_5_Fine</a>
+eventualmente inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_5_Inizio_COL">Fascia_Ore_Viaggi_5_Inizio_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fascia_Ore_Viaggi_5_Inizio_COL"></a>Fascia_Ore_Viaggi_5_Inizio_COL</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px;">Ora/Minuto
+di Inizio della 5° Fascia entro la quale viene abilitata per
+questo Collaboratore la Generazione delle Ore Viaggio che rientrano in
+questa Fascia mentre <br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato per gli
+eventuali Collaboratori </span>che lo hanno caricato nella
+propria Scheda
+Anagrafica al posto dell'eventuale valore definito come default nel
+Campo&nbsp; <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_5_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_5_Inizio</span></a>
+eventualmente inserito in Scheda Parametri<a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a></li>
+<li>mentre i Cantieri/Assistiti NON gestiscono questa
+eventuale eccezzione per Singolo Cantiere/Assistito ed usano quindi
+sempre il valore del Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Fascia_Ore_Viaggio_5_Inizio"><span style="text-decoration: underline;">Fascia_Ore_Viaggio_5_Inizio</span></a>
+eventualmente
+inserito in Scheda Parametri</li>
+</ul>
+<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold; color: rgb(153, 51, 0);">Se viene inserita assieme
+alla</span> </span><a href="_TR_COL.html#Fascia_Ore_Viaggi_5_Fine_COL">Fascia_Ore_Viaggi_5_Fine_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">allora viene controllato
+che la Data di Fine sia &lt;= alla Data&nbsp; di Inizio</span></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fax_1_Col"></a> Fax_1_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">1°
+Numero di FAX <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span><br>
+</td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Fax_1_Rif_Col"></a> Fax_1_Rif_Col</span> </td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 1° Numero di FAX
+associabile a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Fax_2_Col"></a> Fax_2_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">2°
+Numero di FAX <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Collaboratore.<span style="color: rgb(153, 51, 0);">&nbsp;</span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fax_2_Rif_Col"></a> Fax_2_Rif_Col </span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 2° Numero di FAX
+associabile a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Flag_Entrata_Col"></a> Flag_Entrata_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)<br>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Metodo
+di
+Gestione dell'eventuale </span><a style="text-decoration: line-through;" href="#Limite_Entrata_Col">Limite
+Ora di
+Entrata</a><span style="text-decoration: line-through;"> impostata per questo Collaboratore. </span><span style="color: rgb(153, 51, 0); text-decoration: line-through;"><span style="font-weight: bold;">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_SYS e Nome_Tab</span>=</span>
+<a style="text-decoration: line-through;" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_Entrata">Flag_Entrata</a>
+<ul style="text-decoration: line-through;">
+<li>A = TD_AGG_IN_RICALCOLO_ORE_FIG</li><ul><li>Attiva l'Applicazione Automatica del Limite di
+Ora di
+Entrata durante il Calcolo delle Ore Figurative.</li></ul>
+<li>S = TD_SEGNALA_BLOCCA_IN_VERIFICA_INPUT</li><ul><li>Attiva la Segnalazione con relativo Blocco
+durante
+l'Elaborazione delle Timbrature ricevute che hanno una Entrata
+effettuata prima dell'Ora impostata come Limite Ora di Entrata.</li></ul>
+</ul>
+<span style="font-weight: bold; text-decoration: underline line-through;">viene
+comunque utilizzato per questo Collaboratore&nbsp;</span><span style="text-decoration: line-through;">
+anche per i Cantieri che avessero caricato nella propria Scheda
+Anagrafica un diverso </span><a style="text-decoration: line-through;" href="../TR_CANT/TR_CANT.AAA.html#Flag_Entrata_Can">Flag_Entrata_Can</a><a href="TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col"><br>
+</a> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Flag_INPS_Col"></a> Flag_INPS_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Tipo
+Posizione INPS di questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span>
+<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FLAG_INPS">Flag_INPS</a>&nbsp;
+<ul></ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr><td style="width: 280px;"><a name="Flag_Monte_Ore_Col"></a><span style="font-weight: bold;"><span style="text-decoration: underline;"> &nbsp;Flag_Monte_Ore_Col</span></span></td><td style="text-align: center; width: 127px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td><td style="width: 665px;">Indica
+se per quel Collaboratore è Abilitata/Disabilitata la Gestione del
+MONTE_ORE in base al Flag_Monte_Ore della Tabella Param<br><ul><li>Se Flag_Monte_Ore in Tab_Param = 0</li><ul><li>NON è abilitata la Gestione del MONTE ORE x NESSUN COLLABORATORE</li></ul><li>se il Flag_Monte_Ore in Tab-Param = 1</li><ul><li>La Gestione del Monte Ore è Abilitata SOLO per i Collaboratori che hanno</li><ul><li>FLAG_MONTE_ORE_COL = TRUE</li></ul></ul><li>se il Flag_Monte_Ore della Tab_Param = 2</li><ul><li>La Gestione del Monte Ore è Abilitata per TUTTI i Collaboratori ad accezzione di quelli che hanno</li><ul><li>FLAG_MONTE_ORE_COL = TRUE</li></ul></ul></ul></td><td><br>
+</td><td><br>
+</td><td><br>
+</td></tr><tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Flag_NON_Esportare_Col"></a>
+Flag_NON_Esportare_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Blocco
+Esportazione delle Rilevazioni
+di questo Collaboratore da parte del programma di Export delle
+Rilevazioni. </span><span style="font-weight: bold; color: rgb(153, 51, 0); text-decoration: line-through;">Se
+inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=Decod_SYS e Nome_Tab=</span><span style="text-decoration: line-through;"> </span><a style="text-decoration: line-through;" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_Non_Esportare">Flag_NON_Esportare</a><span style="text-decoration: line-through;">
+e può assumere SOLO i
+seguenti Valori:</span><br style="text-decoration: line-through;">
+<ul>
+<li style="text-decoration: line-through;"><span style="font-style: italic;">Null</span>/0 = TD_SI_EXPORT</li><ul style="text-decoration: line-through;"><li>Indica che
+le Timbrature di questo Collaboratore NON vengono esportate dal
+sistema </li></ul>
+<li style="text-decoration: line-through;">&nbsp; &nbsp;&nbsp; 1 &nbsp;
+&nbsp; &nbsp;= TD_NO_EXPORT</li><ul><li><span style="text-decoration: line-through;">Valore
+di Default che
+indica lo stato Normale del Record</span> </li></ul>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Flag_Ore_Viaggi_Col"></a> Flag_Ore_Viaggi_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Abilitazione
+alla Gestione Viaggi.  Indica se questo Collaboratore è abilitato o meno alla Gestione dei Viaggi (<span style="font-weight: bold;">Vedi Domain.Extension.ExtensionEnum <span style="background-color: yellow;">FlagTripHoursColEnum)<br>
+</span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Calcolo_Viaggi_Col">Tipo_Calcolo_Viaggi_Col</a>
+e può assumere SOLO i
+seguenti Valori:<br>
+<ul><li><span style="font-style: italic;">&nbsp;</span>&nbsp; Null/0 = TD_NO_CALCOLO <span style="font-weight: bold;"><span style="background-color: yellow;">FlagTripHoursColEnum.None = 0</span></span>
+</li><ul><li>Nessun Calcolo&nbsp;</li></ul><li>&nbsp; &nbsp; 1 &nbsp;= TD_CALCOLO_X_COLLAB <span style="font-weight: bold;"><span style="background-color: yellow;">FlagTripHoursColEnum.OnlyOne = 1<br>
+</span></span></li><ul><li>Abilta la Gestione Viaggi per questo
+Singolo Collaboratorie</li><ul><li><span style="font-weight: bold; text-decoration: underline;">Nel
+caso in cui in Scheda Parametri&nbsp;NON sia stata abilitata la Gestione Viaggi&nbsp;</span></li><ul><li><span style="font-weight: bold; text-decoration: underline;">(Campo</span> <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Flag_Ore_Viaggi">Flag_Ore_Viaggi</a>
+= <span style="font-style: italic;">Null</span>/0)</li></ul></ul></ul><li>&nbsp; &nbsp; 2 &nbsp;= TD_CALCOLO_X_COLLAB_ESCLUSO <span style="font-weight: bold;"><span style="background-color: yellow;">FlagTripHoursColEnum.AllExceptTwo = 2</span></span></li><ul><li>Disabilita la Gestione Viaggi per questo il
+Singolo Collaboratore</li><ul><li><span style="font-weight: bold; text-decoration: underline;">Nel
+caso in cui in Scheda Parametri&nbsp;sia stata abilitata la Gestione Viaggi&nbsp;</span></li><ul><li><span style="font-weight: bold; text-decoration: underline;">(Campo</span> <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Flag_Ore_Viaggi">Flag_Ore_Viaggi</a>
+= 1)</li></ul></ul></ul><li>&nbsp; &nbsp; <span style="text-decoration: line-through;">3 &nbsp;= TD_CALCOLO_X_AUTISTI_1 (</span><span style="text-decoration: underline line-through; font-weight: bold;">A
+prescindere da quanto&nbsp; impostato in Scheda
+Parametri)</span></li><ul style="text-decoration: line-through;"><li>Abilita la Gestione Personalizzata dei Viaggi dai
+Passaggi&nbsp;</li><ul><li>(Gestione Autisti-1 x COPP 2001)</li></ul></ul><li style="text-decoration: line-through;">&nbsp; &nbsp; 4 &nbsp;= TD_CALCOLO_X_AUTISTI_2&nbsp;(<span style="text-decoration: underline; font-weight: bold;">A
+prescindere da quanto&nbsp; impostato in Scheda
+Parametri)</span></li><ul style="text-decoration: line-through;"><li>Abilita
+la Gestione Personalizzata dei Viaggi dalle Rilevazioni</li></ul><ul style="text-decoration: line-through;"><ul><li>(Gestione Autisti-2 x Coop 2001 senza Pausa e solo x Fasce3/4)</li></ul></ul><li>&nbsp; &nbsp;<span style="text-decoration: line-through;"> 5 = TD_CALCOLO_X_KM&nbsp;(</span><span style="text-decoration: underline line-through; font-weight: bold;">A
+prescindere da quanto&nbsp; impostato in Scheda
+Parametri)</span></li><ul><li><span style="text-decoration: line-through;">Abilita la Gestione dei Viaggi con
+l'aggiunta del Calcolo dei KM</span>&nbsp;</li></ul></ul>
+<span style="text-decoration: underline; font-weight: bold;">
+</span>
+
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Flag_Ore_Viaggi_Col_Inizio_Fine</span></td>
+      <td style="vertical-align: top;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a></td>
+      <td style="vertical-align: top;">Abilitazione alla gestuone dei
+Viaggi Da/A Casa . Indica se questo Collaboratore è abilitato o meno
+alla Generazione dei Viaggi ANCHE in Partenza e in Arrivo da/a Casa. (<span style="font-weight: bold;">Vedi Domain.Extension.ExtensionEnum <span style="background-color: yellow;">FlagTripHoursColStartEndEnum). </span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Calcolo_Viaggi_Col">Tipo_Calcolo_Viaggi_Col</a>
+e può assumere SOLO i
+seguenti Valori:<br>
+      <ul>
+        <li>Null/0 = TD_NO_CALCOLO <br>
+        </li>
+        <ul>
+          <li><span style="font-weight: bold;"><span style="background-color: yellow;">FlagTripHoursColStartEndEnum).</span></span><span style="font-weight: bold;"><span style="background-color: yellow;">.None = 0</span></span>
+          </li>
+        </ul>
+        <ul>
+<li>Nessun Calcolo&nbsp;</li>
+        </ul>
+        <li>&nbsp; &nbsp; 1 &nbsp;= TD_CALCOLO_X_COLLAB <br>
+        </li>
+        <ul>
+          <li><span style="font-weight: bold;"><span style="background-color: yellow;">FlagTripHoursColStartEndEnum).</span></span><span style="font-weight: bold;"><span style="background-color: yellow;">.OnlyOne = 1<br>
+</span></span></li>
+        </ul>
+        <ul>
+<li>Abilta la Gestione Viaggi per questo
+Singolo Collaboratorie</li><ul><li><span style="font-weight: bold; text-decoration: underline;">Nel
+caso in cui in Scheda Parametri&nbsp;NON sia stata abilitata la Gestione Viaggi&nbsp;</span></li><ul><li><span style="font-weight: bold; text-decoration: underline;">(Campo</span> <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Flag_Ore_Viaggi">Flag_Ore_Viaggi</a>
+= <span style="font-style: italic;">Null</span>/0)</li></ul></ul>
+        </ul>
+        <li>&nbsp; &nbsp; 2 &nbsp;= TD_CALCOLO_X_COLLAB_ESCLUSO</li>
+        <ul>
+          <li>&nbsp;<span style="font-weight: bold;"><span style="background-color: yellow;">FlagTripHoursColStartEndEnum).</span></span><span style="font-weight: bold;"><span style="background-color: yellow;">.AllExceptTwo = 2</span></span></li>
+        </ul>
+        <ul>
+<li>Disabilita la Gestione Viaggi per questo il
+Singolo Collaboratore</li><ul><li><span style="font-weight: bold; text-decoration: underline;">Nel
+caso in cui in Scheda Parametri&nbsp;sia stata abilitata la Gestione Viaggi&nbsp;</span></li><ul><li><span style="font-weight: bold; text-decoration: underline;">(Campo</span> <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Flag_Ore_Viaggi">Flag_Ore_Viaggi</a>
+= 1)</li></ul></ul>
+        </ul>
+      </ul>
+      <br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold;"><a name="GGConsMax_Col"></a>GGConsMax_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">N°GG
+consecutivi Massimi per questo Collaboratore (Utilizzato in alcuni
+Programmi Personalizzati). <span style="color: rgb(153, 51, 0); font-weight: bold;">
+Se inserito viene controllato che assuma valori fra 0 e 100.</span>
+</td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Indennita_Sanificazione_Col"></a>
+Indennità_Sanificazione_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Indennità di Sanificazione <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Nessun Controllo specifico</span><br>
+</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Indennita_Trasporto_Col"></a>
+Indennità_Trasporto_Col </span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Indennità di Trasposrto <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Libretto_Sanitario_Col"></a>
+Libretto_Sanitario_Col</span><span style="font-weight: bold;">
+</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50<br>
+</td>
+<td style="vertical-align: top; width: 665px;">N°
+Libretto Sanitario di questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span>
+</td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Limite_Entrata_Col"></a> Limite_Entrata_Col</span>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">Orario
+in Ore/Minuti prima del
+quale NON vengono considerati i minuti di anticipo rispetto all'Orario
+di Entrata previsto per questo Collaboratore applicato in base al
+valore impostato del Campo <a href="#Flag_Entrata_Col">Flag_Entrata_Col
+<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></a></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Limite_Inizio_Notte_Col"></a>
+Limite_Inizio_Notte_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 1021px; background-color: red;">Ora
+e Minuto Utilizzato
+solo in un PROGRAMMA PERSONALIZZATO X COOP 2001 .<span style="background-color: white;"> </span><span style="color: rgb(153, 51, 0); background-color: white; font-weight: bold;">Nessun Controllo specifico</span>
+</td>
+</tr>
+</tbody>
+</table>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Livello_Col"></a> Livello_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+del Livello assegnato a questo Collaboratore.&nbsp; <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserita, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Livello_Col"><span style="text-decoration: underline;">Livello_Col</span></a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Matricola_Col"></a> Matricola_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">N° di
+Matricola assegnata a
+questo Collaboratore. Viene utilizzata in tutti i programmi
+personalizzati di Export delle Rilevazioni per assegnargli l'eventuale
+Matricola con cui viene gestito dai sistemi nei quali viene esportato. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span>
+</td><td style="width: 39px; text-align: center;">LIbero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Metodo_Arrotondamento_Col"></a>
+Metodo_Arrotondamento_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Metodo
+di Arrotondamento da utilizzare
+nel Calcolo delle Ore Figurative per questo Collaboratore.<span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserita, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_SYS e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Livello_Col"><span style="text-decoration: underline;"></span></a><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Metodo_Arrtondamento">Metodo_Arrotondamento
+</a>e <span style="font-weight: bold; text-decoration: underline;">può
+assumere SOLO i seguenti valori (vedi Domain.Extension.ExtensionEnum = </span><span style="color: black; background-color: yellow;">(</span><span style="font-weight: bold; text-decoration: underline; color: black; background-color: yellow;">RoundingMethodEnum)</span><br>
+<ul>
+<li>none = TD_ARROT_STANDARD <span style="background-color: yellow;">(</span><span style="color: black; text-decoration: underline; font-weight: bold; background-color: yellow;">RoundingMethodEnum.None</span><span style="color: black; background-color: yellow;">)</span><br>
+</li><ul><li>Vedi eventuali Parametri impostati in Scheda
+Parametri</li></ul>
+<li style="text-decoration: line-through;">1 = TD_ARROT_DURATA <span style="color: black; background-color: yellow;">(</span><span style="color: black; text-decoration: underline; font-weight: bold; background-color: yellow;">RoundingMethodEnum.Duration</span><span style="color: black; background-color: yellow;">)</span></li><ul style="text-decoration: line-through;"><li>Arrotondamento per Durata&nbsp; (vedi <a href="../TR_CANT/TR_CANT.AAA.html#Tipo_Arrotondamento_Can">Tipo
+Arrotondamento_Col</a>)</li></ul>
+<li>2 = TD_ARROT_EU<span style="background-color: yellow;"> </span><span style="color: black; background-color: yellow;">(</span><span style="color: black; text-decoration: underline; font-weight: bold; background-color: yellow;">RoundingMethodEnum.StartEnd</span><span style="color: black; background-color: yellow;">)</span></li><ul><li>Arrotondamento per Entrata/Uscita</li></ul>
+<li>3 = <span style="text-decoration: line-through;">TD_ARROT_DURATA_SU_ORARIO_PREVISTO</span></li><ul style="text-decoration: line-through;"><li>&nbsp;x Durata Personalizzata con Tolleranza&nbsp;
+su Orario
+Previsto</li></ul>
+<li style="text-decoration: line-through;">9 = TD_NO_ARROT</li><ul style="text-decoration: line-through;"><li>Escludi comunque questo Collaboratore dagli
+Arrotondamenti eventualmenti impostati in modo Generale in Scheda
+Parametri</li></ul>
+</ul>
+Se inserito <span style="font-weight: bold; text-decoration: underline;"><br>
+</span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+comunque utilizzato per questo Collaboratore&nbsp;</span> </li>
+<ul>
+<li>sia per i Cantieri che avessero caricato nella
+propria Scheda
+Anagrafica un diverso <a href="../TR_CANT/TR_CANT.AAA.html#Metodo_Arrotondamento_Can">Metodo_Arrotondamento_Can</a>
+</li>
+</ul>
+<ul>
+<li>sia al posto dell'eventuale valore presente nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento">Metodo_Arrotondamento</a>
+della Scheda Parametri<span style="font-weight: bold; text-decoration: underline;"> (vedi Domain.Extension.ExtensionEnum = </span><span style="color: black; background-color: yellow;">(</span><span style="font-weight: bold; text-decoration: underline; color: black; background-color: yellow;">RoundingMethodEnum)</span></li>
+</ul>
+</ul>
+L'Arrotondamento per Durata viene applicato SOLO dal Programma di
+Calcolo Ore Figurative mentre l'Arrotondamento per Entrata/Uscita viene
+applicato sia immediatamente per Singola Rilevazione sia
+successivamente dal programma di Calcolo delle Ore Figurative</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Minuti_Arrot_Durata_Fig_Col"></a>
+Minuti_Arrot_Durata_Fig_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">Minuti
+di Tolleranza di Default da applicare
+durante il <span style="font-weight: bold; text-decoration: underline;">Calcolo
+delle Ore Figurative dai VIAGGI</span> per arrotondarle.<span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">Se inserito viene
+controllato che assuma valori fra 0 e 60 e MAGGIORE della</span> </span><a href="#Soglia_Arrot_Durata_Fig_Col">Soglia_Arrot_Durata_Fig_Col</a>
+<ul>
+<li>&nbsp;<span style="font-weight: bold; text-decoration: underline;">viene
+comunque utilizzato per questo Collaboratore&nbsp;</span> </li>
+</ul>
+<ul style="margin-left: 40px;">
+<li>sia per i Cantieri che avessero caricato nella
+propria Scheda
+Anagrafica un diverso <a href="../TR_CANT/TR_CANT.AAA.html#Metodo_Arrotondamento_Can">Metodo_Arrotondamento_Can</a>
+</li>
+</ul>
+<ul style="margin-left: 40px;">
+<li>sia al posto dell'eventuale valore presente nel Campo
+<a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento">Metodo_Arrotondamento</a>
+della Scheda Parametri</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr><td style="vertical-align: top; width: 280px;"><a name="Monte_Ore_Col"></a> &nbsp;<span style="font-weight: bold; text-decoration: underline;">Monte_Ore_Col</span></td><td style="text-align: center; vertical-align: top; width: 127px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td><td style="width: 665px;">Contiene
+il Monte Ore (POSITIVO/NEGATIVO) espresso in MINUTI a CREDITO/DEBITO di
+quel Collaboratore alla Data di Blocco registrata in Tab_Param.<span style="text-decoration: underline;"> Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> al momento in cui viene modificata la DATA_BLOCCO in Tab_Param e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+QUINDI MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema.</span></span></td><td><br>
+</td><td><br>
+</td><td><br>
+</td></tr><tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="N_Persone_A_Carico_Col"></a>
+N_Persone_A_Carico_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">N°
+delle Persone a Carico do questo Collaboratore.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun Controllo specifico</span><span style="color: rgb(153, 51, 0);"></span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="N_Pos_INAIL_Col"></a> N_Pos_INAIL_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">N°
+del Codice identificativo INAIL di questo Collaboratore.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun Controllo specifico</span>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="N_Pos_INPS_Col"></a> N_Pos_INPS_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">N°
+del Codice identificativo INPS di questo Collaboratore .&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);"> Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Nascita_Cap_Col"></a> Nascita_Cap_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">CAP
+del Comune di
+Nascita di questo Collaboratore.<span style="text-decoration: underline; font-weight: bold;">assegnato dal Sistema in modo automatico in base al <a href="_TR_COL.html#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo ASSOCIATO-1 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="_TR_COL.html#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.</span></span><span style="color: rgb(153, 51, 0);">
+<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab</span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Cap">Sigla_Cap<br>
+</a>&nbsp;<span style="text-decoration: underline; font-weight: bold;">Diventa
+un Campo OBBLIGATORIO per il Calcolo/verifica del Codice Fiscale in
+quanto viene utilizzato per recuperarne il relativo </span><span style="text-decoration: underline;"></span><a href="#Codice_Nascita_Luogo_Col">Codice_Nascita_Luogo_Col</a><span style="font-weight: bold; text-decoration: underline;"><br>
+</span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Nascita_Data_Col"></a> Nascita_Data_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+di Nascita di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold;">Diventa
+un Campo OBBLIGATORIO per il Calcolo/verifica del Codice Fiscale-</span>
+La relativa Data del Prossimo Compleanno viene segnalata dalla Gestione
+Scadenze. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Nascita_Luogo_Col"></a> Nascita_Luogo_Col</span>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a></td>
+<td style="vertical-align: top; width: 665px;">Comune
+di Nascita di questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab= Decod_Tab
+Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a>&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">
+nel
+Campo Decodifica_Tab. <br></span>Quando viene inserito provvede <span style="text-decoration: underline;">AUTOMATICAMENTE a
+caricare i corrispondenti valori nei campi da lui dipendenti:</span><br>
+<ul>
+<li><a href="_TR_COL.html#Codice_Nascita_Luogo_Col">Codice_Nascita_Luogo_Col</a> preso dal Campo CHIAVE della tabella COMUNI</li><li><a href="_TR_COL.html#Nascita_Cap_Col">Nascita_Cap_Col</a> preso dal Campo ASSOCIATO-1&nbsp;della tabella COMUNI</li><li><a href="_TR_COL.html#Nascita_Provincia_Col">Nascita_Provincia_Col</a> preso dal Campo &nbsp;ASSOCIATO-2 della tabella COMUNI</li>
+
+
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><a name="Nascita_Provincia_Col"></a> <span style="text-decoration: underline; font-weight: bold;">Nascita_Provincia_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Provincia
+di Nascita di questo Collaboratore.<span style="text-decoration: underline; font-weight: bold;">assegnato dal Sistema in modo automatico in base al <a href="_TR_COL.html#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo ASSOCIATO-2 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="_TR_COL.html#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema.</span></span> <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserita
+viene controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e
+Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province">Sigla_Province</a></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Nazionalita_Col"></a> Nazionalita_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+della Nazionalità di
+questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito viene controllato che esista in
+TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../../../HELP%20TECNICO/Specifiche%20Tecniche%20POWER-S/Tabelle%20Decodifica%20Elenco.html#Nazionalita">Nazionalita</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Nome_Col"></a>Nome_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Nome
+del Collaboratore&nbsp; <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">Nessun Controllo specifico</span></span></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Note_Col"></a> Note_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a><br>
+(Max)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Note
+Descrittive Libere abbinate&nbsp;
+a questo Cantiere/Assistito.<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;"><br>
+</td><td style="width: 60px; text-align: center;">NOTE</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="NottAbi_Col"></a> NottAbi_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Notturno
+Abituale per questo Collaboratore.</span><span style="text-decoration: underline line-through; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold; text-decoration: line-through;">=FALSE </span><span style="background-color: red; text-decoration: line-through;">Utilizzato solo nell'Export
+del Cartellino Presenza !</span><span style="color: rgb(153, 51, 0); text-decoration: line-through;"> &nbsp;<span style="font-weight: bold;">Può
+assumere SOLO i
+seguenti Valori:</span></span><br style="text-decoration: line-through;">
+<ul>
+<li style="text-decoration: line-through;">VERO (True)&nbsp;&nbsp;&nbsp;&nbsp; -
+<br>
+</li>
+<li><span style="text-decoration: line-through;">FALSO (False)&nbsp; - </span><br>
+</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="OreMassime"></a> OreMassime</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">N°
+Ore Massime Settimanali/Mensili per questo Collaboratore utilizzate
+nella Gestione <a href="#Prova">Ore Prova</a>. <span style="color: rgb(153, 51, 0); font-weight: bold;"> Se inserito viene
+controllato che assuma valori fra 0 e 744 (pari a 24 ore x 31 GG)</span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="OreMaxGG_Col"></a> OreMaxGG_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">Ore/Minuti
+Massimi Giornaliere per questo Collaboratore utilizzato in Gestione
+Cartellino Presenza. <span style="color: rgb(153, 51, 0); font-weight: bold;">
+Nessun Controllo Specifico</span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">DATE<br>TIME</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Patente_Col"></a> Patente_Col</span> </td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(2)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Tipo
+di Patente (A/B....) che ha questo Collaboratore . <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserita, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Patente"><span style="text-decoration: underline;">Tipo_Patente</span></a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Prova"></a> Prova </span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Attiva
+la Gestione delle Ore Prova per questo Collaboratore riferite alle </span><a style="text-decoration: line-through;" href="#OreMassime">OreMassime</a><span style="text-decoration: line-through;"> assegnate a questo
+Collaboratore. </span><span style="color: rgb(153, 51, 0); font-weight: bold; text-decoration: line-through;">Se
+inserito viene controllato che sia &lt;= 1</span><span style="text-decoration: line-through;"> e pùò
+quindi </span><span style="text-decoration: underline line-through; font-weight: bold;">assumere
+SOLO i seguenti valori prefissati</span><br style="text-decoration: line-through;">
+<ul>
+<li style="text-decoration: line-through;">0&nbsp; =&nbsp; Gestione Ore Prova NON
+attivata</li>
+<li><span style="text-decoration: line-through;">1&nbsp; =&nbsp; Gestione Ore Prova Attivata
+per questo Collaboratore</span> </li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Qualifica_Col"></a> Qualifica_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+della Qualifica che ha questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Qualifica">Qualifiche_Col</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Quota_PTime_Col"></a> Quota_PTime_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#REAL">REAL</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Eventuale
+% del Part-Time effettuato da questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;"> Se inserito viene
+controllato che assuma valori fra 0 e 100</span> </td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Residenza_Cap_Col"></a> Residenza_Cap_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(15)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">CAP
+del Comune di Residenza di questo Collaboratore.<span style="text-decoration: underline; font-weight: bold;">assegnato dal Sistema in modo automatico in base al <a href="_TR_COL.html#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo ASSOCIATO-1 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="_TR_COL.html#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span> <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Cap">Sigla_Cap</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Residenza_Indirizzo_Col"></a>
+Residenza_Indirizzo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Indirizzo
+di Residenza di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+inseribile. </span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Interno_Col"></a> Residenza_Interno_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">N°
+dell'Interno dell'Indirizzo di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+inseribile.&nbsp;</span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Residenza_Localita_Col"></a>
+Residenza_Localita_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Località
+del Comune di Residenza di questo Collaboratore. <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+inseribile.&nbsp;</span><span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span> </td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Luogo_Col"></a> Residenza_Luogo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Comune
+di Residenza di questo Collaboratore.<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con Gruppo_Tab= Decod_SYS
+Nome_Tab=</span><span style="font-weight: bold;"> </span><a style="font-weight: bold;" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni</a><span style="font-weight: bold;">&nbsp;
+</span><span style="font-weight: bold; color: rgb(153, 51, 0);">nel
+Campo Decodifica_Tab</span><br>
+Quando viene inserito provvede <span style="text-decoration: underline;">AUTOMATICAMENTE a
+caricare i corrispondenti valori nei campi da lui dipendenti:</span><br><ul><li><a href="_TR_COL.html#Codice_Residenza_Luogo_Col">Codice_Residenza_Luogo_Col</a> viene preso dal Campo CHAIVE della Tabella COMUNI</li><li><a href="_TR_COL.html#Residenza_Cap_Col">Residenza_Cap_Col</a> viene preso dal Campo ASSOCIATO1 della Tabella COMUNI</li><li><a href="_TR_COL.html#Residenza_Provincia_Col">Residenza_Provincia_Col</a> viene preso dal Campo ASSOCIATO2 della Tabella COMUNI</li></ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Residenza_Provincia_Col"></a>
+Residenza_Provincia_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Sigla
+delle Provincia del Comune di Residenza di questo Collaboratore.<span style="color: rgb(153, 51, 0);"> </span><span style="text-decoration: underline; font-weight: bold;">assegnato dal Sistema in modo automatico in base al <a href="_TR_COL.html#Residenza_Luogo_Col">Luogo di Residenz</a></span><a href="../TR_CANT/_TR_CANT.html#Luogo_Can">a&nbsp;</a>
+del Collaboratore prelevandolo dal Campo ASSOCIATO-2 della TAB_DECOD con
+Gruppo_Tab=Tab_Decod e Nome_Tab= <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Comuni">Comuni
+</a>. e Decodifica_Tab=<span style="font-weight: bold; text-decoration: underline;"><a href="_TR_COL.html#Residenza_Luogo_Col">Residenza_Luogo_Col</a></span>.
+<span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span><span style="color: rgb(153, 51, 0);">. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab</span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province">Sigla_Province</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Residenza_Provincia_GEN_Col"></a>
+Residenza_Provincia_GEN_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(4)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Sigla
+della Provincia del Comune
+di Residenza che aveva questo Collaboratore al 1° Gennaio del corrente
+anno. Viene utilizzato per essere indicato nel CUD da rilasciare a
+questo Collaboratore<span style="font-weight: bold; color: rgb(153, 51, 0);">.Se
+inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sigla_Province">Sigla_Province</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="width: 280px;"><span style="font-weight: bold;"><a name="Resp_Id"></a> </span><span style="font-weight: bold; text-decoration: underline;">Resp_Id</span></td>
+<td style="text-align: center; width: 127px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td>
+<td style="width: 665px;">N°Identificativo del Responsabile assegnato a questo
+Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito viene verificato che esista nella
+Tabella RESP</span><span style="font-weight: bold;">.</span>&nbsp; Se la Struttura
+Aziendale è
+particolarmente ampia e si vogliono poi suddividere e selezionare i
+Collaboratoriti appartenenti assegnati ad un determinato Responsabile
+conviene inserire
+questo dato nell'Anagrafica Collaboratori in quanto poi il Codice
+Responsabile
+viene poi usato in tutte le Stampe per permettere di selezionare i
+Collaboratori in base al Codice del Responsabilee di Appartenenza.<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline; color: red;">NOTA
+BENE </span>: Quando in SK UTENTI ad un determinato UTENTE di
+Power Web viene
+anche
+assegnato un <a href="../TR_UTENTI/TR_UTENTI.AAA.html#Codice_Filiale_Utente">Codice
+Responsabile</a> allora, per questo utente,
+in tutte le Maschere e Report di Power Web, vengono AUTOMATICAMENTE
+selezionati dal sistema TUTTI E SOLO I DATI che appartengono ai
+Collaboratori&nbsp; che risultano assegnati allo stesso
+Responsabile
+assegnato all'Utente che si è collegato a Power.</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Retribuzione_Lorda_Col"></a>
+Retribuzione_Lorda_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Retribuzione Lorda <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span>
+</td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Retribuzione_Netta_Col"></a>
+Retribuzione_Netta_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Retribuzione Netta <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Retribuzione_Oraria_Col"></a>
+Retribuzione_Oraria_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Retribuzione Oraria <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Retribuzione_Straordinaria_Col"></a>Retribuzione_Straordinaria_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Retribuzione Oraria Straordinaria <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Scadenza_Patente_Col"></a> Scadenza_Patente_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+di Scadenza della <a href="#Patente_Col">Patente_Col</a>
+di questo Collaboratore. Viene Gestita dalla Gestione Segnalazione
+Scadenze.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Controllo specifico</span> </td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Sesso_Col"></a> Sesso_Col</span> </td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Sesso
+di questo Collaboratore che <span style="text-decoration: underline;">diventa
+OBBLIGATORIO nel caso in cui si voglia Calcolare/verificare la
+correttezza del Codice Fiscale del Collaboratore</span>. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserita, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_SYS e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Sesso">Sesso</a>
+e<span style="font-weight: bold; text-decoration: underline;">
+può assumere SOLO i seguenti valori Predefiniti a Livello di
+Sistema a quindi Codificati per poter essere Gestiti in Lingua:</span><br>
+<ul>
+<li>TD_FEMMINA</li>
+<li>TD_MASCHIO</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold;"><a name="Singola_Reg"></a>
+Singola_Reg</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Abilita
+Gestione Passaggi per questo Collaboratore ovvero identifica i
+Collaboratori presso i quali le relative Timbrature
+vengono trattate Singolarmente (Timbratura di Passaggio) invece che
+come Timbrature di Entrata/Uscita. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE<br>
+</span>Nel caso venga abilitato per questo
+Collaboratore (Valore=VERO) allora ogni Singola Timbratura viene
+caricata nella Tabella PASS invece che nella Tabella RIL accoppiata
+alla corrispondente Timbratura di Uscita.<span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">Può
+assumere SOLO i
+seguenti Valori:</span></span>
+<ul>
+<li>VERO (True) . Le Timbrature vengono trattate
+SINGOLARMENTE <br>
+</li>
+<li>FALSO (False) Le Timbrature vengono trattate a Coppie
+(Entrata/Uscita)</li>
+</ul>
+NOTA BENE : il Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Abilita_Pas">Abilita_Pas&nbsp;</a>
+della in Scheda Parametri deve essere = 1 (Abilitata) altrimenti&nbsp; NON è possibile attivare questo campo a True</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">GEN</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Soglia_Arrot_Durata_Fig_Col"></a>
+Soglia_Arrot_Durata_Fig_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Minuti della Soglia
+di Arrotondamento da Applicare durante il Calcolo degli Arrotondamenti delle Ore
+Figurative x Durata </span><span style="font-weight: bold; text-decoration: underline line-through;">generate
+dalla Gestione Viaggi</span><span style="text-decoration: line-through;">.</span><span style="font-weight: bold; text-decoration: underline line-through;"></span><br style="text-decoration: line-through;">
+<span style="font-weight: bold; color: rgb(153, 51, 0); text-decoration: line-through;"> Se inserito
+viene controllato che assuma valori fra 0 e 60 e MINORE dei corripondenti </span><a style="text-decoration: line-through;" href="#Minuti_Arrot_Durata_Fig_Col">Minuti_Arrot_Durata_Fig_Col</a>
+<ul>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">VIAG</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Soglia_Durata_Col"></a> Soglia_Durata_Col</span>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px;"><span style="text-decoration: line-through;">Minuti
+della Soglia di Arrotondamento in Minuti da
+applicare assieme ai Minuti di </span><a style="text-decoration: line-through;" href="#Arrot_Durata_Col">Arrot_Durata_Col
+</a><span style="text-decoration: underline line-through; font-weight: bold;"></span><span style="text-decoration: line-through;">durante
+il </span><span style="text-decoration: underline line-through;">Calcolo
+degli Arrotondamenti x Durata</span><span style="text-decoration: line-through;"> (se attivato
+nel Campo </span><a style="text-decoration: line-through;" href="#Metodo_Arrotondamento_Col">Metodo_Arrotondamento_Col</a><span style="text-decoration: line-through;">&nbsp;
+delle Ore Figurative sulla base&nbsp; </span><a style="text-decoration: line-through;" href="#Tipo_Arrotondamento_Col">Tipo_Arrotondamento_Col.</a><span style="text-decoration: line-through;">
+indicato.</span><br style="text-decoration: line-through;">
+<span style="font-weight: bold; color: rgb(153, 51, 0); text-decoration: line-through;"> Se inserito
+viene controllato che assuma valori fra 0 e 60 e MAGGIORE della corrispondente</span> <a style="text-decoration: line-through;" href="#Arrot_Durata_Col">Arrot_Durata_Col</a><br style="text-decoration: line-through;">
+      <ul>
+<li style="text-decoration: line-through;"><span style="font-weight: bold; text-decoration: underline;">viene
+utilizzato (se diverso da NULL e quindi anche se 0) SOLO per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Arrot_Fig_Can">Soglia_Durata
+Can</a>&nbsp;<span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span>
+</li><li><span style="text-decoration: line-through;">ANCHE per le Timbrature
+effettuate su dei Cantieri che hanno , a loro volta, caricato un
+proprio valore di&nbsp;</span><a style="text-decoration: line-through;" href="../TR_CANT/TR_CANT.AAA.html#Soglia_Arrot_Fig_Can">Soglia_Durata </a><br>
+</li>
+        <li>altrimenti viene usato il valore presente nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento">Soglia_Arrotondamento</a><a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento"></a>
+della Scheda Parametri</li>
+      </ul>
+
+<ul></ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="SogliaF_Col"></a> SogliaF_Col</span> </td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a></td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">Minuti della Soglia
+di Arrotondamento da
+applicare durante il <span style="text-decoration: underline;">Calcolo
+degli Arrotondamenti delle Ore Figurative
+alle Timbrature di Uscita</span>. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se inserito viene
+controllato che assuma valori fra 0 e 60 e MAGGIORE della corrispodente</span> </span><a href="_TR_COL.html#ArrotI_Col">ArrotF_Col</a><span style="color: rgb(153, 51, 0);"> <span style="font-weight: bold;">e MAGGIORE della corrispondente</span> <a href="#ArrotI_Col"><span style="font-weight: bold;">ArrotI_Col</span></a></span><span style="font-weight: bold; text-decoration: underline;"> </span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+comunque utilizzato per questo Collaboratore&nbsp;</span> </li>
+
+        <li>sia per i Cantieri che avessero caricato nella
+propria Scheda
+Anagrafica una diversa <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Arrot_Fig_Can">Soglia_Arrot_Fig_Can</a> diversa da NULL in Scheda Cantieri</li>
+        <li>altrimenti viene usato valore presente nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento">Metodo_Arrotondamento</a>
+della Scheda Parametri</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="SogliaI_Col"></a> SogliaI_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">Minuti della Soglia
+di Arrotondamento da
+applicare durante il<span style="text-decoration: underline;">
+Calcolo degli Arrotondamenti delle Ore Figurative
+alle Timbrature di Entrata</span>.<span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;"> Se inserito viene
+controllato che assuma valori fra 0 e 60 e MINORE della corrispondente</span> </span><a href="TR_COL.AAA.html#ArrotF_Col">ArrotF_Col</a> <span style="font-weight: bold; text-decoration: underline;"> </span>
+<ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">viene
+comunque utilizzato per questo Collaboratore <br>
+          </span></li>
+        <li>sia per i Cantieri che avessero caricato nella
+propria Scheda
+Anagrafica una diversa <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Arrot_Fig_F_Can">Soglia_Arrot_Fig_F_Can</a></li>
+        <li>altrimenti viene usato valore presente nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Metodo_Arrotondamento"></a>della Scheda Parametri</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Stato_Civile_Col"></a> Stato_Civile_Col</span>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(2)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+dello Stato Civile di
+questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserita, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Stato_Civile">Stato_Civile</a>
+,&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;"> </span><span style="text-decoration: underline;"><span style="color: rgb(153, 51, 0); font-weight: bold;">la cui codifica è per altro
+LIBERA</span><br>
+</span>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Straniero_CEE_Col"></a> Straniero_CEE_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Indica
+se questo Collaboratore è uno Straniero appartenente o meno ad un Paese della
+Cee. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE. <span style="color: rgb(153, 51, 0);">Può assumere SOLO i seguenti
+</span>Valori<br>
+</span>
+<ul>
+<li>VERO (True) .- Questo Collaboratore è uno Straniero
+CEE<br>
+</li>
+<ul>
+<li><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">Viene
+controllato che sia ANCHE identificato</span><span style="color: rgb(153, 51, 0);"> <span style="text-decoration: underline; font-weight: bold;">come</span></span>
+<a href="#Straniero_Col">Straniero=True</a><br>
+</li>
+</ul>
+<li>FALSO (False) - Questo Collaboratore <br>
+</li>
+<ul>
+<li>è uno straniero Extra CEE se il Campo <a href="#Straniero_Col">Straniero</a> è = VERO</li>
+<li>NON è uno Straniero se il Campo <a href="TR_COL.AAA.html#Straniero_Col">Straniero</a> è =
+FALSO<br>
+</li>
+</ul>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Straniero_Col"></a> Straniero_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Indica
+se questo Collaboratore è uno Straniero. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE</span>
+<ul>
+<li>VERO (True) .- Questo Collaboratore è uno Straniero</li>
+<ul>
+<li>Vedere anche se è identificato o meno come <a href="#Straniero_CEE_Col">Straniero_CEE</a> oppure
+Extra_Cee<br>
+</li>
+</ul>
+<li>FALSO (False) - Questo Collaboratore NON è uno
+Straniero</li>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">CHK</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Straniero_Scadenza_Permesso_Col"></a>Straniero_Scadenza_Permesso_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a>
+</td>
+<td style="vertical-align: top; width: 665px;">Data
+di Scadenza del Permesso di Soggiorno di questo Collaboratore. Viene
+gestista dalla Gestione Scadenze. <span style="color: rgb(153, 51, 0);"><span style="font-weight: bold;">Se inserito viene controllato che il campo</span> <a href="#Straniero_Col">STRANIERO_COL</a><span style="font-weight: bold;"> sia = TRUE</span></span><br>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ANAG</td><td style="width: 60px; text-align: center;">DATE</td>
+</tr>
+<tr><td style="width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tipo_Orario_Col"></a> Tab_Orari_Tipo_Id</span></td><td style="text-align: center; width: 127px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td><td style="width: 665px;">N°Identificativo del Tipo Orario assegnato a questo
+Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito viene verificato che esista nella
+Tabella TAB_ORARI</span><span style="color: rgb(153, 51, 0);"></span></td><td style="width: 39px; text-align: center;">OK</td><td>TEL/FAX</td><td>COMBO</td></tr><tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Telefono_1_Col"></a> Telefono_1_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">1°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo
+Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_1_Rif_Col"></a> Telefono_1_Rif_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 1° Numero
+di Telefono
+associabile a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_2_Col"></a> Telefono_2_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">2°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Telefono_2_Rif_Col"></a> Telefono_2_Rif_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">Riferimento
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 2° Numero
+di Telefono
+associabile a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Telefono_3_Col"></a> Telefono_3_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">3°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold;"><a name="Telefono_3_Rif_Col"></a>
+<span style="text-decoration: underline;">Telefono_3_Rif_Col</span></span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">Riferimento&nbsp;
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 3° Numero
+di Telefono
+associabile a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Telefono_4_Col"></a> Telefono_4_Col</span>
+<br>
+</td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 665px;">4°
+Numero di Telefono <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span><span style="color: rgb(153, 51, 0);"></span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Telefono_4_Rif_Col"></a> Telefono_4_Rif_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Riferimento&nbsp;
+<span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabile</span> al 4° Numero
+di Telefono
+associabile a questo Collaboratore.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun
+Controllo specifico</span></td><td style="width: 39px; text-align: center;">Libero</td><td style="width: 60px; text-align: center;">TEL/FAX</td><td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tipo_Arrotondamento_Col"></a>
+Tipo_Arrotondamento_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px; text-decoration: line-through;">Metodo
+di Arrotondamento da applicare
+a questo Collaboratore nel caso di Calcolo delle Ore Figurative in base
+alla Durata.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Se
+inserito viene controllato che esista in TAB_DECOD con
+Gruppo_Tab=Decod_SYS e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Arrotondamento">Tipo_Arrotondamento</a>
+e può assumere SOLO i seguenti valori
+<ul>
+<li>
+&nbsp; 0 = TD_TIPO_ARROTONDAMENTO_STANDARD_DESC</li><ul><li>Arrotondamento Standard Durata Giornaliera in base alla <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li></ul>
+<li>&nbsp; 1 = TD_TIPO_ARROTONDAMENTO_NO_DURATA_MINORE_SOGLIA_DESC</li><ul><li>NON arrotonda se hanno DURATA
+&lt;= della <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li></ul>
+<li>&nbsp; 2 = TD_TIPO_ARROTONDAMENTO_NO_DURATA_MAGGIORE_SOGLIA_DESC</li><ul><li>NON arrotonda se hanno DURATA
+&gt;&nbsp;&nbsp; della <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li></ul>
+<li>&nbsp; 3 = TD_TIPO_ARROTONDAMENTO_SINGOLA_REG_X_SOGLIA_DESC</li><ul><li>Arrotonda la Durata della SINGOLA
+Rilevazione in base alla <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li></ul>
+</ul>
+<span style="color: rgb(153, 51, 0);"> </span>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">viene
+comunque utilizzato per questo Collaboratore&nbsp;</span> </li>
+<ul>
+<li>sia per i Cantieri che avessero caricato nella
+propria Scheda
+Anagrafica una diversa <a href="../TR_CANT/TR_CANT.AAA.html#Tipo_Arrotondamento_Can">Tipo_Arrotondamento_Can</a>
+</li>
+</ul>
+<ul>
+<li>sia al posto dell'eventuale valore presente nel
+Campo <a href="../TR_PARAMETRI/TR_PARAMETRI.AAA.html#Tipo_Arrotondamento">Tipo_Arrotondamento</a>
+della Scheda Parametri</li>
+</ul>
+</ul>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">ARR</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tipo_Col"></a> Tipo_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(5)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+del Tipo Collaboratore
+associato a questo Collaboratore. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../../../HELP%20TECNICO/Specifiche%20Tecniche%20POWER-S/Tabelle%20Decodifica%20Elenco.html#Tipo_Col">Tipo_Col&nbsp;</a><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Rapporto_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">la cui codifica è per altro
+LIBERA</span><span style="font-weight: bold; color: rgb(153, 51, 0);">&nbsp;</span></a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Tipo_Rapporto_Col"></a> Tipo_Rapporto_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+del Tipo di Rapporto attivato con questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Rapporto_Col">Tipo_Rapporto_Col <span style="font-weight: bold; color: rgb(153, 51, 0);">&nbsp;</span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">la cui codifica è per altro
+LIBERA</span><span style="font-weight: bold; color: rgb(153, 51, 0);">&nbsp;</span></a></td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tipo_Contratto_Col"></a> Tipo_Contratto_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+del Tipo di Contratto
+attivato con questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_Tab e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Contratto_Col">Tipo_Contratto_Col&nbsp;<span style="text-decoration: underline; font-weight: bold;"><span style="color: rgb(153, 51, 0);">la cui codifica è per altro
+LIBERA</span></span>&nbsp;</a>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Titolo_Studio_Col"></a>Titolo_Studio_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(2)<br>
+</td>
+<td style="vertical-align: top; width: 665px;">Codice
+del Titolo di Studio di
+questo Collaboratore. <span style="color: rgb(153, 51, 0);">S<span style="font-weight: bold; color: rgb(153, 51, 0);">e
+inserita, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=Decod_Tab e Nome_Tab</span></span><span style="font-weight: bold; color: rgb(153, 51, 0);">=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Stato_Civile">Titolo_Studio</a>
+<span style="color: rgb(153, 51, 0); font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"><span style="color: rgb(153, 51, 0);">la cui codifica è per altro
+LIBERA</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">QUAL</td><td style="width: 60px; text-align: center;">COMBO</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Trattenuta_Vitto_Col"></a> Trattenuta_Vitto_Col</span></td>
+<td style="vertical-align: top; width: 127px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a><br>
+</td>
+<td style="vertical-align: top; width: 665px;">Importo
+della Trattenuta x Vitto <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+assegnabile</span> a questo Collaboratore. <span style="font-weight: bold; color: rgb(153, 51, 0);">Nessun Controllo
+specifico.</span><br>
+</td><td style="width: 39px; text-align: center;">OK</td><td style="width: 60px; text-align: center;">IMP</td><td style="width: 60px; text-align: center;">SPIN</td>
+</tr>
+<tr><td style="width: 280px;"><span style="text-decoration: underline; font-weight: bold;"><a name="TipoNotturno_Col"></a> TipoNotturno_Col</span></td><td style="width: 127px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)</td><td style="width: 665px;">Tipo
+di Notturno applicato a quel Cantiere/Assistito. Indica come
+Gestire la ricerca della Timbratura di Uscita quando è Abilitata la
+Gestione del Notturno e l'ULTIMA ENTRATA DEL GIORNO è avvenuta PRIMA
+DELLA MEZZANOTTE. <span style="font-weight: bold; text-decoration: underline;"> (<span style="color: black; background-color: yellow;">vedi Domain.Extension.ExtensionEnum = </span></span><span style="font-weight: bold; text-decoration: underline; color: yellow; background-color: yellow;"><span style="color: black;">NocturneTypeEnum</span></span><span style="background-color: yellow;"></span>)<br>
+Il Sistema ricerca la Timbratura di CHIUSURA purchè rientri entro i
+Minuti indicati nel Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Notte_Ril_Can">Durata_Max_Gruppo_Notte_Ril_Col.</a><br>
+<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito
+viene controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_SYS e
+Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Notturno">Tipo_Notturno</a>
+e <span style="text-decoration: underline; font-weight: bold;">può
+assumere SOLO i seguenti valori:</span><br>
+      <ul>
+        <li>&nbsp; Null&nbsp;&nbsp;&nbsp;&nbsp; = Notturno NON gestito epr quel Collaboratore <span style="font-weight: bold; text-decoration: underline; color: black; background-color: yellow;">NocturneTypeEnum.None</span>
+        </li>
+      </ul>
+
+<ul><li><span style="font-style: italic;">&nbsp;&nbsp;&nbsp;&nbsp; </span>1&nbsp;&nbsp;&nbsp;&nbsp; = TD_DOPO_MEZZANOTTE <span style="font-weight: bold; text-decoration: underline; color: black; background-color: yellow;">NocturneTypeEnum.OverMidnight</span></li>
+        <ul>
+          <li><span style="font-weight: bold; text-decoration: underline; color: rgb(0, 153, 0);"></span>(In Acceess era 0  viene convertito nell'Import da Power Old)<br>
+          </li>
+        </ul>
+<li>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration: line-through;">&nbsp; 2 &nbsp;&nbsp;&nbsp; = TD_DOPO_ULTIMA_REG (In Acceess era 0  viene convertito nell'Import da Power Old)</span></li><ul style="text-decoration: line-through;"><li>oltre l'ultima timbratura
+di
+Entrata</li></ul></ul></td><td style="width: 39px; text-align: center;">OK</td><td>ARR</td><td>COMBO</td></tr><tr>
+<td style="vertical-align: top; width: 280px;"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</td>
+<td style="vertical-align: top; width: 127px;"><br>
+</td>
+<td style="vertical-align: top; width: 665px;"><br>
+</td><td style="width: 39px; text-align: center;"><br>
+</td><td style="width: 60px; text-align: center;"><br>
+</td><td style="width: 60px; text-align: center;"><br>
+</td>
+</tr>
+</tbody>
+</table>
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"></span><br>
+<span style="text-decoration: underline; font-weight: bold;"></span><br>
+<br>
+</body></html>

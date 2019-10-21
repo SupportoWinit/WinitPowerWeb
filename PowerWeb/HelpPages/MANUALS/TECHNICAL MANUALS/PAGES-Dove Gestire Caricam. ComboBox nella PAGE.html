@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>DOVE GESTIRE IL CARICAMENTO DELLE COMBO BOX NELLA PAGE</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE GESTIRE IL CARICAMENTO DELLE COMBO BOX NELLA PAGE</h1>
+
+La parte di Codice che si occupa di CARICARE i valori delle COMBO BOX è
+gestito in<br>
+
+<ul>
+
+  <li style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 0, 153);">CommonServiceWeb.cs</li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: red;"><span style="color: rgb(0, 0, 102);">public static
+void</span> BindCombobox<span style="color: rgb(0, 0, 102);">(GridViewDataComboBoxColumn
+comboboxColumn)</span></span></li>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="color: black;">Vengono
+letti i Record presenti nella Tab_GridLookUp con NOMERICERCA= Nome del
+Campo a cui è intestata la ComboBox ordinati per
+Ordinamento.&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+  <li><span style="color: black;">Viene ricavato il Nome della Tabella
+a cui è collegata la Combo Box</span></li>
+  <li><span style="color: black;">Nel caso in cui la Tabella associata
+alla ComboBox sia </span></li>
+  <ul>
+    <li><span style="color: black;">la Tab_Decod&nbsp;</span></li>
+    <ul>
+      <li><span style="color: black;">costruisco la Chiave con il Nome
+CHIAVE_TAB</span></li>
+    </ul>
+    <li><span style="color: black;">un'altra Tabella</span></li>
+    <ul>
+      <li><span style="color: black;">costruisco la Chiave con il Nome
+della Tabella + "_Id" &nbsp; &nbsp;(Col_id , Cant_id, Pru_id..... ecc
+ecc)<br>
+        </span></li>
+    </ul>
+  </ul>
+  <li><span style="color: black;">&nbsp;Per ogni Record della
+TabGridLookUp</span></li>
+  <ul>
+    <li><span style="color: black;">carica la lista dei Campi associati
+alla ComboBox per ognuno dei quali definisce se qual Campo sarà</span></li>
+    <ul>
+      <li><span style="color: black;">visibile nella corrispondenza
+colonna in base al corrispondente valore del CAMPO_VIDEO a lui associato</span></li>
+      <li><span style="color: black;">quello il cui valore (se scelto
+dalla lista) verrà scritto nel DB in base al corrispondente valore del
+CAMPO_DB a lui associato</span></li>
+    </ul>
+  </ul>
+  <li><span style="color: black;">Imposta le proprietà della ComboBox</span></li>
+</ul>
+
+<span style="color: black;"><br>
+</span>
+<ul style="color: black;">
+
+  <ul>
+    <ul>
+      <span style="font-weight: bold;"></span>
+    </ul>
+  </ul>
+</ul>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

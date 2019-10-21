@@ -1,0 +1,446 @@
+﻿<% if (DesignMode)
+   { %>
+<script src="~/Scripts/jquery.alerts.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery-1.8.3-vsdoc.js" type="text/javascript"></script>
+<% } %>
+
+
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PowerWeb.SiteMaster" %>
+
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxMenu" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxEditors" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    Namespace="DevExpress.Web.ASPxSiteMapControl" TagPrefix="dx" %>
+<%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxPopupControl" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
+<%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxCallbackPanel" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
+<%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxPanel" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head id="Head1" runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Styles/jquery.alerts.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/Content/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/dx.carmine.compact.css" />
+    
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src='DX.ashx?jsfile=Scripts/jquery-2.2.3.min.js'></script>
+    <script type="text/javascript" src='http://code.jquery.com/ui/1.11.4/jquery-ui.min.js'></script>
+    <script type="text/javascript" src='DX.ashx?jsfile=Scripts/ContextMenu/jquery.contextMenu.js'></script>
+    <script type="text/javascript" src='DX.ashx?jsfile=Scripts/ContextMenu/jquery.ui.position.js'></script>
+    <script type="text/javascript" src='DX.ashx?jsfile=Scripts/jquery.alerts.js'></script>
+    <script type="text/javascript" src='DX.ashx?jsfile=Scripts/jquery.ui.draggable.js'></script>
+    <script type="text/javascript" src='DX.ashx?jsfile=Scripts/date.js'></script>
+    <script type="text/javascript" src="/Scripts/angular.js"></script>
+    <script type="text/javascript" src="/Scripts/angular-sanitize.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cldrjs/0.4.5/cldr.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cldrjs/0.4.5/cldr/event.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cldrjs/0.4.5/cldr/supplemental.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/globalize/1.1.1/globalize.min.js"></script>
+    <script type="text/javascript" src="/Scripts/globalize/message.js"></script>
+    <script type="text/javascript" src="/Scripts/globalize/number.js"></script>
+    <script type="text/javascript" src="/Scripts/globalize/currency.js"></script>
+    <script type="text/javascript" src="/Scripts/globalize/date.js"></script>
+    <script type="text/javascript" src="/Scripts/jszip.min.js"></script>
+    <script type="text/javascript" src="/Scripts/dx.viz-web.js"></script>
+    <!-- Include Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  crossorigin="anonymous"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+        function DisplayDialogError(title, message) {
+            jAlert("error", message, title, "false");
+        }
+
+        function DisplayDialogWarning(title, message) {
+            jAlert("warning", message, title, "false");
+        }
+
+        function DisplayDialogInfo(title, message) {
+            jAlert("info", message, title, "false");
+        }
+
+        function DisplayDialogConfirm(title, message) {
+            jAlert("confirm", message, title, "false");
+        }
+
+        function DisplayDialogConfirm(title, message, modal) {
+            jAlert("confirm", message, title, modal);
+        }
+
+        function DisplayJConfirm(title, message, callback) {
+            jAlert("confirm", message, title, false, callback);
+        }
+
+        //---------------------------- GESTIONE DEL POPUP DI GESTIONE DELLA SCHEDULAZIONE JOB ----------------------------------------------
+
+        // eseguito al cambio di selezione di uno dei radio button di selezione del tipo schedulazione
+        function periodRadioButtonSelectionChanged(s) {
+            // nascondimento di tutti gli elementi nella scelta dei dati
+            $('[id*="ScheduleData"]').css('display', 'none');
+            $('[id*="ScheduleData' + s + '"]').css('display', '');
+            $('#selectedScheduleType').text(s);
+        }
+
+        // eseguito al cambiamento di valore sul combobox di selezione del tipo periodo;
+        // si occupa di nascondere o visualizzare i dati delle date del periodo statico
+        function periodTypeChanged() {
+            var cmbPeriodType = ASPxClientComboBox.Cast(FldPeriodType);
+
+            if (cmbPeriodType.GetSelectedItem().value == "StaticPeriod") {
+                $('#staticPeriodTable').css('display', 'inline');
+            }
+            else {
+                $('#staticPeriodTable').css('display', 'none');
+            }
+        }
+
+        // funzione di apertura del popup di schedulazione attività
+        function OpenSchedulerPopup(operationCode, operationDescription, usePeriod, defaultPeriodType, defaultPeriodFrom, defaultPeriodTo) {
+
+            // impostazione dei default comuni
+            MoreThanOnceADayScheduleJob.SetChecked(true);
+            FldMinutesInterval.SetValue(30);
+            FldDaysInterval.SetValue(1);
+            FldFromHour.SetValue(new Date(2011, 1, 1, 8, 0, 0));
+            FldToHour.SetValue(new Date(2011, 1, 1, 18, 0, 0));
+            FldAtHour.SetValue(new Date(2011, 1, 1, 8, 0, 0));
+            periodRadioButtonSelectionChanged('MoreThanOnceADayScheduleJob');
+            FldStartRepetitionDate.SetValue(Date.now());
+            FldEndRepetitionDate.SetValue(new Date(new Date().getFullYear(), 11, 31));
+            ChkBoxSaturday.SetChecked(true);
+            ChkBoxSunday.SetChecked(true);
+
+            // impostazione dei parametri passati
+            $('#operationType').text(operationDescription);
+            $('#operationTypeCode').text(operationCode);
+            if (usePeriod) {
+                $('#periodTypeSelector').css('display', 'inline');
+                if (defaultPeriodType != '' && typeof (defaultPeriodType) != 'undefined')
+                    FldPeriodType.SetValue(defaultPeriodType);
+                if (defaultPeriodFrom != '' && typeof (defaultPeriodFrom) != 'undefined')
+                    FldStaticPeriodFrom.SetValue(defaultPeriodFrom);
+                if (defaultPeriodTo != '' && typeof (defaultPeriodTo) != 'undefined')
+                    FldStaticPeriodTo.SetValue(defaultPeriodTo);
+                periodTypeChanged();
+            }
+            else {
+                $('#periodTypeSelector').text('');
+                $('#periodTypeSelector').css('display', 'none');
+            }
+
+            SchedulePopupControl.Show();
+        }
+
+        // funzione scatenato all'avvio della richiesta di schedulazione
+        function sendScheduleRequest() {
+            var operationTypeCode = $('#operationTypeCode').text();
+            var scheduleType = $('#selectedScheduleType').text();
+
+            cpScheduleJobLayout.PerformCallback(operationTypeCode + '#' + scheduleType);
+        }
+
+        // funzione richiamat al termine del callback del pannello di inserimento schedulazione
+        function scheduleInserted() {
+            if (cpScheduleJobLayout.cpInserSchResult) {
+                DisplayDialogInfo('Power Web', 'Schedulazione inserita correttamente');
+            }
+            else {
+                DisplayDialogError('Power Web', 'Schedulazione non inserita! Ritentare o contattare un amministratore!');
+            }
+
+            SchedulePopupControl.Hide();
+        }
+
+    </script>
+    <style type="text/css">
+        .periodRadioButton {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="Form1" runat="server">
+        <div class="page">
+            <div class="header">
+                <div class="title">
+                    <dx:ASPxLabel ID="TitleLabel" runat="server" Text="ASPxLabel" EncodeHtml="false" />
+                    <dx:ASPxLabel ID="SubTitleLabel" runat="server" Text="ASPxLabel" EncodeHtml="false" />
+                </div>
+                <div class="loginDisplay">
+                    <% if (!IsUserLogged()) {
+                        %>
+                         [ <a href="~/Pages/Account/LoginPage.aspx" runat="server">Accedi</a>]
+                        <% 
+                        }
+                        else
+                        {%>
+                         [<span><% =Domain.PowerWebContext.Current.User.Codice_Utente %></span>]
+                         <br/>
+                         [ <asp:LinkButton  runat="server" onclick="OnLoggingOut">Disconnetti</asp:LinkButton> ]
+                        <% 
+                        }
+                    %>
+
+                    <br/>
+                    <dx:ASPxLabel ID="DeployVersionLabel" runat="server" Text="" EncodeHtml="false" />
+                </div>
+                <div class="clear hideSkiplink">
+                    <dx:ASPxMenu ID="NavigationMenu" runat="server" AutoSeparators="RootOnly" DataSourceID="ASPxSiteMapDataSource1" EnableCallBacks="true" EnableCallbackCompression="true">
+                        <SubMenuItemStyle HorizontalAlign="Left" />
+                    </dx:ASPxMenu>
+                    <asp:SiteMapPath ID="SiteMapPath" runat="server" CssClass="powerWebBreadcumb">
+                    </asp:SiteMapPath>
+                    <dx:ASPxSiteMapDataSource ID="ASPxSiteMapDataSource1" runat="server" SiteMapProvider="PowerWeb.Menu.PowerWebSitemapProvider"></dx:ASPxSiteMapDataSource>
+                </div>
+            </div>
+            <div class="main">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="footer">
+            Winit S.r.l. - Via Oss Mazzurana, 8 - 38122 Trento (TN)
+        | Tel. (+39)0461260470 Fax. (+39) 0461223035 | E-Mail: <a href="mailto:supporto@win-it.it">supporto@win-it.it</a> | WebSite: <a href="http://www.winit.it"  onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">www.winit.it</a> | <a href="http://winitreservedarea.powerwebcloud.it" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Area Riservata</a> | <a href="http://www.winit.it/wp-content/uploads/2016/09/assistenzaremota.exe" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Scarica Assistenza Remota</a>
+        </div>
+        <%-- POPUP DI GESTIONE SCHEDULAZIONE --%>
+        <dx:ASPxPopupControl ID="pcScheduleJob" runat="server" PopupElementID="btnScheduleJob" AllowDragging="True" ShowCloseButton="True"
+            PopupHorizontalAlign="WindowCenter" PopupVerticalAlign="WindowCenter" Width="600px" HeaderText="Schedule job popup" ClientInstanceName="SchedulePopupControl"
+            CloseAction="OuterMouseClick">
+            <HeaderTemplate>
+                <table>
+                    <tr>
+                        <td>
+                            <dx:ASPxButton UseSubmitBehavior="false" ID="BtnScheduleJob" runat="server" Text="Schedula attività" AutoPostBack="false" ClientInstanceName="btnScheduleJob"
+                                OnInit="BtnScheduleJob_OnInit">
+                                <ClientSideEvents Click="function (s, e) { sendScheduleRequest(); }"></ClientSideEvents>
+                            </dx:ASPxButton>
+                        </td>
+                        <td>
+                            <span id="operationType"></span>
+                            <span id="operationTypeCode" style="display: none;"></span>
+                            <span id="selectedScheduleType" style="display: none;"></span>
+                        </td>
+                    </tr>
+                </table>
+            </HeaderTemplate>
+            <ContentCollection>
+                <dx:PopupControlContentControl runat="server" SupportsDisabledAttribute="True">
+                    <dx:ASPxCallbackPanel ID="cpScheduleJobLayout" runat="server" Width="100%" Height="350px" ClientInstanceName="cpScheduleJobLayout" OnCallback="CpScheduleJobLayout_OnCallback">
+                        <ClientSideEvents EndCallback="function (s, e) { scheduleInserted(); }"></ClientSideEvents>
+                        <PanelCollection>
+                            <dx:PanelContent ID="ScheduleJobPanelContent" runat="server" SupportsDisabledAttribute="True">
+                                <div id="scheduleTypeSelector" style="width: 30%; height: 60%; float: left; vertical-align: middle;">
+                                    <dx:ASPxRadioButton ID="MoreThanOnceADayScheduleJob" ClientInstanceName="MoreThanOnceADayScheduleJob" runat="server" GroupName="ScheduleType" Text="Più di una volta al giorno" CssClass="periodRadioButton">
+                                        <ClientSideEvents CheckedChanged="function (s, e) { periodRadioButtonSelectionChanged('MoreThanOnceADayScheduleJob'); }"></ClientSideEvents>
+                                    </dx:ASPxRadioButton>
+                                    <dx:ASPxRadioButton ID="DailyScheduleJob" ClientInstanceName="DailyScheduleJob" runat="server" GroupName="ScheduleType" Text="Giornalmente" CssClass="periodRadioButton">
+                                        <ClientSideEvents CheckedChanged="function (s, e) { periodRadioButtonSelectionChanged('DailyScheduleJob'); }"></ClientSideEvents>
+                                    </dx:ASPxRadioButton>
+                                    <dx:ASPxRadioButton ID="WeeklyScheduleJob" ClientInstanceName="WeeklyScheduleJob" runat="server" GroupName="ScheduleType" Text="Settimanalmente" CssClass="periodRadioButton">
+                                        <ClientSideEvents CheckedChanged="function (s, e) { periodRadioButtonSelectionChanged('WeeklyScheduleJob'); }"></ClientSideEvents>
+                                    </dx:ASPxRadioButton>
+                                    <dx:ASPxRadioButton ID="MonthlyScheduleJob" ClientInstanceName="MonthlyScheduleJob" runat="server" GroupName="ScheduleType" Text="Mensilmente" CssClass="periodRadioButton">
+                                        <ClientSideEvents CheckedChanged="function (s, e) { periodRadioButtonSelectionChanged('MonthlyScheduleJob'); }"></ClientSideEvents>
+                                    </dx:ASPxRadioButton>
+                                </div>
+                                <div id="scheduleDataSelector" style="width: 60%; margin-left: 10px; float: left; vertical-align: middle; height: 60%; border-left: 1px solid darkgray">
+                                    <table style="margin-top: 20px; padding-left: 10px; width: 100%">
+                                        <tr>
+                                            <td id="ScheduleDataMoreThanOnceADayScheduleJob1" style="width: 30%">
+                                                <dx:ASPxLabel runat="server" ID="LblMinutesInterval" Text="Ogni quanti minuti" />
+                                            </td>
+                                            <td id="ScheduleDataMoreThanOnceADayScheduleJob2" style="width: 70%">
+                                                <dx:ASPxSpinEdit runat="server" ID="FldMinutesInterval" ClientInstanceName="FldMinutesInterval" MinValue="0" MaxValue="1440" DecimalPlaces="0" />
+                                            </td>
+                                            <td id="ScheduleDataDailyScheduleJob1" style="width: 30%">
+                                                <dx:ASPxLabel runat="server" ID="LblDaysInterval" Text="Ogni quanti giorni" />
+                                            </td>
+                                            <td id="ScheduleDataDailyScheduleJob2" style="width: 70%">
+                                                <dx:ASPxSpinEdit runat="server" ID="FldDaysInterval" ClientInstanceName="FldDaysInterval" MinValue="1" MaxValue="31" DecimalPlaces="0" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 30%" id="ScheduleDataMoreThanOnceADayScheduleJob3">
+                                                <dx:ASPxLabel runat="server" ID="LblFromHour" Text="Dalle ore" />
+                                            </td>
+                                            <td style="width: 70%" id="ScheduleDataMoreThanOnceADayScheduleJob4">
+                                                <dx:ASPxTimeEdit runat="server" ID="FldFromHour" ClientInstanceName="FldFromHour" />
+                                            </td>
+                                            <td style="width: 30%" id="ScheduleDataDailyScheduleJob3ScheduleDataWeeklyScheduleJob1ScheduleDataMonthlyScheduleJob1">
+                                                <dx:ASPxLabel runat="server" ID="LblAtHour" Text="Alle ore" />
+                                            </td>
+                                            <td style="width: 70%" id="ScheduleDataDailyScheduleJob4ScheduleDataWeeklyScheduleJob2ScheduleDataMonthlyScheduleJob2">
+                                                <dx:ASPxTimeEdit runat="server" ID="FldAtHour" ClientInstanceName="FldAtHour" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 30%" id="ScheduleDataMoreThanOnceADayScheduleJob5">
+                                                <dx:ASPxLabel runat="server" ID="LblToHour" Text="Alle ore" />
+                                            </td>
+                                            <td style="width: 70%" id="ScheduleDataMoreThanOnceADayScheduleJob6">
+                                                <dx:ASPxTimeEdit runat="server" ID="FldToHour" ClientInstanceName="FldToHour" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 30%" id="ScheduleDataMoreThanOnceADayScheduleJob7ScheduleDataDailyScheduleJob5ScheduleDataWeeklyScheduleJob3ScheduleDataMonthlyScheduleJob3">
+                                                <div id="ScheduleDataWeeklyScheduleJob4ScheduleDataMonthlyScheduleJob4">
+                                                    <dx:ASPxLabel runat="server" ID="LblDaysInclusions" Text="Giorni di esecuzione" />
+                                                </div>
+                                                <div id="ScheduleDataMoreThanOnceADayScheduleJob9ScheduleDataDailyScheduleJob8">
+                                                    <dx:ASPxLabel runat="server" ID="LblDaysExclusions" Text="Giorni esclusi" />
+                                                </div>
+                                            </td>
+                                            <td style="width: 70%" id="ScheduleDataMonthlyScheduleJob4">
+                                                <dx:ASPxCheckBoxList runat="server" ID="ChkBoxsMonthDays" ClientInstanceName="ChkBoxsMonthDays" RepeatColumns="5" RepeatDirection="Horizontal">
+                                                    <Items>
+                                                        <dx:ListEditItem Text="01" Value="1" />
+                                                        <dx:ListEditItem Text="02" Value="2" />
+                                                        <dx:ListEditItem Text="03" Value="3" />
+                                                        <dx:ListEditItem Text="04" Value="4" />
+                                                        <dx:ListEditItem Text="05" Value="5" />
+                                                        <dx:ListEditItem Text="06" Value="6" />
+                                                        <dx:ListEditItem Text="07" Value="7" />
+                                                        <dx:ListEditItem Text="08" Value="8" />
+                                                        <dx:ListEditItem Text="09" Value="9" />
+                                                        <dx:ListEditItem Text="10" Value="10" />
+                                                        <dx:ListEditItem Text="11" Value="11" />
+                                                        <dx:ListEditItem Text="12" Value="12" />
+                                                        <dx:ListEditItem Text="13" Value="13" />
+                                                        <dx:ListEditItem Text="14" Value="14" />
+                                                        <dx:ListEditItem Text="15" Value="15" />
+                                                        <dx:ListEditItem Text="16" Value="16" />
+                                                        <dx:ListEditItem Text="17" Value="17" />
+                                                        <dx:ListEditItem Text="18" Value="18" />
+                                                        <dx:ListEditItem Text="19" Value="19" />
+                                                        <dx:ListEditItem Text="20" Value="20" />
+                                                        <dx:ListEditItem Text="21" Value="21" />
+                                                        <dx:ListEditItem Text="22" Value="22" />
+                                                        <dx:ListEditItem Text="23" Value="23" />
+                                                        <dx:ListEditItem Text="24" Value="24" />
+                                                        <dx:ListEditItem Text="25" Value="25" />
+                                                        <dx:ListEditItem Text="26" Value="26" />
+                                                        <dx:ListEditItem Text="27" Value="27" />
+                                                        <dx:ListEditItem Text="28" Value="28" />
+                                                        <dx:ListEditItem Text="29" Value="29" />
+                                                        <dx:ListEditItem Text="30" Value="30" />
+                                                        <dx:ListEditItem Text="31" Value="31" />
+                                                    </Items>
+                                                </dx:ASPxCheckBoxList>
+                                            </td>
+                                            <td style="width: 70%" id="ScheduleDataMoreThanOnceADayScheduleJob10ScheduleDataDailyScheduleJob9ScheduleDataWeeklyScheduleJob5">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxMonday" ClientInstanceName="ChkBoxMonday" Text="Lunedì" ValueType="System.String" ValueChecked="Monday" />
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxTuesday" ClientInstanceName="ChkBoxTuesday" Text="Martedì" ValueType="System.String" ValueChecked="Tuesday" />
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxWednesday" ClientInstanceName="ChkBoxWednesday" Text="Mercoledì" ValueType="System.String" ValueChecked="Wednesday" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxThursday" ClientInstanceName="ChkBoxThursday" Text="Giovedì" ValueType="System.String" ValueChecked="Thursday" />
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxFriday" ClientInstanceName="ChkBoxFriday" Text="Venerdì" ValueType="System.String" ValueChecked="Friday" />
+                                                        </td>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxSaturday" ClientInstanceName="ChkBoxSaturday" Text="Sabato" ValueType="System.String" ValueChecked="Saturday" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <dx:ASPxCheckBox runat="server" ID="ChkBoxSunday" ClientInstanceName="ChkBoxSunday" Text="Domenica" ValueType="System.String" ValueChecked="Sunday" />
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="periodTypeSelector" style="float: left; width: 90%; height: 20%; vertical-align: middle; border-top: 1px solid darkgray; margin-top: 10px;">
+                                    <table style="margin-top: 10px; width: 100%;">
+                                        <tr>
+                                            <td style="width: 30%">
+                                                <dx:ASPxLabel runat="server" ID="LblPeriodType" Text="Periodo di competenza" />
+                                            </td>
+                                            <td style="width: 70%">
+                                                <dx:ASPxComboBox runat="server" ID="FldPeriodType" ClientInstanceName="FldPeriodType">
+                                                    <ClientSideEvents SelectedIndexChanged="function (s, e) { periodTypeChanged(); }"></ClientSideEvents>
+                                                    <Items>
+                                                        <dx:ListEditItem Text="Periodo statico" Value="StaticPeriod" />
+                                                        <dx:ListEditItem Text="Data corrente" Value="Today" />
+                                                        <dx:ListEditItem Text="Data precedente" Value="Yesterday" />
+                                                        <dx:ListEditItem Text="Settimana corrente" Value="CurrentWeek" />
+                                                        <dx:ListEditItem Text="Settimana precedente" Value="LastWeek" />
+                                                        <dx:ListEditItem Text="Mese corrente" Value="CurrentMonth" />
+                                                        <dx:ListEditItem Text="Mese precedente" Value="LastMonth" />
+                                                        <dx:ListEditItem Text="Mese corrente e precedente" Value="CurrentAndLastMonths" />
+                                                        <dx:ListEditItem Text="Anno corrente" Value="CurrentYear" />
+                                                        <dx:ListEditItem Text="Anno precedente" Value="LastYear" />
+                                                    </Items>
+                                                </dx:ASPxComboBox>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table id="staticPeriodTable" style="display: none; width: 100%;">
+                                        <tr>
+                                            <td>
+                                                <dx:ASPxLabel runat="server" ID="LblStaticPeriodFrom" Text="Da" />
+                                            </td>
+                                            <td>
+                                                <dx:ASPxDateEdit runat="server" ID="FldStaticPeriodFrom" ClientInstanceName="FldStaticPeriodFrom" />
+                                            </td>
+                                            <td>
+                                                <dx:ASPxLabel runat="server" ID="LblStaticPeriodTo" Text="Al" />
+                                            </td>
+                                            <td>
+                                                <dx:ASPxDateEdit runat="server" ID="FldStaticPeriodTo" ClientInstanceName="FldStaticPeriodTo" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="repetitionSelector" style="float: left; width: 90%; height: 20%; vertical-align: middle; border-top: 1px solid darkgray; margin-top: 10px;">
+                                    <table style="margin-top: 10px; width: 100%;">
+                                        <tr>
+                                            <td>
+                                                <dx:ASPxLabel runat="server" ID="LblStartRepetition" Text="Ripeti da" />
+                                            </td>
+                                            <td>
+                                                <dx:ASPxDateEdit runat="server" ID="FldStartRepetitionDate" ClientInstanceName="FldStartRepetitionDate" />
+                                            </td>
+                                            <td>
+                                                <dx:ASPxLabel runat="server" ID="LblEndRepetition" Text="Fino al" />
+                                            </td>
+                                            <td>
+                                                <dx:ASPxDateEdit runat="server" ID="FldEndRepetitionDate" ClientInstanceName="FldEndRepetitionDate" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </dx:PanelContent>
+                        </PanelCollection>
+                    </dx:ASPxCallbackPanel>
+                </dx:PopupControlContentControl>
+            </ContentCollection>
+            <FooterTemplate>
+            </FooterTemplate>
+        </dx:ASPxPopupControl>
+    </form>
+</body>
+</html>

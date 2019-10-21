@@ -1,0 +1,33 @@
+DOMANDE
+
+1) NON C'E' la ADDVALIDATIONERRORE???? 
+	Nella gvTabFestivi_RowValidating
+	Nella gvTabDist_RowValidating
+	Nella gvTabAut_RowValidating
+	mentre c'è in tutte le altre
+	NEL CASO CI VA O NON CI VA ANCHE la HASERRORS??
+	
+2) 	NEL MODULO TABGRIDLOOCKUPREPOSITORY c'è un lungo elenco
+	public enum TabGridLookupSearchNameEnum
+	che sembra parziale
+	COSA SERVE E VA ALLINEATO CON QUALCOSA??
+	
+3) Nel caso in cui nella Check devo controllare l'UNIVOCITA' per RECORD
+	con CHIAVI MULTIPLE ??
+	es TAB_GRIDLOOCKUP
+		NOMERICERCA + Ordinamento + (NOMECAMPO)
+
+4) NELLA STRUTTURA DEL DB nella TAB_GRIDLOOCKUP ACCETTANO VALORI NULL
+   i Campi :
+   NOMERISORSA
+   NOMETAB
+   NOMETABDECOD
+   che SONO SEMPRE VALORIZZATI (per ORA)
+   METTERE CHE NON ACCETTANO VALORI NULL???
+   
+ 5) STEFANO DICE CHE IN VISUAL STUDIO C'E' UN AREA APPUNTI !!!! DOV'E'??
+ 6) ESISTE UN SISTEMA PER CERCARE ALL'INTERNO DELLE POWERWEBRESORCES un VALORE???
+ 7) come INSERIRE NEL CODICE ASPX 
+	il CRITERIO DI ORDINAMENTO INIZIALE
+	
+	http://stackoverflow.com/questions/65351/null-or-default-comparsion-of-generic-argument-in-c-sharp

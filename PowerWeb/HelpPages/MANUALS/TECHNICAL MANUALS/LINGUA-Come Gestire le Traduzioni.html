@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Lingue - Come Gestire le Traduzioni nelle diverse Lingue</title></head><body><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span><span style="text-decoration: underline;">Come Gestire&nbsp;le
+Traduzioni nelle diverse LINGUE</span></h1>
+<span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span>La
+Gestione delle Lingue prevede la Gestione delle Traduzioni in Lingua
+delle Costanti contenute <br>
+<ul>
+<li>in <span style="font-weight: bold;">COMMON\
+PowerWebResources.resx</span><span style="text-decoration: underline; font-weight: bold;"></span>
+ovvero</li>
+</ul>
+Queste Costanti vanno estratte dal Sistema lanciando l'Apposito
+Programma di Gestione delle Lingue (vedi&nbsp;<a href="LINGUE%20-%20Il%20Programma%20per%20Importare-Esportare%20le%20Traduzioni%20delle%20Risorse.html">Manuale
+LINGUE - Le Nomenclature delle Risorse.html</a>) che provvede ad
+estrarle dal Sistema ed a creare , in base all'opzione
+scelta,&nbsp; i
+seguenti 2 Files csv:<br>
+<ul style="font-weight: bold;">
+<li>Costanti_Estratte_da_Resx.csv</li>
+<li>Costanti_Estratte_Da-Resource.csv</li>
+</ul>
+che hanno entrambi il seguente tracciato:<br>
+<ul>
+<li>Provenienza<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Nome della Form/Report/Resources di Provenienza<br>
+</li>
+<li>Nome Costante ;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Nome Standard della Costante nella Form/report/Resouces</li>
+<ul>
+<li>Valore in Italiano <br>
+</li>
+</ul>
+<ul>
+<li>Valore in Inglese <br>
+</li>
+</ul>
+<ul>
+<li>Valore in Tedesco <br>
+</li>
+</ul>
+<ul>
+<li>Valore in Spaganolo</li>
+</ul>
+<ul>
+<li>Valore in Francese<br>
+</li>
+</ul>
+<ul>
+<li>Valore in Russo <br>
+</li>
+</ul>
+<ul>
+<li>Valore Assist.Domicial.</li>
+<li>Valore da Definire-A <br>
+</li>
+</ul>
+<ul>
+<li>Valore da Definire-B<br>
+</li>
+</ul>
+</ul>
+<span style="font-family: Symbol;"><span style=""></span></span><u style="font-weight: bold;">Essendo entrambi questi 2 File di
+Tipo
+RIGENERATIVO</u> ovvero vengono ad ogni successivo lancio <br>
+<ul>
+<li>&nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">Cancellati
+(se già esistenti)</span><br style="font-weight: bold;">
+</li>
+<li><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+Scritti ex
+Novo con lo stesso Nome</span><br>
+</li>
+</ul>
+occorre che, <span style="text-decoration: underline;">per
+evitare
+inconsapevoli perdite durante l'eventuale lavoro di traduzione</span>
+eventualmente in corso, <span style="font-weight: bold; text-decoration: underline;">le
+Traduzioni vengano eseguite su apposite COPIE</span> (create
+manualmente dal
+responsabile della Traduzione in quella specifica lingua) del suddetto
+File che
+, per identificarle in modo univoco e standard, si chiameranno :<br>
+<ul>
+<li><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span></span><b style="">Costanti_In_Traduzione_Resx.csv</b></li>
+<li><b style="">Costanti
+_In_Traduzione_Resource.csv<br>
+</b></li>
+</ul>
+<span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><u>Una
+volta terminata la Traduzione&nbsp;</u> il corrsipondente
+file verrà
+rinominato a cura del responsabile
+della traduzione rispettivamente in<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Costanti_Tradotte_per_Resx.csv<br>
+&nbsp;&nbsp;&nbsp; Costanti_Tradotte_per_Resource.csv<o:p></o:p></b>
+<ul>
+</ul>
+Il Contenuto di questi 2 Files , contenenti il risultato delle
+traduzioni, anche parziale, va poi importato nel Sistema lanciando
+l'Apposito
+Programma di Gestione delle Lingue (frmGestioneXml) che provvederà <span style="text-decoration: underline;"></span><u><br>
+</u>
+<ul>
+<li><span style="text-decoration: underline; font-weight: bold;">partendo
+dalle Costanti presenti nel Sistema</span>&nbsp;</li>
+</ul>
+a ricercarle nel File (<b>Costanti_Tradotte_per_Resx.csv e/o </b><b>Costanti_Tradotte_per_Resource.csv</b>)&nbsp;
+indicato a video ed a sostituirne<span style=""></span>
+(<b style="">quando
+DIVERSO da BLANKS nel file di Input</b>) il valore della lingua x
+nel
+corrispondente file Rsx e/o Resource della lingua corrsipondente<o:p><br>
+</o:p>
+<ul>
+<li><b>file Costanti_Tradotte_per_Resx.csv</b></li>
+<ul>
+<li><b>Nome Form/Report di Provenienza</b></li>
+<li><b>Nome Costante<br>
+</b></li>
+<ul>
+<li>valore in <span style="color: red;">italiano</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;&gt; blank&nbsp;&nbsp; -------&gt; Aggiorna
+Valore della Costante
+nel file NomeForm/Report.<span style="font-weight: bold; color: red;">it_IT</span>.resx
+<br>
+</li>
+<li>valore in <span style="color: red;">inglese&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;&gt; blank&nbsp;&nbsp; -------&gt; Aggiorna
+Valore della Costante
+nel file NomeForm/Report.<span style="color: red; font-weight: bold;">en_GB</span>.resx
+</li>
+<li>valore in <span style="color: red;">tedesco</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;&gt; blank&nbsp;&nbsp; -------&gt; Aggiorna
+Valore della Costante
+nel file NomeForm/Report.<span style="font-weight: bold; color: red;">de_DE</span>.resx
+&nbsp; </li>
+<li>valore in <span style="color: red;">spagnolo</span>&nbsp;&nbsp;&nbsp;
+&lt;&gt; blank&nbsp;&nbsp; -------&gt; Aggiorna
+Valore della Costante
+nel file NomeForm/Report.<span style="font-weight: bold; color: red;">es_ES</span>_IT.resx</li>
+<li>valore in <span style="color: red;">francese&nbsp;</span>
+&nbsp;&nbsp; &lt;&gt; blank&nbsp;&nbsp;
+-------&gt; Aggiorna Valore
+della Costante nel file NomeForm/Report.<span style="font-weight: bold; color: red;">fr_FR</span>_IT.resx</li>
+<li>valore in russo &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;&gt; blank&nbsp;&nbsp; -------&gt; Aggiorna
+Valore della Costante
+nel fileNomeForm/Report.xx-XX.resx </li>
+<li>valore in Ass.Domic &lt;&gt;
+blank&nbsp;&nbsp; -------&gt;
+Aggiorna Valore della Costante nel file NomeForm/Report.X1_X1.resx </li>
+<li>valore in Lingua-A &nbsp; &lt;&gt;
+blank&nbsp;&nbsp;
+-------&gt; Aggiorna Valore della Costante nel file
+NomeForm/Report.aa_AA.resx </li>
+<li>valore in Lingua-B&nbsp;&nbsp;&nbsp;
+&lt;&gt;
+blank&nbsp;&nbsp; -------&gt; Aggiorna Valore della
+Costante nel file
+NomeForm/Report.bb_BB.resx</li>
+</ul>
+</ul>
+</ul>
+<o:p><span style="font-weight: bold; text-decoration: underline;">NOTA
+BENE :</span>&nbsp;<span style="text-decoration: underline;"> </span></o:p><span style="text-decoration: underline;">l'Aggiornamento viene
+eseguito
+partendo SEMPRE dalle SOLE Costanti presenti nel Sistema </span>per
+cui anche se nel File delle Costanti_Tradotte che viene importato sono
+eventualmente presenti delle Costanti che NON sono più presenti nel
+sistema (perchè nel frattempo il sistema è stato modificato
+eliminandone alcune di obsolete e/o modificandone il Nome standard) NON
+SUCCEDE NULLA in quanto vengono ignorate proprio perchè si parte SEMPRE
+da quelle presenti attulmente nel Sistema. <br>
+<br>
+</body></html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>PAGINA MASTER</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a> <br>
+<br>
+<span style="font-size: 16pt; font-weight: bold; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span>LA GRIDMASTERPAGE</span>
+<ul>
+</ul>
+La Pagina Master dell'intera Applicazion&nbsp;è descritta in<br>
+<ul>
+<li>&nbsp;&nbsp;&nbsp; &nbsp;PowerWeb</li>
+<ul>
+<li>&nbsp;SiteMaster&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </li>
+</ul>
+</ul>
+<img style="width: 837px; height: 338px; float: left;" alt="" src="../IMMAGINI%20HELP%20TECNICO/Pagina%20Master.PNG">&nbsp;&nbsp;<br>
+&nbsp;<br>
+&nbsp; &nbsp;loginDisplay: Tasto di Login
+<ul>
+<ul>
+<li><span style="text-decoration: underline;"></span>
+&nbsp;&nbsp;&nbsp;Title : Area di visualizzazione del Titolo</li>
+<li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; da visualizzare in tutta l'Applicazione</li>
+<li>.</li>
+<li>.</li>
+<li>.&nbsp;ASPxMenu ID : Gestione del Menù della</li>
+<li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; Applicazione.</li>
+<li>.</li>
+
+<li>.. &nbsp;<span style="font-weight: normal;">Main
+: Area di visualizzazione delle pages</span></li>
+<ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><ul><li>Come Prima Pagina viene mostrata la &nbsp; &nbsp; &nbsp; pagina di &nbsp;<a href="PAGINA%20LOGIN.Html"> LOGIN.ASPX</a></li></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul>
+<li>.</li>
+<li>. Footer :&nbsp;Area di visualizzazione del Titolo</li>
+<li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; da visualizzare in tutta l'Applicazione</li>
+</ul>
+</ul>
+In questa Pagina Master viene gestito ed impostato <span style="text-decoration: underline;">PER TUTTE LE SUCCESSIVE
+PAGINE DELL?APPLICAZIONE</span><br>
+<ul>
+<li style="font-weight: bold;">Il Testo che si vuole
+visualizzare come Testata in tutte le successive Pagine
+dell'Applicazione</li>
+<ul>
+<li>Per
+modificare il Testo della Testata in ogni &nbsp;Pagina
+dell'Applicazione
+occorre aprire il &nbsp;SiteMaster e modificarne il relativo Testo
+all'interno del codice &nbsp;html</li>
+<ul>
+<li>&lt;div class="title"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;div
+id="appTitle"&gt; POWER WEB&lt;br /&gt;Il software di
+gestione delle presenze<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;/div&gt;<br>
+&lt;/div&gt;&nbsp;&nbsp;</li>
+</ul>
+</ul>
+<li style="font-weight: bold;">Il Tasto di
+LOGIN&nbsp;</li>
+<ul>
+<li>&nbsp;&lt;div class="loginDisplay"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;asp:LoginView
+ID="HeadLoginView" runat="server" EnableViewState="false"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&lt;AnonymousTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp; [ &lt;a
+href="~/Account/Login.aspx"
+id="HeadLoginStatus" runat="server"&gt;Accedi&lt;/a&gt;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&lt;/AnonymousTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&lt;LoggedInTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; Pagina iniziale - <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&lt;span class="bold"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;asp:LoginName
+ID="HeadLoginName"
+runat="server" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp;&lt;/span&gt;! [<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&lt;asp:LoginStatus ID="HeadLoginStatus"
+runat="server"
+LogoutAction="Redirect" LogoutText="Disconnessione" LogoutPageUrl="~/"
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;
+OnLoggingOut="OnLoggingOut"
+/&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &lt;/LoggedInTemplate&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+&lt;/asp:LoginView&gt;<br>
+&nbsp;&nbsp;&lt;/div&gt;</li>
+</ul>
+<li style="font-weight: bold;">il Menù di Navigazione</li>
+<ul>
+<li>&lt;div class="clear hideSkiplink"&gt;<br>
+&nbsp;&nbsp;
+&nbsp; &lt;dx:ASPxMenu ID="NavigationMenu" runat="server"
+AutoSeparators="RootOnly" DataSourceID="ASPxSiteMapDataSource1"&gt;<br>
+&nbsp;&nbsp; &nbsp; &lt;/dx:ASPxMenu&gt;<br>
+&nbsp;&nbsp;
+&nbsp; &lt;dx:ASPxSiteMapDataSource ID="ASPxSiteMapDataSource1"
+runat="server"
+SiteMapProvider="PowerWeb.Menu.PowerWebSitemapProvider"&gt;<br>
+&nbsp;&nbsp; &nbsp;
+&lt;/dx:ASPxSiteMapDataSource&gt;<br>
+&lt;/div&gt;</li>
+</ul>
+<li style="font-weight: bold;">la Visuallizzazione delle
+altre Pagine dell'Applicazione</li>
+<ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">&lt;div class="main"&gt;</span><br style="font-weight: normal;">
+<span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;asp:ContentPlaceHolder
+ID="MainContent" runat="server" /&gt;</span><br style="font-weight: normal;">
+<span style="font-weight: normal;">&lt;/div&gt;</span></li>
+</ul>
+<li><span style="font-weight: bold;">Il testo che
+si vuole visualizzare come PièPagina in tutte le successive Pagine
+dell'Applicazione</span></li>
+<ul>
+<li>&nbsp;&lt;div class="footer"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Winit S.r.l. - Via Oss Mazzurana, 8 - 38122 Trento (TN)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Tel. (+39)046126470 Fax. (+39) 0461223035 <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| E-Mail: &lt;a
+href="mailto:supporto@win-it.it"&gt;supporto@win-it.it&lt;/a&gt;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| WebSite: &lt;a
+href="www.winit.it"&gt;www.winit.it&lt;/a&gt; <br>
+&nbsp;&nbsp;&lt;/div&gt;</li>
+</ul>
+</ul>
+<br>
+<br>
+&nbsp;<br>
+</body></html>

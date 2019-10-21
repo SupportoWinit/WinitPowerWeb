@@ -1,0 +1,1896 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Le Differenze fra le Tabelle di Power/Access e PowerWeb/SQL</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1 style="margin-left: 21.55pt; text-indent: -21.55pt;"><span style="font-size: 16pt;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></span></span><span style="font-size: 16pt; text-decoration: underline;">LE DIFFERENZE FRA
+LE TABELLE DI
+POWER/ACCESS e POWERWEB/SQLSQLPOWER-WEB</span></h1>
+
+In Power-11, rispetto a Power ed a Como , sono state
+mantenute solo le Tabelle Principali a cui sono state poi aggiunte
+alcune Nuove
+Tabelle necessarie per gestire alcune nuove funzionalità che prima non
+erano
+presenti.
+<p class="MsoNormal">Le Tabelle di POWER-11 sono quindi le seguenti con
+le
+seguenti Modifiche:</p>
+
+<ul>
+
+  <li><b style="">CANT<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Anagrafica
+dei Cantieri/Assistiti</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><span style="font-weight: bold; color: red;">Aggiunto
+Campo</span></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Cant_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Int</span>
+&nbsp;<span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><b style=""><span style="color: red;">Cli_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+Int</span></b></li>
+              <li><b style=""><span style="color: red;">Fil_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;Int<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Eliminato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Cli_Can
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;Sostituito da Cli_Id</span></b></li>
+              <li><b style=""><span style="color: red;">Codice_Resp
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; Sostituito da Fil_Id (attenzione se sono
+valorizzati sia Resp sia Fil)!!<br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><span style="font-weight: bold; color: red;">Filale_Can</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="font-weight: bold; color: red;">Sostituito da Fil_Id</span><b style=""><span style="color: red;"></span></b></li>
+              <li><b style=""><span style="color: red;">Pausa_Gruppo_Notte_Can&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NON veniva utilizzato in Power/Access</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><span style="color: red;"><span style=""></span><b style="">Modificato Campo</b></span></li>
+            <ul>
+              <li><b style=""><span style="color: red;"><span style=""></span>DataOra<u>Utima</u>Modifica&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa<span style="">&nbsp;&nbsp; </span>DataOra<u>Ultima</u>Modifica_Can</span></b><b style=""><span style="color: red;"><span style=""></span></span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;"><span style=""></span>Codice_V<u>au</u>cher_Can<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>diventa<span style="">&nbsp; </span>Codice_V<u>ou</u>cher_Can</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Costo_Orario_Can&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Long da VALUTA</span></b></li>
+              <li><b style=""><span style="color: red;">Data_Rapporto_Fine_Can
+&nbsp;&nbsp; diventa Data_Rapporto_Fine_1_Can</span></b></li>
+              <li><b style=""><span style="color: red;">Data_Rapporto_Inizio_Can
+&nbsp;&nbsp; diventa Data_Rapporto_Inizio_1_Can</span></b></li>
+              <li><b style=""><span style="color: red;">Percentuale_Servizio_Can
+&nbsp; &nbsp; diventa Percentuale_Servizio_1_Can</span></b></li>
+              <li><b style=""><span style="color: red;">Tipo_Servizio_Can
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Tipo_Servizio_1_Can</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Flag_Entrata_Can
+                </span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="color: red;"><span style="font-weight: bold;">A diventa&nbsp; 1</span>&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Attiva l'Applicazione Automatica del Limite di Ora di
+Entrata durante il Calcolo delle Ore Figurative.</li>
+              </ul>
+              <ul>
+                <li><span style="color: red; font-weight: bold;">S&nbsp;
+diventa&nbsp; 2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Attiva Segnalazione con Blocco durante
+l'Elaborazione delle Timbrature ricevute) <br>
+                </li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">FlagGps_Can&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Flag_GPS_Can</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_Can&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(Max)<br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Sesso_Col</span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><b style=""><span style="color: red;">F
+&nbsp;&nbsp; </span></b><span style="color: red;"><span style="color: black;"><span style="color: red; font-weight: bold;">diventa
+1</span><span style="font-weight: bold;">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Femmina)<br>
+                  </span></span></li>
+              </ul>
+              <ul>
+                <li><b style=""><span style="color: red;">M&nbsp; </span></b><span style="color: red; font-weight: bold;">diventa 2</span><b style=""><span style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></b><span style="color: black;"> (Maschio)</span></li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Tipo_Cantiere_Can</span></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+passato da TEXT(3) a VARCHAR(10)<br>
+                <b style=""><span style="color: red;"></span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Tipo_Calcolo_Viaggi_Can</span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">A
+&nbsp;&nbsp; diventa 1 </span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+(Codice Cantiere/Assistito)</li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">C&nbsp;&nbsp;&nbsp;
+diventa&nbsp; 2&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Comune del Cantiere)<br>
+                </li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">N&nbsp;&nbsp;&nbsp;
+diventa&nbsp; 3 </span>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (Cap del
+Cantiere)</li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Tipologia_Can</span></b></li>
+            </ul>
+            <ul style="color: red;">
+              <ul>
+                <li>Blanks/CAN diventa&nbsp; 1 &nbsp; &nbsp; (valore di
+Deaful) identifica i Record CANTIERI</li>
+              </ul>
+            </ul>
+            <ul style="color: red;">
+              <ul>
+                <li>ASS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp; ( identifica i Record
+ASSISTITIi)<br>
+                </li>
+              </ul>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="color: red;">ATT &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp; diventa&nbsp; 3 &nbsp; &nbsp;
+(identifica&nbsp; i Record ATTIVITA')</span><br>
+                </li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b><span style="">&nbsp;</span>CANT_NOTE<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Note
+delle Anagrafiche dei Cantieri/Assistiti</b><span style="color: red;"><span style=""><span style="font-weight: bold;"></span></span></span></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><span style="color: red;"><span style=""><span style="font-weight: bold;"></span></span><span style=""> </span><b>Aggiunto
+Campo <br>
+              </b></span></li>
+            <ul>
+              <li><span style="color: red;"><b>Cant_Note_Id &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INT&nbsp;</b></span><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><span style="color: red;"><b>Cant_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT<br>
+                </b></span></li>
+              <li><span style="color: red;"><b>Data_Registrazione_CANT_NOTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DATETIME</b></span></li>
+              <li><span style="color: red;"><b>DataOraUlotimaModifica_CANT_NOTE&nbsp;&nbsp;&nbsp;
+DATETIME</b></span></li>
+              <li><span style="color: red;"><b>Utenti_Id<br>
+                </b></span></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Cantiere_Note
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Sostituito da Cant_Id</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_CAN_Note
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">Inserita_Da_Can_Note
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa Utenti_Id<br>
+                </span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Eliminato
+Campo&nbsp;</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Assegnata_a_Can_Note</span></b></li>
+              <li><b style=""><span style="color: red;"><br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Chiusura_Eff_Can_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Chiusura_Prev_Can_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Chiusura_Riv_Can_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Nota_Chiusa_Can_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Nota_Chiusura_Can_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Priorità_Nota_Can_Note</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b>CANT_VAR<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Log delle
+Variazioni dei Dati Anagrafici dei Cantieri/Assistiti</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <li style="color: red;"><b>ALLINEATO AL NUOVO TRACCIATO DELLA
+TABELLA CANT</b></li>
+          <ul>
+            <li><b style=""><span style="color: red;">Aggiunto
+Campo&nbsp;</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">CANT_VAR_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp; INT &nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE
+AUTOMATICA)</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style=""><span style=""></span>CLI<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Anagrafica
+dei Clienti</b></li>
+</ul>
+
+<ul>
+
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Aggiunto
+Campo&nbsp;</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">CLI_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT
+&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE
+AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">BANCA_IBAN_CLI</span></b>&nbsp;&nbsp;
+                <span style="color: red; font-weight: bold;">&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Varchar(40)</span><br>
+                <b style=""><span style="color: red;"></span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica
+&nbsp;&nbsp;
+diventa DataOraUltimaModifica_Cli</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_CLI_Note
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(Max)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Partita_iva_Cli&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da text(11) a VARCHAR(20)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Pagamento_Codice_Cli&nbsp;&nbsp;&nbsp;
+&nbsp; da text(4)&nbsp; a VARCHAR(10)</span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Eliminato Campo <br>
+              </span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">BANCA_ABI_CLI&nbsp;&nbsp;</span></b></li>
+              <li><b style=""><span style="color: red;">BANCA_CAB_CLI</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+</ul>
+
+<ul>
+
+  <li><b style="">COL<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Anagrafica
+dei Collaboratori</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Aggiunto
+Campo&nbsp;</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">COL_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT
+&nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><b style=""><span style="color: red;">RESP_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;INT<br>
+                </span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Resp_Col
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; diventa Resp_Id <br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Disponibili<u>tà</u>_Inizio_Col
+diventa Data_Disponibili<u>ta</u>_Inizio_Col</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;"></span></b><b style=""><span style="color: red;"><span style=""></span>Data_Disponibili<u>tà</u>_Fine_Col<span style="">&nbsp;&nbsp; </span>diventa Data_Disponibili<u>ta</u>_Fine_Col</span></b></li>
+            </ul>
+            <ul>
+              <li><b><span style="color: red;">Domicilio_interno_Col&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da Char(50) a VarChar(10)</span></b></li>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa DataOraUltimaModifica_Col</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Indenni<u>tà</u>_Sanificazione_Col
+                <span style="">&nbsp;&nbsp;</span>diventa Indennit<span style="text-decoration: underline;">a</span>_Sanificazione_Col</span></b><b style=""><span style="color: red;"><span style=""></span></span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;"><span style=""></span>Indenni<u>tà</u>_Trasporto_Col<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>diventa
+Indenni<u>ta</u>_Trasporto_Col</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_Col&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(4000)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Residenza_Interno_Col&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da CHAR(50) a VarChar(10)</span></b><br>
+              </li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">TipoContratto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Tipo_Contratto_Col</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Sesso_Col</span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><b style=""><span style="color: red;">F&nbsp;&nbsp;&nbsp;&nbsp;</span></b><span style="color: red;"> <span style="color: black;"><span style="font-weight: bold; color: red;">diventa 1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Femmina)</span></span></li>
+              </ul>
+              <ul>
+                <li><b style=""><span style="color: red;">M&nbsp;&nbsp;
+                  </span></b><span style="color: black;"><span style="font-weight: bold; color: red;">diventa 2&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Maschio)</span><b style=""><span style="color: red;"><br>
+                  </span></b></li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Stato_Civile_Col
+                <br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">N&nbsp;&nbsp;
+diventa 1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Celibe/Numbile)&nbsp; </li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">C&nbsp;&nbsp;&nbsp;
+diventa 2&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Coniugata/o) &nbsp; &nbsp; &nbsp; </li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">V&nbsp;&nbsp;&nbsp;
+diventa 3&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Vedova/o)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">D&nbsp;&nbsp;&nbsp;
+diventa 4</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Divosrziata/o)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">S&nbsp;&nbsp;&nbsp;&nbsp;
+diventa 5</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Separata/o)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="text-decoration: underline;"></span></li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Titolo_Studio_Col</span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">E&nbsp;&nbsp;&nbsp;
+diventa 1&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Licenza Elementare)<br>
+                  <span style="color: red;"><span style="color: black;"></span></span></li>
+              </ul>
+              <ul>
+                <li><span style="color: red;"><span style="color: black;"><span style="font-weight: bold; color: red;">M&nbsp;&nbsp;
+diventa 2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </span></span><span style="color: red;"><span style="color: black;">(Scuola Media)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">S&nbsp;&nbsp;&nbsp;
+dventa&nbsp; 3</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Licenza Liceale)&nbsp; <br>
+                </li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">L&nbsp;&nbsp;
+diventa 4&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Laurea)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Flag_Entrata_Col
+                </span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">A
+diventa&nbsp; 1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Attiva l'Applicazione Automatica del Limite di Ora di
+Entrata durante il Calcolo delle Ore Figurative.</li>
+              </ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">S&nbsp;
+diventa&nbsp; 2</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Attiva Segnalazione con Blocco durante
+l'Elaborazione delle Timbrature ricevute)&nbsp;</li>
+              </ul>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Flag_Inps_Col</span></b></li>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="font-weight: bold; color: red;">C&nbsp;&nbsp;&nbsp;
+diventa 1</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Commercio)<br>
+                  <span style="color: red;"><span style="color: black;"></span></span></li>
+              </ul>
+            </ul>
+            <ul>
+              <ul>
+                <li><span style="color: red;"><span style="color: black;"><span style="font-weight: bold; color: red;">I&nbsp;&nbsp;
+diventa 2&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </span></span><span style="color: red;"><span style="color: black;">(Industria)</span></span></li>
+              </ul>
+              <li><b style=""><span style="color: red;">Eliminato Campo
+                <br>
+                </span></b></li>
+              <ul>
+                <li><b style=""><span style="color: red;">FLAG_NASCOSTO_COL</span></b></li>
+                <li><b style=""><span style="color: red;">FILIALE_COL</span></b></li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">COL_NOTE<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Note delle
+Anagrafiche dei Collaboratori</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><span style="color: red;"><b style="">Aggiunto Campo<br>
+              </b></span></li>
+            <ul>
+              <li><span style="color: red;"><b>Col_Note_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; INT&nbsp;</b></span><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><span style="color: red;"><b>Col_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT</b></span></li>
+              <li><span style="color: red;"><b>Utenti_Id<br>
+                </b></span></li>
+              <li><span style="color: red;"><b>Data_Registrazione_COL_NOTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DATETIME</b></span></li>
+              <li><span style="color: red;"><b>DataOraUlotimaModifica_COL_NOTE&nbsp;&nbsp;&nbsp;
+DATETIME</b></span></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Collaboratore
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa Col_id</span></b><b style=""><span style="color: red;"></span></b></li>
+              <li><b style=""><span style="color: red;">Note_Col_Note
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">Inserita_Da_Col_Note
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa Utenti_Id<br>
+                </span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Eliminato Campo <br>
+              </span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Assegnata_a_Col_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Chiusura_Eff_Col_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Chiusura_Prev_Col_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Data_Chiusura_Riv_Col_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Nota_Chiusa_Col_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Nota_Chiusura_Col_Note</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Priorità_Nota_Col_Note</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">COL_VAR<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Log delle
+Variazioni dei Dati Anagrafici dei Collaboratori</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul style="color: red;">
+          <li><b>ALLINEATO AL NUOVO TRACCIATO DELLA TABELLA COL</b></li>
+        </ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Aggiunto
+Campo&nbsp;</span></b></li>
+          </ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">COL_VAR_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp; INT &nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE
+AUTOMATICA)</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b>COL_ORARIO<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ELIMINATA &nbsp;- Viene tutto Gestito con il Tipo Orario</span></b></li>
+</ul>
+
+<b><span style=""></span></b>
+<ul>
+
+  <li><b style="">FIL&nbsp;<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Anagrafiche
+delle Filiali dei Cantieri</b>&nbsp;&nbsp;&nbsp; &nbsp;<span style="font-weight: bold; color: red;">(EX TAB_FILIALI)</span></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Fil_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_Fil&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">DataRegistrazione_Fil
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;&nbsp;</span></b><b style=""><span style="color: red;">DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">Disabilitazione_Fil
+&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Bit</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">FRU<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Anagrafiche
+delle Matricole Unità Fisse</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Fru_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_FRU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">DataRegistrazione_FRU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li style="font-weight: bold;"><span style="color: red;">Modificato
+Campo</span></li>
+            <ul>
+              <li><b><span style="color: red;">MATRICOLA_FRU&nbsp;&nbsp;
+diventa N_SERIE_FRU</span></b>&nbsp;&nbsp; <span style="color: red;"></span></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_FRU
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(Max)</span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">E</span></b><b style=""><span style="color: red;">liminato Campo <br>
+              </span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">ABILITAZIONE_DATA_FINE_FRU</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">ABILITAZIONE_DATA_INIZIO_FRU</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">FLAG_EU_FRU</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">LATITUDINEGPS_FRU</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">LONGITUDINEGPS_FRU</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">RAGGIOGPS_FRU<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b>FRU_CANT<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Associazioni
+fra Matricole Unità Fisse e Cantieri/Assistiti</b><b style=""><span style=""></span></b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style=""></span><span style="color: red;">Aggiunta&nbsp;</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">CANT_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT </span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">DATA_ABILIT in
+KEY</span></b></li>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_FRU_CANT
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">DataRegistrazione_FRU_CANT
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">FRU_CANT_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; INT</span></b></li>
+              <li><b style=""><span style="color: red;">FRU_ID
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; INT<br>
+                </span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Cantiere_Fru_Cant
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa Cant_id</span></b></li>
+              <li><b style=""><span style="color: red;">Codice_Fru_Cant
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;diventa Fru_Id<br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_FRU_CAN_Note1
+&nbsp;&nbsp;&nbsp;&nbsp; da MEMO diventa VarChar(Max)</span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Eliminato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Abilitazione_Data_Fine_FRU_CAN<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style=""><span style="">LINGUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Lingue Gestite <span style="color: red;">&nbsp; (NUOVA)</span></b></li>
+</ul>
+
+<ul>
+
+  <li><b style=""><span style="">MENU
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Struttura
+dei Menu x TIPO MENU&#8217;&nbsp;<span style="color: red;">&nbsp; (NUOVA)<br>
+    </span></b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">(al Posto di
+SwitchItem)</span></b></li>
+              <span style="font-weight: bold;"><br>
+              </span>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <li><b style=""><span style="color: red;"><span style="color: black;">MENU_TIPO
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; </span></span></b><b style="">TIPI di Menù Gestiti <span style="color: red;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (NUOVA)</span></b></li>
+  <span style="font-weight: bold;"><br>
+  </span>
+  <li><b style="">PARAMETRI<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Parametri
+Generali</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Param_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><b style=""><span style="color: red;">CompanyName
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NVARCHAR(MAx)</span></b></li>
+              <li><b style=""><span style="color: red;">CompanyAddress
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;NVARCHAR(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">CompanyInfo
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NVARCHAR(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">CompanyLogo
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NVARCHAR(MAx)</span></b></li>
+              <li><b style=""><span style="color: red;">RowperPages
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;INT</span></b></li>
+              <li><b style=""><span style="color: red;">MDBPath
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;NVARCHAR(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">NomeAppl
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;NVARCHAR(20)</span></b></li>
+              <li><b style=""><span style="color: red;">PublicKey
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+NVARCHAR(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">ActivationDate
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NVARCHAR(Max)</span></b></li>
+              <li><b style=""><span style="color: red;">DominioVisualizzazione
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT</span></b></li>
+              <li><b style=""><span style="color: red;">DominioManutenzione
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;INT <br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">PercorsoLogoSocie<u>tà</u>&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;
+diventa PercorsoLogoSocie<u>ta</u></span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_filiale_Inst&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; diventa Codice_Filiale</span></b></li>
+              <li><b style=""><span style="color: red;">IntervalloSched&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da LONG a TIME(0)</span></b></li>
+              <li><b style=""><span style="color: red;">PercorsoFotoCol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da Char(200) a Varchar(255)</span></b></li>
+              <li><b style=""><span style="color: red;">Percorso_Tabelle_Power&nbsp;&nbsp;&nbsp;
+da Char(200) a VarChar(255)</span></b></li>
+              <li><b style=""><span style="color: red;"></span></b><span style="font-weight: bold; color: red;">GG_X_Allarmi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da INT a SMALLINT</span></li>
+              <li><span style="font-weight: bold; color: red;">Abilita_Passaggi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da TYNINT a BIT</span></li>
+              <li><span style="font-weight: bold; color: red;">ContrSovrapPass&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da TYNINT a BIT</span></li>
+              <li><span style="font-weight: bold; color: red;">Arrot_Durata&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+in Default_Minuti_Durata<br>
+                </span></li>
+              <li><span style="font-weight: bold; color: red;">Soglia_Durata&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+in Default_Soglia_Durata<br>
+                </span></li>
+              <li><span style="font-weight: bold; color: red;">Soglia_Arrot_Durata_Fig_I
+&nbsp; in Default_Soglia_Arrot_I</span></li>
+              <li><span style="font-weight: bold; color: red;">Soglia_Arrot_Durata_Fig_F
+in Default_Soglia_Arrot_F</span></li>
+              <li><span style="font-weight: bold; color: red;">Default_Minuti_Tolleranza
+in Default_Minuti_Arrot_I</span></li>
+              <li><span style="font-weight: bold; color: red;">Default_Minuti_Tolleranza
+in Default_Minuti_Arrot_I</span></li>
+              <li><span style="font-weight: bold; color: red;">Pausa_Viaggio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da TynInt a BIT</span></li>
+              <li><span style="font-weight: bold; color: red;">Tipo_Calcolo_Viaggio
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in Tipo_Viaggio</span></li>
+              <li><span style="font-weight: bold; color: red;">Tipo_assegnazione_Viaggio
+in Tipo_Assegnazione_Viaggi<br>
+                </span></li>
+              <li><span style="font-weight: bold; color: red;">Utilizzo_Fascie_Viaggio
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in Utilizzo_FasceViaggi<br>
+                </span></li>
+            </ul>
+            <ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">PRU<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Anagrafiche
+delle Matricole Unità Portatili</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Pru_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_PRU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">DataRegistrazione_FRU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+            </ul>
+            <ul>
+            </ul>
+            <li style="font-weight: bold;"><span style="color: red;">Modificato
+Campo</span></li>
+            <ul style="font-weight: bold;">
+              <li><span style="color: red;">Matricola_PRU</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="color: red;">diventa N_Serie_PRU</span></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_PRU
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+da MEMO diventa VarChar(4000)</span></b></li>
+              <li><b style=""><span style="color: red;">Singola_Reg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Singola_Reg_Pru<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">E</span></b><b style=""><span style="color: red;">liminato Campo <br>
+              </span></b></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">ABILITAZIONE_DATA_FINE_PRU</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">ABILITAZIONE_DATA_INIZIO_PRU</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b>PRU_COL<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Associazioni
+fra Matricole Unità Portatili e Collaboratori</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Aggiunta <br>
+              </span></b></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Col_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b><b style=""><span style="color: red;"></span></b></li>
+              <li><b style=""><span style="color: red;">DATA_ABILIT in
+KEY</span></b></li>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_PRU_COL
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">DataRegistrazione_PRU_COL
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">Pru_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; INT</span></b></li>
+              <li><b style=""><span style="color: red;">Pru_Col_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;INT<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Col_Pru_Col
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa Col_id</span></b></li>
+              <li><b style=""><span style="color: red;">Codice_Pru_Col
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa
+Pru_Col_id<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Note_PRU_COL_Note
+&nbsp;&nbsp;&nbsp;&nbsp; da MEMO diventa VarChar(1000)</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Eliminato Campo</span></b></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Abilitazione_Data_Fine_PRU_COL</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">REG<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Rilevazioni
+&nbsp; <span style="color: red;">(EX INPUT_FISICO/INPUT/RIL/REG_FIS)</span></b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <li><b style=""><span style="color: red;">i Vecchi Record di
+INPUT e di&nbsp;RIL&nbsp;vanno divisi in 2 record separati (uno per
+l'Entrata e uno per l'Uscita)<br>
+            </span></b></li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Reg_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><b style=""><span style="color: red;">Cant_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;INT</span></b></li>
+              <li><b style=""><span style="color: red;">Col_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; INT<br>
+                </span></b></li>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_Reg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">DataRegistrazione_Reg&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></b><b style=""><span style="color: red;">DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">Disabilitazione_Reg&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Bit</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_EU_Reg
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NVARCHAR(1)</span></b></li>
+              <li><b style=""><span style="color: red;">IsNotToElaborate
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; BIT</span></b></li>
+              <li><b style=""><span style="color: red;">Motivazione_Reg_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;INT<br>
+                </span></b></li>
+              <li><b style=""><span style="color: red;">Registrazione_Data_Ora_Orig_Reg
+&nbsp;DATETIME</span></b></li>
+              <li><b style=""><span style="color: red;">Registrazione_Tipo
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;NVARCHAR(10)</span></b></li>
+              <ul>
+                <li><b style=""><span style="color: red;">ATTENZIONE
+NON E' LO STESSO TIPO DI ACCESS!!!!!</span></b></li>
+                <li><b style=""><span style="color: red;">cahe viene
+spostato in Motivazione_Reg!!!!<br>
+                  </span></b></li>
+              </ul>
+              <li><b style=""><span style="color: red;">RiferimentoRRN_Reg
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;INT</span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice
+_Cantiere &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; diventa
+Cant_Id</span></b></li>
+              <li><b style=""><span style="color: red;">Codice_Collaboratore
+&nbsp; &nbsp; &nbsp; &nbsp;diventa Col_Id</span></b></li>
+              <li><b style=""><span style="color: red;">Codice_Fru
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; diventa Fru_Id</span></b></li>
+              <li><b style=""><span style="color: red;">Codice_Pru
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; diventa Pru_Id</span></b></li>
+              <li><b style=""><span style="color: red;">KM_Ril &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; diventa KM_Reg</span></b></li>
+              <li><b style=""><span style="color: red;">Note_Ril &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;diventa Note_Reg</span></b></li>
+              <li><b style=""><span style="color: red;"></span></b><b style=""><span style="color: red;">Tipo_Rilevazione &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;diventa Motivazione_Reg_id</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Data_Ril
+&nbsp; &nbsp; &nbsp; va nel Campo Registrazione_Data_Ora_Fig_Reg&nbsp;</span></b></li>
+              <li><b style=""><span style="color: red;">&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></b><b style=""><span style="color: red;">va nel Campo
+Registrazione_Data_Ora_Fis_Reg&nbsp;</span></b></li>
+              <li><b style=""><span style="color: red;">&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+va nel Campo Registrazione_Data_Ora_Orig_Reg&nbsp;</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_HHMM_Inizio_Ril
+&nbsp;va nel campo Registrazione_Data_Ora_Fis_Reg del 1° Record</span></b></li>
+              <li><b style=""><span style="color: red;">&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></b><b style=""><span style="color: red;">va nel campo Registrazione_Data_Ora_Orig_Reg del
+1° Record</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_HHMM_Fine_Ril
+&nbsp; &nbsp;</span></b><b style=""><span style="color: red;">va nel
+campo Registrazione_Data_Ora_Fis_Reg del 2° record</span></b></li>
+              <li><b style=""><span style="color: red;">&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></b><b style=""><span style="color: red;">va nel campo Registrazione_Data_Ora_Orig_Reg del
+2° Record</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Ril
+&nbsp; &nbsp; &nbsp; &nbsp; va nel campo Registrazione_Durata_Fis_Reg</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Fig_Ril
+&nbsp;va nel campo Registrazione_Durata_Fig_Reg</span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Eliminato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Flag_Straordinario_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Notturna_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_PreFestiva_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Festiva_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Forfait_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Autista_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">DataElab_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">TimeElab_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Esportata_Ril<br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Prestazione_Data_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_AAAA_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_MM_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_GG_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Not_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Not_Fig_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Not_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Diu_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Ore_Diu_Fig_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Matricola_Fru_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Matricola_Pru_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Man_Ril
+&nbsp; &nbsp;viene determinato in base all'eventuale delta fra
+Prestazione_Data_Ora_Orig e Ora_Fis</span></b></li>
+              <li><b style=""><span style="color: red;">NonCartaceo_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Provenienza_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Prestazione_Data_Reale_Ril</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Temp_Ril<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style=""><span style="color: red;"><span style="color: black;">RESP</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;<span style="color: black;">Responsabili</span></span></b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Resp_id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">DataOraUltimaModifica_Resp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">DataRegistrazione_Resp&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></b><b style=""><span style="color: red;">DateTime</span></b></li>
+              <li><b style=""><span style="color: red;">Disabilitazione_Resp&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Bit</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">TAB_AUT<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Autorizzazioni
+x Utente/Funzione</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li><b style=""><span style="color: red;">Aut_Id&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+              <li><b style=""><span style="color: red;">Nome
+Pannello_Aut &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NVARCHAR(10)<br>
+                </span></b></li>
+              <li><b style=""><span style="color: red;">Funz_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;INT</span></b></li>
+              <li><b style=""><span style="color: red;">Utente_Id
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;INT</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Codice_Utente
+&nbsp; &nbsp; diventa Utente_Id</span></b></li>
+              <li><b style=""><span style="color: red;">Cod_Funz &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;diventa Funz_Id<br>
+                </span></b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;">MsgDel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa MsgDel1</span></b></li>
+              <li><b style=""><span style="color: red;">MsgDel1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa MsgDel2</span></b></li>
+              <li><b style=""><span style="color: red;">MsgIns&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa MsgIns1</span></b></li>
+              <li><b style=""><span style="color: red;">MsgIns1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa MsgIns2</span></b></li>
+              <li><b style=""><span style="color: red;">MsgMod&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa MsgMod1</span></b></li>
+              <li><b style=""><span style="color: red;">MsgMod1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa MsgMod2<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><b style="">TAB_DATAGRID<span style="">&nbsp;&nbsp; </span>Memorizzazione
+DataGrid Maschere&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; <span style="color: red;">(NUOVA)</span><o:p></o:p></b></li>
+</ul>
+
+<ul>
+
+  <li><b style="">TAB_DECOD<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Tabelle
+di Decodifica</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li style="color: red;"><b style=""><span style=""></span>Inserito
+Campo</b></li>
+            <ul>
+              <li style="color: red;"><b style="">Tab_decod_Id &nbsp;
+&nbsp; &nbsp;</b><b style=""><span style="color: red;">INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li style="color: red; font-weight: bold;">Associato6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)<br>
+              </li>
+              <li style="color: red; font-weight: bold;">Associato7
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato8
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato9
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+            </ul>
+            <ul>
+              <li style="color: red; font-weight: bold;">Associato11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato12
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato13
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato14
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato15
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato16
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato17
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato18
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato19
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+              <li style="color: red; font-weight: bold;">Associato20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VarChar(255)</li>
+            </ul>
+            <li style="color: red;"><b style="">Modificato Campo</b></li>
+            <ul>
+              <li style="color: red;"><b style="">Associato&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Associato1 <br>
+                </b></li>
+            </ul>
+            <ul>
+              <li><b style=""><span style="color: red;"></span><o:p></o:p></b><span style="color: red; font-weight: bold;">Funzione&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Gruppo_Tab</span></li>
+              <li style="color: red; font-weight: bold;">Campo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Nome_Tab</li>
+              <li style="color: red; font-weight: bold;">Chiave&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Chiave_Tab</li>
+              <li><span style="color: red; font-weight: bold;">Decodifica&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Decodifica_Tab</span><br>
+              </li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">TAB_DISTANZE &nbsp; &nbsp;
+&nbsp;Tabella delle Distanze &nbsp; (Ex TAB_DIST)</span></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li style="color: red;"><span style="font-weight: bold;">Inserito
+Campo</span></li>
+            <ul>
+              <li style="color: red;"><b style="">Tab_Distanza_Id
+&nbsp; &nbsp; &nbsp;</b><b style=""><span style="color: red;">INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">TAB_EXCEL_MODEL &nbsp; Tabella
+dei Modelli di Excel <span style="color: red;">&nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (NUOVA)</span></span></li>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">TAB_FESTIVI &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; Tabella dei Festivi &nbsp;(Ex TAB_FESTIVITA')</span></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li style="color: red;"><span style="font-weight: bold;">Inserito
+Campo</span></li>
+            <ul>
+              <li style="color: red;"><b style="">Tab_Festivi_Id &nbsp;
+&nbsp; &nbsp;</b><b style=""><span style="color: red;">INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <li style="color: red;"><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li style="color: red;"><span style="font-weight: bold;">Festività
+diventa Descrizione_Tab_Fest</span>ivi<b style=""><span style="color: red;"></span></b></li>
+            </ul>
+            <li style="color: red;"><b style=""><span style="color: red;">Eliminato Campo</span></b></li>
+            <ul>
+              <li style="color: red;"><b style=""><span style="color: red;">Tipo_Orario<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">TAB_FUNZ &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tabella delle Funzioni</span></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li style="color: red;"><span style="font-weight: bold;">Inserito
+Campo</span></li>
+            <ul>
+              <li style="color: red;"><b style="">Tab_Funz_Id &nbsp;
+&nbsp; &nbsp;</b><b style=""><span style="color: red;">INT &nbsp;</span></b><b style=""><span style="color: red;">&nbsp;</span></b><b style=""><span style="color: red;">(CHIAVE AUTOMATICA)</span></b></li>
+            </ul>
+            <ul>
+              <li style="color: red;"><b style=""><span style="color: red;">Link &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;NVARCHAR(Max)</span></b></li>
+            </ul>
+            <li style="color: red;"><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li style="color: red;"><b style=""><span style="color: red;">Desc_Funz &nbsp; &nbsp; &nbsp; &nbsp; diventa
+Tab_Funz_Nome<br>
+                </span></b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">TAB_FUNZ_FIELD &nbsp; Tabella
+dei Campi delle Funzioni &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;<span style="color: red;"> (NUOVA)</span></span></li>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">Tab_GRIDLOCKUP &nbsp;Tabella
+Griglie di LoockUp &nbsp; &nbsp;<span style="color: red;"> &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;(NUOVA)</span><br>
+    </span></li>
+</ul>
+
+<ul>
+
+  <li><b>TAB_ORARI<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>Tabella Orari</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li style="color: red;"><b style="">Inserito Campo</b></li>
+            <ul>
+              <li style="color: red; font-weight: bold;">RRN &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; INT</li>
+            </ul>
+            <li style="color: red;"><b style="">Modificato Campo</b></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li style="color: red;"><b>Annullato&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; diventa Disabilitazione_Orario</b></li>
+              <li style="color: red;"><span style="font-weight: bold;">Tipo_Pausa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Tipo_Pausa_Orario</span><br>
+              </li>
+              <li style="color: red;"><b>Sequenza&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Sequenza_Orario</b></li>
+            </ul>
+            <li style="color: red;"><b>Eliminato Campo</b></li>
+            <ul>
+              <li style="color: red;"><span style="font-weight: bold;">Ore</span><br>
+              </li>
+              <li style="color: red;"><b>Tipo_Giorno</b></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold; color: black;">TAB_ORARI_CANT
+&nbsp;Tabella Orario degli Orari &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;(NUOVA)</span></li>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold; color: black;">TAB_ORARI_TIPO
+&nbsp; &nbsp;Tabella Tipi Orari</span></li>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold; color: black;">TAB_REPORT &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tabella dei Report &nbsp; &nbsp;
+&nbsp; &nbsp;<span style="color: red;"> &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; (NUOVA)</span></span></li>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold; color: black;">TAB_REPORT_GROUP
+&nbsp; &nbsp;Tabella&nbsp;Raggruppamenti dei Report &nbsp; &nbsp; &nbsp;<span style="color: red;">(NUOVA)</span></span></li>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold; color: black;">TAB_REPORT_ORDER
+&nbsp; &nbsp;Tabella Ordinamenti dei Report &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; <span style="color: red;">&nbsp; (NUOVA)</span><br>
+    </span></li>
+</ul>
+
+<ul>
+
+  <li><b>UTENTI<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+A</span>nagrafica
+Utenti</b></li>
+  <ul>
+    <ul>
+      <ul>
+        <ul>
+          <ul>
+            <li><b style=""><span style="color: red;">Inserito Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">DataOraUltimaModsifica_Utente
+DateTime</span></b><br>
+                <b style=""><span style="color: red;"></span></b></li>
+              <li><b style=""><span style="color: red;">Lingua_Utente&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+nVarChar(50)</span></b></li>
+              <li><b><span style="color: red;">Note_Utente&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; nVarChar(4000)<br>
+                </span></b></li>
+            </ul>
+            <li><b style=""><span style="color: red;">Modificato Campo</span></b></li>
+            <ul>
+              <li><b style=""><span style="color: red;">Tip<span style="text-decoration: underline;">oM</span>en<span style="text-decoration: underline;">ù</span>_Utente<span style="">&nbsp;&nbsp;&nbsp;
+                </span>diventa Tip<span style="text-decoration: underline;">o_M</span>en<span style="text-decoration: underline;">u</span>_Utente</span></b></li>
+              <li><b style=""><span style="color: red;">Disabilitato&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Disabilitazione_Utente</span></b></li>
+              <li><b style=""><span style="color: red;">Data_Registrazione&nbsp;
+diventa Data_registrazione_Utente</span></b></li>
+              <li><b style=""><span style="color: red;">Flag_Resp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+diventa Flag_Resp_Utente</span></b></li>
+              <span style="font-weight: bold;"><br>
+              </span>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <li style="color: black;"><b style="">UTENTI_FIL &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;Utenti/Filiali &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: red;">
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;(NUOVA)</span></b></li>
+</ul>
+
+<ul>
+
+  <li><b style=""><span style="color: red;"><span style="color: black;">UTENTI_RESP</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: black;">Utenti/Responsabili</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (NUOVA)<br>
+    </span></b></li>
+</ul>
+
+<h3 style="text-decoration: underline;"><span style="">LE </span>TABELLE
+UNIFICATE IN TAB_DECOD rispetto a POWER in
+POWER-11
+<o:p>&nbsp;</o:p></h3>
+
+<ul>
+
+  <li>- TAB_INTERF </li>
+  <li>- TAB_NAZIONALITA' </li>
+  <li><span style="" lang="EN-US">- TAB_PAG<o:p></o:p></span> </li>
+  <li><span style="" lang="EN-US">- TAB_PAR<o:p></o:p></span> </li>
+  <li><span style="" lang="EN-US">- TAB_PROV<o:p></o:p></span> </li>
+  <li>- TAB_PROV_COMUNI </li>
+</ul>
+
+<h3><span style="font-weight: bold; text-decoration: underline;"><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span>LE
+TABELLE da RECUPERARE (FORSE) da POWER a POWER-11</span><o:p>&nbsp;</o:p><br>
+</h3>
+
+<ul>
+
+  <li>- COL_PAG</li>
+  <li>- FATTURE_RIGHE</li>
+  <li>- FATTURE_TESTATE</li>
+  <li>- PIANO-ANNO</li>
+  <li>- PIANO_MESE</li>
+  <li>- PIANO_SET</li>
+  <li><span style="" lang="EN-US">- SCHED<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US">- SCHED_MESE<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US">- SCHED_SET<o:p></o:p></span><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></li>
+</ul>
+
+<h3 style="text-decoration: underline;">LE <span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span>TABELLE
+ELIMINATE rispetto a POWER in POWER-1<o:p> <br>
+</o:p></h3>
+
+<ul>
+
+  <li><span style="" lang="EN-US">- <s>INPUT<o:p></o:p></s></span></li>
+  <li><s><span style="" lang="EN-US">- INPUT_FISICO<o:p></o:p></span></s></li>
+  <li><s><span style="" lang="EN-US">- INPUT_FISICO_ENTRY<o:p></o:p></span></s></li>
+  <li><s>- MATR_FRU<o:p></o:p></s></li>
+  <li><s>- MOTIV_MESE<o:p></o:p></s></li>
+  <li><s>- REG_FIS<o:p></o:p></s></li>
+  <li><s><span style="" lang="EN-US">- STRUTTURADB<o:p></o:p></span></s></li>
+  <li><s><span style="" lang="EN-US">- SWITCHBOARD ITEMS<o:p></o:p></span></s></li>
+  <li><s><span style="" lang="EN-US">- SWITCHBOARD ITEMS LINGUA<o:p></o:p></span></s></li>
+  <li><s>- WRKPRTBGT<o:p></o:p></s><o:p>&nbsp;</o:p></li>
+</ul>
+
+<h3><span style="text-decoration: underline;">LE TABELLE DA DECIDERE SE
+ELIMINARE rispetto a POWER in
+POWER-</span>11</h3>
+
+<ul>
+
+  <li>- ETICHETTE</li>
+  <li>- RIL_ATTIVITA'</li>
+  <li>- TAB_ECOD_ETI</li>
+  <li>- TAB_DECOD_ETI_PERS</li>
+  <li>- TIMEOUT LETTURA</li>
+  <li>- TIMEOUT RILETTURA</li>
+  <li><span style="" lang="EN-US">- TIMEOUT SPEGNIMENTO<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US"><o:p>&nbsp;</o:p></span></li>
+  <li><span style="" lang="EN-US">- RIL_APP<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US">- RIL_APP_BUDGET<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US">- RIL_APP_CNFR<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US">- RIL_APP_SET<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US">- RILEXP_EXCEL<o:p></o:p></span></li>
+  <li><span style="" lang="EN-US"><span style="">&nbsp;</span><o:p> <br>
+    </o:p></span></li>
+  <li><span style="" lang="EN-US">- TAB_FUNZ_CAMPI<o:p></o:p></span></li>
+  <li>- TAB_TIPO_GIORNO</li>
+</ul>
+
+</body></html>

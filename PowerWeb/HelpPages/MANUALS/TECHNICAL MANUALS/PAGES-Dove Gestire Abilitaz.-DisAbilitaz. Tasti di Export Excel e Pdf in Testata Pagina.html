@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>DOVE ABILITARE/DISABILITARE I TASTI DI EXPORT EXCEL/PDF</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE ABILITARE/DISABILITARE TASTI DI EXPORT EXCEL e/o PDF<br>
+</h1>
+
+Per evitare che venga lanciato un Export Excel e/o PDF quando i
+dati da esportare sono troppi e quindi i tempi di Export sarebbero
+troppi lunghi tanto da bloccarne l'esecuzione si è inserito un
+controllo nella <br>
+
+<br style="font-weight: bold;">
+
+<span style="font-weight: bold;">GridMasterPage.master.cs</span> la
+Routine <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">hideOrShowExportButtons</span><br>
+
+<br>
+
+che provvede ad Abilitare/Disabilitare nella Testata delle Pagine i
+Tasti di Funzionali <br>
+
+<ul style="font-weight: bold;">
+
+  <li>btnPrintXlsx</li>
+  <li>btnPrintPdf</li>
+</ul>
+
+quando il N° dei Record estratti su quella Pagina sia &lt; 1000 Records
+(Abilitati) o sia &gt;= 1000 REcords (Disabilitati)<br>
+
+<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

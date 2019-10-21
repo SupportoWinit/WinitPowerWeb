@@ -1,0 +1,652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{02C65754-6580-4484-8B58-A7CA4CA51434}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Business</RootNamespace>
+    <AssemblyName>Business</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BingMapsRESTToolkit, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BingMapsRESTToolkit.1.0.8\lib\net45\BingMapsRESTToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Data.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.Data.v14.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v14.1.Core, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.Printing.v14.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.Utils.v14.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v14.1.Core, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.Office.v14.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v14.1.Core, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.RichEdit.v14.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.Web.v14.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\Program Files (x86)\DevExpress 14.1\Components\Bin\Framework\DevExpress.XtraEditors.v14.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExtreme.AspNet.Data, Version=2.2.0.0, Culture=neutral, PublicKeyToken=982f5dab1439d0f7, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExtreme.AspNet.Data.2.2.0\lib\net452\DevExtreme.AspNet.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Excel, Version=2.1.2.3, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.2.1.2.3\lib\net45\Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.5840.25917, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.6\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Westwind.Utilities, Version=2.68.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Westwind.Utilities.2.68\lib\net45\Westwind.Utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Z.EntityFramework.Extensions, Version=3.13.11.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.3.13.11\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessExtension\CoordinatesData.cs" />
+    <Compile Include="BusinessExtension\DevexpressExtension.cs" />
+    <Compile Include="BusinessExtension\ModulesActivationList.cs" />
+    <Compile Include="BusinessExtension\TimesheetModuleItem.cs" />
+    <Compile Include="BusinessExtension\TimesheetTotalController.cs" />
+    <Compile Include="BusinessService.cs" />
+    <Compile Include="BusinessServices\ElaborateService\CoupleRegsHelper.cs" />
+    <Compile Include="BusinessServices\ElaborateService\Helpers\ElaborateServiceHelper.cs" />
+    <!-- <Compile Include="BusinessServices\ImportCustomerService\CantCustomerImport\DefaultImport.cs" /> -->
+    <!-- <Compile Include="BusinessServices\ImportCustomerService\Factory\CustomerImportFactory.cs" /> -->
+    <!-- <Compile Include="BusinessServices\ImportCustomerService\Helpers\ImportCustomerHelper.cs" /> -->
+    <!-- <Compile Include="BusinessServices\ImportCustomerService\Interfaces\ICustomerImport.cs" /> -->
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\ClockAppReg.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\WinitJsonReg.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\ClockAppRegTranslatorManager.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\WinitJsonTranslatorManager.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\TranslatedRegs\TranslatedStringRegs.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Enums\JsonRegTypeEnum.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Helpers\ClockAppStringFormatter.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Interfaces\JsonReg\IJsonReg.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Interfaces\RegsTranslatorsManagers\IRegTranslatorManager.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Interfaces\TranslatedRegs\ITranslatedRegs.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\IRegTranslatorService.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Service\RegTranslatorService.cs" />
+    <Compile Include="BusinessServices\RegWriterService\Classes\Writer\TxtWriter.cs" />
+    <Compile Include="BusinessServices\RegWriterService\Interfaces\Writer\IWriter.cs" />
+    <Compile Include="BusinessServices\RegWriterService\IRegWriterService.cs" />
+    <Compile Include="BusinessServices\RegWriterService\Service\RegWriterService.cs" />
+    <Compile Include="BusinessServices\UserService\IUserService.cs" />
+    <Compile Include="BusinessServices\UserService\Service\UserService.cs" />
+    <Compile Include="DataClasses\GeoBadgeDTOs\GeoBadgeReg.cs" />
+    <Compile Include="DataClasses\SupportClasses\RegsByDay.cs" />
+    <Compile Include="DataClasses\WebApiDataClasses\WinitPasswordChangeDTO.cs" />
+    <Compile Include="ExternalImport\ExternalImportFactory.cs" />
+    <Compile Include="ExternalImport\ExternalImportManager.cs" />
+    <Compile Include="ExternalImport\IExternalImport.cs" />
+    <Compile Include="ExternalImport\Implementations\GeoBadgeExternalImport.cs" />
+    <Compile Include="HttpHub\HttpHubs\GeoBadgeHub.cs" />
+    <Compile Include="HttpHub\HttpModule.cs" />
+    <Compile Include="ImportModules\CantImportModule\Factory\CantImportFactory.cs" />
+    <Compile Include="ImportModules\ImportBase.cs" />
+    <Compile Include="Infrastructure\UnityPerSessionContextLifeTimeManager.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\DictionaryEntityControllers.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ClockAppSynchronizators\SynchronizationCollector.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ISynchronizationProcessor.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ClockAppSynchronizators\CantSynchronizer.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ClockAppSynchronizators\ColSynchronizer.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ClockAppSynchronizators\FruSynchronizer.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ClockAppSynchronizators\PruSynchronizer.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\ClockAppSynchronizators\Tab_DamageSynchronizer.cs" />
+    <Compile Include="DataClasses\DevExtremeUtilities\DataSourceLoadOptions.cs" />
+    <Compile Include="DataClasses\WebApiDataClasses\DamageJson.cs" />
+    <Compile Include="DataClasses\WebApiDataClasses\FileContainerJson.cs" />
+    <Compile Include="DataClasses\WebMethodDataClasses\LoadOptions.cs" />
+    <Compile Include="DevExtremeLinqServerRepository.cs" />
+    <Compile Include="ExportExcelEngine\ExportExcelEngine.cs" />
+    <Compile Include="ExportExcelEngine\ExportExcelTreeNodeAbstractFormatter.cs" />
+    <Compile Include="ExportExcelEngine\IExportExcelSpecialized.cs" />
+    <Compile Include="ExportExcelEngine\ExportExcelTreeNode.cs" />
+    <Compile Include="ExportExcelEngine\ExportExcelTreeNodeMapping.cs" />
+    <Compile Include="ExportExcelEngine\ExportExcelTreeNodeTemplate.cs" />
+    <Compile Include="ExpressionBuilder.cs" />
+    <Compile Include="FileClockAppDecodeModule\FileClockAppDecoder.cs" />
+    <Compile Include="FileClockAppDecodeModule\Decoders\JpgFileDecoder.cs" />
+    <Compile Include="FileClockAppDecodeModule\FileDecoderToolBox.cs" />
+    <Compile Include="FileClockAppDecodeModule\IFileDecoder.cs" />
+    <Compile Include="FileClockAppDecodeModule\Decoders\Mp3FileDecoder.cs" />
+    <Compile Include="HttpHub\HttpManager.cs" />
+    <Compile Include="Infrastructure\DependencyResolverFactory.cs" />
+    <Compile Include="Infrastructure\IDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IDependencyResolverFactory.cs" />
+    <Compile Include="Infrastructure\IoC.cs" />
+    <Compile Include="Infrastructure\UnityDependencyResolver.cs" />
+    <Compile Include="Infrastructure\UnityPerExecutionContextLifetimeManager.cs" />
+    <Compile Include="DataClasses\LoginValidationResult.cs" />
+    <Compile Include="IocFactory\ClockAppSynchronization\Factory\ClockAppSynchronizationFactory.cs" />
+    <Compile Include="FileClockAppDecodeModule\Factory\FileDecoderFactory.cs" />
+    <Compile Include="IocFactory\GridLookUp\GridLookUpFactory.cs" />
+    <Compile Include="ImportModules\IImport.cs" />
+    <Compile Include="ImportModules\CantImportModule\Imports\DefaultImport.cs" />
+    <Compile Include="ImportModules\CantImportModule\Imports\MosaicoImport.cs" />
+    <Compile Include="ImportModules\ColImportModule\Factory\ColImportFactory.cs" />
+    <Compile Include="MDBSchema\PowerMDBDataSet.cs">
+      <DependentUpon>PowerMDBDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MDBSchema\PowerMDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PowerMDBDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="PowerWebConfig.cs" />
+    <Compile Include="Profile\MembershipHttpModule.cs" />
+    <Compile Include="Profile\PowerWebMembershipProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RegFileCreators\GeoBadgeRegFileCreator.cs" />
+    <Compile Include="RegFileCreators\IRegFileCreator.cs" />
+    <Compile Include="Repository\Custom\Aut_StrRepository.cs">
+      <DependentUpon>IAut_StrRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\CantRepository.cs">
+      <DependentUpon>ICantRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Cant_VarRepository.cs">
+      <DependentUpon>ICant_VarRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Cant_VRepository.cs">
+      <DependentUpon>ICant_VRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\DamageRepository.cs">
+      <DependentUpon>IDamageRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IDamageRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_ExcelModelRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_DamageRepository.cs" />
+    <Compile Include="Repository\Custom\ITimesheetRepository.cs" />
+    <Compile Include="Repository\Custom\CliRepository.cs">
+      <DependentUpon>ICliRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ColCantOrarioRepository.cs">
+      <DependentUpon>IColCantOrarioRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ColRepository.cs">
+      <DependentUpon>IColRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Col_VarRepository.cs">
+      <DependentUpon>ICol_VarRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Cant_NoteRepository.cs">
+      <DependentUpon>ICant_NoteRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Col_VRepository.cs" />
+    <Compile Include="Repository\Custom\IAut_StrRepository.cs" />
+    <Compile Include="Repository\Custom\IColCantOrarioRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_OrariTipoRepository.cs" />
+    <Compile Include="Repository\Custom\IUtenti_HistoryRepository.cs" />
+    <Compile Include="Repository\Custom\IVersioniRepository.cs" />
+    <Compile Include="Repository\Custom\Reg_StoredRepository.cs">
+      <DependentUpon>IReg_StoredRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IReg_StoredRepository.cs" />
+    <Compile Include="Repository\Custom\IMenu_TipoRepository.cs" />
+    <Compile Include="Repository\Custom\ICol_VRepository.cs" />
+    <Compile Include="Repository\Custom\ICant_VRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_MessaggiRepository.cs" />
+    <Compile Include="Repository\Custom\IResourcesRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_OrariRepository.cs" />
+    <Compile Include="Repository\Custom\Menu_TipoRepository.cs" />
+    <Compile Include="Repository\Custom\ResourcesRepository.cs">
+      <DependentUpon>IResourcesRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_DamageRepository.cs">
+      <DependentUpon>ITab_DamageRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_ExcelModelRepository.cs">
+      <DependentUpon>ITab_ExcelModelRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_OrariTipoRepository.cs">
+      <DependentUpon>ITab_OrariTipoRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\TimesheetRepository.cs" />
+    <Compile Include="Repository\Custom\Utenti_HistoryRepository.cs">
+      <DependentUpon>IUtenti_HistoryRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\VersioniRepository.cs">
+      <DependentUpon>IVersioniRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_MessaggiRepository.cs">
+      <DependentUpon>ITab_MessaggiRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_OrariRepository.cs">
+      <DependentUpon>ITab_OrariRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Utenti_RespRepository.cs">
+      <DependentUpon>IUtenti_RespRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IUtenti_RespRepository.cs" />
+    <Compile Include="Repository\Custom\Utenti_FilRepository.cs">
+      <DependentUpon>IUtenti_FilRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IUtenti_FilRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_EditFormTemplateRepository.cs">
+      <DependentUpon>ITab_EditFormTemplateRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ITab_EditFormTemplateRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_ComuniRepository.cs">
+      <DependentUpon>ITab_ComuniRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ITab_ComuniRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_FunzRepository.cs">
+      <DependentUpon>ITab_FunzRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ITab_FunzRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_DataGridRepository.cs">
+      <DependentUpon>ITab_DataGridRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ITab_DataGridRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_Chk_ImpRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_ProvRepository.cs">
+      <DependentUpon>ITab_ProvRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ITab_ProvRepository.cs" />
+    <Compile Include="Repository\Custom\FilRepository.cs">
+      <DependentUpon>IFilRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ILingueRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_DistRepository.cs">
+      <DependentUpon>ITab_DistRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_FestiviRepository.cs">
+      <DependentUpon>ITab_FestiviRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ITab_FestiviRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_DistRepository.cs" />
+    <Compile Include="Repository\Custom\IFilRepository.cs" />
+    <Compile Include="Repository\Custom\RespRepository.cs">
+      <DependentUpon>IRespRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IRespRepository.cs" />
+    <Compile Include="Repository\Custom\ICant_NoteRepository.cs" />
+    <Compile Include="Repository\Custom\ICol_NoteRepository.cs" />
+    <Compile Include="Repository\Custom\Col_NoteRepository.cs">
+      <DependentUpon>ICol_NoteRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ICol_VarRepository.cs" />
+    <Compile Include="Repository\Custom\ICant_VarRepository.cs" />
+    <Compile Include="Repository\Custom\IParamRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_AutRepository.cs" />
+    <Compile Include="Repository\Custom\ParamRepository.cs">
+      <DependentUpon>IParamRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IPruRepository.cs" />
+    <Compile Include="Repository\Custom\PruRepository.cs">
+      <DependentUpon>IPruRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Reg_VRepository.cs">
+      <DependentUpon>IReg_VRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IReg_VRepository.cs" />
+    <Compile Include="Repository\Custom\FruRepository.cs">
+      <DependentUpon>IFruRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IFruRepository.cs" />
+    <Compile Include="Repository\Custom\IPru_ColRepository.cs" />
+    <Compile Include="Repository\Custom\Pru_ColRepository.cs">
+      <DependentUpon>IPru_ColRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\RegRepository.cs">
+      <DependentUpon>IRegRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IRegRepository.cs" />
+    <Compile Include="Repository\Custom\Fru_CantRepository.cs">
+      <DependentUpon>IFru_CantRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IFru_CantRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_GridLookupRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_AutRepository.cs">
+      <DependentUpon>ITab_AutRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\Tab_GridLookupRepository.cs">
+      <DependentUpon>ITab_GridLookupRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\ICliRepository.cs" />
+    <Compile Include="Repository\Custom\ICantRepository.cs" />
+    <Compile Include="Repository\Custom\IColRepository.cs" />
+    <Compile Include="Repository\Custom\ITab_DecodRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_DecodRepository.cs">
+      <DependentUpon>ITab_DecodRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\IUtentiRepository.cs" />
+    <Compile Include="Repository\Custom\Tab_Chk_ImpRepository.cs">
+      <DependentUpon>ITab_Chk_ImpRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\UtentiRepository.cs">
+      <DependentUpon>IUtentiRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Custom\LingueRepository.cs">
+      <DependentUpon>ILingueRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\DictionaryExtension.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\ISynchronizationCollector.cs" />
+    <Compile Include="Repository\RepoManager.cs" />
+    <Compile Include="Service References\GeocodeServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\LicenceServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\RouteServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Synchronization\Implementations\ClockAppManagerSynchronizer.cs" />
+    <Compile Include="Synchronization\Implementations\GeoBadgeSynchronizer.cs" />
+    <Compile Include="Synchronization\Collectors\DbChangeTrackerCollector.cs" />
+    <Compile Include="Synchronization\Interfaces\ICollector.cs" />
+    <Compile Include="Synchronization\Interfaces\ISynchronizer.cs" />
+    <Compile Include="Synchronization\Interfaces\IOperationStrategies.cs" />
+    <Compile Include="Synchronization\OperationStrategies\ClockApp\ClockAppCantOperationStrategies.cs" />
+    <Compile Include="Synchronization\OperationStrategies\ClockApp\ClockAppColOperationStrategies.cs" />
+    <Compile Include="Synchronization\OperationStrategies\GeoBadge\GeoBadgeCantStrategies.cs" />
+    <Compile Include="Synchronization\OperationStrategies\GeoBadge\GeoBadgeColStrategies.cs" />
+    <Compile Include="Synchronization\SynchronizatioManager\Implementations\SynchronizationManager.cs" />
+    <Compile Include="Synchronization\SynchronizatioManager\ISynchronizationManager.cs" />
+    <Compile Include="Synchronization\Interfaces\ISynchronizator.cs" />
+    <Compile Include="Synchronization\Synchronizators\Synchronizator.cs" />
+    <Compile Include="XmlExportsData\Perfetto\ContentClasses.cs" />
+    <Compile Include="XmlExportsData\Perfetto\Envelope.cs" />
+    <Compile Include="XmlExportsData\Perfetto\Document.cs" />
+    <Compile Include="XmlExportsData\Perfetto\ExportedData.cs" />
+    <Compile Include="XmlExportsData\Perfetto\PerfettoWriter.cs" />
+    <Compile Include="XmlExportsData\Perfetto\RapportiniPerfetto.cs" />
+    <Compile Include="XmlExportsData\Perfetto\RegvRow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{65651CE2-12B7-40B7-A32B-95256FE3B547}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{614356aa-2bae-4dd2-9b2d-89d5f3f0fd72}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{eeeef105-26cd-4dd5-8fbc-4ed94e840a9b}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="MDBSchema\PowerMDBDataSet.xsc">
+      <DependentUpon>PowerMDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="MDBSchema\PowerMDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PowerMDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="MDBSchema\PowerMDBDataSet.xss">
+      <DependentUpon>PowerMDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\GeocodeServiceReference\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\GeocodeServiceReference\Business.GeocodeServiceReference.GeocodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GeocodeServiceReference\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\GeocodeServiceReference\contracts.wsdl" />
+    <None Include="Service References\GeocodeServiceReference\contracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\GeocodeServiceReference\geocode.wsdl" />
+    <None Include="Service References\GeocodeServiceReference\geocode.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\GeocodeServiceReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LicenceServiceReference\Business.LicenceServiceReference.LicenceData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LicenceServiceReference\Business.LicenceServiceReference.ModulesActivation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LicenceServiceReference\Business.LicenceServiceReference.ScheduleData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LicenceServiceReference\LicenceServiceLibrary.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LicenceServiceReference\service.wsdl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LicenceServiceReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LicenceServiceReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RouteServiceReference\Business.RouteServiceReference.MajorRoutesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RouteServiceReference\Business.RouteServiceReference.RouteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RouteServiceReference\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RouteServiceReference\contracts.wsdl" />
+    <None Include="Service References\RouteServiceReference\contracts.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RouteServiceReference\route.wsdl" />
+    <None Include="Service References\RouteServiceReference\route.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RouteServiceReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\GeocodeServiceReference\" />
+    <WCFMetadataStorage Include="Service References\LicenceServiceReference\" />
+    <WCFMetadataStorage Include="Service References\RouteServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GeocodeServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GeocodeServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GeocodeServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RouteServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RouteServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RouteServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LicenceServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LicenceServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LicenceServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jszip.js" />
+    <Content Include="Scripts\jszip.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BusinessServices\ParamService\Classes\" />
+    <Folder Include="BusinessServices\ParamService\Interfaces\" />
+    <Folder Include="BusinessServices\RegWriterService\Enum\" />
+    <Folder Include="BusinessServices\UserService\Classes\" />
+    <Folder Include="BusinessServices\UserService\Interfaces\" />
+    <Folder Include="ImportModules\ColImportModule\Imports\" />
+    <Folder Include="IocFactory\Export\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties NotesItemIdentifier="Business.notes" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

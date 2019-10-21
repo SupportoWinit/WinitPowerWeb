@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Dove Inizializzare le LABEL di una Pagina (NON ASSOCIATE A CAMPI del DB)</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a> <br>
+
+<h1>Dove Inizializzare le LABEL di una Pagina (NON ASSOCIATE A CAMPI
+del DB)<br>
+</h1>
+
+Le Label dei Campi definiti nel DATABASE vengono automaticamente
+gestite e caricate in Lingua dal Sistema (vedi xxxxx)<br>
+
+<br>
+
+Nel caso delle eventuali LABEL "slegate" dai corrispondenti campi, come
+ad esempio per le Label della Pagina di LANCIO ELABORAZIONE, queste
+label vanno INIZIALIZZATE (sempre in lingua) insernedone le relative
+Istruzioni nel Codice ascx del corrispondente Modulo e più
+precisiamente in<br>
+
+<ul style="font-weight: bold; color: rgb(51, 0, 153);">
+
+  <li>POWER WEB</li>
+  <ul>
+    <li>MODULES</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>XXXXModule.ascx.cs&nbsp; (vedi ad esempio Modulo
+ELABORATEMODULE.ascx.cs)<br>
+      </li>
+      <ul>
+        <li>&nbsp;protected void Page_Init(object sender, EventArgs e)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: black;">{</span><span style="font-weight: normal; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span><br style="font-weight: normal; color: black;">
+          <span style="font-weight: normal; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//Inizializza le Label della Pagina Video in Lingua &nbsp;<br>
+          <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lblFileDaImportare.Text =
+CommonServiceBiz.GetLocalizedString(PowerWebResources.LBL_IMPORT_TXT);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+btnUpload.Text =
+CommonServiceBiz.GetLocalizedString(PowerWebResources.LBL_IMPORT_TXT);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lblDal.Text =
+CommonServiceBiz.GetLocalizedString(PowerWebResources.LBL_PERIODO_DAL);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lblAl.Text =
+CommonServiceBiz.GetLocalizedString(PowerWebResources.LBL_AL);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+btnTrips.Text =
+CommonServiceBiz.GetLocalizedString(PowerWebResources.LBL_LANCIO_ELAB_VIAGGI);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+btnElaborate.Text =
+CommonServiceBiz.GetLocalizedString(PowerWebResources.LBL_LANCIO_ELAB_REG);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lblResult.Text = ".";<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+//Inizializza la Data Inizio Elaborazione con la Data del 1° del Mese
+Precedente<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+deFrom.Date = new DateTime(DateTime.Today.Year, DateTime.Today.Month,
+1).AddMonths(-1);</span></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<br>
+
+<br>
+</body></html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Dove Impostare le ToolTip di una Pagina</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>Dove Impostare le ToolTip di una Pagina</h1>
+
+La Gestione delle ToolTip è fatta in punti diversi in base al Tipo di
+TASTO al quale è riferito il ToolTip<br>
+
+<br>
+
+<span style="font-weight: bold;">- </span><span style="font-weight: bold; text-decoration: underline;">NEL
+CASO DEI TASTI STANDARD E COMUNI A TUTTE LE FORM </span> la Gestione
+dei ToolTip in Lingua è
+fatta nel Codice &nbsp;&nbsp;&nbsp; <br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline; color: rgb(51, 0, 153);">POWERWEB</li>
+  <ul>
+    <li><span style="color: rgb(51, 0, 153);"> </span><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 0, 153);">GridMasterPage.master.cs</span>&nbsp;</li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;
+protected void</span> <span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">Page_Init</span><span style="font-weight: bold; color: rgb(51, 0, 153);">(object
+sender, EventArgs e)</span><span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;</span>&nbsp;</li>
+    </ul>
+  </ul>
+</ul>
+
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;............................................ &nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: red;"> btnSaveLayout</span>.ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_SALVA_LAYOUT_GRID</span>));<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">btnDeleteLayout</span>.ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_CANCELLA_LAYOUT_GRID</span>));<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">btnHelp</span>.ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_HELP</span>));<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">btnCustomizeColumns</span>.ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_PERSONALIZZA_COLONNE_GRID</span>));<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color: red; font-weight: bold;">btnPrint</span>.ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_APRI_OPZIONI_REPORT</span>));<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">btnPrintPdf</span>.ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_ESEGUI_STAMPA_PDF</span>));<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color: red; font-weight: bold;">btnPrintXlsx</span><span style="font-weight: bold;">.</span>ToolTip
+= CommonService.GetLocalizedLabel(CommonService.GetPropertyName(()
+=&gt; Common.PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_ESEGUI_STAMPA_EXCEL</span>));<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; ..............................................<br>
+
+<br>
+
+<span style="font-weight: bold;">- </span><span style="font-weight: bold; text-decoration: underline;">NEL
+CASO DEI BOTTONI DI <span style="color: red;">EDIT</span> STANDARD E COMUNI A TUTTE LE FORM&nbsp; </span><br>
+
+<br>
+
+<ul style="font-weight: bold; text-decoration: underline; color: rgb(51, 0, 153);">
+
+  <li>POWERWEB</li>
+  <ul>
+    <li><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 0, 153);">CommonServiceWeb.cs</span></li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 0, 153);">public
+static void<span style="color: rgb(204, 51, 204);"> <span style="text-decoration: underline;">InitGridCommandColumn</span></span><span style="text-decoration: underline;">(</span>GridViewCommandColumn
+currentCmdColumn)</span></li>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+..............................................</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (currentCmdColumn != null)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 204, 0);">//
+PER I CUSTOM BUTTON</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+GridViewCommandColumnCustomButton addButton =
+currentCmdColumn.CustomButtons.SingleOrDefault(btn =&gt; btn.ID ==
+"add");<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (addButton != null)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">addButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNINSERISCI</span>);<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+GridViewCommandColumnCustomButton addCloneButton =
+currentCmdColumn.CustomButtons.SingleOrDefault(btn =&gt; btn.ID ==
+"addClone");<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (addCloneButton != null)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">addCloneButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNCLONA</span>);<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+GridViewCommandColumnCustomButton deleteButton =
+currentCmdColumn.CustomButtons.SingleOrDefault(btn =&gt; btn.ID ==
+"delete");<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (deleteButton != null)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: red;"> deleteButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNELIMINA</span>);<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+GridViewCommandColumnCustomButton viewButton =
+currentCmdColumn.CustomButtons.SingleOrDefault(btn =&gt; btn.ID ==
+"view");<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (viewButton != null)<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="font-weight: bold; color: red;">viewButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNVISUALIZZA</span>);<br>
+
+<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 204, 0);">//
+PER I BUTTON STANDARD</span><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentCmdColumn.<span style="font-weight: bold; color: red;">EditButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNMODIFICA</span>);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentCmdColumn.<span style="font-weight: bold; color: red;">CancelButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNANNULLA</span>);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentCmdColumn.<span style="font-weight: bold; color: red;">UpdateButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNAGGIORNA</span>);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+currentCmdColumn.<span style="font-weight: bold; color: red;">ClearFilterButton</span>.Image.ToolTip
+= CommonService.GetLocalizedString(PowerWebResources.<span style="font-weight: bold; color: red;">CTRL_BTNANNULLA</span>);<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+.....................................................<br>
+
+<br>
+
+<span style="font-weight: bold;"></span><br style="color: red;">
+
+<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

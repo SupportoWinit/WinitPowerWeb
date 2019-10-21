@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>DOVE RENDERE NON VISIBILI DETERMINATI CAMPI NELLA EDIT di una GRID MASTER</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE RENDERE NON VISIBILI DETERMINATI CAMPI NELLA EDIT di una GRID
+MASTER</h1>
+
+Nel caso in cui si voglia che
+determinati Campi NON vengano VISUALIZZATI nella parte di EDIT di una
+GRID MASTER <br>
+
+basta aggiungere in<br>
+
+<ul>
+
+  <li style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 0, 153);">MODULES</li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: red;">REG_V</span>Modules.ascx</li>
+      <ul>
+        <li style="font-weight: bold; color: rgb(51, 0, 153);">.................................................</li>
+      </ul>
+      <ul>
+        <li style="font-weight: bold; color: rgb(51, 0, 153);">&lt;dx:GridViewDataTextColumn
+FieldName="Cant_Mnemonic"&nbsp; VisibleIndex="40"
+Width="15%"&gt;</li>
+        <ul>
+          <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: red;">&lt;EditFormSettings Visible="False"
+/&gt;</span>&nbsp;</li>
+        </ul>
+        <li style="font-weight: bold; color: rgb(51, 0, 153);">&lt;/dx:GridViewDataTextColumn&gt;</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+in questo modo il Codice Mnemonico del Cantiere NON viene mostrato
+nella maschera di EDIT delle Registrazioni<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

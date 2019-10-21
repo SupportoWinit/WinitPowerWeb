@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Configuration>
+  <!--<Importazione timbrature tramite get da geoBadge server ("1" = attivo)>-->
+  <Synch company="GeoBadge" class="Business.Synchronization.Implementations.GeoBadgeSynchronizer`1,Business" enabled="0" >
+    <HostConfig host="my.geo-badge.com"/>
+    <ExtraInfos>
+      <uid  value="winit" />
+      <pw value="POWER2013" />
+      <idTenant value="312" />
+    </ExtraInfos>
+    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.GeoBadge.GeoBadgeCantStrategies,Business" enabled="0">
+      <create  value="/api/Terminale_V1/Crea" />
+      <modify  value="/api/Terminale_V1/Modifica" />
+      <delete  value="/api/Terminale_V1/Elimina" />
+    </OperationStrategy>
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.GeoBadge.GeoBadgeColStrategies,Business" enabled="0">
+      <create  value="/api/Lavoratore_V1/Crea" />
+      <modify  value="/api/Lavoratore_V1/Modifica" />
+      <delete  value="/api/Lavoratore_V1/Elimina" />
+    </OperationStrategy>
+  </Synch>
+
+  <Synch company="ClockAppManager" class="Business.Synchronization.Implementations.ClockAppManagerSynchronizer`1,Business" enabled="0" >
+    <HostConfig host="localhost" port="52947" protocol="http"/>
+    <ExtraInfos>
+    </ExtraInfos>
+    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppCantOperationStrategies,Business" enabled="0">
+      <create  value="/api/ManagePowerWebCant" />
+      <modify  value="/api/ManagePowerWebCant" />
+      <delete  value="/api/ManagePowerWebCant" />
+    </OperationStrategy>
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="1">
+      <create  value="/api/ManagePowerWebCol" />
+      <modify  value="/api/ManagePowerWebCol" />
+      <delete  value="/api/ManagePowerWebCol" />
+    </OperationStrategy>
+  </Synch>
+
+
+  <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
+    <HostConfig host="my.geo-badge.com" protocol="https" />
+    <ExtraInfos>
+      <uid  value="boschrexroth" />
+      <pw value="Power2017W!" />
+      <idTenant value="1465" />
+    </ExtraInfos>
+    <OperationStrategy >
+      <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
+    </OperationStrategy>
+  </ExternalImport>
+  
+</Configuration>
+

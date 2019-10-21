@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>DOVE GESTIRE I FILTRI CUSTOM delle DATAGRID MASTER</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a> <br>
+
+<h1>DOVE GESTIRE I FILTRI CUSTOM delle DATAGRID MASTER</h1>
+
+Al momento nei Campi della DATAGRID MASTER sono previsti i seguenti
+FILTRI CUSTOM<br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; FILTRO PER I CAMPI DATA</li>
+  <ul>
+    <li><span style="font-weight: bold; text-decoration: underline;">Attualmente</span>
+prevede di mostrare AL POSTO DEL CALENDARIO in cui è possibile
+selezionare una SOLA DATA</li>
+    <ul>
+      <li>di gestire le seguenti selezioni</li>
+      <ul>
+        <li>IERI</li>
+        <li>SETTIMANA Precedente</li>
+        <li>MESE&nbsp;Precedente&nbsp;</li>
+        <li>TRIMESTRE Precedente</li>
+        <li>SEMESTRE Precedente</li>
+        <li>ANNO&nbsp;Precedente</li>
+        <li>a 1 Settimana da OGGI</li>
+        <li>a 1 Mese da OGGI</li>
+        <li>a 3 Mesi da Oggi</li>
+        <li>a 6 Mesi da Oggi</li>
+        <li>a 12 Mesi da Oggi</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+che se attivati prendono il posto dei NORMALI FILTRI gestiti
+automaticamente da DevExpress.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">La
+Definizione dei Filtri CUSTOM è nella Routine</span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <br>
+
+<ul style="font-weight: bold; color: rgb(51, 0, 153);">
+
+  <li>POWER WEB</li>
+  <ul>
+    <li>COMMONSERVICESWEB</li>
+    <ul>
+      <li><span style="font-weight: normal; color: black;">&nbsp;public
+static void </span>GridHeaderFilterFillItems <span style="font-weight: normal; color: black;">(ASPxGridViewHeaderFilterEventArgs
+e)</span>&nbsp;</li>
+    </ul>
+  </ul>
+</ul>
+
+modificando questa Routine si possono<br>
+
+<ul>
+
+  <li>AGGIUNGERE NUOVE OPZIONI</li>
+  <li>MODIFICARE QUELLE ESISTENTI</li>
+  <li>ELIMINARE QUELLE ESISTENTI</li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">L'Attivazione
+dei Filtri CUSTOM avviene inserendo nella Routine</span><br>
+
+<ul style="font-weight: bold; color: rgb(51, 0, 153);">
+
+  <li>POWER WEB</li>
+  <ul>
+    <li>MODULES</li>
+  </ul>
+  <ul>
+    <ul>
+      <li>XXXXModule.ascx.cs</li>
+      <ul>
+        <li><span style="color: black; font-weight: normal;">public
+void </span>HeaderFilterFillItems <span style="font-weight: normal; color: black;">(object sender,
+ASPxGridViewHeaderFilterEventArgs e)</span></li>
+        <ul>
+          <li><span style="font-weight: normal; color: black;">per ogni
+Campo Data in cui si vuole usare il Filtro CUSTOM al posto di quello STD</span></li>
+          <ul>
+            <li><span style="font-weight: normal; color: black;">if (</span></li>
+            <ul>
+              <li><span style="font-weight: normal; color: black;">e.Column.FieldName
+== CommonService.GetPropertyName(() =&gt;<span style="font-weight: bold; color: red;"> _colStub.Data_Registrazione_Col</span>)
+||</span></li>
+              <li><span style="font-weight: normal; color: black;">
+e.Column.FieldName == CommonService.GetPropertyName(() =&gt; <span style="font-weight: bold; color: red;">_colStub.DataOraUltimaModifica_Col</span>)
+||</span></li>
+              <li>............................</li>
+              <li><span style="font-weight: normal; color: black;"></span><span style="font-weight: normal; color: black;">e.Column.FieldName ==
+CommonService.GetPropertyName(() =&gt;<span style="font-weight: bold; color: red;">
+_colStub.Data_Disponibilita_Inizio_Col</span>)</span></li>
+            </ul>
+            <li><span style="font-weight: normal; color: black;">&nbsp;
+&nbsp;)</span></li>
+            <li><span style="font-weight: normal; color: black;">
+CommonServiceWeb.GridHeaderFilterFillItems(e);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: normal; color: black;">invece di lasciare la
+Routine </span>HeaderFilterFillItems completamente <span style="font-weight: normal; color: black;">VUOTA. &nbsp;&nbsp;&nbsp;<br>
+</span><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+<br>
+</body></html>

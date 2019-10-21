@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>RegVM_Page</title>
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css">
+
+</head><body>
+<a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (REGV_M) di Manutenzione delle Registrazioni Multiple&nbsp;</span>
+</h1>
+
+Questa pagina permette l'Inserimento, la Modifica, la
+Clonazione e la Cancellazione delle Registrazioni sia in modo Singolo
+sia in Modo Multiplo (x Collaboratore/Giorno selezionato).<br>
+<span style="font-weight: bold; text-decoration: underline;"><br>
+La differenza principale fra questa pagina e la pagina di</span> <a href="_RegVPage.html">Manutenzione delle Registrazioni x Collaboratore/Giorno</a> <br>
+<ul>
+  <li>sta nel fatto che una volta ottenuta la Visualizzazione delle Registrazioni filtrate in base alle selezioni impostare<br>
+  </li>
+  <ul>
+    <li>premendo il tasto di MODIFICA MULTIPLA in corrispondenza di una di queste</li>
+    <ul>
+      <li>verranno AUTOMATICAMENTE visualizzate nella parte inferiore della pagina <br>
+      </li>
+    </ul>
+    <ul>
+      <ul>
+        <li>TUTTE LE REGISTRAZIONI relative a quel Collaboratore/Giorno</li>
+        <ul>
+          <li>in base alle eventuali ulteriori selezioni indicate per questo tipo di visualizzazione<br>
+          </li>
+          <ul>
+            <li>ovvero verranno mostrate o meno ANCHE</li>
+            <ul>
+              <li>le Registrazioni dei Viaggi</li>
+              <li>le Registrazionei dei Passaggi</li>
+              <li>le Registrazioni delle ATtività<br>
+              </li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+    <li>premendo il Tasto di Modifica SINGOLA in corrispondenza di una di queste</li>
+    <ul>
+      <li>verrà aperta nella normale funzionalità di Edit <br>
+      </li>
+      <ul>
+        <li>la SINGOLA REGISTRAZIONE selezionata</li>
+        <ul>
+          <li>come nel caso della pagina di <a href="_RegVPage.html">Manutenzione delle Registrazioni x Collaboratore/Giorno</a></li>
+          <ul>
+            <li>alla quale si rimanda per il relativo funzionamento<br>
+            </li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <li><span style="font-weight: bold;">
+Questa pagina è di Tipo MASTER (senza Dettaglio)</span> e quindi per la spiegazione della
+relativa struttura di Funzionamento.</li>
+  <ul>
+    <li>rimanda la
+relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> <br>
+    </li>
+  </ul>
+
+  <li>Gestisce il <a href="../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">Tasto di
+ON/OFF</a></li>
+  <li>Gestisce la Modalità di EDIT DIRETTO<br>
+  </li>
+</ul>
+
+<span style="font-weight: bold;">Ricordiamo che esitono anche delle
+specifiche pagine di </span><br>
+
+<ul>
+
+  <li><a href="_RegVPage.html">Manutenzione delle Registrazioni x Collaboratore/Giorno</a></li>
+  <li><a href="_MassiveInsertPage.html">Inserimento Massivo delle Registrazioni</a></li>
+  <li><a href="_RegV_ErrPage.html">Manutenzione delle Registrazioni in Stato di Errore x
+Collaboratore/Giorno</a> </li>
+</ul>
+
+<dl>
+
+  <dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire una Registrazione sono i seguenti:</u></b></dt>
+</dl>
+
+<ul>
+
+  <li><a href="../HelpPages/TR_RECORD/_TR_CANT.html#Codice_Cantiere">UN
+CODICE COLLABORATORE</a><span style="">&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  </li>
+  <li><span style=""></span><a href="../HelpPages/TR_RECORD/_TR_CANT.html#Codice_Cantiere">UN CODICE
+COLLABORATORE</a><span style="">&nbsp;</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+  <li><a href="../TR_RECORD/_TR_CANT.HTML#Data_Registrazione_Can">LA
+DATA DELLA REGISTRAZIONE</a></li>
+  <li><a href="../TR_RECORD/_TR_CANT.HTML#DataOraUltimaModifica_Can">UN
+ORARIO DI ENTRATA</a></li>
+</ul>
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Comportamenti
+Specifici per la Pagina REGV_M</span><br>
+
+<br>
+
+<span style="text-decoration: underline;">Rispetto al comportamento
+Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina
+REGV</span> <span style="text-decoration: underline;">ci sono alcuni
+comportamenti particolari che vale la pena di Segnalare</span>;<br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;">AREA TASTI
+FUNZIONALI</li>
+  <ul>
+    <li>Gestione TASTO di Export Excel CUSTOM</li>
+    <ul>
+      <li>Vedi Manuale<span style="color: red;"> L'Export Custom delle
+Registrazioni &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="color: red;">
+      </li>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; text-decoration: underline; color: black;">AREA
+FILTRI CUSTOM</li>
+  <ul>
+    <li>vengono impostati i FILTRI CUSTOM di PERIODO sui seguenti Campi</li>
+    <ul>
+      <li>Data_Reg<br>
+      </li>
+    </ul>
+  </ul>
+</ul>
+
+<a name="AREA_GESTIONE_EDIT"></a><span style="text-decoration: underline; font-weight: bold;">AREA GESTIONE EDIT</span>
+<ul>
+
+  <ul>
+    <li style="text-decoration: underline; font-weight: bold;">le
+Registrazioni relative ai VIAGGI <br>
+    </li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal;">vengono
+sempre e solo ricreate automaticamente dal sistema</span></li>
+      <ul>
+        <li style="text-decoration: underline; font-weight: bold;"><span style="font-weight: normal;">e sono quindi gestibili ESCLUSIVAMENTE IN
+CONSULTAZIONE</span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;"><span style="font-weight: bold;">Le Registrazioni delle ATTIVITA'</span> che
+ricadono all'interno di una Registrazione di Entrata/Uscita</span></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal;">vengono
+AUTOMATICAMENTE associate alla corrispondente Registrazione di
+Entrata/Uscita a cui appartengono</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal;">in caso contrario vengono identificate da
+un apposito Stato di SINGOLE<br>
+          </span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;">Le Registrazioni di Entrata e/o di
+Uscita che NON risultano ACCOPPIABILI alla rispettiva REgistrazione di
+Uscita e/o di Entrata</li>
+    <ul>
+      <li style="font-weight: bold;">vengono identificate daun apposito
+Stato di SINGOLE<br>
+      </li>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">la
+      <span style="font-weight: bold;">Durata Fisica e/o Figurativa di
+una Registrazionecon Entrata/Uscita <br>
+      </span></span></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal;"><span style="font-weight: bold;">viene sempre e solo calcolata </span></span><span style="font-weight: normal;"><span style="font-weight: bold;">automaticamente
+        </span></span><span style="font-weight: normal;"><span style="font-weight: bold;">dal sistema e non è quindi gestibile da
+parte dell'Utente<br>
+        </span></span></li>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">Ogni
+volta che si conferma una Singola Registrazione il sistema provvede
+AUTOMATICAMENTE</span></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal;">a
+rielaborare TUTTE LE REGISTRAZIONI relative a TUTTI I
+COLLABORATORI/CANTIERI</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal;">a</span><br>
+          <span style="font-weight: normal;"></span></li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><span style="font-weight: normal;">Nel
+caso in cui <br>
+      </span></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal;">NON
+sia attiviata la Gestione del NOTTURNO</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal;">ad ogni aggiornamento di una Singola
+Registrazione</span></li>
+        <ul>
+          <li style="font-weight: bold;"><span style="font-weight: normal;">vengono ri-elaborate TUTTE le
+Registrazioni relative al Giorno della Registrazione aggiornata per
+Tutti i Collaboratori/Cantieri</span></li>
+        </ul>
+      </ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal;">sia
+attivata la Gestione del NOTTURNO</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal;">ad ogni aggiornamento di una Singola
+Registrazione</span></li>
+        <ul>
+          <li style="font-weight: bold;"><span style="font-weight: normal;">vengono ri-elaborate TUTTE le
+Registrazioni del Giorno della Registrazione aggiornata per Tutti i
+Collaboratori/Cantieri</span></li>
+          <ul>
+            <li style="font-weight: bold;"><span style="font-weight: normal;">a partire dall'Ora di Fine Durata Notturno</span></li>
+            <li style="font-weight: bold;"><span style="font-weight: normal;">fino all'Ora di Fine Durata Notturno del
+Giorno Successivo</span></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+    
+  </ul>
+</ul>
+
+<span style="font-weight: bold;">
+Per il significato </span><br>
+
+<ul>
+
+  <li>dei singoli Tasti&nbsp; presenti nella Testata della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+  <li>dei singoli Campi&nbsp; presenti nella pagina si
+rimanda al documento che descrive i campi del <a href="../TR_RECORD/_TR_CANT.html">Tracciato Record della Tabella REGV</a></li>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">
+Per come Modificare</span> <br>
+
+<ul>
+
+  <li>i Campi (Colonne) da visualizzare nella Griglia Master si rimanda
+la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master</a></li>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>i Filtri dei Campi (Colonne) della Griglia Master o della Griglia
+di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>i Singoli Record visualizzati per gestire
+l'Inserimento/Modifica/Cancellazione/Consultazione <br>
+  </li>
+  <ul>
+    <li>si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>&nbsp;&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio)</a></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-weight: bold;">&nbsp; </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o di Dettaglio)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei
+Collaboratori<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+Una volta scelta la Modalità di Visualizzazione/Ricerca delle
+Registrazioni che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista
+delle Registrazioni che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+</body></html>

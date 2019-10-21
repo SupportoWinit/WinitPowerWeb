@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>LA CREAZIONE DI NUOVI CAMPI DI CALCOLO</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style="font-size: 16pt; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span>CREAZIONE
+CONTROLLI VALIDITA' CAMPI TABELLA</h1>Tutti
+i Controlli da fare sui vari campi di una Tabella (sia in INS/VAR da
+Video, sia durante Import , sia da parte di qualsiasi routine che
+aggiorna<br>e/o inserisce un Record in una determinata Tabella) sono <br><br><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; SONO TUTTI CENTRALIZZATI NELLA CLASSE</span> <span style="font-weight: bold; text-decoration: underline;">CHECK</span><br><ul><li>&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(51, 0, 153);">BUSINESS</span></li><ul><li style="font-weight: bold; color: rgb(51, 0, 153);">REPOSITORY</li><ul><li><span style="font-weight: bold; color: rgb(51, 0, 153);">CUSTOM</span></li><ul><li><span style="font-weight: bold; color: rgb(51, 0, 153);">es: ICantRepository</span></li><ul><li><span style="font-weight: bold; color: rgb(51, 0, 153);">CantRepository</span></li><ul><li><span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;</span><span style="color: rgb(51, 0, 153);"><span style="color: black;">public override Dictionary&lt;string, string&gt;</span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"> <span style="text-decoration: underline;">Check</span></span><span style="color: rgb(51, 0, 153);"><span style="color: black;">(Tab_Distanze entity, bool isNew = false)</span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"><br></span></li></ul></ul></ul></ul></ul></ul>
+in modo tale che vengano SEMPRE EFFETTUATI da Tutte le Routine che toccano per qualsiasi ragione una Tabella<br><ul style="font-weight: bold;"><li>CHECK&nbsp; x CAMPI OBBLIGATORI</li></ul>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span style="font-weight: bold;"> // Verifico che sia stato immesso un Valore nel campo</span><span style="font-weight: bold; color: red;"> NomeCampoTabella</span><br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; if (String.IsNullOrEmpty(entity.<span style="font-weight: bold; color: red;">NomeCampoTabella</span>))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+result.Add(CommonService.GetPropertyName(() =&gt; entity.<span style="font-weight: bold; color: red;">NomeCampoTabella</span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+CommonService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_E_OBBLIGATORIO,
+PowerWebResources.FLD_<span style="font-weight: bold; color: red;">NOMECAMPOTABELLA</span>));<br><ul><li><span style="font-weight: bold;">CHECK x&nbsp;CAMPI&nbsp; CHE DEVONO AVERE VALORI MINORI/MAGGIORI DI ALTRI</span> </li></ul>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;//<span style="font-weight: bold;"> Verifico che il VALORE di un ca mpo <span style="color: red;">NomeCampoTabella1</span> <span style="text-decoration: underline;">SIA MINORE</span> del valore di un altro campo</span> <span style="font-weight: bold; color: red;">NomeCampoTabella2</span><br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; if (CommonService.Nz(entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>, 0) &lt; CommonService.Nz(entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella2</span></span>, 0))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+result.Add(CommonService.GetPropertyName(() =&gt; entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+CommonService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_DEVE_ESSERE_MINORE_UGUALE_Y,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; new string[] { PowerWebResources.FLD_<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>, PowerWebResources.FLD_<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span> }));<br><ul><li><span style="font-weight: bold;">CHECK x&nbsp;CAMPI DATA CHE DEVONO AVERE VALORI DATA MINORI/MAGGIORI DI ALTRI</span></li></ul>&nbsp; &nbsp; &nbsp; &nbsp;<span style="font-weight: bold;"> // Verifico che la DATA di un campo </span><span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1 </span></span><span style="font-weight: bold;">sia minore della data di un altro campo</span> <span style="font-weight: bold; color: red;">NomeCampoTabella2</span><br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; if (CommonService.Nz(entity.<span style="font-weight: bold; color: red;">NomeCampoTabella1</span>, new DateTime(1, 1, 1))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &gt; CommonService.Nz(entity.<span style="font-weight: bold; color: red;">NomeCampoTabella2</span>, new DateTime(9999, 1, 1)))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+result.Add(CommonService.GetPropertyName(() =&gt; entity.<span style="font-weight: bold; color: red;">NomeCampoTabella1</span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+CommonService.GetLocalizedString(PowerWebResources.ERR_DATA_INIZIO_X_DEVE_ESSERE_MINORE_DI_DATA_FINE_Y,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; new string[] { PowerWebResources.FLD_<span style="font-weight: bold; color: red;">NomeCampoTabella1</span>, PowerWebResources.FLD_<span style="font-weight: bold; color: red;">NomeCampoTabella2</span> }));<br><br><ul><li><span style="font-weight: bold;">CHECK x&nbsp;CAMPI NUMERICI CHE DEVONO AVERE VALORI MINORI DI UN DETERMINATO VALORE</span></li></ul>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span style="font-weight: bold;">// Verifico&nbsp; che il valore del campo </span><span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1 </span></span><span style="font-weight: bold;">sia minore di un certo valore predefinito massimo</span><br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;if (CommonService.Nz(entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>, 0) &gt; 31)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+result.Add(CommonService.GetPropertyName(() =&gt; entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+CommonService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_DEVE_ESSERE_MINORE_UGUALE_Y,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; new string[] { PowerWebResources.FLD_<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>, "31" }));<br><br><ul><li><span style="font-weight: bold;">CHECK x&nbsp;CAMPI CHE DEVONO ESSERE PRESENTI IN UN ALTRA TABELLA <span style="color: red;">NomeTabella</span></span></li></ul>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-weight: bold; color: red;"> NomeTabella</span> o<span style="font-weight: bold; color: red;">NomeTabella</span> =&nbsp;<span style="font-weight: bold; color: red;">NomeTabella</span>s.SingleOrDefault(x =&gt; x.<span style="font-weight: bold; color: red;">NomeCampoChiaveTabella</span> == oRow.<span style="font-weight: bold; color: red;">NomeCampoChiaveTabella</span>);<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (o<span style="font-weight: bold; color: red;">NomeTabella</span> != null)<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; // Se esiste CARICO l'ID Corrispondente<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; oNewRecord.<span style="font-weight: bold; color: red;">NomeCampoID</span> = o<span style="font-weight: bold; color: red;">NomeTabella</span><span style="font-weight: bold;">.</span><span style="font-weight: bold; color: red;">NomeCampoID</span>;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;else<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; //se NON esiste Segnalo Errore<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ul><li><span style="font-weight: bold;">CHECK x&nbsp;CAMPI CHE DEVONO ESSERE PRESENTI IN TAB_DECOD (Prendondo o meno ALTRI VALORI ASSOCIATI IN TAB_DECOD)</span></li></ul>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">&nbsp;// Verifico che il valore del campo </span><span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1 </span></span><span style="font-weight: bold;">sia presente nella TAB_DECOD&nbsp;</span>e modifico il valore anche di altri campi<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; if (CommonService.Nz(<span style="font-weight: bold;"></span><span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>, "") != "") &nbsp;<span style="font-weight: bold; text-decoration: underline;">oppure</span> if (CommonService.Nz(entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>, 0) != 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; tab_Decod =
+RepoManager.TabDecodRepo.SearchDecodifyInTable(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+TabDecodGroupTypeEnum.DECOD_TAB.ToString(), TabDecodNameEnum.<span style="font-weight: bold; color: red;">NOMETABDECOD</span>.ToString(), entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; if (tab_Decod == null)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+result.Add(CommonService.GetPropertyName(() =&gt; entity.<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+CommonService.GetLocalizedString(PowerWebResources.ERR_VALORE_CAMPO_X_NON_PRESENTE_IN_TABELLA_DECODIFICHE,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; PowerWebResources.FLD_<span style="font-weight: bold;"><span style="color: red;">NomeCampoTabella1</span></span>));<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">//se trovato imposto ANCHE gli ALTRI VALORI DIPENDENTI DAL VALORE INSERITO uguali ai Valori a lui Associati in TAB_DECOD</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; else<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+entity.Codice_Luogo_Residenza_Can = tab_Decod.Chiave_Tab;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; if (tab_Decod.Associato1
+!= "")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; entity.Cap_Can = tab_Decod.Associato1;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; if (tab_Decod.Associato2
+!= "")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; entity.Provincia_Can = tab_Decod.Associato2;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; }&nbsp; <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }<br></body></html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Cant_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (CANT) di Gestione delle Schede Anagrafiche dei
+Cantieri/Assistiti/Attività</span>
+</h1>
+
+Questa pagina permette l'Inserimento, la Modifica, la
+Cancellazione ( a determinate condizioni) di un
+Cantiere/Assistito/Attività per il quale si
+vogliono poi gestire le
+Rilevazioni in Power.<br>
+<ul>
+  <li><span style="font-weight: bold; text-decoration: underline;">
+
+Questa pagina è di Tipo MASTER</span> (senza Dettaglio) e quindi si rimanda la relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della relativa struttura di Funzionamento.</li>
+  <li><span style="text-decoration: underline; font-weight: bold;">Gestisce il&nbsp;</span><a style="text-decoration: underline; font-weight: bold;" href="../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible"></a><span style="text-decoration: underline; font-weight: bold;">Tasto di ON/OFF</span> in base alla parametrizzazione inserita nel campo <a href="../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">PopulateBtnVisible</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">TAB_FUNZ</a><br>
+  </li>
+</ul><span style="text-decoration: underline; font-weight: bold;">
+
+
+La differenziazione fra Cantiere , Assistito , Attività</span> avviene in base
+al valore inserito nel Campo <a href="../TR_RECORD/_TR_CANT.html#Tipologia_Can">TIPOLOGIA CANTIERE.</a><br>
+<dl>
+<dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire un Cantiere/Assistito/Attività sono i seguenti:</u></b></dt>
+</dl>
+
+
+<ul>
+<li><a href="../HelpPages/TR_RECORD/_TR_CANT.html#Codice_Cantiere">UN
+CODICE&nbsp; </a><span style=""><a href="../TR_RECORD/_TR_CANTPage.HTML#Codice_Cantiere">CANTIERE</a>
+&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(Massimo di 20 caratteri Alfanumerici) </li><li><a href="../TR_RECORD/_TR_CANT.HTML#Descrizione_Can">LA
+DESCRIZIONE
+CANTIERE</a> <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(Massimo di 50 caratteri
+Alfanumerici)</li><li><a href="../TR_RECORD/_TR_CANT.HTML#Tipologia_Can">LA TIPOLOGIA
+CANTIERE</a> <br>
+  </li><ul><li>per definire se si tratta di un</li><ul><li>CANTIERE vero e proprio&nbsp;&nbsp; (=CAN)<br>
+      </li><li>ASSISTITO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(=ASS)<br>
+      </li><li>ATTIVITA'
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(=ATT)<br>
+      </li></ul></ul><li><a href="../TR_RECORD/_TR_CANT.HTML#Data_Registrazione_Can">LA
+DATA 1° REGISTRAZIONE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li><li><a href="../TR_RECORD/_TR_CANT.HTML#DataOraUltimaModifica_Can">DATA/ORA
+ULTIMA MODIFICA</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+</ul>
+
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">La
+Maschera di Gestione dell'Anagrafica Cantieri/Assistiti/attività
+prevede la gestione dei propri Dati Anagrafici suddividendoli per
+comodità in più TAB</span><br>
+
+
+
+<ul>
+<li style="font-weight: bold;">Generali</li><li style="font-weight: bold;">Ubicazione</li><li style="font-weight: bold;">Tel/Fax</li><li style="font-weight: bold;">Parametri</li><li style="font-weight: bold;">Arrotondamenti</li><li style="font-weight: bold;">Note</li><li style="font-weight: bold;">Assistito</li>
+</ul>
+
+
+
+
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Comportamenti Specifici per la Pagina CANT</span><br>
+
+<br>
+
+<span style="text-decoration: underline;">Rispetto al comportamento Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina CANT</span> <span style="text-decoration: underline;">ci sono alcuni comportamenti particolari che vale la pena di Segnalare</span>;<br>
+
+<ul>
+<li style="font-weight: bold; text-decoration: underline;">AREA TASTI FUNZIONALI</li><ul><li>Gestione TASTO di Visualizzazione Posizione Cantiere su MAPPA</li><ul><li>Veid Manuale <span style="color: red;">Come Gestire la Posizione GPS di un Cantiere</span><br>
+      </li></ul><li>Gestione TASTO di Export Excel CUSTOM</li><ul><li>Vedi Manuale<span style="color: red;"> L'Export Custom delle Anagrafiche Cantieri/Assistiti/Attività &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </span><br style="color: red;">
+    </li></ul></ul><li style="font-weight: bold; text-decoration: underline; color: black;">AREA FILTRI CUSTOM</li><ul><li>vengono impostati i FILTRI CUSTOM di PERIODO sui seguenti Campi</li><ul><li><a href="../TR_RECORD/_TR_CANT.html#DataOraUltimaModifica_Can">DataOraUltimaModifica_Can</a></li><li><a href="../TR_RECORD/_TR_CANT.html#Data_Isee_Can">Data_Isee_Can</a></li><li><a href="../TR_RECORD/_TR_CANT.html#Data_Nascita_Can">Data_Nascita_Can</a></li><li><a href="../TR_RECORD/_TR_CANT.html#Data_Rapporto_Fine_1_Can">Data_Rapporto_Fine_1_Can</a></li><li><a href="../TR_RECORD/_TR_CANT.html#Data_Rapporto_Inizio_1_Can">Data_Rapporto_Inizio_1_Can</a></li></ul></ul><li style="text-decoration: underline; font-weight: bold;"><a name="AREA_GESTIONE_EDIT"></a>AREA GESTIONE EDIT</li><ul><li style="font-weight: bold;">MODIFICA di un Record Cantiere</li><ul><li style="text-decoration: underline;">Quando si modifica il Luogo di Nascita</li><ul><li>vengono Automaticamente AGGIORNATI anche i corrispondenti valori dei seguenti campi<br>
+      </li><ul><li>Provincia di Residenza (<a href="_Cant_Page.html#Provincia_Nascita_Can">Provincia_Nascita_Can</a>)<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li><li>Cap di Residenza (<a href="_Cant_Page.html#Cap_Nascita_Can">Cap_Nascita_Can</a>)</li><li>Codice Luogo Nascita (<a href="_Cant_Page.html#Codice_Luogo_Nascita_Can">Codice_Luogo_Nascita_Can</a>)<br>
+          </li></ul></ul><li><span style="text-decoration: underline;">Quando si modifica il Luogo di Residenza<span style="font-weight: bold;"></span></span></li><ul><li>vengono Automaticamente AGGIORNATI anche i corrispondenti valori dei seguenti campi<br>
+      </li><ul><li>Provincia (<a href="_Cant_Page.html#Provincia_Can">Provincia_Can</a>)<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li><li>Cap&nbsp; (<a href="_Cli_Page.html#Residenza_Cap_Cli">Cap_Can)</a></li><li>Codice del Luogo di Residenza (<a href="_Cant_Page.html#Codice_Luogo_Residenza_Can">Codice_Luogo_Residenza_Can</a>)</li></ul></ul><li style="text-decoration: underline;">Quando si modifica il Codice del Luogo di Nascita</li><ul><li>vengono Automaticamente AGGIORNATI anche i corrispondenti valori dei seguenti campi<br>
+      </li><ul><li>Provincia di Nascita (<a href="_Cant_Page.html#Provincia_Nascita_Can">Provincia_Nascita_Can</a>)<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li><li>Cap di Nascita (<a href="_Cli_Page.html#Cap_Nascita_Can">Cap_Nascita_Can)</a></li><li>Codice del Luogo di Nascita (<a href="_Cant_Page.html#Luogo_Nascita_Can">Luogo_Nascita_Can</a>)</li></ul></ul><li style="text-decoration: underline;">Quando si modifica il Codice del Luogo</li><ul><li>vengono Automaticamente AGGIORNATI anche i corrispondenti valori dei seguenti campi<br>
+      </li><ul><li>Provincia di Nascita (<a href="_Cant_Page.html#Provincia_Can">Provincia_Can</a>)<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li><li>Cap di Nascita (<a href="_Cli_Page.html#Cap_Can">Cap_Can)</a></li><li>Codice del Luogo di Nascita (<a href="_Cant_Page.html#Luogo_Can">Luogo_Can</a>)</li></ul></ul></ul><ul><li><span style="text-decoration: underline;">Gestione Scrittura Record in Tabella CANT_VAR </span><br>
+      </li><ul><li>se&nbsp; il campo <a href="../TR_RECORD/_TR_PARAM.html#File_Cant_Var">File_Cant_Var</a> della Tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a> = TRUE</li><ul><li>in questo caso quando si conferma una Modifica al REcord</li><ul><li>scrive l'immagine di com'era il Record PRIMA della MODIFICA nella Tabella CANT_VAR<br>
+            </li></ul></ul></ul><li><span style="text-decoration: underline;">Gestione LATITUDINE/LONGITUDINE E TABELLA DISTANZE </span><br>
+      </li><ul><li>se il campo <a href="../TR_RECORD/_TR_PARAM.html#FLAG_GPS">Flag_GPS</a> della Tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a> = 1 <br>
+        </li><ul><li>nel caso in cui il sia Cambiato il <a href="../TR_RECORD/_TR_CANT.html#CAP_CAN">CAP</a> e/o il <a href="../TR_RECORD/_TR_CANT.html#LUOGO_CAN">LUOGO</a> e/o l'<a href="../TR_RECORD/_TR_CANT.html#INDIRIZZO_CAN">INDIRIZZO</a> del Cantiere (e non siano Blank) oppure la <a href="../TR_RECORD/_TR_CANT.html#LatitudineGps_Can">LATITUDINE</a> e/o la <a href="../TR_RECORD/_TR_CANT.html#LongitudineGps_Can">LONGITUDINE</a> sono = 0</li></ul><ul><ul><li>ricalcola la nuova LATITUDINE E LONGITUDINE del Cantiere con i Nuovi CAP/LUOGO/INDIRIZZO forniti</li></ul></ul><ul><ul><ul><li>se poi il campo<a href="../TR_RECORD/_TR_PARAM.html#Tipo_Assegnazione_KMMinuti">Tipo_Assegnazione_KMMinuti</a> della Tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAM</a> ha il valore = 2 (Calcola)</li><ul><li>CANCELLA TUTTI gli eventuali precedenti Record presenti nella Tabella TAB_DISTANZE</li><ul><li>con Chiave "G" <br>
+                  </li><ul><li>+ Chiave Partenza = CAP/LUOGO/INDIRIZZO VECCHIO</li><li>oppure</li><li>+ Chiave Arrivo = CAP/LUOGO/INDIRIZZO VECCHIO</li></ul></ul><li>in quanto andranno pi ricalcolati questi Record in base alle Nuove LAT/LONG ricalcolate</li></ul></ul></ul></ul></ul><li><span style="text-decoration: underline;">Gestione Attività</span></li><ul><li>nel caso in cui sia stato cambiato il valore del campo <a href="../TR_RECORD/_TR_CANT.html#TIPOLOGIA_CAN">TIPOLOGIA_CAN</a> <br>
+        </li><ul><li>se la Vecchia Tipologia era ATT oppure la Nuova Tipologia è = ATT</li><ul><li>provvede <span style="text-decoration: underline;">ad aggiornare su TUTTE LE REG con DATA MAGGIORE della DATA BLOCCO</span></li><ul><li><span style="text-decoration: underline;">il Flag di ATTIVITA'</span></li><ul><li><span style="text-decoration: underline;">= ATT se il Nuovo Cantiere diventa ATTIVITà</span></li></ul><ul><li><span style="text-decoration: underline;">= NONE se il NUovo Cantiere non è più una Attività</span></li></ul></ul></ul></ul></ul></ul></ul>
+</ul>
+<span style="font-weight: bold;"><span style="text-decoration: underline;">
+
+
+
+Per il significato</span> </span><br>
+<ul>
+  <li>dei singoli Tasti&nbsp; presenti nella Testata della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+  <li>dei singoli Campi&nbsp; presenti nella pagina si
+rimanda al documento che descrive i campi del <a href="../TR_RECORD/_TR_CANT.html">Tracciato Record della Tabella CANT</a></li>
+</ul>
+<span style="font-weight: bold; text-decoration: underline;">
+Per come Modificare</span> <br>
+<ul>
+  <li>i Campi (Colonne) da visualizzare nella Griglia Master si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master</a></li>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html"> Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>i Filtri dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html"> Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio</a></li>
+  </ul>
+  <li>i Singoli Record visualizzati per gestire l'Inserimento/Modifica/Cancellazione/Consultazione <br>
+  </li>
+  <ul>
+    <li>si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+  </ul>
+</ul>
+
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>&nbsp;&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio)</a></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-weight: bold;">&nbsp; </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o di Dettaglio)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei
+Collaboratori<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+Una volta scelta la Modalità di Visualizzazione/Ricerca dei
+Collaboratori che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista dei
+Collaboratori che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span>
+
+<span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+: nel caso in cui nella Tabella <a href="../TR_RECORD/_TR_PARAM.html"><span style="font-weight: bold;">PARAMETRI</span></a> sia stato ATTIVATO il&nbsp; il campo <a href="../TR_RECORD/_TR_PARAM.html#File_Cant_Var">File_Cant_Var</a>
+allora il sistema&nbsp;<span style="text-decoration: underline; font-weight: bold;"></span>, ad
+ogni INSERIMENTO/VARIAZIONE/CANCELLAZIONE di un Record della Scheda
+Cantieri/Assistiti/Attività, <span style="text-decoration: underline; font-weight: bold;">GESTISCE
+IN MANIERA AUTOMATICA LA SCRITTURA&nbsp; DI UN RECORD DI BACKUP</span>
+nella corrispondente Tab CANT_VAR del Record CANT, consultabile poi
+tramite l'apposita Funzione di Consultazione delle Gestione delle Variazioni
+delle Schede Cantieri/Assistiti/Attività<br>
+
+<dl>
+
+</dl><br>
+<span style="font-weight: bold; text-decoration: underline;">I singoli
+TAB come pure i Singoli Campi dei Singoli TAB possono essere resi
+VISIBILI/INVISIBILI.</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;a Livello Generale </span></span>(visibili/invisibili
+quindi per TUTTI gli Utenti Collegati)</li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">a Livello di Singolo Utente </span></span>(visibili/invisibili
+quindi per quello SPECIFICO Utente collegato)</li>
+</ul>
+
+(vedi relativo <span style="color: red;">Manuale
+Abilitazione/Disabilitazione TAB/CAMPI</span>) in
+modo da permettere ad ogni Azienda di poter decidere quanti e quali
+Dati si intendono gestire a livello Anagrafico per i propri
+Cantiere/Assistiti/Attività secondo le proprie necessità.<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+</body></html>

@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerWeb", "PowerWeb\PowerWeb.csproj", "{D42ABD3C-7908-45BE-B43F-308E5429C21D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{02C65754-6580-4484-8B58-A7CA4CA51434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{EEEEF105-26CD-4DD5-8FBC-4ED94E840A9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{65651CE2-12B7-40B7-A32B-95256FE3B547}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reports", "Reports\Reports.csproj", "{85A0DD4D-480D-41F5-819A-E456B84300C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{EDB28F2F-8C17-436D-B1ED-0915493BD636}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "localization", "localization", "{6F9DBD6A-4C47-4ACD-8EE9-13C475A7B76F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{614356AA-2BAE-4DD2-9B2D-89D5F3F0FD72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exports", "Exports\Exports.csproj", "{6AC9482C-845F-457D-9B6B-0E542C4371E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{84A9FAA4-0C89-488E-923C-BDD6AA83EC19}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceTests", "CommonServiceTests\CommonServiceTests.csproj", "{C3574B9A-A591-4EC1-8878-03FDBD1995A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F0461857-5C92-429C-92C3-7C499B1F0C86}"
+	ProjectSection(SolutionItems) = preProject
+		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bootstrap", "Bootstrap\Bootstrap.csproj", "{42E8CEED-59AC-42C2-9F25-CBD898B36FC1}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D42ABD3C-7908-45BE-B43F-308E5429C21D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42ABD3C-7908-45BE-B43F-308E5429C21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42ABD3C-7908-45BE-B43F-308E5429C21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42ABD3C-7908-45BE-B43F-308E5429C21D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C65754-6580-4484-8B58-A7CA4CA51434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C65754-6580-4484-8B58-A7CA4CA51434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C65754-6580-4484-8B58-A7CA4CA51434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C65754-6580-4484-8B58-A7CA4CA51434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEEEF105-26CD-4DD5-8FBC-4ED94E840A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEEEF105-26CD-4DD5-8FBC-4ED94E840A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEEEF105-26CD-4DD5-8FBC-4ED94E840A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEEEF105-26CD-4DD5-8FBC-4ED94E840A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65651CE2-12B7-40B7-A32B-95256FE3B547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65651CE2-12B7-40B7-A32B-95256FE3B547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65651CE2-12B7-40B7-A32B-95256FE3B547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65651CE2-12B7-40B7-A32B-95256FE3B547}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85A0DD4D-480D-41F5-819A-E456B84300C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85A0DD4D-480D-41F5-819A-E456B84300C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85A0DD4D-480D-41F5-819A-E456B84300C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85A0DD4D-480D-41F5-819A-E456B84300C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{614356AA-2BAE-4DD2-9B2D-89D5F3F0FD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{614356AA-2BAE-4DD2-9B2D-89D5F3F0FD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{614356AA-2BAE-4DD2-9B2D-89D5F3F0FD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{614356AA-2BAE-4DD2-9B2D-89D5F3F0FD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC9482C-845F-457D-9B6B-0E542C4371E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC9482C-845F-457D-9B6B-0E542C4371E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC9482C-845F-457D-9B6B-0E542C4371E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC9482C-845F-457D-9B6B-0E542C4371E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3574B9A-A591-4EC1-8878-03FDBD1995A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3574B9A-A591-4EC1-8878-03FDBD1995A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3574B9A-A591-4EC1-8878-03FDBD1995A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3574B9A-A591-4EC1-8878-03FDBD1995A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E8CEED-59AC-42C2-9F25-CBD898B36FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E8CEED-59AC-42C2-9F25-CBD898B36FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E8CEED-59AC-42C2-9F25-CBD898B36FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E8CEED-59AC-42C2-9F25-CBD898B36FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35
+		SolutionGuid = {C2250A86-E800-4D8B-95D6-574E1E039852}
+	EndGlobalSection
+EndGlobal

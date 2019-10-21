@@ -1,0 +1,8 @@
+﻿body {
+}
+
+.pushpinStyle div {
+    color: black !important; /*Make Pushpin text black*/
+    text-shadow: 1px 0px white, -1px 0px white, 0px -1px white, 0px 1px white; /*Give the text all around white text shadow so it looks nice on browsers that support it*/
+    font: 15px sans-serif !important;
+}

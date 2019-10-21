@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Tab_Decod_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (Tab_Decod) di Gestione delle Tabelle di Decodifica</span>
+</h1>
+
+Questa pagina permette<span style="font-weight: bold; text-decoration: underline;"> </span>l'Inserimento,
+la Modifica, la
+Cancellazione ( a determinate condizioni) delle Tabelle di Decodifica
+utilizzate in PowerWeb<br>
+
+<br>
+
+<span style="text-decoration: underline; font-weight: bold;">Le Tabelle
+di Decodifica vengono differenziate in base al</span>:<br>
+
+<ul>
+
+  <li><a href="../TR_RECORD/_TR_TAB_DECOD.html#GRUPPO_TAB"><span style="font-weight: bold;">GRUPPO_TAB</span></a> che può
+assumere i seguenti Valori<br>
+  </li>
+  <ul>
+    <li style="font-weight: bold;"><a href="../TR_RECORD/_TR_TAB_DECOD.html#DECOD_TITLE">DECOD_TITLE</a></li>
+    <ul>
+      <li style="text-decoration: underline;">Identifica i Record di
+Testata delle Tabelle di Decodifica</li>
+      <ul>
+        <li>possono essere gestiti SOLO dagli Utenti WINIT
+(Livello&gt;=12)<br>
+        </li>
+      </ul>
+    </ul>
+    <li style="font-weight: bold;"><a href="../TR_RECORD/_TR_TAB_DECOD.html#DECOD_SYS">DECOD_SYS</a></li>
+    <ul>
+      <li style="font-weight: bold;"><span style="font-weight: normal; text-decoration: underline;">Identifica i Record di Dettaglio delle Tabelle di Decodifica di Sistema</span></li>
+      <ul>
+        <li style="font-weight: bold;"><span style="font-weight: normal;">possono essere gestiti SOLO dagli Utenti WINIY (Livello &gt;=12)</span><span style="font-weight: normal; text-decoration: underline;"><br>
+          </span></li>
+      </ul>
+    </ul>
+
+    <li><a href="../TR_RECORD/_TR_TAB_DECOD.html#DECOD_TAB"><span style="font-weight: bold;">DECOD_TAB</span></a></li>
+    <ul>
+      <li><span style="text-decoration: underline;">Identifica i Record di Dettaglio delle Tabelle di Decodifica Generiche</span><span style="font-weight: bold;"></span></li>
+      <ul>
+        <li>possono essere gestiti DA TUTTI gli Utenti<span style="font-weight: bold;"><br>
+          </span></li>
+      </ul>
+    </ul>
+
+  </ul>
+</ul>
+
+<span style="font-weight: bold;"><span style="text-decoration: underline;">
+Ogni Tabella ha quindi la seguente Struttura</span><br>
+<br>
+</span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold;">1 -
+RECORD DI TESTATA</span> con i seguenti
+valori<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>
+<ul>
+
+  <ul>
+    <li>GRUPPO_TAB <span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>=
+DECOD_TITLE (valore FISSO)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+    </li>
+  </ul>
+  <ul>
+    <li>NOME_TAB<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>=
+NOME DI UNO DEI GRUPPI PREVISTI</li>
+    <ul>
+      <li><a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">TAB_DECOD</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODIFICA
+UTENTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">vedi Elenco
+TAB_DECOD)</a></li>
+      <ul>
+        <li>TUTTI I RECORD DI QUESTO GRUPPO NON SONO MODIFICABILI DAGLI
+UTENTI CON LIVELLO &lt;=12</li>
+      </ul>
+      <li><a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">TAB_SYS&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODFICA DI SISTEMA (<a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">vedi ELENCO
+TAB_SYS</a>)</li>
+      <ul>
+        <li>TUTTE I RECORD DI QUESTO GRUPPO NON SONO MODIFICABILI DAGLI
+UTENTI CON LIVELLO &lt;=12</li>
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <li>CHIAVE_TAB<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>=&nbsp; NOME DELLA TABELLA di cui è la Testata
+    </li>
+    <li>DECODIFICA_TAB&nbsp;<span style="">
+&nbsp; </span>=<span style="">&nbsp; </span>DESCRIZIONE
+DELLA
+SPECIFICA TABELLA DI
+DECODIFICA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp;&nbsp; Elenco dei Responsabili&nbsp;</li>
+  </ul>
+</ul>
+
+<br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">"n"
+RECORD DEI DATI</span> della relativa&nbsp; Tabella&nbsp; <br>
+  </li>
+</ul>
+
+<ul>
+
+  <ul>
+    <li>GRUPPO_TAB<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; </span>=
+NOME GRUPPO TABELLE DI
+DECODIFICA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+    </li>
+    <ul>
+      <li><a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">TAB_DECOD</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODIFICA
+UTENTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">vedi Elenco
+TAB_DECOD)</a><br>
+      </li>
+      <li><a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">TAB_SYS&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODFICA DI SISTEMA (<a href="../TR_RECORD/_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">vedi ELENCO
+TAB_SYS</a>)<br>
+      </li>
+    </ul>
+  </ul>
+</ul>
+
+<ul>
+
+  <ul>
+    <li>NOME_TAB<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>=
+NOME DELLA SPECIFICA TABELLA DI
+DECODIFICA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp; TAB_RESP<br>
+    </li>
+  </ul>
+</ul>
+
+<ul>
+
+  <ul>
+    <li>CHIAVE_TAB<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>=&nbsp;
+VALORE
+DELLA CHIAVE DELLO SPECIFICO
+RECORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp; 0001</li>
+    <li>DECODIFICA_TAB&nbsp;<span style="">
+&nbsp; </span>=<span style="">&nbsp; </span>DESCRIZIONE
+ASSOCIATA ALLO SPECIFICA
+CHIAVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp; MARIO ROSSI </li>
+  </ul>
+</ul>
+
+<br style="font-weight: bold; text-decoration: underline;">
+
+<span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+: <br>
+<ul>
+  <li><span style="font-weight: bold; text-decoration: underline;">i NOMI
+DELLE TABELLE sono UNIVOCI <br>
+    </span></li>
+  <ul>
+    <li><span style="font-weight: bold; text-decoration: underline;">a prescindere dal GRUPPO di APPARTENENZA</span> <br>
+    </li>
+    <ul>
+      <li>in modo che se in futuro si dovesse passare una Tabella da un Gruppo ad
+un Altro non ci sono problemi particolari</li>
+    </ul>
+    <ul>
+      <ul>
+        <li>ciò significa che NON ci sono mai
+2 Tabelle con lo stesso NOME_TAB</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+
+Perciò i vari campi della Tabella TAB_DECOD hanno i seguenti
+significati
+in base la fatto che siano un Record di Testata o di Dettaglio Dati:<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"><a name="GRUPPO_TAB"></a>GRUPPO_TAB&nbsp;</span>&nbsp;
+- se&nbsp; = "DECOD_TITLE"&nbsp; identifica un Record di
+Testata che contiene poi <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - nel Campo<a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">
+<span style="text-decoration: underline;">NOME_TAB</span></a>
+il Nome del Gruppo delle Tabelle a cui appartiene la Tabella <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; con Nome
+inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#CHIAVE_TAB"><span style="text-decoration: underline;">CHIAVE_TAB</span></a><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; - nel
+Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#CHIAVE_TAB"><span style="text-decoration: underline;">CHIAVE_TAB</span> </a>il
+Nome della Singola Tabella appartenente al Gruppo di Tabelle<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; con Nome
+inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#DECODIFICA_TAB">DECODIFICA_TAB</a>
+la relativa Descrizione con il SIgnificato della Tabella<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - se
+&lt;&gt; "DECOD_TITLE"&nbsp;
+identifica i Record delle Tabelle per le quali è stato PRIMA inserito <br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp; un Record di Testata con <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a>=DECOD_TITLE<br>
+
+<span style="font-weight: bold; text-decoration: underline;"><a name="NOME_TAB"></a>NOME TAB</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -
+se&nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>&nbsp;
+= "DECOD_TITLE"&nbsp; Contiene il NOME DEL GRUPPO delle Tabelle<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; a cui appartiene la Tabella
+con Nome inserito
+nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#CHIAVE_TAB"><span style="text-decoration: underline;">CHIAVE_TAB</span></a>
+<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; - se &nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>
+&lt;&gt; "DECOD_TITLE" Contiene il Nome della Tabella <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; appartenente al Gruppo di
+Tabelle con Nome
+inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a><br>
+
+<span style="text-decoration: underline; font-weight: bold;"><a name="CHIAVE_TAB"></a>CHIAVE_TAB</span>&nbsp;&nbsp;&nbsp;&nbsp;
+- se&nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>&nbsp;
+= "DECOD_TITLE"&nbsp; Contiene il Nome della SINGOLA TABELLA<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;appartenente al GRUPPO DI TABELLE con
+Nome inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a><br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - se
+&nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>
+&lt;&gt; "DECOD_TITLE" Contiene la Chiave dell'Elemento della
+Tabella<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; con Nome inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a>
+appartenente al Gruppo di Tabelle<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; con Nome inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a><br>
+
+<span style="text-decoration: underline; font-weight: bold;"><a name="DECODIFICA_TAB"></a>DECODIFICA_TAB</span>
+&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; Descrizione della
+Singola Tabella per i Record di Testata
+( se NOME_TAB&nbsp; = "DECOD_TITLE")&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; Descrizione del Valore
+associato alla
+Chiave del Record&nbsp; ( se NOME_TAB&nbsp; &lt;&gt;
+"DECOD_TITLE")<span style="text-decoration: underline; font-weight: bold;"><br>
+</span><br>
+
+Questa pagina è di Tipo MASTER (senza Dettaglio) e quindi si rimanda la
+relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della
+relativa struttura di Funzionamento.<br>
+
+<dl>
+
+  <dt><span style="font-weight: bold; text-decoration: underline;">Per
+poter Gestire una NUOVA TABELLA occorre che PRIMA venga inserito da un
+UTENTE WINIT (Livello &gt;=12)&nbsp; nella Tabella TAB_DECOD il Record
+di Testata</span> con<br>
+</dt></dl>
+<ul>
+  <li><a href="../TR_RECORD/_TR_TAB_DECOD.html#GRUPPO_TAB">NOME GRUPPO</a> = DECOD_TITLE</li>
+  <li style="font-weight: bold;"><a style="font-weight: normal;" href="../TR_RECORD/_TR_TAB_DECOD.html#NOME_TAB">NOME_TABELLA</a> =</li>
+  <ul>
+    <li>DECOD_SYS se si tratta di una NUOVA TABELLA di SISTEMA</li>
+    <li>DECOD_TAB se si tratta di una NUOVA TABELLA GENERICA</li>
+  </ul>
+  <li><a href="../TR_RECORD/_TR_TAB_DECOD.html#CHIAVE_TAB">CHIAVE_TABELLA</a> = Nome Assegnato a quella NUOVA TABELLA</li>
+  <ul>
+    <li><a href="../TR_RECORD/_TR_TAB_DECOD.html#DECODIFICA_TAB">DECODIFICA_TABELLA</a> = Descrizione della NUOVA TABELLA<br>
+    </li>
+  </ul>
+</ul>
+<dl>
+  <dt><b style=""><u>Per potre Gestire un RECORD DI UNA TABELLA ESISTENTE è necessario inserire su ogni Record i Seguenti Dati<br>
+    </u></b></dt>
+
+</dl>
+
+
+<ul>
+
+  
+  <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeRicerca">NOME GRUPPO</a><span> =</span></li>
+  <ul>
+    <li><span>DECOD_SYS se si tratta di un Record di una Tabella di Sistema<br>
+      </span></li>
+    <li><span>DECOD_TAB se si tratta di un Record di una Tabella Generica</span> </li>
+  </ul>
+
+  <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Ordinamento">NOME TABELLA</a>&nbsp; <span style="">= Valore inserito nel Campo CHIAVE_TABELLA del Record di Testata ( quello con Nome_Gruppo= DECOD_SYS o DECOD_TAB)</span></li>
+  <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeCampo">VALORE_CHIAVE_RECORD</a><span style=""></span></li>
+  <ul>
+    <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeTab">DECODIFICA RECORD</a></li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">NON ci sono
+Comportamenti Specifici per la Pagina TAB_DECOD</span><br>
+
+<br>
+
+<span style="text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Per il
+Significato </span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; dei singoli Tasti&nbsp; presenti nella Testata
+della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Per come
+Modificare</span><br>
+
+<ul>
+
+  <li>&nbsp;i Campi (Colonne) da visualizzare nella Griglia Master <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="mailto:../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a></li>
+  </ul>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb)</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio<br>
+  </li>
+  <ul>
+    <li>&nbsp;si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb</a></li>
+  </ul>
+  <li>i Filtri sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare i Filtri della Griglia Master o di Dettaglio di una Pagina
+di
+PowerWeb</a></li>
+  </ul>
+  <li>un Record della Griglia Master per effettuarne</li>
+  <ul>
+    <li>l'Inserimento/Modifica/Cancellazione/Consultazione del Singoli
+Record visualizzatoi</li>
+    <ul>
+      <li>&nbsp;si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+    </ul>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>
+&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>&nbsp;&nbsp; (vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o della Griglia di Dettaglio
+di una Pagina di
+PowerWeb)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei Collaboratori nell'<a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html#AREA_H">Area
+H dello Schema della pagina Standard di PowerWeb</a><br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>Una
+volta scelta la Modalità di Visualizzazione/Ricerca delle Tabelle di
+Decodifica che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista
+delle Tabelle di Decodifica che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span><span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+</body></html>

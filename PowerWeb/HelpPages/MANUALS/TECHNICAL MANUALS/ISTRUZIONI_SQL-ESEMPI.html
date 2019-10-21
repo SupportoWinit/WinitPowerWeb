@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Esempi di Istruzioni SQL/title&gt;</title>
+
+  </head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>ESEMPI DI ISTRUZIONI SQL</h1>
+
+<ol>
+
+  <li>Selct su Campi DateTime</li>
+  <ol>
+    <li>Seelzione su PARTE DATA</li>
+    <ol>
+      <li>Select * from Reg where CONVERT(Char(8), NomeCampoDateTime,
+112) = 'AAAAMMGG'</li>
+    </ol>
+    <li>Selezione su Parte TIME</li>
+    <ol>
+      <li>Select * from Reg where CONVERT(Char(12), NomeCampoDateTime,
+114) = 'hh:mm:ss:mmm' <br>
+      </li>
+      <ol>
+        <li>NOTA BENE i Millisecondi sono 997 e non 999 !!!!!<br>
+        </li>
+      </ol>
+    </ol>
+  </ol>
+</ol>
+
+<br>
+
+<br>
+</body></html>

@@ -1,0 +1,122 @@
+﻿/* jQuery Alert */
+
+#popup_container
+{
+    font-family: Segoe UI;
+    font-size: 12px;
+    min-width: 300px; /* Dialog will be no smaller than this */
+    max-width: 600px; /* Dialog will wrap after this width */
+    background: #acc0e9;
+    background-color: #EEF0F6;
+    border: solid 2px #999;
+    color: #000;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 3px;
+}
+
+#popup_title
+{
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.75em;
+    color: #666;
+    background: #CCC url(../Icons/jAlert/sprite.png) top repeat-x;
+    border: solid 1px #FFF;
+    border-bottom: solid 1px #999;
+    cursor: default;
+    padding: 0em;
+    margin: 0em;
+}
+
+#popup_content
+{
+    background: 16px 16px no-repeat url(../Icons/jAlert/info.gif);
+    padding: 1em 1.75em;
+    margin: 0em; /* border: solid 1px black; */
+}
+
+    #popup_content.info
+    {
+        background-color: Transparent;
+        background-image: url(../Icons/jAlert/info.png);
+    }
+
+    #popup_content.success
+    {
+        background-color: Transparent;
+        background-image: url(../Icons/jAlert/success.png);
+    }
+
+    #popup_content.warning
+    {
+        background-color: Transparent;
+        background-image: url(../Icons/jAlert/warning.png);
+    }
+
+    #popup_content.error
+    {
+        background-color: Transparent;
+        background-image: url(../Icons/jAlert/error.png);
+    }
+
+    #popup_content.confirm
+    {
+        background-image: url(../Icons/jAlert/important.gif);
+    }
+
+    #popup_content.prompt
+    {
+        background-image: url(../Icons/jAlert/help.gif);
+    }
+
+.button
+{
+    border: solid 2px #999;
+    border-radius: 2px;
+}
+
+#popup_message
+{
+    padding-left: 48px;
+    font-family: Segoe UI;
+}
+
+#popup_panel
+{
+    text-align: center;
+    margin: 1em 0em 0em 1em;
+}
+
+#popup_prompt
+{
+    margin: .5em 0em;
+    font-size: 8pt;
+    font-family: Segoe UI;
+    border: 1px solid #7b9ebd;
+}
+
+#popup_ok
+{
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde);
+    cursor: hand;
+    width: 50px;
+    font-size: 11px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-family: Segoe UI;
+    height: 20px; /* border: 1px solid #7b9ebd; */
+}
+
+#popup_cancel
+{
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde);
+    cursor: hand;
+    width: 50px;
+    font-size: 11px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-family: Segoe UI;
+    border: 1px solid #7b9ebd;
+}

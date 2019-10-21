@@ -1,0 +1,4130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CTRL_APRI_OPZIONI_REPORT" xml:space="preserve">
+    <value>Apri Opzioni di Stampa</value>
+  </data>
+  <data name="CTRL_BTNAGGIORNA" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="CTRL_BTNANNULLA" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="CTRL_BTNCLONA" xml:space="preserve">
+    <value>Clona Record</value>
+  </data>
+  <data name="CTRL_BTNELIMINA" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="CTRL_BTNESEGUI" xml:space="preserve">
+    <value>Esegui</value>
+  </data>
+  <data name="CTRL_BTNINSERISCI" xml:space="preserve">
+    <value>Inserimento</value>
+  </data>
+  <data name="CTRL_BTNLAUNCHEXPORT" xml:space="preserve">
+    <value>Lancio Report</value>
+  </data>
+  <data name="CTRL_BTNMODIFICA" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="CTRL_BTNSTAMPA" xml:space="preserve">
+    <value>Stampa</value>
+  </data>
+  <data name="CTRL_BTNVISUALIZZA" xml:space="preserve">
+    <value>Visualizza</value>
+  </data>
+  <data name="CTRL_CANCELLA_LAYOUT_GRID" xml:space="preserve">
+    <value>Cancella Struttura Griglia</value>
+  </data>
+  <data name="CTRL_ESEGUI_STAMPA_EXCEL" xml:space="preserve">
+    <value>Esegui Stampa Excel</value>
+  </data>
+  <data name="CTRL_ESEGUI_STAMPA_PDF" xml:space="preserve">
+    <value>Esegui Stampa PDF</value>
+  </data>
+  <data name="CTRL_HELP" xml:space="preserve">
+    <value>HELP</value>
+  </data>
+  <data name="CTRL_PERSONALIZZA_COLONNE_GRID" xml:space="preserve">
+    <value>Personalizza Colonne Griglia</value>
+  </data>
+  <data name="CTRL_SALVA_LAYOUT_GRID" xml:space="preserve">
+    <value>Salva Struttura Griglia</value>
+  </data>
+  <data name="ERR_ACCESSO_DATABASE" xml:space="preserve">
+    <value>Errore durante l'accesso al database!</value>
+  </data>
+  <data name="ERR_AGGIORNAMENTO_PASSWORD_NON_ABILITATO_PER_QUESTO_CLIENTE" xml:space="preserve">
+    <value>Aggiornamento della password non abilitato per questo cliente!</value>
+  </data>
+  <data name="ERR_ALMENO_UN_CAMPO_TRA_X_E_Y_E_OBBLIGATORIO" xml:space="preserve">
+    <value>Almeno un campo tra '{0}' e '{1}' è obbligatorio!</value>
+  </data>
+  <data name="ERR_CAMPO_DB_ERRATO" xml:space="preserve">
+    <value>Ci sono più Record con Campo_DB selezionato</value>
+  </data>
+  <data name="ERR_CAMPO_DB_MANCANTE" xml:space="preserve">
+    <value>Ci deve essere almeno un CAMPO_DB selezionato</value>
+  </data>
+  <data name="ERR_CAMPO_DB__VIDEO_MANCANTE" xml:space="preserve">
+    <value>Deve esistere almeno un CAMPO_Db e/o CAMPO_VIDEO selezionato</value>
+  </data>
+  <data name="ERR_CAMPO_VIDEO_MANCANTE" xml:space="preserve">
+    <value>Ci deve essere almeno un CAMPO_VIDEO selezionato</value>
+  </data>
+  <data name="ERR_CAMPO_X_DEVE_AVERE_UNO_DEI_SEGUENTI_VALORI_Y" xml:space="preserve">
+    <value>Il campo '{0}' deve avere uno dei seguenti valori: {1}!</value>
+  </data>
+  <data name="ERR_CAMPO_X_DEVE_ESSERE_COMPRESO_FRA_Y_E_Z" xml:space="preserve">
+    <value>Il campo '{0}' deve essere compreso fra '{1}' e '{2}'!</value>
+  </data>
+  <data name="ERR_CAMPO_X_DEVE_ESSERE_MAGGIORE_UGUALE_Y" xml:space="preserve">
+    <value>Il campo '{0}' deve essere maggiore/uguale a '{1}'</value>
+  </data>
+  <data name="ERR_CAMPO_X_DEVE_ESSERE_MINORE_UGUALE_Y" xml:space="preserve">
+    <value>Il campo '{0}' deve essere minore/uguale a '{1}'!</value>
+  </data>
+  <data name="ERR_CAMPO_X_DEVE_VALERE_Y" xml:space="preserve">
+    <value>Il campo '{0}' deve valere '{1}'!</value>
+  </data>
+  <data name="ERR_CAMPO_X_DEVE_VALERE_Y_MENTRE_VALE_Z" xml:space="preserve">
+    <value>Il campo '{0}' deve valere '{1}' mentre vale '{2}'!</value>
+  </data>
+  <data name="ERR_CAMPO_X_E_OBBLIGATORIO" xml:space="preserve">
+    <value>Il campo '{0}' è obbligatorio!</value>
+  </data>
+  <data name="ERR_CAMPO_X_NON_ESISTE_IN_TABELLA_Y" xml:space="preserve">
+    <value>Il Campo {0} NON esiste nella Tabella [1]DataBase</value>
+  </data>
+  <data name="ERR_CAMPO_X_NON_PRESENTE_IN_DATI_IMPORT" xml:space="preserve">
+    <value>Il campo '{0}' non è presente nei dati che si stanno importando!</value>
+  </data>
+  <data name="ERR_CODICE_FISCALE_ERRATO" xml:space="preserve">
+    <value>Il codice fiscale fornito è errato!</value>
+  </data>
+  <data name="ERR_CONTATTARE_WINIT" xml:space="preserve">
+    <value>Contattare Winit!</value>
+  </data>
+  <data name="ERR_DATABASE_NON_AGGIORNATO_COME_APPLICAZIONE" xml:space="preserve">
+    <value>Il database non è aggiornato alla stessa versione dell'applicazione!
+Contattare Winit!</value>
+  </data>
+  <data name="ERR_DATA_INIZIO_X_DEVE_ESSERE_MINORE_DI_DATA_FINE_Y" xml:space="preserve">
+    <value>La data di inizio del campo '{0}' deve essere minore della data di fine del campo '{1}'!</value>
+  </data>
+  <data name="ERR_DATA_NON_VALIDA" xml:space="preserve">
+    <value>La data non è valida!</value>
+  </data>
+  <data name="ERR_DATI_INSUFFICIENTI" xml:space="preserve">
+    <value>Dati insufficienti!</value>
+  </data>
+  <data name="ERR_DATI_NECESSARI_MANCANTI" xml:space="preserve">
+    <value>Mancano dei dati che sono necessari!</value>
+  </data>
+  <data name="ERR_DEVE_ESSERE_SCELTO_ALMENO_UN_GG" xml:space="preserve">
+    <value>Deve essere scelto almeno un giorno lavorativo nella settimana!</value>
+  </data>
+  <data name="ERR_DURANTE_DELETE" xml:space="preserve">
+    <value>durante la cancellazione</value>
+  </data>
+  <data name="ERR_DURANTE_INSERT" xml:space="preserve">
+    <value>durante inserimento</value>
+  </data>
+  <data name="ERR_DURANTE_UPDATE" xml:space="preserve">
+    <value>durante l'aggiornamento</value>
+  </data>
+  <data name="ERR_ESTENSIONE_FILE_X_NON_VALIDA" xml:space="preserve">
+    <value>L'estensione file '{0}' non è valida!</value>
+  </data>
+  <data name="ERR_FILE_DELLE_PASSWORD_INESISTENTE_O_NON_ACCESSIBILE" xml:space="preserve">
+    <value>File delle password inesistente o non accessibile!</value>
+  </data>
+  <data name="ERR_FK_CANT_CLI" xml:space="preserve">
+    <value>Errore nel legame tra cliente e cantiere </value>
+  </data>
+  <data name="ERR_FK_COL_CANT" xml:space="preserve">
+    <value>Errore nel legame tra cantiere e collaboratori </value>
+  </data>
+  <data name="ERR_INCONGRUENZA_SUL_SERVER_DI_AGGIORNAMENTO" xml:space="preserve">
+    <value>C'è un'incongruenza sul server di aggiornamento software!
+Contattare Winit!</value>
+  </data>
+  <data name="ERR_IN_CALCOLO_CODICE_FISCALE" xml:space="preserve">
+    <value>Errore durante il calcolo del codice fiscale!</value>
+  </data>
+  <data name="ERR_LIVELLO_NON_MODIFICABILE_DA_UTENTE_NON_ADMIN" xml:space="preserve">
+    <value>Un Utente NON ADMIN non può modificarsi il Livello</value>
+  </data>
+  <data name="ERR_LUNGHEZZA_CAMPO_X_DEVE_ESSERE_MINORE_UGUALE_Y" xml:space="preserve">
+    <value>La Lunghezza del dato inserito nel campo '{0}' deve essere minore/uguale a '{1}'!</value>
+  </data>
+  <data name="ERR_LUNGHEZZA_X_MINORE_UGUALE_X" xml:space="preserve">
+    <value>La lunghezza del campo '{0}' deve essere minore/uguale a {1}!</value>
+  </data>
+  <data name="ERR_MANCANO_DELLE_RISORSE" xml:space="preserve">
+    <value>Mancano delle risorse (vedi finestra output)!</value>
+  </data>
+  <data name="ERR_MANCA_RECORD_TITLE_IN_TAB_DECOD" xml:space="preserve">
+    <value>Manca Record TITLE in Tab_Decod Inserimento Dettaglio Impossibile</value>
+  </data>
+  <data name="ERR_MATRICOLA_INESISTENTE" xml:space="preserve">
+    <value>La matricola '{0}' è inesistente!</value>
+  </data>
+  <data name="ERR_MESSAGGIO_AVVERTIMENTO_X0_PER_CAMPO_X1_PER_TABELLA_X2_PER_UTENTE_X3" xml:space="preserve">
+    <value>Avviso: {0} - Campo:'{1}'  - Tabella:'{2}' - Utente:'{3}'</value>
+  </data>
+  <data name="ERR_NOME_FILE_X_NON_VALIDO" xml:space="preserve">
+    <value>Il nome file '{0}' non è valido!</value>
+  </data>
+  <data name="ERR_NOME_RISORSA_X_NON_ESISTE_IN_RESOURCES" xml:space="preserve">
+    <value>Il Nome Risorsa {0} NON esiste nelle Risorse di Sistema</value>
+  </data>
+  <data name="ERR_NOMI_GRUPPI_TAB_DECOD_NON_VALIDI" xml:space="preserve">
+    <value>GRUPPOTAB deve essere uguale a DECOD_SYS e/o DECOD_TAB e/o DECOD_TITLE</value>
+  </data>
+  <data name="ERR_NO_SALVA_STRUTTURA_DEFAULT" xml:space="preserve">
+    <value>La struttura di DEFAULnon è modificabile</value>
+  </data>
+  <data name="ERR_N_CAMPI_X_PREVISTO_DIVERSO_DA_N_CAMPI_Y_TROVATI" xml:space="preserve">
+    <value>Trovati {0} campi rispetto ai {1} attesi!</value>
+  </data>
+  <data name="ERR_OGGETTO_X_NON_TROVATO" xml:space="preserve">
+    <value>Oggetto '{0}' non trovato!</value>
+  </data>
+  <data name="ERR_ORARIO_NON_VALIDO" xml:space="preserve">
+    <value>L'orario non è valido!</value>
+  </data>
+  <data name="ERR_PERCORSO_DIRECTORY_X_NON_VALIDO" xml:space="preserve">
+    <value>Il percorso directory '{0}' non è valido!</value>
+  </data>
+  <data name="ERR_PRIMA_MATRICOLA_INESISTENTE" xml:space="preserve">
+    <value>La matricola '{0}' è inesistente!</value>
+  </data>
+  <data name="ERR_RECORD_CON_VALORI_DUPLICATI" xml:space="preserve">
+    <value>Record con valori duplicati!</value>
+  </data>
+  <data name="ERR_RECORD_X_DA_IMPORTARE_ERRATO" xml:space="preserve">
+    <value>Il record {0} da importare contiene dei valori errati!</value>
+  </data>
+  <data name="ERR_RINOMINAZIONE_FILE_X_IN_FILE_Y_NON_RIUSCITA" xml:space="preserve">
+    <value>Rinominazione file '{0}' in '{1}' non riuscita!</value>
+  </data>
+  <data name="ERR_RISCONTRATA_INCONGRUENZA_DURANTE_AGGIORNAMENTO_PASSWORD" xml:space="preserve">
+    <value>Riscontrata un'incongruenza durante l'aggiornamento della password!</value>
+  </data>
+  <data name="ERR_ROLLBACK_ESEGUITO" xml:space="preserve">
+    <value>Eseguito Rollback su database!</value>
+  </data>
+  <data name="ERR_SECONDA_MATRICOLA_INESISTENTE" xml:space="preserve">
+    <value>La matricola '{0}' è inesistente!</value>
+  </data>
+  <data name="ERR_SE_CODICE_CAN_E_COL_ASSENTI_FRU_E_PRU_OBBLIGATORI" xml:space="preserve">
+    <value>Se Cod.Cantiere  e Cod.Collab. assenti diventano OBBLIGATORI il Codice U.Fisse e U.Portatile</value>
+  </data>
+  <data name="ERR_SE_CODICE_PRU_E_FRU_ASSENTI_CANTIERE_E_COLLAB_OBBLIGATORI" xml:space="preserve">
+    <value>Se Cod.PRU e Cod.FRU assenti diventano OBBLIGATORI il Cantiere e il Collaboratore</value>
+  </data>
+  <data name="ERR_STRANIERO_CEE" xml:space="preserve">
+    <value>Se straniero_cee=true allora anche straniero deve essere =true</value>
+  </data>
+  <data name="ERR_STRUTTURA_NON_DELL_UTENTE" xml:space="preserve">
+    <value>La struttura non appartiene all'Utente</value>
+  </data>
+  <data name="ERR_TABELLA_X_NON_ESISTE" xml:space="preserve">
+    <value>La Tabella {0} indicata NON esiste nel DataBase</value>
+  </data>
+  <data name="ERR_TABELLA_X_NON_ESISTE_IN_TAB_DECOD" xml:space="preserve">
+    <value>La Tabella [0] NON esiste in TAB_DECOD</value>
+  </data>
+  <data name="ERR_TIPO_IMPORT_OBBLIGATORIO" xml:space="preserve">
+    <value>E' necessario indicare il Tipo di Import (STD o MOSAICO)</value>
+  </data>
+  <data name="ERR_TITOLO" xml:space="preserve">
+    <value>POWER WEB</value>
+  </data>
+  <data name="ERR_UTENTE_CON_LIVELLO_MAGGIORE_DI_10_NON_MODIFICABILE" xml:space="preserve">
+    <value>Utente con Liv&gt;10 Modificabile SOLOda Utente con Livello Pari o Maggiroe</value>
+  </data>
+  <data name="ERR_UTENTE_NON_ADMIN_NON_PUO_MOD_ALTRI_UTENTI" xml:space="preserve">
+    <value>Utente con Livello NON ADMIN può modificare solo se stesso</value>
+  </data>
+  <data name="ERR_UTENTE_NON_AUTORIZZATO_GRUPPO_TAB" xml:space="preserve">
+    <value>La Gestione dei Gruppi DECOD_SYS e DECO_TITLE è riservata alla WINIT</value>
+  </data>
+  <data name="ERR_UTENTE_NON_AUTORIZZATO_TABELLA" xml:space="preserve">
+    <value>La Gestione di questa Tabella è riservata alla WINIT</value>
+  </data>
+  <data name="ERR_VALORE_CAMPO_X_ERRATO" xml:space="preserve">
+    <value>Valore campo '{0}' errato!</value>
+  </data>
+  <data name="ERR_VALORE_CAMPO_X_NON_PRESENTE_IN_TABELLA_DECODIFICHE" xml:space="preserve">
+    <value>Il valore del campo '{0}' non è presente nella tabella delle decodifiche!</value>
+  </data>
+  <data name="ERR_VALORE_CAMPO_X_NON_PRESENTE_IN_TABELLA_Y" xml:space="preserve">
+    <value>Il valore del campo '{0}' non è presente nella tabella '{1}'!</value>
+  </data>
+  <data name="ERR_VALORE_NON_PRESENTE_IN_LISTA" xml:space="preserve">
+    <value>Valore non presente in lista!</value>
+  </data>
+  <data name="EXP_CARTELLINO_STANDARD" xml:space="preserve">
+    <value>Export XLSX Cartellino</value>
+  </data>
+  <data name="EXP_REGISTRAZIONI_ESTESE" xml:space="preserve">
+    <value>Export XLSX Registrazioni estese</value>
+  </data>
+  <data name="FDL_TOCOLDESC" xml:space="preserve">
+    <value>Al Collab:</value>
+  </data>
+  <data name="FLD_ABILITAZIONE_DATA_INIZIO_FRU_CAN" xml:space="preserve">
+    <value>Data Inizio Abilitaz.</value>
+  </data>
+  <data name="FLD_ABILITAZIONE_DATA_INIZIO_PRU_COL" xml:space="preserve">
+    <value>Data Inizio Abilitaz.</value>
+  </data>
+  <data name="FLD_ABILITA_PASS" xml:space="preserve">
+    <value>Abilita pass.</value>
+  </data>
+  <data name="FLD_ACTIVATIONDATE" xml:space="preserve">
+    <value>Data Attivazione</value>
+  </data>
+  <data name="FLD_APRIOGGETTO" xml:space="preserve">
+    <value>Nome oggetto da lanciare</value>
+  </data>
+  <data name="FLD_ARRIVO_TAB_DIST" xml:space="preserve">
+    <value>Luogo Arrivo</value>
+  </data>
+  <data name="FLD_ARRIVO_TAB_DISTANZE" xml:space="preserve">
+    <value>Luogo Arrivo</value>
+  </data>
+  <data name="FLD_ARROTF_COL" xml:space="preserve">
+    <value>Min.arrot in uscita</value>
+  </data>
+  <data name="FLD_ARROTI_COL" xml:space="preserve">
+    <value>Min.arrot in entrata</value>
+  </data>
+  <data name="FLD_ARROT_DURATA" xml:space="preserve">
+    <value>Min.arrot.x durata</value>
+  </data>
+  <data name="FLD_ARROT_DURATA_CAN" xml:space="preserve">
+    <value>Min.arrot.x durata</value>
+  </data>
+  <data name="FLD_ARROT_DURATA_COL" xml:space="preserve">
+    <value>Min.arrot.x durata</value>
+  </data>
+  <data name="FLD_ASSEGNI_FAMIGLIARI_COL" xml:space="preserve">
+    <value>Flag assegni fam.</value>
+  </data>
+  <data name="FLD_ASSEGNI_FAMIGLIARI_FINE_COL" xml:space="preserve">
+    <value>Data inizio x assegni fam</value>
+  </data>
+  <data name="FLD_ASSEGNI_FAMIGLIARI_INIZIO_COL" xml:space="preserve">
+    <value>Data fine x assegni fam</value>
+  </data>
+  <data name="FLD_ASSOCIATED" xml:space="preserve">
+    <value>Ass.</value>
+  </data>
+  <data name="FLD_ASSOCIATO" xml:space="preserve">
+    <value>Con assoc.</value>
+  </data>
+  <data name="FLD_ASSOCIATO1" xml:space="preserve">
+    <value>Associato-1</value>
+  </data>
+  <data name="FLD_ASSOCIATO10" xml:space="preserve">
+    <value>Associato-10</value>
+  </data>
+  <data name="FLD_ASSOCIATO11" xml:space="preserve">
+    <value>Associato-11</value>
+  </data>
+  <data name="FLD_ASSOCIATO12" xml:space="preserve">
+    <value>Associato-12</value>
+  </data>
+  <data name="FLD_ASSOCIATO13" xml:space="preserve">
+    <value>Associato-13</value>
+  </data>
+  <data name="FLD_ASSOCIATO14" xml:space="preserve">
+    <value>Associato-14</value>
+  </data>
+  <data name="FLD_ASSOCIATO15" xml:space="preserve">
+    <value>Associato-15</value>
+  </data>
+  <data name="FLD_ASSOCIATO16" xml:space="preserve">
+    <value>Associato-16</value>
+  </data>
+  <data name="FLD_ASSOCIATO17" xml:space="preserve">
+    <value>Associato-17</value>
+  </data>
+  <data name="FLD_ASSOCIATO18" xml:space="preserve">
+    <value>Associato-18</value>
+  </data>
+  <data name="FLD_ASSOCIATO19" xml:space="preserve">
+    <value>Associato-19</value>
+  </data>
+  <data name="FLD_ASSOCIATO2" xml:space="preserve">
+    <value>Associato-2</value>
+  </data>
+  <data name="FLD_ASSOCIATO20" xml:space="preserve">
+    <value>Associato-20</value>
+  </data>
+  <data name="FLD_ASSOCIATO3" xml:space="preserve">
+    <value>Associato-3</value>
+  </data>
+  <data name="FLD_ASSOCIATO4" xml:space="preserve">
+    <value>Associato-4</value>
+  </data>
+  <data name="FLD_ASSOCIATO5" xml:space="preserve">
+    <value>Associato-5</value>
+  </data>
+  <data name="FLD_ASSOCIATO6" xml:space="preserve">
+    <value>Associato-6</value>
+  </data>
+  <data name="FLD_ASSOCIATO7" xml:space="preserve">
+    <value>Associato-7</value>
+  </data>
+  <data name="FLD_ASSOCIATO8" xml:space="preserve">
+    <value>Associato-8</value>
+  </data>
+  <data name="FLD_ASSOCIATO9" xml:space="preserve">
+    <value>Associato-9</value>
+  </data>
+  <data name="FLD_AUTOMUNITO_COL" xml:space="preserve">
+    <value>Flag automunito</value>
+  </data>
+  <data name="FLD_BANCA_DESCRIZIONE_CLI" xml:space="preserve">
+    <value>Descrizione banca</value>
+  </data>
+  <data name="FLD_BANCA_IBAN_CLI" xml:space="preserve">
+    <value>Iban</value>
+  </data>
+  <data name="FLD_BINGKEY" xml:space="preserve">
+    <value>Chiave x Mappe</value>
+  </data>
+  <data name="FLD_CAMPO_DB" xml:space="preserve">
+    <value>Campo DB</value>
+  </data>
+  <data name="FLD_CAMPO_FILTRO" xml:space="preserve">
+    <value>Tipo Filtro</value>
+  </data>
+  <data name="FLD_CAMPO_LOCALIZZATO" xml:space="preserve">
+    <value>Campo in Lingua</value>
+  </data>
+  <data name="FLD_CAMPO_NOTONLYINLIST" xml:space="preserve">
+    <value>Inser.Libero</value>
+  </data>
+  <data name="FLD_CAMPO_SELEZIONATO" xml:space="preserve">
+    <value>Campo Selez.</value>
+  </data>
+  <data name="FLD_CAMPO_VIDEO" xml:space="preserve">
+    <value>Campo Video</value>
+  </data>
+  <data name="FLD_CANONE_MENSILE_FASCIA1_CAN" xml:space="preserve">
+    <value>Canone mensile fascia-1</value>
+  </data>
+  <data name="FLD_CANONE_MENSILE_FASCIA2_CAN" xml:space="preserve">
+    <value>Canone mensile fascia-2</value>
+  </data>
+  <data name="FLD_CANTIERE_VIAGGIO" xml:space="preserve">
+    <value>Cod.Cantiere Dflt x Viaggi</value>
+  </data>
+  <data name="FLD_CANT_DESC" xml:space="preserve">
+    <value>Desc. Cantiere</value>
+  </data>
+  <data name="FLD_CANT_ID" xml:space="preserve">
+    <value>Cod. Cantiere</value>
+  </data>
+  <data name="FLD_CANT_MNEMONIC" xml:space="preserve">
+    <value>Cod. Cantiere</value>
+  </data>
+  <data name="FLD_CAP_CAN" xml:space="preserve">
+    <value>Cap</value>
+  </data>
+  <data name="FLD_CAP_NASCITA_CAN" xml:space="preserve">
+    <value>Cap nascita</value>
+  </data>
+  <data name="FLD_CAP_TAB_COMUNI" xml:space="preserve">
+    <value>Cap</value>
+  </data>
+  <data name="FLD_CHIAVE_RECORD_TAB_CHECK_IMP" xml:space="preserve">
+    <value>Chiave del Record Errato</value>
+  </data>
+  <data name="FLD_CHIAVE_TAB" xml:space="preserve">
+    <value>Chiave tab.</value>
+  </data>
+  <data name="FLD_CLI_ID" xml:space="preserve">
+    <value>Cod. Cliente</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE_CAN_NOTE" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE_COL" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE_COL_ORARIO" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE_FRU_CAN" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE_REG" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CANTIERE_TAB_ORARI" xml:space="preserve">
+    <value>Cod. cantiere</value>
+  </data>
+  <data name="FLD_CODICE_CLIENTE" xml:space="preserve">
+    <value>Cod. cliente</value>
+  </data>
+  <data name="FLD_CODICE_CLIENTE_CAN" xml:space="preserve">
+    <value>Cod. cliente</value>
+  </data>
+  <data name="FLD_CODICE_COLLABORATORE" xml:space="preserve">
+    <value>Cod. collaboratore</value>
+  </data>
+  <data name="FLD_CODICE_COLLABORATORE_COL_NOTE" xml:space="preserve">
+    <value>Cod. collaboratore</value>
+  </data>
+  <data name="FLD_CODICE_COLLABORATORE_COL_ORARIO" xml:space="preserve">
+    <value>Cod. collaboratore</value>
+  </data>
+  <data name="FLD_CODICE_COLLABORATORE_PRU_COL" xml:space="preserve">
+    <value>Cod. collaboratore</value>
+  </data>
+  <data name="FLD_CODICE_COLLABORATORE_REG" xml:space="preserve">
+    <value>Cod. collaboratore</value>
+  </data>
+  <data name="FLD_CODICE_DITTA_CLI" xml:space="preserve">
+    <value>Codice ditta</value>
+  </data>
+  <data name="FLD_CODICE_DOMICILIO_LUOGO_COL" xml:space="preserve">
+    <value>Cod.Comune domicilio</value>
+  </data>
+  <data name="FLD_CODICE_FIL" xml:space="preserve">
+    <value>Cod. filiale</value>
+  </data>
+  <data name="FLD_CODICE_FILIALE" xml:space="preserve">
+    <value>Codice Fil.</value>
+  </data>
+  <data name="FLD_CODICE_FILIALE_UTENTE" xml:space="preserve">
+    <value>Cod.Filiale</value>
+  </data>
+  <data name="FLD_CODICE_FISCALE_CLI" xml:space="preserve">
+    <value>Cod.fiscale</value>
+  </data>
+  <data name="FLD_CODICE_FISCALE_COL" xml:space="preserve">
+    <value>Cod.fiscale</value>
+  </data>
+  <data name="FLD_CODICE_FRU" xml:space="preserve">
+    <value>Unità fissa</value>
+  </data>
+  <data name="FLD_CODICE_FRU_CAN" xml:space="preserve">
+    <value>Unità fissa</value>
+  </data>
+  <data name="FLD_CODICE_FRU_REG" xml:space="preserve">
+    <value>Unità fissa</value>
+  </data>
+  <data name="FLD_CODICE_FUNZ" xml:space="preserve">
+    <value>Cod.funz.</value>
+  </data>
+  <data name="FLD_CODICE_IBAN_COL" xml:space="preserve">
+    <value>Iban</value>
+  </data>
+  <data name="FLD_CODICE_ISTAT_TAB_COMUNI" xml:space="preserve">
+    <value>Cod.Istat Comune</value>
+  </data>
+  <data name="FLD_CODICE_LUOGO_NASCITA_CAN" xml:space="preserve">
+    <value>Cod.Comune nascita</value>
+  </data>
+  <data name="FLD_CODICE_LUOGO_RESIDENZA_CAN" xml:space="preserve">
+    <value>Cod.Comune resid.</value>
+  </data>
+  <data name="FLD_CODICE_LUOGO_TAB_COMUNI" xml:space="preserve">
+    <value>Cod.Comune</value>
+  </data>
+  <data name="FLD_CODICE_NASCITA_LUOGO_COL" xml:space="preserve">
+    <value>Cod.Comune nascita</value>
+  </data>
+  <data name="FLD_CODICE_PROV_TAB_COMUNI" xml:space="preserve">
+    <value>Prov</value>
+  </data>
+  <data name="FLD_CODICE_PRU" xml:space="preserve">
+    <value>Unità port.</value>
+  </data>
+  <data name="FLD_CODICE_PRU_COL" xml:space="preserve">
+    <value>Unità port.</value>
+  </data>
+  <data name="FLD_CODICE_PRU_REG" xml:space="preserve">
+    <value>Unità port.</value>
+  </data>
+  <data name="FLD_CODICE_RESIDENZA_LUOGO_COL" xml:space="preserve">
+    <value>Cod.Comune resid.</value>
+  </data>
+  <data name="FLD_CODICE_RESP" xml:space="preserve">
+    <value>Cod. resp.</value>
+  </data>
+  <data name="FLD_CODICE_RESP_CAN" xml:space="preserve">
+    <value>Codice resp.cantiere</value>
+  </data>
+  <data name="FLD_CODICE_RESP_COL" xml:space="preserve">
+    <value>Cod. resp.</value>
+  </data>
+  <data name="FLD_CODICE_UTENTE" xml:space="preserve">
+    <value>Cod. utente</value>
+  </data>
+  <data name="FLD_CODICE_UTENTE_AUT" xml:space="preserve">
+    <value>Cod. utente</value>
+  </data>
+  <data name="FLD_CODICE_VOUCHER_CAN" xml:space="preserve">
+    <value>Codice voucher</value>
+  </data>
+  <data name="FLD_COD_CANT" xml:space="preserve">
+    <value>Cod. Cantiere</value>
+  </data>
+  <data name="FLD_COD_FISC_CAN" xml:space="preserve">
+    <value>Cod. fiscale</value>
+  </data>
+  <data name="FLD_COD_FUNZ" xml:space="preserve">
+    <value>Cod. funzione</value>
+  </data>
+  <data name="FLD_COD_FUNZ_AUT" xml:space="preserve">
+    <value>Cod. funzione</value>
+  </data>
+  <data name="FLD_COD_LUOGO_TAB_COMUNI" xml:space="preserve">
+    <value>Cod.Comune</value>
+  </data>
+  <data name="FLD_COGNOMENOME" xml:space="preserve">
+    <value>Cognome e Nome</value>
+  </data>
+  <data name="FLD_COGNOMENOME_CLI" xml:space="preserve">
+    <value>Cognome e Nome Cli</value>
+  </data>
+  <data name="FLD_COGNOMENOME_COL" xml:space="preserve">
+    <value>Cognome e Nome Col</value>
+  </data>
+  <data name="FLD_COGNOME_ASSISTITO_CAN" xml:space="preserve">
+    <value>Cognome assistito</value>
+  </data>
+  <data name="FLD_COGNOME_CLI" xml:space="preserve">
+    <value>Cognome</value>
+  </data>
+  <data name="FLD_COGNOME_COL" xml:space="preserve">
+    <value>Cognome</value>
+  </data>
+  <data name="FLD_COL_DESC" xml:space="preserve">
+    <value>Desc. Collaboratore</value>
+  </data>
+  <data name="FLD_COL_ID" xml:space="preserve">
+    <value>Cod. Collaboratore</value>
+  </data>
+  <data name="FLD_COL_MNEMONIC" xml:space="preserve">
+    <value>Cod. Collaboratore</value>
+  </data>
+  <data name="FLD_COMBOBOXROWSPERPAGE" xml:space="preserve">
+    <value>N°Righe per ComboBox</value>
+  </data>
+  <data name="FLD_COMPANYADDRESS" xml:space="preserve">
+    <value>Indirizzo Società</value>
+  </data>
+  <data name="FLD_COMPANYINFO" xml:space="preserve">
+    <value>Informazioni Aggiuntive Società</value>
+  </data>
+  <data name="FLD_COMPANYLOGO" xml:space="preserve">
+    <value>Logo della Società</value>
+  </data>
+  <data name="FLD_COMPANYNAME" xml:space="preserve">
+    <value>Nome Società</value>
+  </data>
+  <data name="FLD_COMUNI_ASSOCIATO1" xml:space="preserve">
+    <value>Cap</value>
+  </data>
+  <data name="FLD_COMUNI_ASSOCIATO2" xml:space="preserve">
+    <value>Prov.</value>
+  </data>
+  <data name="FLD_CONTRIBUTO_DISABILI_FASCIA1_CAN" xml:space="preserve">
+    <value>Contributo disabili fascia-1</value>
+  </data>
+  <data name="FLD_CONTRIBUTO_DISABILI_FASCIA2_CAN" xml:space="preserve">
+    <value>Contributo disabili fascia-2</value>
+  </data>
+  <data name="FLD_CON_ABILITAZIONI" xml:space="preserve">
+    <value>Con abilitaz.</value>
+  </data>
+  <data name="FLD_CON_ASSOCIAZIONI" xml:space="preserve">
+    <value>Con assoc.</value>
+  </data>
+  <data name="FLD_CON_NOTE" xml:space="preserve">
+    <value>Con note</value>
+  </data>
+  <data name="FLD_CON_ORARIO" xml:space="preserve">
+    <value>Con orario</value>
+  </data>
+  <data name="FLD_COSTO_MEZZORA_PRESCUOLA_CAN" xml:space="preserve">
+    <value>Costo mezzora prescuola</value>
+  </data>
+  <data name="FLD_COSTO_ORARIO_CAN" xml:space="preserve">
+    <value>Costo orario</value>
+  </data>
+  <data name="FLD_CTRL_CODICE_FISC" xml:space="preserve">
+    <value>Ctrl IBAN</value>
+  </data>
+  <data name="FLD_CTRL_CODICE_IBAN" xml:space="preserve">
+    <value>Ctrl IBAN</value>
+  </data>
+  <data name="FLD_CTRL_SOVRAP_PASS" xml:space="preserve">
+    <value>Ctrl Sovrapposizi dei PASS</value>
+  </data>
+  <data name="FLD_CTRL_TAB_COMUNI" xml:space="preserve">
+    <value>Controlli in Tab Comuni</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMDOIFICA_REG" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_AUT" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_CAN" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_CAN_NOTE" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_CLI" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_COL" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_COL_NOTE" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_COL_ORARIO" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_FIL" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_FRU" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_FRU_CAN" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_LINGUE" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_PRU" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_PRU_COL" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_REG" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_RESP" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_TAB_ORARI" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAORAULTIMAMODIFICA_UTENTE" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DATAVARGPS_CAN" xml:space="preserve">
+    <value>Data ult.var.gps</value>
+  </data>
+  <data name="FLD_DATA_BLOCCO_REG" xml:space="preserve">
+    <value>Data Blocco Registrazioni</value>
+  </data>
+  <data name="FLD_DATA_DISPONIBILITA_FINE_COL" xml:space="preserve">
+    <value>Data assunzione</value>
+  </data>
+  <data name="FLD_DATA_DISPONIBILITA_INIZIO_COL" xml:space="preserve">
+    <value>Data licenziamento</value>
+  </data>
+  <data name="FLD_DATA_INIZIO" xml:space="preserve">
+    <value>Data inizio</value>
+  </data>
+  <data name="FLD_DATA_INIZIO_VALIDITA_COL_ORARIO" xml:space="preserve">
+    <value>Inizio valid.</value>
+  </data>
+  <data name="FLD_DATA_INIZIO_VALIDITA_TAB_ORARI" xml:space="preserve">
+    <value>Inizio valid.</value>
+  </data>
+  <data name="FLD_DATA_ISEE_CAN" xml:space="preserve">
+    <value>Data isee</value>
+  </data>
+  <data name="FLD_DATA_NASCITA_CAN" xml:space="preserve">
+    <value>Data nascita</value>
+  </data>
+  <data name="FLD_DATA_NOTA_CAN_NOTE" xml:space="preserve">
+    <value>Data nota</value>
+  </data>
+  <data name="FLD_DATA_NOTA_COL_NOTE" xml:space="preserve">
+    <value>Data della nota</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIGFIS_E" xml:space="preserve">
+    <value>Data / Ora Fig/Fis E.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIGFIS_U" xml:space="preserve">
+    <value>Data / Ora Fig/Fis U.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIG_E" xml:space="preserve">
+    <value>Data / Ora E. Fig.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIG_EDATE" xml:space="preserve">
+    <value>Data Reg Fig E.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIG_ETIME" xml:space="preserve">
+    <value>Ora /Min  E. Fig</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIG_U" xml:space="preserve">
+    <value>Data / Ora U. Fig.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIG_UTIME" xml:space="preserve">
+    <value>Ora /Min U Fig</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIS_E" xml:space="preserve">
+    <value>Data / Ora E. Fis.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIS_EDATE" xml:space="preserve">
+    <value>Data Reg Fis E.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIS_ETIME" xml:space="preserve">
+    <value>Ora / Min. Fis E.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIS_U" xml:space="preserve">
+    <value>Data / Ora U. Fis.</value>
+  </data>
+  <data name="FLD_DATA_ORA_FIS_UTIME" xml:space="preserve">
+    <value>Ora /Min U Fis</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_1_CAN" xml:space="preserve">
+    <value>Data fine rapporto-1</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_2_CAN" xml:space="preserve">
+    <value>Data fine rapporto-2</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_3_CAN" xml:space="preserve">
+    <value>Data fine rapporto-3</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_4_CAN" xml:space="preserve">
+    <value>Data fine rapporto-4</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_5_CAN" xml:space="preserve">
+    <value>Data fine rapporto-5</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_CAN" xml:space="preserve">
+    <value>Data fine rapporto</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_FINE_CLI" xml:space="preserve">
+    <value>Data fine rapporto</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_1_CAN" xml:space="preserve">
+    <value>Data inizio rapporto-1</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_2_CAN" xml:space="preserve">
+    <value>Data inizio rapporto-2</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_3_CAN" xml:space="preserve">
+    <value>Data inizio rapporto-3</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_4_CAN" xml:space="preserve">
+    <value>Data inizio rapporto-4</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_5_CAN" xml:space="preserve">
+    <value>Data inizio rapporto-5</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_CAN" xml:space="preserve">
+    <value>Data inizio rapporto</value>
+  </data>
+  <data name="FLD_DATA_RAPPORTO_INIZIO_CLI" xml:space="preserve">
+    <value>Data inizio rapporto</value>
+  </data>
+  <data name="FLD_DATA_REG" xml:space="preserve">
+    <value>Data Reg.</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_AUT" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_CAN" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_CAN_NOTE" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_CLI" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_COL" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_COL_NOTE" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_COL_ORARIO" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_FIL" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_FRU" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_FRU_CAN" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_LINGUE" xml:space="preserve">
+    <value>Data Registrazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_PRU" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_PRU_COL" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_REG" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_RESP" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_TAB_ORARI" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_REGISTRAZIONE_UTENTE" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="FLD_DATA_SORV_SAN_COL" xml:space="preserve">
+    <value>Data/Ora Ult.Mod.</value>
+  </data>
+  <data name="FLD_DECODIFICA_TAB" xml:space="preserve">
+    <value>Descrizione elem.</value>
+  </data>
+  <data name="FLD_DECODIFICA_TAB_DESC" xml:space="preserve">
+    <value>Descrizione Tabella</value>
+  </data>
+  <data name="FLD_DEFAULT_ABILITATI" xml:space="preserve">
+    <value>Dflt abilitati</value>
+  </data>
+  <data name="FLD_DEFAULT_DURATA_MAX_GRUPPO_NOTTE_RIL" xml:space="preserve">
+    <value>Dflt durata notturno</value>
+  </data>
+  <data name="FLD_DEFAULT_DURATA_MAX_GRUPPO_RIL" xml:space="preserve">
+    <value>Dflt durata  totale</value>
+  </data>
+  <data name="FLD_DEFAULT_DURATA_MAX_RIL" xml:space="preserve">
+    <value>Dflt durata max</value>
+  </data>
+  <data name="FLD_DEFAULT_DURATA_MIN_RIL" xml:space="preserve">
+    <value>Dflt durata min.</value>
+  </data>
+  <data name="FLD_DEFAULT_MINUTI_ARROT_F" xml:space="preserve">
+    <value>Dflt minuti arrot.in uscita</value>
+  </data>
+  <data name="FLD_DEFAULT_MINUTI_ARROT_I" xml:space="preserve">
+    <value>Dflt minuti arrot.in entrata</value>
+  </data>
+  <data name="FLD_DEFAULT_MINUTI_DURATA" xml:space="preserve">
+    <value>Dflt min.arrot.durata</value>
+  </data>
+  <data name="FLD_DEFAULT_SOGLIA_ARROT_F" xml:space="preserve">
+    <value>Dflt soglia arrot.uscita</value>
+  </data>
+  <data name="FLD_DEFAULT_SOGLIA_ARROT_I" xml:space="preserve">
+    <value>Dflt soglia arrot.entrata</value>
+  </data>
+  <data name="FLD_DEFAULT_SOGLIA_DURATA" xml:space="preserve">
+    <value>Dflt soglia arrot.durata</value>
+  </data>
+  <data name="FLD_DEL_AUT" xml:space="preserve">
+    <value>Aut Del</value>
+  </data>
+  <data name="FLD_DESCRIZIONE_CAN" xml:space="preserve">
+    <value>Descrizione cantiere</value>
+  </data>
+  <data name="FLD_DESCRIZIONE_FIL" xml:space="preserve">
+    <value>Descr.Filiale</value>
+  </data>
+  <data name="FLD_DESCRIZIONE_FUNZ" xml:space="preserve">
+    <value>Descrizione Funzione</value>
+  </data>
+  <data name="FLD_DESCRIZIONE_PROV" xml:space="preserve">
+    <value>Descrizione Prov.</value>
+  </data>
+  <data name="FLD_DESCRIZIONE_RESP" xml:space="preserve">
+    <value>Descriz.Resp.</value>
+  </data>
+  <data name="FLD_DESCRIZIONE_TAB_FESTIVI" xml:space="preserve">
+    <value>Descr.GG Festivo</value>
+  </data>
+  <data name="FLD_DESC_CANT" xml:space="preserve">
+    <value>Desc. Cantiere</value>
+  </data>
+  <data name="FLD_DESC_FUNZ" xml:space="preserve">
+    <value>Descr.funz.</value>
+  </data>
+  <data name="FLD_DISABILE_COL" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_CAN" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_CAN_NOTE" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_CLI" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_COL" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_COL_NOTE" xml:space="preserve">
+    <value>Disabil.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_COL_ORARIO" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_FIL" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_FRU" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_FRU_CAN" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_LINGUE" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_PRU" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_PRU_COL" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_REG" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_RESP" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_TAB_ORARI" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DISABILITAZIONE_UTENTE" xml:space="preserve">
+    <value>Disab.</value>
+  </data>
+  <data name="FLD_DOMAINFILTER" xml:space="preserve">
+    <value>Gestione Filtri x Fil e/o Resp</value>
+  </data>
+  <data name="FLD_DOMICILIO_CAP_CLI" xml:space="preserve">
+    <value>Cap dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_CAP_COL" xml:space="preserve">
+    <value>Cap dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_INDIRIZZO_CLI" xml:space="preserve">
+    <value>Ind. dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_INDIRIZZO_COL" xml:space="preserve">
+    <value>Ind. dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_INTERNO_COL" xml:space="preserve">
+    <value>N° interno dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_LOCALITA_COL" xml:space="preserve">
+    <value>Località dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_LUOGO_CLI" xml:space="preserve">
+    <value>Comune dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_LUOGO_COL" xml:space="preserve">
+    <value>Comune dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_NAZIONE_CLI" xml:space="preserve">
+    <value>Naz.dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_PROVINCIA_CLI" xml:space="preserve">
+    <value>Prov. dom.</value>
+  </data>
+  <data name="FLD_DOMICILIO_PROVINCIA_COL" xml:space="preserve">
+    <value>Prov. dom.</value>
+  </data>
+  <data name="FLD_DOMINIO_UTENTI_FIL" xml:space="preserve">
+    <value>Dominio</value>
+  </data>
+  <data name="FLD_DOMINIO_UTENTI_RESP" xml:space="preserve">
+    <value>Dominio</value>
+  </data>
+  <data name="FLD_DOM_COL_ORARIO" xml:space="preserve">
+    <value>Dom.</value>
+  </data>
+  <data name="FLD_DOM_TAB_ORARI" xml:space="preserve">
+    <value>Dom.</value>
+  </data>
+  <data name="FLD_DURATA_FIG" xml:space="preserve">
+    <value>Durata Fig. (mmm)</value>
+  </data>
+  <data name="FLD_DURATA_FIG_HH_C" xml:space="preserve">
+    <value>Durata Fis (hh:ccc)</value>
+  </data>
+  <data name="FLD_DURATA_FIG_HH_S" xml:space="preserve">
+    <value>Durata Fig (hh:mm)</value>
+  </data>
+  <data name="FLD_DURATA_FIS" xml:space="preserve">
+    <value>Durata Fis. (mmm)</value>
+  </data>
+  <data name="FLD_DURATA_FIS_HH_C" xml:space="preserve">
+    <value>Durata Fis. (hh:ccc)</value>
+  </data>
+  <data name="FLD_DURATA_FIS_HH_S" xml:space="preserve">
+    <value>Durata Fis (hh:mm)</value>
+  </data>
+  <data name="FLD_DURATA_MASSIMA_VIAGGIO" xml:space="preserve">
+    <value>Durata max viaggio</value>
+  </data>
+  <data name="FLD_DURATA_MAX_GRUPPO_NOTTE_RIL_CAN" xml:space="preserve">
+    <value>Durata max notturno</value>
+  </data>
+  <data name="FLD_DURATA_MAX_GRUPPO_NOTTE_RIL_COL" xml:space="preserve">
+    <value>Durata max notturno</value>
+  </data>
+  <data name="FLD_DURATA_MAX_GRUPPO_RIL_CAN" xml:space="preserve">
+    <value>Durata max giorno</value>
+  </data>
+  <data name="FLD_DURATA_MAX_GRUPPO_RIL_COL" xml:space="preserve">
+    <value>Durata max giorno</value>
+  </data>
+  <data name="FLD_DURATA_MAX_RIL_CAN" xml:space="preserve">
+    <value>Durata max ril.</value>
+  </data>
+  <data name="FLD_DURATA_MAX_RIL_COL" xml:space="preserve">
+    <value>Durata max ril.</value>
+  </data>
+  <data name="FLD_DURATA_MINIMA_VIAGGIO" xml:space="preserve">
+    <value>Durata min. viaggio</value>
+  </data>
+  <data name="FLD_DURATA_MIN_RIL_CAN" xml:space="preserve">
+    <value>Durata min.ril.</value>
+  </data>
+  <data name="FLD_DURATA_MIN_RIL_COL" xml:space="preserve">
+    <value>Durata min.ril.</value>
+  </data>
+  <data name="FLD_DURATA_PAUSA" xml:space="preserve">
+    <value>Durata pausa</value>
+  </data>
+  <data name="FLD_DURATA_PAUSA_COL" xml:space="preserve">
+    <value>Durata pausa</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_1_FINE" xml:space="preserve">
+    <value>Fascia ore viaggi-1 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_1_FINE_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-1 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_1_INIZIO" xml:space="preserve">
+    <value>Fascia ore viaggi-1 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_1_INIZIO_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-1 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_2_FINE" xml:space="preserve">
+    <value>Fascia ore viaggi-2 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_2_FINE_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-2 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_2_INIZIO" xml:space="preserve">
+    <value>Fascia ore viaggi-2 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_2_INIZIO_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-2 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_3_FINE" xml:space="preserve">
+    <value>Fascia ore viaggi-3 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_3_FINE_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-3 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_3_INIZIO" xml:space="preserve">
+    <value>Fascia ore viaggi-3 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_3_INIZIO_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-3 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_4_FINE" xml:space="preserve">
+    <value>Fascia ore viaggi-4 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_4_FINE_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-4 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_4_INIZIO" xml:space="preserve">
+    <value>Fascia ore viaggi-4 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_4_INIZIO_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-4 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_5_FINE" xml:space="preserve">
+    <value>Fascia ore viaggi-5 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_5_FINE_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-5 fine</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_5_INIZIO" xml:space="preserve">
+    <value>Fascia ore viaggi-5 inizio</value>
+  </data>
+  <data name="FLD_FASCIA_ORE_VIAGGI_5_INIZIO_COL" xml:space="preserve">
+    <value>Fascia ore viaggi-5 inizio</value>
+  </data>
+  <data name="FLD_FAX_1_CAN" xml:space="preserve">
+    <value>Fax-1</value>
+  </data>
+  <data name="FLD_FAX_1_CLI" xml:space="preserve">
+    <value>Fax-1</value>
+  </data>
+  <data name="FLD_FAX_1_COL" xml:space="preserve">
+    <value>Fax-1</value>
+  </data>
+  <data name="FLD_FAX_1_RIF_CAN" xml:space="preserve">
+    <value>Rif. fax-1</value>
+  </data>
+  <data name="FLD_FAX_1_RIF_CLI" xml:space="preserve">
+    <value>Rif. fax-1</value>
+  </data>
+  <data name="FLD_FAX_1_RIF_COL" xml:space="preserve">
+    <value>Rif. fax-1</value>
+  </data>
+  <data name="FLD_FAX_2_CAN" xml:space="preserve">
+    <value>Fax-2</value>
+  </data>
+  <data name="FLD_FAX_2_CLI" xml:space="preserve">
+    <value>Fax-2</value>
+  </data>
+  <data name="FLD_FAX_2_COL" xml:space="preserve">
+    <value>Fax-2</value>
+  </data>
+  <data name="FLD_FAX_2_RIF_CAN" xml:space="preserve">
+    <value>Rif. fax-2</value>
+  </data>
+  <data name="FLD_FAX_2_RIF_CLI" xml:space="preserve">
+    <value>Rif. fax-2</value>
+  </data>
+  <data name="FLD_FAX_2_RIF_COL" xml:space="preserve">
+    <value>Rif. fax-2</value>
+  </data>
+  <data name="FLD_FILE_CANT_VAR" xml:space="preserve">
+    <value>Attiva variaz.cant</value>
+  </data>
+  <data name="FLD_FILE_COL_VAR" xml:space="preserve">
+    <value>Attiva variaz.col</value>
+  </data>
+  <data name="FLD_FILIALE_CAN" xml:space="preserve">
+    <value>Filiale</value>
+  </data>
+  <data name="FLD_FILIALE_CLI" xml:space="preserve">
+    <value>Filiale</value>
+  </data>
+  <data name="FLD_FILIALE_COL" xml:space="preserve">
+    <value>Filiale</value>
+  </data>
+  <data name="FLD_FIL_ID" xml:space="preserve">
+    <value>Codice Filiale</value>
+  </data>
+  <data name="FLD_FIL_INCLUSIVE" xml:space="preserve">
+    <value>Filiali Incl/Escl</value>
+  </data>
+  <data name="FLD_FINE_NOTTURNO_COL_ORARIO" xml:space="preserve">
+    <value>Hhmm fine nott.</value>
+  </data>
+  <data name="FLD_FINE_NOTTURNO_TAB_ORARI" xml:space="preserve">
+    <value>Hhmm fine nott.</value>
+  </data>
+  <data name="FLD_FLAGCAMBIOGIORNORIL_CAN" xml:space="preserve">
+    <value>Flag notturno abil.</value>
+  </data>
+  <data name="FLD_FLAGCAMBIOGIORNORIL_COL" xml:space="preserve">
+    <value>Flag notturno abil.</value>
+  </data>
+  <data name="FLD_FLAGGPSSTATUS_CAN" xml:space="preserve">
+    <value>Flag gps</value>
+  </data>
+  <data name="FLD_FLAGGPS_CAN" xml:space="preserve">
+    <value>Flag gest.gps</value>
+  </data>
+  <data name="FLD_FLAG_ENTRATA_CAN" xml:space="preserve">
+    <value>Flag entrata</value>
+  </data>
+  <data name="FLD_FLAG_ENTRATA_COL" xml:space="preserve">
+    <value>Flag entrata</value>
+  </data>
+  <data name="FLD_FLAG_EU_REG" xml:space="preserve">
+    <value>Flag e/u</value>
+  </data>
+  <data name="FLD_FLAG_GPS" xml:space="preserve">
+    <value>Flag gest.gps</value>
+  </data>
+  <data name="FLD_FLAG_INPS_COL" xml:space="preserve">
+    <value>flag_inps_col</value>
+  </data>
+  <data name="FLD_FLAG_LIMITA_RESP_UTENTE" xml:space="preserve">
+    <value>Gest.x resp</value>
+  </data>
+  <data name="FLD_FLAG_MAN_REG" xml:space="preserve">
+    <value>Modificata</value>
+  </data>
+  <data name="FLD_FLAG_NASCOSTO_COL" xml:space="preserve">
+    <value>flag_nascosto_col</value>
+  </data>
+  <data name="FLD_FLAG_NON_ESPORTARE_CAN" xml:space="preserve">
+    <value>Flag non esportare</value>
+  </data>
+  <data name="FLD_FLAG_NON_ESPORTARE_COL" xml:space="preserve">
+    <value>Flag non esportare</value>
+  </data>
+  <data name="FLD_FLAG_ORE_VIAGGI" xml:space="preserve">
+    <value>Flag ore viaggi</value>
+  </data>
+  <data name="FLD_FLAG_ORE_VIAGGI_COL" xml:space="preserve">
+    <value>Tipo ore viaggi</value>
+  </data>
+  <data name="FLD_FLAG_ORE_VIAGGI_COL_INIZIO_FINE" xml:space="preserve">
+    <value>Flag Ora Inizio/Fine Viaggio</value>
+  </data>
+  <data name="FLD_FRU_ID" xml:space="preserve">
+    <value>Unità Fissa</value>
+  </data>
+  <data name="FLD_FUNZIONE" xml:space="preserve">
+    <value>Funzione</value>
+  </data>
+  <data name="FLD_FUNZ_AUT" xml:space="preserve">
+    <value>Aut Gen</value>
+  </data>
+  <data name="FLD_G1" xml:space="preserve">
+    <value>Lunedì</value>
+  </data>
+  <data name="FLD_G2" xml:space="preserve">
+    <value>Martedì</value>
+  </data>
+  <data name="FLD_G3" xml:space="preserve">
+    <value>Mercoledì</value>
+  </data>
+  <data name="FLD_G4" xml:space="preserve">
+    <value>Giovedì</value>
+  </data>
+  <data name="FLD_G5" xml:space="preserve">
+    <value>Venerdì</value>
+  </data>
+  <data name="FLD_G6" xml:space="preserve">
+    <value>Sabato</value>
+  </data>
+  <data name="FLD_G7" xml:space="preserve">
+    <value>Domenica</value>
+  </data>
+  <data name="FLD_GESTIONE_CAN" xml:space="preserve">
+    <value>gestione_can</value>
+  </data>
+  <data name="FLD_GGCONSMAX_COL" xml:space="preserve">
+    <value>ggconsmax_col</value>
+  </data>
+  <data name="FLD_GG_X_ALLARMI" xml:space="preserve">
+    <value>Dflt gg allarmi</value>
+  </data>
+  <data name="FLD_GIORNO_TAB_FESTIVI" xml:space="preserve">
+    <value>Data Festiva</value>
+  </data>
+  <data name="FLD_GIO_COL_ORARIO" xml:space="preserve">
+    <value>Gio.</value>
+  </data>
+  <data name="FLD_GIO_TAB_ORARI" xml:space="preserve">
+    <value>Gio.</value>
+  </data>
+  <data name="FLD_GRUPPO_TAB" xml:space="preserve">
+    <value>Gruppo</value>
+  </data>
+  <data name="FLD_HHMM_FINE_COL_ORARIO" xml:space="preserve">
+    <value>HH:MM fine</value>
+  </data>
+  <data name="FLD_HHMM_FINE_NOTTURNO_COL_ORARIO" xml:space="preserve">
+    <value>HH:MM fine notturno</value>
+  </data>
+  <data name="FLD_HHMM_FINE_NOTTURNO_TAB_ORARI" xml:space="preserve">
+    <value>HH:MM fine notturno</value>
+  </data>
+  <data name="FLD_HHMM_FINE_TAB_ORARI" xml:space="preserve">
+    <value>HH:MM fine</value>
+  </data>
+  <data name="FLD_HHMM_INIZIO_COL_ORARIO" xml:space="preserve">
+    <value>HH:MM inizio</value>
+  </data>
+  <data name="FLD_HHMM_INIZIO_NOTTURNO_COL_ORARIO" xml:space="preserve">
+    <value>HH:MM inizio notturno</value>
+  </data>
+  <data name="FLD_HHMM_INIZIO_NOTTURNO_TAB_ORARI" xml:space="preserve">
+    <value>HH:MM di inizio notturno</value>
+  </data>
+  <data name="FLD_HHMM_INIZIO_TAB_ORARI" xml:space="preserve">
+    <value>HH:MM inizio</value>
+  </data>
+  <data name="FLD_INDENNITA_SANIFICAZIONE_COL" xml:space="preserve">
+    <value>Indennità sanificazione</value>
+  </data>
+  <data name="FLD_INDENNITA_TRASPORTO_COL" xml:space="preserve">
+    <value>Indennità  trasporto</value>
+  </data>
+  <data name="FLD_INDIRIZZO_CAN" xml:space="preserve">
+    <value>Indirizzo</value>
+  </data>
+  <data name="FLD_INSERITA_DA_CAN_NOTE" xml:space="preserve">
+    <value>Inserita da</value>
+  </data>
+  <data name="FLD_INSERITA_DA_COL_NOTE" xml:space="preserve">
+    <value>Inserita da</value>
+  </data>
+  <data name="FLD_INS_AUT" xml:space="preserve">
+    <value>Aut Ins</value>
+  </data>
+  <data name="FLD_IPO_COTRATO_COL" xml:space="preserve">
+    <value>Tipo contratto</value>
+  </data>
+  <data name="FLD_ISNOTTOELABORATE" xml:space="preserve">
+    <value>Da Non Elab.</value>
+  </data>
+  <data name="FLD_KM_REG" xml:space="preserve">
+    <value>Km</value>
+  </data>
+  <data name="FLD_KM_TAB_DIST" xml:space="preserve">
+    <value>KM</value>
+  </data>
+  <data name="FLD_KM_TAB_DISTANZE" xml:space="preserve">
+    <value>KM</value>
+  </data>
+  <data name="FLD_LATITUDINEGPS_CAN" xml:space="preserve">
+    <value>Latitudine</value>
+  </data>
+  <data name="FLD_LIBRETTO_SANITARIO_COL" xml:space="preserve">
+    <value>N° libretto sanitario</value>
+  </data>
+  <data name="FLD_LIMITE_ENTRATA_CAN" xml:space="preserve">
+    <value>Ora limite entrata can.</value>
+  </data>
+  <data name="FLD_LIMITE_ENTRATA_COL" xml:space="preserve">
+    <value>limite_entrata_col</value>
+  </data>
+  <data name="FLD_LIMITE_INIZIO_NOTTE_CAN" xml:space="preserve">
+    <value>Ora inizio notturno</value>
+  </data>
+  <data name="FLD_LIMITE_INIZIO_NOTTE_COL" xml:space="preserve">
+    <value>limite_inizio_notte_col</value>
+  </data>
+  <data name="FLD_LINGUA_CLI" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="FLD_LINGUA_ID" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="FLD_LINGUA_UTENTE" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="FLD_LINGUE_ID" xml:space="preserve">
+    <value>Lingua</value>
+  </data>
+  <data name="FLD_LINK_TAB_FUNZ" xml:space="preserve">
+    <value>Link </value>
+  </data>
+  <data name="FLD_LIVELLO1" xml:space="preserve">
+    <value>Liv.1</value>
+  </data>
+  <data name="FLD_LIVELLO2" xml:space="preserve">
+    <value>Liv.2</value>
+  </data>
+  <data name="FLD_LIVELLO3" xml:space="preserve">
+    <value>Liv.3</value>
+  </data>
+  <data name="FLD_LIVELLO4" xml:space="preserve">
+    <value>Liv.4</value>
+  </data>
+  <data name="FLD_LIVELLO_ASSISTITO_CAN" xml:space="preserve">
+    <value>Liv.</value>
+  </data>
+  <data name="FLD_LIVELLO_COL" xml:space="preserve">
+    <value>Liv.</value>
+  </data>
+  <data name="FLD_LIV_UTENTE" xml:space="preserve">
+    <value>Liv.</value>
+  </data>
+  <data name="FLD_LONGITUDINEGPS_CAN" xml:space="preserve">
+    <value>Longitudine</value>
+  </data>
+  <data name="FLD_LUN_COL_ORARIO" xml:space="preserve">
+    <value>Lun.</value>
+  </data>
+  <data name="FLD_LUN_TAB_ORARI" xml:space="preserve">
+    <value>Lun.</value>
+  </data>
+  <data name="FLD_LUOGO_CAN" xml:space="preserve">
+    <value>Comune</value>
+  </data>
+  <data name="FLD_LUOGO_NASCITA_CAN" xml:space="preserve">
+    <value>Comune nascita</value>
+  </data>
+  <data name="FLD_LUOGO_TAB_COMUNI" xml:space="preserve">
+    <value>Comune</value>
+  </data>
+  <data name="FLD_MAR_COL_ORARIO" xml:space="preserve">
+    <value>Mar.</value>
+  </data>
+  <data name="FLD_MAR_TAB_ORARI" xml:space="preserve">
+    <value>Mar.</value>
+  </data>
+  <data name="FLD_MATRICOLA_COL" xml:space="preserve">
+    <value>Matricola</value>
+  </data>
+  <data name="FLD_MATRICOLA_FRU" xml:space="preserve">
+    <value>Matricola</value>
+  </data>
+  <data name="FLD_MATRICOLA_PRU" xml:space="preserve">
+    <value>Matricola</value>
+  </data>
+  <data name="FLD_MDBPATH" xml:space="preserve">
+    <value>Percorso DB Interfacciato</value>
+  </data>
+  <data name="FLD_MENSA_CAN" xml:space="preserve">
+    <value>Flag mensa</value>
+  </data>
+  <data name="FLD_MENU_TIPO_ID" xml:space="preserve">
+    <value>Tipo menù</value>
+  </data>
+  <data name="FLD_MER_COL_ORARIO" xml:space="preserve">
+    <value>Mer.</value>
+  </data>
+  <data name="FLD_MER_TAB_ORARI" xml:space="preserve">
+    <value>Mer.</value>
+  </data>
+  <data name="FLD_MESI_VALIDITA_REG" xml:space="preserve">
+    <value>N° mesi validità timbrature</value>
+  </data>
+  <data name="FLD_METODO_ARROTONDAMENTO" xml:space="preserve">
+    <value>Metodo arrot.</value>
+  </data>
+  <data name="FLD_METODO_ARROTONDAMENTO_CAN" xml:space="preserve">
+    <value>Metodo arrot.</value>
+  </data>
+  <data name="FLD_METODO_ARROTONDAMENTO_COL" xml:space="preserve">
+    <value>Metodo arrot.</value>
+  </data>
+  <data name="FLD_MINUTI_ARROT_DURATA_FIG_COL" xml:space="preserve">
+    <value>Minuti Arrot.Durata Viaggi</value>
+  </data>
+  <data name="FLD_MINUTI_TOLLERANZA_CAN" xml:space="preserve">
+    <value>Minuti arrot..entrata</value>
+  </data>
+  <data name="FLD_MINUTI_TOLLERANZA_F_CAN" xml:space="preserve">
+    <value>Minuti arrot..uscita</value>
+  </data>
+  <data name="FLD_MODULETYPE" xml:space="preserve">
+    <value>Tipo Import</value>
+  </data>
+  <data name="FLD_MOD_AUT" xml:space="preserve">
+    <value>Aut Mod</value>
+  </data>
+  <data name="FLD_MONTE_ORE" xml:space="preserve">
+    <value>Monte Ore</value>
+  </data>
+  <data name="FLD_MOTIVAZIONE_REG" xml:space="preserve">
+    <value>Codice Motiv.</value>
+  </data>
+  <data name="FLD_MOTIVAZIONE_REG_COD" xml:space="preserve">
+    <value>Descr. Motiv.</value>
+  </data>
+  <data name="FLD_MOTIVAZIONE_REG_ID" xml:space="preserve">
+    <value>Motiv.</value>
+  </data>
+  <data name="FLD_MSGDEL1_AUT" xml:space="preserve">
+    <value>1°Ok x del</value>
+  </data>
+  <data name="FLD_MSGDEL2_AUT" xml:space="preserve">
+    <value>2°Ok x del</value>
+  </data>
+  <data name="FLD_MSGINS1_AUT" xml:space="preserve">
+    <value>1°Ok x ins</value>
+  </data>
+  <data name="FLD_MSGINS2_AUT" xml:space="preserve">
+    <value>2°Ok x ins</value>
+  </data>
+  <data name="FLD_MSGMOD1_AUT" xml:space="preserve">
+    <value>1°Ok x mod</value>
+  </data>
+  <data name="FLD_MSGMOD2_AUT" xml:space="preserve">
+    <value>2°Ok x mod</value>
+  </data>
+  <data name="FLD_NASCITA_CAP_COL" xml:space="preserve">
+    <value>Cap nascita</value>
+  </data>
+  <data name="FLD_NASCITA_DATA_COL" xml:space="preserve">
+    <value>Data nascita</value>
+  </data>
+  <data name="FLD_NASCITA_LUOGO_COL" xml:space="preserve">
+    <value>Comune nascita</value>
+  </data>
+  <data name="FLD_NASCITA_PROVINCIA_COL" xml:space="preserve">
+    <value>Prov.nascita</value>
+  </data>
+  <data name="FLD_NAZIONALITA_COL" xml:space="preserve">
+    <value>Nazionalità</value>
+  </data>
+  <data name="FLD_NAZIONE_CAN" xml:space="preserve">
+    <value>Nazione</value>
+  </data>
+  <data name="FLD_NAZIONE_NASCITA_CAN" xml:space="preserve">
+    <value>Nazione nascita</value>
+  </data>
+  <data name="FLD_NOMECAMPO" xml:space="preserve">
+    <value>Nome campo</value>
+  </data>
+  <data name="FLD_NOMECONTROLLO" xml:space="preserve">
+    <value>Nome controllo</value>
+  </data>
+  <data name="FLD_NOMEFORM" xml:space="preserve">
+    <value>Nome form</value>
+  </data>
+  <data name="FLD_NOMEMENU" xml:space="preserve">
+    <value>Nome menù</value>
+  </data>
+  <data name="FLD_NOMEMENU_UTENTE" xml:space="preserve">
+    <value>Menù</value>
+  </data>
+  <data name="FLD_NOMERICERCA" xml:space="preserve">
+    <value>Nome ricerca</value>
+  </data>
+  <data name="FLD_NOMETAB" xml:space="preserve">
+    <value>Nome Tabella</value>
+  </data>
+  <data name="FLD_NOMETAB_DECOD" xml:space="preserve">
+    <value>Nome Tabella Decodifica</value>
+  </data>
+  <data name="FLD_NOMEUTENTE" xml:space="preserve">
+    <value>Nome utente</value>
+  </data>
+  <data name="FLD_NOME_ASSISTITO_CAN" xml:space="preserve">
+    <value>Nome assistito</value>
+  </data>
+  <data name="FLD_NOME_CAMPO_FUNZ" xml:space="preserve">
+    <value>Nome campo</value>
+  </data>
+  <data name="FLD_NOME_CLI" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="FLD_NOME_COL" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="FLD_NOME_FUNZ_AUT" xml:space="preserve">
+    <value>Funzione</value>
+  </data>
+  <data name="FLD_NOME_LINGUE" xml:space="preserve">
+    <value>Descriz. Lingua</value>
+  </data>
+  <data name="FLD_NOME_PANNELLO_AUT" xml:space="preserve">
+    <value>Pannello</value>
+  </data>
+  <data name="FLD_NOME_PANNELLO_FUNZ" xml:space="preserve">
+    <value>Nome pannello</value>
+  </data>
+  <data name="FLD_NOME_RISORSA" xml:space="preserve">
+    <value>Risorsa</value>
+  </data>
+  <data name="FLD_NOME_TAB" xml:space="preserve">
+    <value>Nome tabella</value>
+  </data>
+  <data name="FLD_NOME_TABELLA_TAB_CHECK_IMP" xml:space="preserve">
+    <value>Nome Tabella con Errori</value>
+  </data>
+  <data name="FLD_NOME_TAB_FUNZ" xml:space="preserve">
+    <value>Nome Funzione</value>
+  </data>
+  <data name="FLD_NOTA_BENE" xml:space="preserve">
+    <value>{\rtf1\ansi\ansicpg1252\deff0\deflang1040{\fonttbl{\f0\fnil\fcharset0 segoe ui;}{\f1\fnil\fcharset0 arial;}}
+{\*\generator msftedit 5.41.21.2509;}\viewkind4\uc1\pard\b\f0\fs18 nota bene:\b0\par
+nel caso in cui nella \b scheda parametri\b0  di power sia stato impostato il flag di \b caricamento automatico matricole\b0 , per ogni unit\'e0 fissa inserita o cancellata verr\'e0 anche inserita o cancellata la corrispondente matricola in modo automatico.\par
+\f1\fs22\par
+}</value>
+  </data>
+  <data name="FLD_NOTA_CAN_NOTE" xml:space="preserve">
+    <value>Testo della nota</value>
+  </data>
+  <data name="FLD_NOTA_COL_NOTE" xml:space="preserve">
+    <value>Testo della nota</value>
+  </data>
+  <data name="FLD_NOTE_CAN" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_CLI" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_COL" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_FIL" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_FRU" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_FRU_CAN" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_PRU" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_PRU_COL" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_REG" xml:space="preserve">
+    <value>Note registrazione</value>
+  </data>
+  <data name="FLD_NOTE_RESP" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTE_UTENTE" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="FLD_NOTTABI_COL" xml:space="preserve">
+    <value>Flag notturno abituale</value>
+  </data>
+  <data name="FLD_NR_ISEE_CAN" xml:space="preserve">
+    <value>N° isee</value>
+  </data>
+  <data name="FLD_NUMERO_BIMBI_FASCIA_CAN" xml:space="preserve">
+    <value>N° bimbi x fascia</value>
+  </data>
+  <data name="FLD_NUMERO_GG_LAVORATIVI" xml:space="preserve">
+    <value>N° gg lavorativi</value>
+  </data>
+  <data name="FLD_NUMERO_UTENTI_FASCIA1_CAN" xml:space="preserve">
+    <value>N° utenti fascia-1</value>
+  </data>
+  <data name="FLD_NUMERO_UTENTI_FASCIA2_CAN" xml:space="preserve">
+    <value>N° utenti fascia-2</value>
+  </data>
+  <data name="FLD_NUMERO_UTENTI_POSTSCUOLA_1MEZZORA_CAN" xml:space="preserve">
+    <value>N° utenti post scuola 1° mezzora</value>
+  </data>
+  <data name="FLD_NUMERO_UTENTI_POSTSCUOLA_2MEZZORA_CAN" xml:space="preserve">
+    <value>N° utenti post scuola 2° mezzora</value>
+  </data>
+  <data name="FLD_NUMERO_UTENTI_PRESCUOLA_CAN" xml:space="preserve">
+    <value>N° utenti pre scuola</value>
+  </data>
+  <data name="FLD_NUTENTI_FIL" xml:space="preserve">
+    <value>N° Fil Assoc</value>
+  </data>
+  <data name="FLD_N_CANT_VAR" xml:space="preserve">
+    <value>N°Var. Assoc</value>
+  </data>
+  <data name="FLD_N_COL_VAR" xml:space="preserve">
+    <value>N°Var. Assoc</value>
+  </data>
+  <data name="FLD_N_FRU_CANT" xml:space="preserve">
+    <value>N°Unità Assoc.</value>
+  </data>
+  <data name="FLD_N_NOTE_CANT" xml:space="preserve">
+    <value>N°Note Assoc.</value>
+  </data>
+  <data name="FLD_N_NOTE_COL" xml:space="preserve">
+    <value>N°Note Assoc.</value>
+  </data>
+  <data name="FLD_N_PERSONE_A_CARICO_COL" xml:space="preserve">
+    <value>N° persone a carico</value>
+  </data>
+  <data name="FLD_N_POS_INAIL_COL" xml:space="preserve">
+    <value>N° pos.inail</value>
+  </data>
+  <data name="FLD_N_POS_INPS_COL" xml:space="preserve">
+    <value>N° pos.inps</value>
+  </data>
+  <data name="FLD_N_PRU_COL" xml:space="preserve">
+    <value>N°Unità Assoc.</value>
+  </data>
+  <data name="FLD_N_SEQ_COL_ORARIO" xml:space="preserve">
+    <value>N° seq.</value>
+  </data>
+  <data name="FLD_N_SEQ_TAB_ORARI" xml:space="preserve">
+    <value>N° seq.</value>
+  </data>
+  <data name="FLD_N_SERIE_FRU" xml:space="preserve">
+    <value>N° serie</value>
+  </data>
+  <data name="FLD_N_SERIE_PRU" xml:space="preserve">
+    <value>N° serie</value>
+  </data>
+  <data name="FLD_N_UTENTI_FIL" xml:space="preserve">
+    <value>N°Fil. Assoc</value>
+  </data>
+  <data name="FLD_N_UTENTI_RESP" xml:space="preserve">
+    <value>N°Resp. Assoc</value>
+  </data>
+  <data name="FLD_ORA_E" xml:space="preserve">
+    <value>Ora Entrata</value>
+  </data>
+  <data name="FLD_ORA_FINE_ORARIO" xml:space="preserve">
+    <value>Ora Fine</value>
+  </data>
+  <data name="FLD_ORA_INIZIO_ORARIO" xml:space="preserve">
+    <value>Ora Inizio</value>
+  </data>
+  <data name="FLD_ORA_U" xml:space="preserve">
+    <value>Ora Uscita</value>
+  </data>
+  <data name="FLD_ORDINAMENTO" xml:space="preserve">
+    <value>Ordine</value>
+  </data>
+  <data name="FLD_OREMASSIME" xml:space="preserve">
+    <value>Ore massime settimana/mese</value>
+  </data>
+  <data name="FLD_OREMAXGG_COL" xml:space="preserve">
+    <value>Ore max x gg/col</value>
+  </data>
+  <data name="FLD_ORE_MASSIME_CAN" xml:space="preserve">
+    <value>Ore massime settimana/mese</value>
+  </data>
+  <data name="FLD_Ore_Tab_Dist" xml:space="preserve">
+    <value>Ore</value>
+  </data>
+  <data name="FLD_Ore_Tab_DistANZE" xml:space="preserve">
+    <value>Ore</value>
+  </data>
+  <data name="FLD_PAGAMENTO_1MESE_ESCL_CLI" xml:space="preserve">
+    <value>Mese-1 escluso</value>
+  </data>
+  <data name="FLD_PAGAMENTO_2MESE_ESCL_CLI" xml:space="preserve">
+    <value>Mese-2 escluso</value>
+  </data>
+  <data name="FLD_PAGAMENTO_CODICE_CLI" xml:space="preserve">
+    <value>Cod.pag.</value>
+  </data>
+  <data name="FLD_PAGAMENTO_GF_CLI" xml:space="preserve">
+    <value>Pag. fm</value>
+  </data>
+  <data name="FLD_PAGAMENTO_GG_CLI" xml:space="preserve">
+    <value>Gg pag.</value>
+  </data>
+  <data name="FLD_PAGAMENTO_INTERVALLO_CLI" xml:space="preserve">
+    <value>Gg interv.rate</value>
+  </data>
+  <data name="FLD_PAGAMENTO_RATE_CLI" xml:space="preserve">
+    <value>N° rate</value>
+  </data>
+  <data name="FLD_PAGAMENTO_SCONTO_CLI" xml:space="preserve">
+    <value>% sconto</value>
+  </data>
+  <data name="FLD_PARTENZA_TAB_DIST" xml:space="preserve">
+    <value>Luogo Partenza</value>
+  </data>
+  <data name="FLD_PARTENZA_TAB_DISTANZE" xml:space="preserve">
+    <value>Luogo Partenza</value>
+  </data>
+  <data name="FLD_PARTITA_IVA_CLI" xml:space="preserve">
+    <value>Partita iva</value>
+  </data>
+  <data name="FLD_PASSWORD" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="FLD_PATENTE_COL" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="FLD_PAUSA_GRUPPO_NOTTE_CAN" xml:space="preserve">
+    <value>pausa_gruppo_notte_can</value>
+  </data>
+  <data name="FLD_PAUSA_VIAGGIO" xml:space="preserve">
+    <value>Pausa viaggio</value>
+  </data>
+  <data name="FLD_PERCENTUALE_CAN" xml:space="preserve">
+    <value>% cantiere</value>
+  </data>
+  <data name="FLD_PERCENTUALE_SERVIZIO_1_CAN" xml:space="preserve">
+    <value>% servizio</value>
+  </data>
+  <data name="FLD_PERCENTUALE_SERVIZIO_2_CAN" xml:space="preserve">
+    <value>% servizio-2</value>
+  </data>
+  <data name="FLD_PERCENTUALE_SERVIZIO_3_CAN" xml:space="preserve">
+    <value>% servizi-3</value>
+  </data>
+  <data name="FLD_PERCENTUALE_SERVIZIO_4_CAN" xml:space="preserve">
+    <value>% servizi-4</value>
+  </data>
+  <data name="FLD_PERCENTUALE_SERVIZIO_5_CAN" xml:space="preserve">
+    <value>% servizio-5</value>
+  </data>
+  <data name="FLD_PERCENTUALE_SERVIZIO_CAN" xml:space="preserve">
+    <value>% servizio-1</value>
+  </data>
+  <data name="FLD_PERCORSOFOTOCOL" xml:space="preserve">
+    <value>Path foto dipendenti</value>
+  </data>
+  <data name="FLD_PROVA" xml:space="preserve">
+    <value>Flag in prova</value>
+  </data>
+  <data name="FLD_PROVINCIA_CAN" xml:space="preserve">
+    <value>Prov.</value>
+  </data>
+  <data name="FLD_PROVINCIA_NASCITA_CAN" xml:space="preserve">
+    <value>Prov.di nascita</value>
+  </data>
+  <data name="FLD_PRU_ID" xml:space="preserve">
+    <value>Unità Portatile</value>
+  </data>
+  <data name="FLD_PUBLICKEY" xml:space="preserve">
+    <value>Chiave Pubblica</value>
+  </data>
+  <data name="FLD_PWD_UTENTE" xml:space="preserve">
+    <value>Password Utente</value>
+  </data>
+  <data name="FLD_QUALIFICA_COL" xml:space="preserve">
+    <value>Qualifica</value>
+  </data>
+  <data name="FLD_QUOTA_PTIME_COL" xml:space="preserve">
+    <value>% P. Time</value>
+  </data>
+  <data name="FLD_RAGGIOGPSDEFAULT" xml:space="preserve">
+    <value>Dflt Rggio GPS</value>
+  </data>
+  <data name="FLD_RAGGIOGPS_CAN" xml:space="preserve">
+    <value>Raggio gps</value>
+  </data>
+  <data name="FLD_RAGGRUPPAMENTO1_CAN" xml:space="preserve">
+    <value>Raggrup.1</value>
+  </data>
+  <data name="FLD_RAGGRUPPAMENTO1_COL" xml:space="preserve">
+    <value>Raggrup.1</value>
+  </data>
+  <data name="FLD_RAGGRUPPAMENTO2_CAN" xml:space="preserve">
+    <value>Raggrup.2</value>
+  </data>
+  <data name="FLD_RAGGRUPPAMENTO2_COL" xml:space="preserve">
+    <value>Raggrup.1</value>
+  </data>
+  <data name="FLD_REGE" xml:space="preserve">
+    <value>Id Reg Entrata</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_DATA_ORA_FIG_REG" xml:space="preserve">
+    <value>Data/Ora Fig.</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_DATA_ORA_FIS_REG" xml:space="preserve">
+    <value>Data/Ora Eff.</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_DATA_ORA_ORIG_REG" xml:space="preserve">
+    <value>Data/Ora Orig.</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_DURATA_FIG_REG" xml:space="preserve">
+    <value>Durata Fig.</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_DURATA_FIS_REG" xml:space="preserve">
+    <value>Durata Eff.</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_STATO_REG" xml:space="preserve">
+    <value>Stato Registrazione</value>
+  </data>
+  <data name="FLD_REGISTRAZIONE_TIPO_REG" xml:space="preserve">
+    <value>Tipo Reg</value>
+  </data>
+  <data name="FLD_REGU" xml:space="preserve">
+    <value>Id Reg Uscita</value>
+  </data>
+  <data name="FLD_RESIDENZA_CAP_CLI" xml:space="preserve">
+    <value>Cap Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_CAP_COL" xml:space="preserve">
+    <value>Cap REs.</value>
+  </data>
+  <data name="FLD_RESIDENZA_INDIRIZZO_CLI" xml:space="preserve">
+    <value>Ind. Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_INDIRIZZO_COL" xml:space="preserve">
+    <value>Ind. Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_INTERNO_CAN" xml:space="preserve">
+    <value>N° Interno</value>
+  </data>
+  <data name="FLD_RESIDENZA_INTERNO_COL" xml:space="preserve">
+    <value>N° Interno</value>
+  </data>
+  <data name="FLD_RESIDENZA_LOCALITA_CAN" xml:space="preserve">
+    <value>Località Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_LOCALITA_COL" xml:space="preserve">
+    <value>Località Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_LUOGO_CLI" xml:space="preserve">
+    <value>Comune Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_LUOGO_COL" xml:space="preserve">
+    <value>Comune Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_NAZIONE_CLI" xml:space="preserve">
+    <value>Naz. Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_PROVINCIA_CLI" xml:space="preserve">
+    <value>Prov. Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_PROVINCIA_COL" xml:space="preserve">
+    <value>Prov. Res.</value>
+  </data>
+  <data name="FLD_RESIDENZA_PROVINCIA_GEN_COL" xml:space="preserve">
+    <value>Prov. Res. al 01/01</value>
+  </data>
+  <data name="FLD_RESP_ID" xml:space="preserve">
+    <value>Cod. Resp.</value>
+  </data>
+  <data name="FLD_RESP_INCLUSIVE" xml:space="preserve">
+    <value>Resp Incl/Escl</value>
+  </data>
+  <data name="FLD_RETRIBUZIONE_LORDA_COL" xml:space="preserve">
+    <value>Retribuzione lorda</value>
+  </data>
+  <data name="FLD_RETRIBUZIONE_NETTA_COL" xml:space="preserve">
+    <value>Retribuzione netta</value>
+  </data>
+  <data name="FLD_RETRIBUZIONE_ORARIA_COL" xml:space="preserve">
+    <value>Retribuzione oraria</value>
+  </data>
+  <data name="FLD_RETRIBUZIONE_STRAORDINARIA_COL" xml:space="preserve">
+    <value>Retribuzione straord.</value>
+  </data>
+  <data name="FLD_RIFERIMENTORRN_ATT" xml:space="preserve">
+    <value>Rif.Assoc.</value>
+  </data>
+  <data name="FLD_RIFERIMENTORRN_REG" xml:space="preserve">
+    <value>Riferim.</value>
+  </data>
+  <data name="FLD_RIPETIZIONE" xml:space="preserve">
+    <value>Ripetizione</value>
+  </data>
+  <data name="FLD_ROWSPERPAGE" xml:space="preserve">
+    <value>N° di Righe per Pagina</value>
+  </data>
+  <data name="FLD_RRN" xml:space="preserve">
+    <value>Rrn</value>
+  </data>
+  <data name="FLD_SAB_COL_ORARIO" xml:space="preserve">
+    <value>Sab.</value>
+  </data>
+  <data name="FLD_SAB_TAB_ORARI" xml:space="preserve">
+    <value>Sab</value>
+  </data>
+  <data name="FLD_SCADENZA_PATENTE_COL" xml:space="preserve">
+    <value>Data Scad. Patente</value>
+  </data>
+  <data name="FLD_SESSO_CAN" xml:space="preserve">
+    <value>Sesso</value>
+  </data>
+  <data name="FLD_SESSO_COL" xml:space="preserve">
+    <value>Sesso</value>
+  </data>
+  <data name="FLD_SIGLA_LINGUE" xml:space="preserve">
+    <value>Sigla Lingua</value>
+  </data>
+  <data name="FLD_SIGLA_PROV" xml:space="preserve">
+    <value>Prov</value>
+  </data>
+  <data name="FLD_SINGOLA_REG" xml:space="preserve">
+    <value>Abil. Pass.</value>
+  </data>
+  <data name="FLD_SINGOLA_REG_FRU" xml:space="preserve">
+    <value>Abil. Pass.</value>
+  </data>
+  <data name="FLD_SINGOLA_REG_PRU" xml:space="preserve">
+    <value>Abil. Pass.</value>
+  </data>
+  <data name="FLD_SOGLIAF_COL" xml:space="preserve">
+    <value>Minuti Soglia Arrot. Uscita</value>
+  </data>
+  <data name="FLD_SOGLIAI_COL" xml:space="preserve">
+    <value>Minuti Soglia Arrot. Entrata</value>
+  </data>
+  <data name="FLD_SOGLIA_ARROT_DURATA_FIG_COL" xml:space="preserve">
+    <value>Soglia Arrot. Durata Viaggi</value>
+  </data>
+  <data name="FLD_SOGLIA_ARROT_FIG_CAN" xml:space="preserve">
+    <value>Minuti Soglia Arrot. Entrata</value>
+  </data>
+  <data name="FLD_SOGLIA_ARROT_FIG_F_CAN" xml:space="preserve">
+    <value>Minuti Soglia Arrot. Uscita</value>
+  </data>
+  <data name="FLD_SOGLIA_DURATA_CAN" xml:space="preserve">
+    <value>Minuti Soglia Arrot. Durata</value>
+  </data>
+  <data name="FLD_SOGLIA_DURATA_COL" xml:space="preserve">
+    <value>Minutiu Soglia Arrot. Durata</value>
+  </data>
+  <data name="FLD_STATO_CIVILE_COL" xml:space="preserve">
+    <value>Stato Civile</value>
+  </data>
+  <data name="FLD_STATO_RECORD_TAB_CHECK_IMP" xml:space="preserve">
+    <value>Stato del Record</value>
+  </data>
+  <data name="FLD_STRANIERO_CEE_COL" xml:space="preserve">
+    <value>Flag cee</value>
+  </data>
+  <data name="FLD_STRANIERO_COL" xml:space="preserve">
+    <value>Flag straniero</value>
+  </data>
+  <data name="FLD_STRANIERO_SCADENZA_PERMESSO_COL" xml:space="preserve">
+    <value>Data scad.permesso sog.</value>
+  </data>
+  <data name="FLD_TAB_CHK_IMP_ID" xml:space="preserve">
+    <value>Tab.Check_Imp</value>
+  </data>
+  <data name="FLD_TAB_COMUNI_ASSOCIATO1" xml:space="preserve">
+    <value>Tab. Cap</value>
+  </data>
+  <data name="FLD_TAB_COMUNI_ASSOCIATO2" xml:space="preserve">
+    <value>Tab. Prov</value>
+  </data>
+  <data name="FLD_TAB_COMUNI_ID" xml:space="preserve">
+    <value>Tab. Comuni</value>
+  </data>
+  <data name="FLD_TAB_DIST_ID" xml:space="preserve">
+    <value>Tab. Dist.</value>
+  </data>
+  <data name="FLD_TAB_FUNZ_ID" xml:space="preserve">
+    <value>Cod. Funz.</value>
+  </data>
+  <data name="FLD_TAB_GRIDLOOKUP_ID" xml:space="preserve">
+    <value>Tab. GridLookUp</value>
+  </data>
+  <data name="FLD_TAB_ORARI_CANT_ID" xml:space="preserve">
+    <value>Tab. Orario Cant</value>
+  </data>
+  <data name="FLD_TAB_ORARI_ID" xml:space="preserve">
+    <value>Tab. Orari</value>
+  </data>
+  <data name="FLD_TAB_ORARI_TIPO_DESC" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="FLD_TAB_ORARI_TIPO_ID" xml:space="preserve">
+    <value>Tab. Tipo Orario</value>
+  </data>
+  <data name="FLD_TAB_PROV_ID" xml:space="preserve">
+    <value>Tab. Provincia</value>
+  </data>
+  <data name="FLD_TAB_REPORT_GROUP_ASSOCIATO1" xml:space="preserve">
+    <value>Nome 1° campo di raggr.</value>
+  </data>
+  <data name="FLD_TAB_REPORT_GROUP_ASSOCIATO2" xml:space="preserve">
+    <value>Nome 2° campo di raggr.</value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO1" xml:space="preserve">
+    <value>On/off 1° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO10" xml:space="preserve">
+    <value>On/off 10° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO11" xml:space="preserve">
+    <value>On/off 11° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO12" xml:space="preserve">
+    <value>On/off 12° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO13" xml:space="preserve">
+    <value>On/off 13° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO14" xml:space="preserve">
+    <value>On/off 14° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO15" xml:space="preserve">
+    <value>On/off 15° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO16" xml:space="preserve">
+    <value>On/off 16° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO17" xml:space="preserve">
+    <value>On/off 17° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO18" xml:space="preserve">
+    <value>N° sort di default</value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO19" xml:space="preserve">
+    <value>On/off stampa pagina intestazione</value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO2" xml:space="preserve">
+    <value>On/off 2° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO20" xml:space="preserve">
+    <value>Libero (non utilizzato)</value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO3" xml:space="preserve">
+    <value>On/off 3° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO4" xml:space="preserve">
+    <value>On/off 4° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO5" xml:space="preserve">
+    <value>On/off 5° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO6" xml:space="preserve">
+    <value>On/off 6° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO7" xml:space="preserve">
+    <value>On/off 7° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO8" xml:space="preserve">
+    <value>On/off 8° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_OPZ_ASSOCIATO9" xml:space="preserve">
+    <value>On/off 9° opz.stampa </value>
+  </data>
+  <data name="FLD_TAB_REPORT_SKIP_ASSOCIATO1" xml:space="preserve">
+    <value>1° opz. salto pagina</value>
+  </data>
+  <data name="FLD_TAB_REPORT_SKIP_ASSOCIATO2" xml:space="preserve">
+    <value>2° opz. salto pagina</value>
+  </data>
+  <data name="FLD_TAB_REPORT_SORT_ASSOCIATO1" xml:space="preserve">
+    <value>Nome 1° campo di ord.</value>
+  </data>
+  <data name="FLD_TAB_REPORT_SORT_ASSOCIATO2" xml:space="preserve">
+    <value>Nome 2° campo di ord.</value>
+  </data>
+  <data name="FLD_TELEFONO_1_CAN" xml:space="preserve">
+    <value>Telefono-1</value>
+  </data>
+  <data name="FLD_TELEFONO_1_CLI" xml:space="preserve">
+    <value>Telefono-1</value>
+  </data>
+  <data name="FLD_TELEFONO_1_COL" xml:space="preserve">
+    <value>Telefono-1</value>
+  </data>
+  <data name="FLD_TELEFONO_1_RIF_CAN" xml:space="preserve">
+    <value>Rif.telefono-1</value>
+  </data>
+  <data name="FLD_TELEFONO_1_RIF_CLI" xml:space="preserve">
+    <value>Rif.telefono-1</value>
+  </data>
+  <data name="FLD_TELEFONO_1_RIF_COL" xml:space="preserve">
+    <value>Rif.telefono-1</value>
+  </data>
+  <data name="FLD_TELEFONO_2_CAN" xml:space="preserve">
+    <value>Telefono-2</value>
+  </data>
+  <data name="FLD_TELEFONO_2_CLI" xml:space="preserve">
+    <value>Telefono-2</value>
+  </data>
+  <data name="FLD_TELEFONO_2_COL" xml:space="preserve">
+    <value>Telefono-2</value>
+  </data>
+  <data name="FLD_TELEFONO_2_RIF_CAN" xml:space="preserve">
+    <value>Rif.telefono-2</value>
+  </data>
+  <data name="FLD_TELEFONO_2_RIF_CLI" xml:space="preserve">
+    <value>Rif.telefono-2</value>
+  </data>
+  <data name="FLD_TELEFONO_2_RIF_COL" xml:space="preserve">
+    <value>Rif.telefono-2</value>
+  </data>
+  <data name="FLD_TELEFONO_3_CAN" xml:space="preserve">
+    <value>Telefono-3</value>
+  </data>
+  <data name="FLD_TELEFONO_3_CLI" xml:space="preserve">
+    <value>Telefono-3</value>
+  </data>
+  <data name="FLD_TELEFONO_3_COL" xml:space="preserve">
+    <value>Telefono-3</value>
+  </data>
+  <data name="FLD_TELEFONO_3_RIF_CAN" xml:space="preserve">
+    <value>Rif.telefono-3</value>
+  </data>
+  <data name="FLD_TELEFONO_3_RIF_CLI" xml:space="preserve">
+    <value>Rif.telefono-3</value>
+  </data>
+  <data name="FLD_TELEFONO_3_RIF_COL" xml:space="preserve">
+    <value>Rif.telefono-3</value>
+  </data>
+  <data name="FLD_TELEFONO_4_CAN" xml:space="preserve">
+    <value>Telefono-4</value>
+  </data>
+  <data name="FLD_TELEFONO_4_CLI" xml:space="preserve">
+    <value>Telefono-4</value>
+  </data>
+  <data name="FLD_TELEFONO_4_COL" xml:space="preserve">
+    <value>Telefono-4</value>
+  </data>
+  <data name="FLD_TELEFONO_4_RIF_CAN" xml:space="preserve">
+    <value>Rif.telefono-4</value>
+  </data>
+  <data name="FLD_TELEFONO_4_RIF_CLI" xml:space="preserve">
+    <value>Rif.telefono-4</value>
+  </data>
+  <data name="FLD_TELEFONO_4_RIF_COL" xml:space="preserve">
+    <value>Rif.telefono-4</value>
+  </data>
+  <data name="FLD_TEMPO_DOPPIA_REG" xml:space="preserve">
+    <value>Mesi x doppia registr.</value>
+  </data>
+  <data name="FLD_TESTO" xml:space="preserve">
+    <value>Testo</value>
+  </data>
+  <data name="FLD_TIPOLOGIA_CAN" xml:space="preserve">
+    <value>Tipologia</value>
+  </data>
+  <data name="FLD_TIPONOTTURNO" xml:space="preserve">
+    <value>Tipo notturno</value>
+  </data>
+  <data name="FLD_TIPONOTTURNO_CAN" xml:space="preserve">
+    <value>Tipo notturno</value>
+  </data>
+  <data name="FLD_TIPONOTTURNO_COL" xml:space="preserve">
+    <value>Tipo notturno</value>
+  </data>
+  <data name="FLD_TIPO_ARRIVO_TAB_DISTANZE" xml:space="preserve">
+    <value>Tipo Arrivo</value>
+  </data>
+  <data name="FLD_TIPO_ARROTONDAMENTO" xml:space="preserve">
+    <value>Tipo arrotond.</value>
+  </data>
+  <data name="FLD_TIPO_ARROTONDAMENTO_CAN" xml:space="preserve">
+    <value>Tipo arrotondamento</value>
+  </data>
+  <data name="FLD_TIPO_ARROTONDAMENTO_COL" xml:space="preserve">
+    <value>Tipo arrotondamento</value>
+  </data>
+  <data name="FLD_TIPO_ASSEGNAZIONE_KMMINUTI" xml:space="preserve">
+    <value>Tipo Assegnaz.KM/MINUTI alle REG</value>
+  </data>
+  <data name="FLD_TIPO_ASSEGNAZIONE_VIAGGI" xml:space="preserve">
+    <value>Tipo assegnaz.viaggi</value>
+  </data>
+  <data name="FLD_TIPO_CALCOLO_VIAGGI_CAN" xml:space="preserve">
+    <value>Tipo calcolo viaggi</value>
+  </data>
+  <data name="FLD_TIPO_CANTIERE_CAN" xml:space="preserve">
+    <value>Tipo cantiere</value>
+  </data>
+  <data name="FLD_TIPO_COL" xml:space="preserve">
+    <value>Tipo collab.</value>
+  </data>
+  <data name="FLD_TIPO_CONTRATTO_COL" xml:space="preserve">
+    <value>Tipo contratto</value>
+  </data>
+  <data name="FLD_TIPO_INTERV_CAN" xml:space="preserve">
+    <value>Tipo intervento</value>
+  </data>
+  <data name="FLD_TIPO_MODIFICA" xml:space="preserve">
+    <value>Tipo Mod.</value>
+  </data>
+  <data name="FLD_TIPO_NOTA_CAN_NOTE" xml:space="preserve">
+    <value>Tipo nota</value>
+  </data>
+  <data name="FLD_TIPO_NOTA_COL_NOTE" xml:space="preserve">
+    <value>Tipo nota</value>
+  </data>
+  <data name="FLD_TIPO_ORARIO_COL" xml:space="preserve">
+    <value>Tipo orario</value>
+  </data>
+  <data name="FLD_TIPO_ORARIO_COL_ORARIO" xml:space="preserve">
+    <value>Tipo orario</value>
+  </data>
+  <data name="FLD_TIPO_ORARIO_TAB_ORARI" xml:space="preserve">
+    <value>Tipo orario</value>
+  </data>
+  <data name="FLD_TIPO_PARTENZA_TAB_DISTANZE" xml:space="preserve">
+    <value>Tipo Partenza</value>
+  </data>
+  <data name="FLD_TIPO_PAUSA_COL_ORARIO" xml:space="preserve">
+    <value>Tipo pausa</value>
+  </data>
+  <data name="FLD_TIPO_PAUSA_TAB_ORARI" xml:space="preserve">
+    <value>Tipo pausa</value>
+  </data>
+  <data name="FLD_TIPO_RAPPORTO_COL" xml:space="preserve">
+    <value>Tipo rapporto</value>
+  </data>
+  <data name="FLD_TIPO_SERVIZIO_1_CAN" xml:space="preserve">
+    <value>Tipo servizio</value>
+  </data>
+  <data name="FLD_TIPO_SERVIZIO_2_CAN" xml:space="preserve">
+    <value>Tipo servizio-2</value>
+  </data>
+  <data name="FLD_TIPO_SERVIZIO_3_CAN" xml:space="preserve">
+    <value>Tipo servizio-3</value>
+  </data>
+  <data name="FLD_TIPO_SERVIZIO_4_CAN" xml:space="preserve">
+    <value>Tipo servizio-4</value>
+  </data>
+  <data name="FLD_TIPO_SERVIZIO_5_CAN" xml:space="preserve">
+    <value>Tipo servizio-5</value>
+  </data>
+  <data name="FLD_TIPO_SERVIZIO_CAN" xml:space="preserve">
+    <value>Tipo servizio</value>
+  </data>
+  <data name="FLD_TIPO_TAB_DIST" xml:space="preserve">
+    <value>Tipo Tab.Dist.</value>
+  </data>
+  <data name="FLD_TIPO_VIAGGIO" xml:space="preserve">
+    <value>Tipo calcolo viaggi</value>
+  </data>
+  <data name="FLD_TITOLO_STUDIO_COL" xml:space="preserve">
+    <value>Titolo studio</value>
+  </data>
+  <data name="FLD_TOLLERANZA_COL_ORARIO" xml:space="preserve">
+    <value>Hhmm toller.</value>
+  </data>
+  <data name="FLD_TOLLERANZA_TAB_ORARI" xml:space="preserve">
+    <value>Hhmm toller.</value>
+  </data>
+  <data name="FLD_TRATTENUTA_VITTO_COL" xml:space="preserve">
+    <value>Trattenuta vtto</value>
+  </data>
+  <data name="FLD_TURNO10_CAN" xml:space="preserve">
+    <value>Turno-10</value>
+  </data>
+  <data name="FLD_TURNO1_CAN" xml:space="preserve">
+    <value>Turno-1</value>
+  </data>
+  <data name="FLD_TURNO2_CAN" xml:space="preserve">
+    <value>Turno-2</value>
+  </data>
+  <data name="FLD_TURNO3_CAN" xml:space="preserve">
+    <value>Turno-3</value>
+  </data>
+  <data name="FLD_TURNO4_CAN" xml:space="preserve">
+    <value>Turno-4</value>
+  </data>
+  <data name="FLD_TURNO5_CAN" xml:space="preserve">
+    <value>Turno-5</value>
+  </data>
+  <data name="FLD_TURNO6_CAN" xml:space="preserve">
+    <value>Turno-6</value>
+  </data>
+  <data name="FLD_TURNO7_CAN" xml:space="preserve">
+    <value>Turno-7</value>
+  </data>
+  <data name="FLD_TURNO8_CAN" xml:space="preserve">
+    <value>Turno-8</value>
+  </data>
+  <data name="FLD_TURNO9_CAN" xml:space="preserve">
+    <value>Turno-9</value>
+  </data>
+  <data name="FLD_UTENTI_FIL_ID" xml:space="preserve">
+    <value>Utente/Fil Id</value>
+  </data>
+  <data name="FLD_UTENTI_ID" xml:space="preserve">
+    <value>Id.Utente</value>
+  </data>
+  <data name="FLD_UTENTI_RESP_ID" xml:space="preserve">
+    <value>Utente/Resp Id</value>
+  </data>
+  <data name="FLD_UTILIZZO_FASCE_VIAGGI" xml:space="preserve">
+    <value>Flag utilizzo fasce viaggi</value>
+  </data>
+  <data name="FLD_VALUTA_CLI" xml:space="preserve">
+    <value>Valuta</value>
+  </data>
+  <data name="FLD_VEN_COL_ORARIO" xml:space="preserve">
+    <value>Ven.</value>
+  </data>
+  <data name="FLD_VEN_TAB_ORARI" xml:space="preserve">
+    <value>Ven.</value>
+  </data>
+  <data name="FLD_ZONA_CAN" xml:space="preserve">
+    <value>Zona</value>
+  </data>
+  <data name="FLD_ZONA_COL" xml:space="preserve">
+    <value>Zona</value>
+  </data>
+  <data name="LBL_AUTOMATICO" xml:space="preserve">
+    <value>Generazione Automatica</value>
+  </data>
+  <data name="LBL_COL" xml:space="preserve">
+    <value>Collab:</value>
+    <comment>:</comment>
+  </data>
+  <data name="LBL_DURATA" xml:space="preserve">
+    <value>Durata</value>
+  </data>
+  <data name="LBL_EXPAND" xml:space="preserve">
+    <value>Espandi</value>
+  </data>
+  <data name="LBL_E_FIG" xml:space="preserve">
+    <value>E.Fig</value>
+  </data>
+  <data name="LBL_E_FIS" xml:space="preserve">
+    <value>E.Fis.</value>
+  </data>
+  <data name="LBL_FROMCOLDESC" xml:space="preserve">
+    <value>Dal Collab:</value>
+  </data>
+  <data name="LBL_FROMDATAREG" xml:space="preserve">
+    <value>Dalla Data</value>
+  </data>
+  <data name="LBL_GIORNO" xml:space="preserve">
+    <value>Giorno:</value>
+  </data>
+  <data name="LBL_MESE" xml:space="preserve">
+    <value>Mese</value>
+  </data>
+  <data name="LBL_MOD" xml:space="preserve">
+    <value>Mod.</value>
+  </data>
+  <data name="LBL_MOT" xml:space="preserve">
+    <value>Mot.</value>
+  </data>
+  <data name="LBL_PARAMETRI_DI_LANCIO_DEL_REPORT" xml:space="preserve">
+    <value>Parametri di Lancio del Report</value>
+  </data>
+  <data name="LBL_STAMPA_COVER" xml:space="preserve">
+    <value>Stampa Pagina di Copertina</value>
+  </data>
+  <data name="LBL_TOCOLDESC" xml:space="preserve">
+    <value>Al Collaboratore</value>
+  </data>
+  <data name="LBL_TODATAREG" xml:space="preserve">
+    <value>Alla Data</value>
+  </data>
+  <data name="LBL_TOTALE_COL" xml:space="preserve">
+    <value>Tot.Col:</value>
+  </data>
+  <data name="LBL_TOTALE_GIORNO" xml:space="preserve">
+    <value>Tot.Giorno:</value>
+  </data>
+  <data name="LBL_TOTALE_MESE" xml:space="preserve">
+    <value>Tot.Mese:</value>
+  </data>
+  <data name="LBL_U_FIG" xml:space="preserve">
+    <value>U.Fig.</value>
+  </data>
+  <data name="LBL_U_FIS" xml:space="preserve">
+    <value>U.Fis.</value>
+  </data>
+  <data name="MENU_FRMABILITAZIONI_TEXT" xml:space="preserve">
+    <value>Abilitazioni funzioni</value>
+  </data>
+  <data name="MENU_FRMASSOCIAZIONICANTFRU_TEXT" xml:space="preserve">
+    <value>Associazioni - cantieri con dettaglio unità fisse</value>
+  </data>
+  <data name="MENU_FRMASSOCIAZIONICOLPRU_TEXT" xml:space="preserve">
+    <value>Associazioni - collaboratori con dettaglio unità portatili</value>
+  </data>
+  <data name="MENU_FRMASSOCIAZIONIFRUCANT_TEXT" xml:space="preserve">
+    <value>Associazioni - unità fisse con dettaglio cantieri</value>
+  </data>
+  <data name="MENU_FRMASSOCIAZIONIPRUCOL_TEXT" xml:space="preserve">
+    <value>Associazioni - unità portatili con dettaglio collaboratori</value>
+  </data>
+  <data name="MENU_FRMCANTIERI_TEXT" xml:space="preserve">
+    <value>Cantieri</value>
+  </data>
+  <data name="MENU_FRMCANTNOTE_TEXT" xml:space="preserve">
+    <value>Note cantieri</value>
+  </data>
+  <data name="MENU_FRMCANTVAR_TEXT" xml:space="preserve">
+    <value>Variazioni anagrafiche cantieri</value>
+  </data>
+  <data name="MENU_FRMCLIENTI_TEXT" xml:space="preserve">
+    <value>Clienti</value>
+  </data>
+  <data name="MENU_FRMCOLLABORATORI_TEXT" xml:space="preserve">
+    <value>Collaboratori</value>
+  </data>
+  <data name="MENU_FRMCOLNOTE_TEXT" xml:space="preserve">
+    <value>Note collaboratori</value>
+  </data>
+  <data name="MENU_FRMCOLORARIO_TEXT" xml:space="preserve">
+    <value>Orari dei collaboratori</value>
+  </data>
+  <data name="MENU_FRMCOLVAR_TEXT" xml:space="preserve">
+    <value>Variazioni anagrafiche collaboratori</value>
+  </data>
+  <data name="MENU_FRMCONNESSIONE_TEXT" xml:space="preserve">
+    <value>Connessione al database</value>
+  </data>
+  <data name="MENU_FRMERRORI_IMPORT" xml:space="preserve">
+    <value>Errori import</value>
+  </data>
+  <data name="MENU_FRMERRORI_IMPORT_TEXT" xml:space="preserve">
+    <value>Visualizzazione errori import</value>
+  </data>
+  <data name="MENU_FRMEXPORT_TEXT" xml:space="preserve">
+    <value>Esportazione dati</value>
+  </data>
+  <data name="MENU_FRMFILIALI_TEXT" xml:space="preserve">
+    <value>Filiali</value>
+  </data>
+  <data name="MENU_FRMFIL_UTENTI_TEXT" xml:space="preserve">
+    <value>Associazioni Filiali/Utenti</value>
+  </data>
+  <data name="MENU_FRMFUNZIONI_TEXT" xml:space="preserve">
+    <value>Funzioni</value>
+  </data>
+  <data name="MENU_FRMGESTIONEMENU_TEXT" xml:space="preserve">
+    <value>Gestione menù</value>
+  </data>
+  <data name="MENU_FRMIMPORTDAACCESSASQLSERVER_TEXT" xml:space="preserve">
+    <value>Import iniziale da database access</value>
+  </data>
+  <data name="MENU_FRMIMPORT_TEXT" xml:space="preserve">
+    <value>Importazione dati</value>
+  </data>
+  <data name="MENU_FRMLANCIAELABREG_TEXT" xml:space="preserve">
+    <value>Lancio elaborazione timbrature</value>
+  </data>
+  <data name="MENU_FRMLANCIASTAMPAREG_TEXT" xml:space="preserve">
+    <value>Stampa timbrature</value>
+  </data>
+  <data name="MENU_FRMLINGUE_TEXT" xml:space="preserve">
+    <value>Lingue</value>
+  </data>
+  <data name="MENU_FRMLOGIN_TEXT" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="MENU_FRMPARAMETRI_TEXT" xml:space="preserve">
+    <value>Parametri</value>
+  </data>
+  <data name="MENU_FRMREGISTRAZIONI_TEXT" xml:space="preserve">
+    <value>Manutenzione timbrature</value>
+  </data>
+  <data name="MENU_FRMRESP_TEXT" xml:space="preserve">
+    <value>Responsabili</value>
+  </data>
+  <data name="MENU_FRMRESP_UTENTI_TEXT" xml:space="preserve">
+    <value>Associazioni Responsabili/Utenti</value>
+  </data>
+  <data name="MENU_FRMSEGNALAZIONI_TEXT" xml:space="preserve">
+    <value>Segnalazioni</value>
+  </data>
+  <data name="MENU_FRMSTAMPAANTEPRIMA_TEXT" xml:space="preserve">
+    <value>Anteprima di stampa</value>
+  </data>
+  <data name="MENU_FRMTABORARI_TEXT" xml:space="preserve">
+    <value>Tabella Orari</value>
+  </data>
+  <data name="MENU_FRMTAB_CHECKIMP_TEXT" xml:space="preserve">
+    <value>Tab. Check Import</value>
+  </data>
+  <data name="MENU_FRMTAB_COMUNI_TEXT" xml:space="preserve">
+    <value>Tab.Comuni e Cap</value>
+  </data>
+  <data name="MENU_FRMTAB_DECOD_TEXT" xml:space="preserve">
+    <value>Tabelle Decodifica</value>
+  </data>
+  <data name="MENU_FRMTAB_DIST_TEXT" xml:space="preserve">
+    <value>Tab. Distanze</value>
+  </data>
+  <data name="MENU_FRMTAB_FESTIVI_TEXT" xml:space="preserve">
+    <value>Tab.Festivi</value>
+  </data>
+  <data name="MENU_FRMTAB_GRIDLOOKUP_TEXT" xml:space="preserve">
+    <value>Tab.Grid Look Up</value>
+  </data>
+  <data name="MENU_FRMTAB_PROV_TEXT" xml:space="preserve">
+    <value>Tab.Prov.</value>
+  </data>
+  <data name="MENU_FRMTIME_SHEET_TEXT" xml:space="preserve">
+    <value>Cartellino Presenze</value>
+  </data>
+  <data name="MENU_FRMUNITAFISSE_TEXT" xml:space="preserve">
+    <value>Unità fisse</value>
+  </data>
+  <data name="MENU_FRMUNITAPORTATILI_TEXT" xml:space="preserve">
+    <value>Unità portatili</value>
+  </data>
+  <data name="MENU_FRMUTENTI_FIL_TEXT" xml:space="preserve">
+    <value>Associazioni Utenti/Filiali</value>
+  </data>
+  <data name="MENU_FRMUTENTI_RESP_TEXT" xml:space="preserve">
+    <value>Associazioni Utenti/Responsabili</value>
+  </data>
+  <data name="MENU_FRMUTENTI_TEXT" xml:space="preserve">
+    <value>Utenti</value>
+  </data>
+  <data name="MENU_GROUP_ANAGRAFICHE" xml:space="preserve">
+    <value>Anagrafiche</value>
+  </data>
+  <data name="MENU_GROUP_ASSOCIAZIONI_UNITA" xml:space="preserve">
+    <value>Associazioni unità</value>
+  </data>
+  <data name="MENU_GROUP_CONFIGURAZIONE" xml:space="preserve">
+    <value>Configurazione</value>
+  </data>
+  <data name="MENU_GROUP_CONFIGURAZIONE_SISTEMA" xml:space="preserve">
+    <value>Configurazione Sistema</value>
+  </data>
+  <data name="MENU_GROUP_CONFIGURAZIONE_UTENTI" xml:space="preserve">
+    <value>Configurazioni Utente</value>
+  </data>
+  <data name="MENU_GROUP_FUNZIONI_AVANZATE" xml:space="preserve">
+    <value>Funzioni avanzate</value>
+  </data>
+  <data name="MENU_GROUP_FUNZIONI_BASE" xml:space="preserve">
+    <value>Funzioni base</value>
+  </data>
+  <data name="MENU_GROUP_FUNZIONI_COMUNI" xml:space="preserve">
+    <value>Funzioni comuni</value>
+  </data>
+  <data name="MENU_GROUP_GESTIONE_ORARI" xml:space="preserve">
+    <value>Gestione orari</value>
+  </data>
+  <data name="MENU_GROUP_IMPORT_EXPORT" xml:space="preserve">
+    <value>Import/export</value>
+  </data>
+  <data name="MENU_GROUP_NOTE_ANAGRAFICHE" xml:space="preserve">
+    <value>Note anagrafiche</value>
+  </data>
+  <data name="MENU_GROUP_REGISTRAZIONI" xml:space="preserve">
+    <value>Gestione timbrature</value>
+  </data>
+  <data name="MENU_GROUP_STORICO_VARIAZIONI" xml:space="preserve">
+    <value>Storico variazioni</value>
+  </data>
+  <data name="MENU_TIPO_ASSISTENZA" xml:space="preserve">
+    <value>Menù assistenza</value>
+  </data>
+  <data name="MENU_TIPO_DEFAULT" xml:space="preserve">
+    <value>Menù standard</value>
+  </data>
+  <data name="MENU_TIPO_SCUOLE" xml:space="preserve">
+    <value>Menù tipo scuole</value>
+  </data>
+  <data name="RPT_NOME_REPORT_ELENCO_UNITA_FISSE" xml:space="preserve">
+    <value>Stampa lista unità fisse</value>
+  </data>
+  <data name="RPT_NOME_REPORT_ELENCO_UNITA_PORTATILI" xml:space="preserve">
+    <value>Stampa lista unità portatili</value>
+  </data>
+  <data name="RPT_NOME_REPORT_ELENCO_UTENTI" xml:space="preserve">
+    <value>Stampa lista utenti</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_ABILITAZIONI_FUNZ_UTE" xml:space="preserve">
+    <value>Stampa lista funzioni con/senza abilitazioni agli utenti (funzute)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_ABILITAZIONI_UTE_FUNZ" xml:space="preserve">
+    <value>Stampa lista utenti con/senza abilitazioni alle funzioni (utefunz)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_ASSOCIAZIONI_CANT_FRU" xml:space="preserve">
+    <value>Stampa lista cantieri con/senza associazioni alle unità fisse (cantfru)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_ASSOCIAZIONI_COL_PRU" xml:space="preserve">
+    <value>Stampa lista collaboratori con/senza associazioni alle unità portatili (colpru)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_ASSOCIAZIONI_FRU_CANT" xml:space="preserve">
+    <value>Stampa lista unità fisse con/senza associazioni ai cantieri (frucant)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_ASSOCIAZIONI_PRU_COL" xml:space="preserve">
+    <value>Stampa lista unità portatili con/senza associazioni ai collaboratori (prucol)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_CANTIERI" xml:space="preserve">
+    <value>Stampa lista cantieri</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_CANTIERI_CON_SENZA_NOTE" xml:space="preserve">
+    <value>Stampa lista cantieri con/senza note</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_CANTIERI_VAR" xml:space="preserve">
+    <value>Lista variazioni cantiere</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_CLIENTI" xml:space="preserve">
+    <value>Stampa lista clienti</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_COLLABORATORI" xml:space="preserve">
+    <value>Stampa lista collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_COLLABORATORI_CON_SENZA_NOTE" xml:space="preserve">
+    <value>Stampa lista collaboratori con/senza note</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_COLLABORATORI_ORARIO" xml:space="preserve">
+    <value>Lista collab. con/senza orario</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_COLLABORATORI_VAR" xml:space="preserve">
+    <value>Lista variazioni collaboratore</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_DATAGRID" xml:space="preserve">
+    <value>Lista datagrid</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_MENU" xml:space="preserve">
+    <value>Lista dei menù</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_NOTE_CANT_NOTE" xml:space="preserve">
+    <value>Stampa lista delle Note dei Cantieri</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_NOTE_COL_NOTE" xml:space="preserve">
+    <value>Stampa lista delle Note dei Collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_REG_DET" xml:space="preserve">
+    <value>Lista reg.dettagliate</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_STRUTTURA_MENU" xml:space="preserve">
+    <value>Lista struttura dei menù</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_STRUTTURA_MENU_CORRENTE" xml:space="preserve">
+    <value>Lista struttura menù corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_TABELLE" xml:space="preserve">
+    <value>Stampa elenco tab. decodifica</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_TABORARI" xml:space="preserve">
+    <value>Stampa elenco tipi orari con/senza orari associati</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_TAB_AUT" xml:space="preserve">
+    <value>Stampa lista delle abilitazioni delle singole funzioni/utenti</value>
+  </data>
+  <data name="RPT_NOME_REPORT_LISTA_TAB_ORARI" xml:space="preserve">
+    <value>Stampa elenco tab.orari con/senza orari</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_ABILITAZIONI_UTE_FUNZ" xml:space="preserve">
+    <value>Stampa lista delle abilitazioni del singolo utente (utefunz)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_ASSOCIAZIONE_CANT_FRU" xml:space="preserve">
+    <value>Stampa lista delle unità fisse associate al cantiere corrente (cantfru)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_ASSOCIAZIONE_COL_PRU" xml:space="preserve">
+    <value>Stampa lista delle unità portatili associate al collaboratore corrente (colpru)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_ASSOCIAZIONE_FRU_CANT" xml:space="preserve">
+    <value>Stampa lista dei cantieri associati alla unità fissa corrente (frucant)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_ASSOCIAZIONE_PRU_COL" xml:space="preserve">
+    <value>Stampa lista dei collaboratori associati alle unità portatile corrente (prucol)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_CANTIERE_CORRENTE" xml:space="preserve">
+    <value>Stampa scheda cantiere corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_CANTIERE_VAR_CORRENTE" xml:space="preserve">
+    <value>Scheda variazione corrente </value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_CLIENTE_CORRENTE" xml:space="preserve">
+    <value>Stampa scheda cliente corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_COLLABORATORE_CORRENTE" xml:space="preserve">
+    <value>Stampa scheda collaboratore corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_COLLABORATORE_ORARIO_CORRENTE" xml:space="preserve">
+    <value>Stampa elenco orari del collaboratore corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_COLLABORATORE_VAR_CORRENTE" xml:space="preserve">
+    <value>Scheda variazione corrente </value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_DATAGRID_CORRENTE" xml:space="preserve">
+    <value>Lista dettaglio singola datagrid </value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_NOTE_CANTIERE_CORRENTE" xml:space="preserve">
+    <value>Stampa note del cantiere corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_NOTE_COLLABORATORE_CORRENTE" xml:space="preserve">
+    <value>Stampa note del collaboratore corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_PARAMETRI" xml:space="preserve">
+    <value>Stampa scheda parametri</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_REG_COL" xml:space="preserve">
+    <value>Stampa Schede Reg x COL</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_REG_DET" xml:space="preserve">
+    <value>Stampa scheda reg.dettagliata corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_TABELLA_CORRENTE" xml:space="preserve">
+    <value>Stampa scheda tabella corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDA_TAB_ORARI" xml:space="preserve">
+    <value>Stampa lista degli orari associate al tipo orario corrente</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_ABILITAZIONI_FUNZ_UTE" xml:space="preserve">
+    <value>Stampa lista delle abilitazioni delle singole funzioni (funzute)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_ABILITAZIONI_UTE_FUNZ" xml:space="preserve">
+    <value>Stampalista delle abilitazioni dei singoli utenti (utefunz)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_ASSOCIAZIONI_CANT_FRU" xml:space="preserve">
+    <value>Stampa lista delle unità fisse associate ai singoli cantieri (cantfru)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_ASSOCIAZIONI_COL_PRU" xml:space="preserve">
+    <value>Stampa lista delle unità portatili associate ai singoli collaboratori (colpru)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_ASSOCIAZIONI_FRU_CANT" xml:space="preserve">
+    <value>Stampa lista dei cantieri associati alle singole unità fisse (frucant)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_ASSOCIAZIONI_PRU_COL" xml:space="preserve">
+    <value>Stampa lista dei collaboratori associati alle singole unità portatili (prucol)</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_CANTIERI" xml:space="preserve">
+    <value>Stampa schede cantieri</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_CANTIERI_VAR" xml:space="preserve">
+    <value>Schede variazioni collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_CANT_VAR" xml:space="preserve">
+    <value>Stampa Schede Variazioni Cantieri</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_CLIENTI" xml:space="preserve">
+    <value>Stampa schede clienti</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_COLLABORATORI" xml:space="preserve">
+    <value>Stampa schede collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_COLLABORATORI_ORARIO" xml:space="preserve">
+    <value>Stampa elenco orari dei collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_COLLABORATORI_VAR" xml:space="preserve">
+    <value>Schede variazioni collaboratore</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_COL_VAR" xml:space="preserve">
+    <value>Stampa Schede Variazioni Collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_DATAGRID" xml:space="preserve">
+    <value>Lista dettaglio datagrid</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_NOTE_CANTIERI" xml:space="preserve">
+    <value>Stampa note dei cantieri</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_NOTE_COLLABORATORI" xml:space="preserve">
+    <value>Stampa note dei collaboratori</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_REG_DET" xml:space="preserve">
+    <value>Stampa schede reg.dettagliate</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_TABELLE" xml:space="preserve">
+    <value>Stampa schede tabelle</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_TAB_ORARI" xml:space="preserve">
+    <value>Stampa lista degli orari associate ai tipi orari selezionati</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_UNITA_FISSE" xml:space="preserve">
+    <value>Stampa Scheda unità fisse</value>
+  </data>
+  <data name="RPT_NOME_REPORT_SCHEDE_UNITA_PORTATILI" xml:space="preserve">
+    <value>Stampa Scheda unità portatili</value>
+  </data>
+  <data name="STR_ABILITATO" xml:space="preserve">
+    <value>Abilitato</value>
+  </data>
+  <data name="STR_ACCESSO_AL_DATABASE_FALLITO" xml:space="preserve">
+    <value>Accesso fallito al database '{0}'!
+errore restituito: {1}</value>
+  </data>
+  <data name="STR_AGGIORNAMENTO" xml:space="preserve">
+    <value>Aggiornamento</value>
+  </data>
+  <data name="STR_AGGIORNAMENTO_IMPOSSIBILE" xml:space="preserve">
+    <value>Impossibile effettuare l'aggiornamento riprovare piu tardi. grazie</value>
+  </data>
+  <data name="STR_AGGIORNA_PASSWORD" xml:space="preserve">
+    <value>Aggiorna password</value>
+  </data>
+  <data name="STR_AIUTO_SU_MASCHERA_CORRENTE" xml:space="preserve">
+    <value>Aiuto su maschera corrente</value>
+  </data>
+  <data name="STR_AL" xml:space="preserve">
+    <value>Al</value>
+  </data>
+  <data name="STR_ALLE" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="STR_ALTRE_TABELLE" xml:space="preserve">
+    <value>Altre tabelle</value>
+  </data>
+  <data name="STR_ANAGRAFICA" xml:space="preserve">
+    <value>Anagrafica</value>
+  </data>
+  <data name="STR_ANNULLA" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="STR_ARROTONDAMENTI" xml:space="preserve">
+    <value>Arrotondamenti</value>
+  </data>
+  <data name="STR_ASSISTITO" xml:space="preserve">
+    <value>ASSISTITO</value>
+  </data>
+  <data name="STR_ASSOCIAZIONI_CANTIERI_UNITA_FISSE" xml:space="preserve">
+    <value>Associazioni dei cantieri alle unità fisse</value>
+  </data>
+  <data name="STR_ASSOCIAZIONI_COLLABORATORI_UNITA_MOBILI" xml:space="preserve">
+    <value>Associazioni dei collaboratori alle unità mobili</value>
+  </data>
+  <data name="STR_ATTENZIONE" xml:space="preserve">
+    <value>Attenzione</value>
+  </data>
+  <data name="STR_AUTORIZZAZIONI_INSUFFICIENTI_PER_USARE_OGGETTO" xml:space="preserve">
+    <value>L'utente non dispone delle autorizzazioni necessarie per usare questa funzionalità!</value>
+  </data>
+  <data name="STR_AUTORIZZAZIONI_NON_DEFINITE" xml:space="preserve">
+    <value>Per questo utente non sono state definite le autorizzazioni per usare la maschera o il report!</value>
+  </data>
+  <data name="STR_AVVISO" xml:space="preserve">
+    <value>Avviso</value>
+  </data>
+  <data name="STR_CAMPI_DA_NASCONDERE" xml:space="preserve">
+    <value>Campi da nascondere</value>
+  </data>
+  <data name="STR_CAMPI_DA_VISUALIZZARE" xml:space="preserve">
+    <value>Campi da visualizzare</value>
+  </data>
+  <data name="STR_CAMPO_X_DATA_GRID_MANCANTE" xml:space="preserve">
+    <value>La colonna {0} della lista non esiste!</value>
+  </data>
+  <data name="STR_CAMPO_X_NON_PRESENTE_IN_DATABASE" xml:space="preserve">
+    <value>Il campo {0} non è presente nel database corrente!</value>
+  </data>
+  <data name="STR_CANTIERE" xml:space="preserve">
+    <value>Cantiere</value>
+  </data>
+  <data name="STR_CANTIERI" xml:space="preserve">
+    <value>Cantieri</value>
+  </data>
+  <data name="STR_CLIENTI" xml:space="preserve">
+    <value>Clienti</value>
+  </data>
+  <data name="STR_CODUTEFUNZ_ERR" xml:space="preserve">
+    <value>Deve essere indicato un codice utente e/o un codice funzione e/o entrambi</value>
+  </data>
+  <data name="STR_COLLABORATORE" xml:space="preserve">
+    <value>Collaboratore</value>
+  </data>
+  <data name="STR_COLLABORATORI" xml:space="preserve">
+    <value>Collaboratori</value>
+  </data>
+  <data name="STR_COND_COMM" xml:space="preserve">
+    <value>Condizioni Commerciali</value>
+  </data>
+  <data name="STR_CONFERMA_CANCELLAZIONE" xml:space="preserve">
+    <value>Si conferma la cancellazione?</value>
+  </data>
+  <data name="STR_CONTROLLO_SE_STRUTTURA_DB_E_AGGIORNATA" xml:space="preserve">
+    <value>Controllo se la struttura del database è aggiornata a questa versione del software.</value>
+  </data>
+  <data name="STR_CRITERIO_ORDINAMENTO" xml:space="preserve">
+    <value>Ordinamento</value>
+  </data>
+  <data name="STR_CRITERIO_RAGGRUPPAMENTO" xml:space="preserve">
+    <value>Raggruppamento</value>
+  </data>
+  <data name="STR_DAL" xml:space="preserve">
+    <value>Dal</value>
+  </data>
+  <data name="STR_DALLE" xml:space="preserve">
+    <value>Dalle</value>
+  </data>
+  <data name="STR_DATABASE_ACCESS" xml:space="preserve">
+    <value>Database access</value>
+  </data>
+  <data name="STR_DATA_REGISTRAZIONE" xml:space="preserve">
+    <value>Data creazione</value>
+  </data>
+  <data name="STR_DATA_SCADENZA" xml:space="preserve">
+    <value>Data scadenza {0}</value>
+  </data>
+  <data name="STR_DB_INDICATO_X_NON_ESISTE" xml:space="preserve">
+    <value>Il database {0} indicato non esiste</value>
+  </data>
+  <data name="STR_DIRECTORY_FILE_NON_TROVATO" xml:space="preserve">
+    <value>La directory e/o il file indicato non esiste</value>
+  </data>
+  <data name="STR_DISABILITATO" xml:space="preserve">
+    <value>Disabilitato</value>
+  </data>
+  <data name="STR_DISATTIVA_FILTRO" xml:space="preserve">
+    <value>Disattiva filtro</value>
+  </data>
+  <data name="STR_DOMANDA_1_UTENTE_VUOLE_ESEGUIRE_ELIMINAZIONE" xml:space="preserve">
+    <value>Si vuole eseguire la cancellazione?</value>
+  </data>
+  <data name="STR_DOMANDA_1_UTENTE_VUOLE_ESEGUIRE_INSERIMENTO" xml:space="preserve">
+    <value>Si vuole eseguire l'inserimento?</value>
+  </data>
+  <data name="STR_DOMANDA_1_UTENTE_VUOLE_ESEGUIRE_MODIFICA" xml:space="preserve">
+    <value>Si vuole eseguire la modifica?</value>
+  </data>
+  <data name="STR_DOMANDA_2_UTENTE_VUOLE_ESEGUIRE_ELIMINAZIONE" xml:space="preserve">
+    <value>Si vuole veramente eseguire la cancellazione?</value>
+  </data>
+  <data name="STR_DOMANDA_2_UTENTE_VUOLE_ESEGUIRE_INSERIMENTO" xml:space="preserve">
+    <value>Si vuole veramente eseguire l'inserimento?</value>
+  </data>
+  <data name="STR_DOMANDA_2_UTENTE_VUOLE_ESEGUIRE_MODIFICA" xml:space="preserve">
+    <value>Si vuole veramente eseguire la modifica?</value>
+  </data>
+  <data name="STR_DOMANDA_UTENTE_VUOLE_ESEGUIRE_AGGIORNAMENTO" xml:space="preserve">
+    <value>Vuoi eseguire l'aggiornamento?</value>
+  </data>
+  <data name="STR_DOWNLOAD_AGGIORNAMENTO" xml:space="preserve">
+    <value>Download aggiornamento</value>
+  </data>
+  <data name="STR_DURATA_FIG" xml:space="preserve">
+    <value>Durata Fig.</value>
+  </data>
+  <data name="STR_DURATA_FIS" xml:space="preserve">
+    <value>Durata Fis.</value>
+  </data>
+  <data name="STR_ELABORAZIONE_NON_PREVISTA" xml:space="preserve">
+    <value>Elaborazione non prevista attualmente</value>
+  </data>
+  <data name="STR_ENTRAMBI" xml:space="preserve">
+    <value>Entrambi</value>
+  </data>
+  <data name="STR_ENTRATA_FIG" xml:space="preserve">
+    <value>Entrata Fig.</value>
+  </data>
+  <data name="STR_ENTRATA_FIS" xml:space="preserve">
+    <value>Entrata Fis.</value>
+  </data>
+  <data name="STR_ERRATE" xml:space="preserve">
+    <value>Errate</value>
+  </data>
+  <data name="STR_ERRORE" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="STR_ERRORE_TABELLA_PARAMETRI_NON_CONTIENE_DATI" xml:space="preserve">
+    <value>Errore: la tabella parametri non contiene dati!</value>
+  </data>
+  <data name="STR_FIL" xml:space="preserve">
+    <value>Tab.Filiali</value>
+  </data>
+  <data name="STR_FILTRATO" xml:space="preserve">
+    <value>Filtrato</value>
+  </data>
+  <data name="STR_FILTRO_A_1_ANNO_DA_OGGI" xml:space="preserve">
+    <value>A 1 Anno da Oggi</value>
+  </data>
+  <data name="STR_FILTRO_A_1_MESE_DA_OGGI" xml:space="preserve">
+    <value>a 1 Mese da Oggi</value>
+  </data>
+  <data name="STR_FILTRO_A_1_SETTIMANA_DA_OGGI" xml:space="preserve">
+    <value>a 1 Settimana da Oggi</value>
+  </data>
+  <data name="STR_FILTRO_A_3_MESI_DA_OGGI" xml:space="preserve">
+    <value>a 3 Mesi da Oggi</value>
+  </data>
+  <data name="STR_FILTRO_A_6_MESI_DA_OGGI" xml:space="preserve">
+    <value>a 6 Mesi da Oggi</value>
+  </data>
+  <data name="STR_FILTRO_A_ANNO_PRECEDENTE" xml:space="preserve">
+    <value>Anno Precedente</value>
+  </data>
+  <data name="STR_FILTRO_A_IERI" xml:space="preserve">
+    <value>Ieri</value>
+  </data>
+  <data name="STR_FILTRO_A_MESE_PRECEDENTE" xml:space="preserve">
+    <value>Mese Precedente</value>
+  </data>
+  <data name="STR_FILTRO_A_SEMESTRE_PRECEDENTE" xml:space="preserve">
+    <value>Semestre Precedente</value>
+  </data>
+  <data name="STR_FILTRO_A_SETTIMANA_PRECEDENTE" xml:space="preserve">
+    <value>Settimana Precedente</value>
+  </data>
+  <data name="STR_FILTRO_A_TRIMESTRE_PRECEDENTE" xml:space="preserve">
+    <value>Trimestre Precedente</value>
+  </data>
+  <data name="STR_FRU" xml:space="preserve">
+    <value>Fru</value>
+  </data>
+  <data name="STR_GENERALE" xml:space="preserve">
+    <value>Generale</value>
+  </data>
+  <data name="STR_GESTIONE_SCELTE_SORT_TEXT" xml:space="preserve">
+    <value>Gestione campi di ordinamento</value>
+  </data>
+  <data name="STR_GIORNI_RIMANENTI" xml:space="preserve">
+    <value>Giorni rimanenti</value>
+  </data>
+  <data name="STR_IL_FILE_X_DI_IMPORT_ESISTE_GIA" xml:space="preserve">
+    <value>Il File {0} esiste già sul Server e verrà quindi Cancellato. Rilanciare l'Import</value>
+  </data>
+  <data name="STR_IL_N_SERIE_E_GIA_ASSEGNATO" xml:space="preserve">
+    <value>Il n°di serie esiste già abbinato ad una diversa unità</value>
+  </data>
+  <data name="STR_IMPORTI" xml:space="preserve">
+    <value>Importi</value>
+  </data>
+  <data name="STR_IMPORT_ACCESS_MOSAICO" xml:space="preserve">
+    <value>Import da Access x Mosaico</value>
+  </data>
+  <data name="STR_IMPORT_ACCESS_STD" xml:space="preserve">
+    <value>Import da Access Standard</value>
+  </data>
+  <data name="STR_IMPORT_DA_POWER_ACCESS" xml:space="preserve">
+    <value>Import standard da power access</value>
+  </data>
+  <data name="STR_IMPORT_DA_WINIT" xml:space="preserve">
+    <value>Import standard da winit</value>
+  </data>
+  <data name="STR_IMPORT_INIZIATO" xml:space="preserve">
+    <value>Import da Access</value>
+  </data>
+  <data name="STR_IMPORT_MATRICOLE_DA_WINIT" xml:space="preserve">
+    <value>Import txt con solo matricole ricevuto da winit</value>
+  </data>
+  <data name="STR_IMPORT_REG_TXT" xml:space="preserve">
+    <value>Import Timbrature da file txt</value>
+  </data>
+  <data name="STR_IMPORT_STD_ACCESS" xml:space="preserve">
+    <value>Import standard da Access</value>
+  </data>
+  <data name="STR_IMPORT_TABELLA_X" xml:space="preserve">
+    <value>Import della tabella: {0}</value>
+  </data>
+  <data name="STR_IMPORT_TERMINATO" xml:space="preserve">
+    <value>Import TERMINATO</value>
+  </data>
+  <data name="STR_IMPOSSIBILE_ESEGUIRE_LA_STAMPA_SELEZIONATA" xml:space="preserve">
+    <value>Impossibile eseguire la stampa selezionata</value>
+  </data>
+  <data name="STR_INDICARE_IL_DB" xml:space="preserve">
+    <value>Inserire il nome di un database esistente</value>
+  </data>
+  <data name="STR_INDICARE_NOMEMENU" xml:space="preserve">
+    <value>Indicare il nome del menù</value>
+  </data>
+  <data name="STR_INDIRIZZI" xml:space="preserve">
+    <value>Indirizzi</value>
+  </data>
+  <data name="STR_IN_ELABORAZIONE" xml:space="preserve">
+    <value>In elaborazione...</value>
+  </data>
+  <data name="STR_KM" xml:space="preserve">
+    <value>Km.</value>
+  </data>
+  <data name="STR_LETTURA_RECORD_TABELLA" xml:space="preserve">
+    <value>Lettura dei records della tabella</value>
+  </data>
+  <data name="STR_LICENZA_SCADUTA" xml:space="preserve">
+    <value>Licenza software scaduta!</value>
+  </data>
+  <data name="STR_LINGUE" xml:space="preserve">
+    <value>Lingue</value>
+  </data>
+  <data name="STR_L_ORA_DI_INIZIO_E_MAGGIORE_DI_QUELLA_DI_FINE" xml:space="preserve">
+    <value>La data di inizio è maggiore di quella di fine</value>
+  </data>
+  <data name="STR_MANUTENZIONE_REG" xml:space="preserve">
+    <value>Manutenzione Registrazioni</value>
+  </data>
+  <data name="STR_MENU" xml:space="preserve">
+    <value>Menù</value>
+  </data>
+  <data name="STR_MENU_DEFAULT_NON_CANCELLABILE" xml:space="preserve">
+    <value>Il menù di default non è mai cancellabile</value>
+  </data>
+  <data name="STR_MENU_DI_DEFAULT_NON_ESISTENTE" xml:space="preserve">
+    <value>Menù di default non esistente! avvisare winit!</value>
+  </data>
+  <data name="STR_MENU_GENERALE_NON_CANCELLABILE" xml:space="preserve">
+    <value>Menù generale non cancellabile!</value>
+  </data>
+  <data name="STR_MOTIVAZIONE" xml:space="preserve">
+    <value>Motivazione</value>
+  </data>
+  <data name="STR_NESSUN_DATO_SELEZIONATO" xml:space="preserve">
+    <value>Non è stato selezionato nessun dato</value>
+  </data>
+  <data name="STR_NESSUN_RECORD_SODDISFA_LA_RICERCA" xml:space="preserve">
+    <value>Nessun record soddisfa la ricerca!</value>
+  </data>
+  <data name="STR_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="STR_NOME_EXPORT" xml:space="preserve">
+    <value>Nome export</value>
+  </data>
+  <data name="STR_NOTE" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="STR_NUOVA_REG" xml:space="preserve">
+    <value>Nuova Registrazione...</value>
+  </data>
+  <data name="STR_NUOVE" xml:space="preserve">
+    <value>Nuove</value>
+  </data>
+  <data name="STR_NUOVE_ED_ERRATE" xml:space="preserve">
+    <value>Nuove ed errate precedenti</value>
+  </data>
+  <data name="STR_N_REC_CARICATO" xml:space="preserve">
+    <value>N° record caricato</value>
+  </data>
+  <data name="STR_OPERAZIONE_ESEGUITA" xml:space="preserve">
+    <value>Operazione eseguita</value>
+  </data>
+  <data name="STR_OPZIONI_EXPORT" xml:space="preserve">
+    <value>Opzioni Export</value>
+  </data>
+  <data name="STR_OPZIONI_STAMPA" xml:space="preserve">
+    <value>Opzioni di stampa</value>
+  </data>
+  <data name="STR_ORA_INIZIO_ELAB" xml:space="preserve">
+    <value>Elaborazione iniziata alle</value>
+  </data>
+  <data name="STR_PARAMETRI" xml:space="preserve">
+    <value>Parametri</value>
+  </data>
+  <data name="STR_PIANO" xml:space="preserve">
+    <value>Piano</value>
+  </data>
+  <data name="STR_PRECEDENTE_ALLE" xml:space="preserve">
+    <value>Precedente alle</value>
+  </data>
+  <data name="STR_PREMERE_IL_TASTO_DESTRO_DEL_MOUSE_PER_APRIRE_LA_TABELLA_COLLEGATA" xml:space="preserve">
+    <value>Premere il tasto destro del mouse per aprire la tabella collegata</value>
+  </data>
+  <data name="STR_PRU" xml:space="preserve">
+    <value>Pru</value>
+  </data>
+  <data name="STR_QUALIFICHE" xml:space="preserve">
+    <value>Qualifiche</value>
+  </data>
+  <data name="STR_RECORD_ACCETTATI" xml:space="preserve">
+    <value>Record accettati: {0}</value>
+  </data>
+  <data name="STR_RECORD_SCARTATI" xml:space="preserve">
+    <value>Record scartati: {0}</value>
+  </data>
+  <data name="STR_RECORD_TRATTATI" xml:space="preserve">
+    <value>Record trattati: {0}</value>
+  </data>
+  <data name="STR_RESP" xml:space="preserve">
+    <value>Tab.Responsabili</value>
+  </data>
+  <data name="STR_RIMANGONO_ANCORA_N_GIORNI_ALLA_SCADENZA_DELLA_LICENZA" xml:space="preserve">
+    <value>Rimangono ancora {0} giorni alla scadenza della licenza!</value>
+  </data>
+  <data name="STR_SALTO_PAGINA" xml:space="preserve">
+    <value>Salto pagina</value>
+  </data>
+  <data name="STR_SALVATAGGIO" xml:space="preserve">
+    <value>Salvataggio</value>
+  </data>
+  <data name="STR_SALVATAGGIO_EFFETTUATO" xml:space="preserve">
+    <value>Salvataggio eseguito!</value>
+  </data>
+  <data name="STR_SALVA_LAYOUT" xml:space="preserve">
+    <value>Salva Layout</value>
+  </data>
+  <data name="STR_SCEGLIERE_DATABASE_ACCESS" xml:space="preserve">
+    <value>Scegliere il database access</value>
+  </data>
+  <data name="STR_SCEGLIERE_IL_FILE" xml:space="preserve">
+    <value>Scegliere il file</value>
+  </data>
+  <data name="STR_SCEGLIERE_LA_DIRECTORY" xml:space="preserve">
+    <value>Scegliere la directory</value>
+  </data>
+  <data name="STR_SCEGLI_CAMPI_DA_VISUALIZZARE" xml:space="preserve">
+    <value>Scegli i campi da visualizzare</value>
+  </data>
+  <data name="STR_SELEZIONARE_ALMENO_UN_CAMPO" xml:space="preserve">
+    <value>Selezionare almeno un campo</value>
+  </data>
+  <data name="STR_SELEZIONARE_ALMENO_UN_VALORE_DALLA_LISTA" xml:space="preserve">
+    <value>Selezionare almeno un valore dalla lista!</value>
+  </data>
+  <data name="STR_SELEZIONARE_TIPO_IMPORT" xml:space="preserve">
+    <value>Non è stato selezionato nessun tipo di import</value>
+  </data>
+  <data name="STR_SELEZIONA_TUTTO" xml:space="preserve">
+    <value>(seleziona tutto)</value>
+  </data>
+  <data name="STR_SEL_DETTAGLI_EXPORT" xml:space="preserve">
+    <value>Dettagli</value>
+  </data>
+  <data name="STR_SEL_DETTAGLI_STAMPA" xml:space="preserve">
+    <value>Dettagli Stampa</value>
+  </data>
+  <data name="STR_SERVIZI" xml:space="preserve">
+    <value>Servizi</value>
+  </data>
+  <data name="STR_SI" xml:space="preserve">
+    <value>Si</value>
+  </data>
+  <data name="STR_SOMMARIO" xml:space="preserve">
+    <value>Sommario</value>
+  </data>
+  <data name="STR_STAMPA_GRUPPO" xml:space="preserve">
+    <value>Stampa gruppo</value>
+  </data>
+  <data name="STR_STAMPA_NON_ABILITATA" xml:space="preserve">
+    <value>Stampa non abilitata</value>
+  </data>
+  <data name="STR_STAMPA_PDF" xml:space="preserve">
+    <value>Stampa pdf</value>
+  </data>
+  <data name="STR_STO_IMPORTANDO_TAB_X_DI_Y_CHIAVE_COUNT_DI" xml:space="preserve">
+    <value>Sto importando la Tabella {0}  - {1} di {2} - Chiave Record: {3} - Count: {4} di {5}</value>
+  </data>
+  <data name="STR_STO_SCRIVENDO_NEL_DATABASE_TAB_X" xml:space="preserve">
+    <value>Scrittura nel DataBase della Tabella {0}</value>
+  </data>
+  <data name="STR_STO_SCRIVENDO_NEL_DATABASE_TAB_X_LASTKEY_Y" xml:space="preserve">
+    <value>Sto scrivendo nel DataBase la Tab: {0} - LastKey: {1}</value>
+  </data>
+  <data name="STR_SUCCESSIVO_ALLE" xml:space="preserve">
+    <value>Successivo alle</value>
+  </data>
+  <data name="STR_TABELLA_AUTORIZZAZIONI" xml:space="preserve">
+    <value>Tab.Autorizzazioni</value>
+  </data>
+  <data name="STR_TABELLA_DECODIFICHE" xml:space="preserve">
+    <value>Tabella decodifiche</value>
+  </data>
+  <data name="STR_TAB_COMUNI" xml:space="preserve">
+    <value>Tab.Comuni</value>
+  </data>
+  <data name="STR_TAB_FUNZ" xml:space="preserve">
+    <value>Tabella Funzioni</value>
+  </data>
+  <data name="STR_TAB_PROV" xml:space="preserve">
+    <value>Tab.Province</value>
+  </data>
+  <data name="STR_TELEFONI_FAX" xml:space="preserve">
+    <value>Telefoni/Fax</value>
+  </data>
+  <data name="STR_TEMPO_RESIDUO" xml:space="preserve">
+    <value>Tempo residuo</value>
+  </data>
+  <data name="STR_TITOLO" xml:space="preserve">
+    <value>POWER &lt;b&gt;WEB&lt;/b&gt;</value>
+  </data>
+  <data name="STR_TITOLO_POPUP_ERRORE" xml:space="preserve">
+    <value>POWER WEB by WINITsrl</value>
+  </data>
+  <data name="STR_TITOLO_SUB" xml:space="preserve">
+    <value>Il software di gestione delle presenze</value>
+  </data>
+  <data name="STR_TOTALE" xml:space="preserve">
+    <value>Totale</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD" xml:space="preserve">
+    <value>Sono stati trattati {0} records </value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_ERRATI" xml:space="preserve">
+    <value>Sono stati scartati {0} records totali</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_ERRATI_GENERICI" xml:space="preserve">
+    <value>Sono stati scartati {0} records x errori generici</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_ERRATI_IN_INSERIMENTO" xml:space="preserve">
+    <value>Sono stati scartati in inserimento {0} records</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_ERRATI_IN_MODIFICA" xml:space="preserve">
+    <value>Sono stati scartati in modifica {0} records</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_OK" xml:space="preserve">
+    <value>Sono stati accettati {0} records totali</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_OK_IN_INSERIMENTO" xml:space="preserve">
+    <value>Sono stati accettati {0} records nuovi</value>
+  </data>
+  <data name="STR_TRATTATI_X_RECORD_OK_IN_MODIFICA" xml:space="preserve">
+    <value>Sono stati accettati {0} records modificati</value>
+  </data>
+  <data name="STR_TURNI" xml:space="preserve">
+    <value>Turni</value>
+  </data>
+  <data name="STR_UBICAZIONE" xml:space="preserve">
+    <value>Ubicazione</value>
+  </data>
+  <data name="STR_UNITA_FISSE" xml:space="preserve">
+    <value>Unità fisse</value>
+  </data>
+  <data name="STR_UNITA_MOBILI" xml:space="preserve">
+    <value>Unità mobili</value>
+  </data>
+  <data name="STR_UN_LUNEDI" xml:space="preserve">
+    <value>un lunedì</value>
+  </data>
+  <data name="STR_USCITA_FIG" xml:space="preserve">
+    <value>Uscita Fig.</value>
+  </data>
+  <data name="STR_USCITA_FIS" xml:space="preserve">
+    <value>Uscita Fis.</value>
+  </data>
+  <data name="STR_UTENTE" xml:space="preserve">
+    <value>Utente</value>
+  </data>
+  <data name="STR_UTENTE_O_PASSWORD_INVALIDI" xml:space="preserve">
+    <value>L'utente o la password inseriti non sono validi!</value>
+  </data>
+  <data name="STR_UTENTI" xml:space="preserve">
+    <value>Utenti</value>
+  </data>
+  <data name="STR_VALORE_CAMPO_X_ERRATO" xml:space="preserve">
+    <value>Il valore del campo '{0}' è errato!</value>
+  </data>
+  <data name="STR_VALORE_ERRATO" xml:space="preserve">
+    <value>Valore errato</value>
+  </data>
+  <data name="STR_VALORE_GIA_PRESENTE" xml:space="preserve">
+    <value>Valore già presente</value>
+  </data>
+  <data name="STR_VALORE_NON_PREVISTO" xml:space="preserve">
+    <value>E' stato indicato un valore non previsto!</value>
+  </data>
+  <data name="STR_VERSIONE" xml:space="preserve">
+    <value>Versione</value>
+  </data>
+  <data name="STR_VIAGGI_E_PAUSE" xml:space="preserve">
+    <value>Viaggi e Pause</value>
+  </data>
+  <data name="STR_VISUALIZZA_CAMPI_DATAGRID_MANCANTI" xml:space="preserve">
+    <value>Non sono ancora stati selezionati i campi da visualizzare in questo form. selezionare tramite il tasto apposito.</value>
+  </data>
+  <data name="TD_ABB" xml:space="preserve">
+    <value>Abbinate</value>
+  </data>
+  <data name="TD_AGG_IN_RICALCOLO_ORE_FIG" xml:space="preserve">
+    <value>Aggiorna in ricalcolo ore figurative</value>
+  </data>
+  <data name="TD_ARROT_1" xml:space="preserve">
+    <value>Arrot. 1</value>
+  </data>
+  <data name="TD_ARROT_2" xml:space="preserve">
+    <value>Arrot. 2</value>
+  </data>
+  <data name="TD_ARROT_DURATA" xml:space="preserve">
+    <value>Metodo arrotondamento x durata</value>
+  </data>
+  <data name="TD_ARROT_DURATA_SU_ORARIO_PREVISTO" xml:space="preserve">
+    <value>Arrot. x Durata su Orario Previsto</value>
+  </data>
+  <data name="TD_ARROT_EU" xml:space="preserve">
+    <value>Metodo arrotondamento x e/u</value>
+  </data>
+  <data name="TD_ARROT_STANDARD" xml:space="preserve">
+    <value>Metodo arrotondamento standard</value>
+  </data>
+  <data name="TD_ASS" xml:space="preserve">
+    <value>Assistito</value>
+  </data>
+  <data name="TD_ATT" xml:space="preserve">
+    <value>Attività</value>
+  </data>
+  <data name="TD_CALCOLO_DA_TAB_DISTANZE" xml:space="preserve">
+    <value>Calcolo Viaggi da Tab Distanze</value>
+  </data>
+  <data name="TD_CALCOLO_VIAGGIO" xml:space="preserve">
+    <value>Tab. sigle valute</value>
+  </data>
+  <data name="TD_CALCOLO_VIAGGI_X_SOLO_COL_ABILITATI" xml:space="preserve">
+    <value>Calcolo Viaggi x Solo i Col Abilitati</value>
+  </data>
+  <data name="TD_CALCOLO_VIAGGI_X_TUTTI_SALVO_COL_ESCLUSI" xml:space="preserve">
+    <value>Calcolo Viaggi x TUTTI i Col salvo gli Esclusi</value>
+  </data>
+  <data name="TD_CALCOLO_X_CANTIERE" xml:space="preserve">
+    <value>Calcolo x cantiere</value>
+  </data>
+  <data name="TD_CALCOLO_X_COD_CANTIERE" xml:space="preserve">
+    <value>Calcolo x codice cantiere</value>
+  </data>
+  <data name="TD_CALCOLO_X_COLLAB" xml:space="preserve">
+    <value>Calcolo x singolo col</value>
+  </data>
+  <data name="TD_CALCOLO_X_COLLAB_ESCLUSO" xml:space="preserve">
+    <value>Singolo col escluso</value>
+  </data>
+  <data name="TD_CALCOLO_X_COMUNE" xml:space="preserve">
+    <value>Calcolo x comune</value>
+  </data>
+  <data name="TD_CALCOLO_X_KM" xml:space="preserve">
+    <value>Calcolo con aggiunta km</value>
+  </data>
+  <data name="TD_CAMPO" xml:space="preserve">
+    <value>Campo</value>
+  </data>
+  <data name="TD_CAN" xml:space="preserve">
+    <value>Cantiere</value>
+  </data>
+  <data name="TD_CANTIERE" xml:space="preserve">
+    <value>Da Cantiere a Cantiere</value>
+  </data>
+  <data name="TD_CANTIERE_DESC" xml:space="preserve">
+    <value>da Cantiere a Cantiere</value>
+  </data>
+  <data name="TD_CANTIERE_VIAGGI_FISSO" xml:space="preserve">
+    <value>I viaggi vengono intestati al cantiere viaggi indicato in sk parametri</value>
+  </data>
+  <data name="TD_CANTIERE_VIAGGI_SPECIALE" xml:space="preserve">
+    <value>Le ore viaggio generate hanno un trattamento speciale se il cantiere  ha tipocan=""cmn"</value>
+  </data>
+  <data name="TD_CANTIERE_VIAGGI_TERMINE" xml:space="preserve">
+    <value>I viaggi vengono intestati al cantiere in cui termina il viaggio</value>
+  </data>
+  <data name="TD_CAP" xml:space="preserve">
+    <value>DA/A Cap</value>
+  </data>
+  <data name="TD_CAP_DESC" xml:space="preserve">
+    <value>da CAP a CAP</value>
+  </data>
+  <data name="TD_CODCAN" xml:space="preserve">
+    <value>DA/A Codice Cantiere</value>
+  </data>
+  <data name="TD_COLLAB_ABILITATO_IN_VIAGGI" xml:space="preserve">
+    <value>Col.Abilit. x Viaggi</value>
+  </data>
+  <data name="TD_COLLAB_ESCLUSO_DA_VIAGGI" xml:space="preserve">
+    <value>Col:Esluso x Viaggi</value>
+  </data>
+  <data name="TD_COL_NOTE" xml:space="preserve">
+    <value>Note Collaboratore</value>
+  </data>
+  <data name="TD_COMMERCIO" xml:space="preserve">
+    <value>Contratto commercio</value>
+  </data>
+  <data name="TD_COMUNI_DESC" xml:space="preserve">
+    <value>Tab. comuni e relativi codici/cap/province</value>
+  </data>
+  <data name="TD_COORD_GPS_ASSEGNATE" xml:space="preserve">
+    <value>Coordinate gps assegnate</value>
+  </data>
+  <data name="TD_COORD_GPS_DA_ASSEGNARE" xml:space="preserve">
+    <value>Coordinate gps da assegnare</value>
+  </data>
+  <data name="TD_COORD_GPS_DA_NON_ASSEGNARE" xml:space="preserve">
+    <value>Coordinate gps da non assegnare</value>
+  </data>
+  <data name="TD_COORD_GPS_NON_TROVATE" xml:space="preserve">
+    <value>Coordinate gps non trovate</value>
+  </data>
+  <data name="TD_COORD_GPS_SOVRAPPOSTE" xml:space="preserve">
+    <value>Coordinate gps sovrapposte</value>
+  </data>
+  <data name="TD_CTRL_CODICE_FISC_ATTIVO" xml:space="preserve">
+    <value>Controllo Cod.Fisc.Attivo</value>
+  </data>
+  <data name="TD_CTRL_CODICE_FISC_DESC" xml:space="preserve">
+    <value>Tab.Controllo Codice Fiscale</value>
+  </data>
+  <data name="TD_CTRL_CODICE_FISC_NON_ATTIVO" xml:space="preserve">
+    <value>Controllo Cod.Fisc.Non Attivo</value>
+  </data>
+  <data name="TD_CTRL_CODICE_IBAN_ATTIVO" xml:space="preserve">
+    <value>Controllo Cod.IBAN Attivo</value>
+  </data>
+  <data name="TD_CTRL_CODICE_IBAN_DESC" xml:space="preserve">
+    <value>Tab. Controllo Codice IBAN</value>
+  </data>
+  <data name="TD_CTRL_CODICE_IBAN_NON_ATTIVO" xml:space="preserve">
+    <value>Controllo Cod.IBAN Non Attivo</value>
+  </data>
+  <data name="TD_CTRL_TAB_COMUNI_ATTIVO" xml:space="preserve">
+    <value>Controllo in Tab_Comuni Attivo</value>
+  </data>
+  <data name="TD_CTRL_TAB_COMUNI_DESC" xml:space="preserve">
+    <value>Tab. Controllo in Tab_Comuni</value>
+  </data>
+  <data name="TD_CTRL_TAB_COMUNI_NON_ATTIVO" xml:space="preserve">
+    <value>Controllo in Tab_Comuni Non Attivo</value>
+  </data>
+  <data name="TD_DA_ELAB" xml:space="preserve">
+    <value>Da Elab.</value>
+  </data>
+  <data name="TD_DOMAINFILTER" xml:space="preserve">
+    <value>Tab Gestione Dominio x Fil e/o Resp</value>
+  </data>
+  <data name="TD_DOMAINFILTER_ATTIVO_X_FILIALE" xml:space="preserve">
+    <value>Gestione Manut.x Fil. Attiva</value>
+  </data>
+  <data name="TD_DOMAINFILTER_ATTIVO_X_FILIALE_E_RESPONSABILE" xml:space="preserve">
+    <value>Gestione Manut.x Fil./Resp. Attiva</value>
+  </data>
+  <data name="TD_DOMAINFILTER_ATTIVO_X_RESPONSABILE" xml:space="preserve">
+    <value>Gestione Manut.x Resp. Attiva</value>
+  </data>
+  <data name="TD_DOMAINFILTER_NON_ATTIVO" xml:space="preserve">
+    <value>Gestione Manut.x Fil./Resp NON Attiva</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_FIL" xml:space="preserve">
+    <value>Tab Gestione Vis/Mod x Fil</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_FIL_NON_ATTIVO" xml:space="preserve">
+    <value>Gestione Filtro x Fil. NON Attivo</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_FIL_X_MODIFICA" xml:space="preserve">
+    <value>Gestione Filtro x Fil. Attivo in Modifica</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_FIL_X_VISUALIZZAZIONE" xml:space="preserve">
+    <value>Gestione Filtro x Fil. Attivo in Visualizzazione</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_RESP" xml:space="preserve">
+    <value>Tab Gestione Vis/Mod x Resp</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_RESP_NON_ATTIVO" xml:space="preserve">
+    <value>Gestione Filtro x Resp. NON Attivo</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_RESP_X_MODIFICA" xml:space="preserve">
+    <value>Gestione Filtro x Resp. Attivo in Modifica</value>
+  </data>
+  <data name="TD_DOMINIO_UTENTI_RESP_X_VISUALIZZAZIONE" xml:space="preserve">
+    <value>Gestione Filtro x Resp. Attivo in Visualizzazione</value>
+  </data>
+  <data name="TD_DOPO_MEZZANOTTE" xml:space="preserve">
+    <value>Dopo mezzanotte</value>
+  </data>
+  <data name="TD_DOPO_ULTIMA_REG" xml:space="preserve">
+    <value>Dopo ultima timbratura</value>
+  </data>
+  <data name="TD_E" xml:space="preserve">
+    <value>Entrata</value>
+  </data>
+  <data name="TD_ERR_MAX" xml:space="preserve">
+    <value>Errata x Durata Massima Superiore a Parametri</value>
+  </data>
+  <data name="TD_ERR_MIN" xml:space="preserve">
+    <value>Errata x Durata Minima Inferiore a Parametri</value>
+  </data>
+  <data name="TD_ERR_SOVRAP" xml:space="preserve">
+    <value>Errata x Sovrapposizione</value>
+  </data>
+  <data name="TD_EURO" xml:space="preserve">
+    <value>Euro</value>
+  </data>
+  <data name="TD_FASCE_VIAGGI_ABILITATE" xml:space="preserve">
+    <value>Fasce viaggi abilitate</value>
+  </data>
+  <data name="TD_FASCE_VIAGGI_DESC" xml:space="preserve">
+    <value>Tab. fascie viaggi</value>
+  </data>
+  <data name="TD_FASCE_VIAGGI_DISABILITATE" xml:space="preserve">
+    <value>Fasce viaggi disabilitate</value>
+  </data>
+  <data name="TD_FLAG_ENTRATA_DESC" xml:space="preserve">
+    <value>Tab. flag di entrata</value>
+  </data>
+  <data name="TD_FLAG_EU_REG_DESC" xml:space="preserve">
+    <value>Tab. fascie viaggi</value>
+  </data>
+  <data name="TD_FLAG_GPS_SK_CANT_DESC" xml:space="preserve">
+    <value>Tab. flag gps in sk cantiere</value>
+  </data>
+  <data name="TD_FLAG_GPS_SK_PARAMETRI_DESC" xml:space="preserve">
+    <value>Tab. flag gps in sk parametri</value>
+  </data>
+  <data name="TD_FLAG_INPS_DESC" xml:space="preserve">
+    <value>Tab. flag inps</value>
+  </data>
+  <data name="TD_FLAG_LIMITA_RESPONSABILE_DESC" xml:space="preserve">
+    <value>Tab. flag che limita gli accessi per responsabile</value>
+  </data>
+  <data name="TD_FLAG_MOD_REG_DESC" xml:space="preserve">
+    <value>Tab. flag reg.modificata</value>
+  </data>
+  <data name="TD_FLAG_NON_ESPORTARE_DESC" xml:space="preserve">
+    <value>Tab. valori non esportare</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_001" xml:space="preserve">
+    <value>Codice cantiere</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_001_SORT_001" xml:space="preserve">
+    <value>Codice cantiere/data ora</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_002" xml:space="preserve">
+    <value>Descrizione cantiere</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_002_SORT_001" xml:space="preserve">
+    <value>Descrizione cantiere/data ora</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_003" xml:space="preserve">
+    <value>Codice collaboratore</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_003_SORT_001" xml:space="preserve">
+    <value>Codice collaboratore/data ora</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_004" xml:space="preserve">
+    <value>Cognome e nome collaboratore</value>
+  </data>
+  <data name="TD_FORM_SELEZ_FRMREGISTRAZIONI_004_SORT_001" xml:space="preserve">
+    <value>Cognome e nome collaboratore/data ora</value>
+  </data>
+  <data name="TD_GENERA_ANCHE_SE_INIZIO_FINE_STESSO_CANTIERE" xml:space="preserve">
+    <value>Genera ANCHE se Inizio/Fine su Stesso Cantiere</value>
+  </data>
+  <data name="TD_GPS_BING" xml:space="preserve">
+    <value>Gps Attivo (con BING)</value>
+  </data>
+  <data name="TD_GPS_NON_ABILITATO" xml:space="preserve">
+    <value>Gps NON Abilitato</value>
+  </data>
+  <data name="TD_INDUSTRIA" xml:space="preserve">
+    <value>Contratto industria</value>
+  </data>
+  <data name="TD_IN_BASE_A_PARAM" xml:space="preserve">
+    <value>Vedi Param</value>
+  </data>
+  <data name="TD_LINGUE_DE" xml:space="preserve">
+    <value>Tedesco</value>
+  </data>
+  <data name="TD_LINGUE_DEFAULT" xml:space="preserve">
+    <value>Lingua di default</value>
+  </data>
+  <data name="TD_LINGUE_DESC" xml:space="preserve">
+    <value>Tab.Lingue</value>
+  </data>
+  <data name="TD_LINGUE_EN" xml:space="preserve">
+    <value>Inglese</value>
+  </data>
+  <data name="TD_LINGUE_IT" xml:space="preserve">
+    <value>Italiano</value>
+  </data>
+  <data name="TD_LIT" xml:space="preserve">
+    <value>Lira Italiana</value>
+  </data>
+  <data name="TD_LIVELLO_CANTIERE_DESC" xml:space="preserve">
+    <value>Tab. codice livello del cantiere</value>
+  </data>
+  <data name="TD_LIVELLO_COLLABORATORE_DESC" xml:space="preserve">
+    <value>Tab. codice livello del collaboratore</value>
+  </data>
+  <data name="TD_MASCHERA" xml:space="preserve">
+    <value>Maschera</value>
+  </data>
+  <data name="TD_METODO_ARROTONDAMENTO_DESC" xml:space="preserve">
+    <value>Tab. codice dei metodi di arrtondamento previsti</value>
+  </data>
+  <data name="TD_MODULETYPE_0_STD_DESC" xml:space="preserve">
+    <value>Import Standard</value>
+  </data>
+  <data name="TD_MODULETYPE_1_MOSAICO_DESC" xml:space="preserve">
+    <value>Import x Cliente Mosaico</value>
+  </data>
+  <data name="TD_MODULETYPE_DESC" xml:space="preserve">
+    <value>Tab.Tipo Import</value>
+  </data>
+  <data name="TD_MOTIVAZIONI" xml:space="preserve">
+    <value>Tab Motivazioni</value>
+  </data>
+  <data name="TD_MOTIVAZIONI_DESC" xml:space="preserve">
+    <value>Tab.motivazioni</value>
+  </data>
+  <data name="TD_NAZIONALITA_DESC" xml:space="preserve">
+    <value>Tab. codici nazionalità</value>
+  </data>
+  <data name="TD_NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="TD_NON_GENERA_SE_INIZIO_FINE_STESSO_CANTIERE" xml:space="preserve">
+    <value>Non Genera se Inizio/Fine su Stesso Cantiere</value>
+  </data>
+  <data name="TD_NO_ARROT" xml:space="preserve">
+    <value>Nessun Arrotondamento</value>
+  </data>
+  <data name="TD_NO_CALCOLO" xml:space="preserve">
+    <value>Nessun calcolo</value>
+  </data>
+  <data name="TD_NO_DESC" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="TD_NO_EXPORT" xml:space="preserve">
+    <value>Export disabilitato</value>
+  </data>
+  <data name="TD_NO_VIAGGIO" xml:space="preserve">
+    <value>Non genera se inizio/fine stesso cantiere</value>
+  </data>
+  <data name="TD_PANNELLO" xml:space="preserve">
+    <value>Pannello</value>
+  </data>
+  <data name="TD_PASS" xml:space="preserve">
+    <value>Passaggio</value>
+  </data>
+  <data name="TD_QUALIFICHE_COL_DESC" xml:space="preserve">
+    <value>Tab. codici qualifiche collaboratori</value>
+  </data>
+  <data name="TD_REG" xml:space="preserve">
+    <value>Registrazione</value>
+  </data>
+  <data name="TD_RIL" xml:space="preserve">
+    <value>RILEVAZIONE</value>
+  </data>
+  <data name="TD_SEGNALA_BLOCCA_IN_VERIFICA_INPUT" xml:space="preserve">
+    <value>Segnala e Blocca in Verif.Input</value>
+  </data>
+  <data name="TD_SEGNALA_BOLCCA_IN_VERIFICA_INPUT" xml:space="preserve">
+    <value>Segnala e blocca in verifica input</value>
+  </data>
+  <data name="TD_SESSO_DESC" xml:space="preserve">
+    <value>Tab. codice sesso</value>
+  </data>
+  <data name="TD_SESSO_FEMMINA" xml:space="preserve">
+    <value>F</value>
+  </data>
+  <data name="TD_SESSO_FEMMINA_DESC" xml:space="preserve">
+    <value>Femmina</value>
+  </data>
+  <data name="TD_SESSO_MASCHIO" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="TD_SESSO_MASCHIO_DESC" xml:space="preserve">
+    <value>Maschio</value>
+  </data>
+  <data name="TD_SI" xml:space="preserve">
+    <value>Si</value>
+  </data>
+  <data name="TD_SIGLA_CAP_DESC" xml:space="preserve">
+    <value>Tab. cap</value>
+  </data>
+  <data name="TD_SIGLA_NAZIONI_DESC" xml:space="preserve">
+    <value>Tab. sigle nazioni</value>
+  </data>
+  <data name="TD_SIGLA_PROVINCE_DESC" xml:space="preserve">
+    <value>Tab. sigle province</value>
+  </data>
+  <data name="TD_SI_DESC" xml:space="preserve">
+    <value>SI</value>
+  </data>
+  <data name="TD_SI_EXPORT" xml:space="preserve">
+    <value>Export abilitato</value>
+  </data>
+  <data name="TD_SI_NO_DESC" xml:space="preserve">
+    <value>Tab.SI/NO</value>
+  </data>
+  <data name="TD_SI_VIAGGIO" xml:space="preserve">
+    <value>Genera anche se inizio/fine stesso cantiere</value>
+  </data>
+  <data name="TD_STATO_CIVILE_DESC" xml:space="preserve">
+    <value>Tab. stato civile</value>
+  </data>
+  <data name="TD_STATO_REGISTRAZIONE_DESC" xml:space="preserve">
+    <value>Tab. Stato Registrazione</value>
+  </data>
+  <data name="TD_STRINGA_NO" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="TD_STRINGA_SI" xml:space="preserve">
+    <value>SI</value>
+  </data>
+  <data name="TD_TIPOLOGIA_CANTIERE_DESC" xml:space="preserve">
+    <value>Tab. tipologia cantiere/assistito/attività</value>
+  </data>
+  <data name="TD_TIPO_ARROTONDAMENTO_DESC" xml:space="preserve">
+    <value>Tab. tipo arrotondamneto</value>
+  </data>
+  <data name="TD_TIPO_ARROTONDAMENTO_NO_DURATA_MAGGIORE_SOGLIA_DESC" xml:space="preserve">
+    <value>NO Arrot. x Durata Maggiore della Soglia</value>
+  </data>
+  <data name="TD_TIPO_ARROTONDAMENTO_NO_DURATA_MINORE_SOGLIA_DESC" xml:space="preserve">
+    <value>NO Arrot. x Durata Minore della Soglia</value>
+  </data>
+  <data name="TD_TIPO_ARROTONDAMENTO_PERSONALIZZATO1_DESC" xml:space="preserve">
+    <value>Tipo arrotondamento personalizzato-1</value>
+  </data>
+  <data name="TD_TIPO_ARROTONDAMENTO_SINGOLA_REG_X_SOGLIA_DESC" xml:space="preserve">
+    <value>Arrot. x Singola Reg.</value>
+  </data>
+  <data name="TD_TIPO_ARROTONDAMENTO_STANDARD_DESC" xml:space="preserve">
+    <value>Tipo arrotondamento standard</value>
+  </data>
+  <data name="TD_TIPO_ASSEGNAZIONE_KMMINUTI_DA_GIS_SE_NON_IN_TAB_DIST" xml:space="preserve">
+    <value>Da Tab Dist (x Cant) con Ricalcolo da GIS se NON esistenti</value>
+  </data>
+  <data name="TD_TIPO_ASSEGNAZIONE_KMMINUTI_DA_TAB_DIST_ESISTENTE" xml:space="preserve">
+    <value>Da Tab Dist (x Cant/Cap/Luogo) se esistenti</value>
+  </data>
+  <data name="TD_TIPO_ASSEGNAZIONE_KMMINUTI_DESC" xml:space="preserve">
+    <value>Tab. Tipo Assegnazione KM/Minuti</value>
+  </data>
+  <data name="TD_TIPO_ASSEGNAZIONE_KMMINUTI_NON_ATTIVATO" xml:space="preserve">
+    <value>Non Attivo</value>
+  </data>
+  <data name="TD_TIPO_ASSEGNAZIONE_VIAGGI_DESC" xml:space="preserve">
+    <value>Tab.tipo assegn.viaggi</value>
+  </data>
+  <data name="TD_TIPO_CALCOLO_VIAGGI_CANT_DESC" xml:space="preserve">
+    <value>Tab. tipo calcolo viaggi in sk cantiere</value>
+  </data>
+  <data name="TD_TIPO_CALCOLO_VIAGGI_COL_DESC" xml:space="preserve">
+    <value>Tab. tipo calcolo viaggi in sk collaboratore</value>
+  </data>
+  <data name="TD_TIPO_CALCOLO_VIAGGI_DESC" xml:space="preserve">
+    <value>Tab.tipo calcolo viaggi</value>
+  </data>
+  <data name="TD_TIPO_CANTIERE_DESC" xml:space="preserve">
+    <value>Tab. tipo cantiere</value>
+  </data>
+  <data name="TD_TIPO_COLLABORATORE_DESC" xml:space="preserve">
+    <value>Tab. tipo collaboratore</value>
+  </data>
+  <data name="TD_TIPO_CONTRATTO_COL_DESC" xml:space="preserve">
+    <value>Tab. tipo contratto in sk collab.</value>
+  </data>
+  <data name="TD_TIPO_DISTANZA_DESC" xml:space="preserve">
+    <value>Tab.Tipo Distanza</value>
+  </data>
+  <data name="TD_TIPO_INTERVENTO_DESC" xml:space="preserve">
+    <value>Tab. tipo intervento</value>
+  </data>
+  <data name="TD_TIPO_NOTA_DESC" xml:space="preserve">
+    <value>Tab. tipo nota</value>
+  </data>
+  <data name="TD_TIPO_NOTTURNO_DESC" xml:space="preserve">
+    <value>Tab. tipo gestione notturno</value>
+  </data>
+  <data name="TD_TIPO_ORARIO_DESC" xml:space="preserve">
+    <value>Tab. tipo orario</value>
+  </data>
+  <data name="TD_TIPO_ORDINAMENTO_DESC" xml:space="preserve">
+    <value>Tab. tipo di ordinam. da video</value>
+  </data>
+  <data name="TD_TIPO_PAGAMENTO_DESC" xml:space="preserve">
+    <value>Tab. tipo di pagamento</value>
+  </data>
+  <data name="TD_TIPO_PATENTE_DESC" xml:space="preserve">
+    <value>Tab. tipo patente</value>
+  </data>
+  <data name="TD_TIPO_PAUSA_DESC" xml:space="preserve">
+    <value>Tab.tipo pausa</value>
+  </data>
+  <data name="TD_TIPO_RAPPORTO_COL_DESC" xml:space="preserve">
+    <value>Tab. tipo rapporto in sk collab.</value>
+  </data>
+  <data name="TD_TIPO_RILEVAZIONE_DESC" xml:space="preserve">
+    <value>Tab. tipo rilevazione</value>
+  </data>
+  <data name="TD_TIPO_SELEZIONE_DESC" xml:space="preserve">
+    <value>Tab. tipo di selezioni da video</value>
+  </data>
+  <data name="TD_TIPO_SERVIZIO_CANT_DESC" xml:space="preserve">
+    <value>Tab. tipo servizio in sk cantiere</value>
+  </data>
+  <data name="TD_TIPO_VIAGGIO_DESC" xml:space="preserve">
+    <value>Tab.Tipo Viaggio</value>
+  </data>
+  <data name="TD_TITOLO_STUDIO_DESC" xml:space="preserve">
+    <value>Tab. titolo studio</value>
+  </data>
+  <data name="TD_TPO_VIAGGIO_DESC" xml:space="preserve">
+    <value>Tab. tipo viaggio</value>
+  </data>
+  <data name="TD_U" xml:space="preserve">
+    <value>Uscita</value>
+  </data>
+  <data name="TD_VALUTE_DESC" xml:space="preserve">
+    <value>Tab. sigle valute</value>
+  </data>
+  <data name="TD_VIAGGIO" xml:space="preserve">
+    <value>Viaggio</value>
+  </data>
+  <data name="TD_VIAGGIO1" xml:space="preserve">
+    <value>Viaggio 1</value>
+  </data>
+  <data name="TD_VIAGGIO2" xml:space="preserve">
+    <value>Viaggio 2</value>
+  </data>
+</root>

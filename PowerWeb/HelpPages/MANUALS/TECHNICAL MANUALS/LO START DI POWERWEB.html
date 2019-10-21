@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>LO START DI POWERWEB</title>
+
+  
+</head><body>
+<h1>LO START DI POWERWEB</h1>
+
+Quando PowerWeb viene lanciato per PRIMA COSA viene attivata la<br>
+
+<ul>
+
+  <li>All'interno della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Global.ascx.cs</span></li>
+  <ul>
+    <li><span style="color: black;">la </span><span style="color: rgb(51, 51, 255);"><span style="color: black;">routine</span></span><span style="font-weight: bold; color: rgb(51, 51, 255);"><span style="color: black;"> </span>Application_Start</span></li>
+  </ul>
+  
+  <ul>
+    <ul>
+
+    <li>che richiama all'interno della <span style="color: rgb(51, 51, 255);"><span style="color: black;">Region Methods della</span> </span><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Business.PowerWebConfig.cs</span></li>
+  
+    </ul>
+    <ul>
+      <ul>
+
+      <li>la routine <span style="color: rgb(51, 51, 255); font-weight: bold;">Init</span></li>
+    
+      </ul>
+      <ul>
+        <ul>
+
+      <li>che se NON è la prima Attivazione del Giorno</li>
+    
+        </ul>
+        <ul>
+
+        
+          <ul>
+            <li>richiama la routine&nbsp; <span style="color: rgb(51, 51, 255); font-weight: bold;">Create</span></li>
+          </ul>
+
+      
+        </ul>
+        <ul>
+          <ul>
+            <ul>
+              <li>che recupera dalla <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">WebConnection.config</span></li>
+            </ul>
+          </ul>
+        </ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>la stringa di connessione al DB SQL <br>
+                </li>
+              </ul>
+              <li>registrando che NON è più la Prima Conenssione</li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+  <li>e poi all'interno della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Site.Master.cs</span></li>
+  <ul>
+    <li>richiama la <span style="font-weight: bold; color: rgb(51, 51, 255);">Page_Init</span></li>
+    <ul>
+      <li>che provvede a Inizializzare il Titolo ed il Sottotitolo dell'Applicazione <br>
+      </li>
+      <ul>
+        <li>prendendoli dai campi STR_TITOLO e STR_TITOLO_SUB delle Resources<span style="font-weight: bold;"></span></li>
+      </ul>
+    </ul>
+  </ul>
+
+  <ul>
+    
+    
+    <ul>
+      
+      
+      <ul>
+        
+      </ul>
+    </ul>
+  </ul>
+  
+  <li>e poi all'interno della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Default.Aspx,cs</span><br>
+  </li>
+  <ul>
+    <li>la routine <span style="font-weight: bold; color: rgb(51, 51, 255);">Page_Init</span></li>
+    <ul>
+      <li>che gestisce il Controllo sulla Data di Scadenza e sulla Data Ultimo Controllo <br>
+      </li>
+      <ul>
+        <li>se non trova il File \Scripts\Debug.txt</li>
+        <ul>
+          <li>che segnala di NON eseguire il controllo (quando si è in TEST)<br>
+          </li>
+        </ul>
+        <li>chiama all'interno della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Business.BusinessServices.cs</span></li>
+        <ul>
+          <li>la routine <span style="font-weight: bold; color: rgb(51, 51, 255);">CheckFirstTimeInitialize</span></li>
+          <ul>
+            <li>che verifica esista il File ( il cui nome [menu2.js] è preso dal campo LastConn dei SETTINGS ) contenente criptata la Data dell'Ultima Connessione fatta<br>
+            </li>
+            <li>decriptandone il valore con la routine <span style="font-weight: bold; color: rgb(51, 51, 255);">MD5DescryptStrin</span></li>
+            <li><span style="color: black;">decripatando poi il valore della Data Attuale del Server sul quale è stato attivato PowerWeb</span></li>
+            <li><span style="color: black;">se la <span style="text-decoration: underline;">Data/Ora</span> Attuale del Server sul quale è stato attivato POWERWEB è MINORE/UGUALE alla <span style="text-decoration: underline;">Data/Ora</span> </span>dell'Ultima Connessione fatta</li>
+            <ul>
+              <li><span style="color: black;">Genera una ECCEZIONE</span></li>
+            </ul>
+          </ul>
+        </ul>
+        <ul>
+          <ul>
+            <li><span style="color: black;">Se la <span style="text-decoration: underline;">Data (senza Ora)</span> Attuale del Server sul quale è stato attivato POWERWEB è UGUALE alla <span style="text-decoration: underline;">Data (senza Ora)</span> </span>dell'Ultima Connessione fatta</li>
+            <ul>
+              <li>significa che i controlli per quel giorno sono stati già fatti e quindi prosegue senza farne altri<br>
+              </li>
+            </ul>
+            <li><span style="color: black;">Se la <span style="text-decoration: underline;">Data (senza Ora)</span> Attuale del Server sul quale è stato attivato POWERWEB è MAGGIORE alla <span style="text-decoration: underline;">Data (senza Ora)</span> </span>dell'Ultima Connessione fatta<span style="color: black;"></span></li>
+            <ul>
+              <li><span style="color: black;">Registra la Nuova Data di Ultimo Collegamento nel File </span> il cui nome [menu2.js] è preso dal campo LastConn dei SETTINGS <br>
+              </li>
+            </ul>
+          </ul>
+        </ul>
+        <ul>
+          <ul>
+            <ul>
+              <li>richiama poi la routine <span style="font-weight: bold; color: rgb(51, 51, 255);">UpdateExpirationDate</span></li>
+            </ul>
+          </ul>
+          <ul>
+            <ul>
+              <ul>
+                <li>che richiama la <span style="font-weight: bold; color: rgb(51, 51, 255);">IsExpired</span></li>
+                <ul>
+                  <li><span style="color: black;">che richiama la </span><span style="font-weight: bold; color: rgb(51, 51, 255);">GetExpirationDate</span> <br>
+                  </li>
+                </ul>
+                <ul>
+                  <ul>
+                    <li>provvede a richiamare il Servizio di Gestione Licenze della Winit passandogli</li>
+                    <ul>
+                      <li>la PublicKey del Cliente /recuperandola dalla Tab PARAM)</li>
+                      <li>la Data di Ultimo Colllgamento</li>
+                    </ul>
+                    <li>ricevendone indietro <br>
+                    </li>
+                    <ul>
+                      <li>la Nuova ActivationDate registrata per quella PublicKey nel DB del Servizio Gestione Licenze Winit</li>
+                    </ul>
+                    <li>oppure NULL ad indicare che la Licenza è scaduta <br>
+                    </li>
+                  </ul>
+                </ul>
+              </ul>
+            </ul>
+            <ul>
+              <ul>
+                <ul>
+                  <li><span style="font-weight: bold; text-decoration: underline; color: red;">ADESSO IMPOSTA INVECE&nbsp; AUTOMATICAMENTE LA DATA DI EXPIRATION A MAX VALUE&nbsp;</span></li>
+                </ul>
+              </ul>
+              <ul>
+                <li><span style="color: black;">e verifica che la Nuova Data di Scadenza ricevuta sia MAGGIORE/UGUALE alla Data </span><span style="color: black;">Attuale del Server sul quale è stato attivato PowerWeb</span></li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <ul>
+        <li><span style="color: black;">altrimeni CHIUDE l'APPLICAZIONE<br>
+          </span></li>
+      </ul>
+    </ul>
+    <ul>
+      <li>Calcola quanti Giorni Mancano alla Nuova Data di Scadenza&nbsp; ricevuta</li>
+    </ul>
+    <ul>
+      <ul>
+        <li>Se i Giorni rimanenti sono INFERIORI al N° di GG presenti nel campo GiorniAvvisoScadenza dei SETTINGS</li>
+      </ul>
+      <ul>
+        <ul>
+          <li>mostra a Video un messaggio di avviso indicando quanti GG mancano ancora alla Scadenza.</li>
+        </ul>
+      </ul>
+    </ul>
+    <li>la routine <span style="font-weight: bold; color: rgb(51, 51, 255);">Page_Load</span></li>
+    <ul>
+      <li><span style="color: black;">che recupera dal campo CompanyName della tab PARAM il Nome della Società da mostrare a video</span><span style="font-weight: bold; color: rgb(51, 51, 255);"></span></li>
+    </ul>
+  </ul>
+  <li>e poi all'interno della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Site.Master.cs</span></li>
+  <ul>
+<li>richiama la <span style="font-weight: bold; color: rgb(51, 51, 255);">Page_Load</span></li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 51, 255);">ATTUALMENTE VUOTA</span></li>
+    </ul>
+  </ul>
+</ul>
+<span style="font-weight: bold;">Il Nome della pagina di Iniziale di AUTENTICAZIONE dell'Utente viene preso dalla <span style="text-decoration: underline; color: rgb(51, 51, 255);">WEB,CONFIG</span>.&nbsp;  &nbsp;&nbsp;&nbsp; </span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; <br>
+<ul>
+  <li><span style="color: rgb(51, 51, 255);">&lt;authentication mode="Forms"&gt;</span></li>
+  <ul>
+    <li><span style="color: rgb(51, 51, 255);">&lt;forms loginUrl="~/<span style="font-weight: bold; text-decoration: underline;">Account/Login.aspx</span>" timeout="2880" /&gt;</span></li>
+  </ul>
+  <li><span style="color: rgb(51, 51, 255);">&lt;/authentication&gt;</span></li>
+</ul>
+<span style="font-weight: bold; text-decoration: underline; font-style: italic; color: red;">A QUESTO PUNTO MOSTRA LA PAGINA INIZIALE DI POWERWEB</span><br>
+<br>
+Quando si preme il tasto di ACCEDI viene chiamata all'interno 
+<ul>
+  <li>della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">Account.Login.aspx.cs</span></li>
+  <ul>
+    <li>nel codice aspx della pagina <br>
+    </li>
+    <ul>
+      <li>vengono inizializzati</li>
+    </ul>
+    <ul>
+      <ul>
+        <li>il Messaggio di "Accedi"</li>
+        <li>il Messaggio di "immettere nome utente e password"</li>
+        <li>la label dei campi USER e PASSWORD</li>
+      </ul>
+    </ul>
+    <ul>
+      <li>viene controllato che sia stat inserito</li>
+      <ul>
+        <li>il Codice Utente</li>
+        <li>la relativa Password</li>
+      </ul>
+    </ul>
+  </ul>
+  <li>viene poi preso <br>
+  </li>
+  <li>&lt;membership defaultProvider="PowerWebMembershipProvider"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;providers&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;clear /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;add
+name="PowerWebMembershipProvider"
+type="Business.Profile.PowerWebMembershipProvider"
+connectionStringName="PowerWebEntities" enablePasswordRetrieval="false"
+enablePasswordReset="true" requiresQuestionAndAnswer="false"
+requiresUniqueEmail="false" maxInvalidPasswordAttempts="5"
+minRequiredPasswordLength="6" minRequiredNonalphanumericCharacters="0"
+passwordAttemptWindow="10" applicationName="PowerWeb" /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/providers&gt;<br>
+&nbsp;&nbsp;&nbsp; &lt;/membership&gt;<br>
+  </li>
+  <ul>
+    <li>il della <span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">BUSINESS.PROFILE <br>
+      </span></li>
+  </ul>
+  <ul>
+    <li><span style="color: black;">la routine di </span><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 51, 255);">PowerWebMembershipProvider.cs</span></li>
+  </ul>
+  <ul>
+    <ul>
+      <li><br>
+      </li>
+    </ul>
+  </ul>
+  <ul>
+    <li><br>
+    </li>
+  </ul>
+</ul>
+<br>
+<br>
+
+<br>
+</body></html>

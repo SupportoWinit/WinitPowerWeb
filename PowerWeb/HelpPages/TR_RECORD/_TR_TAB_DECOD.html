@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_TAB_DECOD</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head>
+<body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>TABELLA TAB_DECOD<br>
+</h1>
+<span style="font-weight: bold;">Contiene le Tabelle di
+Decodifica
+utilizzate in Power-Web<br><br>
+Ogni Tabella HA la seguente Struttura<br><br></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="text-decoration: underline; font-weight: bold;">1 -
+RECORD DI TESTATA</span> con i seguenti
+valori<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>
+<ul>
+<ul>
+<li>GRUPPO_TAB <span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>= DECOD_TITLE (valore FISSO)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+</li>
+<ul></ul>
+</ul>
+<ul>
+<li>NOME_TAB<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>=
+NOME DI UNO DEI GRUPPI PREVISTI</li><ul><li><a href="_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">TAB_DECOD</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODIFICA
+UTENTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<a href="_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">vedi Elenco
+TAB_DECOD)</a></li><ul><li>TUTTI I RECORD DI QUESTO GRUPPO NON SONO MODIFICABILI DAGLI UTENTI CON LIVELLO &lt;=12</li></ul><li><a href="_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">TAB_SYS&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODFICA DI SISTEMA (<a href="_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">vedi ELENCO
+TAB_SYS</a>)</li><ul><li>TUTTE I RECORD DI QUESTO GRUPPO NON SONO MODIFICABILI DAGLI UTENTI CON LIVELLO &lt;=12</li></ul></ul>
+</ul>
+
+<ul>
+<li>CHIAVE_TAB<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>=&nbsp; NOME DELLA TABELLA di cui è la Testata
+</li><li>DECODIFICA_TAB&nbsp;<span style="">
+&nbsp; </span>=<span style="">&nbsp; </span>DESCRIZIONE
+DELLA
+SPECIFICA TABELLA DI
+DECODIFICA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp;&nbsp; Elenco dei Responsabili&nbsp;</li>
+</ul>
+</ul>
+<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">"n"
+RECORD DEI DATI</span> della relativa&nbsp; Tabella&nbsp; <br>
+</li>
+</ul>
+<ul>
+<ul>
+<li>GRUPPO_TAB<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; </span>=
+NOME GRUPPO TABELLE DI
+DECODIFICA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+</li>
+<ul>
+<li><a href="_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">TAB_DECOD</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODIFICA
+UTENTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (<a href="_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">vedi Elenco
+TAB_DECOD)</a><br>
+</li>
+<li><a href="_TR_TAB_DECOD_ELENCO_DECOD_TAB.html">TAB_SYS&nbsp;</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NOME DEL GRUPPO DELLE TABELLE DI DECODFICA DI SISTEMA (<a href="_TR_TAB_DECOD_ELENCO_DECOD_SYS.html">vedi ELENCO
+TAB_SYS</a>)<br>
+</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>NOME_TAB<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>=
+NOME DELLA SPECIFICA TABELLA DI
+DECODIFICA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp; TAB_RESP<br>
+</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>CHIAVE_TAB<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>=&nbsp;
+VALORE
+DELLA CHIAVE DELLO SPECIFICO
+RECORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp; 0001</li>
+<li>DECODIFICA_TAB&nbsp;<span style="">
+&nbsp; </span>=<span style="">&nbsp; </span>DESCRIZIONE
+ASSOCIATA ALLO SPECIFICA
+CHIAVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+es:&nbsp; MARIO ROSSI </li>
+</ul>
+</ul>
+<br style="font-weight: bold; text-decoration: underline;"><span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span> : <span style="font-weight: bold; text-decoration: underline;">i NOMI DELLE TABELLE sono UNIVOCI a prescindere dal GRUPPO di APPARTENENZA</span>
+in modo che se in futuro si dovesse passare una Tabella da un Gruppo ad
+un Altro non ci sono problemi particolari e soprattutto NON ci sono mai
+2 Tabelle con lo stesso Nome.<br><br>
+Perciò i vari campi della Tabella TAB_DECOD hanno i seguenti significati
+in bas la fatto che siano un Record di Testata o di Dettaglio Dati:<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;"><a name="GRUPPO_TAB"></a>GRUPPO_TAB&nbsp;</span>&nbsp;
+- se&nbsp; = "DECOD_TITLE"&nbsp; identifica un Record di
+Testata che contiene poi <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - nel Campo<a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">
+<span style="text-decoration: underline;">NOME_TAB</span></a>
+il Nome del Gruppo delle Tabelle a cui appartiene la Tabella <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; con Nome
+inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#CHIAVE_TAB"><span style="text-decoration: underline;">CHIAVE_TAB</span></a><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; - nel
+Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#CHIAVE_TAB"><span style="text-decoration: underline;">CHIAVE_TAB</span> </a>il
+Nome della Singola Tabella appartenente al Gruppo di Tabelle<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; con Nome
+inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#DECODIFICA_TAB">DECODIFICA_TAB</a>
+la relativa Descrizione con il SIgnificato della Tabella<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - se
+&lt;&gt; "DECOD_TITLE"&nbsp;
+identifica i Record delle Tabelle per le quali è stato PRIMA inserito <br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp; un Record di Testata con <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a>=DECOD_TITLE<br>
+<span style="font-weight: bold; text-decoration: underline;"><a name="NOME_TAB"></a>NOME TAB</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -
+se&nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>&nbsp;
+= "DECOD_TITLE"&nbsp; Contiene il NOME DEL GRUPPO delle Tabelle<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; a cui appartiene la Tabella
+con Nome inserito
+nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#CHIAVE_TAB"><span style="text-decoration: underline;">CHIAVE_TAB</span></a>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; - se &nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>
+&lt;&gt; "DECOD_TITLE" Contiene il Nome della Tabella <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; appartenente al Gruppo di
+Tabelle con Nome
+inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a><br>
+<span style="text-decoration: underline; font-weight: bold;"><a name="CHIAVE_TAB"></a>CHIAVE_TAB</span>&nbsp;&nbsp;&nbsp;&nbsp;
+- se&nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>&nbsp;
+= "DECOD_TITLE"&nbsp; Contiene il Nome della SINGOLA TABELLA<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;appartenente al GRUPPO DI TABELLE con
+Nome inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - se
+&nbsp; <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a>
+&lt;&gt; "DECOD_TITLE" Contiene la Chiave dell'Elemento della
+Tabella<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; con Nome inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#NOME_TAB">NOME_TAB</a>
+appartenente al Gruppo di Tabelle<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; con Nome inserito nel Campo <a href="../../../HELP%20TECNICO/TESTO%20HELP%20TECNICO/Tabelle%20Decodifica%20Elenco.html#GRUPPO_TAB">GRUPPO_TAB</a><br>
+<span style="text-decoration: underline; font-weight: bold;"><a name="DECODIFICA_TAB"></a>DECODIFICA_TAB</span>
+&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; Descrizione della
+Singola Tabella per i Record di Testata
+( se NOME_TAB&nbsp; = "DECOD_TITLE")&nbsp; <br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; Descrizione del Valore
+associato alla
+Chiave del Record&nbsp; ( se NOME_TAB&nbsp; &lt;&gt;
+"DECOD_TITLE") <br>
+<br>
+&nbsp;Le Chiavi del Record : &nbsp;<a href="#TabDecod_Id">TabDecod_Id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+&nbsp;I Campi Obbligatori&nbsp;&nbsp; : &nbsp;&nbsp;<a href="_TR_TAB_DECOD.html#TabDecod_Id">TabDecod_Id</a> (<span style="font-weight: bold; color: red;">Chiave</span>),
+<a href="#Chiave_Tab">Chiave_Tab</a> , <a href="#DECODIFICA_TAB">Decodifica_Tab</a> , &nbsp;<a href="#Gruppo_Tab">Gruppo_Tab</a> , <a href="#Nome_Tab">Nome_Tab</a>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td><a name="TabDecod_Id"></a> <span style="font-weight: bold; text-decoration: underline;">TabDecod_Id</span></td>
+<td>
+<div style="text-align: center;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#NVARCHAR">INT</a></div>
+</td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;della Singola
+Tabella</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span></td>
+</tr>
+
+
+
+
+
+
+
+
+
+
+<tr>
+<td style="vertical-align: top; width: 153px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Nome_Tab"></a> Nome_Tab</span></td>
+<td style="vertical-align: top; width: 162px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 1049px;">Descrizione
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>
+della Tabella identificata dal Codice Funzione. <span style="color: rgb(153, 51, 0);">Viene
+controllato che assieme alla Chiave_Tab costituisca una CHIAVE UNIVOCA
+a prescindere dal GRUPPO DI APPARTENENZA e che abbia Lunghezza &lt;= 50
+Caratteri e che esista Come <a href="#Chiave_Tab">Chiave_Tab</a> del Record con Gruppo:_tab = "DECOD_TITLE" ovevro che abbia il relativo Record di Testata.</span>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 153px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Chiave_Tab"></a> Chiave_Tab</span></td>
+<td style="vertical-align: top; width: 162px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 1049px;">Codice
+Identificativo <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio&nbsp;</span></span>
+del Singolo Valore della Tabella.<span style="color: rgb(153, 51, 0);">Viene controllato che assiema al Nome_Tab costituisca una CHIAVE UNIVOCA a prescindere dal GRUPPO DI APPARTENENZA</span> <span style="color: rgb(153, 51, 0);">e che abbia Lunghezza &lt;= 50 Caratteri</span><br>
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 153px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Decodifica_Tab"></a> Decodifica_Tab</span>
+</td>
+<td style="vertical-align: top; width: 162px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(50)</td>
+<td style="vertical-align: top; width: 1049px;">Descrizione
+<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>
+del Singolo Valore della Tabella. <span style="color: rgb(153, 51, 0);">Viene controllato che abbia una Lunghezza &lt;=50 Caratteri</span>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 153px;"><span style="font-weight: bold; text-decoration: underline;"><a name="Gruppo_Tab"></a> Gruppo_Tab</span></td>
+<td style="vertical-align: top; width: 162px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(255)</td>
+<td style="vertical-align: top; width: 1049px;">Codice
+Identificativo <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>
+del Gruppo di Tabelle. <span style="color: rgb(153, 51, 0);">Viene controllato che abbia una Lunghezza &lt;= 255 Caratteri e che assumao solo uno dei seguenti valori :<br></span><ul><li>DECOD_TITLE&nbsp;= Identifica i
+Record di Testata (Titolo) delle singole Tabelle&nbsp;<span style="font-weight: bold; color: rgb(204, 51, 204);">NON modificabili da parte degli Utenti</span></li><li>DECOD_TAB &nbsp; &nbsp;= Identifica le Tabelle&nbsp;modificabili da parte degli Utenti</li><li>DECOD_SYS &nbsp; &nbsp;= Identifica le Tabelle <span style="font-weight: bold; color: rgb(204, 51, 204);">NON modificabili da parte degli Utenti</span></li></ul><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td>
+</tr>
+<tr><td style="vertical-align: top; width: 153px;"></td><td style="vertical-align: top; width: 162px; text-align: center;"></td><td style="vertical-align: top; width: 1049px;"></td></tr></tbody>
+</table>
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span><br>
+<br>
+<br>
+</body></html>

@@ -1,0 +1,815 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<style><endnote><head>
+<style></style>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>LA CREAZIONE DI UNA NUOVA FORM - CODICE ASCX del MODULO</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+<h1><span style="font-size: 16pt; text-decoration: underline;"></span><a name="CREAZIONE_DI_UNA_NUOVA_FORM_Codice_Ascx"></a>CREAZIONE
+DI UNA NUOVA FORM (Codice Ascx del Modulo)</h1>
+<span style="color: rgb(0, 0, 153); font-weight: bold;"></span><span style="font-weight: bold;"></span>Dopo avere creato <br>
+<span>&nbsp;&nbsp;&nbsp; 1) </span><a href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM.html#REPOSITORY"><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 102, 255);">REPOSITORY</span></a><br>
+&nbsp;&nbsp; &nbsp;<span style="font-weight: bold; color: rgb(204, 51, 204);">2)&nbsp;</span><a href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM.html#REPOMANAGER"><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 102, 255);">REPOMANAGER</span></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(204, 51, 204);">3)</span>
+<a href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM.html#INFRASTRUCTURE"><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 102, 255);">INFRASTRUCTURE</span></a><br>
+<br>
+e il relativo<br>
+<ul>
+</ul>
+<span style="font-weight: bold; color: rgb(204, 51, 204);">&nbsp;&nbsp;&nbsp;
+4)
+&nbsp;</span><span style="font-weight: bold; text-decoration: underline;"><a href="AAA_CREAZIONE%20DI%20UNA%20NUOVA%20FORM%20-%20CODICE%20ASCX%20del%20MODULO.html"><span style="color: rgb(204, 51, 204);">MODULES</span></a> per la parte relativa al Codice ascx<br>
+</span>
+<ul>
+<li style="font-weight: bold; color: rgb(51, 0, 153);">SOLUTION</li>
+<ul>
+<li style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</li>
+<ul>
+<li style="font-weight: bold; color: rgb(51, 0, 153);">MODULES</li>
+</ul>
+</ul>
+</ul>
+occorre gestire la parte relativa al<span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);"> CODICE ASCX
+</span>del XXXXModule.ASCX<br>
+</span>
+<ul>
+<ul>
+<ul>
+<span style="font-weight: bold;"></span>
+</ul>
+</ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;">Aprire
+il Codice Html del Modulo(facendo DOPPIO CLICK &nbsp;sul Nome del
+Modulo (es:</span></span><span style="font-weight: bold; color: red;">PruModule.ascx))</span></li>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;">Modificare
+i Riferimenti da Vecchi Nomi a Nuovi</span></span></li>
+<ul>
+<li><span style="font-weight: bold;"><span style="color: rgb(51, 0, 153);">MODULO</span></span>
+(il nome va cambiato in ogni pagina in base al Nome del Modulo usato da
+quella pagina)</li>
+<ul>
+<li>&lt;%@ Control Language="C#"
+AutoEventWireup="true"
+CodeBehind="<span style="text-decoration: underline; font-weight: bold; color: red;">XXXXModule.ascx.cs</span>"</li>
+</ul>
+<ul>
+<li>&nbsp;&nbsp;&nbsp;
+Inherits="PowerWeb.Modules.<span style="font-weight: bold; text-decoration: underline; color: red;">XXXXModule</span>"
+%&gt;</li>
+</ul>
+</ul>
+<li><span style="font-weight: bold; text-decoration: underline;">Inserire
+le&nbsp;Definizioni dei NameSpaces utilizzati nella pagina</span>&nbsp;</li>
+<ul>
+<li><span style="font-weight: bold;"><span style="color: rgb(51, 0, 153);">GRIDVIEW &nbsp; (SEMPRE)</span></span></li>
+<ul>
+<li>&lt;%@ Register
+Assembly="DevExpress.Web.ASPxGridView.v12.1, Version=12.1.5.0,
+Culture=neutral, PublicKeyToken=b88d1754d700e49a"</li>
+<li>&nbsp;&nbsp;&nbsp; Namespace="<span style="text-decoration: underline; color: black;">DevExpress.</span><span style="font-weight: bold; text-decoration: underline; color: rgb(51, 0, 153);">Web.ASPxGridView</span>"
+TagPrefix="dx" %&gt;</li>
+</ul>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">EDITORS
+(SEMPRE)</span></li>
+<ul>
+<li>&lt;%@ Register
+Assembly="DevExpress.Web.ASPxEditors.v12.1, Version=12.1.5.0,
+Culture=neutral, PublicKeyToken=b88d1754d700e49a"</li>
+</ul>
+<ul>
+<li>&nbsp;&nbsp;&nbsp;
+Namespace="DevExpress.Web<span style="font-weight: bold; color: rgb(51, 0, 153);">.<span style="text-decoration: underline;">ASPxEditors</span></span>"
+TagPrefix="dx" %&gt;</li>
+</ul>
+</ul>
+<li style="font-weight: bold; color: rgb(204, 51, 204);">.---------------------------------------------------------------<span style="text-decoration: underline;">DATA GRID MASTER</span>----------------------------------------------------------------------------------------------------</li>
+<li><span style="font-weight: bold;">Definizione
+delle Caratteristiche e degli eventi legati alla DATAGRIDVIEW MASTER</span></li>
+<ul>
+<li>&lt;dx:ASPxGridView ID="<span style="font-weight: bold; color: red;">gvXXX</span>"
+runat="server" AutoGenerateColumns="False" Width="100%"</li>
+<li style="text-decoration: underline;"><span style="font-weight: bold;">Se GLI EVENTI di INS/VAR/DEL/VIS
+sono gestiti nella DATAGRID MASTER allora</span></li>
+<li><span style="font-weight: bold;">Definizione
+degli EVENTI da eseguire che lanciano la relativa Routine nel Codice
+C## allo scatenarsi dell'evento</span></li>
+<ul>
+<ul>
+<li><span style="font-weight: bold;"><span style="text-decoration: underline;">ALTRIMENTI VEDI PARTE
+DATAGRID DETTAGLIO</span><br>
+</span></li>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnInitNewRow</span>="<span style="font-weight: bold; color: red;">gvXXX</span>_InitNewRow"</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowValidating</span>="<span style="font-weight: bold; color: red;">gvXXX</span>_RowValidating"</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowInserting</span>="<span style="font-weight: bold; color: red;">gvXXX</span>_RowInserting"&nbsp;</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowUpdating</span>="<span style="font-weight: bold; color: red;">gvXXX</span>_RowUpdating"</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowDeleting</span>="<span style="font-weight: bold; color: red;">gvXXX</span>_RowDeleting"&gt;<span style="font-weight: bold;"></span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnCommandButtonInitialize</span>="<span style="font-weight: bold; color: red;">gvXXX</span>_CommandButtonInitialize"&nbsp;&nbsp;</li>
+</ul>
+</ul>
+<li><span style="font-weight: bold;">Inizio
+definizione dei Tasti Abilitati nella 1° Colonna della DataGrid MASTER</span></li>
+<ul>
+<li>&lt;dx:GridViewCommandColumn VisibleIndex="0"
+Width="100px" ButtonType="Image"&gt;</li>
+<li><span style="font-weight: bold;">Tasto
+di VISUALIZZAZIONE</span> (personalizzato)<img style="width: 26px; height: 29px; float: left;" alt="" src="../../ICONE/Visualizza.PNG"></li>
+<ul>
+<li>&lt;CustomButtons&gt;</li>
+<ul>
+<li>&lt;dx:GridViewCommandColumnCustomButton
+ID="view"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image ToolTip="View"
+Url="../Icons/Search/Search.png" /&gt;</li>
+<li>&lt;/dx:GridViewCommandColumnCustomButton&gt;</li>
+</ul>
+</ul>
+<li> &lt;/CustomButtons&gt;</li>
+</ul>
+<li style="font-weight: bold;">Tasto di MODIFICA&nbsp;<img style="width: 27px; height: 24px; float: left;" alt="" src="../../Modifica.PNG"></li>
+<ul>
+<li>&lt;EditButton Visible="True"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Edit/Edit.png"
+/&gt;</li>
+</ul>
+<li> &lt;/EditButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di INSERISCI<img style="width: 25px; height: 29px; float: left;" alt="" src="../../ICONE/Inserisci.PNG"></span></li>
+<ul>
+<li> &lt;NewButton Visible="True"&gt;</li>
+<ul>
+<li>&lt;Image Url="../Icons/Add/Add.png" /&gt;</li>
+</ul>
+<li>&lt;/NewButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di CANCELLA<img style="width: 25px; height: 25px; float: left;" alt="" src="../../ICONE/Cancella.PNG"></span></li>
+<ul>
+<li>&lt;DeleteButton Visible="True"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Delete/Delete.png"
+/&gt;</li>
+</ul>
+</ul>
+<ul>
+<li>&lt;/DeleteButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di ANNULLA<img style="width: 25px; height: 25px; float: left;" alt="" src="../../ICONE/Annulla.PNG"></span></li>
+<ul>
+<li>&lt;CancelButton Visible="true"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Undo/Undo.png"
+/&gt;</li>
+</ul>
+</ul>
+<ul>
+<li>&lt;/CancelButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di CONFERMA<img style="width: 22px; height: 20px; float: left;" alt="" src="../../ICONE/Conferma.PNG"></span></li>
+<ul>
+<li>&nbsp;&lt;UpdateButton
+Visible="true"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Check/Check.png"
+/&gt;</li>
+</ul>
+</ul>
+<ul>
+<li>&lt;/UpdateButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di PULISCI</span></li>
+<ul>
+<li>&nbsp;&lt;ClearFilterButton
+Visible="True"&gt;</li>
+</ul>
+<ul>
+<li>&lt;/ClearFilterButton&gt;</li>
+</ul>
+</ul>
+<li style="font-weight: bold;">Verificare se occorre
+modificare la gestione delle Dimensioni della DataGrid MASTER</li>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">
+&lt;dx:GridViewCommandColumn VisibleIndex="0" Width="40px"
+ButtonType="Image" ShowSelectCheckbox="True"&gt;</span></span></span></li>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;HeaderTemplate&gt;</span></span></span></li>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;dx:ASPxCheckBox
+ID="SelectAllCheckBox" runat="server" ToolTip="Select/Unselect all rows
+on the page"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ClientSideEvents-CheckedChanged="function(s, e) {
+grid.SelectAllRowsOnPage(s.GetChecked()); }" /&gt;</span></span></span></li>
+</ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;/HeaderTemplate&gt;</span></span></span></li>
+</ul>
+</ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;"><span style="font-weight: bold;">Verificare se occorre modificare
+l'allineamento orizzontale della DataGrid MASTER</span></span></span></span></li>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;HeaderStyle
+HorizontalAlign="Center" /&gt;</span></span></span></li>
+</ul>
+</ul>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;"><span style="font-weight: bold;">Decidere se lasciare la
+visualizzazione della Windows di Richiesta Conferma al momento della
+CANCELLAZIONE</span></span></span></span></li>
+<ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;SettingsBehavior
+ConfirmDelete="True" /&gt;</span></span></span></li>
+</ul>
+<li style="font-weight: bold;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;"><span style="font-weight: bold;">RICREARE L'ELENCO DEI CAMPI DELLA
+DATAGRID MASTER</span></span></span></span></li>
+</ul>
+<ul>
+<ul>
+<li><span style="color: red;"><span style="color: black;">Premere il Tasto di PROGETTAZIONE</span></span></li>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="text-decoration: underline;">NEL CASO la Pagina non
+avesse il Componente DATAGRID</span><br>
+</span></span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li style="width: 508px;"><span style="color: red;"><span style="color: black;">Aprire
+CASELLA STRUMENTI</span></span><span style="color: red;"><span style="color: black;"></span></span></li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li style="width: 528px;"><span style="color: red;"><span style="color: black;">Scegliere
+dal Gruppo DX 11.2 DATA il Componente ASPXGRIDWIEV</span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li style="margin-left: 0px; width: 550px;"><span style="color: red;"><span style="color: black;">Trascinarlo
+nella Riga Vuota del Modulo</span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span><span style="color: red;"><span style="color: black;"></span></span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="color: red;"><span style="color: black;">CHIUDERE LA WINDOW che si apre
+--------&gt;</span></span></li>
+</ul>
+<li><span style="color: red;"><span style="color: black;"><span style="text-decoration: underline;">se il Componete DataGrid
+c'era già allora</span><br>
+</span></span></li>
+</ul>
+<ul>
+<ul>
+<li><span style="color: red;"><span style="color: black;">premere la Freccetta in ALTO a DX del
+Componente DataGrid<br>
+</span></span></li>
+</ul>
+<ul>
+<ul>
+<li>&nbsp;CHOSE DATA SOURCE:</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>NUOVA ORIGINE DATI</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>OGGETTO</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>Togliere il SIMBOLO DI SPUNTA</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>Scegliere&nbsp;BUSINESS.REPOSITORY.CUSTOM.nome</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li>Scegliere METODO&nbsp;</li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>GETALL( &nbsp; &nbsp;)</li>
+</ul>
+<li>premere FINE</li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<li>Confermare nella Windows di avvertimento di FARE IL
+REFRESH dei Campi</li>
+</ul>
+<ul style="font-weight: bold;">
+<li>Cancellare la Riga di ObjectDataSource=
+ObjectDataSource1</li>
+</ul>
+</ul>
+<li>Riaprire il Sorce HTML del Module</li>
+<ul>
+<li>AGGIUNGERE alla Riga che gestisce l'eventuale Codice_ID</li>
+<ul>
+<li>&lt;dx:GridViewDataTextColumn FieldName="Pru_Id"
+VisibleIndex="0" <span style="font-weight: bold; color: red;">Visible="false",
+ShowInCustomizationForm ="false"</span> &gt;</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">Inizio
+definizione di TUTTI I CAMPI della ENTITA' associata alla DataGrid
+MASTER</span></li>
+</ul>
+<ul>
+<ul>
+<li>&lt;dx:GridView<span style="font-weight: bold;">XXXXXXXXColumn
+</span>FieldName="<span style="font-weight: bold; color: red;">NOME_CAMPO</span>"
+&nbsp;</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">VisibleIndex=</span>"nn"
+(N° della Colonna della DataGrid" - <span style="text-decoration: underline;">VA DEFINITA SOLO per i
+Campi che vanno visualizzati nella DataGrid Master di DEFAULT INIZIALE</span>)</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">Visible=</span>"false"
+&nbsp;(<span style="text-decoration: underline;">se
+NON va mostrato nella DataGrid Master di DEAFULT iniziale)</span></li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">ReadOnly
+=</span>"True" (se va reso NON Modificabile)</li>
+</ul>
+<ul>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;"><span style="font-weight: bold;">ShowSelectCheckbox</span>="False"
+(se NON va reso visible nella Finestra di Selezione dei Campi della
+DataGrid)</span></span></span></li>
+</ul>
+<ul>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;"><span style="font-weight: bold;">Width</span> = "NNNNpx"
+oppure "NNN%" per impostare la LARGHEZZA del Campo ETICHETTA nella
+DataGrid Master</span></span></span></li>
+</ul>
+<ul>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">NB:<span style="font-weight: bold; text-decoration: underline;"> la
+Larghezza della Colonna relativa al Campo per un DATACOMBOBOX</span>
+va impostata ANCHE come</span></span></span></li>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;PropertiesComboBox
+Width ="NNNpx"\&gt;&nbsp;</span></span></span></li>
+</ul>
+</ul>
+<li>
+<div style="margin-left: 40px;"><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">perchè viene poi usata ANCHE
+NEI corrispondenti TAB&nbsp; </span></span></span><br>
+</div>
+<span style="color: red;"><span style="color: black;"><span style="font-weight: normal;"></span></span></span><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+</span></span></span></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">GridView</span><span style="font-weight: bold; color: red;">DataText</span><span style="font-weight: normal;">Column</span></li>
+<ul>
+<li style="font-weight: bold;"><span style="font-weight: normal;">Campi
+</span>NVARCHAR&nbsp;&nbsp;</li>
+</ul>
+<li>GridView<span style="font-weight: bold; color: red;">DataDate</span>Column<span style="font-weight: bold;"></span></li>
+<ul>
+<li>Campi <span style="font-weight: bold;">DATE</span></li>
+<li>Campi <span style="font-weight: bold;">DATETIME</span></li>
+<li>Campi<span style="font-weight: bold;">
+SMALDATETIME</span></li>
+<ul>
+<li>x i Campi DATA non serve impostare il Formato
+GG/MM/SSA perchè lo imposta Automaticamente</li>
+<li>x i Campi Data/Ora occorre impostare invece il
+formato GG/MM/SSAA - HH:MM</li>
+<ul>
+<li><span style="font-weight: bold;">&nbsp;</span>&lt;Properties<span style="font-weight: bold;"><span style="color: red;">DateEdit</span>
+DisplayFormatString="dd/MM/yyyy - hh:mm:ss"&gt;</span></li>
+<li><span style="font-weight: bold;">&lt;</span>/PropertiesDateEdit&gt;</li>
+</ul>
+</ul>
+</ul>
+<li>GridView<span style="font-weight: bold; color: red;">DataTimeEdit</span>Column</li>
+<ul>
+<li>Campi <span style="font-weight: bold;">TIME(X)</span></li>
+</ul>
+<li>GridView<span style="font-weight: bold; color: red;">DataSpinEdit</span>Column</li>
+<ul>
+<li>Campi <span style="font-weight: bold;">TINYNT</span></li>
+<li>Campi <span style="font-weight: bold;">SMALLINT</span></li>
+<li>Campi <span style="font-weight: bold;">INT</span></li>
+<li>Campi <span style="font-weight: bold;">FLOAT</span></li>
+<li>Campi <span style="font-weight: bold;">REAL</span></li>
+<ul>
+<li>x i Campi NUMERICI nei quali si vuole impostare
+il Formato "#.###.,##" standard basta impostare</li>
+<ul>
+<li>&lt;Properties<span style="font-weight: bold; color: red;">SpinEdit</span>
+<span style="font-weight: bold;">DisplayFormatString="g"</span>&gt;</li>
+<li>&lt;/PropertiesSpinEdit&gt;</li>
+</ul>
+<li>nel caso si voglia impostare il N° di Cifre
+decimali fisso</li>
+<ul>
+<li>Properties<span style="font-weight: bold; color: red;">SpinEdit</span>
+<span style="font-weight: bold;">DecimalPlaces="2"</span>&gt;</li>
+<li>&lt;/PropertiesSpinEdit&gt;</li>
+</ul>
+<li>nel caso in cui sia un Campo PERCENTUALE (%)</li>
+<ul>
+<li>&lt;Properties<span style="font-weight: bold; color: red;">SpinEdit</span>
+<span style="font-weight: bold;">DisplayFormatString="p"</span>&gt;</li>
+</ul>
+<ul>
+<li>&lt;/PropertiesSpinEdit&gt;</li>
+</ul>
+<li>nel caso in cui si voglia la SIGLA
+VALUTA&nbsp;</li>
+<ul>
+<li>&lt;Properties<span style="font-weight: bold; color: red;">SpinEdit</span>
+<span style="font-weight: bold;">DisplayFormatString="c"</span>&gt;</li>
+<li>&lt;/PropertiesSpinEdit&gt;</li>
+</ul>
+<li>nel caso si voglia controllare che NON SIA
+MAGGIORE DI</li>
+<ul>
+<li>&lt;Properties<span style="font-weight: bold; color: red;">SpinEdit</span>
+<span style="font-weight: bold;">MaxValue
+="NN"</span>&gt;</li>
+<li>&lt;/PropertiesSpinEdit&gt;</li>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<li>GridView<span style="font-weight: bold; color: red;">DataCheck</span>Column</li>
+<ul>
+<li>Campi <span style="font-weight: bold;">BOOLEAN</span></li>
+</ul>
+<li><span style="font-weight: bold;">GridViewDATACOMBOBOXColumn</span></li>
+<ul>
+<li><span style="font-weight: bold;">N.B.&nbsp;LA
+LARGHEZZA DELLA COMOBOX VA IMPOSTATA 2 VOLTE</span></li>
+<ul>
+<li><span style="font-weight: bold;">la
+prima impostando Width ="NNNpx" o "NNN%" sulla riga della
+GridViewDATACOMBOBOXColumnn</span></li>
+<ul>
+<li><span style="font-weight: bold;">e
+vale per impostare la larghezza del Campo ETICHETTA della DATAGRID</span></li>
+</ul>
+<li><span style="font-weight: bold;">la
+seconda impostando</span></li>
+<ul>
+<li><span style="font-weight: bold;">&nbsp;</span><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;PropertiesComboBox
+Width ="NNNpx"\&gt; &nbsp;oppure&nbsp;</span></span></span><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">&lt;PropertiesComboBox
+Width ="NNN%"\&gt;</span></span></span></li>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">vale
+per impostare ANCHE la LARGEHZZA del&nbsp;</span></span></span></li>
+<ul>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">CAMPO
+della DataGrid Master</span></span></span></li>
+<li><span style="color: red;"><span style="color: black;"><span style="font-weight: normal;">CAMPO
+DEL TAB corrispondente<br>
+</span></span></span></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">&lt;/<span style="color: rgb(51, 0, 153);">Columns</span>&gt;
+x </span><span style="font-weight: bold;">chiudere
+la definizione delle Colonne</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">per
+inserire una finestra di richiesta conferma&nbsp;nel caso di DELETE</span></li>
+<ul>
+<li>&lt;SettingsBehavior ConfirmDelete="True"
+/&gt;</li>
+</ul>
+</ul>
+<li><span style="font-weight: bold; color: red;"><span style="color: rgb(204, 51, 204);">--------------------------------------------------------------------------------
+&nbsp; DATA GRID DETTAGLIO
+--------------------------------------------------------------------------------------------------</span></span></li>
+<li><span style="font-weight: bold;">Definizione
+delle Caratteristiche e degli eventi legati alla <span style="text-decoration: underline;">DATAGRIDVIEW DETTAGLIO</span></span></li>
+<ul>
+<li style="color: rgb(51, 0, 153);"><span style="font-weight: bold;">&lt;Templates&gt;</span></li>
+<ul>
+<li><span style="font-weight: bold;"><span style="color: rgb(51, 0, 153);">&lt;DetailRow&gt;</span><span style="text-decoration: underline;"><br>
+</span></span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<li>&lt;<span style="font-weight: bold; color: rgb(51, 0, 153);">dx:ASPxGridView</span>
+ID="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>"
+runat="server" AutoGenerateColumns="False" Width="100%"</li>
+</ul>
+</ul>
+<li style="text-decoration: underline;"><span style="font-weight: bold;">Se esiste una DataGrid di
+DETTAGLIO allora ANCHE GLI EVENTI di INS/VAR/DEL/VIS sono gestiti nella
+DATAGRID DETTAGLIO</span></li>
+<li><span style="font-weight: bold;">Definizione
+degli EVENTI da eseguire che lanciano la relativa Routine nel Codice
+C## allo scatenarsi dell'evento</span></li>
+<ul>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnInitRow</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>_InitRow"<span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="text-decoration: underline;"></span></span></li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="text-decoration: underline;"></span>OnInitNewRow</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>_InitNewRow"</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowValidating</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>_RowValidating"</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowInserting</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>_RowInserting"&nbsp;</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowUpdating</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL_</span>_RowUpdating"</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnRowDeleting</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>_RowDeleting"&gt;<span style="font-weight: bold;"></span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;</li>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnCommandButtonInitialize</span>="<span style="font-weight: bold; color: red;">gvXXX_DETAIL</span>_CommandButtonInitialize"&nbsp;&nbsp;</li>
+<li><span style="font-weight: bold; text-decoration: underline;">se la
+DataGrid di DETTAGLIO&nbsp;HA i TAB</span> occorre anche
+gestire l'evento di visualizzazione sul Bottone di View Custom!</li>
+<ul>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">OnCustomButtonCallback="</span><span style="font-weight: bold; color: red;">gvXXX_DETAIL</span><span style="font-weight: bold; color: rgb(51, 0, 153);">_CustomButtonCallback"&gt;</span></li>
+</ul>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">Inizio
+della
+Definizione della Parte delle Colonne della DataGrid Principale</span></li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">&lt;<span style="color: rgb(51, 0, 153);">Columns</span>&gt;</span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li style="text-decoration: underline;"><span style="font-weight: bold;">Se i TASTI DI INS/VAR/DEL/VIS
+sono Gestiti nella DATA GRID DETTAGLIO</span></li>
+</ul>
+<li><span style="font-weight: bold;">Inizio
+definizione dei Tasti Abilitati nella 1° Colonna della DataGrid
+Principale</span></li>
+<ul>
+<li>&lt;dx:GridViewCommandColumn VisibleIndex="0"
+Width="100px" ButtonType="Image"&gt;</li>
+<li><span style="font-weight: bold;">Tasto
+di <span style="text-decoration: underline;">VISUALIZZAZIONE</span></span>
+(personalizzato)</li>
+<ul>
+<li>&lt;CustomButtons&gt;</li>
+<ul>
+<li>&lt;dx:GridViewCommandColumnCustomButton
+ID="view"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image ToolTip="View"
+Url="../Icons/Search/Search.png" /&gt;</li>
+<li>&lt;/dx:GridViewCommandColumnCustomButton&gt;</li>
+</ul>
+</ul>
+<li> &lt;/CustomButtons&gt;</li>
+</ul>
+<li style="font-weight: bold;">Tasto di <span style="text-decoration: underline;">EDIT</span></li>
+<ul>
+<li>&lt;EditButton Visible="True"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Edit/Edit.png"
+/&gt;</li>
+</ul>
+<li> &lt;/EditButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di <span style="text-decoration: underline;">INSERISCI</span></span></li>
+<ul>
+<li> &lt;NewButton Visible="True"&gt;</li>
+<ul>
+<li>&lt;Image Url="../Icons/Add/Add.png" /&gt;</li>
+</ul>
+<li>&lt;/NewButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di <span style="text-decoration: underline;">CANCELLA</span></span></li>
+<ul>
+<li>&lt;DeleteButton Visible="True"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Delete/Delete.png"
+/&gt;</li>
+</ul>
+</ul>
+<ul>
+<li>&lt;/DeleteButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di <span style="text-decoration: underline;">ANNULLA</span></span></li>
+<ul>
+<li>&lt;CancelButton Visible="true"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Undo/Undo.png"
+/&gt;</li>
+</ul>
+</ul>
+<ul>
+<li>&lt;/CancelButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto
+di <span style="text-decoration: underline;">VERIFICA</span></span></li>
+<ul>
+<li>&nbsp;&lt;UpdateButton
+Visible="true"&gt;</li>
+</ul>
+<ul>
+<ul>
+<li>&lt;Image Url="../Icons/Check/Check.png"
+/&gt;</li>
+</ul>
+</ul>
+<ul>
+<li>&lt;/UpdateButton&gt;</li>
+</ul>
+<li><span style="font-weight: bold;">Tasto di
+PULISCI</span></li>
+<ul>
+<li>&lt;ClearFilterButton Visible="True"&gt;</li>
+<li>&lt;/ClearFilterButton&gt;<span style="font-weight: bold;"><br>
+</span></li>
+</ul>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">Inizio
+definizione dei Tasti Abilitati nella "n" Colonne della DataGrid
+Principale</span></li>
+</ul>
+<ul>
+<ul>
+<li>&lt;dx:GridView<span style="font-weight: bold;">XXXXXXXXColumn
+</span>FieldName="<span style="font-weight: bold; color: red;">NOME_CAMPO</span>"
+&nbsp;</li>
+<li><br>
+</li>
+<li><span style="font-weight: bold; text-decoration: underline; color: red;">VEDI
+QUANTO DETTO PER LE COLONNE DELLA DATA GRID PRINCIPALE</span></li>
+<li><span style="font-weight: bold; text-decoration: underline; color: red;"><br>
+</span></li>
+</ul>
+<ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">&lt;/Columns&gt;</span><span style="font-weight: bold;"> x </span><span style="font-weight: bold;">chiudere
+la definizione delle Colonne &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;&nbsp;</span></li>
+</ul>
+</ul>
+</ul>
+<li><span style="font-weight: bold;">Impostare
+anche per la Data Grid Dettaglio il fatto che eventualmente&nbsp;</span></li>
+<ul>
+<li><span style="font-weight: bold;">RIMPICCIOLISCA
+l'ULTIMA COLONNA DI DX &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;</span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<ul>
+<li>&lt;<span style="font-weight: bold;">SettingsBehavior</span>
+<span style="font-weight: bold;">ColumnResizeMode</span>="NextColumn"&nbsp;/&gt;&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">VISUALIZZI
+ANCHE LA RIGA DI SCELTA DEI CAMPI</span> della Data Grid
+Dettaglio&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;</li>
+</ul>
+<ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">&lt;Settings
+ShowFilterRow="True" &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></li>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">ShowGroupPanel="True"
+/&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp;&nbsp;</span></li>
+</ul>
+</ul>
+<li style="font-weight: bold;">&lt;/dx:ASPxGridView&gt;
+x chiudere le definizioni della&nbsp;<span style="font-weight: bold;">DATAGRID di DETTAGLIO</span></li>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold; color: rgb(51, 0, 153);">&lt;/DetailRow&gt;</span>
+&nbsp;<span style="font-weight: bold;">x chiudere le
+definizioni delle Righe della DATAGRID di DETTAGLIO</span></li>
+</ul>
+<li style="font-weight: bold; color: rgb(51, 0, 153);">&lt;/Templates&gt;
+<span style="color: black;">x chiudere le
+definizioni dei TEMPLATES</span></li>
+</ul>
+</ul>
+<br>
+</body></html>

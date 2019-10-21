@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/LicenceServiceLibrary" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/LicenceServiceLibrary" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfScheduleData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ScheduleData" nillable="true" type="tns:ScheduleData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfScheduleData" nillable="true" type="tns:ArrayOfScheduleData" />
+  <xs:complexType name="ScheduleData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CustomerPublicKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="JobParameters" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="JobType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="OwnerUserLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="ScheduleCreationDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ScheduleEditDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ScheduleEndDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ScheduleExclusions" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ScheduleId" type="xs:int" />
+      <xs:element minOccurs="0" name="ScheduleParameters" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ScheduleStartDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ScheduleType" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ScheduleData" nillable="true" type="tns:ScheduleData" />
+  <xs:complexType name="ArrayOfModulesActivation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ModulesActivation" nillable="true" type="tns:ModulesActivation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfModulesActivation" nillable="true" type="tns:ArrayOfModulesActivation" />
+  <xs:complexType name="ModulesActivation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ModuleType" type="tns:ModulesTypeEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ModulesActivation" nillable="true" type="tns:ModulesActivation" />
+  <xs:simpleType name="ModulesTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Times" />
+      <xs:enumeration value="Timesheet" />
+      <xs:enumeration value="AmmountMinutes" />
+      <xs:enumeration value="Rounding" />
+      <xs:enumeration value="Nocturne" />
+      <xs:enumeration value="Trips" />
+      <xs:enumeration value="Activities" />
+      <xs:enumeration value="Scheduler" />
+      <xs:enumeration value="Gps" />
+      <xs:enumeration value="Pass" />
+      <xs:enumeration value="BudgetComparing" />
+      <xs:enumeration value="WhereIsIt" />
+      <xs:enumeration value="OvertimeAuth" />
+      <xs:enumeration value="Notification" />
+      <xs:enumeration value="Privacy" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ModulesTypeEnum" nillable="true" type="tns:ModulesTypeEnum" />
+  <xs:complexType name="UploadData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FileContent" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PublicKey" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UploadData" nillable="true" type="tns:UploadData" />
+  <xs:complexType name="ArrayOfLicenceData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LicenceData" nillable="true" type="tns:LicenceData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLicenceData" nillable="true" type="tns:ArrayOfLicenceData" />
+  <xs:complexType name="LicenceData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LicenceExpirationDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LicenceData" nillable="true" type="tns:LicenceData" />
+</xs:schema>

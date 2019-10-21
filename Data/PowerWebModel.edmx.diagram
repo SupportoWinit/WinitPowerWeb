@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ab866a1a19604397a2ec21f56d3ad294" Name="Diagram1" ZoomLevel="20">
+
+
+        <EntityTypeShape EntityType="PowerWebModel.Cli" Width="1.5" PointX="1.5" PointY="61.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Col_Monte_Minuti" Width="1.5" PointX="8.25" PointY="43" />
+        <EntityTypeShape EntityType="PowerWebModel.Fil" Width="1.5" PointX="2.5" PointY="26.25" />
+        <EntityTypeShape EntityType="PowerWebModel.Fru" Width="1.5" PointX="6" PointY="37" />
+        <EntityTypeShape EntityType="PowerWebModel.Fru_Cant" Width="1.5" PointX="8.25" PointY="38.5" />
+        <EntityTypeShape EntityType="PowerWebModel.Lingue" Width="1.5" PointX="9" PointY="61.125" />
+        <EntityTypeShape EntityType="PowerWebModel.Menu" Width="1.5" PointX="15.75" PointY="64.25" />
+        <EntityTypeShape EntityType="PowerWebModel.Pru" Width="1.5" PointX="6" PointY="72.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Pru_Col" Width="1.5" PointX="8.25" PointY="56.5" />
+        <EntityTypeShape EntityType="PowerWebModel.Resources" Width="1.5" PointX="11.25" PointY="62.75" />
+        <EntityTypeShape EntityType="PowerWebModel.Resp" Width="1.5" PointX="3.75" PointY="51.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Aut" Width="1.5" PointX="16.5" PointY="50.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Cap" Width="1.5" PointX="10.75" PointY="12.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Chk_Imp" Width="1.5" PointX="10.75" PointY="15.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Comuni" Width="1.5" PointX="8" PointY="18.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_DataGrid" Width="1.5" PointX="13.5" PointY="67.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Decod" Width="1.5" PointX="6" PointY="40.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Dist" Width="1.5" PointX="4.375" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_EditFormTemplate" Width="1.5" PointX="5.75" PointY="22.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Festivi" Width="1.5" PointX="7.75" PointY="22.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Messaggi" Width="1.5" PointX="42.5" PointY="11" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Orari" Width="1.5" PointX="32.625" PointY="46.375" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Orari_Tipo" Width="1.5" PointX="0.75" PointY="57.125" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Prov" Width="1.5" PointX="5.75" PointY="19.25" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Report" Width="1.5" PointX="13.5" PointY="71.75" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Report_Group" Width="1.5" PointX="28.375" PointY="72.25" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Report_Order" Width="1.5" PointX="15.75" PointY="73.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Utenti_Fil" Width="1.5" PointX="13.5" PointY="52.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Utenti_Resp" Width="1.5" PointX="13.5" PointY="60.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Versioni" Width="1.5" PointX="9" PointY="64.5" />
+        <EntityTypeShape EntityType="PowerWebModel.Cant_Fil_V" Width="1.5" PointX="12.75" PointY="12.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Col_Resp_V" Width="1.5" PointX="9.75" PointY="24.625" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Fil_Fil" />
+        <AssociationConnector Association="PowerWebModel.FK_Fru_Cant_Fru" />
+        <AssociationConnector Association="PowerWebModel.FK_Menu_Menu" />
+        <AssociationConnector Association="PowerWebModel.FK_Pru_Col_Pru" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Resp_Resp" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Comuni_Tab_Prov" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Dist_Tab_Decod" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Orari_Tab_Orari_Tipo" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Report_Group_Tab_Report" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Report_Order_Tab_Report" />
+        <AssociationConnector Association="PowerWebModel.FK_Resources_Lingue" />
+        <AssociationConnector Association="PowerWebModel.FK_Resources_Versioni" />
+        <EntityTypeShape EntityType="PowerWebModel.MetaDescriptor" Width="1.5" PointX="5.75" PointY="14.375" />
+        <EntityTypeShape EntityType="PowerWebModel.MetaFieldDescriptor" Width="1.5" PointX="8" PointY="13" />
+        <AssociationConnector Association="PowerWebModel.FK_MetaFieldDescriptor_MetaDescriptor" />
+        <EntityTypeShape EntityType="PowerWebModel.Cant_Note" Width="1.5" PointX="16.5" PointY="56.375" />
+        <EntityTypeShape EntityType="PowerWebModel.Col_Note" Width="1.5" PointX="13.5" PointY="56.375" />
+        <EntityTypeShape EntityType="PowerWebModel.Utenti" Width="1.5" PointX="11.25" PointY="54.875" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Note_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Note_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Lingue" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Aut_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_DataGrid_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Report_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Fil_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Resp_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Versioni" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_GridLookup" Width="1.625" PointX="13.5" PointY="76.5" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_GridLookup_Utenti" />
+        <EntityTypeShape EntityType="PowerWebModel.Col_V" Width="1.5" PointX="14.75" PointY="23.625" />
+        <EntityTypeShape EntityType="PowerWebModel.PendingElab" Width="1.5" PointX="11.25" PointY="51.25" />
+        <AssociationConnector Association="PowerWebModel.FK_PendingElab_Fru" />
+        <AssociationConnector Association="PowerWebModel.FK_PendingElab_Pru" />
+        <EntityTypeShape EntityType="PowerWebModel.Menu_Tipo" Width="1.5" PointX="12.25" PointY="7.625" />
+        <AssociationConnector Association="PowerWebModel.FK_Menu_Menu_Tipo" />
+        <AssociationConnector Association="PowerWebModel.FK_Menu_Tipo_Utenti" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Menu_Tipo" />
+        <EntityTypeShape EntityType="PowerWebModel.Cant_Var" Width="1.5" PointX="0.1989679188462756" PointY="11.874797349737397" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Funz" Width="1.5" PointX="3.9446999281387312" PointY="22.942492182805431" />
+        <AssociationConnector Association="PowerWebModel.FK_Menu_Tab_Funz" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Aut_Tab_Funz" />
+        <EntityTypeShape EntityType="PowerWebModel.Col_Var" Width="3.25" PointX="30.875" PointY="79.875" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Messaggi_Utenti" />
+        <EntityTypeShape EntityType="PowerWebModel.Cant_V" Width="2.25" PointX="22.5" PointY="10.625" />
+        <EntityTypeShape EntityType="PowerWebModel.Col_Cant_Orario" Width="1.5" PointX="41.375" PointY="40.125" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Cli" />
+        <EntityTypeShape EntityType="PowerWebModel.Reg_Stored" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PowerWebModel.Aut_Str" Width="1.5" PointX="42.25" PointY="58.25" />
+        <AssociationConnector Association="PowerWebModel.FK_Aut_Str_Resp" />
+        <EntityTypeShape EntityType="PowerWebModel.Reg_V" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PowerWebModel.Timesheet" Width="1.5" PointX="42.25" PointY="61.875" />
+        <EntityTypeShape EntityType="PowerWebModel.Col" Width="3" PointX="19" PointY="41.5" />
+        <AssociationConnector Association="PowerWebModel.FK_Aut_Str_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Monte_Minuti_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Note_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Orario_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Resp" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Tab_Orari_Tipo" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Var_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Pru_Col_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Timesheet_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_Col" />
+        <EntityTypeShape EntityType="PowerWebModel.Reg" Width="1.5" PointX="37.25" PointY="46.375" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Fru" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Pru" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Reg" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Tab_Decod" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Excel_Model" Width="2.75" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PowerWebModel.Param" Width="1.5" PointX="33.25" PointY="17.375" />
+        <EntityTypeShape EntityType="PowerWebModel.Utenti_History" Width="1.5" PointX="10.125" PointY="68.75" />
+        <AssociationConnector Association="PowerWebModel.FK_Utenti_History_Utenti" />
+        <EntityTypeShape EntityType="PowerWebModel.Cant" Width="1.5" PointX="22.75" PointY="36.75" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Cli" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Fil" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Tab_Orari_Tipo" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Var_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Orario_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Fru_Cant_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Param_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_NoteCant" />
+        <EntityTypeShape EntityType="PowerWebModel.Damage" Width="1.5" PointX="25" PointY="53.25" />
+        <EntityTypeShape EntityType="PowerWebModel.Tab_Damage" Width="1.5" PointX="8.25" PointY="35.375" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Col" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Fru" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Pru" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Tab_Damage" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Tab_Decod" />
+        <AssociationConnector Association="PowerWebModel.FK_Tab_Damage_Tab_Decod" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>LA GESTIONE DEI FILES DI LOG</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>LA GESTIONE DEI FILES di LOG</h1>
+In Power vengono gestiti due Files di LOG<br>
+&nbsp;&nbsp; <span style="color: rgb(51, 0, 153); font-weight: bold;">WINIT</span><br style="color: rgb(51, 0, 153); font-weight: bold;">
+<span style="color: rgb(51, 0, 153); font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;POWERWEBCODE</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</span><br style="color: rgb(51, 0, 153); font-weight: bold;">
+<span style="color: rgb(51, 0, 153); font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;LOG</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span style="font-weight: bold; text-decoration: underline;">
+InfoLog.log</span><br style="font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="font-weight: bold; text-decoration: underline;">InfoWarn.log</span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</span>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp;<br>
+<br>
+Nel file <span style="font-weight: bold; text-decoration: underline;">
+InfoLog.log&nbsp;</span>vengono scritti i messaggi di
+INFORMAZIONE che permettono di ricostruire &nbsp;la sequenza delle
+cose eseguite dai singoli utenti. <br><span style="text-decoration: underline;">
+A questo scopo in tutti i MODULI è stata inserita la scrittura
+automatica dei seguenti messaggi</span>
+<ul>
+<li>la <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 0, 153);">gvXXXX_RowInserting</span>
+scrive&nbsp; il seguente messaggio</li>
+<ul>
+<li><span style="font-weight: bold;">&nbsp;2012-10-01
+08:53:42,580 INFO PowerWeb.Modules</span>.<span style="font-weight: bold; color: red;">NOME_TABELLA</span><span style="font-weight: bold;">Module 127.0.0.1 -</span> <span style="font-weight: bold; color: red;">NOME_TABELLA</span>-<span style="font-weight: bold;">Row Updating by</span> <span style="font-weight: bold; color: red;">NOME_UTENTE</span></li>
+</ul>
+<ul>
+<ul>
+<li>a cui segue nel caso di avvenuto inserimento, il
+seguente messaggio</li>
+<ul>
+<li>2012-10-01 08:53:47,296 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - Updated <span style="font-weight: bold; color: red;">NOME_TABELLA</span>
+id <span style="font-weight: bold; color: red;">NUMERO_ID_RECORD_INSERITO</span></li>
+</ul>
+<li>mentre , nel caso di errore avvenuto durante
+l'Inserimento, scrive il seguente messaggio</li>
+<ul>
+<li>2012-10-01 08:53:47,296 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - Unable to Insert <span style="font-weight: bold; text-decoration: underline; color: red;">NOME_TABELLA</span></li>
+</ul>
+</ul>
+</ul>
+<li>la <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 0, 153);">gvXXXX_RowUpdating</span>
+scrive&nbsp; il seguente messaggio</li>
+<ul>
+<li>&nbsp;2012-10-01 08:53:42,580 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - <span style="font-weight: bold; color: red;">NOME_TABELLA</span>-Row
+Updating by <span style="font-weight: bold; color: red;">NOME_UTENTE</span></li>
+<ul>
+<li>a cui segue nel caso di avvenuto inserimento, il
+seguente messaggio</li>
+<ul>
+<li>2012-10-01 08:53:47,296 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - Updated <span style="font-weight: bold; color: red;">NOME_TABELLA</span>
+id <span style="font-weight: bold; color: red;">NUMERO_ID_RECORD_INSERITO</span></li>
+</ul>
+<li>mentre , nel caso di errore avvenuto durante
+l'Inserimento, scrive il seguente messaggio</li>
+<ul>
+<li>2012-10-01 08:53:47,296 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - Unable to Update <span style="font-weight: bold; text-decoration: underline; color: red;">NOME_TABELLA</span></li>
+</ul>
+</ul>
+</ul>
+<li>la <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 0, 153);">gvXXXX_RowDeleting</span>
+scrive&nbsp; il seguente messaggio</li>
+<ul>
+<li>&nbsp;2012-10-01 08:53:42,580 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - <span style="font-weight: bold; color: red;">NOME_TABELLA</span>-Row
+Deleting by <span style="font-weight: bold; color: red;">NOME_UTENTE</span></li>
+<ul>
+<li>a cui segue nel caso di avvenuto inserimento, il
+seguente messaggio</li>
+<ul>
+<li>2012-10-01 08:53:47,296 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - Deleted <span style="font-weight: bold; color: red;">NOME_TABELLA</span>
+id <span style="font-weight: bold; color: red;">NUMERO_ID_RECORD_INSERITO</span></li>
+</ul>
+<li>mentre , nel caso di errore avvenuto durante
+l'Inserimento, scrive il seguente messaggio</li>
+<ul>
+<li>2012-10-01 08:53:47,296 INFO PowerWeb.Modules.<span style="font-weight: bold; color: red;">NOME_TABELLA</span>Module
+127.0.0.1 - Unable to Delete <span style="font-weight: bold; text-decoration: underline; color: red;">NOME_TABELLA</span></li>
+</ul>
+</ul>
+</ul>
+</ul>NB: nel caso in cui si voglia <span style="font-weight: bold; text-decoration: underline;">ANCHE REGISTRARE NEL LOG l'INTERO RECORD</span> (Inserito/Modificato/cancellato) allora va impostato ANCHE in<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(51, 0, 153);"> COMMON</span><br style="font-weight: bold; color: rgb(51, 0, 153);"><span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; SETTINGS</span>.settings il valore del Campo : <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(51, 0, 153);">IsSaveChangesLogActive&nbsp;</span> = &nbsp;TRUE<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(51, 0, 153); font-weight: bold;"></span><br><br><br>
+</body></html>

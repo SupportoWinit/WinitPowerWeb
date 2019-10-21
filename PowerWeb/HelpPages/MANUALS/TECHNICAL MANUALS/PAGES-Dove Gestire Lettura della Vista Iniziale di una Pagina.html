@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Dove Gestire la Lettura della Vista Iniziale di una Pagina</title>
+
+  
+</head><body style="margin-left: 0px; width: 1387px;">
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1><span style="font-size: 16pt; text-decoration: underline;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span>Dove
+Gestire la Lettura della Vista Iniziale di una Pagina<br>
+</h1>
+
+<ul style="text-decoration: underline;">
+
+  <li>
+    <h2 style="margin-left: 0px; width: 1384px;">Visualizzazione
+Specifica x Singolo Utente</h2>
+  </li>
+</ul>
+
+Quando si apre una Pagina che ha una DataGrid iniziale , il sistema
+verifica se esiste nella Tabella TAB_DATAGRID<br>
+
+uno o più record che abbiano :<br>
+
+<ul>
+
+  <li><span style="font-weight: bold;">NOME_DATAGRID</span> =&nbsp;Nome
+della DataGrid principale associata a quella
+pagina&nbsp;&nbsp;&nbsp;&nbsp;</li>
+  <li><span style="font-weight: bold;">CODICE_UTENTE</span> = Utente_Id
+collegato</li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Nel caso
+ne esista più di uno</span> propone x Default quello con Codice_Utente
+= Utente_ID collegato e DATA_LAYOUT_DATAGRID + RECENTE<br>
+
+<br>
+
+Questo
+per proporre come COLONNE DI DEFAULT l'elenco di Colonne eventualmente
+inserito da quello specifico Utente in modo che ogni Utente<br>
+
+possa crearsi una propria Visualizzazione di Default<br>
+
+<br>
+
+Per
+creare una propia Visualizzazione a livello di Singolo Utente
+(Utente_ID &lt;&gt; Null) basta modificare a Video la Struttura delle
+Colonne della Data Grid<br>
+
+e salvarla con un Nome a scelta (evitare di Chiamarla DEFAULT che è una
+parola riservata)<br>
+
+<br>
+
+Le
+Visualizzazioni PERSONALIZZATE x UTENTE sono identificate (nella
+Finestra di selezione Video) da un Simbolo Utenti davanti al Nome della
+Visualizzazione<br>
+
+<ul>
+
+  <li>
+    <h2 style="margin-left: 0px; width: 1384px;"><span style="text-decoration: underline;">Visualizzazione Specifica x Azienda</span>&nbsp;(valida
+in assenza della precedente)</h2>
+  </li>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">NEL CASO
+IN CUI NON ESISTA</span> nessun Record&nbsp;per quello specifico Utente
+allora cerca l'eventuale Record della Tabella<br>
+
+TAB_DATAGRID che abbia <br>
+
+<ul>
+
+  <li><span style="font-weight: bold;">NOME_DATAGRID</span> =&nbsp;Nome
+della DataGrid principale associata a quella
+pagina&nbsp;&nbsp;&nbsp;&nbsp;</li>
+  <li><span style="font-weight: bold;">CODICE_UTENTE</span> = Null</li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Nel caso
+ne esista più di uno</span> propone x Default quello con Codice_Utente
+= Null e DATA_LAYOUT_DATAGRID + RECENTE <br>
+
+<br>
+
+Questo per proporre come COLONNE DI DEFAULT l'elenco di Colonne
+eventualmente inserito da quella Azienda&nbsp;in modo che ogni
+Utente<br>
+
+che
+NON abbia una propria&nbsp;Visualizzazione di Default utilizzi quella
+di Defaul creata dall'Azienda Stessa al posto di quella Standard
+proposta<br>
+
+da Winit<br>
+
+<br>
+
+Per creare una&nbsp;Visualizzazione a livello Aziendale
+(Utente_ID = Null) occorre essere un Utente particolare che abbia un
+apposita Autorizzazione <br>
+
+a farlo definita nella TAB_AUT, ovvero che abbia un apposito Record
+nella TAB_AUT con<br>
+
+<ul>
+
+  <li><span style="font-weight: bold;">FUNZ_AUT</span> &gt;= al Livello
+definito come Livello ADMIN in (normalmente è 10)</li>
+  <li><span style="font-weight: bold;">NOME_PANNELLO</span> = NULL</li>
+  <li><span style="font-weight: bold;">FUNZ_ID</span> = NULL</li>
+  <li><span style="font-weight: bold;">UTENTE_ID</span> = Utente_Id con
+cui quell'Utente è identificato nela Tabella UTENTI&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+  </li>
+</ul>
+
+Quando
+un Utente , con queste caratteristiche , (normalmente sarà l'Utente
+ADMIN a farlo)&nbsp; modifica a Video la Struttura delle
+Colonne della Data Grid<br>
+
+&nbsp;e la salva con un Nome a scelta
+(evitare di Chiamarla DEFAULT che è una parola riservata) questa
+struttura viene memorizzata <br>
+
+<br>
+
+Le
+Visualizzazioni PERSONALIZZATE x UTENTE sono identificate (nella
+Finestra di selezione Video) da un Simbolo Utenti davanti al Nome della
+Visualizzazione<br>
+
+<ul>
+
+  <li>
+    <h2 style="margin-left: 0px; width: 1384px;"><span style="text-decoration: underline;">Visualizzazione Standard
+WINIT&nbsp;</span>(valida in assenza delle 2 precedenti)</h2>
+  </li>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">NEL CASO
+IN CUI NON ESISTA</span> nessun Record nella Tabella TAB_DATAGRID per
+quella specifica DataGrid (con o senza Codice Utente)<br>
+
+allora
+viene proposta automaticamente una Visualizzazione di DEFAULT STANDARD
+, predisposta da WINIT come Versione di Default Standard<br>
+
+per tutti
+gli Utenti che non abbiamo creato o una propria Visualizzazione
+specifica per sè stessi o una Visualizzazione Aziendale.<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+: la Visualizzazione di DEFAULT preparata da WINIT viene gestita in
+base al contenuto del Codice presente in<br>
+
+<ul>
+
+  <li>SOLUZION "POWER WEB"</li>
+  <ul>
+    <li>POWERWEB</li>
+    <ul>
+      <li>MODULES</li>
+      <ul>
+        <li>NomePagina.ascx</li>
+        <ul>
+          <li>usando
+i Campi che in questo modulo NON hanno VISIBLE=FALSE&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+Le
+Visualizzazioni STANDARD proposte da WINIT PERSONALIZZATE x UTENTE sono
+identificate (nella
+Finestra di selezione Video) dal nome <br>
+
+DEFAULT (che è quindi una parola riservata e non va usata mai per
+creare nessuna visualizzazione Aziendale e/o x Utente)<br>
+
+<br>
+
+NOTA BENE : ATTUALMENTE NON VIENE CONTROLLATO<br>
+
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;che una
+eventaule Visualizzazione x UTENTE e/o x AZIENDA venga&nbsp;o meno
+chiamata DEFAULT. <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Occorre aggiungere il relativo
+Controllo e Messaggio<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; mentre viene controllato che la
+Visualizzazione abbia un Nome (diverso da Blank) ma non viene emesso il
+relativo messaggio<br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; di errore quando non la si identifica
+con nessun nome in fase di salvataggio<br>
+
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Occorre
+aggiungere il relativo Messaggio<br>
+
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+<br>
+
+<br>
+
+</body></html>

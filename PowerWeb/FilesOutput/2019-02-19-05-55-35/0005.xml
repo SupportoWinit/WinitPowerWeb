@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document documentname="DINRapportiniBase">
+  <DocumentInfo>
+    <Namespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</Namespace>
+    <Profile>RapportiniSogedi</Profile>
+    <Title>Rapportino di lavoro per Commessa</Title>
+    <Description>
+    </Description>
+    <Creation>
+      <Domain>DEFAULT_DOMAIN</Domain>
+      <Site>DEFAULT_SITE</Site>
+      <User>marco.verri</User>
+      <DateTime>2019-02-19T05:55:42</DateTime>
+    </Creation>
+    <NextFile>0006</NextFile>
+  </DocumentInfo>
+  <Documents>
+    <Masters namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa" table="IM_WorkingReports" instances="1">
+      <Master>
+        <Fields>
+          <WorkingReportDate>2019-01-10</WorkingReportDate>
+          <Job>18/00033</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>16200</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#43995#19-01-10</Note>
+                <StartHour>26820</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>12600</OrdinaryHours>
+                <OvertimeHours>780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#43995#19-01-10</Note>
+                <StartHour>46200</StartHour>
+                <EndHour>59580</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1740</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#43995#19-01-10</Note>
+                <StartHour>25080</StartHour>
+                <EndHour>26820</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1740</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#43995#19-01-10</Note>
+                <StartHour>59580</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>NERMAS</Employee>
+                <OrdinaryHours>16200</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico NERMAS#43995#19-01-10</Note>
+                <StartHour>26820</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>NERMAS</Employee>
+                <OrdinaryHours>12600</OrdinaryHours>
+                <OvertimeHours>780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico NERMAS#43995#19-01-10</Note>
+                <StartHour>46200</StartHour>
+                <EndHour>59580</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>NERMAS</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1740</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico NERMAS#43995#19-01-10</Note>
+                <StartHour>25080</StartHour>
+                <EndHour>26820</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>NERMAS</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1740</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>18/00033</Job>
+                <WorkingReportDate>2019-01-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico NERMAS#43995#19-01-10</Note>
+                <StartHour>59580</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+    </Masters>
+  </Documents>
+</Document>

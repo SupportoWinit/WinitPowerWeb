@@ -1,0 +1,2455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_PARAMETRI</title>
+  
+  <style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+  </style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; TABELLA
+PARAMETRI<br>
+</h1>
+<span style="font-weight: bold;">Contiene i Parametri che
+guidano/abilitano il Funzionamento di POWER-S</span><span style="font-weight: bold;"></span><br>
+<br>
+Le Chiavi del Record :&nbsp; <a href="#Param_Id">Param_Id</a> (<span style="font-weight: bold; color: red;">Automatica</span>) &nbsp;
+&nbsp;<span style="font-weight: bold; text-decoration: underline; color: rgb(204, 51, 204);">NOTA
+BENE : Al Momento Esiste un SOLO RECORD</span><br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="#Param_Id">Param_Id</a>
+(<span style="font-weight: bold; color: red;">Chiave</span>), <a href="#ActivationDate">ActivationDate</a> ,&nbsp; <a href="#CompanyName">CompanyName</a> , <a href="#PublicKey">PublicKey</a>
+,&nbsp; <a href="#RowPerPages">RowPerPages</a> , <br>
+I Campi con Default &nbsp; :&nbsp;&nbsp;<a href="#Default_Abilitati">Default_Abilitati</a>
+(True), <a href="#File_Cant_Var"><span style="text-decoration: underline;">File_Cant_Var</span></a>
+(False) ,&nbsp;<a href="#File_Col_Var"> File_Col_Var</a>
+(False) <br>
+<br>
+I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;10-<a href="#CompanyName">Company_Name</a> (20%) / 20<a href="#CompanyAddress">-CompanyAddress </a>(20%)&nbsp; / 30 <a href="#CompanyInfo">CompanyInfo</a> (25%) / 40 - <a href="#RowPerPages">RowsPerPage</a> (5%) / 50 - <a href="#Abilita_Pass">Abilita_Pass</a> (5%) / 60 - <a href="#Mesi_Validita_Reg">Mesi_Validita_Reg</a> (5%) / 100 -
+Data_Blocco_Reg (10%)<br>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="color: white; text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; width: 264px;">NOME
+DEL CAMPO NEL DB</td>
+      <td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 139px;">TIPO
+CAMPO</td>
+      <td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 752px;">DESCRIZIONE
+DEL CAMPO</td>
+      <td style="width: 39px; background-color: silver;"><span style="color: white;">CTRL</span></td>
+      <td style="background-color: silver; color: white; text-align: center; text-decoration: underline; width: 60px;">TAB</td>
+      <td style="text-align: center; background-color: silver; text-decoration: underline; width: 61px;"><span style="font-weight: bold; color: white;">COMBO</span></td>
+    </tr>
+  </tbody>
+</table>
+<table style="text-align: left; width: 100%; height: 10px; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 252px;"><a name="Param_Id"></a>&nbsp;<span style="font-weight: bold; text-decoration: underline;">Param_Id</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="text-align: left; width: 655px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;del Singolo
+Record Parametri</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostato AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="text-decoration: underline; font-weight: bold; color: rgb(204, 51, 204);">DI
+RECORD PARAMETRI AL MOMENTO NE ESISTE UNO SOLO</span> <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">NO</td>
+      <td style="width: 60px; text-align: center;">NO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;"><a name="Abilita_Att"></a> Abilita_Att</span></td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+      <td style="vertical-align: top;">Abilitazione
+Gestione Attività <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=False </span><span style="font-weight: bold; color: rgb(153, 51, 0);"><br>
+</span><span style="font-weight: bold; color: red;">Può essere mdoificato SOLO dagli UTENTI WINIT (Liv &gt;0 15)</span><span style="font-weight: bold; color: rgb(153, 51, 0);"> e può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">valori
+prefissati</span><span style="font-weight: bold; color: rgb(153, 51, 0);">
+:</span><br>
+
+      
+      <ul>
+<li>0 = La Gestione Attività NON è abilitata</li>
+        <ul>
+          <li>La DisAttivazione pretende che NON ci siano Cantieri con <a href="_TR_CANT.html#Tipologia_Can">Tipologia_Can</a> = ATT<br>
+          </li>
+        </ul>
+<li>1 =&nbsp; La Gestione Attività è abilitata <br>
+</li>
+        <ul>
+          
+          <li>L'Attivazione pretende che NON ci siano Cantieri con <a href="_TR_CANT.html#Tipologia_Can">Tipologia_Can </a>= ATT</li>
+
+        </ul>
+      </ul>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Abilita_Arrotondamenti"></a> <span style="font-weight: bold; text-decoration: underline;">Abilita_Arrotondamenti</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+      <td style="vertical-align: top;">Abilitazione
+Gestione Arrotondamenti<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=False </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">valori
+prefissati</span><span style="font-weight: bold; color: rgb(153, 51, 0);">
+:</span><br>
+
+
+      
+      <ul>
+<li>0 = La Gestione Arrotondamenti NON è abilitata</li><li>1 =&nbsp; La Gestione Arrotondamenti è abilitata <br>
+</li>
+        <ul>
+          <li><span style="font-weight: bold; color: red;">può essere impostato a True SOLO dagli UTENTI WINIT (Liv &gt;0 15)</span></li>
+        </ul>
+      </ul>
+
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Abilita_Gps"></a> <span style="font-weight: bold; text-decoration: underline;">Abilita_Gps</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+      <td style="vertical-align: top;">Abilitazione
+Gestione GPS <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=False </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">valori
+prefissati</span><span style="font-weight: bold; color: rgb(153, 51, 0);">
+:</span><br>
+
+
+
+      
+      <ul>
+<li>0 = La Gestione GPS NON è abilitata</li><li>1 =&nbsp; La Gestione GPS è abilitata <br>
+</li>
+        <ul>
+          <li><span style="font-weight: bold; color: red;">può essere impostato a True SOLO dagli UTENTI WINIT (Liv &gt;0 15)</span></li>
+        </ul>
+      </ul>
+
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Abilita_Pass"></a><span style="font-weight: bold; text-decoration: underline;">Abilita_Pass</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+      <td style="vertical-align: top; width: 655px;">Abilitazione
+Gestione Passaggi. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=False </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">valori
+prefissati</span><span style="font-weight: bold; color: rgb(153, 51, 0);">
+:</span><br>
+      <ul>
+        <li>0 = La Gestione Passaggi NON è abilitata</li>
+        <ul>
+          <li>La DisAttivazione pretende che NON ci siano Cantieri con <a href="_TR_CANT.html#Singola_Reg">Singola_Reg</a>= True</li>
+        </ul>
+        <li>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+=&nbsp; La Gestione Passaggi è abilitata&nbsp;</li>
+        <ul>
+          <li>L'Attivazione pretende che NON ci siano Cantieri con <a href="_TR_CANT.html#Singola_Reg">Singola_Reg</a>= True
+          </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ATTIVAZIONI</td>
+      <td style="width: 60px; text-align: center;">CHK</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="ActivationDate"></a> <span style="font-weight: bold; text-decoration: underline;">ActivationDate</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(10)</td>
+      <td style="width: 655px;">&nbsp;Data di Scadenza Cripatata (in base al valore della<a href="#PublicKey"> PublicKey</a>) oltre la quale l'uso del Software
+viene bloccato. <span style="font-weight: bold; color: rgb(204, 51, 204);">Viene Gestita dal
+Sistema AUTOMATICAMENTE e NON E' MODIFICABILE DAGLI UTENTI</span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Attiva_Num_Aut_Can"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Attiva_Num_Aut_Can</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+      <td style="vertical-align: top;">Attivazione della NUMERAZIONE AUTOMATICA dei CAntieri <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=False </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">valori
+prefissati</span><span style="font-weight: bold; color: rgb(153, 51, 0);">
+:</span><br>
+
+      
+      <ul>
+<li>0 = La Numerazione dei Cantieri è MANUALE</li><li>1 = La Numerazione dei Cantieri è AUTOMATICA PROGRESSIVA</li>
+        <ul>
+          <li>in questo caso i Codici dei Cantieri devono essere NUMERICI<br>
+          </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Attiva_Num_Aut_Col"></a> <span style="font-weight: bold; text-decoration: underline;">Attiva_Num_Aut_Col</span></td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a></td>
+      <td style="vertical-align: top;">Attivazione della NUMERAZIONE AUTOMATICA dei Collaboratori <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=False </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; font-weight: bold; color: rgb(153, 51, 0);">valori
+prefissati</span><span style="font-weight: bold; color: rgb(153, 51, 0);">
+:</span><br>
+
+
+      
+      <ul>
+<li>0 = La Numerazione dei Collaboratori è MANUALE</li><li>1 = La Numerazione dei Collaboratori è AUTOMATICA PROGRESSIVA</li><ul><li>in questo caso i Codici dei Collaboratori devono essere NUMERICI<br>
+    </li></ul>
+      </ul>
+
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="width: 252px;"><a name="BingKey"></a> <span style="font-weight: bold; text-decoration: underline;">BingKey</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(MAX)</td>
+      <td style="width: 655px;">Codice di Attivazione di BING x
+Gestione Mappe (nel caso in
+cui l'Utente gestisca LOCALMENTE le Mappe.<br>
+Il Codice di Attivazione NON SERVE nel caso in cui utilizzi il Servizio
+di Winit sul Server Winit.<br>
+</td>
+      <td><br>
+      </td>
+      <td style="text-align: center;">VIAGGI<br>
+      </td>
+      <td style="text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Cantiere_Viaggio"></a><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">Cant_Id</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(20)<br>
+      </td>
+      <td style="vertical-align: top; width: 655px;">Codice
+Identificativo del
+Cantiere
+che viene utilizzato per intestare le Rilevazioni generate dal
+programma di Generazione Ore Viaggi quando il <a href="#Tipo_Assegnazione_Viaggio">Tipo_Assegnazione_Viaggio</a>=Blank/0.<br>
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito
+viene controllato che l'Identificativo del Cantiere inserito esista
+nella corrispondente
+tabel</span>la <a href="../TR_CANT/_TR_CANT.html">CANT<br>
+      </a> </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="ComboboxRowsPerPage"></a><span style="font-weight: bold;"></span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">ComboboxRowsPerPage</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top; width: 655px;">N° delle Righe di
+Dettaglio che
+vengono caricate automaticamente nelle ComboBox da parte di DevExpress
+(Non confondere con il parametro&nbsp;<a href="#RowPerComboBox">RowPerComboBox</a>
+che indica invece quante Righe di Dettaglio mostrare nelle ComboBox
+quando si apre la ComboBox<span style="font-weight: bold; text-decoration: underline;">) </span>.In
+base al valore indicato per ogni ComboBox di ogni Griglia, il sistema
+visualizza il corrispondente Numero di Righe all'apertura della
+ComboBox <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">= 50</span></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="ComboBoxDelay"></a> <span style="font-weight: bold; text-decoration: underline;">ComboBoxDelay</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top; width: 655px;">Indica dopo quanti
+MILLISECONDI
+(default 1000 = 1 Secondo) DevExpress deve incominciare a cercare nelle
+righe delle ComboBox il Valore inserito nella ComboBox. Serve ad
+evitare che inizi la ricerca subito senza aspettare che l'utente abbia
+inserito i caratteri necessari ad effettuare la ricerca.<br>
+      <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=1000 Millisecondi
+pari ad 1 Secondo</span><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="CompanyAddress"></a> <span style="text-decoration: underline; font-weight: bold;">CompanyAddress</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="width: 655px;">&nbsp;Indirizzo dell'Azienda<span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="color: white;"></span></span></span>
+che verrà poi riportato in Tutte le
+Maschere e in Tutti i Report. <span style="font-weight: bold; color: rgb(153, 51, 0);">Nessun Controllo
+specifico</span></td>
+      <td style="width: 39px; text-align: center;">Libero</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="CompanyInfo"></a> <span style="font-weight: bold; text-decoration: underline;">CompanyInfo</span></td>
+      <td style="width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="width: 655px;">Informazioni relative all'Azienda che
+verranno riportate (se presenti) in tutte le Maschere e in Tutti i
+Report.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">Nessun
+Controllo specifico</span></td>
+      <td style="width: 39px; text-align: center;">Libero</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="CompanyLogo"></a> <span style="font-weight: bold; text-decoration: underline;">CompanyLogo</span></td>
+      <td style="width: 115px;">VARBINARY (Max)</td>
+      <td style="width: 655px;">Logo (espresso in binario) dell'Azienda
+che verrà poi riportato in Tutte le
+Maschere e in Tutti i Report.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">Nessun Controllo
+specifico</span></td>
+      <td style="width: 39px; text-align: center;">Libero</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="CompanyName"></a> <span style="font-weight: bold; text-decoration: underline;">CompanyName</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="width: 655px;">Nome dell'Azienda <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span> che verrà poi riportato
+in Tutte le
+Maschere e in Tutti i Report.&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">Nessun Controllo
+specifico salvo il fatto che sia stato inserito</span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px; text-decoration: line-through; background-color: rgb(204, 204, 204);"><a name="CtrlSovrapPass"></a><span style="font-weight: bold; text-decoration: underline;">Ctrl_Sovrap_Pass</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px; text-decoration: line-through; background-color: rgb(204, 204, 204);"><a href="I%20Formati%20dei%20Campi.html#TYNINT">BIT</a> </td>
+      <td style="vertical-align: top; width: 655px; text-decoration: line-through; background-color: rgb(204, 204, 204);">Abilitazione
+il Controllo di NON Sovrapposizione delle Timbrature Passaggio con le
+eventuali Timbrature E/U esistenti. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=True. </span>Nel
+caso deve essere stato attivato il <a href="#Abilita_Pass">Flag
+di Gestione dei Passaggi</a> . <span style="color: rgb(153, 51, 0); font-weight: bold;">Può assumere SOLO i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+prefissati</span><br>
+      <ul>
+        <li>&nbsp;
+False = Gestione Controllo Sovrapposizione Passaggi NON
+Abilitata&nbsp;</li>
+        <li>&nbsp;True&nbsp;&nbsp; = Gestione Controllo Sovrapposizione
+Passaggi Abiltata<br>
+        </li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center; text-decoration: line-through; background-color: rgb(204, 204, 204);">OK</td>
+      <td style="width: 60px; text-align: center; text-decoration: line-through; background-color: rgb(204, 204, 204);">ATTIVAZIONI</td>
+      <td style="width: 60px; text-align: center; text-decoration: line-through; background-color: rgb(204, 204, 204);">CHK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Ctrl_Codice_Fisc"></a>&nbsp;
+      <span style="font-weight: bold; text-decoration: underline;">Ctrl_Codice_Fisc</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Attiva/Disattiva il Controllo
+sul Codice Fiscale del Cantiere (Assistito) e/o Collaboratore. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 (NON attivo). </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito,
+viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FLAG_GPS_PARAMETRI">Ctrl_Codice_Fisc</a>
+e può assumere i seguenti valori:<br>
+      <ul>
+        <li>0 = TD_CTRL_CODICE_FISC_NON_ATTIVO</li>
+        <ul>
+          <li>Gestione Controllo Codice Fiscale inserito NON attivo.</li>
+        </ul>
+
+        <li>1 = TD_CTRL_CODICE_FISC_ATTIVO</li>
+        <ul>
+          <li>Gestione Controllo Codice Fiscale inserito attivo.</li>
+        </ul>
+
+      </ul>
+Se attivato ,viene controllato che il Codice Fiscale inserito in
+Anagrafica Cantiere e/o
+Collaboratore sia formalmente valido in base al Comune , al Sesso ed
+alla Data di Nascita indicate.<br>
+Se invece questo controllo NON è attivato, nel campo Codice Fiscale
+delle
+Anagrafiche NON ne viene controllata la relativa Valdità<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">ATTIVAZIONI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Ctrl_Codice_IBAN"></a>&nbsp;
+      <span style="font-weight: bold; text-decoration: underline;">Ctrl_Codice_IBAN</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Attiva/Disattiva il Controllo
+sul Codice IBAN del Cantiere (Assistito) e/o Collaboratore. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 (NON attivo). </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito,
+viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FLAG_GPS_PARAMETRI">Ctrl_Codice_Iban</a>
+e può assumere i seguenti valori:<br>
+      <ul>
+        <li>0 = TD_CTRL_CODICE_IBAN_NON_ATTIVO<br>
+</li>
+        <ul>
+          <li>Gestione Controllo IBAN inserito NON attivo.</li>
+        </ul>
+
+        <li>1 =  TD_CTRL_CODICE_IBAN_ATTIVO</li>
+        <ul>
+          <li>Gestione Controllo IBAN inserito attivo.</li>
+        </ul>
+
+      </ul>
+Se attivato ,viene controllato che il Codice IBAN inserito in
+Anagrafica Cantiere e/o
+CollaboratoreCodice IBAN sia formalmente corretto<br>
+Se invece questo controllo NON è attivato, nel campo Codice IBAN delle
+Anagrafiche è possibile inserire qualsiasi IBAN in modo libero e NON
+controllato.</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">ATTIVAZIONI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Ctrl_Tab_Comuni"></a>&nbsp;
+      <span style="font-weight: bold; text-decoration: underline;">Ctrl_Tab_Comuni</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top;">Attiva/Disattiva il Controllo
+sul Nome del Comune inserito in Anagrafica
+Cantiere/Collaboratore/Cliente. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 (NON attivo). </span><span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito,
+viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FLAG_GPS_PARAMETRI">Ctrl_Tab_Comuni</a>
+e può assumere i seguenti valori:<br>
+      <ul>
+        <li>0 = TD_CTRL_TAB_COMUNI_NON_ATTIVO</li>
+        <ul>
+          <li>Gestione Controllo Comune inserito NON attivo.</li>
+        </ul>
+
+        <li>1 = TD_CTRL_TAB_COMUNI_ATTIVO</li>
+        <ul>
+          <li>Gestione Controllo Comune inserito attivo.</li>
+        </ul>
+
+      </ul>
+Se attivato, viene controllato che esista nella corrispondente
+Tab_Comuni il Nome del Comune inserito in Anagrafica Cantiere e/o
+Collaboratore e/o Cliente e non è possibile inserire un Nome di Comune
+NON esistente
+nella suddetta Tabella.<br>
+Se invece questo controllo NON è attivato, nel campo Nome Comune delle
+Anagrafiche è possibile inserire qualsiasi Nome in modo libero e NON
+controllato.</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">ATTIVAZIONI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="Data_Blocco_Reg"></a> <span style="font-weight: bold; text-decoration: underline;">Data_Blocco_Reg</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="width: 655px;">DATA <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span>PRIMA
+DELLA QUALE NON E' PIU' POSSIBILE <br>
+      <ul>
+        <li>
+MODIFICARE LE REGISTRAZIONI.</li>
+        <li>CANCELLARE LE ASSOCIAZIONI</li>
+        <ul>
+          <li>FRU_CANT</li>
+          <li>PRU_COL</li>
+          <li>CANT_FRU</li>
+          <li>COL_PRU</li>
+        </ul>
+        <li>MODIFICARE TIPI ORARI</li>
+        <ul>
+          <li>con Data INizio Validità anteriore alla data Blocco</li>
+        </ul>
+      </ul>
+DATA DOPO DOPO LA QUALE NON E' POSSIBILE<br>
+      <ul>
+        <li>ARCHIVIARE LE REG in Tab. REG_STORED<br>
+        </li>
+      </ul>
+&nbsp;Serve per impedire che le Registrazioni ANTECEDENTI alla Data
+Indicata possano venire modificate in modo sia di evitare che vengano
+RIELABORATE siaq che vengano Modificati dei Dati che sono considerati
+CONFERMATI (Funziona come la Data di Stampa Registri Bollati di
+Contabilità) &nbsp;Se necessario si può modificarla in modo da poter
+rielaborare anche le Registrazioni che erano BLOCCATE. <span style="color: rgb(153, 51, 0); font-weight: bold;">Viene controllato che NON sia INFERIORE alla <a href="#Data_Archiviazione_Reg">Data di Archiviazione</a></span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="text-align: center;">GEN</td>
+      <td style="text-align: center;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Data_Archiviazione_Reg"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Data_Archiviazione_Reg</span></td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATE</a></td>
+      <td style="vertical-align: top;">Data FINO ALLA QUALE SONO STATE ARCHIVIATE LE REG NELLA TABELLA REG_STORICO. <span style="color: rgb(153, 51, 0); font-weight: bold;">Viene controllato che NON sia MAGGIORE della</span> <a href="#Data_Blocco_Reg">DATA BLOCCO</a><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="width: 252px;"><a name="Data_Registrazione"></a> <span style="font-weight: bold; text-decoration: underline;">Data_Registrazione</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATETIME</a></td>
+      <td style="width: 655px;">Data
+e Ora <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio -</span></span>
+in
+cui PER la PRIMA VOLTA è stato inserito questo Record Parametri <span style="color: rgb(255, 102, 0);"></span><span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+del 1° Inserimento nel sistema di quel Record)</span> <span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+      <span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema </span><span style="color: black;">(Vedi
+anche <a href="../TR_FIL/_TR_FIL.html#DataOraUltimaModifica_FRU">DataOraUltimaModifica</a></span></span>Note
+      <span style="text-decoration: underline; font-weight: bold; color: rgb(0, 153, 0);">liberamente
+associabili</span> a questo Utente.&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Particolare
+Controllo</span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="text-align: center;">GEN</td>
+      <td style="text-align: center;">DATE</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="DataOraUltimaModifica"></a> <span style="font-weight: bold; text-decoration: underline;">DataOraUltimaModifica</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#DATE">DATETIME</a></td>
+      <td style="width: 655px;">Data ed Ora <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Obbligatorio&nbsp;</span></span>
+in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=DATA/ORA
+dell'Ultima Modifica fatta su quel Record)</span> <span style="color: rgb(153, 51, 0);">Nessun Controllo Specifico</span><br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="../TR_FIL/_TR_FIL.html#Data_Registrazione_FRU">
+Data_Registrazione_FRU</a>)&nbsp;<span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Particolare
+Controllo</span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="text-align: center;">GEN</td>
+      <td style="text-align: center;">DATE</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px; text-decoration: line-through; background-color: rgb(204, 204, 204);"><a name="Default_Abilitati"></a><span style="font-weight: bold; text-decoration: underline;">Default_Abilitati</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px; text-decoration: line-through; background-color: rgb(204, 204, 204);"><a href="../I%20Formati%20dei%20Campi%20del%20DB.htm#BIT">BIT</a> </td>
+      <td style="vertical-align: top; width: 655px; text-decoration: line-through; background-color: rgb(204, 204, 204);">Abilita
+Esclusione di Default dei Cantieri/Assistiti e/o dei Collaboratori che
+risultano Disabilitati quando si entra in Gestione Scheda Anagrafica
+dei Cantieri/Assistiti e/o Collaboratori. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=TRUE&nbsp;
+(in modo che per default mostri SOLO quelli ABILITATI). <span style="color: rgb(153, 51, 0);">Può assumere SOLO i seguenti
+valori:</span><br>
+      </span>
+      <ul>
+        <li>&nbsp;0 = NON Abilitata l'Esclusione x Default dei
+Cantierei/Assistiti Disabilitati<br>
+        </li>
+        <li>&nbsp;1 = Abilitatal'Esclusione x Default dei
+Cantierei/Assistiti Disabilitati</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center; text-decoration: line-through; background-color: rgb(204, 204, 204);">OK</td>
+      <td style="width: 60px; text-align: center; text-decoration: line-through; background-color: rgb(204, 204, 204);">GEN</td>
+      <td style="width: 60px; text-align: center; text-decoration: line-through; background-color: rgb(204, 204, 204);">CHK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Durata_Max_Gruppo_Notte_Ril"></a><span style="font-weight: bold; text-decoration: underline;">Default_Durata_Max_<br>
+Gruppo_Notte_Ril</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 655px;">Durata
+Massima di Defaul in
+Ore/Minuti delle Ore Notturne Lavorabili&nbsp; o oltre la
+Mezzanotte o oltre l'ultima timbratura di
+Entrata ( in base al valore indicato nel campo <a href="../TR_CANT/TR_CANT.AAA.html#FlagCambioGiornoRil_Can"><span style="font-weight: bold; text-decoration: underline;">FlagCambioGiornoRil_Can</span></a><span style="font-weight: bold;"> ) </span>effettuata prima
+della
+Mezzanotte. La Durata Massima Gruppi Notte (oltre la Mezzanotte) <span style="text-decoration: underline; font-weight: bold;">è
+alternativa</span> alla <a href="../TR_CANT/TR_CANT.AAA.html#Pausa_Gruppo_Notte_Can">Pausa
+Gruppi Notte</a>. Serve per BLOCCARE le Timbrature Notturne che
+hanno una
+eventuale Durata Anomala dovuta ad un errato accoppiamento fra Entrata
+ed Uscita per mancanza della Timbratura di Entrata. <span style="color: rgb(153, 51, 0); font-weight: bold;">Nessun Particolare
+Controllo</span><br>
+Questo valore,
+anche se presente,&nbsp;<span style="color: red; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"> </span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente
+Campo&nbsp;<a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Notte_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a>
+          <a href="../TR_COL/TR_COL.AAA.html#Durata_Max_Gruppo_Notte_Ril_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Gruppo_Notte_Ril_Col</span></a><span style="font-weight: bold; text-decoration: underline;"> </span></li>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Cantieri</span> che hanno caricato
+nella propria Scheda Anagrafica il corrispondente Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Notte_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Gruppo_Notte_Ril_Can</span></a><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista. Vedere anche &nbsp; <a href="#Default_Durata_Max_Gruppo_Ril">Default_Durata_Max_Gruppo_Ril</a>&nbsp;
+, <a href="#Default_Durata_Max_Ril">Default_Durata_Max_Ri</a>l
+, <a href="#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a>
+&nbsp; </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">PARAM</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Durata_Max_Gruppo_Ril"></a><span style="font-weight: bold; text-decoration: underline;">Default_Durata_Max<br>
+_Gruppo_Ril</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 655px;">Durata
+Massima di Default in in
+Ore/Minuti della Somma delle Timbrature di E/U effettuate nello stesso
+Giorno eseguite presso quel
+Cantiere/Assistito. Serve per BLOCCARE TUTTE le Timbrature di E/U per i
+Giorni in cui il Totale delle Ore Lavorate supera quanto previsto
+probabilmente dovuto ad un probabile errato accoppiamento fra Entrata
+ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.<br>
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">Questo
+valore,
+se presente, &nbsp;viene controllato che sia Maggiore</span><span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">/Uguale della</span> </span><a href="#Default_Durata_Max_Ril">Default_Durata_Max_Ril</a><span style="text-decoration: underline;"> </span><span style="color: rgb(102, 51, 0); font-weight: bold;">&nbsp;<span style="color: rgb(153, 51, 0);">e Maggiore</span></span><span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">/Uguale della</span> </span><a href="#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a><span style="text-decoration: underline;">&nbsp;</span><span style="font-weight: bold; color: rgb(102, 51, 51);"></span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Durata_Max_Gruppo_Ril_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Gruppo_Ril_Col</span></a></li>
+        <li>NON viene utilizzato per gli evetali Cantieri <span style="font-weight: bold; text-decoration: underline;"></span>che
+hanno caricato nella propria Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can"><span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Durata_Max_Gruppo_Ril_Can</span></a>.
+          <br>
+        </li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Giornaliera prevista. Vedere anche <a href="#Default_Durata_Max_Gruppo_Ril">Durata_Max_Gruppo_Ril</a>, <a href="#Default_Durata_Max_Ril">Durata_Max_Ril</a><a href="#Default_Durata_Max_Ril"> </a>, <a href="#Default_Durata_Min_Ril_">Durata_Min_Ril</a>&nbsp;<span style="font-weight: bold;"> </span><span style="font-weight: bold;">
+e solo per i casi di Gestione
+del Notturno
+vedere</span><span style="font-weight: bold;">
+anche&nbsp; </span><a href="#Default_Durata_Max_Gruppo_Notte_Ril">Default_Durata_Max_Gruppo_Notte_Ril</a>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">PARAM</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Durata_Max_Ril"></a><span style="text-decoration: underline; font-weight: bold;">Default_Durata_Max_Ril</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 655px;">Durata
+Massima di Default in in
+Ore/Minuti della Singola Timbratura di E/U eseguita. Serve per BLOCCARE
+le Singole Timbrature di E/U che
+hanno una eventuale
+Durata Maggiore di quanto previsto dovuta ad un probabile errato
+accoppiamento fra Entrata ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.<br>
+      <span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale dell</span>a
+      </span><a href="#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a>
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">e
+Minore/Uguale alla</span> <a href="#Default_Durata_Max_Gruppo_Ril">Default_Durata_Max_Gruppo_Ril</a><span style="color: red; font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Durata_Max_Ril_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Max_Ril_Col</span></a></li>
+        <li><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span>NON
+viene utilizzato per gli eventuali Cantieri che hanno caricato nella
+propria Scheda Anagrafica il corripsondente&nbsp; Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a><span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;"></span></li>
+      </ul>
+      <span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;"></span>L'Utente
+può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista. Vedere anche <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Ril_Can">Default_Durata_Max_Gruppo_Ril</a>,&nbsp;
+      <a href="#Default_Durata_Max_Gruppo_Ril">Default_Durata_Max_Ril</a>
+, <a href="#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a>&nbsp;<span style="font-weight: bold;"> e solo per i casi di Gestione
+del Notturno
+vedere anche&nbsp;</span> <a href="#Default_Durata_Max_Gruppo_Notte_Ril">Default_Durata_Max_Gruppo_Notte_Ril&nbsp;</a>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">PARAM</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Durata_Min_Ril"></a><span style="font-weight: bold; text-decoration: underline;">Default_Durata_Min_Ril</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Durata
+Minima di Default in in
+Ore/Minuti della Singola Timbratura di E/U eseguita. Serve per BLOCCARE
+le Singole Timbrature di E/U che
+hanno una eventuale
+Durata Minore di quanto previsto dovuta ad un probabile errato
+accoppiamento fra Entrata ed Uscita
+per mancanza di una Timbratura di Entrata o di Uscita.<br>
+      <span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della</span>
+      </span><a href="#Default_Durata_Max_Ril">Default_Durata_Max_Ril</a>
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">e
+Minore/Uguale alla</span> <a href="#Default_Durata_Max_Gruppo_Ril">Default_Durata_Max_Gruppo_Ril</a><span style="font-weight: bold; text-decoration: underline;"> </span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Durata_Min_Ril_Col</span></a>
+          <br>
+        </li>
+      </ul>
+      <ul>
+        <li><span style="text-decoration: underline; font-weight: bold;">NON
+viene utilizzato per gli eventuali Cantieri</span> che hanno
+caricato nella propria Scheda Anagrafica Cantiere il corrispondente
+Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a>.
+        </li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Notturna prevista.Vedere anche <a href="#Default_Durata_Max_Gruppo_Ril">Default_Durata_Max_Gruppo_Ril</a>,&nbsp;
+      <a href="TR_PARAMETRI.AAA.html#Default_Durata_Max_Gruppo_Ril">Default_Durata_Max_Ril
+      </a>,&nbsp;<a href="TR_PARAMETRI.AAA.html#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a><span style="font-weight: bold;"><a href="#Default_Durata_Min_Ril"> </a>e
+solo per i casi
+di Gestione del Notturno
+vedere anche&nbsp;</span> <a href="#Default_Durata_Max_Gruppo_Notte_Ril">Default_Durata_Max_Gruppo_Notte_Ril</a>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">PARAM</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Minuti_Arrot_I"></a><span style="text-decoration: underline; font-weight: bold;">Default_Minuti_Arrot_I</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+di Tolleranza di Default da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative alle <span style="text-decoration: underline;">Timbrature di Entrata</span>&nbsp;&nbsp;<span style="color: rgb(153, 102, 51); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia &lt;=60 e &gt;= della corrisponden</span>te</span> <a href="#Default_Soglia_Arrot_I">Default_Soglia_Arrot_I</a>.
+Questo valore,
+anche se presente,
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo&nbsp;<a href="../TR_COL/TR_COL.AAA.html#Minuti_Tolleranza_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Minuti_Tolleranza_Col</span></a>.</li>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Cantieri</span> hanno caricato nella propria Scheda
+Anagrafica Cantiere il corrispondente Campo. <a href="../TR_CANT/TR_CANT.Abb.html#Minuti_Tolleranza_Can"><span style="color: rgb(51, 102, 255);"> </span><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Minuti_Tolleranza_Can</span></a>&nbsp;</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Minuti_Arrot_F"></a><span style="text-decoration: underline; font-weight: bold;">Default_Minuti_Arrot_F</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+di Tolleranza di Default da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative alle
+T<span style="text-decoration: underline;">imbrature di
+Uscita</span>&nbsp;<a href="../TR_CANT/TR_CANT.AAA.html#Minuti_Tolleranza_F_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a>
+e/o <a href="../TR_COL/TR_COL.AAA.html#Minuti_Tolleranza_F_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a>.
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito viene
+controllato che sia &lt;=60 e &gt;= della corrispondente</span> <a href="#Default_Soglia_Arrot_F">Default_Soglia_Arrot_F</a>
+Questo valore,
+anche se presente, <br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo&nbsp;<a href="../TR_COL/TR_COL.AAA.html#Minuti_Tolleranza_F_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Minuti_Tolleranza_F_Col</span></a>
+          <br>
+        </li>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Cantieri</span> hanno caricato nella propria Scheda
+Anagrafica Cantiere il corrispondente Campo <a href="../TR_CANT/TR_CANT.AAA.html#Minuti_Tolleranza_F_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Minuti_Tolleranza_F_Can</span></a></li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Minuti_Durata"></a><span style="font-weight: bold; text-decoration: underline;">Default_Minuti_Durata</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+di Tolleranza di Default da applicare
+durante il Calcolo degli Arrotondamenti delle Ore Figurative x Durata
+(se attivato
+nel Campo <a href="../TR_CANT/TR_CANT.Abb.html#Metodo_Arrotondamento_Can">Metodo_Arrotondamento</a>)&nbsp;
+delle Ore Figurative sulla base&nbsp; <a href="../TR_CANT/TR_CANT.Abb.html#Tipo_Arrotondamento_Can">Tipo_Arrotondamento</a>
+indicato.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Se
+inserito viene
+controllato che sia &lt;=60 e &gt;= della corrispondente</span> <a href="#Default_Soglia_Durata">Default_Soglia_Durata</a>.
+Questo valore,
+anche se presente,<br>
+      <ul>
+        <li>&nbsp;<span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Arrot_Durata_Col</span>
+          <br>
+        </li>
+        <li>NON viene utilizzato per gli eventuali Cantieri che
+hanno
+impostato nella propria Scheda Anagrafica Cantiere il corrispondente
+Campo <a href="../TR_CANT/TR_CANT.AAA.html#Arrot_Durata_Can"><span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Arrot_Durata_Can</span></a></li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Soglia_Arrot_I"></a><span style="font-weight: bold; text-decoration: underline;">Default_Soglia_Arrot_I</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+della Soglia di Arrotondamento di Default da
+applicare al Calcolo delle <span style="text-decoration: underline; font-weight: bold;">Ore
+Viaggi Figurative</span> assieme ai <a href="#Default_Minuti_Arrot_I">Defaul_Minuti_Arrot_I</a>.<span style="font-weight: bold; color: rgb(153, 51, 0);">
+Se inserito viene
+controllato che sia &lt;=60 e &lt;= del corrispondente
+valore d</span>i <a href="#Default_Minuti_Arrot_I">Default_Minuti_Arrot_I</a>
+Questo valore,
+anche se presente<br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Soglia_Durata_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Durata_Col</span></a></li>
+      </ul>
+mentre viene utilizzato per tutti i Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione<a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can"><span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;"></span></a></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Soglia_Arrot_F"></a><span style="text-decoration: underline; font-weight: bold;">Default_Soglia_Arrot_F</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+della Soglia di Arrotondamento di Default da
+applicare durante il Calcolo degli Arrotondamenti delle Ore Figurative
+alle Timbrature di Uscita. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito viene
+controllato che sia &lt;=60 e &lt;= del corrispondente
+valore di</span> <a href="_TR_PARAMETRI.html#Default_Minuti_Arrot_F">Default_Minuti_Arrot_F</a>
+Questo valore,
+anche se presente<br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Soglia_Arrot_Fig_F_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Arrot_Fig_F_Col</span></a></li>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Cantieri/Assistiti</span> che hanno
+caricato
+nella propria Scheda Anagrafica il corrispondente Campo <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Arrot_Fig_F_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Arrot_Fig_F_Can</span></a></li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Default_Soglia_Durata"></a><span style="font-weight: bold; text-decoration: underline;">Default_Soglia_Durata</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+della Soglia di Arrotondamento di Default da
+applicare assieme ai Minuti di <a href="#Default_Minuti_Durata">Default_Minuti_Durata</a>
+durante il Calcolo degli Arrotondamenti x Durata (se attivato
+nel Campo <a href="../TR_CANT/TR_CANT.AAA.html#Metodo_Arrotondamento_Can">Metodo_Arrotondamento</a>)&nbsp;
+delle Ore Figurative sulla base&nbsp; <a href="../TR_CANT/TR_CANT.AAA.html#Tipo_Arrotondamento_Can">Tipo_Arrotondamento_Can.</a>
+indicato. <span style="color: rgb(153, 51, 0); font-weight: bold;"> Se
+inserito
+viene controllato che NON sia Maggiore di 60 e che sia MINORE/UGUALE
+della
+corripondente</span> <a href="#Default_Minuti_Durata">Default_Minuti_Durata</a>
+.Questo valore,
+anche se presente<br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Soglia_Durata_Col"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);">Soglia_Durata_Col</span></a></li>
+        <li><span style="text-decoration: underline; font-weight: bold;">NON
+viene utilizzato per gli eventuali Cantieri</span> che hanno
+caricato nella propria Scheda Anagrafica Cantiere il
+orrispondente&nbsp; Campo <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can"><span style="color: rgb(51, 51, 255); text-decoration: underline; font-weight: bold;">Soglia_Durata_Can</span></a></li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Dflt_DoRefresh_Grid"></a><span style="text-decoration: underline;">&nbsp; <span style="font-weight: bold;">Dflt_DoRefresh_Grid</span></span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">BIT</a></td>
+      <td style="vertical-align: top;">Indica se la Griglia delle REG e REGS va AGGIORNATA ad ogni Aggiornamento.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE<span style="color: rgb(153, 51, 0);"> </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">e può assumere i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+:&nbsp;</span><span style="text-decoration: underline; background-color: white;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span>
+      </span>
+      
+      <ul>
+<li>&nbsp;&nbsp;&nbsp;
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Indica di eseguire l'Aggiornamento della Griglia ad ogni Conferma di Modifica<br>
+        </li><li>&nbsp;&nbsp;&nbsp;&nbsp; FALSE
+&nbsp;&nbsp; = Indica di NON eseguire l'Aggiornamento della Griglia ad ogni Conferma di Modifica
+        </li>
+      </ul>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Dflt_Include_Activities"></a> <span style="text-decoration: underline; font-weight: bold;">Dflt_Include_Activities</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">BIT</a></td>
+      <td style="vertical-align: top; width: 655px;">Indica il valore
+da utilizzare
+come Default nella pagina di
+Manutenzione Registrazioni Multiple per indicare al sistema di
+visualizzare o meno anche le Registrazioni delle Attività .<br>
+      <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE<span style="color: rgb(153, 51, 0);"> </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">e può assumere i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+:&nbsp;</span><span style="text-decoration: underline; background-color: white;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span>
+      </span>
+      <ul>
+        <li>&nbsp;&nbsp;&nbsp;
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Indica di Visualizzare anche
+le Registrazioni delle Attività<br>
+        </li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp; FALSE
+&nbsp;&nbsp; = Indica di NON visualizzare le REgistrazioni delle
+Attività<br>
+        </li>
+      </ul>
+I valori di Default proposti possono poi essere modificati manualmente
+dall'Utente direttamente a Video nella pagina della Manutenzione delle
+Registrazioni Multiple</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Dflt_Flag_Include_Pass"></a>&nbsp; <span style="font-weight: bold;"></span><span style="font-weight: bold; text-decoration: underline;">Dflt_Include_Pass</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">BIT</a></td>
+      <td style="vertical-align: top; width: 655px;">Indica il valore
+da utilizzare
+come Default nella pagina di
+Manutenzione Registrazioni Multiple per indicare al sistema di
+visualizzare o meno anche le Registrazioni dei Passaggi .<br>
+      <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE<span style="color: rgb(153, 51, 0);"> </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">e può assumere i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+:&nbsp;</span><span style="text-decoration: underline; background-color: white;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span>
+      </span>
+      <ul>
+        <li>&nbsp;&nbsp;&nbsp;
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Indica di Visualizzare anche
+le Registrazioni dei Passaggi<br>
+        </li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp; FALSE
+&nbsp;&nbsp; = Indica di NON visualizzare le REgistrazioni dei Passaggi<br>
+        </li>
+      </ul>
+I valori di Default proposti possono poi essere modificati manualmente
+dall'Utente direttamente a Video nella pagina della Manutenzione delle
+Registrazioni Multiple</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Dflt_Include_Trips"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Dflt_Include_Trips</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">BIT</a></td>
+      <td style="vertical-align: top; width: 655px;">Indica il valore
+da utilizzare
+come Default nella pagina di
+Manutenzione Registrazioni Multiple per indicare al sistema di
+visualizzare o meno anche le Registrazioni dei Viaggi .<br>
+      <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE<span style="color: rgb(153, 51, 0);"> </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">e può assumere i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+:&nbsp;</span><span style="text-decoration: underline; background-color: white;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span>
+      </span>
+      <ul>
+        <li>&nbsp;&nbsp;&nbsp;
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Indica di Visualizzare anche
+le Registrazioni dei Viaggi<br>
+        </li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp; FALSE
+&nbsp;&nbsp; = Indica di NON visualizzare le REgistrazioni dei Viaggi</li>
+      </ul>
+I valori di Default proposti possono poi essere modificati manualmente
+dall'Utente direttamente a Video nella pagina della Manutenzione delle
+Registrazioni Multiple</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="DominioManutenzione"></a> <span style="text-decoration: underline; font-weight: bold;">DomainFilter</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="width: 655px;">Tipo di Gestione dei Filtri x
+Filiale/Responsabile in Manutenzione.<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito,
+viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FLAG_GPS_PARAMETRI">DomainFilter</a>
+e può assumere i seguenti valori:<br>
+      <ul>
+        <li>0 = TD_DOMAINFILTER_NON_ATTIVO</li>
+        <ul>
+          <li>Filtri x Filiale/Responsabile NON Attivati</li>
+        </ul>
+        <li>1 = TD_DOMAINFILTER_ATTIVO_X_FILIALE</li>
+        <ul>
+          <li>Filtri Attivati x Filliale sui Cantieri</li>
+        </ul>
+        <li>2 = TD_DOMAINFILTER_ATTIVO_X_RESPONSABILE</li>
+        <ul>
+          <li>Filtri Attivati x Responsabile sui
+Collaboratori</li>
+        </ul>
+        <li>3 = TD_DOMAINFILTER_ATTIVO_X_FILIALE_E_RESPONSABILE</li>
+        <ul>
+          <li>&nbsp;Filtri Attivati x
+Filiale/cantiere e x Responsabile/Collaboratore</li>
+        </ul>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ATTIVAZIONI</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Durata_Massima_Viaggio"></a><span style="text-decoration: underline; font-weight: bold;">Durata_Massima_Viaggio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Durata
+Massima di Default in
+Ore/Minuti della Singola Durata di un Viaggio creato dalla generazione
+Ore Viaggi. Serve per BLOCCARE le Singole Timbrature di E/U di Viaggio
+che
+hanno una eventuale
+Durata Maggiore di quanto previsto dovuta ad un probabile errato
+inserimento dei parametri di calcolo.<br>
+      <span style="color: rgb(153, 51, 0); font-weight: bold;"> Se
+inserito
+viene controllato che NON sia MINORE della
+corripondente</span> <a href="#Durata_Minima_Viaggio">Durata_Minima_Viaggio</a><br>
+Questo valore,
+anche se presente, <span style="font-weight: bold; text-decoration: underline;"><br>
+      </span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo</li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa
+informazione <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a><br>
+        </li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Viaggio prevista.Vedere anche <a href="#Durata_Minima_Viaggio">Durata_Minima_Viaggio</a>
+, <a href="#Durata_Pausa">Durata_Pausa</a> </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Durata_Minima_Viaggio"></a><span style="text-decoration: underline; font-weight: bold;">Durata_Minima_Viaggio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Durata
+Minima di Default in
+Ore/Minuti della Singola Durata di un Viaggio creato dalla generazione
+Ore Viaggi. Serve per BLOCCARE le Singole Timbrature di E/U di Viaggio
+che
+hanno una eventuale
+Durata Minore di quanto previsto dovuta ad un probabile errato
+inserimento dei parametri di calcolo.<br>
+      <span style="color: rgb(153, 51, 0); font-weight: bold;"> Se
+inserito
+viene controllato che NON sia MAGGIORE della
+corripondente</span> <a href="#Durata_Massima_Viaggio">Durata_Massima_Viaggio</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo</li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa
+informazione <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Min_Ril_Can"><span style="text-decoration: underline; font-weight: bold; color: rgb(51, 102, 255);"></span></a><br>
+        </li>
+      </ul>
+L'Utente può eventualmente poi FORZARE MANUALMENTE
+l'Accettazione
+delle Timbrature che vuole accettare pur superando la Durata Massima
+Viaggio prevista.Vedere anche <a href="#Durata_Massima_Viaggio">Durata_Massima_Viaggio</a>
+, <a href="#Durata_Pausa">Durata_Pausa</a> </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Durata_Pausa"></a><span style="text-decoration: underline; font-weight: bold;">Durata_Pausa</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Durata
+della Pausa in Ore/Minuti da sottrarre automaticamente (se indicata)
+durante la Generazione delle Ore Viaggio. <br>
+      <span style="font-weight: bold; color: rgb(102, 51, 51);"><span style="color: rgb(153, 51, 0);">Non sono previsti specifici Controlli.</span>
+      </span>Questo valore , anche se
+presente, <br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Durata_Pausa_Col"><span style="text-decoration: underline;">Durata_Pausa_Col</span></a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_1_Fine"></a><span style="text-decoration: underline; font-weight: bold;">Fascia_Ore_Viaggi_1_Fine</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Fine della 1° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"> <span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_1_Inizio">Fascia_Ore_Viaggi_1_Inizio&nbsp;</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Fine_Col">Fascia_Ore_Viaggi_1_Fine_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_1_Inizio"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_1_Inizio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Inizio della 1° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale dell</span>a
+      </span><a href="#Fascia_Ore_Viaggi_1_Fine">Fascia_Ore_Viaggi_1_Fine&nbsp;</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_1_Inizio_Col">Fascia_Ore_Viaggi_1_Inizio_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_2_Fine"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_2_Fine</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Fine della 2° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_2_Inizio">Fascia_Ore_Viaggi_2_Inizio&nbsp;</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_2_Fine_Col">Fascia_Ore_Viaggi_2_Fine_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_2_Inizio"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_2_Inizio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Inizio della 2° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa
+Fascia.&nbsp;Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_2_Fine">Fascia_Ore_Viaggi_2_Fine</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_2_Inizio_Col">Fascia_Ore_Viaggi_2_Inizio_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_3_Fine"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_3_Fine</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Fine della 3° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa Fascia.<span style="color: rgb(153, 51, 0);">&nbsp;</span><span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_3_Inizio">Fascia_Ore_Viaggi_3_Inizio&nbsp;</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_3_Fine_Col">Fascia_Ore_Viaggi_3_Fine_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_3_Inizio"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_3_Inizio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Inizio della 3° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa
+Fascia.&nbsp;Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_3_Fine">Fascia_Ore_Viaggi_3_Fine</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_3_Inizio_Col">Fascia_Ore_Viaggi_3_Inizio_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_4_Fine"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_4_Fine</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Fine della 4° Fascia entro la quale viene abilitata la
+Generzione delle Ore Viaggio che rientrano in questa Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_4_Inizio">Fascia_Ore_Viaggi_4_Inizio&nbsp;</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_4_Fine_Col">Fascia_Ore_Viaggi_4_Fine_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_4_Inizio"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_4_Inizio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Inizio della 4° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa
+Fascia.&nbsp;Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_4_Fine">Fascia_Ore_Viaggi_4_Fine</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_4_Inizio_Col">Fascia_Ore_Viaggi_4_Inizio_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_5_Fine"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_5_Fine</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a></td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Fine della 5° Fascia entro la quale viene abilitata la
+Generzione delle Ore Viaggio che rientrano in questa Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Maggiore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_4_Inizio">Fascia_Ore_Viaggi_5_Inizio&nbsp;</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_5_Fine_Col">Fascia_Ore_Viaggi_5_Fine_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Fascia_Ore_Viaggi_5_Inizio"></a><span style="font-weight: bold; text-decoration: underline;">Fascia_Ore_Viaggi_5_Inizio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a> </td>
+      <td style="vertical-align: top; width: 655px;">Ora/Minuto
+di Inizio della 5° Fascia entro la quale viene abilitata la
+Generazione delle Ore Viaggio che rientrano in questa
+Fascia.&nbsp;Fascia.&nbsp;<span style="color: rgb(102, 51, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Questo valore,
+se presente, &nbsp;viene controllato che sia &nbsp;Minore/Uguale della</span>
+      </span><a href="#Fascia_Ore_Viaggi_5_Fine">Fascia_Ore_Viaggi_5Fine</a><span style="color: red; font-weight: bold;"></span>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli
+eventuali Collaboratori </span>che hanno caricato nella propria
+Scheda
+Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Fascia_Ore_Viaggi_5_Inizio_Col">Fascia_Ore_Viaggi_5_Inizio_Col</a></li>
+        <li>mentre viene utilizzato per tutti i
+Cantieri/Assistiti per i quali non
+è previsto di gestire eventuali valori specifici per questa informazione</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">DATE<br>
+TIME</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; font-weight: bold; text-decoration: underline; width: 252px;"><a name="File_Cant_Var"></a>File_Cant_Var</td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.htm#BIT">BIT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Abilitazione
+Gestione Scrittura del File delle Variazioni delle Schede Cantieri
+nella Tabella CANT_VAR (se = True)&nbsp;
+altrimenti NON vengono scritti i Record di Log. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE&nbsp;<span style="color: rgb(153, 51, 0);"> </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">e può assumere i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+:</span><span style="text-decoration: underline; background-color: white;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span>
+      </span>
+      <ul>
+        <li>&nbsp;&nbsp;&nbsp;
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Abilita Scrittura del File delle Variazioni dei Record Cantieri<br>
+        </li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp; FALSE
+&nbsp;&nbsp; = NON Abilita Scrittura del File delle Variazioni
+dei Record Cantieri</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ATTIVAZIONI</td>
+      <td style="width: 60px; text-align: center;">CHK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="File_Col_Var"></a><span style="text-decoration: underline; font-weight: bold;">File_Col_Var</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.htm#BIT">BIT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Abilitazione
+Gestione Scrittura del File delle Variazioni delle Schede Collaboratori
+nella Tabella COL_VAR (se = True)&nbsp; altrimenti NON vengono
+scritti i
+Record di Log. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE<span style="color: rgb(153, 51, 0);"> </span></span><span style="color: rgb(153, 51, 0); font-weight: bold;">e può assumere i
+seguenti </span><span style="text-decoration: underline; color: rgb(153, 51, 0); font-weight: bold;">valori
+:&nbsp;</span><span style="text-decoration: underline; background-color: white;"></span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;"></span>
+      </span>
+      <ul>
+        <li>&nbsp;&nbsp;&nbsp;
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Abilita Scrittura del File delle Variazioni dei Record Collaboratori<br>
+        </li>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp; FALSE
+&nbsp;&nbsp; = NON Abilita Scrittura del File delle Variazioni
+dei Record Collaboratori</li>
+      </ul>
+      <span style="color: rgb(255, 102, 0); font-weight: bold;"></span>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ATTIVAZIONI</td>
+      <td style="width: 60px; text-align: center;">CHK</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Flag_GPS"></a><span style="font-weight: bold; text-decoration: underline;">Flag_GPS</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1) </td>
+      <td style="vertical-align: top; width: 655px;">Abiltazione
+Gestione GPS indicando eventualmente il tipo di Software per gestire le
+Mappe. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+inserito,
+viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FLAG_GPS_PARAMETRI">Flag_Gps_Parametri</a>
+      <ul>
+        <li>&nbsp;Blanks/0&nbsp; = TD_GPS_ NON_ABILITATO</li>
+        <ul>
+          <ul>
+            <ul>
+              <li>Gestione GPS NON
+attivata</li>
+            </ul>
+          </ul>
+        </ul>
+        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= TD_GPS_MAP_POINT</li>
+        <ul>
+          <ul>
+            <ul>
+              <li>Gestione GPS tramite MAPPOINT</li>
+            </ul>
+          </ul>
+        </ul>
+        <li>&nbsp;&nbsp;<span style="text-decoration: line-through;">&nbsp;&nbsp;&nbsp;
+2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= Gestione GPS tramite GOOGLEMAPS</span></li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Flag_Calcolo_Viaggi"></a>
+      <span style="font-weight: bold; text-decoration: underline;">Flag_Calcolo_Viaggi</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.htm#BIT">BIT</a></td>
+      <td style="vertical-align: top;">Indica al sistema se (quando è
+attivato il Flag di Ore_Viaggi) il Calcolo dei Viaggi va eseguito<br>
+      <ul>
+        <li>ad
+ogni modifica</li>
+        <li>solo quando si Lancia l'apposita
+procedura di Ricalcolo.&nbsp;<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;"></span></li>
+      </ul>
+      <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE <span style="color: rgb(153, 51, 0);">e può assumere solo i
+seguenti valori:</span></span>
+      <ul>
+        <li>False = I Viaggi NON vengono ricalcolati ad oggni modifica
+di una Registrazione ma SOLO quando si lancia una specifica
+elaborazione di Ricalcolo</li>
+        <li>True&nbsp; = I Viaggi vengono&nbsp; ricalcolati SEMPRE in
+Tempo Reale ad ogni modifica di una Registrazione</li>
+      </ul>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">VIAGGI<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Flag_Monte_Ore"></a> <span style="font-weight: bold; text-decoration: underline;">Flag_Monte_Ore</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a>
+      </td>
+      <td style="vertical-align: top;">Indica
+al Sistema se viene gestito e in che modo va eventualmente gestito il
+Calcolo del Saldo delle Ore Figurative Totali e Mensili fatte in PIU' o
+in MENO rispetto al Monte Ore previsto sulla base dell'Orario associato
+al Singolo Collaboratore. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=0 .&nbsp; </span><span style="color: rgb(255, 102, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">Il
+valore inserito viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab=DECOD_SYS e Nome_TAB=FLAG_MONTE_ORE e può assumere solo i
+seguenti valori:</span></span>
+      
+      <ul>
+<li>0 = TD_GESTIONE_MONTE_ORE_NON_ABILITATO</li>
+        <ul>
+          <li>Il Calcolo del Monte Ore NON è gestito per questa Azienda</li>
+        </ul>
+
+        <li>1 = TD_GESTIONE_MONTE_ORE_PER_INCLUSIONE</li>
+        <ul>
+          <li>Il Calcolo del Monte Ore è Gestito in MODO INCLUSIVO <br>
+        </li>
+        </ul>
+
+        <ul>
+          <li>ovvero SOLO per i <a href="_TR_COL.html">Collaboratori</a> che hanno il proprio <a href="_TR_COL.html#Flag_Monte_ore">Flag Monte Ore</a> settato = True</li>
+        </ul>
+        <li>2 = TD_GESTIONE_MONTE_ORE_PER_ESCLUSIONE</li>
+        <ul>
+          <li>Il Calcolo del Monte Ore è Getsito in MODO ESCLUSIVO</li>
+        </ul>
+
+        <ul>
+          <li>ovvero per TUTTI i <a href="_TR_COL.html">Collaboratori</a> SALVO quelli che hanno il proprio <a href="_TR_COL.html#Flag_Monte_ore">Flag Monte Ore</a> settato = True<br>
+          </li>
+        </ul>
+      </ul>
+I Totali vengono calcolati fino alla DATA DI BLOCCO impostata attualemnte nella Tabella <a href="file:///D:/Sviluppo%20Locale/PowerWeb/PowerWeb/HelpPages/TR_RECORD/_TR_PARAM.html">PARAM</a> e d aggiornati quando si sposta la Data Blocco (sia in Avanti sia Indietro) e scritti <br>
+
+      <ul>
+<li>a livello di Totale</li><ul><li>nel campo <a href="_TR_COL.html#Monte_Minuti">Monte_Minuti</a> della Tabella <a href="_TR_COL.html">COL</a></li></ul><li>a Livello di Singolo ANNO per i 12 Campi Mensili <a href="_TR_COL_MONTE_MINUTI.html#M01_Col_Monte_Minuti">Mxx_Col_Monte_Minuti</a> della Tabella <a href="_TR_COL_MONTE_MINUTI.html">COL_MONTE_MINUT</a>I</li>
+      </ul>
+
+
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">ATTIVAZIONI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Flag_Ore_Viaggi"></a><span style="text-decoration: underline; font-weight: bold;">Flag_Ore_Viaggi</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Indica al sistema
+se è abilitata
+la Gestione dei Viaggi per tutti i
+Collaboratori o solo per quelli abilitati. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Calcolo_Viaggi">Tipo_Calcolo_Viaggi <span style="color: rgb(255, 102, 0); font-weight: bold;"><span style="color: rgb(153, 51, 0);">e può assumere solo i
+seguenti valori:</span></span></a>
+      <ul>
+        <li>0&nbsp; = TD_NO_CALCOLO</li>
+        <ul>
+          <li>Procedura NON attivita<br>
+        </li>
+        </ul>
+
+        <li>1&nbsp; = TD_CALCOLO_VIAGGI_X_TUTTI_SALVO_COL_ESCLUSI</li>
+        <ul>
+          <li>l Calcolo dei Viaggi avviene per TUTTI I
+Collaboratori
+ESCLUSI quelle DISABILITATI , ovvero tratta solo tutti quelli che hanno
+il proprio Flag_Ore_Viaggi_Col_Inizio_Fin &lt;&gt;&nbsp; 2 (che
+significa che sono disabilitati)</li>
+        </ul>
+
+        <li>2 = TD_CALCOLO_VIAGGI_X_SOLO_COL_ABILITATI</li>
+        <ul>
+          <li>Il Calcolo dei Viaggi avviene per I SOLI Collaboratori
+ABILITATI ,
+ovvero tratta solo quelli che hanno il proprio
+Flag_Ore_Viaggi_Col_Inizio_Fin = 1 (che significa che sono
+abilitati)</li>
+        </ul>
+
+      </ul><span style="font-weight: bold; color: red;">NOTA BENE&nbsp; Può essere impostato a Tun valore &lt;&gt; 0 SOLO dagli UTENTI WINIT (Liv &gt;0 15)</span><br>
+
+      <span style="text-decoration: line-through;">NOTA BENE : è poi
+possibile , a prescindere da quanto inserito in
+Scheda Parametri) attivare per singolo Collaboratore alcune versioni
+Personalizzate della Gestione Viaggi impostando il Valore del </span><br style="text-decoration: line-through;">
+      <ul>
+        <li style="text-decoration: line-through;">Campo <a href="../TR_COL/TR_COL.AAA.html#Flag_Ore_Viaggi_Col">Flag_Ore_Viaggi_Col</a>
+del Singolo Collaboratore</li>
+        <ul>
+          <li style="text-decoration: line-through;">&nbsp;Abilitare la
+Gestione dei Viaggi con
+l'aggiunta del Calcolo dei KM impostandolo = 5</li>
+          <li style="text-decoration: line-through;">Abilitare la
+Gestione Personalizzata dei Viaggi dai
+Passaggi impostandolo = 3 (Gestione Autisti-1 x COPP 2001)</li>
+          <li><span style="text-decoration: line-through;">Abilitare la
+Gestione Personalizzata dei Viaggi
+dalle
+Rilevazioni impostandolo = 4 (Gestione Autisti-2 x Coop 2001 senza
+Pausa e solo x Fasce3/4)</span><br>
+          </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a name="Flag_Ore_Viaggi_Inizio_Fine"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Flag_Ore_Viaggi_Inizio_Fine</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#BIT">INT</a></td>
+      <td style="vertical-align: top;">Indica al sistema se è abilitato
+o meno <br>
+      <ul>
+        <li>alla Gestione dei Viaggi di Inizio/Fine Giornata per tutti i
+Collaboratori o solo per quelli abilitati</li>
+      </ul>
+&nbsp;<span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span> <a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Calcolo_Viaggi">Tipo_Calcolo_Viaggi</a>
+      <ul>
+        <li>0&nbsp; =  TD_NO_CALCOLO</li>
+        <ul>
+          <li>Procedura NON attivita<br>
+        </li>
+        </ul>
+
+        <li>1&nbsp; = TD_CALCOLO_VIAGGI_X_TUTTI_SALVO_COL_ESCLUSI</li>
+        <ul>
+          <li>Il Calcolo dei Viaggi di Inizio/Fine Giornata
+avviene per TUTTI I Collaboratori
+ESCLUSI quelle DISABILITATI , ovvero tratta solo tutti quelli che hanno
+il proprio Flag_Ore_Viaggi_Col_Inizio_Fin &lt;&gt;&nbsp; 2 (che
+significa che sono disabilitati)</li>
+        </ul>
+
+        <li>2 = TD_CALCOLO_VIAGGI_X_SOLO_COL_ABILITATI</li>
+        <ul>
+          <li>Il Calcolo dei Viaggi di Inizio/Fine Giornata avviene
+per I SOLI Collaboratori ABILITATI ,
+ovvero tratta solo quelli che hanno il proprio
+Flag_Ore_Viaggi_Col_Inizio_Fin = 1 (che significa che sono
+abilitati)</li>
+        </ul>
+
+      </ul>
+I Dati della durata di questi viaggi viene presa dalla <a href="_TR_TAB_DISTANZE.html">TAB_DISTANZE</a> in
+cui vengono cercati (sia per il Viaggio di Inizio sia per il Viaggio di
+Fine) per<br>
+      <ul>
+        <li>ZONA_COL &lt;---&gt; ZONA_CANT (se non trovato viene poi
+cercato per)</li>
+        <ul>
+          <li>il record della TAB_DISTANZE verrà cercato con chiave =
+"Z"<br>
+          </li>
+        </ul>
+        <li>DOMICILIO_CAP_COL &lt;----&gt; CAP_CAN (se non trovato
+viene poi cercato per)</li>
+        <ul>
+          <li>il record della TAB_DISTANZE verrà cercato con chiave =
+"K"</li>
+        </ul>
+        <li>DOMICILIO_LUOGO_COL &lt;---&gt; LUOGO_CAN (se non trovato
+viene segnalato erroe)</li>
+        <ul>
+          <li>il record della TAB_DISTANZE verrà cercato con chiave =
+"P"</li>
+        </ul>
+      </ul>
+      <br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">VIAGGI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="GG_X_Allarmi"></a><span style="text-decoration: underline; font-weight: bold;">GG_X_Allarmi</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">N°
+dei GG di Default da utilizzare nella Gestione delle Segnalazioni di
+Allarme. <span style="font-weight: bold; color: rgb(153, 51, 0);">Nessun
+Controllo Specifico.</span><br>
+      </td>
+      <td style="width: 39px; text-align: center;">Libero</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="text-align: left; width: 252px;"><a name="MDBPath"></a>
+      <span style="font-weight: bold; text-decoration: underline;">MDBPath</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="width: 655px;">Percorso e Nome del DataBase Access di
+Como e/o Power da cui importare i Dati nel DataBase SQL di Power_S. <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio quando si lancia l'IMPORT INIAZIALE DEI DATI DAL VECCHIO
+DB ACCESS di COMO e/o POWER</span></td>
+      <td style="width: 39px; text-align: center;">Libero</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">TEXT</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Mesi_Validita_Reg"></a><span style="font-weight: bold; text-decoration: underline;">Mesi_Validita_Reg</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">N°
+di Mesi <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio&nbsp;</span> in base ai quali BLOCCARE le
+Timbrature che si stanno
+importando nel sistema e che hanno una Data inferiore alla Data Odierna
+- N°Mesi indicati.Serve x impedire di importare x errore delle
+Timbrature TROPPO VECCHIE!!. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se
+non indicato viene impostato AUTOMATICAMENTE a 6 Mesi. Viene
+controllato che NON sia MAGGIORE di 240 (pari a 12 Mesi x 20 anni)&nbsp;</span><br>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Metodo_Arrotondamento"></a><span style="font-weight: bold; text-decoration: underline;">Metodo_Arrotondamento</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Metodo
+di Arrotondamento di Default delle Ore Figurative da applicare alle
+Rilevazioni . <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito, viene controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#METODO_ARROTONDAMENTO">Metodo_Arrotondamento</a>
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">e può
+assumere SOLO
+i seguenti Valori:</span><br>
+      <ul>
+        <li>Blanks/0&nbsp; = TD_ARROT_STANDARD</li>
+        <ul>
+          <ul>
+            <ul>
+              <li>Attivato Arrotondamento per E/U</li>
+            </ul>
+          </ul>
+        </ul>
+        <li style="text-decoration: line-through;">&nbsp;&nbsp;&nbsp;
+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+= TD_ARROT_DURATA</li>
+        <ul style="text-decoration: line-through;">
+          <ul>
+            <ul>
+              <li>Attivato Arrotondamneto per DURATA</li>
+            </ul>
+          </ul>
+        </ul>
+        <li>&nbsp; &nbsp; &nbsp;2 &nbsp; &nbsp; &nbsp; &nbsp;=
+&nbsp;TD_ARROT_EU</li>
+        <ul>
+          <ul>
+            <ul>
+              <li>Attivato Arrotondamento per E/U</li>
+            </ul>
+          </ul>
+        </ul>
+        <li>&nbsp; <span style="text-decoration: line-through;">&nbsp; &nbsp;3 &nbsp; &nbsp; &nbsp; &nbsp;=
+&nbsp;TD_ARROT_DURATA_SU_ORARIO_PREVISTO</span></li>
+        <ul style="text-decoration: line-through;">
+          <ul>
+            <ul>
+              <li>Attivato Arrotondamento per Durata su Orario Previsto</li>
+            </ul>
+          </ul>
+        </ul>
+        <li style="text-decoration: line-through;">&nbsp; &nbsp; </li></ul>
+Per le <span style="text-decoration: underline; font-weight: bold;">Ore
+Figurative Viaggi generate dalla Gestione Viaggi</span> vedere i
+Campi <a href="#Minuti_Arrot_Durata_Fig">Minuti_Arrot_Durata_Fig</a>
+e <a href="#Soglia_Durata">Soglia_Durata</a> </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="ModuleType"></a><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp; </span></span><span style="font-weight: bold; text-decoration: underline;">ModuleType</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#BIT">INT</a></td>
+      <td style="vertical-align: top; width: 655px;">Indica il Tipo di
+Interfacciamento verso le Tabella ACCESS da Importare da POWER/COMO<br>NON
+è un campo gestibile a Video !!! in quanto può assumere i seguenti
+valori (FISSI NEL CODICE C# dell'Applicazione definiti all'interno di
+DOMAIN/EXTENSION/ExtensioneEnum.cs<br>
+      <ul>
+        <li>0 = NONE</li>
+        <ul>
+          <li>Indica che si tratta di un Interfacciamento
+STANDARD</li>
+        </ul>
+
+        <li>1 = MOSAICO</li>
+        <ul>
+          <li>Indica che si tratta dell'Interfacciamento
+Specifico per Mosaico</li>
+        </ul>
+
+        <ul>
+          
+          <ul>
+            <li>I dati della tabella RESP vengono caricati in Tab FIL</li>
+          </ul>
+
+          <li>.........<br>
+          </li>
+        </ul>
+      </ul>
+      
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">ATTIVAZIONI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Pausa_Viaggio"></a><span style="font-weight: bold; text-decoration: underline;">Pausa_Viaggio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Abilita
+la Gestione delle Ore Pausa anche durante la Genereazione delle Ore
+Viaggio. <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=FALSE <span style="color: rgb(153, 51, 0);">e può assumere solo i
+seguenti valori:</span></span>
+      <ul>
+        <li>False = Le eventuali Ore Pausa NON vengono trattate
+(sottratte) durante la Generazione delle Ore Viaggio</li>
+        <li>True&nbsp; = Le
+eventuali Ore Pausa (se presenti) vengono trattate (sottratte) durante
+la Generazione delle Ore Viaggio</li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">CHK</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="PublicKey"></a> <span style="text-decoration: underline; font-weight: bold;">PublicKey</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="width: 655px;">Valore della Public Key assegnata
+assieme alla <a href="#ActivationDate">Data di Attivazione</a>&nbsp;al
+momento dell'Installazione da WINIT per gestire le Date di Scadenza
+(Acdella Password e la data di Ultimo Collegamento in modo criptato. <span style="font-weight: bold; color: rgb(153, 51, 153);">Viene impostata
+AUTOMATICAMENTE dal Sistema e NON PUO' ESSERE MODIFICATA DALL'UTENTE</span></td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">NO</td>
+      <td style="width: 60px; text-align: center;">NO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="RaggioGpsDefault"></a><span style="font-weight: bold; text-decoration: underline;"> RaggioGpsDefault</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#FLOAT">FLOAT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 655px;">Raggio
+di Deaful da utilizzare per i Cantiere/Assistito che non hanno uno
+specifico <a href="../TR_CANT/TR_CANT.AAA.html#RaggioGPS_Can">RaggioGPS_Can</a>
+definito nella propria Scheda Anagrafica per calcolare il Cerchio con
+Centro la Latidtudine e
+Longitudine di quel Cantiere/Assistito entro il quale le successive
+Timbrature GPS sono considerate come appartenenti a quello specifico
+Cantiere/Assistito. <span style="font-weight: bold; color: rgb(153, 51, 153);">Nessun
+Controllo Specifico</span> </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="RowPerComboBox"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">RowPerComboBox</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="vertical-align: top; width: 655px;">N° delle Righe di
+dettaglio che
+vengono visualizzata nelle ComboBox.In base al valore indicato per ogni
+ComboBox di ogni Griglia, il sistema visualizza il corrispondente
+Numero di Righe all'apertura della ComboBox <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">= 50</span><span style="color: rgb(255, 102, 0); font-weight: bold;"></span></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">DEFAULT<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><a name="RowPerPages"></a> <span style="text-decoration: underline; font-weight: bold;">RowPerPages</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="width: 655px;">N°
+delle Righe di dettaglio che vengono visualizzata nella Griglia
+Principale di tutte le Form. (Da NON confondere con il parametro <a href="#ComboboxRowsPerPage">ComboboxRowsPerPage</a> che indica invece
+il N° di Record che DevExpress carica in memroia per ogni ComboBox)<span style="font-weight: bold; text-decoration: underline;">&nbsp;</span> <span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">=
+15</span></td>
+      <td style="width: 39px; text-align: center;">Libero</td>
+      <td style="width: 60px; text-align: center;">DEFAULT</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">&nbsp; <a name="StoredChunkSize"></a><span style="font-weight: bold; text-decoration: underline;">StoredChunkSize</span><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Indica il N° dei Record da scrivere per blocco quando si Archiviano/Ripristinano le REG da/a Reg_Stored.<span style="text-decoration: underline; color: rgb(255, 102, 0); font-weight: bold;">Valore
+di Default</span><span style="color: rgb(255, 102, 0); font-weight: bold;">= 5000 record per blocco.<br>
+      </span></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top;"><a name="RRN_Winit"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">RRN_Winit</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">BIGINT<br>
+      </td>
+      <td style="vertical-align: top;">RRN assegnato nel DB della WINIT
+per identificare il Cliente che utilizza l'Applicazione PowerWeb. Viene
+usato dal Serviziod elle LIcenze per controllare la validità del
+Cliente collegato con PowerWeb<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+<tr>
+      <td style="vertical-align: top; font-weight: bold; text-decoration: underline; width: 252px;"><a name="Tempo_Doppia_Reg"></a> Tempo_Doppia_Reg</td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#SMALLINT">SMALLINT</a><br>
+      </td>
+      <td style="vertical-align: top; width: 655px;">Minuti
+entro i quali una Nuova Timbrature a parità di <br>
+      <ul>
+        <li>Codice Unità Fissa</li>
+        <li>Codice Unità Portatile</li>
+        <li>Codice Collaboratore</li>
+        <li>Codice Cantiere/Assistito</li>
+        <li>GG/MM/SSAA</li>
+        <li>HH:MM +/- Minuti impostati come Tempo_Doppia_Reg<br>
+        </li>
+      </ul>
+con una Timbratura già esistente viene considerata comunque UGUALE
+quindi SCARTATA e NON CARICATA nel Sistema .<span style="font-weight: bold; color: rgb(153, 51, 0);"> Se inserita viene
+controllato che sia MINORE di 10 Minuti</span><br>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">GEN</td>
+      <td style="width: 60px; text-align: center;">SPIN</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px; text-decoration: line-through;"><a name="Tipo_Arrotondamento"></a><span style="font-weight: bold; text-decoration: underline;">&nbsp; Tipo_Arrotondamento</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px; text-decoration: line-through;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px; text-decoration: line-through;">Tipo
+di Arrotondamento x Durata da applicare
+nel caso di Calcolo delle Ore Figurative in base alla Durata.<span style="font-weight: bold; color: rgb(153, 51, 0);"> Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#TIPO_ARROTONDAMENTO">Tipo_Arrotondamento</a>
+      <span style="font-weight: bold; color: rgb(153, 51, 0);">e può
+assumere SOLO
+i seguenti Valori:</span>
+      <ul>
+        <li>&nbsp; 0 = TD_TIPO_ARROTONDAMENTO_STANDARD_DESC</li>
+        <ul>
+          <li>Arrotondamento Standard Durata
+Giornaliera in base alla <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+        <li>&nbsp; 1 =
+TD_TIPO_ARROTONDAMENTO_NO_DURATA_MINORE_SOGLIA_DESC</li>
+        <ul>
+          <li>NON arrotonda se hanno DURATA
+&lt;= della <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+        <li>&nbsp; 2 =
+TD_TIPO_ARROTONDAMENTO_NO_DURATA_MAGGIORE_SOGLIA_DESC</li>
+        <ul>
+          <li>NON arrotonda se hanno DURATA
+&gt;&nbsp;&nbsp; della <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+        <li>&nbsp; 3 = TD_TIPO_ARROTONDAMENTO_SINGOLA_REG_X_SOGLIA_DESC</li>
+        <ul>
+          <li>Arrotonda la Durata della SINGOLA
+Rilevazione in base alla <a href="../TR_CANT/TR_CANT.AAA.html#Soglia_Durata_Can">Soglia_Durata_Can</a></li>
+        </ul>
+      </ul>
+Questo valore,
+anche se presente<br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">NON
+viene
+utilizzato per gli eventuali Collaboratori</span> che hanno
+caricato
+nella propria Scheda Anagrafica Collaboratore il corrispondente Campo <a href="../TR_COL/TR_COL.AAA.html#Tipo_Arrotondamento_Col">Tipo_Arrotondamento_Col</a></li>
+        <li><span style="text-decoration: underline; font-weight: bold;">NON
+viene utilizzato per gli eventuali Cantieri</span> che hanno
+caricato nella propria Scheda Anagrafica Cantiere il
+corrispondente&nbsp; Campo <a href="../TR_CANT/TR_CANT.AAA.html#Tipo_Arrotondamento_Can">Tipo_Arrotondamento_Can</a></li>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">ARROT</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Tipo_Assegnazione_KMMinuti"></a>&nbsp; <span style="font-weight: bold; text-decoration: underline;">Tipo_Assegnazione_KMMinuti</span><br>
+      </td>
+      <td style="vertical-align: top; width: 115px;"><br>
+      </td>
+      <td style="vertical-align: top; width: 655px;">Indica il Metodo
+da seguire per gestire la Tab_Distanze. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#TIPO_ASSEGNAZIONE_VIAGGI">Tipo_Assegnazione_KMMinuti
+      </a>e <span style="color: rgb(153, 51, 0); font-weight: bold;">può
+assumere SOLO i seguenti Valori:</span><br>
+      <ul>
+        <li>0 = TD_TIPO_ASSEGNAZIONE_KMMINUTI_NON_ATTIVATO</li>
+        <ul>
+          <li>La Procedura di Assegnazione delle Ore/Km alle REG NON è
+attivata</li>
+        </ul>
+        <li>1 = TD_TIPO_ASSEGNAZIONE_KMMINUTI_DA_TAB_DIST_ESISTENTE</li>
+        <ul>
+          <li>Le Procedura di Assegnazione Ore/KM alle REG si aspetta
+di trovare già i Dati cercati nella Tab_Distanze</li>
+          <ul>
+            <li>La ricerca del Dato nella Tab_Distanze viene
+eseguita&nbsp; sempre per Codice Cantiere</li>
+            <ul>
+              <li>&nbsp;(cerca in Tab_Distanze i Record con Chiave =
+"C")</li>
+            </ul>
+            <li>Se NON viene trovato in Tab_Distanze nessun Record per
+Codice Cantiere</li>
+            <ul>
+              <li>La ricerca del Dato nella Tab_Distanze viene
+eseguita&nbsp; sempre per CAP</li>
+              <ul>
+                <li>&nbsp;(cerca in Tab_Distanze i Record con Chiave =
+"K")</li>
+              </ul>
+            </ul>
+            <li>Se NON viene trovato in Tab_Distanze nessun Record per
+CAP</li>
+            <ul>
+              <li>La ricerca del Dato nella Tab_Distanze viene
+eseguita&nbsp; sempre per LUOGO</li>
+              <ul>
+                <li>&nbsp;(cerca in Tab_Distanze i Record con Chiave =
+"P")</li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <ul>
+        <li>2&nbsp; =
+TD_TIPO_ASSEGNAZIONE_KMMINUTI_DA_GIS_SE_NON_IN_TAB_DIST</li>
+        <ul>
+          <li>Le Procedura di Assegnazione Ore/KM alle REG cerca in Tab_Distanze i Record con CAP|COMUNE|INDIRIZZO</li>
+          <ul>
+            <li>(cerca in Tab_Distanze i Record con Chiave =
+"G")</li>
+          </ul>
+          <li>Se NON viene trovato in Tab_Distanze nessun Record per
+CAP|COMUNE|INDIRIZZO</li>
+          <ul>
+            <li>ed esistono in Anagrafica del Cantiere la Relativa Latitudine e Longitudine</li>
+            <ul>
+              <li>calcola i nuovi Valori dei KM e dei Tempi tramite GIS (usando BING)</li>
+              <ul>
+                <li>creandone poi il relativi Record x CAP|COMUNE|INDIRIZZO <br>
+                </li>
+                <ul>
+                  <li>con chiave G</li>
+                </ul>
+              </ul>
+            </ul>
+            <li>se NON esistono in Anagrafica del Cantiere la relativa Latitudine e Longitudine</li>
+            <ul>
+              <li>&nbsp;le Calcola tramite GIS (usando BING)</li>
+              <li>calcola i nuovi Valori dei KM e dei Tempi tramite GIS (usando BING)</li>
+              <ul>
+                <li>creandone poi il relativi Record x CAP|COMUNE|INDIRIZZO <br>
+  </li>
+                <ul>
+<li>con chiave G</li>
+                </ul>
+              </ul>
+            </ul>
+          </ul>
+
+        </ul>
+      </ul>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: middle; text-align: center;">VIAGGI</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px; background-color: rgb(204, 204, 204);"><a name="Tipo_Assegnazione_Viaggio"></a><span style="font-weight: bold; text-decoration: underline line-through;">Tipo_Assegnazione_Viaggi</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px; text-decoration: line-through; background-color: rgb(204, 204, 204);"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px; background-color: rgb(204, 204, 204);"><span style="text-decoration: line-through;">Metodo
+di Calcolo di Default della Generazione Ore Viaggio. </span><span style="color: rgb(153, 51, 0); font-weight: bold; text-decoration: line-through;">Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab</span><span style="text-decoration: line-through;">=</span><a style="text-decoration: line-through;" href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#TIPO_ASSEGNAZIONE_VIAGGI">Tipo_Assegnazione_Viaggi
+      </a><span style="text-decoration: line-through;">e </span><span style="color: rgb(153, 51, 0); font-weight: bold; text-decoration: line-through;">può
+assumere SOLO i seguenti Valori:</span>
+      <ul>
+        <li style="text-decoration: line-through;">0 = TD_CANTIERE_VIAGGI_FISSO</li>
+        <ul style="text-decoration: line-through;">
+          <li>Le Ore Viaggio generate vengono intestate al <a href="#Cantiere_Viaggio">Cantiere_Viaggio</a> indicato
+in Scheda Parametri</li>
+        </ul>
+        <li style="text-decoration: line-through;">1 = TD_CANTIERE_VIAGGI_TERMINE</li>
+        <ul style="text-decoration: line-through;">
+          <li>Le Ore Viaggio generate
+vengono intestate sempre al Cantiere in cui TERMINA il Viaggio (salvo
+l'ultima del Giorno se intestata ad un Cantiere con Tipo_Cantiere=MAG
+del Giorno che viene intestata al Cantiere di Partenza)</li>
+        </ul>
+        <li style="text-decoration: line-through;">2&nbsp; = TD_CANTIERE_VIAGGI_SPECIALE</li>
+        <ul>
+          <li><span style="text-decoration: line-through;">Le Ore
+Viaggio generate hanno un trattamento speciale se il Cantiere&nbsp;
+ha
+TipoCan=""CMN"</span><br>
+          </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center; background-color: rgb(204, 204, 204);"><br>
+</td>
+      <td style="width: 60px; text-align: center; background-color: rgb(204, 204, 204);"><br>
+</td>
+      <td style="width: 60px; text-align: center; background-color: rgb(204, 204, 204);">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><a name="Tipo_Calcolo_Viaggio"></a><span style="font-weight: bold; text-decoration: underline;">Tipo_Viaggio</span></td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Blocca
+Generazione Ore Viaggio fra 2 Cantieri Uguali. <span style="font-weight: bold; color: rgb(153, 51, 0);">Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab=</span><a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#TIPO_CALCOLO_VIAGGI">Tipo_Viaggio
+      </a><span style="font-weight: bold; color: rgb(153, 51, 0);">e
+può
+assumere SOLO i seguenti Valori:</span>
+      <ul>
+        <li>&nbsp;0 = TD_NON_GENERA_SE_INIZIO_FINE_STESSO_CANTIERE</li>
+        <ul>
+          <li>NON vengono generate le Ore Viaggio che
+hanno Inizio/Fine sullo stesso Cantiere</li>
+        </ul>
+        <li>&nbsp;1 =&nbsp;
+TD_GENERA_ANCHE_SE_INIZIO_FINE_STESSO_CANTIERE</li>
+        <ul>
+          <li>vengono generate anche le
+eventuali
+Ore Viaggio che hanno Inizio/Fine sullo stesso Cantiere </li>
+        </ul>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="width: 252px;"><span style="font-weight: bold;"><a name="TipoNotturno"></a> <span style="text-decoration: underline;">TipoNotturno</span></span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+      <td style="width: 655px;">Tipo
+di Notturno di Default&nbsp; Indica come
+Gestire la ricerca della Timbratura di Uscita quando è Abilitata la
+Gestione del Notturno e l'ULTIMA ENTRATA DEL GIORNO è avvenuta PRIMA
+DELLA MEZZANOTTE. <br>
+Il Sistema ricerca la Timbratura di CHIUSURA purchè rientri entro i
+Minuti indicati nel Campo <a href="../TR_CANT/TR_CANT.AAA.html#Durata_Max_Gruppo_Notte_Ril_Can">Durata_Max_Gruppo_Notte_Ril_Col.</a><br>
+      <span style="color: rgb(153, 51, 0); font-weight: bold;">Se
+inserito
+viene controllato che esista in TAB_DECOD con Gruppo_Tab=Decod_SYS e
+Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Notturno">Tipo_Notturno</a>
+e <span style="text-decoration: underline; font-weight: bold;">può
+assumere SOLO i seguenti valori:</span><br>
+      <ul>
+        <li>0&nbsp; = TD_NOTTURNO_NON_ABIL</li>
+        <li>1&nbsp; = TD_DOPO_MEZZANOTTE</li>
+
+        <ul>
+          <ul>
+            
+            <li>oltre la Mezzanotte <br>
+              </li>
+<ul>
+              
+            </ul>
+          </ul>
+        </ul>
+        <li style="text-decoration: line-through;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1&nbsp;&nbsp;&nbsp;&nbsp; = TD_DOPO_ULTIMA_REG</li>
+        <ul style="text-decoration: line-through;">
+          <ul>
+            <ul>
+              <li>oltre l'ultima timbratura
+di
+Entrata</li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="vertical-align: middle; text-align: center;">PARAM<br>
+</td>
+      <td>COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Utilizzo_Fascie_Viaggio"></a>Utilizzo_Fasce_Viaggi</span><br>
+      </td>
+      <td style="vertical-align: top; text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Campi.html#TYNINT">TINYINT</a> </td>
+      <td style="vertical-align: top; width: 655px;">Indica al sistema
+se è Disabilitata o meno la Gestione delle Fasce Viaggio. <span style="color: rgb(153, 51, 0); font-weight: bold;">Se inserito, viene
+controllato che esista nella TAB_DECOD con
+Gruppo_Tab= Decod_SYS e Nome_Tab</span>=<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#FASCE_VIAGGI">Fasce_Viaggi
+      </a>e <span style="color: rgb(153, 51, 0); font-weight: bold;">può
+assumere SOLO i seguenti Valori:</span>
+      <ul>
+        <li>&nbsp;0 = TD_FASCE_VIAGGI_ABILITATE</li>
+        <ul>
+          <li>vengono gestite le&nbsp;Fasce Viaggio dal
+Sistema e
+vengono quindi Visualizzati a Video i campi relativi alle&nbsp;Fasce
+Viaggio</li>
+        </ul>
+        <li>&nbsp;1 =&nbsp; TD_FASCE_VIAGGI_DISABILITATE</li>
+        <ul>
+          <li>NON vengono gestite le&nbsp;Fasce
+Viaggio
+dal Sistema e NON vengono quindi Visualizzati a Video i campi relativi
+alle&nbsp;Fasce Viaggio </li>
+        </ul>
+      </ul>
+      <br>
+      </td>
+      <td style="width: 39px; text-align: center;">OK</td>
+      <td style="width: 60px; text-align: center;">VIAGGI</td>
+      <td style="width: 60px; text-align: center;">COMBO</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 252px;"><br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      </td>
+      <td style="vertical-align: top; width: 115px;"><br>
+      </td>
+      <td style="vertical-align: top; width: 655px;"><br>
+      </td>
+      <td style="width: 39px; text-align: center;"><br>
+      </td>
+      <td style="width: 60px; text-align: center;"><br>
+      </td>
+      <td style="width: 60px; text-align: center;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+</body></html>

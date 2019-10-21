@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Help Gestione</title></head><body><a href="../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1 style="margin-left: 21.55pt; text-indent: -21.55pt;"><span style="font-size: 16pt;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span style="font-size: 16pt; text-decoration: underline;">LA GESTIONE
+dell'HELP</span><span style="font-size: 16pt;"><o:p></o:p></span></h1>
+
+<ul>
+
+  <li><o:p></o:p><span style="font-family: Symbol;"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">
+    </span></span></span>L&#8217;HELP è scritto in HTML con il Programma
+KOMPOZER (Free)</li>
+  <li>L&#8217;Help
+viene gestito a livello di:</li>
+  <ul>
+    <li><span style=""></span>Singola Maschera</li>
+  </ul>
+  <ul>
+    <li><span style=""></span>F1 : Singolo Campo dellla Singola
+Maschera </li>
+  </ul>
+</ul>
+
+<p class="ElenchiPUNTATI" style="margin-left: 0cm; text-indent: 0cm;"><b style=""><u>1) La Gestione delle CHIAMATE all&#8217;HELP della SINGOLA MASCHERA</u></b> è fatta dall'interno del codice Java che gestisce il Tasto Funzionale di HELP <br>
+</p>
+<ul>
+  <li style="font-weight: bold; color: rgb(51, 51, 255);">PowerWeb</li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">GridMasterPage.master</li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 51, 255);"> &lt;dx:<span style="color: red;">ASPxButton </span>UseSubmitBehavior="false" ID="<span style="color: red;">btnHelp</span>" runat="server" CssClass="headerButtons" AutoPostBack="false"&gt;</span></li>
+      <ul style="font-weight: bold; color: rgb(51, 51, 255);">
+        <li>&lt;ClientSideEvents Click="<span style="color: red;">function(s, e) {redirectOnHelpPage();</span>}" /&gt;</li>
+        <ul>
+          <li>&lt;Image Url="~/Icons/Help/Help.png"&gt;&lt;/Image&gt;</li>
+        </ul>
+      </ul>
+      <ul>
+        <li><span style="font-weight: bold; color: rgb(51, 51, 255);">&lt;/dx:ASPxButton&gt;</span></li>
+      </ul>
+    </ul>
+    <li>che richiama a sua volta (sempre nella stessa Pagina Java) la Funzione di <span style="font-weight: bold; text-decoration: underline; color: red;">redirectonHelpPage</span> che imposta il percorso in cui cercare l'Help<br>
+      <span style="font-weight: bold; color: rgb(51, 51, 255);"></span></li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 51, 255);">function <span style="color: red;">redirectOnHelpPage()</span> {</span><br>
+        <span style="font-weight: bold; color: rgb(51, 51, 255);"></span><span style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; window.open(getBaseURL() + 'HelpPages/PAGES/_' + <span style="color: red;">getCurrentPageNoExtNoPage</span>() + '_PAGE.html', '_blank');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span>&nbsp; <br>
+      </li>
+    </ul>
+    <li>che richiama a sua volta (sempre nella stessa Pagina Java)&nbsp; la Funzione <span style="font-weight: bold; color: red; text-decoration: underline;">getCurrentPageNoExtNoPage</span> che ricava il Nome della Pagina da cui viene chiamato l'Help della Pagina<br>
+    </li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 51, 255);">function <span style="color: red;">getCurrentPageNoExtNoPage</span>() <br>
+        </span></li>
+      <ul>
+        <li><span style="font-weight: bold; color: rgb(51, 51, 255);">{ </span><span style="font-weight: bold; color: rgb(51, 51, 255);">var sPage = <span style="color: red;">getCurrentPage</span>();</span></li>
+        <li><span style="font-weight: bold; color: rgb(51, 51, 255);">return sPage.substr (0, sPage.lastIndexOf('Page'));</span><span style="font-weight: bold; color: rgb(51, 51, 255);"> } <br>
+          </span></li>
+      </ul>
+    </ul>
+    <li><span style="font-weight: bold; color: rgb(51, 51, 255);"></span>che richiama a sua volta&nbsp; (sempre nella stessa Pagina Java)&nbsp; la Funzione <span style="font-weight: bold; color: red; text-decoration: underline;">getCurrentPagee</span> che ricava <br>
+    </li>
+    <ul>
+      <li>&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">function <span style="color: red;">getCurrentPage(</span>)</span></li>
+      <ul>
+        <li><span style="font-weight: bold; color: rgb(51, 51, 255);">{</span><span style="font-weight: bold; color: rgb(51, 51, 255);">var sPath = window.location.pathname;</span></li>
+        <li><span style="font-weight: bold; color: rgb(51, 51, 255);">var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);</span></li>
+        <li><span style="font-weight: bold; color: rgb(51, 51, 255);">return sPage;</span><span style="font-weight: bold; color: rgb(51, 51, 255);"> }</span><br>
+        </li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<p class="ElenchiPUNTATI" style="margin-left: 0cm; text-indent: 0cm;"><span style="font-weight: bold; text-decoration: underline;">Il Testo di HELP della Pagina</span><span style="font-weight: bold;"></span>&nbsp; viene quindi cercato nella <span style="text-decoration: underline; font-weight: bold;">Cartella PAGES</span><br>
+</p>
+
+<ul>
+<li style="font-weight: bold;">PowerWeb</li>
+  <ul>
+    <li style="font-weight: bold;">HelpPages</li>
+    <ul>
+      <li style="font-weight: bold; text-decoration: underline;">PAGES</li>
+      <ul>
+        <li>costruendone il Nome del Singolo Help della Singola pagina da cui viene richiamato</li>
+        <li>con il Nome della Pagina + "_Page.html"<br>
+        </li>
+        <ul>
+          <li style="font-weight: bold;">XXXX_Page<br>
+          </li>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+
+</ul>
+<span style="font-weight: bold;"></span>
+
+
+
+<p class="ElenchiPUNTATI" style="margin-left: 0cm; text-indent: 0cm;"><o:p style="font-weight: bold;">2) </o:p><b style=""><u>La Gestione delle CHIAMATE all&#8217;HELP del
+SINGOLO CAMPO</u></b> è fatta dalla routine :</p>
+<ul>
+<li style="font-weight: bold; color: rgb(51, 51, 255);">PowerWeb</li><ul><li style="font-weight: bold; color: rgb(51, 51, 255); text-decoration: underline;">GridMasterPage.master</li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 51, 255);">function <span style="color: red;">AttachContextmenu</span>()</li>
+      <ul>
+        <li style="font-weight: bold; color: rgb(51, 51, 255);">{$.contextMenu(</li>
+        <ul>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);">{ selector: '.myHelp',callback: function (key, options) <br>
+          </li>
+          <ul>
+            <li style="font-weight: bold; color: rgb(51, 51, 255);">{ if (key == "help") <br>
+            </li>
+            <ul>
+              <li style="font-weight: bold; color: rgb(51, 51, 255);">{ var currentId = $(this).attr('id');</li>
+              <li style="font-weight: bold; color: rgb(51, 51, 255);">window.open(getBaseURL() + 'HelpPages/TR_RECORD/_TR_' + getCurrentPageNoExtNoPage() + '.html#' + currentId, '_blank') } },</li>
+            </ul>
+          </ul>
+          <li style="font-weight: bold; color: rgb(51, 51, 255);">items: <br>
+          </li>
+          <ul>
+            <li style="font-weight: bold; color: rgb(51, 51, 255);">{ "help":</li>
+          </ul>
+          <ul>
+            <ul>
+              <li style="font-weight: bold; color: rgb(51, 51, 255);">&nbsp;{ name: "Help", icon: "help" },</li>
+            </ul>
+            <li style="font-weight: bold; color: rgb(51, 51, 255);">"sep1": "---------", "quit": <br>
+            </li>
+            <ul>
+              <li style="font-weight: bold; color: rgb(51, 51, 255);">{ name: "Quit", icon: "quit" }&nbsp; } }); }<span style="font-weight: bold;"></span></li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+      <li>he richiama a sua volta (sempre nella stessa Pagina Java)&nbsp; la Funzione <span style="font-weight: bold; color: red; text-decoration: underline;">getCurrentPageNoExtNoPage</span> che ricava il Nome della Pagina da cui viene chiamato l'Help della Pagina<br>
+    </li>
+      <ul>
+<li><span style="font-weight: bold; color: rgb(51, 51, 255);">function <span style="color: red;">getCurrentPageNoExtNoPage</span>() <br>
+        </span></li><ul><li><span style="font-weight: bold; color: rgb(51, 51, 255);">{ </span><span style="font-weight: bold; color: rgb(51, 51, 255);">var sPage = <span style="color: red;">getCurrentPage</span>();</span></li><li><span style="font-weight: bold; color: rgb(51, 51, 255);">return sPage.substr (0, sPage.lastIndexOf('Page'));</span><span style="font-weight: bold; color: rgb(51, 51, 255);"> } <br>
+          </span></li></ul>
+      </ul>
+      <li><span style="font-weight: bold; color: rgb(51, 51, 255);"></span>che richiama a sua volta&nbsp; (sempre nella stessa Pagina Java)&nbsp; la Funzione <span style="font-weight: bold; color: red; text-decoration: underline;">getCurrentPagee</span> che ricava <br>
+    </li>
+      <ul>
+<li>&nbsp;<span style="font-weight: bold; color: rgb(51, 51, 255);">function <span style="color: red;">getCurrentPage(</span>)</span></li><ul><li><span style="font-weight: bold; color: rgb(51, 51, 255);">{</span><span style="font-weight: bold; color: rgb(51, 51, 255);">var sPath = window.location.pathname;</span></li><li><span style="font-weight: bold; color: rgb(51, 51, 255);">var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);</span></li><li><span style="font-weight: bold; color: rgb(51, 51, 255);">return sPage;</span><span style="font-weight: bold; color: rgb(51, 51, 255);"> }</span></li></ul>
+      </ul>
+    </ul>
+</ul>
+</ul>
+
+
+<p class="ElenchiPUNTATI" style="margin-left: 0cm; text-indent: 0cm;"><span class="">che è quindi comune a TUTTE LE FORM <br>
+</span></p><p class="ElenchiPUNTATI" style="margin-left: 0cm; text-indent: 0cm;"><span style="text-decoration: underline; font-weight: bold;">Il Testo di HELP&nbsp; del Singolo Camp</span>o viene cercato nella Cartella <span style="text-decoration: underline; font-weight: bold;">TR_RECOR</span>D<br>
+</p>
+<ul>
+
+  <li style="font-weight: bold;">PowerWeb</li>
+  <ul>
+    <li style="font-weight: bold;">HelpPages</li>
+    <ul style="text-decoration: underline;">
+      <li style="font-weight: bold;">TR_RECORD</li>
+    </ul>
+  </ul>
+
+  
+  <ul>
+
+    
+    <ul>
+      <ul>
+        <li>costruendone il Nome del Singolo Help del Singolo Campo della corrispondente Tabella collegata a quella Singola Pagina</li>
+      </ul>
+    </ul>
+  </ul>
+
+  <ul>
+    <ul>
+      
+      <ul>
+        <ul>
+          <li><span style="font-weight: bold;"><br>
+</span></li>
+        </ul>
+      </ul>
+
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      
+      <ul>
+        <ul>
+          <ul>
+            <li>a cui viene aggiunto</li>
+          </ul>
+        </ul>
+      </ul>
+
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <li> per I Campi con prefisso "txt", "chk", "cmb", "dtp", "cmbuc" <br>
+      </li>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      <ul>
+        
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <li><span style="font-weight: bold;">il NOME DEL CAMPO SENZA IL relativo PREFISSO</span><br>
+        </li>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+
+      </ul>
+    </ul>
+  </ul>
+  <ul>
+    <ul>
+      
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <ul>
+                  <li>mentre per gli altri Campi e/o Aree della Maschera<br>
+      </li>
+                </ul>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
+
+      <ul>
+        
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <ul>
+                  <ul>
+                    <li><span style="font-weight: bold;">Il NOME DEL CAMPO COMPLETO </span><br>
+        </li>
+                  </ul>
+                </ul>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span class="">All&#8217;interno della Cartella dell&#8217;HELP vengono gestite 2
+Cartelle principali</span>
+
+<ul>
+
+  <li><span style="font-weight: bold;">HELP
+TECNICO&nbsp;&nbsp;&nbsp;&nbsp; <br>
+    </span></li>
+  <li><span style="font-weight: bold;">HELP
+UTENTE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+    </span></li>
+  
+  
+</ul>
+
+<span style="font-size: 16pt; text-decoration: underline; font-weight: bold;"><br>
+</span></body></html>

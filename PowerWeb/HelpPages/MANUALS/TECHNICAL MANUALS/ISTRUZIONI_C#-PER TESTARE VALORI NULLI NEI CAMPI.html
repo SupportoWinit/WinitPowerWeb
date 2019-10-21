@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>IMPORT INIZIALE DA POWER ACCESS</title></head><body><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>ISTRUZIONI X TESTARE PRESENZA VALORI NULLI NEI CAMPI<span style="font-weight: bold;"></span></h1>
+
+<ul><li style="font-weight: bold; text-decoration: underline;">NULLABLE</li><ul><li><span style="font-weight: bold;">STRING</span>&nbsp;</li></ul><ul><ul><li>if ( String.IsNullOrEmpty(Entity.xxxxxxx)) ---------------&gt; restituisce True/False </li></ul></ul><ul><li><span style="font-weight: bold;">INT</span> / <span style="font-weight: bold;">DOUBLE</span> / <span style="font-weight: bold;">FLOAT / DATETIME</span> / <span style="font-weight: bold;">TIME (x) / TIMESPAN</span> ? (nullable)</li></ul><ul><ul><li>if
+( Entity.xxxxxxxxx.HasValue) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;----------------&gt; restituisce True/False &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</li></ul></ul><li><span style="text-decoration: underline; font-weight: bold;">NOT NULLABLE</span></li><ul><li><span style="font-weight: bold;">STRING</span>&nbsp;</li><ul><li>if ( String.IsNullOrEmpty(Entity.xxxxxxx)) ---------------&gt; restituisce True/False </li></ul></ul><ul><li><span style="font-weight: bold;">INT</span> (not nullable)</li></ul><ul><ul><li>if ( Entity.xxxxxxx == Int32.MinValue) &nbsp; &nbsp; ----------------&gt; restituisce True/False</li></ul><li><span style="font-weight: bold;">DOUBLE</span> (not nullable)</li><ul><li>if ( Entity.xxxxxxx == Double.MinValue) &nbsp; &nbsp; ----------------&gt; restituisce True/False</li></ul><li><span style="font-weight: bold;">FLOAT</span>(not nullable)</li><ul><li>if ( Entity.xxxxxxx == Float.MinValue) &nbsp; &nbsp; ----------------&gt; restituisce True/False</li></ul><li><span style="font-weight: bold;">DATETIME</span>(not nullable)</li><ul><li>if ( Entity.xxxxxxx == DateTime.MinValue) &nbsp; &nbsp; ----------------&gt; restituisce True/False</li></ul><li><span style="font-weight: bold;">TIMESPAN</span>(not nullable)</li><ul><li>if ( Entity.xxxxxxx == TimeSpan.MinValue) &nbsp; &nbsp; ----------------&gt; restituisce True/False</li></ul></ul></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

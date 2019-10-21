@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>DOVE DISABILITARE I SINGOLI TABS/CAMPI dI UNA PAGES</title></head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE DISABILITARE I SINGOLI TABS/CAMPI DI UNA PAGE</h1>
+
+Nella Tabella <a href="../../TR_RECORD/_TR_TAB_EDITFORMTEMPLATE.html">TAB_EDITFORMTEMPLATE</a> è possibile per ogni Diversa ENTITA'
+&nbsp;per la quale vengono gestiti gli EditFormTemplate <br>
+
+paremetrizzare il sistema in modo che vengano eventualmente
+DISABILITATI<br>
+
+&nbsp;&nbsp;&nbsp; - uno o + di uno dei TABS <br>
+
+&nbsp;&nbsp;&nbsp; - uno o + di uno dei Singoli Campi<br>
+
+<br>
+
+previsti nella relativa Form di Editing di quella specifica Form<br>
+
+<br>
+
+<span style="font-weight: bold;"></span>Per fare ciò basta inserire
+nella suddetta <span style="font-weight: bold; text-decoration: underline;">Tabella
+TAB_EDITFORMTEMPLATE</span> un record con <br>
+
+<ul>
+
+  <li>il campo<span style="font-weight: bold; color: black;"> <span style="color: rgb(51, 0, 153); text-decoration: underline;">Entity_Tab_EditFormTemplate</span></span>
+intestato a quella ENTITA' (es Cant, e/o COL:NOTE e/o Fru_Cant ecc)</li>
+  <li>associandoci&nbsp;</li>
+  <ul>
+    <li>nel campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 0, 153);">Tabs_Tab_EditFormTemplate</span>
+l'ventuale elenco dei NOMI DEI TABS da DISABILITARE</li>
+    <ul>
+      <li>separandoli uno dall'altro con il carattere | (pipe)<br>
+</li>
+    </ul>
+    <li>nel campo <span style="text-decoration: underline; font-weight: bold; color: rgb(51, 0, 153);">Fields_Tab_EditFormTemplate</span>
+l'eventuale elenco dei NOMI DEI CAMPI DA DISABILITARE</li>
+    <ul>
+      <li>separandoli uno dall'altro con il carattere | (pipe)<br>
+</li>
+    </ul>
+  </ul>
+</ul>
+
+E' possibile disabilitare per ogni singolo Entità nella corrispodnente Pagina di Gestione di questa Entità:<br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; solo determinati TAB</li>
+  <li>&nbsp;&nbsp;&nbsp; solo determinati Campi</li>
+  <li>&nbsp;&nbsp;&nbsp; sia determinati Tab e determinati Campi</li>
+</ul><span style="text-decoration: underline; font-weight: bold;">I
+Nomi delle Entità per le quali è possibile Disabilitare Singoli TABS
+e/o Singoli Campi sono PRECARICATI all'interno della Tabella
+Tab_EditFormTemplate</span> e per alcuni di essi sono già preimpostati alcuni TABS che ATTUALMENTE NON vengono ancora Utilizzati all'interno di POWER WEB<br>
+<br>
+<span style="text-decoration: underline; font-weight: bold;">Per conoscere l'elenco delle Entità con i relativi Tabs e relativi Nomi dei Campi Video</span> eventualmente DISABILITABILI consultare il tracciato Record della <a href="../../TR_RECORD/_TR_TAB_EDITFORMTEMPLATE.html">Tab_EditForm_Template</a>.<br>
+<br>
+
+
+La Gestione a livello di codice viene fatta in:<br>
+
+<ul>
+
+  <li><span style="font-weight: bold; color: rgb(51, 0, 153);">POWER WEB</span></li>
+  <ul>
+    <li><span style="font-weight: bold; color: rgb(51, 0, 153);">MODULE</span></li>
+    <ul>
+      <li><span style="font-weight: bold; color: rgb(51, 0, 153);">EditDictionaryManager</span></li>
+      <ul>
+        <li><span style="font-weight: bold; color: rgb(51, 0, 153);">public
+static class EditDictionaryManager</span></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+tramite le due routine<br>
+
+<ul>
+
+  <li>&nbsp;<span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: black;">private static bool</span> IsEFTTabDisabled <span style="color: black;">(Tab_EditFormTemplate currentEFT, string tabName)</span></span></li>
+  <ul>
+    <li><span style="color: rgb(51, 0, 153);"><span style="color: black;">restituisce </span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: black;">TRUE </span></span><span style="color: rgb(51, 0, 153);"><span style="color: black;">se quel
+EFTT (EditFormTemplateTab)ovvero</span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: black;"> quel TAB è disabilitato</span><br>
+      </span></li>
+  </ul>
+  <li><span style="font-weight: bold; color: rgb(51, 0, 153);">&nbsp;<span style="color: black;">private static TabPageItemExtended </span>GetEFTField
+    <span style="color: black;">(Tab_EditFormTemplate currentEFT,
+string fieldName, TabPageItemFieldTypeEnum PIFEnum =
+TabPageItemFieldTypeEnum.None)</span></span></li>
+  <ul>
+    <li><span style="color: rgb(51, 0, 153);"><span style="color: black;">restituisce </span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: black;">TRUE </span></span><span style="color: rgb(51, 0, 153);"><span style="color: black;">se quel
+Field ovvero</span></span><span style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: black;"> quel CAMPO è disabilitato</span></span></li>
+  </ul>
+</ul>
+
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

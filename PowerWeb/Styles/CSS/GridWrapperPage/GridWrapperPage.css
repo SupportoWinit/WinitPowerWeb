@@ -1,0 +1,14 @@
+﻿#action-buttons{
+    text-align: right;
+    margin-right:0px;
+    padding-bottom:10px;
+   
+}
+#action-buttons div{
+    width:40px;
+   
+}
+.save-delete-vista{
+    width:40px;
+    margin-left:5px;
+}

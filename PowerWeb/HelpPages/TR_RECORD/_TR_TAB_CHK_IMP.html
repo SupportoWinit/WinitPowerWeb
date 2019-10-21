@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_TAB_CHK_IMP</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;"><a name="TABELLA_TAB_CHK_IMP_"></a>TABELLA
+TAB_CHK_IMP<br>
+</h1>
+<span style="font-weight: bold;">Tabella che contiene le eventuali segnalazioni sull'avanzamento dell'Import e contiene:<br>&nbsp;&nbsp;&nbsp; il RRN a cui si è eventualmente interrotta una elaborazione di Import<br>oppure<br>&nbsp;&nbsp;&nbsp; i RRN dei Record che sono stati rilevati come contenenti degli ERRORI durante la fase di Import.<br></span><br><span style="font-weight: bold;"><span style="text-decoration: underline;">NOTA BENE </span>:<br></span><ul><li><span style="font-weight: bold;">&nbsp;se nella tabella c'è un Record con STATO = CHK (ce ne deve essere solo 1) </span></li><ul><li><span style="font-weight: bold;">&nbsp;significa che l'elaborazione di IMPORT si è INTERROTTA PRIMA di aver terminato l'esame di tutti I record&nbsp;</span></li><ul><li><span style="font-weight: bold;">occorre quindi&nbsp;Rilanciarla a partire da quel Record sul quale si è interrotta</span></li></ul></ul><li><span style="font-weight: bold;">&nbsp;se nella Tabella c'è un Record con STATO = END (ce ne deve essere solo 1)</span></li><ul><li><span style="font-weight: bold;">significa che l'elaborazione è ternminata SENZA NESSUN ERRORE</span></li></ul><li><span style="font-weight: bold;">se nella Tabella ci sono dei Record con STATO = ERR ( ce ne possono essere "N" anche per la stessa Tabella)</span></li><ul><li><span style="font-weight: bold;">e NON c'è il Record con STATO = CHK</span></li><ul><li><span style="font-weight: bold;">significa che l'elaborazione è giunta regolarmente alla fine&nbsp;</span></li><ul><li><span style="font-weight: bold;">ma vanno rielaborati SOLO i Record con STATO = ERR</span></li></ul></ul><li><span style="font-weight: bold;">e c'è un Record con STATO = CHK</span></li><ul><li><span style="font-weight: bold;">Vedi quanto previsto al Pto Iniziale</span></li></ul></ul></ul><span style="font-weight: bold;">
+</span><br>
+Le Chiavi del Record :&nbsp; <a href="#Tab_Chk_Imp_Id">Tab_Chk_Imp_Id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; : &nbsp;<a href="_TR_TAB_CHK_IMP.html#Tab_Chk_Imp_Id">Tab_Chk_Imp_Id</a> (<span style="font-weight: bold; color: red;">Chiave</span>), <a href="#Nome_Tabella_Tab_Check_Imp">Nome_Tabella_Tab_Check_Imp</a><br>
+I Campi con Default &nbsp; :&nbsp; <a href="#Data_Registrazione_Lingue">Nessuno</a><br>
+<br>
+I Campi di Default della DATAGRID MASTER: Bottoni (100px FISSO) + 90%<br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; &nbsp;1-<a href="#Sigla_Lingue"><span style="text-decoration: underline;">Nome_Tabella_Tab_Check_Imp</span></a>
+(30%) / 2 -&nbsp;<a href="#Chiave_Record_Tab_Check_Imp">Chiave_Record_Tab_Check_Imp </a>&nbsp;(50%) / 3 -&nbsp;<a href="#Stato_Record_Tab_Check_Imp">Stato_Record_Tab_Check_Imp</a> (10%)
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="color: white; text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; width: 244px;">NOME
+DEL CAMPO NEL DB</td>
+<td style="color: white; text-align: center; font-weight: bold; text-decoration: underline; background-color: silver; width: 111px;">TIPO
+CAMPO</td>
+<td style="background-color: silver; color: white; text-align: center; font-weight: bold; text-decoration: underline; width: 863px;">DESCRIZIONE
+DEL CAMPO</td>
+<td style="background-color: silver; color: white; text-align: center; text-decoration: underline; width: 40px;">CHECK</td>
+<td style="text-align: center; background-color: silver; text-decoration: underline; width: 61px;"><span style="font-weight: bold; color: white;">COMBO</span></td>
+</tr>
+</tbody>
+</table>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 247px;"><span style="font-weight: bold;"><a name="Tab_Chk_Imp_Id"></a></span><span style="text-decoration: underline; font-weight: bold;"> Tab_Chk_Imp_Id</span><span style="text-decoration: underline; font-weight: bold;"></span>
+</td>
+<td style="vertical-align: top; text-align: center; width: 103px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a>
+</td>
+<td style="vertical-align: top; width: 839px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;del Singolo Record di segnalazione</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span>
+</td>
+<td style="width: 59px; text-align: center;">OK</td>
+<td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+
+
+
+<tr>
+<td style="vertical-align: top; width: 247px;"><span style="font-weight: bold;"><a name="Nome_Tabella_Tab_Check_Imp"></a>
+<span style="text-decoration: underline;">Nome_Tabella_Tab_Check_Imp</span></span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 103px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">NVARCHAR(50)</a></td>
+<td style="vertical-align: top; width: 839px;">Nome della Tabella di Input&nbsp;&nbsp;<span style="text-decoration: underline; background-color: red; color: black; font-weight: bold;">Campo
+Obbligatorio</span> . su cui si è arrestata l'elaborazione (x i Record con <a href="#Stato_Record_Tab_Check_Imp">Stato</a> = CHK) &nbsp;o è stato riscontrato quell'errore (x i Record con <a href="#Stato_Record_Tab_Check_Imp">Stato</a> ="ERR")&nbsp;<span style="color: rgb(153, 102, 51); font-weight: bold;"></span></td>
+<td style="width: 59px; text-align: center;">OK</td>
+<td style="width: 60px; text-align: center;">TEXT</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 247px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Chiave_Record_Tab_Check_Imp"></a> Chiave_Record_Tab_Check_Imp</span></td>
+<td style="vertical-align: top; text-align: center; width: 103px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(MAX)<br>
+</td>
+<td style="vertical-align: top; width: 839px;">Chiave del Record di Import &nbsp;<span style="text-decoration: underline; background-color: red; color: black; font-weight: bold;">Campo
+Obbligatorio</span> .su cui si è arrestata l'elaborazione (x i Record con <a href="#Stato_Record_Tab_Check_Imp">Stato</a> = CHK) &nbsp;o è
+stato riscontrato quell'errore (x i Record con <a href="#Stato_Record_Tab_Check_Imp">Stato</a> ="ERR")) <span style="text-decoration: underline; background-color: red; color: black; font-weight: bold;">Campo
+Obbligatorio</span> .<span style="font-weight: bold; color: rgb(153, 102, 51);"></span><span style="color: rgb(153, 51, 0);"></span> </td>
+<td style="width: 59px; text-align: center;">OK</td>
+<td style="width: 60px; text-align: center;">TEXT</td>
+</tr><tr><td><a name="Stato_Record_Tab_Check_Imp"></a> &nbsp;<span style="font-weight: bold; text-decoration: underline;">Stato_Record_Tab_Check_Imp</span></td><td><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(3)</td><td>Stato del Record <span style="text-decoration: underline; background-color: red; color: black; font-weight: bold;">Campo
+Obbligatorio</span> .Può assumere i seguenti valori<br><ul><li>CHK : significa che l'elaborazione si è interrotta a quel Record di quella <a href="#Nome_Tabella_Tab_Check_Imp">Tabella</a></li><li>END : Significa che l'elaborazione è terminata regolarmente</li><li>ERR : significa che su quel record di quella <a href="#TABELLA_TAB_CHK_IMP_">Tabella</a> è stato riscontrato un errore e va rielaborato</li></ul></td><td style="text-align: center;">OK</td><td style="text-align: center;">TEXT</td></tr>
+</tbody>
+</table>
+<span style="text-decoration: underline; font-weight: bold;"></span>
+</body></html>

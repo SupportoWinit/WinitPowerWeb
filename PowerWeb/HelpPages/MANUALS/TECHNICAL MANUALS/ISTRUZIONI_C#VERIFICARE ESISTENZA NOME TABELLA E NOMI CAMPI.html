@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>VERIFICARE NOME TABELLA E RELATIVI NOMI CAMPI</title></head><body style="margin-left: 0px; width: 1387px;"><a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>VERIFICARE NOME TABELLA E NOME CAMPI DELLE TABELLE</h1>
+Quando dovesse servire verificare che <br>
+<ul>
+<li>il Nome della Tabella che si sta usando nel programma
+corrisponda ad una delle Tabelle presenti nel DataBase</li>
+<li>il Nome di un Campo che si sta usando nel programma
+corrisponda ad uno dei Campi presenti nel DataBase per la relativa
+Tabella</li>
+</ul>
+basta eseguire le seguenti istruzioni:<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: rgb(0, 102, 0); font-weight: bold;">&nbsp;//Controllo
+che il Nome della TABELLA inserita sia un Nome di una tabella esistente
+nel Dominio delle Tabelle gestite</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; var
+currentType = Type.GetType(String.Format("Domain.{0}, Domain", entity.<span style="font-weight: bold; text-decoration: underline; color: red;">NomeTab</span>));&nbsp;&nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp; if (currentType == null)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: rgb(0, 102, 0);">//nel caso
+in cui risponda NULL significa che il Nome indicato non esiste nel
+Dominio delle Tabelle conosciuto dall'applicativo</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; throw new Exception();<span style="font-weight: bold; color: rgb(0, 102, 0);">
+&nbsp;// oppure aggiungo il messaggio di errore al Dictionary ecc.ec</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: rgb(0, 102, 0);"> //Dopo
+aver vevrifica e quindi ottenuto la Tabella in currentType<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; //Controllo che il Nome del Campo sia un
+Nome di uno dei Campi della Tabella indicata</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+var property = currentType.GetProperty(entity<span style="font-weight: bold; text-decoration: underline; color: red;">.NomeCampo)</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; if (property == null)<br>
+<span style="font-weight: bold; color: rgb(0, 102, 0);">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; //nel
+caso in cui risponda NULL significa che il Nome del Campo NON
+appartiene alla Tabella indicata</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp; throw new Exception();<br>
+</body></html>

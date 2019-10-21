@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Fil_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (FIL) di Gestione delle Schede Anagrafiche delle Filiali (dei Cantieri/Assistiti)</span>
+</h1>
+
+Questa pagina permette l'Inserimento, la Modifica, la
+Cancellazione ( a determinate condizioni) di ogni Filiale che potrà
+essere poi attribuito ai Singoli Cantieri/Assistiti per gestirne poi
+l'eventuale Filtro sulla base delle Filiali Abilitate/Disabilitate per
+Singolo Utente, (vedi <span style="color: red;">Manuale Come Gestire i
+Filtri per Filiale e/o per Responsabile</span>)<br>
+<ul>
+<li><span style="font-weight: bold; text-decoration: underline;">
+
+Questa pagina è di Tipo MASTER</span> (senza Dettaglio) e quindi si rimanda la relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della relativa struttura di Funzionamento.</li><li><span style="text-decoration: underline; font-weight: bold;">Gestisce il&nbsp;</span><span style="text-decoration: underline; font-weight: bold;">Tasto di ON/OFF</span> in base alla parametrizzazione inserita nel campo <a href="../TR_RECORD/_TR_TAB_FUNZ.html#PopulateBtnVisible">PopulateBtnVisible</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">TAB_FUNZ</a></li><li><span style="text-decoration: underline; font-weight: bold;">Gestisce la Modalità di EDIT diretta dalla Griglia</span> in base alla parametrizzazione inserita nel campo<a href="../TR_RECORD/_TR_TAB_FUNZ.html#Dflt_Grid_Edit_Mode"> Dflt_Grid_Edit_Mode</a> della <a href="../TR_RECORD/_TR_TAB_FUNZ.html">Tab_Funz</a><span style="font-weight: bold; text-decoration: underline;"><br>
+    </span></li>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span>
+<ul>
+
+  <ul>
+    <ul>
+      <ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<o:p></o:p>
+<ul>
+
+  <ul>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;"></span>
+<dl>
+
+  <dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire un Utente sono i seguenti:</u></b></dt>
+</dl>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><a href="../TR_RECORD/_TR_FIL.html#Codice_Filiale">UN CODICE
+FILIALE &nbsp;</a> &nbsp;</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>(Massimo di 20 caratteri Alfanumerici) </li>
+  <li><a href="../TR_RECORD/_TR_FIL.html#Descrizione_Fil">LA RELATIVA
+DESCRIZIONE</a><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(Massimo di 50 caratteri Alfanumerici)<br>
+</li>
+  <li><a href="../TR_RECORD/_TR_FIL.html##Data_Registrazione_Fil">LA
+DATA 1° REGISTRAZIONE</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+  <li><a href="../TR_RECORD/_TR_FIL.html#DataOraUltimaModifica_Fil">DATA/ORA
+ULTIMA MODIFICA</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(Impostata Automaticamente dal sistema e NON Modificabile)</li>
+</ul>
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<span style="font-weight: bold; text-decoration: underline;"><br>
+<br>
+Comportamenti
+Specifici per la Pagina FIL</span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><span style="text-decoration: underline;">Rispetto al comportamento
+Standard di tutte le altre Pagine </span>,<span style="font-weight: bold; text-decoration: underline;"> nella Pagina
+FIL</span><span style="text-decoration: underline;"><span style="font-weight: bold;"> </span>ci sono alcuni comportamenti
+particolari che vale la pena di Segnalare</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;">AREA
+FILTRI CUSTOM</li>
+  <ul>
+    <li>vengono impostati i FILTRI CUSTOM di PERIODO sui seguenti Campi</li>
+    <ul>
+      <ul>
+        <li><a href="../TR_RECORD/_TR_FIL.html#Data_Registrazione_Fil">Data_Registrazione_Fil</a></li>
+        <li><a href="../TR_RECORD/_TR_FIL.html#DataOraUltimaModifica_Fil">DataOraUltimaModifica_Fil</a></li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">La
+Maschera di Gestione dell'Anagrafica Filiali
+prevede la gestione dei propri Dati Anagrafici suddividendoli per
+comodità in più TAB</span><br>
+
+<ul>
+
+  <li style="font-weight: bold;">Generali</li>
+  <li style="font-weight: bold;">Note</li>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">I singoli
+TAB come pure i Singoli Campi dei Singoli TAB possono essere resi
+VISIBILI/INVISIBILI.</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;a Livello Generale </span></span>(visibili/invisibili
+quindi per TUTTI gli Utenti Collegati)</li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">a Livello di Singolo Utente </span></span>(visibili/invisibili
+quindi per quello SPECIFICO Utente collegato)</li>
+</ul>
+
+(vedi relativo <span style="color: red;">Manuale
+Abilitazione/Disabilitazione TAB/CAMPI</span>) in
+modo da permettere ad ogni Azienda di poter decidere quanti e quali
+Dati si intendono gestire a livello Anagrafico per i propri
+Collaboratori secondo le proprie necessità<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">Per il
+Significato </span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; dei singoli Tasti&nbsp; presenti nella Testata
+della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Per come
+Modificare</span><br>
+
+<ul>
+
+  <li>&nbsp;i Campi (Colonne) da visualizzare nella Griglia Master <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="mailto:../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a></li>
+  </ul>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb)</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio<br>
+  </li>
+  <ul>
+    <li>&nbsp;si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb</a></li>
+  </ul>
+  <li>i Filtri sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare i Filtri della Griglia Master o di Dettaglio di una Pagina
+di
+PowerWeb</a></li>
+  </ul>
+  <li>un Record della Griglia Master per effettuarne</li>
+  <ul>
+    <li>l'Inserimento/Modifica/Cancellazione/Consultazione del Singoli
+Record visualizzatoi</li>
+    <ul>
+      <li>&nbsp;si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+    </ul>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>
+&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>&nbsp;&nbsp; (vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o della Griglia di Dettaglio
+di una Pagina di
+PowerWeb)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei Clienti nell'<a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html#AREA_H">Area
+H dello Schema della pagina Standard di PowerWeb</a><br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+Una volta scelta la Modalità di Visualizzazione/Ricerca delle Filiali che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista delle Filiali che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span><span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<dl>
+
+</dl>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+
+</body></html>

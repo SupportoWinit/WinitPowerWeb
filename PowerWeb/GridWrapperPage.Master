@@ -1,0 +1,75 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GridWrapperPage.master.cs" Inherits="PowerWeb.GridWrapperPage" %>
+
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxCallbackPanel" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxCallback" TagPrefix="dx" %>
+
+
+
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
+    <link href="/Styles/CSS/GridWrapperPage/GridWrapperPage.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+
+        var getBingKey = function () {
+            return <%=bingKey%>;
+        }
+
+
+    </script>
+    <script type="text/javascript">function getState(){return <%=initVista%>;}</script>
+    <script type="text/javascript">function getViste() { return <%# viste%>;}</script>
+    <script type="text/javascript" src="/Scripts/Custom/GridWrapperController.js"></script>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <div id="gridWrapperContainer" ng-app="gridWrapper" ng-controller="gridWrapperController">
+        <div class="row">
+
+            <div id="vista-buttons" class="col-md-6">
+                <div dx-select-box="selectBoxOption" id="viste" class="col-md-8"></div>
+                <div dx-button="{ icon: 'floppy', onClick: saveVista }" class="save-delete-vista"></div>
+                <div dx-button="{ icon:  'remove',onClick: deleteVista}" class="save-delete-vista"></div>
+            </div>
+            <div id="action-buttons" class="col-md-6">
+                <div dx-button="{ icon: 'globe' , visible: enableMap}" ng-click="showMap()"></div>
+                <div dx-button="{ icon:  'glyphicon glyphicon-import'}"></div>
+                <div dx-button="{ }"></div>
+                <div dx-button="{ icon:  'glyphicon glyphicon-print'}"></div>
+                <div dx-button="{ icon:  'glyphicon glyphicon-th-list'}"></div>
+                <div dx-button="{ icon:  'glyphicon glyphicon-question-sign'}"></div>
+            </div>
+
+        </div>
+
+        <div id="mapPopup" dx-popup="mapPopupOptions">
+            <div data-options="dxTemplate:{ name: 'content' }">
+                <div id="mapContainer" dx-map="mapOptions"></div>
+            </div>
+        </div>
+
+
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+
+    </div>
+
+    <div id="loadingVisteLoadingPanel"></div>
+    <div id="savingRowLoadingPanel"></div>
+
+
+
+    <input type="hidden" id="selectBoxDataSource" value="" runat="server" />
+
+
+
+
+    <dx:ASPxCallback runat="server" ID="saveViewDate" ClientInstanceName="saveViewDate" OnCallback="saveViewDate_OnCallback" ClientSideEvents-CallbackComplete="saveViewDate_EndCallback">
+        <ClientSideEvents CallbackComplete="saveViewDate_EndCallback"></ClientSideEvents>
+    </dx:ASPxCallback>
+
+
+</asp:Content>
+
+

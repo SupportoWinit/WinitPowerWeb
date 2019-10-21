@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Dove Gestire le CASCADE nelle COMBOBOX</title>
+
+  
+</head><body>
+<a href="../../../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+<h1>DOVE GESTIRE LE CASCADE delle COMBOBOX</h1>
+
+Nel caso in cui si voglia che
+la scelta di un Record presente nell'elenco dei Record associati ad una
+CompoBox provveda in "cascade" <br>
+
+a riempire automaticamente altri
+campi della maschera come ad esempio fare sì che la scelta del Luogo di
+Residenza faccia riempire<br>
+
+anche i corrispondenti Campi Video del CAP
+e della Provincia associati al Luogo selezionato nella Lista associata
+alla ComoBox del<br>
+
+campo Luogo di Residenza occorre&nbsp;aggiungere, per
+ogni campo per il quale si vuole gestire la "cascade",<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">NEL CASO
+DI UN MODULO CON FORM SINGOLA</span> (Cant,Col;Cli;Fru;Pru, ecc) <br>
+
+&nbsp; le
+seguenti istruzioni in<br>
+
+<ul>
+
+  <li style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 0, 153);">MODULES</li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: red;">Cli</span>Modules.ascx</li>
+      <ul>
+        <li>function<span style="font-weight: bold; color: red;">
+OnDomLuogo</span>Changed(s, e)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var currentCmb =
+ASPxClientComboBox.Cast(s);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var <span style="font-weight: bold; color: red;">domProv</span>Cmb =
+ASPxClientComboBox.Cast(grid.GetEditor("<span style="font-weight: bold; color: red;">Domicilio_Provincia_Cli</span>"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var <span style="font-weight: bold; color: red;">domCap</span>Cmb =
+ASPxClientComboBox.Cast(grid.GetEditor("<span style="font-weight: bold; color: red;">Domicilio_Cap_Cli</span>"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: red;">domProv</span>Cmb.SetValue(currentCmb.GetSelectedItem().GetColumnText("<span style="font-weight: bold; color: red;">Codice_Prov_Tab_Comuni</span>"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: bold; color: red;"> domCap</span>Cmb.SetValue(currentCmb.GetSelectedItem().GetColumnText("<span style="font-weight: bold; color: red;">Cap_Tab_Comuni</span>"));<br>
+&nbsp;&nbsp;&nbsp; }</li>
+      </ul>
+    </ul>
+    <li>e conseguentemente le relative istruzioni che la richiamana
+anche nel Modulo</li>
+    <ul style="font-weight: bold; color: rgb(0, 0, 153);">
+      <li><span style="color: red;">Cli</span>Modules.ascx.cs</li>
+      <ul>
+        <li>&nbsp;protected void Page_Init(object sender, EventArgs e)</li>
+        <ul>
+          <li><span style="font-weight: normal; color: black;">vanno
+aggiunte le seguenti istruzioni per ogni Campo di cui si vuole
+gestire&nbsp;la Cascade di uno o più valori&nbsp;presenti nella sua
+ComboBox negli "n" campi corrispondenti (definiti in aspcx a fronte
+dell'evento OnxxxChanged</span></li>
+        </ul>
+        <ul style="font-weight: normal; color: black;">
+          <ul>
+            <li><span style="font-weight: bold;">GridViewDataComboBoxColumn</span>
+              <span style="font-weight: bold; color: red;">domLuogo</span>
+=<span style="font-weight: bold; color: red;"> gvCli</span>.<span style="font-weight: bold;">Columns</span>["<span style="font-weight: bold; color: red;">Domicilio_Luogo_Cli</span>"] <span style="font-weight: bold;">as GridViewDataComboBoxColumn;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: red;">domLuogo</span>.<span style="font-weight: bold;">PropertiesComboBox.ClientSideEvents.SelectedIndexChanged</span>
+= "<span style="font-weight: bold; color: red;">OnDomLuogo</span><span style="font-weight: bold;">Changed</span>";</li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">NEL CASO
+DI UN MODULO CON FORM DETTAIL</span>
+(Fru_Cant,Pru_Col;Cant_Note;COl_Note, ecc) <br>
+
+&nbsp; le
+seguenti istruzioni in<br>
+
+<ul>
+
+  <li style="font-weight: bold; color: rgb(51, 0, 153);">POWERWEB</li>
+  <ul>
+    <li style="font-weight: bold; color: rgb(51, 0, 153);">MODULES</li>
+    <ul>
+      <li style="font-weight: bold; color: rgb(51, 0, 153);"><span style="color: red;">Fru_Cant</span>Modules.ascx</li>
+      <ul>
+        <li><span style="font-weight: bold; color: rgb(0, 0, 102);"></span>function
+          <span style="font-weight: bold; color: red;">OnCodice_CantiereChanged</span>(s,
+e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var currentCmb =
+ASPxClientComboBox.Cast(s);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var <span style="font-weight: bold; color: red;">codice_Cantiere</span>Cmb =
+ASPxClientComboBox.Cast(detailGrid.GetEditor("<span style="font-weight: bold; color: red;">Descrizione_Can</span>"));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; color: red;">codice_Cantiere</span>Cmb.SetValue(currentCmb.GetSelectedItem().GetColumnText("<span style="font-weight: bold; color: red;">Descrizione_Can</span>"));<br>
+&nbsp;&nbsp;&nbsp; }</li>
+      </ul>
+    </ul>
+    <li>e conseguentemente le relative istruzioni che la richiamana
+anche nel Modulo</li>
+    <ul style="font-weight: bold; color: rgb(0, 0, 153);">
+      <li><span style="color: red;">Fru_Cant</span>Modules.ascx.cs</li>
+      <ul>
+        <li><span style="color: black; font-weight: normal;"><span style="font-weight: bold; color: rgb(0, 0, 102);">protected void</span>
+          <span style="font-weight: bold; color: red;">gvFru_Cant</span><span style="font-weight: bold; color: rgb(0, 0, 102);">_Detail_BeforePerformDataSelect(object
+sender, EventArgs e)</span></span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ASPxGridView gvDetails = sender as ASPxGridView;</span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (gvDetails != null)</span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CommonServiceWeb.FillGridLabels(typeof(Fru_Cant), gvDetails);</span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CommonServiceWeb.FillComboboxes(gvDetails);</span><br style="color: black; font-weight: normal;">
+          <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CommonServiceWeb.InitDetailGrid(Page, gvDetails);</span></li>
+        <ul>
+          <ul>
+            <li><span style="font-weight: normal; color: black;">vanno
+aggiunte le seguenti istruzioni per ogni Campo di cui si vuole
+gestire&nbsp;la Cascade di uno o più valori&nbsp;presenti nella sua
+ComboBox
+negli "n" campi corrispondenti (definiti in aspcx a fronte dell'evento
+OnxxxChanged</span></li>
+            <ul>
+              <li><span style="color: black; font-weight: normal;"><span style="font-weight: bold; color: red;"><span style="color: black;">GridViewDataComboBoxColumn
+                </span>codCant =
+gvDetails.Columns[CommonService.GetPropertyName(() =&gt;
+_cantStub.Cant_Id)] as &nbsp;GridViewDataComboBoxColumn;</span></span></li>
+              <li><span style="font-weight: bold; color: red;">&nbsp;codCant.PropertiesComboBox.ClientSideEvents.SelectedIndexChanged
+= "OnCodice_CantiereChanged";</span></li>
+            </ul>
+            <li style="font-weight: normal; color: black;">alle
+pres-esistenti istruzioni</li>
+            <li><span style="color: black; font-weight: normal;">BindDetailGrid(gvDetails);</span><br>
+              <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="color: black; font-weight: normal;">
+              <span style="color: black; font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span></li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <span style="font-weight: bold; text-decoration: underline;">
+NOTA BENE</span> :<br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;">Nel caso in cui NON
+VENGA SCELTO NESSUN RECORD</span> fra quelli esistenti e proposti nella
+COMBOBOX </li>
+  <ul>
+    <li>ma venga "editato" manualmente un Valore che non esiste (quando
+la cosa è permessa)</li>
+    <ul>
+      <li>&nbsp;allora la "cascade" NON VIENE ATTIVATA</li>
+    </ul>
+  </ul>
+  <li>Nel caso in cui i campi che devono essere riempiti in "cascade"
+abbiano già dei valori</li>
+  <ul>
+    <li>i vecchi valori VENGONO SOSTITUITI CON I NUOVI associati al
+Nuova Volare selezionato nella ComboBo</li>
+  </ul>
+</ul>
+
+<br clear="all">
+
+<span style="font-weight: bold; text-decoration: underline;">Attualmente
+nelle Form SINGOLE sono presenti i seguenti Campi gestiti a CASCADE</span><br>
+
+<ul>
+
+  <li style="font-weight: bold; text-decoration: underline;">CliModule</li>
+  <ul>
+    <li><span style="text-decoration: underline;">Domicilio_Luogo_Cli</span>
+che carica in cascade</li>
+    <ul>
+      <li>Domicilio_Provincia_Cli</li>
+      <li>Domicilio_Cap_Cli</li>
+    </ul>
+    <li><span style="text-decoration: underline;">Residenza_Luogo_Cli</span>&nbsp;che
+carica in cascade</li>
+    <ul>
+      <li>Residenza_Provincia_Cli</li>
+      <li>Residenza_Cap_Cli</li>
+    </ul>
+  </ul>
+  <li style="font-weight: bold; text-decoration: underline;">CantModule</li>
+  <ul>
+    <li><span style="text-decoration: underline;">Luogo_Nascita_Can</span>&nbsp;che
+carica in cascade</li>
+    <ul>
+      <li>Provincia_Nascita_Can</li>
+      <li>Cap_Nascita_Can</li>
+      <li>Codice_Luogo_Nascita_Can</li>
+    </ul>
+    <li><span style="text-decoration: underline;">Luogo_Can</span> che
+carica in cascade</li>
+    <ul>
+      <li>Provincia_Can</li>
+      <li>Cap_Can</li>
+      <li>Codice_Luogo_Residenza_Can</li>
+    </ul>
+    <li><span style="text-decoration: underline;">Codice_Luogo_Can</span>
+che carica in cascade</li>
+    <ul>
+      <li>Provincia_Can</li>
+      <li>Cap_Can</li>
+      <li>Luogo_Can</li>
+    </ul>
+    <li><span style="text-decoration: underline;">Codice_Luogo_Nascita_Can</span>&nbsp;che
+carica in cascade</li>
+    <ul>
+      <li>Provincia_Nascita_Can</li>
+      <li>Cap_Nascita_Can</li>
+      <li>Luogo_Nascita_Can</li>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold; text-decoration: underline;">ColModule</span></li>
+  <ul>
+    <li><span style="text-decoration: underline;">Codice_Nascita_Luogo_Col</span></li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Nascita_Provincia_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <ul>
+      <li>Nascita_Cap_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <ul>
+      <li>Nascita_Luogo_Col</li>
+    </ul>
+  </ul>
+  <ul>
+    <li style="text-decoration: underline;">Codice_Residenza_Luogo_Col</li>
+    <ul>
+      <li>Residenza_Provincia_Col<br>
+      </li>
+      <li>Residenza_Cap_Col</li>
+      <li>Residenza_Luogo_Col</li>
+    </ul>
+    <li style="text-decoration: underline;">Codice_Domicilio_Luogo_Col</li>
+    <ul>
+      <li>Domicilio_Provincia_Col<br>
+      </li>
+      <li>Domicilio_Cap_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <ul>
+      <li>Domicilio_Luogo_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <li><span style="text-decoration: underline;">Nascita_Luogo_Col</span></li>
+    <ul>
+      <li>Nascita_Provincia_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <ul>
+      <li>Nascita_Cap_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <ul>
+      <li>Codice_Nascita_Luogo_Col<span style="font-weight: bold; text-decoration: underline;"></span></li>
+    </ul>
+    <li style="text-decoration: underline;">Residenza_Luogo_Col</li>
+    <ul>
+      <li>Residenza_Provincia_Col<br>
+      </li>
+      <li>Residenza_Cap_Col</li>
+      <li>Codice_Residenza_Luogo_Col</li>
+    </ul>
+    <li style="text-decoration: underline;">Domicilio_Luogo_Col</li>
+    <ul>
+      <li>Domicilio_Provincia_Col<br>
+      </li>
+      <li>Domicilio_Cap_Col<span style="font-weight: bold; text-decoration: underline;"><br>
+        </span></li>
+    </ul>
+    <ul>
+      <li>Codice_Domicilio_Luogo_Col<span style="font-weight: bold; text-decoration: underline;"></span></li>
+    </ul>
+  </ul>
+</ul>
+
+<span style="font-weight: bold; text-decoration: underline;">Attualmente
+nelle Form SINGOLE sono presenti i seguenti Campi gestiti a CASCADE<br>
+</span>
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">Fru_CantModule</span></li>
+  <ul>
+    <li><span style="text-decoration: underline;">Cant_Id</span></li>
+  </ul>
+  <ul>
+    <ul>
+      <li>Descrizione_Can</li>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold; text-decoration: underline;">Pru_ColModule</span></li>
+  <ul>
+    <li><span style="text-decoration: underline;">Col_Id</span></li>
+    <ul>
+      <li>CognomeNome_Col</li>
+    </ul>
+  </ul>
+</ul>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span>
+</body></html>

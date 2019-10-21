@@ -1,0 +1,80 @@
+﻿
+.commandsRow {
+    margin-left: 5%;
+    margin-right: 5%;
+    display: inline-block;
+    width: 90%;
+}
+
+    .commandsRow > :not(:last-child) {
+        margin-right: 20px;
+    }
+
+.maingrid {
+    margin: 2% 5%;
+}
+
+.selectBoxGrid {
+    width: auto !important;
+    margin-top: 10px !important;
+    max-height: 300px !important;
+    min-height: 70px !important;
+    max-width: 100% !important;
+}
+
+.container {
+    height: 80%;
+    max-width: 100%;
+}
+
+.blinkingButton {
+    animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.leftButton {
+    float: left;
+}
+
+.rightButton {
+    float: right;
+}
+
+
+
+.popupDateBoxRow {
+    margin-top: 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+/*.bottom-centered-button {
+   text-align:center;
+}*/
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #ff6a00;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    visibility: hidden;
+    transform: translateY(-50%);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

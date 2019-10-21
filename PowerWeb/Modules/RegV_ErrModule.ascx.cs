@@ -1,0 +1,2304 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic;
+using System.Web.UI.WebControls;
+using DevExpress.Data.PLinq.Helpers;
+using DevExpress.Data.WcfLinq.Helpers;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.ASPxPanel;
+using DevExpress.XtraPivotGrid.Data;
+using Business.Repository;
+using Common;
+using Domain;
+using DevExpress.Web.Data;
+using System.Collections;
+using Business;
+using DevExpress.Data.Linq;
+using DevExpress.Web.ASPxEditors;
+using System.Web.UI;
+using System.Text;
+
+namespace PowerWeb.Modules
+{
+    public partial class RegVErrModule : BaseGridModule, IPrintModule
+    {
+        #region Fields and Constants
+
+        const String KEYFIELDNAME = "RegE;TmpNewId";
+
+        private string _callBackParameter = string.Empty;
+
+        private Type _entityType = typeof(Reg_V);
+        const Reg_V _regVStub = null;
+
+        #endregion
+
+        #region Properties
+
+        public bool IsInBatchMode
+        {
+            get { return GridView.SettingsEditing.Mode == GridViewEditingMode.Batch; }
+        }
+
+        public List<Reg_V> RegVsToAdd
+        {
+            get
+            {
+                var regVs = PowerWebContext.GetFromSession<List<Reg_V>>("RegVsToAdd" + gvRegVErrEdit.ID);
+                if (regVs == null)
+                {
+                    regVs = new List<Reg_V>();
+                    PowerWebContext.SetToSession("RegVsToAdd" + gvRegVErrEdit.ID, regVs);
+                }
+                return regVs;
+
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("RegVsToAdd" + gvRegVErrEdit.ID, value ?? new List<Reg_V>());
+            }
+        }
+
+        public List<Reg_V> RegVsToUpdate
+        {
+            get
+            {
+                var regVs = PowerWebContext.GetFromSession<List<Reg_V>>("RegVsToUpdate" + gvRegVErrEdit.ID);
+                if (regVs == null)
+                {
+                    regVs = new List<Reg_V>();
+                    PowerWebContext.SetToSession("RegVsToUpdate" + gvRegVErrEdit.ID, regVs);
+                }
+                return regVs;
+
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("RegVsToUpdate" + gvRegVErrEdit.ID, value ?? new List<Reg_V>());
+            }
+        }
+
+        public List<Reg_V> RegVsToDelete
+        {
+            get
+            {
+                var regVs = PowerWebContext.GetFromSession<List<Reg_V>>("RegVsToDelete" + gvRegVErrEdit.ID);
+                if (regVs == null)
+                {
+                    regVs = new List<Reg_V>();
+                    PowerWebContext.SetToSession("RegVsToDelete" + gvRegVErrEdit.ID, regVs);
+                }
+                return regVs;
+
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("RegVsToDelete" + gvRegVErrEdit.ID, value ?? new List<Reg_V>());
+            }
+        }
+
+        public override ASPxGridView GridView
+        {
+            get
+            {
+                return gvRegVErrEdit;
+            }
+        }
+
+        /// <summary>
+        /// Recupera il template della form utilizzata per il recupero dei dati di raggruppamento in stampa;
+        /// se impostato a null si utilizza il valore specificato nel modulo.
+        /// </summary>
+        /// <value>
+        /// il template della form utilizzata per il recupero dei dati di raggruppamento in stampa;
+        /// se impostato a null si utilizza il valore specificato nel modulo.
+        /// </value>
+        public PowerFormTemplate PrintFormTemplate
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public override Type EntityType
+        {
+            get
+            {
+                return _entityType;
+            }
+        }
+
+        public String EditErrorMessage
+        {
+            get
+            {
+                return PowerWebContext.GetFromSession<String>("EditErrorMessage" + gvRegVErrEdit.ID);
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("EditErrorMessage" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        public Boolean IsToShowEditGrid
+        {
+            get
+            {
+                return PowerWebContext.GetFromSession<Boolean>("IsToShowEditGrid" + gvRegVErrEdit.ID);
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("IsToShowEditGrid" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        public DateTime? BlockDate
+        {
+            get
+            {
+                var dateBlock = PowerWebContext.GetFromSession<DateTime?>("BlockDate" + gvRegVErrEdit.ID);
+                if (dateBlock == null)
+                {
+                    dateBlock = RepoManager.ParamRepo.First().Data_Blocco_Reg ?? DateTime.MinValue;
+                    PowerWebContext.SetToSession("BlockDate" + gvRegVErrEdit.ID, dateBlock);
+                }
+                return dateBlock;
+            }
+            set { PowerWebContext.SetToSession("BlockDate" + gvRegVErrEdit.ID, value); }
+        }
+
+        public Dictionary<string, IQueryable<Reg_V>> CachedRegVs
+        {
+            get
+            {
+                var regVs = PowerWebContext.GetFromSession<Dictionary<string, IQueryable<Reg_V>>>("ChachedRegVs" + gvRegVErrEdit.ID);
+                if (regVs == null)
+                    PowerWebContext.SetToSession("ChachedRegVs" + gvRegVErrEdit.ID, new Dictionary<string, IQueryable<Reg_V>>());
+
+                return PowerWebContext.GetFromSession<Dictionary<string, IQueryable<Reg_V>>>("ChachedRegVs" + gvRegVErrEdit.ID);
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("ChachedRegVs" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        public IQueryable<Reg_V> RegVDataSource
+        {
+            get
+            {
+                IQueryable<Reg_V> regVs = null;
+
+                if (cmbCol_Id.Value != null && cmbData_Reg.Value != null)
+                {
+                    var cachedKey = GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString());
+
+                    if (cachedKey != String.Empty && CachedRegVs.ContainsKey(cachedKey))
+                        regVs = CachedRegVs[cachedKey];
+                    else
+                    {
+                        StringBuilder sbQuery = new StringBuilder("SELECT * FROM Reg_V where");
+                        sbQuery.AppendFormat(" Col_Id = {0}", cmbCol_Id.Value);
+                        DateTime filterDate = Convert.ToDateTime(cmbData_Reg.Value, PowerWebContext.Current.UserCultureInfo);
+                        // se è attivo il notturno in configurazione allora si recupera per la visualizzazione anche il giorno prima e il giorno successivo a quello richiesto
+                        if (RepoManager.ParamRepo.NocturneGeneralConfiguration.Item1 && RepoManager.ParamRepo.NocturneGeneralConfiguration.Item2 != NocturneTypeEnum.Disabled && RepoManager.ParamRepo.NocturneGeneralConfiguration.Item2 != NocturneTypeEnum.None)
+                        {
+                            DateTime previousFilterDate = filterDate.AddDays(-1);
+                            DateTime nextFilterDate = filterDate.AddDays(1);
+
+                            sbQuery.AppendFormat(" And (Data_Reg >= '{0}/{1}/{2}' AND Data_Reg <= '{3}/{4}/{5}')", previousFilterDate.Year, previousFilterDate.Month,
+                                previousFilterDate.Day, nextFilterDate.Year, nextFilterDate.Month, nextFilterDate.Day);
+                        }
+                        else // se non è attivo il notturno allora si recupera il giorno corrente per la visualizzazione
+                        {
+                            sbQuery.AppendFormat(" And Data_Reg = '{0}/{1}/{2}'", filterDate.Year, filterDate.Month,
+                                filterDate.Day);
+                        }
+
+                        regVs = RepoManager.Reg_VRepo.DbSet.SqlQuery(sbQuery.ToString()).AsNoTracking().AsQueryable();
+
+                        CachedRegVs.Add(cachedKey, regVs);
+                    }
+
+                    if (!cbIncludeAllDayReg.Checked)
+                        regVs = regVs.Where(regV => regV.Registrazione_Stato_Reg != (int)RegStateEnum.Ass);
+
+                    if (!cbIncludeActivity.Checked)
+                        regVs = regVs.Where(regV => regV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att);
+
+                    if (!cbIncludePass.Checked)
+                        regVs = regVs.Where(regV => regV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass);
+
+                    if (!cbIncludeTrips.Checked)
+                        regVs = regVs.Where(regV => regV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip);
+
+                    if (!cbIncludeBlocked.Checked)
+                        regVs = regVs.Where(regV => !regV.Registrazione_Bloccata);
+
+                    // al momento nelle registrazioni errate non sono visualizzate le rettifiche e le solo durata
+                    regVs = regVs.Where(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimeSheetManual);
+
+                }
+
+                return regVs;
+            }
+        }
+
+        public List<Col> EditedCols
+        {
+            get
+            {
+                var editedColsList = PowerWebContext.GetFromSession<List<Col>>("EditedCols" + gvRegVErrEdit.ID);
+                if (editedColsList == null)
+                {
+                    editedColsList = new List<Col>();
+
+                    PowerWebContext.SetToSession("EditedCols" + gvRegVErrEdit.ID, editedColsList);
+                }
+
+                return editedColsList;
+
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("EditedCols" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        public bool PrimoSalvataggio
+        {
+            get
+            {
+                return PowerWebContext.GetFromSession<bool>("PrimoSalvataggio" + gvRegVErrEdit.ID);
+            }
+            set
+            {
+                PowerWebContext.SetToSession("PrimoSalvataggio" + gvRegVErrEdit.ID, value);
+
+                SetColDataSourceLabelText();
+
+            }
+        }
+
+        public IQueryable<Col> ColDataSource
+        {
+            get
+            {
+                IQueryable<Col> collList = null;
+                if (IsPreFilterApplied)
+                {
+                    collList = PowerWebContext.GetFromSession<IQueryable<Col>>("ColDataSource" + gvRegVErrEdit.ID);
+                    if (collList == null)
+                    {
+                        // viene preparata la query in base agli stati selezionati...
+                        var sbQuery = BuildRegVErrQuery();
+
+                        // se è richiesto dalle personalizzazioni di visualizzare anche i collaboratori con mancate timbrature allora
+                        // si estraggono anche quelli
+                        int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ErrModuleShowEmptyColEnum);
+
+                        var regvErr = RepoManager.Reg_VRepo.DbSet.SqlQuery(sbQuery).AsNoTracking().AsQueryable();
+                        var collIdList = regvErr.Select(regV => regV.Col_Id).Distinct().AsQueryable();
+
+                        collList = RepoManager.ColRepo.Find(col => collIdList.Contains(col.Col_Id)).AsQueryable();
+
+                        // se è valorizzato il combobox di selezione del collaboratore in pre-filtro allora i dati devono riguardare solo
+                        // quel collaboratore
+                        if (CmbColPreFilter.SelectedIndex != -1)
+                            collList = collList.Where(col => col.Col_Id == (int)CmbColPreFilter.Value);
+
+                        IEnumerable<Col> nonPresentColList = Enumerable.Empty<Col>();
+                        if (customizationVersion == (int)ErrModuleShowEmptyColEnum.Show)
+                            nonPresentColList = RepoManager.ColRepo.Find(col => !col.DisAbilitazione_Col && !collIdList.Contains(col.Col_Id));
+
+
+                        SetEditDatesByColId(regvErr, Convert.ToDateTime(SearchDateFrom.Text,
+                            PowerWebContext.Current.UserCultureInfo),
+                            Convert.ToDateTime(SearchDateTo.Text, PowerWebContext.Current.UserCultureInfo),
+                            nonPresentColList);
+
+                        if (customizationVersion == (int)ErrModuleShowEmptyColEnum.Show)
+                        {
+                            var nonPresentColIds = AllErrDatesByColId.Where(kvp => !collList.Any(checkCol => checkCol.Col_Id == kvp.Key)).Select(kvp => kvp.Key);
+                            collList = RepoManager.ColRepo.Find(col => collIdList.Contains(col.Col_Id) || nonPresentColIds.Contains(col.Col_Id)).AsQueryable();
+                        }
+
+                        collList = collList.Where(col => AllErrDatesByColId[col.Col_Id].Any()).AsQueryable();
+
+                        PowerWebContext.SetToSession("ColDataSource" + gvRegVErrEdit.ID, collList);
+
+                    }
+                }
+
+
+                return collList;
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("ColDataSource" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        public Dictionary<int?, IQueryable<string>> AllErrDatesByColId
+        {
+            get
+            {
+                Dictionary<int?, IQueryable<string>> dateList = null;
+                if (IsPreFilterApplied)
+                    dateList = PowerWebContext.GetFromSession<Dictionary<int?, IQueryable<string>>>("AllErrDatesByColId" + gvRegVErrEdit.ID) ?? new Dictionary<int?, IQueryable<string>>();
+
+                return dateList;
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("AllErrDatesByColId" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        public bool IsPreFilterApplied
+        {
+            get
+            {
+                var isPreFilter = PowerWebContext.GetFromSession<bool?>("IsPreFilterApplied" + gvRegVErrEdit.ID) ?? false;
+
+                return isPreFilter;
+            }
+
+            set
+            {
+                PowerWebContext.SetToSession("IsPreFilterApplied" + gvRegVErrEdit.ID, value);
+            }
+        }
+
+        /// <summary>
+        /// Recupera il tipo di modifica applicato alla griglia del modulo di gestione delle errate.
+        /// </summary>
+        /// <value>
+        /// Il tipo di modifica applicato alla griglia del modulo di gestione delle errate.
+        /// </value>
+        public EditTypeErrModuleEnum EditType
+        {
+            get
+            {
+                return (EditTypeErrModuleEnum)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EditTypeErrModuleEnum);
+            }
+        }
+
+        #endregion
+
+        #region Eventi pagina
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!Page.IsPostBack)
+                BindGrid(true);
+
+            if (cmbData_Reg.DataSource == null)
+                BindCmbData();
+
+            SetGridEditType();
+        }
+
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            if (!Page.IsCallback && !Page.IsPostBack)
+            {
+                cbIncludeBlocked.Checked = RepoManager.ParamRepo.ParametersRow.Dflt_Include_Blocked;
+                cbIncludePass.Checked = RepoManager.ParamRepo.ParametersRow.Dflt_Include_Pass;
+                cbIncludeActivity.Checked = RepoManager.ParamRepo.ParametersRow.Dflt_Include_Activities;
+                cbIncludeTrips.Checked = RepoManager.ParamRepo.ParametersRow.Dflt_Include_Trips;
+
+                // alla prima apertura della pagina viene segnalato al modulo che non è stato applicato il filtro.
+                // questo permette di evitare errori nel calcolo dei datasource per mancanza dei selettori dei filtri
+                IsPreFilterApplied = false;
+
+                // all'apertura della pagina vado a segnalarae che il primo salvataggio non è ancora avvenuto
+                PrimoSalvataggio = false;
+
+                ResetSession();
+            }
+
+            // impostazione in lingua degli elementi della form
+            LocalizeElements();
+
+            SetGridEditType();
+
+            // inizializzazione dei campi data per la preselezione (dal 1° del mese precedente ad oggi);
+            // se la data così calcolata è inferiore o uguale alla data blocco, la stessa viene riportata alla data blocco + 1 giorno
+            var tmpDate = new DateTime(DateTime.Now.AddMonths(-1).Year, DateTime.Now.AddMonths(-1).Month, 1);
+            var blockRegDate = RepoManager.ParamRepo.ParametersRow.Data_Blocco_Reg.HasValue ? RepoManager.ParamRepo.ParametersRow.Data_Blocco_Reg.Value : DateTime.MinValue;
+            if (tmpDate <= blockRegDate)
+                tmpDate = blockRegDate.AddDays(1);
+            SearchDateFrom.Value = tmpDate;
+            tmpDate = DateTime.Now;
+            SearchDateTo.Value = tmpDate;
+
+            gvRegVErrEdit.ClientSideEvents.CustomButtonClick = "OnCustomButtonClick";
+
+            PowerWebService.FillGridLabels(EntityType, gvRegVErrEdit);
+            PowerWebService.FillComboboxes(gvRegVErrEdit);
+
+            PowerWebService.FillComboboxes(cmbCol_Id, CommonService.GetPropertyName(() => _regVStub.Col_Id), true);
+
+            // se il prefiltro è applicato allora i combo sono ripopolati
+            if (IsPreFilterApplied)
+            {
+                cmbCol_Id.ItemsRequestedByFilterCondition += cmbCol_Id_ItemsRequestedByFilterCondition;
+                cmbCol_Id.ItemRequestedByValue += cmbCol_Id_ItemRequestedByValue;
+            }
+
+            // verifico la personalizzazione per la visualizzazione del bottone di correzione automatica
+            int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowAutomaticCorrectionButtonEnum);
+
+            // si visualizza il flag di entrata/uscita solamente se è previsto dalle personalizzazioni
+            if (customizationVersion == (int)ShowAutomaticCorrectionButtonEnum.Enable)
+            {
+
+                BtnPropostaChiusura.Visible = true;
+                CbChiusuraAllSelected.Visible = true;
+
+            }
+
+            if (RepoManager.ParamRepo.ParametersRow.Data_Blocco_Reg.HasValue)
+                BreakRegDate.Date = RepoManager.ParamRepo.ParametersRow.Data_Blocco_Reg.Value;
+            else
+                BreakRegDate.Date = DateTime.MinValue;
+
+            // bind del combobox di gestione dei collaboratori nel pre-filtro
+            PowerWebService.FillComboboxes(CmbColPreFilter, "Search_Col_Id");
+
+            if (!CmbColPreFilter.ReadOnly)
+            {
+                EditButton btnEdit = new EditButton("X");
+                CmbColPreFilter.Buttons.Add(btnEdit);
+
+                CmbColPreFilter.ClientSideEvents.ButtonClick = "onCustomEditButtonComboBoxClick";
+            }
+
+            // se il modulo del notturno risulta abilitato, come prima colonna viene visualizzata la data reg
+            if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
+            {
+                gvRegVErrEdit.Columns["Data_Reg"].Visible = true;
+                gvRegVErrEdit.Columns["Data_Reg"].VisibleIndex = 0;
+            }
+        }
+
+        #endregion
+
+        #region Reset session
+
+        public override void ResetSession()
+        {
+            base.ResetSession();
+            ResetDataSourceAndBind();
+        }
+
+        private void ResetDataSourceAndBind(bool forceBind = false)
+        {
+            ColDataSource = null;
+            AllErrDatesByColId = null;
+            CachedRegVs = null;
+            BlockDate = null;
+            RegVsToAdd = null;
+            RegVsToUpdate = null;
+            RegVsToDelete = null;
+            BindGrid(forceBind);
+        }
+
+        #endregion
+
+        #region Manage ComboBox
+
+        private void cmbCol_Id_ItemsRequestedByFilterCondition(object source, ListEditItemsRequestedByFilterConditionEventArgs e)
+        {
+            ASPxComboBox comboBox = (ASPxComboBox)source;
+
+            BindCmbColId(e.Filter, e.BeginIndex, e.EndIndex, comboBox);
+        }
+
+        private void BindCmbColId(string filter, int beginIndex, int endIndex, ASPxComboBox comboBox)
+        {
+            String searchName = comboBox.ClientInstanceName;
+
+            // se ho già effettuato un primo salvataggio allora non recupero i dati modificati dal data source completo ma li recupero
+            // dal data source dei soli dati modificati
+            var cmbDataSource = RepoManager.Tab_GridLookupRepo.SearchByFieldAndValue(PowerWebService.TabGridLookups, searchName,
+                filter, beginIndex, endIndex, PrimoSalvataggio ? EditedCols.AsQueryable() : ColDataSource);
+
+            comboBox.DataSource = cmbDataSource;
+
+            comboBox.DataBindItems();
+        }
+
+        private void cmbCol_Id_ItemRequestedByValue(object source, ListEditItemRequestedByValueEventArgs e)
+        {
+            if (e.Value == null || String.IsNullOrEmpty(e.Value.ToString()))
+                return;
+
+            ASPxComboBox comboBox = (ASPxComboBox)source;
+
+            String searchName = comboBox.ClientInstanceName;
+
+            // se ho già effettuato un primo salvataggio allora non recupero i dati modificati dal data source completo ma li recupero
+            // dal data source dei soli dati modificati
+            var cmbDataSource = RepoManager.Tab_GridLookupRepo.SearchByFieldAndValue(PowerWebService.TabGridLookups, searchName, e.Value.ToString(), dataSource: PrimoSalvataggio ? EditedCols.AsQueryable() : ColDataSource);
+
+            comboBox.DataSource = cmbDataSource;
+
+            comboBox.DataBindItems();
+        }
+
+        private void BindCmbData()
+        {
+            if (cmbCol_Id.Value != null)
+            {
+                var selectedColId = Convert.ToInt32(cmbCol_Id.Value);
+
+                if (selectedColId != 0)
+                {
+                    if (AllErrDatesByColId != null)
+                    {
+                        var dateDataSource = AllErrDatesByColId.ContainsKey(selectedColId) ? AllErrDatesByColId[selectedColId] : null;
+
+                        cmbData_Reg.DataSource = dateDataSource;
+                        cmbData_Reg.DataBindItems();
+                    }
+                }
+            }
+            else
+            {
+                cmbData_Reg.Value = null;
+                cmbData_Reg.SelectedItem = null;
+                cmbData_Reg.DataSource = null;
+                cmbData_Reg.DataBindItems();
+            }
+        }
+
+        #endregion
+
+        #region DataBinding
+
+        protected void gvRegVErrEdit_DataBinding(object sender, EventArgs e)
+        {
+            gvRegVErrEdit.KeyFieldName = KEYFIELDNAME;
+            LinqServerModeDataSource serverMode = new LinqServerModeDataSource();
+            serverMode.ContextTypeName = "PowerWebEntities.Data";
+            serverMode.TableName = "Reg_V";
+
+            GridView.DataSource = serverMode;
+
+            serverMode.Selecting += linq_Selecting;
+        }
+
+        private void linq_Selecting(object sender, LinqServerModeDataSourceSelectEventArgs e)
+        {
+            e.KeyExpression = KEYFIELDNAME;
+
+            IQueryable<Reg_V> currQueryable = Enumerable.Empty<Reg_V>().AsQueryable();
+
+            if (IsToPopulateGrid)
+            {
+                if (cmbCol_Id.Value != null && cmbData_Reg.Value != null)
+                {
+                    var colId = Convert.ToInt32(cmbCol_Id.Value);
+
+                    var regDate = Convert.ToDateTime(cmbData_Reg.Value);
+
+                    if (colId != 0 && regDate != DateTime.MinValue)
+                    {
+                        //se vi sono reg allora abilito il pulsante di correzione automatica
+                        BtnPropostaChiusura.Enabled = true;
+                        currQueryable = RegVDataSource;
+                    }
+                }
+            }
+
+            e.QueryableSource = currQueryable;
+        }
+
+        private void BindGrid(bool forceBind = false)
+        {
+            if (IsToPopulateGrid || forceBind)
+                gvRegVErrEdit.DataBind();
+        }
+
+        #endregion
+
+        #region Init Grid Combox and Grid Field
+
+        protected void cbmxCol_Id_Init(object sender, EventArgs e)
+        {
+            cbmx_Init(sender, e, CommonService.GetPropertyName(() => _regVStub.Col_Id));
+        }
+
+        protected void cbmxCant_Id_Init(object sender, EventArgs e)
+        {
+            cbmx_Init(sender, e, CommonService.GetPropertyName(() => _regVStub.Cant_Id));
+        }
+
+        private void cbmx_Init(object sender, EventArgs e, string fieldName)
+        {
+            ASPxComboBox cmbx = sender as ASPxComboBox;
+            if (cmbx != null)
+            {
+                PowerWebService.FillComboboxes(cmbx, fieldName);
+            }
+        }
+
+        protected void cbmxMot_Id_Init(object sender, EventArgs e)
+        {
+            cbmx_Init(sender, e, CommonService.GetPropertyName(() => _regVStub.Motivazione_Reg_Id));
+        }
+
+        //Gestione ottimizzata componente calendario in griglia di Edit multiplo
+        protected void de_Init(object sender, EventArgs e)
+        {
+            ASPxDateEdit deData_Fig_Reg = sender as ASPxDateEdit;
+            deData_Fig_Reg.PopupCalendarOwnerID = "__ReferenceDateEdit";
+        }
+
+        #endregion
+
+        #region Manage Errors
+
+        private void SetErrorMessageDictionary(Reg_V regv, Dictionary<string, IList<Dictionary<string, string>>> errorByColId, Dictionary<string, string> validationErrors)
+        {
+            var colKey = string.Format("{0}|{1} {2} {3} {4} {5}", regv.Col_Id, regv.Col_Desc, regv.Cant_Mnemonic, regv.Cant_Desc, regv.Data_Reg.Value.ToShortDateString(), regv.Data_Ora_Fis_E.ToShortTimeString());
+            if (errorByColId.ContainsKey(colKey))
+            {
+                var currentValidationErrorsList = errorByColId[colKey];
+                currentValidationErrorsList.Add(validationErrors);
+                errorByColId[colKey] = currentValidationErrorsList;
+            }
+            else
+            {
+                IList<Dictionary<string, string>> currentValidationErrorsList = new List<Dictionary<string, string>>();
+                currentValidationErrorsList.Add(validationErrors);
+                errorByColId.Add(colKey, currentValidationErrorsList);
+            }
+        }
+
+        private string GetErrorMessageFromDictionary(Dictionary<string, IList<Dictionary<string, string>>> errorsByColId)
+        {
+            var sb = new StringBuilder();
+
+            foreach (KeyValuePair<string, IList<Dictionary<string, string>>> errorByColId in errorsByColId)
+            {
+                sb.Append(errorByColId.Key.Substring(errorByColId.Key.IndexOf('|'))).AppendLine();
+                foreach (Dictionary<string, string> validationError in errorByColId.Value)
+                    sb.Append(CommonService.GetErrorMessageFromDictionary(validationError)).AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
+        #endregion
+
+        #region Eventi filter panel
+
+        /// <summary>
+        /// Filters the panel_ callback.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
+        /// <exception cref="System.InvalidOperationException">
+        /// Correction type not valid
+        /// or
+        /// Correction param not configured
+        /// or
+        /// Correction param not configured
+        /// or
+        /// Correction type not valid
+        /// or
+        /// Correction type not valid
+        /// or
+        /// Correction param not configured
+        /// or
+        /// Correction param not configured
+        /// or
+        /// Correction type not valid
+        /// </exception>
+        protected void filterPanel_Callback(object sender, CallbackEventArgsBase e)
+        {
+
+            if (e.Parameter.StartsWith("colIdChanged"))
+            {
+                BindCmbData();
+                var cmbDSource = cmbData_Reg.DataSource as IEnumerable;
+                if (cmbDSource != null && cmbDSource.AsQueryable().Any())
+                {
+                    cmbData_Reg.SelectedIndex = 0;
+                    BindGrid();
+                }
+            }
+            else if (e.Parameter.StartsWith("includeReg"))
+            {
+                ResetDataSourceAndBind();
+            }
+            else if (e.Parameter.StartsWith("dataRegChanged"))
+            {
+                BindCmbData();
+                BindGrid();
+            }
+            else if (e.Parameter.StartsWith("undo"))
+            {
+                // nell'annullamento azzero la visualizzazione del modulo
+
+                IsPreFilterApplied = false;
+                ResetDataSourceAndBind();
+                cmbCol_Id.SelectedItem = null;
+                cmbCol_Id.Value = null;
+
+                BindCmbData();
+                filterPanel.JSProperties.Add("cpCallBackParameter", e.Parameter);
+            }
+            else if (e.Parameter.StartsWith("PreFilterSelected"))
+            {
+                // 1. Resetto la sessione di modo da calcolare tutti i data source
+                // Successivamente, se è stato applicato il prefiltro e non era già attivo:
+                // 2. vado con il caricamento dei collaboratori/date con registrazioni errate
+                // 3. Inizializzo i combo di ricerca e della griglia
+                // in ogni caso alla fine
+                // 4. Cancello i valori selezionati dal combo dei collaboratori
+                // 5. Ricalcolo i valori del combobox
+                // 6. Svuoto i valori di data selezionato
+                // 7. Effettuo il bind della griglia
+                ResetDataSourceAndBind(true);
+
+                // quando viene premuto il tasto applica si svuotano le proprietà di modifica dei collaboratori
+                EditedCols = null;
+
+                // alla pressione del tasto di applicazione dei filtri si torna allo stato originario,
+                // come se non fosse stato effettuato nessun salvataggio
+                PrimoSalvataggio = false;
+
+                if (!IsPreFilterApplied)
+                {
+                    IsPreFilterApplied = true;
+
+                    cmbCol_Id.ItemsRequestedByFilterCondition += cmbCol_Id_ItemsRequestedByFilterCondition;
+                    cmbCol_Id.ItemRequestedByValue += cmbCol_Id_ItemRequestedByValue;
+
+                    PowerWebService.FillGridLabels(EntityType, gvRegVErrEdit);
+                }
+
+                cmbCol_Id.SelectedItem = null;
+                cmbCol_Id.Value = null;
+
+                // viene impostato come default il valore del primo collaboratore in lista, se presente
+                if (ColDataSource.Any())
+                    cmbCol_Id.Value = ColDataSource.FirstOrDefault().Col_Id;
+
+                BindCmbColId(String.Empty, 0, ColDataSource.Count(), cmbCol_Id);
+                BindCmbData();
+
+                // se è presente una data per il collaboratore attualmente selezionato
+                // allora viene impostato come default del combo data appena bindato
+                if (AllErrDatesByColId.ContainsKey(Convert.ToInt32(cmbCol_Id.Value)))
+                    cmbData_Reg.Value = AllErrDatesByColId[Convert.ToInt32(cmbCol_Id.Value)].FirstOrDefault();
+
+                BindGrid();
+
+            }
+            else if (e.Parameter.StartsWith("endElaborate"))
+            {
+                #region Calcolo codice collaboratore da verificare e riproprorre
+
+                // prima di effettuare il reset della session, se sono stati modificati/aggiunti dei dati
+                // allora si recupera il primo id utilizzato per poi eventuale riproporlo successivamente
+                // al ricalcolo degli errori (in caso non siano stati aggiornati/inseriti dati si ritenta con il collaboratore corrente)
+                int currColId = 0;
+
+                // calcolo della lista delle reg modificate e inserite
+                var regVsToCheck = RegVsToUpdate;
+                regVsToCheck.AddRange(RegVsToAdd);
+                regVsToCheck.AddRange(RegVsToDelete);
+
+                // recupero dell'eventuale primo collaboratore da questa lista
+                if (regVsToCheck.Any())
+                    currColId = Convert.ToInt32(regVsToCheck.OrderBy(regV => regV.Col_Mnemonic).Distinct().Select(regV => regV.Col_Id).FirstOrDefault());
+                else
+                    currColId = Convert.ToInt32(cmbCol_Id.Value);
+
+                #endregion
+
+                cmbCol_Id.SelectedItem = null;
+                cmbCol_Id.Value = null;
+                BindCmbData();
+                ResetDataSourceAndBind(true);
+
+                #region Gestione calcolo ripartenza post elaborazione
+
+                if (PrimoSalvataggio)
+                {
+                    SetColDataSourceLabelText();
+
+                    // se è già stato effettuato il primo salvataggio allora sono puliti dall'elenco dei collaboratori/data
+                    // tutto ciò che, secondo i criteri di pre-filtro non ha più errore
+                    CleanEditedWithNoErrors();
+
+                    // se non sono rimasti più collaboratori dopo il primo salvataggio
+                    // allora si procede al ritorno a come si fosse aperta per la prima volta la pagina
+                    if (!EditedCols.Any())
+                    {
+                        IsPreFilterApplied = false;
+
+                        // impostazione della proprietà per il nascondimento della griglia
+                        filterPanel.JSProperties["cpCallBackParameter"] = "undo";
+                    }
+                }
+
+                // se non ci sono i presupposti per proesguire con l'elaborazione (e cioè se dopo il primo salvataggio non ci
+                // sono più collaboratori in errore), non si eseguono le seguenti operazioni
+                //if (!IsPreFilterApplied)
+                //{
+                // una volta ricalcolati i valori della griglia è verificato se il collaboratore ha ancora errori
+                // (il valore è recuperato dall'elenco dei modificati in caso di primo salvataggio avvenuto)
+                if (!PrimoSalvataggio)
+                    cmbCol_Id.Value = ColDataSource.Any(col => col.Col_Id == currColId) ? currColId : ColDataSource.FirstOrDefault().Col_Id;
+                else
+                    cmbCol_Id.Value = EditedCols.Any() ? EditedCols.FirstOrDefault().Col_Id : (object)null;
+
+                // effettuazione del bind del combo dei collaboratori
+                BindCmbColId(String.Empty, 0, PrimoSalvataggio ? EditedCols.Count : ColDataSource.Count(), cmbCol_Id);
+
+                // se è stato selezionato un nuovo collaboratore
+                if (cmbCol_Id.Value != null)
+                {
+                    // recupero del codice collaboratore impostato
+                    currColId = Convert.ToInt32((cmbCol_Id.Value));
+
+                    if (AllErrDatesByColId.ContainsKey(currColId))
+                    {
+                        // ricalcolo delle date per il collaboratore selezionato
+                        BindCmbData();
+
+                        // selezione della prima data disponibile per il collaboratore
+                        cmbData_Reg.Value = AllErrDatesByColId[currColId].First();
+
+                    }
+
+                    // rieffettuo il bind della griglia
+                    BindGrid();
+                }
+
+                #endregion
+
+
+            }
+            else if (e.Parameter.StartsWith("goToPreviousCol"))
+            {
+                var curColId = Convert.ToInt32(cmbCol_Id.Value);
+                var currentColList = PrimoSalvataggio ? EditedCols.Select(col => col.Col_Id).ToList() : ColDataSource.Select(col => col.Col_Id).ToList();
+
+                if (currentColList.Any())
+                {
+
+                    var index = currentColList.IndexOf(curColId) - 1;
+
+                    if (index >= 0)
+                        cmbCol_Id.Value = currentColList[index];
+                    else
+                        cmbCol_Id.Value = currentColList.Last();
+
+                    cmbCol_Id.DataBindItems();
+                    filterPanel.JSProperties.Add("cpCallBackParameter", "previousCol");
+                }
+            }
+            else if (e.Parameter.StartsWith("goToNextCol"))
+            {
+                var curColId = Convert.ToInt32(cmbCol_Id.Value);
+                var currentColList = PrimoSalvataggio ? EditedCols.Select(col => col.Col_Id).ToList() : ColDataSource.Select(col => col.Col_Id).ToList();
+
+                if (currentColList.Any())
+                {
+                    var index = currentColList.IndexOf(curColId) + 1;
+
+                    if (index <= currentColList.Count - 1)
+                        cmbCol_Id.Value = currentColList[index];
+                    else
+                        cmbCol_Id.Value = currentColList[0];
+
+                    cmbCol_Id.DataBindItems();
+                    filterPanel.JSProperties.Add("cpCallBackParameter", "nextCol");
+                }
+            }
+            else if (e.Parameter.StartsWith("automaticCorrection"))
+            {
+                #region Gestione delle correzioni alle Reg_V
+
+                var customizationVersion = (AutomaticCorrectionEnum)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutomaticCorrectionEnum);
+
+                bool isAllSelected = Convert.ToBoolean(e.Parameter.Substring(e.Parameter.IndexOf("#") + 1));
+
+                // se non devo chiudere tutte le registrazioni selezionate, tratto solo il giorno/collaboratore visualizzato
+                if (!isAllSelected)
+                {
+
+                    #region Chiusura delle Reg_V per il collaboratore/giorno visualizzato
+
+                    IQueryable<Reg_V> retRegVs = null;
+
+                    // in base al tipo di personalizzazione si richiama la specifica funzione di correzione (che restituisce un IQueryable di Reg_V) da integrare con il data
+                    // source esistente
+                    switch (customizationVersion)
+                    {
+                        case AutomaticCorrectionEnum.None:
+                            throw new InvalidOperationException("Correction type not valid");
+                        case AutomaticCorrectionEnum.Add2Minute:
+                            string minutesStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "MinutesNumber");
+                            if (minutesStr == String.Empty)
+                                throw new InvalidOperationException("Correction param not configured");
+
+                            retRegVs = BusinessService.ProposeRegsAddingMinutes(CachedRegVs[GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString())], Convert.ToInt32(minutesStr));
+                            break;
+                        case AutomaticCorrectionEnum.HistoryBased:
+                            string dayMinutesTolleranceStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "DayMinutesTollerance"); ;
+                            string averageMinuteTolleranceStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "AverageMinutesTollerance"); ;
+                            string historyDayStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "HistoryDay"); ;
+                            string averageBaseThresholdStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "AverageBaseThreshold"); ;
+                            if (dayMinutesTolleranceStr == String.Empty || averageMinuteTolleranceStr == String.Empty || historyDayStr == String.Empty || averageBaseThresholdStr == String.Empty)
+                                throw new InvalidOperationException("Correction param not configured");
+
+
+                            retRegVs = BusinessService.ProposeRegsBasedOnHistory(CachedRegVs[GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString())]
+                                , Convert.ToInt32(dayMinutesTolleranceStr)
+                                , Convert.ToInt32(averageMinuteTolleranceStr)
+                                , Convert.ToInt32(historyDayStr)
+                                , Convert.ToInt32(averageBaseThresholdStr));
+                            break;
+                        default:
+                            throw new InvalidOperationException("Correction type not valid");
+                    }
+
+                    // integrazione del data source restituito "chiuso" con l'esistente
+                    var retRegVsIdsList = retRegVs.Select(regv => regv.RegE).ToList();
+                    var cachedList = CachedRegVs[GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString())].ToList();
+                    CachedRegVs[GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString())] = cachedList.Where(regV => !retRegVsIdsList.Contains(regV.RegE)).AsQueryable().Concat(retRegVs);
+
+                    //per ogni regv vado a metterla nella lista delle rag da aggiornare 
+                    PutRegVsInUpdatedList(retRegVs);
+
+                    // alla fine dell'elaborazione segnalo la stringa di messaggio da visualizzare con il numero delle registrazioni e dei collaboratori modificate
+                    SetPostCorrectionMessage(String.Empty);
+
+                    #endregion
+
+                }
+                else
+                {
+
+                    #region Chiusura delle Reg_v per tutti i collaboratori/giorno trovati
+
+                    // inizializzazione delle variabili che tengono conto del numero di elementi modificati
+                    var modifiedColIds = new List<int>();
+                    int modifiedRegs = 0;
+
+                    // per ogni collaboratore recuperato dalla selezione
+                    foreach (var col in ColDataSource)
+                    {
+                        var currentCol = col;
+
+                        // se per il collaboratore che si sta processando sono presenti delle date in errore
+                        if (AllErrDatesByColId.Any(colDate => colDate.Key == currentCol.Col_Id))
+                        {
+                            // per ogni data in errore per il collaboratore in processo
+                            foreach (var errDate in AllErrDatesByColId.FirstOrDefault(colDate => colDate.Key == currentCol.Col_Id).Value)
+                            {
+                                // recupero tutte le reg per quel giorno/collaboratore
+                                var dateToSearch = Convert.ToDateTime(errDate, PowerWebContext.Current.UserCultureInfo);
+                                var colDateRegVs = RepoManager.Reg_VRepo.Find(regv => regv.Col_Id == currentCol.Col_Id && regv.Data_Reg == dateToSearch).AsQueryable();
+
+                                // se ho trovato delle reg_v da processare
+                                if (colDateRegVs.Any())
+                                {
+                                    IQueryable<Reg_V> correctedRegVs = null;
+
+                                    // in base al tipo di personalizzazione si richiama la specifica funzione di correzione (che restituisce un IQueryable di Reg_V) da integrare con il data
+                                    // source esistente
+                                    switch (customizationVersion)
+                                    {
+                                        case AutomaticCorrectionEnum.None:
+                                            throw new InvalidOperationException("Correction type not valid");
+                                        case AutomaticCorrectionEnum.Add2Minute:
+                                            string minutesStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "MinutesNumber");
+                                            if (minutesStr == String.Empty)
+                                                throw new InvalidOperationException("Correction param not configured");
+
+                                            correctedRegVs = BusinessService.ProposeRegsAddingMinutes(colDateRegVs, Convert.ToInt32(minutesStr));
+                                            break;
+                                        case AutomaticCorrectionEnum.HistoryBased:
+                                            string dayMinutesTolleranceStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "DayMinutesTollerance"); ;
+                                            string averageMinuteTolleranceStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "AverageMinutesTollerance"); ;
+                                            string historyDayStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "HistoryDay"); ;
+                                            string averageBaseThresholdStr = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutomaticCorrectionEnum, "AverageBaseThreshold"); ;
+                                            if (dayMinutesTolleranceStr == String.Empty || averageMinuteTolleranceStr == String.Empty || historyDayStr == String.Empty || averageBaseThresholdStr == String.Empty)
+                                                throw new InvalidOperationException("Correction param not configured");
+
+                                            correctedRegVs = BusinessService.ProposeRegsBasedOnHistory(colDateRegVs
+                                                , Convert.ToInt32(dayMinutesTolleranceStr)
+                                                , Convert.ToInt32(averageMinuteTolleranceStr)
+                                                , Convert.ToInt32(historyDayStr)
+                                                , Convert.ToInt32(averageBaseThresholdStr));
+                                            break;
+                                        default:
+                                            throw new InvalidOperationException("Correction type not valid");
+                                    }
+
+                                    // Metto in cache le reg_v corrette e non corrette di modo da visualizzare la nuova situazione in griglia
+                                    var correctedRegVsIdsList = correctedRegVs.Select(regv => regv.RegE).ToList();
+                                    CachedRegVs[GetCachedRegVsKey(currentCol.Col_Id, errDate)] = correctedRegVs.Concat(colDateRegVs.Where(regv => !correctedRegVsIdsList.Contains(regv.RegE)).AsQueryable());
+
+                                    // le registrazioni modificate per la correzione sono inserite all'interno dell'elenco di registrazioni modiifcate a mano (se già presenti sono sovrascritte)
+                                    PutRegVsInUpdatedList(correctedRegVs);
+
+                                    // incremento della variabile che tiene traccia del numero di reg_v modificate
+                                    modifiedRegs += correctedRegVs.Count();
+
+                                    // aggiorno la lista dei collaboratori modificati se l'attualmente in elaborazione non è già presente
+                                    if (modifiedColIds.All(colId => colId != currentCol.Col_Id))
+                                        modifiedColIds.Add(currentCol.Col_Id);
+                                }
+                            }
+                        }
+                    }
+
+                    // alla fine dell'elaborazione segnalo la stringa di messaggio da visualizzare con il numero delle registrazioni e dei collaboratori modificate
+                    SetPostCorrectionMessage(BusinessService.GetLocalizedStringStrParam(PowerWebResources.STR_MODIFICATI_X_REGISTRAZIONI_SU_Y_COLLABORATORI, modifiedRegs.ToString(), modifiedColIds.Count().ToString()));
+
+                    #endregion
+
+                }
+
+
+                //vado a mettere tutto nella griglia
+                BindGrid(true);
+
+                #endregion
+            }
+        }
+
+        #endregion
+
+        #region Eventi di modifica e aggiornamento della griglia
+
+        protected void gvRegVErrEdit_BatchUpdate(object sender, ASPxDataBatchUpdateEventArgs e)
+        {
+            // Si prosegue con l'elaborazione solamente se si è in on e se sono stati selezionati entrambi i valori della combo.
+            // In caso contrario non si esegue alcuna operazione
+            if (IsToPopulateGrid && cmbCol_Id.Value != null && cmbData_Reg != null)
+            {
+                var returnMessage = new Dictionary<string, string>();
+
+                IList<Reg_V> currentAddedReg = new List<Reg_V>();
+                IList<Reg_V> currentUpdatedReg = new List<Reg_V>();
+                IList<Reg_V> currentDeletedReg = new List<Reg_V>();
+
+                // calcolo della chiave di cache
+                var cachedKey = GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString());
+
+                #region Inserimento nuove registrazioni
+
+                // gestione dei valori inseriti
+                foreach (var regV in e.InsertValues)
+                {
+                    // si processano in inserimento solamente le righe che hanno impostata un'ora in ingresso
+                    if (regV.NewValues[CommonService.GetPropertyName(() => _regVStub.Data_Ora_Fis_E)] != null)
+                    {
+                        // inizializzazione di una nuova reg_v
+                        var currRegV = RepoManager.Reg_VRepo.Init();
+
+                        // compilo la nuova regv con i valori inseriti
+                        PowerWebService.FillEntityProperties(currRegV, regV.NewValues);
+
+                        // per tutte le reg nuove viene impostata la data/ora di registrazione (E/U) prendendo la data visualizzata e l'ora di registrazione fisica inserita
+                        var showedDate = Convert.ToDateTime(cmbData_Reg.Value);
+                        currRegV.Data_Reg = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day);
+                        currRegV.Data_Ora_Fis_E = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day,
+                            currRegV.Data_Ora_Fis_E.Hour, currRegV.Data_Ora_Fis_E.Minute, currRegV.Data_Ora_Fis_E.Second);
+                        if (currRegV.Data_Ora_Fis_U != null)
+                            currRegV.Data_Ora_Fis_U = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day,
+                                currRegV.Data_Ora_Fis_U.Value.Hour, currRegV.Data_Ora_Fis_U.Value.Minute,
+                                currRegV.Data_Ora_Fis_U.Value.Second);
+
+                        // inserimento del id del collaboratore
+                        currRegV.Col_Id = Convert.ToInt32(cmbCol_Id.Value);
+
+                        // inserimento dell'id identificativo utilizzato per collegare modifiche e cancellazioni
+                        // a elementi inseriti da questa maschera ma non ancora salvati su database
+                        currRegV.GenerateTmpId();
+
+                        // inserimento dei valori nell'elenco delle reg_v da inserire e nelle reg_v su cui costruire
+                        // la chache
+                        currentAddedReg.Add(currRegV);
+                        RegVsToAdd.Add(currRegV);
+
+                        // ogni volta che viene processata una reg si inserisce, se non già presente,
+                        // il collaboratore nell'elenco dei collaboratori processati
+                        SaveInEditedCols(Convert.ToInt32(currRegV.Col_Id));
+                    }
+                }
+
+                #endregion
+
+                // caching del giorno per i dati inseriti (solo se presenti)
+                if (currentAddedReg.Count > 0)
+                    CachedRegVs[cachedKey] = CachedRegVs[cachedKey].Concat(currentAddedReg);
+
+                #region Aggiornamento registrazioni esistenti
+
+                // gestione dei valori aggiornati
+                foreach (var regV in e.UpdateValues)
+                {
+                    // si processano in inserimento solamente le righe che hanno impostata un'ora in ingresso
+                    if (regV.NewValues[CommonService.GetPropertyName(() => _regVStub.Data_Ora_Fis_E)] != null)
+                    {
+                        // calcolo dell'id della reg 
+                        int regE = Convert.ToInt32(regV.Keys[CommonService.GetPropertyName(() => _regVStub.RegE)]);
+                        // calcolo dell'id temporaneo della reg se precedentemente inserita
+                        string tmpNewId = regV.Keys[CommonService.GetPropertyName(() => _regVStub.TmpNewId)].ToString();
+
+                        // recupero della regV in base all'id se già precedentemente presente e in base all'id temporaneo se inserita in questa maschera
+                        var currRegV = regE != 0
+                            ? RegVDataSource.First(reg => reg.RegE == regE)
+                            : RegVDataSource.First(reg => reg.TmpNewId == tmpNewId);
+
+                        // si procede con l'aggiornamento dei dati della regv (new values e cambio cant col)
+                        // solamente se non si tratta di un viaggio
+                        if (currRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip)
+                        {
+                            // si imposta il cant_id eventualmente modificato dall'utente
+                            // se nei valori aggiornati è stato cambiato il cant_id allora procedo all'azzeramento del corrispondente Fru_Id
+                            // così se nei valori aggiornati è stato cambiato il col_id allora procedo all'azzeramento del corrispondente Pru_Id
+                            PowerWebService.FillEntityProperties(currRegV, regV.NewValues);
+                            RepoManager.Reg_VRepo.ManageCantColChangesBeforeUpdate(currRegV);
+                        }
+
+                        // non si elaborano le modifiche ai viaggi
+                        if (currRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip)
+                        {
+
+                            // si forza in ogni caso le date/ore utili alla modifica al giorno selezionato in combobox
+                            var showedDate = Convert.ToDateTime(cmbData_Reg.Value);
+                            currRegV.Data_Reg = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day);
+                            currRegV.Data_Ora_Fis_E = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day,
+                                currRegV.Data_Ora_Fis_E.Hour, currRegV.Data_Ora_Fis_E.Minute, currRegV.Data_Ora_Fis_E.Second);
+                            if (currRegV.Data_Ora_Fis_U != null)
+                                currRegV.Data_Ora_Fis_U = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day,
+                                    currRegV.Data_Ora_Fis_U.Value.Hour, currRegV.Data_Ora_Fis_U.Value.Minute,
+                                    currRegV.Data_Ora_Fis_U.Value.Second);
+
+
+                            PutRegVsInUpdatedList((new List<Reg_V>() { currRegV }).AsQueryable());
+                            currentUpdatedReg.Add(currRegV);
+
+                            // ogni volta che viene processata una reg si inserisce, se non già presente,
+                            // il collaboratore nell'elenco dei collaboratori processati
+                            SaveInEditedCols(Convert.ToInt32(currRegV.Col_Id));
+                        }
+                        else
+                        {
+                            // se è satao modificato un viaggio si ritorna un messagio di ritorno all'utente
+                            returnMessage.Add("Trip", String.Format("I viaggi non posso essere modificati e quindi le modifiche apportate ai quei dati non sono state salvate."));
+                        }
+                    }
+                }
+
+                #endregion
+
+                // caching del giorno per i dati aggiornati (solo se sono stati raccolti dei dati)
+                if (currentUpdatedReg.Count > 0)
+                {
+                    CachedRegVs[cachedKey] =
+                        CachedRegVs[cachedKey].Where(
+                            reg =>
+                                !currentUpdatedReg.Select(cReg => cReg.RegE).Where(regE => regE != 0).Contains(reg.RegE));
+                    CachedRegVs[cachedKey] =
+                        CachedRegVs[cachedKey].Where(reg => !currentUpdatedReg.Select(cReg => cReg.TmpNewId)
+                            .Where(tmpNewId => tmpNewId != String.Empty)
+                            .Contains(reg.TmpNewId));
+                    CachedRegVs[cachedKey] = CachedRegVs[cachedKey].Concat(currentUpdatedReg);
+                }
+
+                #region Cancellazione registrazioni eliminate
+
+                // gestione dei valori eliminati
+                foreach (var regV in e.DeleteValues)
+                {
+                    // recupero della registrazione marcata per l'eliminazione
+                    int regE = Convert.ToInt32(regV.Keys[CommonService.GetPropertyName(() => _regVStub.RegE)]);
+                    var regVToDelete = RegVDataSource.First(reg => reg.RegE == regE);
+
+                    // se la registrazione non è già marcata per l'eliminazione allora la segno come cancellata
+                    if (
+                        !RegVsToDelete.Any(
+                            reg => reg.RegE != 0 ? reg.RegE == regVToDelete.RegE : reg.TmpNewId == regVToDelete.TmpNewId))
+                    {
+                        currentDeletedReg.Add(regVToDelete);
+                        RegVsToDelete.Add(regVToDelete);
+
+                        // se la reg in cancellazione è presente tra le reg da aggiornare e/o aggiornare
+                        // allora viene eliminata
+                        if (regVToDelete.RegE != 0) // se si tratta di una reg nuova
+                        {
+                            // cancellazione della reg dalla lista di inserimento e aggiornamento
+                            RegVsToUpdate = RegVsToUpdate.Where(regv => regv.RegE != regVToDelete.RegE).ToList();
+                            RegVsToAdd = RegVsToAdd.Where(regv => regv.RegE != regVToDelete.RegE).ToList();
+                        }
+                        else
+                        {
+                            // cancellazione della reg dalla lista di inserimento e aggiornamento
+                            RegVsToUpdate = RegVsToUpdate.Where(regv => regv.TmpNewId != regVToDelete.TmpNewId).ToList();
+                            RegVsToAdd = RegVsToAdd.Where(regv => regv.TmpNewId != regVToDelete.TmpNewId).ToList();
+                        }
+
+                        // ogni volta che viene processata una reg si inserisce, se non già presente,
+                        // il collaboratore nell'elenco dei collaboratori processati
+                        SaveInEditedCols(Convert.ToInt32(cmbCol_Id.Value));
+                    }
+                }
+
+                #endregion
+
+                // caching del giorno per i dati cancellati (solo se sono stati trovati)
+                if (currentDeletedReg.Count > 0)
+                {
+                    CachedRegVs[cachedKey] =
+                        CachedRegVs[cachedKey].Where(
+                            reg =>
+                                !currentDeletedReg.Select(cReg => cReg.RegE).Where(regE => regE != 0).Contains(reg.RegE));
+                    CachedRegVs[cachedKey] =
+                        CachedRegVs[cachedKey].Where(reg => !currentDeletedReg.Select(cReg => cReg.TmpNewId)
+                            .Where(tmpNewId => tmpNewId != String.Empty)
+                            .Contains(reg.TmpNewId));
+                }
+
+                // se ci sono dei messaggi da ritornare all'utente, li passo alla gestione degli errori
+                if (returnMessage.Count > 0)
+                    throw new InvalidOperationException(CommonService.GetErrorMessageFromDictionary(returnMessage));
+
+            }
+        }
+
+        protected void gvRegVErrEdit_OnCommandButtonInitialize(object sender, ASPxGridViewCommandButtonEventArgs e)
+        {
+            if (EditType != EditTypeErrModuleEnum.Inline)
+                if (e.ButtonType == ColumnCommandButtonType.Update || e.ButtonType == ColumnCommandButtonType.Cancel)
+                    e.Visible = false;
+        }
+
+        protected void gvRegVErrEdit_OnRowUpdating(object sender, ASPxDataUpdatingEventArgs e)
+        {
+            switch (EditType)
+            {
+                case EditTypeErrModuleEnum.Inline:
+                    var cachedKey = GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString());
+
+                    if (cachedKey != String.Empty && CachedRegVs.ContainsKey(cachedKey))
+                    {
+                        List<Reg_V> dayCached = CachedRegVs[cachedKey].ToList();
+
+                        // calcolo dell'id della reg 
+                        int regE = Convert.ToInt32(e.Keys[CommonService.GetPropertyName(() => _regVStub.RegE)]);
+                        // calcolo dell'id temporaneo della reg se precedentemente inserita
+                        string tmpNewId = e.Keys[CommonService.GetPropertyName(() => _regVStub.TmpNewId)].ToString();
+
+                        // recupero della regV in base all'id se già precedentemente presente e in base all'id temporaneo se inserita in questa maschera
+                        Reg_V editedRegV = regE != 0
+                            ? dayCached.First(reg => reg.RegE == regE)
+                            : dayCached.First(reg => reg.TmpNewId == tmpNewId);
+
+                        // si procede con l'aggiornamento dei dati della regv (new values e cambio cant col e tipo modifica)
+                        // solamente se non si tratta di un viaggio
+                        if (editedRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip)
+                        {
+                            // si imposta il cant_id eventualmente modificato dall'utente
+                            // se nei valori aggiornati è stato cambiato il cant_id allora procedo all'azzeramento del corrispondente Fru_Id
+                            // così se nei valori aggiornati è stato cambiato il col_id allora procedo all'azzeramento del corrispondente Pru_Id
+                            PowerWebService.FillEntityProperties(editedRegV, e.NewValues);
+                            RepoManager.Reg_VRepo.ManageCantColChangesBeforeUpdate(editedRegV);
+                        }
+
+                        // non si elaborano le modifiche ai viaggi
+                        if (editedRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip)
+                        {
+                            // si forza in ogni caso le date/ore utili alla modifica al giorno selezionato in combobox
+                            var showedDate = Convert.ToDateTime(cmbData_Reg.Value);
+                            editedRegV.Data_Reg = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day);
+                            editedRegV.Data_Ora_Fis_E = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day,
+                                editedRegV.Data_Ora_Fis_E.Hour, editedRegV.Data_Ora_Fis_E.Minute, editedRegV.Data_Ora_Fis_E.Second);
+                            if (editedRegV.Data_Ora_Fis_U != null)
+                                editedRegV.Data_Ora_Fis_U = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day,
+                                    editedRegV.Data_Ora_Fis_U.Value.Hour, editedRegV.Data_Ora_Fis_U.Value.Minute,
+                                    editedRegV.Data_Ora_Fis_U.Value.Second);
+
+
+                            PutRegVsInUpdatedList((new List<Reg_V>() { editedRegV }).AsQueryable());
+
+                            // ogni volta che viene processata una reg si inserisce, se non già presente,
+                            // il collaboratore nell'elenco dei collaboratori processati
+                            SaveInEditedCols(Convert.ToInt32(editedRegV.Col_Id));
+
+                            CachedRegVs[cachedKey] = dayCached.AsQueryable();
+                        }
+                    }
+
+
+                    break;
+            }
+
+            gvRegVErrEdit.CancelEdit();
+            e.Cancel = true;
+        }
+
+        protected void gvRegVErrEdit_OnRowDeleting(object sender, ASPxDataDeletingEventArgs e)
+        {
+            switch (EditType)
+            {
+                case EditTypeErrModuleEnum.Inline:
+
+                    // recupero della registrazione marcata per l'eliminazione
+                    int regE = Convert.ToInt32(e.Keys[CommonService.GetPropertyName(() => _regVStub.RegE)]);
+                    var regVToDelete = RegVDataSource.First(reg => reg.RegE == regE);
+
+                    // se la registrazione non è già marcata per l'eliminazione allora la segno come cancellata
+                    if (!RegVsToDelete.Any(reg => reg.RegE != 0 ? reg.RegE == regVToDelete.RegE : reg.TmpNewId == regVToDelete.TmpNewId))
+                    {
+                        // calcolo della cache per il processo
+                        var cachedKey = GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString());
+                        List<Reg_V> dayCached = CachedRegVs[cachedKey].ToList();
+
+                        RegVsToDelete.Add(regVToDelete);
+
+                        // se la reg in cancellazione è presente tra le reg da aggiornare e/o aggiornare
+                        // allora viene eliminata
+                        if (regVToDelete.RegE != 0) // se si tratta di una reg nuova
+                        {
+                            // cancellazione della reg dalla lista di inserimento e aggiornamento
+                            RegVsToUpdate = RegVsToUpdate.Where(regv => regv.RegE != regVToDelete.RegE).ToList();
+                            RegVsToAdd = RegVsToAdd.Where(regv => regv.RegE != regVToDelete.RegE).ToList();
+
+                            // eliminazione della regv da cancellare dalla cache
+                            dayCached = dayCached.Where(regv => regv.RegE != regVToDelete.RegE).ToList();
+                        }
+                        else
+                        {
+                            // cancellazione della reg dalla lista di inserimento e aggiornamento
+                            RegVsToUpdate = RegVsToUpdate.Where(regv => regv.TmpNewId != regVToDelete.TmpNewId).ToList();
+                            RegVsToAdd = RegVsToAdd.Where(regv => regv.TmpNewId != regVToDelete.TmpNewId).ToList();
+
+                            // eliminazione della regv da cancellare dalla cache
+                            dayCached = dayCached.Where(regv => regv.TmpNewId != regVToDelete.TmpNewId).ToList();
+                        }
+
+                        // salvataggio del giorno modificato in cache
+                        CachedRegVs[cachedKey] = dayCached.AsQueryable();
+                    }
+
+                    break;
+            }
+
+            // ogni volta che viene processata una reg si inserisce, se non già presente,
+            // il collaboratore nell'elenco dei collaboratori processati
+            SaveInEditedCols(Convert.ToInt32(cmbCol_Id.Value));
+
+            gvRegVErrEdit.CancelEdit();
+            e.Cancel = true;
+        }
+
+        protected void gvRegVErrEdit_OnRowInserting(object sender, ASPxDataInsertingEventArgs e)
+        {
+            switch (EditType)
+            {
+                case EditTypeErrModuleEnum.Inline:
+                    // si processano in inserimento solamente le righe che hanno impostata un'ora in ingresso
+                    if (e.NewValues[CommonService.GetPropertyName(() => _regVStub.Data_Ora_Fis_E)] != null)
+                    {
+                        // inizializzazione di una nuova reg_v
+                        var currRegV = RepoManager.Reg_VRepo.Init();
+
+                        // compilo la nuova regv con i valori inseriti
+                        PowerWebService.FillEntityProperties(currRegV, e.NewValues);
+
+                        // per tutte le reg nuove viene impostata la data/ora di registrazione (E/U) prendendo la data visualizzata e l'ora di registrazione fisica inserita
+                        var showedDate = Convert.ToDateTime(cmbData_Reg.Value);
+                        currRegV.Data_Reg = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day);
+                        currRegV.Data_Ora_Fis_E = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day, currRegV.Data_Ora_Fis_E.Hour, currRegV.Data_Ora_Fis_E.Minute, currRegV.Data_Ora_Fis_E.Second);
+                        if (currRegV.Data_Ora_Fis_U != null)
+                            currRegV.Data_Ora_Fis_U = new DateTime(showedDate.Year, showedDate.Month, showedDate.Day, currRegV.Data_Ora_Fis_U.Value.Hour, currRegV.Data_Ora_Fis_U.Value.Minute, currRegV.Data_Ora_Fis_U.Value.Second);
+
+                        // inserimento del id del collaboratore
+                        currRegV.Col_Id = Convert.ToInt32(cmbCol_Id.Value);
+
+                        // inserimento dell'id identificativo utilizzato per collegare modifiche e cancellazioni
+                        // a elementi inseriti da questa maschera ma non ancora salvati su database
+                        currRegV.GenerateTmpId();
+
+                        // inserimento dei valori nell'elenco delle reg_v da inserire e nelle reg_v su cui costruire
+                        // la chache
+                        RegVsToAdd.Add(currRegV);
+
+                        // ogni volta che viene processata una reg si inserisce, se non già presente,
+                        // il collaboratore nell'elenco dei collaboratori processati
+                        SaveInEditedCols(Convert.ToInt32(currRegV.Col_Id));
+
+                        // aggiunta della nuova reg_v alla cache
+                        var cachedKey = GetCachedRegVsKey(Convert.ToInt32(cmbCol_Id.Value), cmbData_Reg.Value.ToString());
+                        List<Reg_V> dayCached = CachedRegVs[cachedKey].ToList();
+                        dayCached.Add(currRegV);
+                        CachedRegVs[cachedKey] = dayCached.AsQueryable();
+                    }
+                    break;
+            }
+
+            gvRegVErrEdit.CancelEdit();
+            e.Cancel = true;
+        }
+
+        protected void gvRegVErrEdit_OnRowValidating(object sender, ASPxDataValidationEventArgs e)
+        {
+
+        }
+
+        protected void gvRegVErrEdit_OnInit(object sender, EventArgs e)
+        {
+            // recupero della griglia
+            var editGrid = (ASPxGridView)sender;
+
+            // recupero della colonna da processare
+            GridViewColumn sameDayColumn = editGrid.Columns["IsUTimeSameDayE"];
+
+            // recupero della colonna di cui adattare la percentuale di spazio
+            GridViewColumn regTypeColumn = editGrid.Columns["Registrazione_Tipo_Reg"];
+
+            // se è abilitato il notturno allora viene visualizzata la colonna di selezione del giorno intero;
+            // in caso contrario la colonna viene nascosta
+            if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
+            {
+                sameDayColumn.Visible = true;
+                regTypeColumn.Width = Unit.Percentage(15);
+            }
+            else
+            {
+                sameDayColumn.Visible = false;
+                regTypeColumn.Width = Unit.Percentage(10);
+            }
+
+            // se è richiesto di visualizzare e gestire i secondi nella griglia allora procedo al cambio delle relative colonne
+            int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowSecondsInHoursErrModuleEnum);
+            if (customizationVersion == (int)ShowSecondsInHoursErrModuleEnum.ShowSeconds)
+            {
+                if (editGrid.Columns["Data_Ora_Fis_E"] != null)
+                {
+                    GridViewColumn regEHourColumn = editGrid.Columns["Data_Ora_Fis_E"];
+                    ((GridViewDataDateColumn)regEHourColumn).PropertiesDateEdit.DisplayFormatString = "HH:mm:ss";
+                    ((GridViewDataDateColumn)regEHourColumn).PropertiesDateEdit.EditFormat = EditFormat.Custom;
+                    ((GridViewDataDateColumn)regEHourColumn).PropertiesDateEdit.EditFormatString = "HH:mm:ss";
+                }
+                if (editGrid.Columns["Data_Ora_Fis_U"] != null)
+                {
+                    GridViewColumn regUHourColumn = editGrid.Columns["Data_Ora_Fis_U"];
+                    ((GridViewDataDateColumn)regUHourColumn).PropertiesDateEdit.DisplayFormatString = "HH:mm:ss";
+                    ((GridViewDataDateColumn)regUHourColumn).PropertiesDateEdit.EditFormat = EditFormat.Custom;
+                    ((GridViewDataDateColumn)regUHourColumn).PropertiesDateEdit.EditFormatString = "HH:mm:ss";
+                }
+            }
+
+
+            // se è richiesto di visualizzare ed utilizzare le colonne indicanti il flag E/U allora le si visualizzano
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowFlagEUInFormEnum) == (int)ShowFlagEUInFormEnum.Show)
+            {
+                // inizializzazione delle colonne di entrata/uscita da visualizzare
+                GridViewColumn entrataEUColumn = editGrid.Columns["EntrataEU"];
+                GridViewColumn uscitaEUColumn = editGrid.Columns["UscitaEU"];
+
+                // inizializzazione delle colonne da ridimensionare
+                GridViewColumn cantColumn = editGrid.Columns["Cant_Id"];
+                GridViewColumn justificationColumn = editGrid.Columns["Motivazione_Reg_Id"];
+
+                // visualizzazione e dimensionamento delle colonne relative al flag E/U
+                entrataEUColumn.Visible = true;
+                entrataEUColumn.Width = Unit.Percentage(5);
+                uscitaEUColumn.Visible = true;
+                uscitaEUColumn.Width = Unit.Percentage(5);
+
+                // ridimensionamento delle colonne a cui sarà sottratto spazio per la visualizzazione del flag E/U
+                cantColumn.Width = Unit.Percentage(25);
+                justificationColumn.Width = Unit.Percentage(10);
+
+            }
+        }
+
+        protected void gvRegVErrEdit_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+
+            _callBackParameter = e.Parameters;
+
+
+            if (e.Parameters.StartsWith("updateToMemory") && IsToPopulateGrid) // se si sta facendo l'update in memoria e si è in ON
+                BindGrid();
+            else if (e.Parameters.StartsWith("elaborate") && IsToPopulateGrid) // se si tratta dell'elaborazione su db e si è in ON
+            {
+                // per prima cosa nell'elaborate viene effettuato il bind della griglia di modo da ricevere i dati aggiornati
+                BindGrid();
+
+                // generazione del dizionario che viualizzerà gli errori di update
+                var errorByColId = new Dictionary<string, IList<Dictionary<string, string>>>();
+
+                // elenco delle date con cui costruire il periodo di rielaborazione
+                var toElaborateDates = new HashSet<DateTime>();
+
+                // inizializzazione delle liste che conterranno le reg da modificare e le reg da cancellare
+                var toUpdateRegs = new List<Reg>();
+                var toDeleteRegs = new List<Reg>();
+
+                // inizializzazione della lista dei collaboratori inclusi nel processo di elaborazione
+                var colIds = new List<int>();
+
+                // dalla lista di inserimento elimino tutte le reg che sono state nel frattempo anche modificate; in questo caso l'ultima modifica
+                // va trattata come inserimento
+                RegVsToAdd = RegVsToAdd.Where(regV => !RegVsToUpdate.Select(uRegV => uRegV.TmpNewId).Where(tmpNewId => tmpNewId != String.Empty).Contains(regV.TmpNewId)).ToList();
+
+                // per ogni regv modificata e inserita
+                var regVsToCheck = RegVsToUpdate;
+                regVsToCheck.AddRange(RegVsToAdd);
+
+                // alla lista per l'elaborazione di inserimenti/update vanno tolti tutti i record marcati per la cancellazione
+                regVsToCheck = regVsToCheck.Where(regV => !RegVsToDelete.Select(dRegV => dRegV.TmpNewId).Where(tmpNewId => tmpNewId != String.Empty).Contains(regV.TmpNewId)).ToList();
+
+                foreach (var regv in regVsToCheck)
+                {
+                    Dictionary<string, string> validationErrors;
+
+                    #region spostamento data uscita RegV se entrata non presente
+
+                    // se la data entrata è non valorizzata
+                    if (regv.Data_Ora_Fis_E.TimeOfDay == TimeSpan.Zero)
+                    {
+                        // se la data di uscita è valorizzata
+                        if (regv.Data_Ora_Fis_U.HasValue)
+                        {
+                            // si sposta la data di uscita su quella di entrata e si marca per la cancellazione
+                            // la vecchia reg in entrata
+                            if (regv.RegE != 0)
+                                toDeleteRegs.Add(RepoManager.RegRepo.FirstOrDefault(reg => reg.Reg_Id == regv.RegE));
+                            regv.Data_Ora_Fis_E = regv.Data_Ora_Fis_U.Value;
+                            regv.Data_Ora_Fis_U = null;
+                            regv.RegE = Convert.ToInt32(regv.RegU);
+                            regv.RegU = null;
+                        }
+                        else// in caso non siano valorizzate date, si passa al record successivo, prima cancellando la reg in entrata
+                        {
+                            // solamente se non si tratta di nuovi inserimenti
+                            if (regv.RegE != 0)
+                            {
+                                //RiferimentoRRN_Reg
+                                var regToDelete = RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == regv.RegE);
+                                regToDelete.RiferimentoRRN_Reg = null;
+                                toDeleteRegs.Add(regToDelete);
+                                if (regv.RegU != null)
+                                {
+                                    toDeleteRegs.Add(RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == regv.RegU));
+                                }
+                                continue;
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    #region Check RegE
+
+                    // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
+                    int regEId = 0;
+                    DateTime origDateE = DateTime.MinValue;
+
+                    // generazione della reg in entrata utilizzata per la modifica e della reg attuale nel repository
+                    Reg newRegE = RepoManager.RegRepo.Init();
+
+                    // recupero la vecchia reg solamente se non si tratta di un nuovo inserimento
+                    Reg oldRegE = null;
+                    if (regv.RegE != 0)
+                    {
+                        oldRegE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegE);
+
+                        // viene verificato se la reg nel repository ha una data, eventualmente utilizzata per una rielaborazione anche di quel giorno
+                        if (oldRegE.Registrazione_Data_Ora_Fis_Reg != null)
+                            toElaborateDates.Add(oldRegE.Registrazione_Data_Ora_Fis_Reg.Date);
+
+                        regEId = regv.RegE;
+                        origDateE = oldRegE.Registrazione_Data_Ora_Orig_Reg;
+                    }
+                    else
+                    {
+                        // se si tratta di un nuovo record allora do in pasto all'elaborate la data e ora d'entrata.
+                        toElaborateDates.Add(regv.Data_Ora_Fis_E.Date);
+                    }
+
+
+                    // se la reg in elaborazione ha una data ora di entrata valida, viene impostata sulla nova reg in entrata di appoggio
+                    if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_E != null &&
+                        regv.Data_Ora_Fis_E != DateTime.MinValue)
+                    {
+                        newRegE.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
+                            regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_E.Hour,
+                            regv.Data_Ora_Fis_E.Minute, regv.Data_Ora_Fis_E.Second);
+                    }
+
+                    // impostazioni dei dati della registrazione in entrata utilizzata per la modifica
+                    newRegE.Cant_Id = regv.Cant_Id;
+                    newRegE.Col_Id = regv.Col_Id;
+                    newRegE.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
+                    newRegE.Registrazione_Data_Ora_Fig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                    newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                    newRegE.Fru_Id = regv.Fru_Id;
+                    newRegE.Pru_Id = regv.Pru_Id;
+                    newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
+
+                    // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
+                    if (oldRegE != null)
+                        RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
+
+                    // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
+                    newRegE.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                    // alla reg_v viene appiccicato il relativo flag di entrata/uscita
+                    newRegE.Flag_EU_Reg = regv.EntrataEU;
+
+                    // se si tratta di una registrazione nuova allora:
+                    // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
+                    // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
+                    if (newRegE.Reg_Id == 0)
+                    {
+                        newRegE.Registrazione_Data_Ora_Fis_Reg = regv.Data_Ora_Fis_E;
+                        newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                    }
+
+                    // viene effettuata la check sulla reg, indicando se si tratta di un nuovo inserimento
+                    validationErrors = regv.RegE == 0 ? RepoManager.RegRepo.Check(newRegE, true) : RepoManager.RegRepo.Check(newRegE, false);
+
+                    // se ci sono stati errori si interrompe l'elaborazione
+                    if (validationErrors.Count > 0)
+                    {
+                        SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                        continue;
+                    }
+
+                    #endregion
+
+                    #region Check RegU
+
+                    // generazione della reg in uscita di appoggio
+                    Reg newRegU = RepoManager.RegRepo.Init();
+                    Reg oldRegU = null;
+
+                    // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
+                    int regUId = 0;
+                    DateTime origDateU = DateTime.MinValue;
+
+                    // se la regv in elaborazione ha una data e ora di uscita valida
+                    if (regv.Data_Ora_Fis_U != null && regv.Data_Ora_Fis_U != DateTime.MinValue)
+                    {
+
+                        // se non si tratta di una nuova reg allora viene recuperata dal repository la reg in uscita con lo stesso codice
+                        if (regv.RegU != null)
+                        {
+                            oldRegU = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegU);
+
+                            // se la reg in uscita presa dal repository ha una data in uscita valida allora la si aggiunge all'elenco di date da rielaborare
+                            if (oldRegU.Registrazione_Data_Ora_Fis_Reg != null)
+                                toElaborateDates.Add(oldRegU.Registrazione_Data_Ora_Fis_Reg.Date);
+
+                            regUId = oldRegU.Reg_Id;
+
+                            origDateU = oldRegU.Registrazione_Data_Ora_Orig_Reg;
+                        }
+
+
+                        // se la regv in elaborazione ha una data/ora di uscita valida viene impostata sulla nuova reg in uscita utilizzata per la modifica
+                        if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_U != null &&
+                            regv.Data_Ora_Fis_U != DateTime.MinValue)
+                        {
+                            newRegU.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
+                                regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_U.Value.Hour,
+                                regv.Data_Ora_Fis_U.Value.Minute, regv.Data_Ora_Fis_U.Value.Second);
+                        }
+
+                        // inserimento dei valori nella nuova reg in uscita
+                        newRegU.Cant_Id = regv.Cant_Id;
+                        newRegU.Col_Id = regv.Col_Id;
+                        newRegU.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
+                        newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                        if (oldRegU != null)
+                        {
+                            newRegU.Fru_Id = oldRegU.Fru_Id;
+                            newRegU.Pru_Id = oldRegU.Pru_Id;
+                            newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
+
+                            // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
+                            if (oldRegU != null)
+                                RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegU, oldRegU);
+                        }
+                        else
+                        {
+                            newRegU.Fru_Id = null;
+                            newRegU.Pru_Id = null;
+                        }
+
+                        // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
+                        newRegU.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                        // alla reg_v viene appiccicato il relativo flag di entrata/uscita
+                        newRegU.Flag_EU_Reg = regv.UscitaEU;
+
+                        // se si tratta di una registrazione nuova allora:
+                        // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
+                        // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
+                        if (newRegU.Reg_Id == 0)
+                        {
+                            newRegU.Registrazione_Data_Ora_Fis_Reg = Convert.ToDateTime(regv.Data_Ora_Fis_U);
+                            newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                        }
+
+                        // se è impostato il notturno e la data/ora fisica d'uscita è inferirore a quella in entrata si verifica la variabile
+                        // di stesso giorno e caso mai si aggiunge un giorno
+                        if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno &&
+                            RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.None && RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.Disabled)
+                        {
+                            if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
+                                regv.Data_Ora_Fis_U.Value.TimeOfDay > regv.Data_Reg.Value.TimeOfDay)
+                                // viene aggiunto un giorno solamente se non si è all'interno dello stesso giorno
+                                if (regv.IsUTimeSameDayE)
+                                {
+                                    newRegU.Registrazione_Data_Ora_Fis_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg.AddDays(1);
+                                    // se si tratta di una nuova registrazione viene reimpostata anche la data/ora originale
+                                    if (newRegU.Reg_Id == 0)
+                                        newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                }
+                        }
+
+                        // assegnazione alla reg in uscita del relative record number della reg in entrata
+                        newRegU.ParentReg = newRegE;
+
+                        newRegU.DisAbilitazione_Reg = false;
+                        newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+
+                        // effettuazione della check per la registrazione in uscita indicando se nuova o variata
+                        validationErrors = regv.RegU == null ? RepoManager.RegRepo.Check(newRegU, true) : RepoManager.RegRepo.Check(newRegU, false);
+
+                        // se ci sono stati errori in validazione, allora si interrompe l'elaborazione
+                        if (validationErrors.Count > 0)
+                        {
+                            SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        // se la regv non ha una valida data/ora d'uscita allora
+                        // viene recuperata la vecchia reg in uscita
+                        oldRegU = RepoManager.RegRepo.SingleOrDefault(rv => rv.Reg_Id == regv.RegU);
+
+                        // e se presente viene marcata per la cancellazione
+                        if (oldRegU != null)
+                            toDeleteRegs.Add(oldRegU);
+
+                        // in caso non abbia una reg in uscita anche la nuova regu va impostata a null per non essere aggiunta
+                        newRegU = null;
+                    }
+
+                    #endregion
+
+                    #region Check RegV
+
+                    // se la regv in elaborazione ha un codice collaboratore non già inserito in lista, lo si aggiunge per gestione dell'elaborate 
+                    if (regv.Col_Id != 0 && regv.Col_Id != null && !colIds.Contains(regv.Col_Id.Value))
+                        colIds.Add(regv.Col_Id.Value);
+
+                    // sono forzate sulla regv da checcare l'ora di entrata e uscita fisica così da evitare
+                    // mancati controlli per la presenza di min value precedentemente inseriti
+                    regv.Data_Ora_Fis_E = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                    if (newRegU != null)
+                        regv.Data_Ora_Fis_U = newRegU.Registrazione_Data_Ora_Fis_Reg;
+
+                    // effettuazione della check della regV (se si tratta di una regv inserita in sessione allora si passa il parametro new, altrimenti il contrario)
+                    validationErrors = RepoManager.Reg_VRepo.Check(regv, regv.RegE == 0 ? true : false);
+
+                    // se ci sono stati errori si interrompe l'elaborazione
+                    if (validationErrors.Count > 0)
+                    {
+                        SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                        continue;
+                    }
+
+                    #endregion
+
+                    #region Manage Regs orig date
+
+                    // è calcolato il fatto che si sta elaborando un'uscita nello stesso giorno
+                    bool isSameDay = true;
+                    // se non c'è il notturno è sicuramente true
+                    if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
+                        isSameDay = regv.IsUTimeSameDayE;
+
+                    // gestione della data/ora originale delle reg 
+                    RepoManager.RegRepo.ManageOrigDates(newRegE, regEId, origDateE, newRegU, regUId, origDateU, isSameDay);
+
+                    #endregion
+
+                    #region Manage Blocking regs
+
+                    // gestione del codice di accoppiamento per le reg bloccate
+                    RepoManager.RegRepo.PerformBlockedRegsCouple(newRegE, newRegU, regv.RegE);
+
+                    #endregion
+
+                    #region Add Checked Regs To updates list
+
+                    // non ci sono stati errori di check e allora è segnalata come da aggiungere la reg nuova e cancellare la precedente
+                    toUpdateRegs.Add(newRegE);
+                    if (oldRegE != null)
+                        toDeleteRegs.Add(oldRegE);
+
+                    // aggiunta la nuova reg in uscita tra quelle da aggiungere (solo se valorizzata)
+                    if (newRegU != null)
+                        toUpdateRegs.Add(newRegU);
+
+                    // se la vecchia reg in uscita è valorizzata allora viene impostata come reg da cancellare
+                    if (oldRegU != null)
+                        toDeleteRegs.Add(oldRegU);
+
+                    #endregion
+                }
+
+                #region Check e preparazione cancellazione
+
+                // per ogni regV marcata per la cancellazione (sono cancellate solamente le reg già presenti)
+                foreach (var regVToDelete in RegVsToDelete.Where(regV => regV.RegE != 0))
+                {
+                    // se la regv in elaborazione ha un codice collaboratore non già inserito in lista, lo si aggiunge per gestione dell'elaborate 
+                    if (regVToDelete.Col_Id != 0 && regVToDelete.Col_Id != null && !colIds.Contains(regVToDelete.Col_Id.Value))
+                        colIds.Add(regVToDelete.Col_Id.Value);
+
+                    // recupero le reg che compongono la reg_v da cancellare
+                    List<Reg> regsMarkedToDelete = RepoManager.Reg_VRepo.GetRegToDelete(regVToDelete);
+
+                    // segnalo le reg calcolate per la cancellazione (effettuata prima dell'elaborate)
+                    toDeleteRegs.AddRange(regsMarkedToDelete);
+
+                    // vegnono aggiunti i giorni delle due reg alle date da elaborare
+                    toElaborateDates.Add(regsMarkedToDelete.First().Registrazione_Data_Ora_Fis_Reg.Date);
+                    if (regsMarkedToDelete.Count == 2)
+                        toElaborateDates.Add(regsMarkedToDelete.Last().Registrazione_Data_Ora_Fis_Reg.Date);
+                }
+
+                #endregion
+
+                #region Elaborate all modified regs
+
+                // se non ci sono stati errori nell'elaborazione
+                if (errorByColId.Count == 0)
+                {
+                    // cancellazione di tutte le reg da cancellare
+                    RepoManager.RegRepo.Delete(toDeleteRegs, true);
+
+                    // aggiunta di tutte le reg da aggiungere                   
+                    RepoManager.RegRepo.Add(toUpdateRegs, true);
+
+                    // inizializzazione delle date di inizio e fine elaborate
+                    DateTime startElabDate = DateTime.MinValue;
+                    DateTime endElabDate = DateTime.MinValue;
+
+                    // ciclo di elaborazione delle date da rielaborare (gestendo solo i valori univoci
+                    foreach (var currentDate in toElaborateDates.Distinct())
+                    {
+                        //-----------------Lettura delle REG del Gruppo NEW e del GRuppo OLD da rielaborare (Union delle due) --------------------
+
+                        //Le Ore dei Campi Date vengono sempre inizializzate a ZERO dal sistema
+                        //Occorre quindi selezionare SEMPRE x DATA MINORE della DATA con ORE ZERO del GG Successivo
+                        //Così vengono prese tutte le REG DEL GIORNO (per non mettere <= 23.59.59)  
+                        //Normalmente bastano quelle del Giorno (per cui i GG in più sono 1 per via dell'Ora 00:00:00)
+                        startElabDate = currentDate;
+                        endElabDate = currentDate.AddDays(1);
+
+                        // gestione delle date di inizio/fine periodo in base alla configurazione del notturno
+                        BusinessService.ManageNocturneStartEndDate(ref startElabDate, ref endElabDate);
+
+                        //leggo Tutte le REG NEW Necessarie alla Successiva ELABORATE
+                        List<Reg> toElaborateRegs = RepoManager.RegRepo.Find(reg => reg.Col_Id.HasValue && colIds.Contains(reg.Col_Id.Value) &&
+                                                            (reg.Registrazione_Data_Ora_Fis_Reg >= startElabDate &&
+                                                             reg.Registrazione_Data_Ora_Fis_Reg < endElabDate)).ToList();
+
+
+                        // elaborazione delle registrazioni recuperate
+                        if (toElaborateRegs.Any())
+                            RepoManager.RegRepo.Elaborate(toElaborateRegs, startElabDate, endElabDate, true, false);
+                    }
+                }
+
+                // se si sono verificati degli errori, vengono visualizzati a video
+                if (errorByColId.Count > 0)
+                    //EditErrorMessage = StringFromDictionary(validationErrors);
+                    EditErrorMessage = GetErrorMessageFromDictionary(errorByColId);
+                else
+                {
+                    // se non ci sono stati errori nel salvataggio allora segnalo che il primo salvataggio è avvenuto
+                    PrimoSalvataggio = true;
+
+                    // se l'elaborazione si è conclusa senza errori allora si imposta a null la proprietà che
+                    // ne permette la visualizzazione sulla griglia
+                    EditErrorMessage = null;
+
+                    // al termine delle operazioni resetto i data source
+                    ResetDataSourceAndBind(true);
+                }
+
+                #endregion
+            }
+        }
+
+        protected void gvRegVErrEdit_AfterPerformCallback(object sender, ASPxGridViewAfterPerformCallbackEventArgs e)
+        {
+            ASPxGridView gv = (ASPxGridView)sender;
+            //gv.JSProperties.Add("cpIsToShowEditGrid", false);
+            //gv.JSProperties["cpIsToShowEditGrid"] = IsToShowEditGrid;
+
+            gv.JSProperties.Add("cpErrorString", null);
+            if (!String.IsNullOrEmpty(EditErrorMessage))
+                gv.JSProperties["cpErrorString"] = EditErrorMessage;
+
+            gv.JSProperties.Add("cpCallBackParameter", _callBackParameter);
+
+        }
+
+        #endregion
+
+        #region Report
+
+        public ExtXtraReport GetReport(Tab_Report report, List<TabPageExtended> selectedTabs, Dictionary<string, int> reportOptions, List<GroupingTreeListItem> groups, List<object> items, ASPxPanel customOptionsPanel = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Metodi privati
+
+        /// <summary>
+        /// Imposta il tipo di modifica della griglia (e elementi accessori) in base alla customizzazione impostata.
+        /// </summary>
+        private void SetGridEditType()
+        {
+            // inizializzazione della colonna comandi
+            var commandCol = gvRegVErrEdit.Columns[0] as GridViewCommandColumn;
+
+            // in base al tipo di modifica richiesta si impostano i vari dati
+            switch (EditType)
+            {
+                case EditTypeErrModuleEnum.Inline:
+                    // impostazione del tipo di modifica
+                    gvRegVErrEdit.SettingsEditing.Mode = GridViewEditingMode.Inline;
+
+                    // nella modifica inline è nascosto il pulsante di update in memoria
+                    btnUpdateMemory.ClientVisible = false;
+
+                    // visualizzazione dei pulsanti di update
+                    commandCol.ShowEditButton = true;
+
+                    break;
+                case EditTypeErrModuleEnum.BatchEdit:
+
+                    // in caso di modifica batch allora si nasconde il pulsante di modifica
+                    commandCol.ShowEditButton = false;
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Imposta la specifica JSProperty sul pulsante di lancio della procedura di correzione al fine di poter visualizzare l'eventuale messaggio di fine elaborazione.
+        /// </summary>
+        private void SetPostCorrectionMessage(string message)
+        {
+            if (!filterPanel.JSProperties.ContainsKey("cpCorrectionMessage"))
+                filterPanel.JSProperties.Add("cpCorrectionMessage", message);
+            filterPanel.JSProperties["cpCorrectionMessage"] = message;
+        }
+
+        /// <summary>
+        /// Sposta le Reg_V passate come parametro nella lista delle Reg_V da updatare sul database.
+        /// </summary>
+        /// <param name="regVsToPut">Le Reg_V da inserire nell'elenco delle reg_v da modificare.</param>
+        private void PutRegVsInUpdatedList(IQueryable<Reg_V> regVsToPut)
+        {
+            foreach (var retRegV in regVsToPut)
+            {
+                if (RegVsToUpdate.Any(reg => reg.RegE != 0 ? reg.RegE == retRegV.RegE : reg.TmpNewId == retRegV.TmpNewId))
+                {
+                    int index = RegVsToUpdate.FindIndex(reg => reg.RegE == retRegV.RegE);
+                    RegVsToUpdate.RemoveAt(index);
+                }
+                RegVsToUpdate.Add(retRegV);
+            }
+        }
+
+        /// <summary>
+        /// Impostazione in lingua degli elementi della pagina.
+        /// </summary>
+        private void LocalizeElements()
+        {
+            BtnPropostaChiusura.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_PROPOSTA_CHIUSURA);
+            CbChiusuraAllSelected.Text = BusinessService.GetLocalizedString(PowerWebResources.STR_TUTTE_LE_ERRATE);
+            LblColPreFilter.Text = BusinessService.GetLocalizedString(PowerWebResources.STR_COLLABORATORE);
+            LblIfEmptyAll.Text = BusinessService.GetLocalizedString(PowerWebResources.STR_SE_VUOTO_TUTTI);
+        }
+
+        /// <summary>
+        /// salvataggio tra i collaboratori modificati del collaboratore passato come parametro e del giorno processato
+        /// </summary>
+        /// <param name="colId">il collabotartore passato come prametro da salvare</param>
+        private void SaveInEditedCols(int colId)
+        {
+            // si processano solamente id collaboratore validi (<> 0)
+            if (colId != 0)
+            {
+                // recupero i collaboratori attualmente in modifica
+                var currEditedCols = EditedCols;
+
+                // se il collaboratore che si sta processando non è presente nella lista
+                if (currEditedCols.All(col => col.Col_Id != colId))
+                {
+                    // allora lo aggiunto alla lista e la rimetto in sessione
+                    currEditedCols.Add(ColDataSource.FirstOrDefault(col => col.Col_Id == colId));
+                    EditedCols = currEditedCols;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pulisce i data source dei collaboratori che non hanno più errori secondo i prefiltri specificati (controllo diretto sul database).
+        /// </summary>
+        private void CleanEditedWithNoErrors()
+        {
+            // si prosegue con l'elaborazione solamente se ci sono dei dati da processare
+            if (EditedCols != null)
+            {
+                if (EditedCols.Any())
+                {
+                    // costruzione della stringa base di ricerca delle regv in errore
+                    string baseQuery = BuildRegVErrQuery();
+
+                    // inizializzazione della lista contenente i collaboratori da rimuovere in quanto
+                    // rimasti senza errate
+                    List<Col> colsToRemove = new List<Col>();
+
+                    // ciclo su tutti i collaboratori/data modificati
+                    for (int i = 0; i < EditedCols.Count; i++)
+                    {
+                        var editedCol = EditedCols[i];
+
+                        // recupero il valore del collaboratore da ricercare
+                        var colId = editedCol.Col_Id;
+
+                        // costruzione della stringa base con la query per la ricerca delle registrazioni errate
+                        StringBuilder regvQuery = new StringBuilder(baseQuery);
+
+                        // viene aggiunta la condizione del collaboratore alla query
+                        regvQuery.AppendFormat(" AND (Col_Id = {0})", colId);
+
+                        // se non ci sono più record errati per questo collaboratore/data, lo si elimina dalla lista
+                        if (!RepoManager.Reg_VRepo.DbSet.SqlQuery(regvQuery.ToString()).AsNoTracking().AsQueryable().Any())
+                        {
+                            colsToRemove.Add(editedCol);
+                        }
+                    }
+
+                    // se sono stati marcati dei collaboratori per la rimozione, si procede a toglierli dall'elenco
+                    if (colsToRemove.Any())
+                        colsToRemove.ForEach(colToRemove => EditedCols.Remove(colToRemove));
+
+                    // se ci sono dei collaboratori rimasti allora si procede, per essi, al ricalcolo delle date
+                    if (EditedCols.Any())
+                    {
+                        StringBuilder datesQuery = new StringBuilder(baseQuery);
+                        datesQuery.AppendFormat(" AND (");
+                        EditedCols.ForEach(col => datesQuery.AppendFormat("Col_Id = {0} OR ", col.Col_Id));
+                        // rimozione degli ultimi caratteri della stringa (l'or non utilizzato)
+                        datesQuery = new StringBuilder(datesQuery.ToString().Remove(datesQuery.ToString().Length - 4));
+                        datesQuery.Append(')');
+
+                        // esecuzione della query
+                        var datesQueryable = RepoManager.Reg_VRepo.DbSet.SqlQuery(datesQuery.ToString()).AsNoTracking().AsQueryable();
+
+                        // impostazione del nuovo data source delle date
+                        SetEditDatesByColId(datesQueryable, Convert.ToDateTime(SearchDateFrom.Text, PowerWebContext.Current.UserCultureInfo), Convert.ToDateTime(SearchDateTo.Text, PowerWebContext.Current.UserCultureInfo), Enumerable.Empty<Col>());
+                    }
+                }
+            }
+        }
+
+        private string GetCachedRegVsKey(int colID, string dataReg)
+        {
+            return String.Format("{0}#{1}", colID, dataReg);
+        }
+
+        /// <summary>
+        /// Costruisce e ritorna uno stringa con la query per la ricerca delle registrazioni errate (utilizzando i dati di filtro).
+        /// </summary>
+        /// <returns>Lo stringa da utilizzare come query per ricercare le reg_V errate</returns>
+        private string BuildRegVErrQuery()
+        {
+            StringBuilder sbQuery = new StringBuilder("SELECT * FROM dbo.Reg_V WHERE ");
+
+            // di default i passaggi non sono mai considerati errore
+            sbQuery.AppendFormat("(Registrazione_Tipo_Reg != {0}) ", (int)RegTypeEnum.Pass);
+
+            sbQuery.AppendFormat("AND (");
+
+            IEnumerable<char> selectedErrors;
+
+            if (ErrorsComboBox.Text.StartsWith("99"))
+            {
+                selectedErrors = new List<char>() { '0', '1', '2', '4', '9' };
+            }
+            else
+            {
+                selectedErrors = ErrorsComboBox.Text.Split(';').Where(errStr => !errStr.StartsWith("99")).Select(err => err.FirstOrDefault());
+            }
+
+
+            foreach (var errCode in selectedErrors)
+            {
+                if (!sbQuery.ToString().EndsWith("("))
+                    sbQuery.AppendFormat(" OR ");
+
+                switch (errCode)
+                {
+                    case '0':
+                        sbQuery.AppendFormat("(Registrazione_Stato_Reg = {0} AND Registrazione_Tipo_Reg = {1})", errCode,
+                            (int)RegTypeEnum.None);
+                        break;
+                    case '1':
+                        sbQuery.AppendFormat("(Registrazione_Stato_Reg = {0} AND Registrazione_Tipo_Reg = {1})",
+                            (int)RegStateEnum.None, (int)RegTypeEnum.Att);
+                        break;
+                    default:
+                        sbQuery.AppendFormat("Registrazione_Stato_Reg = {0}", errCode);
+                        break;
+                }
+            }
+            sbQuery.Append(')');
+
+
+            // ... e viene aggiunto il controllo di periodo
+            DateTime searchDateFrom = Convert.ToDateTime(SearchDateFrom.Text, PowerWebContext.Current.UserCultureInfo);
+            DateTime searchDateTo = Convert.ToDateTime(SearchDateTo.Text, PowerWebContext.Current.UserCultureInfo);
+
+            // se è attivo il notturno in configurazione allora si allunga il periodo di un giorno all'inizio e un giorno alla fine
+            if (RepoManager.ParamRepo.NocturneGeneralConfiguration.Item1 && RepoManager.ParamRepo.NocturneGeneralConfiguration.Item2 != NocturneTypeEnum.Disabled && RepoManager.ParamRepo.NocturneGeneralConfiguration.Item2 != NocturneTypeEnum.None)
+            {
+                searchDateFrom.AddDays(-1);
+                searchDateTo.AddDays(1);
+            }
+
+            sbQuery.AppendFormat(" AND (");
+            sbQuery.AppendFormat("Data_Reg BETWEEN '{0}/{1}/{2}' AND '{3}/{4}/{5}'", searchDateFrom.Year, searchDateFrom.Month,
+                searchDateFrom.Day, searchDateTo.Year, searchDateTo.Month, searchDateTo.Day);
+            sbQuery.Append(')');
+
+            // ... e tolgo dalla selezione tutte le reg che non hanno un collaboratore
+            sbQuery.AppendFormat("AND (");
+            sbQuery.AppendFormat("Col_Id IS NOT NULL");
+            sbQuery.Append(')');
+
+            // ... e tolgo anche le registrazioni bloccate
+            sbQuery.AppendFormat(" AND (");
+            sbQuery.AppendFormat("Registrazione_Bloccata = 0");
+            sbQuery.Append(')');
+            return sbQuery.ToString();
+        }
+
+        /// <summary>
+        /// Imposta il testo della label che indica il filtro sui collaboratori utilizzando il valore di PrimoSalvataggio
+        /// </summary>
+        private void SetColDataSourceLabelText()
+        {
+            // viene aggiornata la label di filtro in base al valore pasato come parametro
+            LblColDataSource.Text = PrimoSalvataggio
+                ? BusinessService.GetLocalizedString(PowerWebResources.STR_LABEL_ONLY_EDITED_COLS)
+                : BusinessService.GetLocalizedString(PowerWebResources.STR_LABEL_ALL_ERR_COLS);
+        }
+
+        /// <summary>
+        /// Imposta a partire da un IQueryable di regv con stato errato tutti collaboratori/data in esse contenute.
+        /// </summary>
+        /// <param name="regVsErr">Le regv con stato errato da processare per il calcolo dei collaboratori/data.</param>
+        /// <param name="startPeriod">L'inzio del periodo di ricerca degli errori</param>
+        /// <param name="endPeriod">Il termine di ricerca degli errori</param>
+        /// <param name="nonPresentCol"></param>
+        private void SetEditDatesByColId(IQueryable<Reg_V> regVsErr, DateTime startPeriod, DateTime endPeriod, IEnumerable<Col> nonPresentCol)
+        {
+            int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ErrModuleShowEmptyColEnum);
+
+            AllErrDatesByColId = new Dictionary<int?, IQueryable<string>>();
+            var regVGroupedByColId = regVsErr.GroupBy(regV => regV.Col_Id);
+            foreach (var colIdGroup in regVGroupedByColId)
+            {
+                var datePattern = PowerWebContext.Current.UserCultureInfo.DateTimeFormat.ShortDatePattern;
+                AllErrDatesByColId.Add(colIdGroup.Key,
+                    colIdGroup.OrderBy(regV => regV.Data_Reg)
+                        .Select(regV => ((DateTime)regV.Data_Reg).ToString(datePattern))
+                        .Distinct()
+                        .AsQueryable());
+
+                // se è richiesto di aggiungere anche le mancate timbrature, si aggiungono anche le date relative (non fine settimana, non festive)
+                if (customizationVersion == (int)ErrModuleShowEmptyColEnum.Show)
+                {
+                    var periodDates = CommonService.GetDatesFromPeriod(startPeriod, endPeriod).Where(dt => dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday
+                                && !RepoManager.Tab_FestiviRepo.DbSet.Any(fst => fst.Giorno_Tab_Festivi == dt)
+                                && !RepoManager.Reg_VRepo.DbSet.Any(regv => colIdGroup.Key == regv.Col_Id && regv.Data_Reg.Value == dt)).Select(dt => dt.ToString(PowerWebContext.Current.UserCultureInfo.DateTimeFormat.ShortDatePattern)).ToList();
+
+
+                    periodDates.AddRange(AllErrDatesByColId[colIdGroup.Key].ToList());
+                    AllErrDatesByColId[colIdGroup.Key] = periodDates.AsQueryable();
+                }
+            }
+
+            if (customizationVersion == (int)ErrModuleShowEmptyColEnum.Show)
+            {
+                if (nonPresentCol != Enumerable.Empty<Col>())
+                {
+                    foreach (var col in nonPresentCol)
+                    {
+                        var periodDates = CommonService.GetDatesFromPeriod(startPeriod, endPeriod)
+                            .Where(dt => dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday
+                                && !RepoManager.Tab_FestiviRepo.DbSet.Any(fst => fst.Giorno_Tab_Festivi == dt)
+                                && !RepoManager.Reg_VRepo.DbSet.Any(regv => col.Col_Id == regv.Col_Id && regv.Data_Reg.Value == dt)
+                            ).Select(dt => dt.ToString(PowerWebContext.Current.UserCultureInfo.DateTimeFormat.ShortDatePattern)).AsQueryable();
+                        AllErrDatesByColId.Add(col.Col_Id, periodDates);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+    }
+
+
+}
+
+
+

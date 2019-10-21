@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>tab_GridLookUp_Page</title>
+  
+
+  
+  
+  <link rel="stylesheet" type="text/css" href="../../Css/stile2.css"></head><body><a href="../AAA_Indice_Generale.html"><input tabindex="1" name="INDICE" value="Indice" type="button"></a>&nbsp;
+
+
+<h1 style="font-weight: normal;"><span style="font-weight: bold;">La
+Pagina (Tab_Grid_LookUp) di Gestione delle ComboBox gestite</span>
+</h1>
+
+Questa pagina permette<span style="font-weight: bold; text-decoration: underline;"> ai SOLI UTENTI
+WINIT (Livello &gt;= 12)</span>
+l'Inserimento, la Modifica, la
+Cancellazione ( a determinate condizioni) della Struttura in base alla
+quale vengono gestite Tutte le ComboBox presenti nella pagine di
+PowerWeb per la cui definizione si rimanda la Manuale <span style="color: red;">Come Impostare la Struttura delle ComboBox nella
+Tabella Tab_GridLookUp</span><br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">In
+Powerweb vengono gestite</span><br>
+
+<ul>
+
+  <li>&nbsp;<span style="text-decoration: underline;">una Struttura
+Standard</span> <br>
+  </li>
+  <ul>
+    <li>utilizzabile da TUTTI gli Utenti</li>
+    <ul>
+      <li>identificata dal fatto che i suoi record hanno il relativo
+Campo <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Utente_Id">Utente_Id</a>
+impostato a NULL</li>
+    </ul>
+  </ul>
+  <li style="text-decoration: underline;">Una possibile Struttura x
+OGNI UTENTE</li>
+  <ul>
+    <li>Utilizzabile quindi dal SOLO Utente che l'ha creata</li>
+    <ul>
+      <li>identificata dal fatto che i suoi record hanno il relativo
+Campo <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Utente_Id">Utente_Id</a>
+impostato con il RRN dell'Utente che l'ha creata<br>
+      </li>
+    </ul>
+  </ul>
+</ul><span style="text-decoration: underline; font-weight: bold;">Ogni Struttura di Ogni ComboBox è identificata nella tabella <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html">TAB_GRIDLOOKU</a>P da:</span><span style="font-weight: bold;"><br>
+<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeRicerca">NomeRicerca</a>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+Nome del Campo Video</span> a cui viene associata la relativa GridLoockUp&nbsp;<span style="font-weight: bold;">&nbsp;&nbsp;
+&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Ordinamento">Ordinamento</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; N°
+Colonna della GridLoockUp </span>in cui visualizzare quel campo<span style="font-weight: bold;"><br></span><span style="text-decoration: underline;">eventualmente personalizzata per Singolo Utente</span><span style="font-weight: bold;"><br></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Utente_Id">Utente_id </a>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;N° identificativo dell'Utente (</span>SOLO per
+le GridLoockUp personalizzate dal singolo Utente<span style="font-weight: bold;">)</span><br>
+<span style="text-decoration: underline;">cui sono associati "n" record (1 per ogni colonna che si vuole gestire in quella ComboBox) con</span><span style="font-weight: bold;"><br></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeRisorsa">NomeRisorsa</a> &nbsp; &nbsp; &nbsp; &nbsp; Valore (in
+lingua) </span>da mostrare come Intestazione della relativa Colonna
+&nbsp;della GridLoockUp<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;<a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeCampo">NomeCampo</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+Nome del Campo </span>da cui prelevare il Valore da Visualizzare nella
+relativa Colonna della GridLoockUp<span style="font-weight: bold;"><br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeTab">NomeTab</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;Nome della Tabella </span>da cui prelevare il Valore del Campo da
+Visualizzare nella relativa Colonna della GridLoockUp<span style="font-weight: bold;"><br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Nome_TabDecod">Nome_TabDecod</a> &nbsp; Nome dell'EVENTUALE Sotto
+Tabella della TAB_DECOD (</span>solo quando Nome Tab = TAB_DECOD<span style="font-weight: bold;">)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Width&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Valore in Px o in % della Larghezza della Singola Colonna </span>cui si riferisce il Record<span style="font-weight: bold;"><br></span><span style="text-decoration: underline;">per ognuno dei quali vanno definiti i seguenti FLAG di Comportamento</span><span style="font-weight: bold;"> (True/False)<br></span><span style="font-weight: bold;">CAMPO_DB &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; va impostato = True </span>solo sul Singolo Campo il cui corrispondente
+Valore della riga selezionata va INSERITO COME VALORE nel Record per quel&nbsp;Campo di
+quella GridLookUp<span style="font-weight: bold;"><br>CAMPO_FILTRO&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+Indica se il Filtro sui valori della
+ComboBax sarà fatto su una Colonna diversa dalla 1° (default) e /o in
+Modo diverso da quello di Default (Contains)<br>CAMPO_NOTINLIST &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; Indica se il Campo Video accetta oppure no (default) dei valori
+ANCHE NON PREVISTI </span>TRA I RECORD PROPOSTI NELLA COMBOBOX<span style="font-weight: bold;"><br>CAMPO_LOCALIZZATO &nbsp; &nbsp; True per i Campi
+&nbsp;il cui VALORE da MOSTRARE nella COLONNA della DataGridLookUp va
+TRADOTTO IN LINGUA<br>&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; es: SESSO, TIPO_DISTANZA,
+TIPO_NOTTURNO ecc ecc<br></span><span style="font-weight: bold;">CAMPO_SELEZIONATO &nbsp; &nbsp; True per i&nbsp;Campi i cui
+corrispondenti Valori</span><span style="font-weight: bold;"> della riga selezionata</span><span style="font-weight: bold;"> vanno MOSTRATI COME VALORI nel
+Campo Videodi GridLookUp<br>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp; </span>Normalmente se se imposta solo 1 per riportare a Video il Singolo
+Valore della Rica/Colonna scelta<br>
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; Ne
+vanno impostati + di 1 quando si vogliono attivare le Ricerche Multiple
+su più colonne e non solo sulla 1° Colonna della GridLookUp<br>
+<span style="font-weight: bold;">CAMPO_VIDEO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp;su TUTTI i Campi da VISUALIZZARE COME COLONNE della
+DataGRidLookUp</span><br>
+<span style="font-weight: bold;"></span><br>
+<span style="font-weight: bold;"><span style="text-decoration: underline;">ESEMPIO: &nbsp;&nbsp;</span> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span>
+ 
+<table style="border-collapse: collapse; width: 684pt;" border="0" cellpadding="0" cellspacing="0" width="910">
+<col style="width: 110pt;" width="146">
+ <col style="width: 72pt;" width="96">
+ <col style="width: 80pt;" width="106">
+ <col style="width: 155pt;" width="206">
+ <col style="width: 101pt;" width="135">
+ <col style="width: 70pt;" width="93">
+ <col style="width: 96pt;" width="128">
+ <tbody><tr style="height: 17.25pt;" height="23">
+  <td style="height: 17.25pt; width: 157px;" class="xl64" height="23">NOMERICERCA</td>
+  <td class="xl64" style="width: 75px;">UTENTE_Id</td>
+  <td class="xl64" style="width: 80pt;" width="106">&nbsp; &nbsp; ORDIN.</td>
+  <td class="xl64" style="width: 220px;">&nbsp;NOMERISORSA</td>
+  <td class="xl64" style="width: 130px;">NOMECAMPO</td>
+  <td class="xl64" style="width: 70pt;" width="93">NOMETAB</td>
+  <td class="xl64" style="width: 96pt;" width="128">NOMETAB_DECOD</td>
+ </tr>
+ 
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Cant_Id</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">0</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_CODICE_CANTIERE</td>
+  <td class="xl66" style="width: 130px;">Codice_Cantiere</td>
+  <td class="xl66" style="width: 70pt;" width="93">Cant</td>
+  <td class="xl66" style="width: 96pt;" width="128">NULL</td>
+ </tr>
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Cant_Id</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">1&nbsp;</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_DESCRIZIONE_CAN</td>
+  <td class="xl66" style="width: 130px;">Descrizione_Can</td>
+  <td class="xl66" style="width: 70pt;" width="93">Cant</td>
+  <td class="xl66" style="width: 96pt;" width="128">NULL</td>
+ </tr>
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Cant_Id</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">2</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_DISABILITAZIONE_CAN</td>
+  <td class="xl66" style="width: 130px;">DisAbilitazione_Can</td>
+  <td class="xl66" style="width: 70pt;" width="93">Cant</td>
+  <td class="xl66" style="width: 96pt;" width="128">NULL</td>
+ </tr>
+ 
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Tipo_Nota_Can_Note</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">0</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_CHIAVE_TAB</td>
+  <td class="xl66" style="width: 130px;">Chiave_Tab</td>
+  <td class="xl66" style="width: 70pt;" width="93">TAB_DECOD</td>
+  <td class="xl66" style="width: 96pt;" width="128">TIPO_NOTA</td>
+ </tr>
+ <tr style="height: 15pt;" height="20">
+  <td class="xl66" style="height: 15pt; width: 157px;" height="20">Tipo_Nota_Can_Note</td>
+  <td style="width: 75px;" class="xl67">NULL</td>
+  <td class="xl63" style="width: 80pt; text-align: center;" width="106">1</td>
+  <td class="xl66" style="width: 220px;">&nbsp;FLD_DECODIFICA_TAB</td>
+  <td class="xl66" style="width: 130px;">Decodifica_Tab</td>
+  <td class="xl66" style="width: 70pt;" width="93">TAB_DECOD</td>
+  <td class="xl66" style="width: 96pt;" width="128">TIPO_NOTA</td></tr></tbody>
+</table>
+<br>
+Questa pagina è di Tipo MASTER (senza Dettaglio) e quindi si rimanda la
+relativo Manuale <a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html">Lo
+Schema della Pagina Standard di PowerWeb</a> per la spiegazione della
+relativa struttura di Funzionamento.<br>
+
+<dl>
+
+  <dt><b style=""><u>Ricordiamo solo che gli UNICI CAMPI OBBLIGATORI
+necessari per gestire un Collaboratore sono i seguenti:</u></b></dt>
+</dl>
+
+<ul>
+
+  <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeRicerca">UN
+NOME DELLA COMBOBOX</a><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(Massimo di 20 caratteri Alfanumerici) </li>
+  <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#Ordinamento">IL
+RELATIVO N° di ORDINAMENTO&nbsp;</a> <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(Numerico Intero)</li>
+  <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeCampo">IL
+RELATIVO NOME DEL CAMPO</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;<span style=""> </span>(Massimo di 50 caratteri
+Alfanumerici)</li>
+  <ul>
+    <li><a href="../TR_RECORD/_TR_TAB_GRIDLOOCKUP.html#NomeTab">NOME
+DELLA TABELLA ASSOCIATA</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=""> </span>(Massimo di 50 caratteri
+Alfanumerici)</li>
+  </ul>
+</ul>
+
+mentre
+<span style="font-weight: bold; text-decoration: underline;">TUTTI gli
+ALTRI CAMPI sono OPZIONALI</span> e possono essere o meno inseriti
+da parte dell'Utente in base a quanto da lui deciso.<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+</span></span><span style="font-weight: bold; text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">NON ci sono
+Comportamenti Specifici per la Pagina TAB_GRIDLOOKUP</span><br>
+
+<br>
+
+<span style="text-decoration: underline;"></span><span style="font-weight: bold; text-decoration: underline;">Per il
+Significato </span><br>
+
+<ul>
+
+  <li>&nbsp;&nbsp;&nbsp; dei singoli Tasti&nbsp; presenti nella Testata
+della
+Pagina si rimanda al Manuale<a href="../MANUALS/USERS%20MANUALS/I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb/_I%20Tasti%20Funzionali%20delle%20Pagine%20di%20PowerWeb.html">
+I Tasti Funzionali delle Pagine di PowerWeb</a></li>
+</ul>
+
+<span style="text-decoration: underline; font-weight: bold;">Per come
+Modificare</span><br>
+
+<ul>
+
+  <li>&nbsp;i Campi (Colonne) da visualizzare nella Griglia Master <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale <a href="mailto:../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a></li>
+  </ul>
+  <li>i Raggruppamenti della Griglia Master o della Griglia di Dettaglio</li>
+  <ul>
+    <li>si rimanda la Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb)</a></li>
+  </ul>
+  <li>gli Ordinamenti sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio<br>
+  </li>
+  <ul>
+    <li>&nbsp;si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare gli Ordinamenti della Griglia Master o di Dettaglio di una
+Pagina di
+PowerWeb</a></li>
+  </ul>
+  <li>i Filtri sia dei Campi di Raggruppamento sia
+dei Campi (Colonne) della Griglia Master o della Griglia di Dettaglio <br>
+  </li>
+  <ul>
+    <li>si rimanda la Manuale<a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">
+Come
+Modificare i Filtri della Griglia Master o di Dettaglio di una Pagina
+di
+PowerWeb</a></li>
+  </ul>
+  <li>un Record della Griglia Master per effettuarne</li>
+  <ul>
+    <li>l'Inserimento/Modifica/Cancellazione/Consultazione del Singoli
+Record visualizzatoi</li>
+    <ul>
+      <li>&nbsp;si rimanda al Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio/_Come%20Gestire%20l%27EDIT%20del%20Singolo%20Record%20di%20una%20Griglia%20MAster%20o%20di%20Dettaglio.html">Come
+Gestire l'EDIT del Singolo RECORD di una Griglia Master o di Dettaglio</a><span style="color: red;"></span></li>
+    </ul>
+  </ul>
+</ul>
+
+Il sistema propone automaticamente
+<br>
+
+<ul>
+
+  <li>l'Ultima Vista salvata dal singolo Utente che la sta richiamando</li>
+  <li>oppure, in mancanza di una specifica Vista per l'Utente che la
+sta richiamando</li>
+  <ul>
+    <li>l'Ultima Vista salvata da un Utente Admin <br>
+    </li>
+    <li>oppure in mancanza di una specifica Vista per l'Utente ADMIN <br>
+    </li>
+    <ul>
+      <li>la vista di Default codificata all'interno del sistema da
+Winit come default.</li>
+    </ul>
+  </ul>
+</ul>
+
+L<span style="text-decoration: underline;"><span style="font-weight: bold;">e singole Colonne che vengono mostrate
+nella GRIGLIA MASTER possono essere personalizzati </span></span>(vedi
+Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20le%20Colonne%20di%20una%20Griglia%20Master/_Come%20Modificare%20le%20Colonne%20della%20GRID%20MASTER%20di%20una%20Pagina%20di%20POWER%20WEB.html">Come
+Modificare le Colonne della Griglia Master di una Pagina di PowerWeb</a>)<br>
+
+<ul>
+
+  <li>sia in modo TEMPORANEO</li>
+  <ul>
+    <li>ovvero le modifiche valgono solo fino a quando non viene chiusa
+la pagina corrente<br>
+    </li>
+  </ul>
+  <li>sia in modo PERMANENTE</li>
+  <ul>
+    <li>ovvero modificando la vista in uso e/o crenadone una Nuova</li>
+  </ul>
+</ul>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;">ed è possibile anche procedere ad</span></span><br>
+
+<ul>
+
+  <li><span style="font-weight: bold; text-decoration: underline;">RAGGRUPPARE</span>
+&nbsp;&nbsp;
+(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Raggruppamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Raggruppamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><br>
+    <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">ORDINARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>&nbsp;&nbsp; (vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20gli%20Ordinamenti%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare gli Ordinamenti della Griglia Master o della Griglia di
+Dettaglio di una Pagina di
+PowerWeb)</a><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">FILTRARE</span></span><span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </span>(vedi Manuale <a href="../MANUALS/USERS%20MANUALS/Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio/_Come%20Modificare%20i%20Filtri%20di%20una%20Griglia%20Master%20o%20Dettaglio.html">Come
+Modificare i Filtri della Griglia Master o della Griglia di Dettaglio
+di una Pagina di
+PowerWeb)</a></li>
+</ul>
+
+i dati che si intendono visualizzare come Lista dei Collaboratori nell'<a href="../MANUALS/USERS%20MANUALS/Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb/_Lo%20Schema%20delle%20Pagine%20Standard%20di%20PowerWeb.html#AREA_H">Area
+H dello Schema della pagina Standard di PowerWeb</a><br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+Una volta scelta la Modalità di Visualizzazione/Ricerca dei
+Collaboratori che si intendono gestire basterà premere il
+Tasto di ON/OFF per attivarne la lettura dal DataBase (il tasto di OFF
+diventa ON a significare che da adesso in poi tutte le modifiche che si
+faranno ai criteri di ricerca/ordinamento sui Campi delle Griglia
+Master verranno eseguiti in tempo reale) e verrà mostrata la lista dei
+Cantieri/assistiti/Attività che soddisfano i crtiteri indicati
+dall'utente come parametri di Selezione ed Ordinamento.<br>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><span style="text-decoration: underline;"><span style="font-weight: bold;">
+</span></span><span style="font-weight: bold; text-decoration: underline;">NOTA BENE</span>
+:<br>
+
+&nbsp;nel caso in cui nella Tabella <a href="../TR_RECORD/_TR_PARAM.html">PARAMETRI</a> sia stato ATTIVATO il
+campo <a href="../TR_RECORD/_TR_PARAM.html#File_Col_Var">File_Col_Var</a>
+allora il sistema&nbsp;<span style="text-decoration: underline; font-weight: bold;"></span>, ad
+ogni INSERIMENTO/VARIAZIONE/CANCELLAZIONE di un Record della Scheda
+Collaboratori , <span style="text-decoration: underline; font-weight: bold;">GESTISCE
+IN MANIERA AUTOMATICA LA SCRITTURA&nbsp; DI UN RECORD DI BACKUP</span>
+nella corrispondente Tab CANT_VAR del Record CANT, consultabile poi
+tramite l'apposito Funzione di Consultazione delle Variazioni
+delle Schede Anagrafiche Collaboratori<br>
+
+<dl>
+
+</dl>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;">i Singoli
+TAB come pure i Singoli Campi dei Singoli TAB possono essere resi
+VISIBILI/INVISIBILI.</span><br>
+
+<ul>
+
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;a Livello Generale </span></span>(visibili/invisibili
+quindi per TUTTI gli Utenti Collegati)</li>
+  <li><span style="text-decoration: underline;"><span style="font-weight: bold;">a Livello di Singolo Utente </span></span>(visibili/invisibili
+quindi per quello SPECIFICO Utente collegato)</li>
+</ul>
+
+(vedi relativo <span style="color: red;">Manuale
+Abilitazione/Disabilitazione TAB/CAMPI</span>) in
+modo da permettere ad ogni Azienda di poter decidere quanti e quali
+Dati si intendono gestire a livello Anagrafico per i propri
+Collaboratori secondo le proprie necessità<br>
+
+<br>
+
+<span style="font-weight: bold; text-decoration: underline;"></span><br>
+
+<br>
+</body></html>

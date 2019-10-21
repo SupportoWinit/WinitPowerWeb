@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>TR_METADESCRIPTOR</title>
+
+  
+  
+  <style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+  </style>
+</head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1 style="text-align: center;">TABELLA
+METADESCRIPTOR<br>
+</h1>
+
+<span style="font-weight: bold;">Contiene le Struttura di descrizione
+dei Dati gestite nelle Pagine che caricano i Dati direttamente dal
+DataBAse</span> <br>
+
+<br>
+
+Le Chiavi del Record :&nbsp; <a href="#MetaDescriptorId">MetaDescriptorId</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+
+I Campi Obbligatori&nbsp;&nbsp; :&nbsp; <a href="#MetaDescriptorId">MetaDescriptorId</a>
+(<span style="font-weight: bold; text-decoration: underline; color: red;">Chiave</span>)
+, <a href="#EntityType">EntityType</a><br>
+
+I Campi con Default &nbsp; :&nbsp; Nessuno<span style="font-weight: bold;"><span style="text-decoration: underline;"></span></span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+<br>
+
+<br>
+
+Al momento vengono gestite solo le seguenti Tabelle tramite Viste
+Logiche ad Hoc<br>
+
+<table>
+
+  <tbody>
+    <tr>
+      <td style="text-align: center; font-weight: bold;">MetaDescriptorId</td>
+      <td style="text-align: center; font-weight: bold;">EntityType</td>
+      <td style="text-align: center; font-weight: bold;">Significato</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">CANT<br>
+      </td>
+      <td>Vista Logica utilizzata nella pagina CANT<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">2</td>
+      <td style="text-align: center;">COL<br>
+      </td>
+      <td>Vista Logica utilizzata nella pagina COL</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">3</td>
+      <td style="text-align: center;">REGV<br>
+      </td>
+      <td>Vista Logica utilizzata nella pagina REGV<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">4<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">REGVM<br>
+      </td>
+      <td style="vertical-align: top;">Vista Logica utilizzata nella
+pagina REGVM</td>
+    </tr>
+  </tbody>
+</table>
+
+&nbsp;&nbsp; <span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+
+<br>
+
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 156px;">&nbsp;<span style="font-weight: bold; text-decoration: underline;"><a name="MetaDescriptorId"></a>MetaDescriptorId</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">INT</a></td>
+      <td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;della Singola
+Riga della tabella METADESCRIPTOR&nbsp;</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun
+Controllo specifico</span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 156px;"><span style="font-weight: bold; text-decoration: underline;">&nbsp;<a name="EntityType"></a>EntityType</span></td>
+      <td style="text-align: center; width: 115px;"><a href="I%20Formati%20dei%20Camp.html#NVARCHAR">NVARCHAR(MAX)</a></td>
+      <td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Nome
+della Vista Logica (definta nelle viste del DB)&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"> </span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;"></span><span style="background-color: white;"><span style="background-color: red;"></span><span style="color: white; background-color: red;"></span><span style="background-color: red;">&nbsp; </span></span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span>.che
+identifica a quale Vista Logica si riferisce la corripsondente
+Descrizione dei Campi usata poi nella Tabella METAFILEDDESCRIPTOR.<br>
+Al momento sono definite ed utilizzate solo le seguenti Viste Logiche<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; CANT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp; COL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp; REGV<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp; REGVM<br>
+      <span style="color: rgb(153, 51, 0);"></span><span style="font-weight: bold; color: rgb(204, 102, 204);"></span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+&nbsp;
+<br>
+
+<br>
+
+</body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>TR_TAB_EDITFORMTEMPLATE</title>
+
+  
+  
+  <style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+  </style>
+</head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>TABELLA TAB_EDITFORMTEMPLATE<br>
+</h1>
+Permette la Gestione dell'Esclusione dalla visualizzazione nella corrispodnente parte di EDIT di una Pagina che li gestisce di:<br>
+<ul>
+  <li><span style="font-weight: bold;">i INTERI TABS</span></li>
+  <li><span style="font-weight: bold;">di Singoli Campi di Edit</span></li>
+</ul>
+
+da parte dell'utente finale SENZA dover modificare il Codice Interno del programma Power Web<span style="font-weight: bold;"><br>
+</span><br>
+
+&nbsp;Le Chiavi del Record : &nbsp;<a href="#Tab_EditFormTemplate_Id">Tab_EditFormTemplate_Id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+
+&nbsp;I Campi Obbligatori&nbsp;&nbsp; : &nbsp; <a href="_TR_TAB_EDITFORMTEMPLATE.html#Tab_EditFormTemplate_Id">Tab_EditFormTemplate_Id</a> (<span style="font-weight: bold; color: red;">Chiave</span>),
+<a href="#Entity_Tab_EditFormTemplate">Entity_tab_EditFormTemplate</a>&nbsp;<a href="#Nome_Tab"></a>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="width: 278px;"><span style="font-weight: bold;"> <a name="Tab_EditFormTemplate_Id"></a>&nbsp; </span><span style="font-weight: bold; text-decoration: underline;">Tab_EditFormTemplate_Id</span></td>
+      <td style="width: 74px;">
+      <div style="text-align: center;"><a href="../I%20Formati%20dei%20Campi%20del%20DB.html#NVARCHAR">INT</a></div>
+      </td>
+      <td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">(<span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">)&nbsp;del Singolo REcord della
+Tabella</span></span></span> <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">.</span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun
+Controllo specifico</span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 278px;"><span style="font-weight: bold; text-decoration: underline;"> <a name="Entity_Tab_EditFormTemplate"></a> Entity_Tab_EditFormTemplate<br>
+</span></td>
+      <td style="vertical-align: top; width: 74px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="vertical-align: top; width: 1049px;">Nome dell'Entità <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span> cui si riferisce la corrispondente Pagina nella quale è previsto che possano essere DISABLITATI <br>
+      <ul>
+        <li>Singoli TABS (vedi <a href="#Tabs_Tab_EditFormTemplate">Tabs_Tab_EditFormTemplate</a>)</li>
+        <li>Singoli Campi (vedi <a href="#Fields_Tab_EditFormTemplate">Fields_Tab_EditFormTemplate</a>)<br>
+        </li>
+      </ul>
+I Nomi dei Singoli TABS che possonoe ssere DIASBILITATI per SIngola Entità sono i seguenti<br>
+
+      <ul>
+<li><span style="font-weight: bold; text-decoration: underline;">CAN</span><span style="font-weight: bold;">T&nbsp; <br>
+</span></li><li style="font-weight: bold; text-decoration: underline;">CLI</li><li style="font-weight: bold; text-decoration: underline;">COL</li><li style="font-weight: bold; text-decoration: underline;">FRU</li><li style="font-weight: bold; text-decoration: underline;">PRU</li><li style="font-weight: bold; text-decoration: underline;">FRU_CANT<br>
+  </li><li style="text-decoration: underline; font-weight: bold;">PRU_CANT</li><li style="font-weight: bold; text-decoration: underline;">FIL</li><li style="text-decoration: underline; font-weight: bold;">RESP</li><li style="font-weight: bold; text-decoration: underline;">PARAM</li><li style="font-weight: bold; text-decoration: underline;">UTENTI</li>
+      </ul>
+      <br>
+<span style="color: rgb(153, 51, 0);"></span>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 278px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Tabs_Tab_EditFormTemplate"></a> Tabs_Tab_EditFormTemplate</span></td>
+      <td style="vertical-align: top; width: 74px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="vertical-align: top; width: 1049px;">Elenco dei Nomi dei Tabs <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span><span style="font-weight: bold; text-decoration: underline;">SEPARATI FRA DI LORO DAL CARATTERE | (pipe) </span>che devono essere DISABILITATI nella Pagina di EDIT di quella Entità.<br>
+I Nomi dei Singoli TABS che possonoe ssere DIASBILITATI per SIngola Entità sono i seguenti<br>
+      <ul>
+        <li><span style="font-weight: bold; text-decoration: underline;">CAN</span><span style="font-weight: bold;">T&nbsp; per default impostare : Importi|Turni|Servizi<br>
+          </span></li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li style="font-weight: bold;">Ubicazione</li>
+          <li style="font-weight: bold;">TelFax</li>
+          <li style="font-weight: bold;">Parametri</li>
+          <li style="font-weight: bold;">Arrotondamenti</li>
+          <li style="font-weight: bold;">Note</li>
+          <li><span style="text-decoration: line-through; font-weight: bold;">Importi</span> (attualmente va sempre DISABILITATO perchè NON utilizzato)<br>
+          </li>
+          <li><span style="text-decoration: line-through; font-weight: bold;">Turni</span> (attualmente va sempre DISABILITATO perchè NON utilizzato)</li>
+          <li><span style="text-decoration: line-through; font-weight: bold;">Servizi</span> (attualmente va sempre DISABILITATO perchè NON utilizzato)</li>
+          <li>Assistito (va DISABILITATO per i Clienti che NON gestiscono gli Assititi)</li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">CLI&nbsp; <span style="font-weight: bold;">per default impostare : CondCom</span><span style="font-weight: bold;"></span></li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+        </ul>
+        <ul>
+          <li><span style="text-decoration: line-through;">CondCom</span> (attualmente va sempre DISABILITATO perchè NON utilizzato)</li>
+          <li>Indirizzi</li>
+          <li>TelFax</li>
+          <li>Note<br>
+          </li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">COL <span style="font-weight: bold;">per default impostare : Importi</span></li>
+        <ul>
+          <li style="font-weight: bold;">Generali</li>
+          <li style="font-weight: bold;">Anagrafica</li>
+          <li><span style="font-weight: bold;">Qualifich</span>e</li>
+          <li style="font-weight: bold;">Indirizzi</li>
+          <li style="font-weight: bold;">TelFax</li>
+          <li style="font-weight: bold;">Parametri</li>
+          <li style="font-weight: bold;">Arrotondamenti</li>
+          <li><span style="text-decoration: line-through; font-weight: bold;">Importi</span> (attualmente va sempre DISABILITATO perchè NON utilizzato)</li>
+          <li><span style="font-weight: bold;">Note</span><br>
+          </li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">FRU</li>
+        <ul>
+          <li style="font-weight: bold;">Generali</li>
+          <li><span style="font-weight: bold;">Note</span><br>
+          </li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">PRU</li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Note</span><br>
+          </li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">FRU_CANT<br>
+        </li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Note</span><br>
+          </li>
+        </ul>
+        <li style="text-decoration: underline; font-weight: bold;">PRU_CANT</li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Note</span><br>
+  </li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">FIL</li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Note</span></li>
+        </ul>
+        <li style="text-decoration: underline; font-weight: bold;">RESP</li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Note</span></li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">PARAM</li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Default</span></li>
+          <li><span style="font-weight: bold;">Attivazioni</span></li>
+          <li><span style="font-weight: bold;">Parametri</span></li>
+          <li><span style="font-weight: bold;">Arrotondamenti</span></li>
+          <li><span style="font-weight: bold;">ViaggiePause<br>
+            </span></li>
+        </ul>
+        <li style="font-weight: bold; text-decoration: underline;">UTENTI</li>
+        <ul>
+          <li><span style="font-weight: bold;">Generali</span> (NON va mai DISABILITATO perchè contiene Chiave e Descrizione)</li>
+          <li><span style="font-weight: bold;">Note</span></li>
+        </ul>
+      </ul>
+
+      <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red;"></span></span> </span></span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 278px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Fields_Tab_EditFormTemplate"></a> Fields_Tab_EditFormTemplate</span>
+      </td>
+      <td style="vertical-align: top; width: 74px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)</td>
+      <td style="vertical-align: top; width: 1049px;">Elenco dei Nomi dei Singoli Campi <span style="text-decoration: underline; font-weight: bold;">SEPARATI FRA DI LORO DAL CARATTERE | (pipe)</span> che devono essere DISABILITATI nella Pagina di EDIT di quella Entità.
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="vertical-align: top; width: 278px;"><br>
+      </td>
+      <td style="vertical-align: top; width: 74px; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; width: 1049px;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<span style="text-decoration: underline; font-weight: bold;"></span><span style="text-decoration: underline; font-weight: bold;"></span><br>
+
+<br>
+
+<br>
+
+</body></html>

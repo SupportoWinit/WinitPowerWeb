@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>TR_REG</title>
+
+<style type="text/css">
+ul
+{
+margin-top: 0;
+margin-bottom: 0;
+}
+</style></head><body style="color: rgb(0, 0, 0); background-color: white;" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<h1>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; TABELLA REG<br>
+</h1>
+<span style="font-weight: bold;">Contiene le Timbrature
+Automatica/Manuali ovvero le Registrazioni </span><span style="font-weight: bold;">dei
+Collaboratori</span>. <span style="font-weight: bold;"><br>
+</span><span style="color: black; font-weight: bold;"><span style="background-color: red;"><span style="background-color: white;">In questa Tabella sono
+presenti:</span></span></span><br style="font-weight: bold;">
+<ul>
+<li style="font-weight: bold;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Timbrature ancora da
+Elaborare</span></span></span></li>
+<li style="font-weight: bold;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Timbrature Elaborate in
+modo corretto</span></span></span></li>
+<li style="font-weight: bold;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Timbrature Elaborate ma
+risultate errate e quindi sospese</span></span></span></li>
+<li style="font-weight: bold;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">TImbrature Ancora da
+Accoppiare</span></span></span></li>
+<li style="font-weight: bold;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">Timbrature Singole</span></span></span></li>
+<li><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="font-weight: bold;">Timbrature Accoppiate&nbsp;</span>
+</span></span></span></li>
+</ul>
+<br>
+Le Chiavi del Record : &nbsp;<a href="#Reg_Id">Reg_id</a>
+(<span style="font-weight: bold; color: red;">Automatica</span>)<br>
+I Campi Obbligatori&nbsp;&nbsp; : <a href="#Reg_Id">&nbsp;Reg_id</a>
+(<span style="font-weight: bold; color: red;">Chiave</span>),&nbsp;<span style="text-decoration: underline;"> <a href="#Data_Registrazione_Reg">Data Registrazione</a></span>
+, <a href="#DataOraUltimaModifica_Reg"><span style="text-decoration: underline;">DataOraUltimaModifica</span></a>,
+<a href="#Registrazione_Ora_Fig_Reg">Registrazione_Ora_Fig</a>,
+<a href="#Registrazione_Durata_Fis_Reg">Registrazione_Ora_Fis</a><br>
+<h3 style="text-decoration: underline; text-align: center;">I
+CAMPI DEL
+RECORD in Ordine ALFABETICO</h3>
+<table style="text-align: left; width: 100%; height: 10px;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Reg_Id"></a>
+</span><span style="font-weight: bold; text-decoration: underline;">Reg_Id</span>
+</td>
+<td style="vertical-align: top; width: 126px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a>
+</td>
+<td style="vertical-align: top; width: 1041px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° Identificativo (</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><span style="background-color: red; font-weight: bold; text-decoration: underline; color: white;">CHIAVE
+AUTOMATICA UNIVOCA</span>)</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;della
+Singola Timbratura </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">&nbsp;</span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">Campo Obbligatorio<span style="color: white;">. </span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">pervenuta al sistema da una
+Unità di Rilevazione (CLESS) e/o Inserita Manualmente dall'Operatore
+e/o generata Automaticamente da qualche procedura di Power Web (es.
+Gestione Viaggi ecc).</span></span></span><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"><span style="color: white;"></span></span></span><span style="text-decoration: underline; background-color: white;">
+Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span></span>. <span style="color: rgb(153, 51, 0);">Nessun Controllo specifico</span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"><br>
+</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;"></span></span></span><span style="color: black;"></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Cant_id"></a>
+</span><span style="text-decoration: underline; font-weight: bold;">Cant_Id</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a>
+</td>
+<td style="vertical-align: top; width: 1041px;"><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° identificativo del
+Singolo Cantiere/Assistito cui appartiene quella Timbratura quando la
+Timbratura è stata correttamente assegnata ad un Cantiere/assistito.
+Contiene NULL quando la Timbratura NON è ancora stata asseganata ad un
+Cantiere/Assistito. </span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span></span><br><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;">
+<span style="font-weight: bold;">Se presente</span>
+</span></span><span style="color: rgb(153, 51, 0);">viene
+controllato che esista come Chiave nella Tabella CANT.</span><br><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">Viene
+inoltre controllato che se non sono stati inseriti&nbsp;
+nè</span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;"> il <a href="_TR_REG.html#Cant_id">Cant_Id</a> nè il <a href="_TR_REG.html#Col_id">Col_id</a></span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;(ovvero sono = 0) allora diventano obbligatori </span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">sia <a href="_TR_REG.html#Pru_id">Pru_Id</a> sia <a href="_TR_REG.html#Fru_Id">Fru_Id</a></span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;"><a href="_TR_REG.html#Col_id"></a> (in quanto si tratta di una Registrazione
+proveniente&nbsp;)</span></span></span><br><a href="../TR_COL/_TR_COL.html">
+</a></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Col_id"></a>
+</span><span style="font-weight: bold; text-decoration: underline;">Col_id</span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td>
+<td style="vertical-align: top;"><span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;"></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N° identificativo del
+Singolo Collaboratore cui appartiene quella Registrazione.&nbsp;</span></span></span><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">quando
+la Timbratura è stata correttamente assegnata ad un Collaboratore.
+Contiene
+NULL quando la Timbratura NON è ancora stata asseganata ad un
+Collaboratore.
+</span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><br>
+<span style="font-weight: bold;">Se presente </span></span></span><span style="color: rgb(153, 51, 0);">viene controllato che esista
+come Chiave nella Tabella COL.</span><br><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">Viene
+inoltre controllato che se non sono stati inseriti&nbsp;
+nè</span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;"> il <a href="_TR_REG.html#Cant_id">Cant_Id</a> nè il <a href="_TR_REG.html#Col_id">Col_id</a></span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">&nbsp;(ovvero sono = 0) allora diventano obbligatori </span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">sia <a href="_TR_REG.html#Pru_id">Pru_Id</a> sia <a href="_TR_REG.html#Fru_Id">Fru_Id</a></span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;"> (in quanto si tratta di una Registrazione
+proveniente&nbsp;)</span></span></span><br><a href="../TR_COL/_TR_COL.html">
+</a></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="text-decoration: underline;"><a name="Data_Registrazione_Reg"></a> </span><span style="font-weight: bold; text-decoration: underline;">Data_Registrazione_Reg</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top; width: 1041px;">Data
+ed Ora <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Campo Obbligatorio -</span></span>
+della Registrazione.<br>
+&nbsp;<span style="text-decoration: underline; background-color: white;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204);"><span style="font-weight: bold;">
+del Sistema</span> </span>(Vedi anche<a href="#DataOraUltimaModifica_Ril">
+DataOraUltimaModifica_Reg</a>)</td>
+</tr>
+<tr>
+<td><a name="DataOraUltimaModifica_Reg"></a>
+<span style="text-decoration: underline; font-weight: bold;">DataOraUltimaModifica_Reg</span></td>
+<td><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a></td>
+<td>Data ed Ora&nbsp; <span style="color: rgb(0, 0, 153); font-weight: bold; text-decoration: underline;"><span style="background-color: red;">- Obbligatorio -</span></span>&nbsp;
+in
+cui PER l'ULTIMA VOLTA è stato modificato nel
+DB questo Record.<br>
+&nbsp;<span style="text-decoration: underline;">Viene
+Impostata AUTOMATICAMENTE dal Sistema</span><span style="background-color: white;"> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> (Vedi anche<a href="_TR_REG.html#Data_Registrazione_Ril">
+Data_Registrazione_Reg</a>)&nbsp;&nbsp;&nbsp; </td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Disabilitazione_Utente"></a> Disabilitazione_Reg</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#BIT">BIT</a><br>
+</td>
+<td style="vertical-align: top; width: 1041px;">Stato
+della Timbratura che indica se
+questa Timbratura è da considerare Disabilitata o meno e può assumere i
+seguenti valori:.<br>
+<ul style="margin-left: 40px;">
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questa Timbratura NON è più ATTIVA e NON va più considerata&nbsp; <br>
+</li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale della Timbratura <br>
+</li>
+</ul>
+Un Timbratura se disabilitata NON viene vista dal sistema SALVO SE
+RICHIESTA ESPRESSAMENTE nelle Funioni che ne prevedono la Gestione</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="Flag_EU_Reg"></a>&nbsp; <span style="font-weight: bold;"><span style="text-decoration: underline;">Flag_EU_Reg</span></span></td>
+<td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(1)</td>
+<td style="vertical-align: top;"><span style="color: rgb(153, 51, 0);">Se inserito, viene
+controllato che abbia una lunghezza &lt;= &nbsp;1 Carattere e che esista nella TAB_DECOD con Gruppo_Tab=Decod_<span style="font-weight: bold;">SYS</span> e
+Nome_Tab</span> =<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_Mod_Reg">
+FLAG_EU_REG</a> .<br><span style="text-decoration: underline; font-weight: bold;">Se NON inserita (blank) significa che è una REG proveniente da un Apparecchio Portatile o da un Fisso con 1 SOLA Antenna<br>Se inserita&nbsp;può&nbsp;assumere SOLO i seguenti Valor</span>i :<br>
+<ul>
+<li>NULL : La Timbratura è stata scaricata SENZA il FLAG di E/U (da un App. PORTATILE)</li>
+<li>E &nbsp; &nbsp; &nbsp; &nbsp; : la
+Timbratura è stata scaricata/caricata/accoppiata come ENTRATA</li>
+<li>U &nbsp; &nbsp; &nbsp; &nbsp; : la
+Timbratura è stata scaricata/caricata/accoppiata come USCITA</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><span style="font-weight: bold;"><a name="Fru_Id"></a> </span><span style="font-weight: bold; text-decoration: underline;">Fru_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a></td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Univoco identificativo della "eventuale" Unità Fissa con la quale è
+stata eseguita la relativa Timbratura. Nel caso delle Timbrature
+inserite Manualmente NON è un campo da Gestire.<span style="font-weight: bold;"> </span></span></span></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">Se presente</span> </span></span><span style="color: rgb(153, 51, 0);">viene controllato che esista
+come Chiave nella Tabella&nbsp;</span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"></span> <a href="../TR_FRU/_TR_FRU.html">FRU.&nbsp;</a></span><br><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">Viene
+inoltre controllato che se non sono stati inseriti nè <a href="_TR_REG.html#Pru_id">Pru_Id</a> nè <a href="_TR_REG.html#Fru_Id">Fru_Id</a>
+&nbsp;(ovevro sono = 0) allora diventano obbligatori sia il <a href="_TR_REG.html#Cant_id">Cant_Id</a> sia il <a href="_TR_REG.html#Col_id">Col_id</a> (in quanto si tratta di una Registrazione
+MANUALE)</span></span></span><br><span style="color: rgb(153, 51, 0);"><a href="../TR_FRU/_TR_FRU.html"></a></span></td>
+</tr>
+<tr>
+<td><a name="IsNotToElaborate"></a> <span style="font-weight: bold; text-decoration: underline;">IsNotToElaborate</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">BIT</a></td>
+<td>Flag che indica che la Timbratura NON va elaborata. Può
+assumere i
+seguenti valori:.<br>
+<ul style="margin-left: 40px;">
+<li>VERO
+(True)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Indica che
+questa RTimbratura NON va elaborata&nbsp; <br>
+</li>
+<li>FALSO (False)&nbsp;&nbsp;&nbsp;&nbsp;
+Valore di Default che
+indica lo stato Normale della Timbratura </li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Km_Reg"></a>
+</span><span style="font-weight: bold; text-decoration: underline;">KM_Reg</span><br>
+</td>
+<td style="vertical-align: top; width: 126px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a>
+</td>
+<td style="vertical-align: top;">Eventuale N° dei KM
+legati a questa Timbratura. <span style="color: rgb(102, 51, 0);">Nessun controllo specfico</span><br>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Motivazione_Reg"></a>
+</span><span style="font-weight: bold; text-decoration: underline;">Motivazione_Reg</span><br>
+</td>
+<td style="vertical-align: top; width: 126px; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">INT</a><br>
+</td>
+<td style="vertical-align: top; width: 1041px;"><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Univoco identificativo</span></span></span>&nbsp;della Motivazione legata a questa Timbratura. <span style="color: rgb(153, 51, 0);">Se inserito viene controllato che abbia una Lunghezza &lt;= 10 caratteri e che esista nella TAB_DECOD con Gruppo_Tab=Decod_Tab e
+Nome_Tab</span> =<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#MOTIVAZIONI"><span style="font-weight: bold;"> MOTIVAZIONI</span><span style="color: red; font-weight: bold;"></span></a></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Note_Reg"></a> Note_Reg</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#NVARCHAR">NVARCHAR</a>(Max)<br>
+</td>
+<td style="vertical-align: top; width: 1041px;">Note
+Descrittive Libere abbinate&nbsp;
+a questa Registrazione. <span style="color: rgb(102, 51, 0);">Nessun controllo specifico</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: bold;"><a name="Pru_id"></a> </span><span style="font-weight: bold; text-decoration: underline;">Pru_Id</span></td>
+<td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+<td><span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">N°
+Univoco identificativo della "eventuale" Unità Portatile con la quale è
+stata eseguita la relativa&nbsp;</span></span></span>Timbratura<span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">. Nel caso delle&nbsp;</span></span></span>Timbratura<span style="color: black;"><span style="background-color: red;"><span style="background-color: white;">
+inserite Manualmente NON è un campo da Gestire.</span></span></span><span style="color: rgb(153, 51, 0); font-weight: bold;"><span style="text-decoration: underline;">Se presente </span></span><span style="color: rgb(153, 51, 0);">viene controllato che esista
+come Chiave nella Tabella&nbsp;</span><span style="color: rgb(153, 51, 0);"><a href="../TR_PRU/_TR_PRU.html">PRU.</a><br></span><span style="color: rgb(153, 51, 0);"><span style="text-decoration: underline;"><span style="font-weight: bold;">Viene
+inoltre controllato che se non sono stati inseriti nè <a href="#Pru_id">Pru_Id</a> nè <a href="#Fru_Id">Fru_Id</a>
+&nbsp;(ovevro sono = 0) allora diventano obbligatori sia il <a href="#Cant_id">Cant_Id</a> sia il <a href="#Col_id">Col_id</a> (in quanto si tratta di una Registrazione
+MANUALE)</span></span></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Registrazione_Durata_Fig_Reg"></a>
+Registrazione_Durata_Fig_Reg</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a><br>
+</td>
+<td style="vertical-align: top; width: 1041px;"><span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span>Durata
+FIGURATIVA in HH:MM della&nbsp;Timbratura.&nbsp;Viene Calcolata dal Sistema in
+base ai Valori delle <a href="#Prestazione_Ora_Fig_Reg">Ore
+Figurative della&nbsp;Timbratura</a><span style="background-color: white;"> e delle <a href="#Prestazione_Ora_Fig_Reg">Ore Figurative della </a></span><a href="#Prestazione_Ora_Fig_Reg">Timbratura</a><span style="background-color: white;"> a lei associata tramite il Campo <a href="#RiferimentoRRN_Reg">RiferimentoRRN_REG</a> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="text-decoration: underline; font-weight: bold;"><a name="Registrazione_Durata_Fis_Reg"></a>
+Registrazione_Durata_Fis_Reg</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#TIME0">TIME(0)</a>
+</td>
+<td style="vertical-align: top;">Durata FISICA in
+HH:MM della&nbsp;Timbratura.&nbsp;<span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span>Viene Calcolata dal Sistema in base ai Valori
+delle <a href="#Prestazione_Ora_Fis_Reg">Ore Fisiche
+della Timbratura</a><span style="background-color: white;">
+e delle <a href="#Prestazione_Ora_Fis_Reg">Ore Fisiche
+della </a></span><a href="#Prestazione_Ora_Fis_Reg">Timbratura</a><span style="background-color: white;"> a lei associata tramite il Campo <a href="#RiferimentoRRN_Reg">RiferimentoRRN_Reg</a> e <span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Registrazione_Data_Ora_Fig_Reg"></a> </span><span style="text-decoration: underline; font-weight: bold;">Registrazione_Data_Ora_Fig_Reg</span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top;">Data e Ora
+Figurativa in GG/MM/SSAA HH:MM:SS della&nbsp;Timbratura.<span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span>Rappresenta la Data e il relativo'Orario Figurativo eventualmente ottenuto applicando lle
+Regole di Arrotondamento previste in Scheda Parametri e/o Scheda
+Cantiere e/o Scheda Collaboratore. Viene Normalmente Calcolata dal Sistema ma è comunque&nbsp;<span style="background-color: white;"><span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span></td>
+</tr>
+<tr><td><a name="Registrazione_Data_Ora_Orig_Reg"></a><span style="font-weight: bold;"> </span><span style="text-decoration: underline; font-weight: bold;">Registrazione_Data_Ora_Orig_Reg</span></td><td style="text-align: left;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a></td><td>Data e Ora
+Originale in GG/MM/SSA HH:MM:SS della&nbsp;Timbratura. <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;"></span>Rappresenta la Data e il relativo&nbsp;Orario Figurativo eventualmente
+ottenuto applicando lle
+Regole di Arrotondamento previste in Scheda Parametri e/o Scheda
+Cantiere e/o Scheda Collaboratore. Viene impostata
+automaticamente&nbsp;dal Sistema al momento del PRIMO INSERIMENTO DI
+UNA TIMBRATURA e <span style="background-color: white;"><span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span></td></tr><tr>
+<td style="vertical-align: top; width: 242px;"><span style="font-weight: bold;"><a name="Registrazione_Data_Ora_Fis_Reg"></a> </span><span style="text-decoration: underline; font-weight: bold;">Registrazione_Data_Ora_Fis_Reg</span></td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#DATETIME">DATETIME</a>
+</td>
+<td style="vertical-align: top;">Data e Ora Fisica in GG/MM/SSAA&nbsp;HH:MM:SS della&nbsp;Timbratura. <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span> Rappresenta la Data e il relativo&nbsp;Orario Effettivo della Timbratura ORIGINARIA&nbsp;<span style="background-color: white;"><span style="background-color: white; color: rgb(204, 51, 204); font-weight: bold;">NON
+E'
+MODIFICABILE da parte degli Utenti</span><span style="color: rgb(204, 51, 204); font-weight: bold;"> del
+Sistema</span></span> <span style="background-color: white;"><span style="color: rgb(204, 51, 204); font-weight: bold;"></span></span></td>
+</tr>
+<tr>
+<td style="vertical-align: top; width: 242px;"><a name="Registrazione_Tipo_Reg"></a><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">Registrazione_Tipo_Reg</span><br>
+</td>
+<td style="vertical-align: top; text-align: center; width: 126px;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a>
+</td>
+<td style="vertical-align: top;">Indica il Tipo di&nbsp;Timbratura&nbsp; <span style="color: black; text-decoration: underline; font-weight: bold; background-color: red;">Campo
+Obbligatorio</span><span style="color: rgb(153, 51, 0);">&nbsp;
+Se inserito, viene controllato che esista nella TAB_DECOD con Gruppo_Tab=Decod_<span style="font-weight: bold;">SYS</span> e
+Nome_Tab</span> =<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Registrazione">
+TIPO_REGISTRAZIONE</a>&nbsp; e <span style="text-decoration: underline; font-weight: bold;">può
+quindi assumere SOLO i seguenti Valor</span>i :<br>
+<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Flag_Mod_Reg"><span style="color: rgb(153, 102, 51);"></span></a>
+<ul>
+<li>0&nbsp;= ORE &nbsp; &nbsp;&nbsp; - Registrazione di Presenza<br>
+</li>
+
+<li>1 = PASS &nbsp; &nbsp;- Registrazione Singola di un PASSAGGIO che NON va abbinata a nessuna altra</li>
+
+<li>2 = ATT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Registrazione Singola di ATTIVITA'&nbsp;&nbsp;che NON va abbinata a nessuna altra</li>
+<li>4 = TRIP&nbsp;&nbsp;&nbsp;&nbsp; - la Registrazione di VIAGGIO&nbsp;Associata ad un altra&nbsp;(Vedi <a href="_TR_REG.html#RiferimentoRRN_Reg">RiferimentoRRN_REG</a>)</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="vertical-align: top;"><a name="RiferimentoRRN_Reg"></a> <span style="text-decoration: underline; font-weight: bold;">RiferimentoRRN_Reg</span></td>
+<td style="vertical-align: top; text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td>
+<td style="vertical-align: top;">Contiene
+l'eventuale Riferimento al
+RRN della Timbratura a cui risulta accoppiata quando questa
+Timbratura è già stata ACCOPPIATA con un'Altra Timbratura per
+generare una RILEVAZIONE&nbsp; costituita da un Orario di Inizio e
+da uno di Fine.</td>
+</tr><tr><td><span style="font-weight: bold;">&nbsp; </span><span style="font-weight: bold; text-decoration: underline;"><a name="Registrazione_Stato_Reg"></a> Registrazione_Stato_Reg</span></td><td style="text-align: center;"><a href="I%20Formati%20dei%20Campi.html#INT">INT</a></td><td>Contiene lo Stato delle Registrazione. <span style="color: rgb(153, 51, 0);">Viene controllato che esista nella TAB_DECOD con Gruppo_Tab=Decod_<span style="font-weight: bold;">SYS</span> e
+Nome_Tab</span> =<a href="../TR_TAB_DECOD/Tabelle%20Decodifica%20Elenco.html#Tipo_Registrazione"> STATO_REGISTRAZIONE</a>&nbsp; e <span style="text-decoration: underline; font-weight: bold;">può
+quindi assumere SOLO i seguenti Valor</span>i :<br><ul><li>0 =&nbsp; SING &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Registrazione Dipsari (NON ASSOCIATA)</li>
+        <li>1 = ABB &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; - Registrazione Abbianata<br>
+        </li>
+<li>2 = &nbsp;ERR_MAX &nbsp;-&nbsp;Registrazione ERRATA in quanto SUPERIORE alla DURATA MASSIMA PREVISTA&nbsp;</li><ul><li>Vedi Campi &nbsp;<a href="../TR_PARAMETRI/_TR_PARAMETRI.html#Default_Durata_Max_Ril">Default_Durata_Max_Ril</a> di <a href="../TR_PARAMETRI/_TR_PARAMETRI.html">PARAM</a> e/o&nbsp;<a href="../TR_CANT/_TR_CANT.html#Durata_Max_Ril_Can">Durata_Max_Ril_Can</a> di <a href="../TR_CANT/_TR_CANT.html">CANT</a> e/o <a href="../TR_COL/_TR_COL.html#Durata_Max_Ril_Col">Durata_Max_Ril_Col</a> di <a href="../TR_COL/_TR_COL.html">COL</a></li></ul><li>4 = &nbsp;ERR_MIN &nbsp; - Registrazione ERRATA in quanto INFERIORE alla DURATA MINIMA PREVISTA</li><ul><li>Vedi Campi &nbsp;<a href="../TR_PARAMETRI/_TR_PARAMETRI.html#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a> di <a href="../TR_PARAMETRI/_TR_PARAMETRI.html">PARAM</a> e/o&nbsp;<a href="../TR_CANT/_TR_CANT.html#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a> di <a href="../TR_CANT/_TR_CANT.html">CANT</a> e/o <a href="../TR_COL/_TR_COL.html#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a> di <a href="../TR_COL/_TR_COL.html">COL</a></li></ul>
+        <li>9 = &nbsp;ERR_SOVR &nbsp; - Registrazione Abbianata E SOVRAPPOSTA in
+quanto si sovrappone per lo stesso Collaboratore/Cantiere ad un'altra
+Registrazione in temini di Tempo ovvero l'Ora di Entrata e/o l'Ora di
+Uscita di una Registrazione di quello stesso Collaboratore/Cantiere
+ricade all'INTERNO dell'Ora di Entrata e/o di Uscita dello stesso
+Collaboratore/Cantiere. Uno stesso collaboratore NON PUO' essere
+presente nello stesso momento in DUE LUOGHI DIVERSI.!!<br>
+        </li>
+        <ul>
+<li>Vedi Campi &nbsp;<a href="../TR_PARAMETRI/_TR_PARAMETRI.html#Default_Durata_Min_Ril">Default_Durata_Min_Ril</a> di <a href="../TR_PARAMETRI/_TR_PARAMETRI.html">PARAM</a> e/o&nbsp;<a href="../TR_CANT/_TR_CANT.html#Durata_Min_Ril_Can">Durata_Min_Ril_Can</a> di <a href="../TR_CANT/_TR_CANT.html">CANT</a> e/o <a href="../TR_COL/_TR_COL.html#Durata_Min_Ril_Col">Durata_Min_Ril_Col</a> di <a href="../TR_COL/_TR_COL.html">COL</a></li>
+        </ul>
+</ul><span style="font-weight: bold; text-decoration: underline; color: red;">NOTA BENE</span> : <span style="text-decoration: underline; font-weight: bold;">il Valore x la SOVRAPPOSIZIONE deve essere 9</span>
+in quanto Somma del valore di Reg ABBINATA 81) e del valore di
+Reg&nbsp; SOVRAPPOSTA (8) del corrispondente Enum a livello di Codice
+C#!!!<br>
+</td></tr>
+<tr><td><br>
+</td><td style="text-align: center;"><br>
+</td><td><br>
+</td></tr></tbody>
+</table>
+</body></html>
