@@ -3,9 +3,6 @@ using Common;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.ImportModules.CantImportModule.Factory
 {
@@ -21,9 +18,10 @@ namespace Business.ImportModules.CantImportModule.Factory
 
             container = new Dictionary<CantImportTypeEnum, Type>();
             container.Add(CantImportTypeEnum.Mosaico, typeof(MosaicoImport));
+            container.Add(CantImportTypeEnum.Solaris, typeof(SolarisImport));
         }
 
-        public static IImport CreateInstance(CantImportTypeEnum customization,string[] rows, int fil_id = 0)
+        public static IImport CreateInstance(CantImportTypeEnum customization, string[] rows, int fil_id = 0)
         {
             if (!container.ContainsKey(customization))
             {

@@ -1,7 +1,7 @@
 ﻿using Business.Infrastructure;
-using Domain;
 using Business.Repository.Custom;
 using Data;
+using Domain;
 
 namespace Business.Repository
 {
@@ -236,6 +236,8 @@ namespace Business.Repository
         {
             get { return IoC.Resolve<IAut_StrRepository>(); }
         }
+
+        public static ICentroDiCostoRepository CentroDiCostoRepo => IoC.Resolve<ICentroDiCostoRepository>();
 
         public static int SaveChanges()
         {

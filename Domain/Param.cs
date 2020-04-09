@@ -38,6 +38,7 @@ namespace Domain
         public Nullable<int> Cant_Id { get; set; }
         public Nullable<int> Cantiere_Timbrature_GPS_Non_Valide { get; set; }
         public bool Cartellino_Divisione_Piano_Notturno_Diurno { get; set; }
+        public bool Cartellino_Visualizza_Arrotondamenti { get; set; }
         public bool Cartellino_Visualizza_Piano { get; set; }
         public bool Cartellino_Visualizza_Ore { get; set; }
         public bool Cartellino_Visualizza_Motivazioni { get; set; }
@@ -163,7 +164,6 @@ namespace Domain
         public bool Abilita_Sincronizzazione_Entità { get; set; }
         public bool Abilita_Import_Esterno { get; set; }
         public Nullable<short> Soglia_Minima_Arrotondamento_Durata { get; set; }
-        public bool Cartellino_Visualizza_Arrotondamenti { get; set; }
     
         public virtual Cant Cant { get; set; }
     }

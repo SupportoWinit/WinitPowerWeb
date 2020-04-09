@@ -26,9 +26,9 @@ namespace Domain
         public string Nome_DataGrid { get; set; }
         public string Nome_Report { get; set; }
         public string Nome_Risorsa { get; set; }
+        public string Nome_Specializzato { get; set; }
         public string Tab_String { get; set; }
         public Nullable<int> Utenti_Id { get; set; }
-        public string Nome_Specializzato { get; set; }
     
         public virtual ICollection<Tab_Report_Group> Tab_Report_Group { get; set; }
         public virtual ICollection<Tab_Report_Order> Tab_Report_Order { get; set; }

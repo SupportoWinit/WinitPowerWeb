@@ -58,11 +58,13 @@ namespace Domain
         public string Fax_2_Can { get; set; }
         public string Fax_2_Rif_Can { get; set; }
         public Nullable<int> Fil_Id { get; set; }
+        public string Flag_Entrata_Can { get; set; }
         public Nullable<byte> Flag_NON_Esportare_Can { get; set; }
         public int FlagGps_Can { get; set; }
         public string Gestione_Can { get; set; }
         public string Indirizzo_Can { get; set; }
         public Nullable<double> LatitudineGps_Can { get; set; }
+        public Nullable<System.TimeSpan> Limite_Entrata_Can { get; set; }
         public Nullable<System.TimeSpan> Limite_Inizio_Notte_Can { get; set; }
         public string Livello_Assistito_Can { get; set; }
         public Nullable<double> LongitudineGps_Can { get; set; }

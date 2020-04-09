@@ -1,27 +1,26 @@
-﻿using System;
+﻿using BingMapsRESTToolkit;
+using Business;
+using Business.ExportExcelEngine;
+using Business.Repository;
+using Common;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
+using DevExpress.Web.ASPxFormLayout;
+using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.ASPxUploadControl;
+using DevExpress.Web.Data;
+using Domain;
+using Exports.ExportExcelGeneric;
+using log4net;
+using Reports;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DevExpress.Web.ASPxClasses;
-using DevExpress.Web.ASPxFormLayout;
-using DevExpress.Web.ASPxGridView;
-using Business.Repository;
-using Domain;
-using DevExpress.Web.Data;
-using Common;
-using Exports.ExportExcelGeneric;
-using Reports;
-using Business;
-using DevExpress.Web.ASPxEditors;
-using System.Text;
-using log4net;
-using DevExpress.Web.ASPxUploadControl;
-using System.IO;
-using Business.ExportExcelEngine;
-using BingMapsRESTToolkit;
-using Business.IocFactory.Import;
 
 namespace PowerWeb.Modules
 {
@@ -32,7 +31,7 @@ namespace PowerWeb.Modules
         const String KEYFIELDNAME = "Cant_Id";
         private static readonly ILog _log = LogManager.GetLogger(typeof(CantModule));
         private int CustomizationVersion;
-        
+
 
         private string _newImportFile
         {
@@ -349,7 +348,7 @@ namespace PowerWeb.Modules
             RepoManager.CantRepo.Add(initCant, true);
             e.Cancel = true;
             gvCant.CancelEdit();
-            
+
         }
 
 
@@ -360,7 +359,7 @@ namespace PowerWeb.Modules
             var currentId = Convert.ToInt32(e.Keys[gvCant.KeyFieldName]);
 
             Cant currentCant = RepoManager.CantRepo.Single(u => u.Cant_Id == currentId);
-            
+
             if (RepoManager.ParamRepo.ParametersRow.File_Cant_Var)
             //Se in Tab PARAM è stato attivato il Flag di Gestione della Scrittura dei Record Variati in CantAR
             {
@@ -372,11 +371,11 @@ namespace PowerWeb.Modules
 
             PowerWebService.FillEntityProperties(currentCant, e.NewValues);
             RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(currentCant);
-            
+
 
             #region Gestione GPS
             bool isToCalculateLatLong = false;
-            
+
             if (RepoManager.ParamRepo.ParametersRow.Flag_GPS == 1)
             //Nel caso in cui sia attivata la Gestione GPS in CANT 
             {
@@ -445,7 +444,7 @@ namespace PowerWeb.Modules
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
-                    Location geocode= BusinessService.GetGeocode(currentCant.GeocodeAddress);
+                    Location geocode = BusinessService.GetGeocode(currentCant.GeocodeAddress);
                     if (geocode != null)
                     {
                         currentCant.LatitudineGps_Can = geocode.Point.Coordinates[0];
@@ -488,7 +487,7 @@ namespace PowerWeb.Modules
                     cantAddress = string.Format("{0} | {1} | {2}", currentCant.Luogo_Can, currentCant.Indirizzo_Can, currentCant.Cap_Can);
                     var tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
                     var toBeDeletedDistances = RepoManager.Tab_DistRepo.Find(td => td.Tab_Decod_Id == tabDecod.Tab_Decod_Id && (td.Arrivo_Tab_Dist == cantAddress || td.Partenza_Tab_Dist == cantAddress));
-                    RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances,true);
+                    RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
                 }
             }
             #endregion
@@ -539,7 +538,7 @@ namespace PowerWeb.Modules
             }
             catch (Exception ex)
             {
-                _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}",ex.Message));
+                _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
             }
 
             e.Cancel = true;
@@ -559,7 +558,7 @@ namespace PowerWeb.Modules
         }
         #region gestione DB app
 
-        
+
         #endregion
 
         public override void BatchUpdate(object sender, ASPxDataBatchUpdateEventArgs e)
@@ -697,9 +696,9 @@ namespace PowerWeb.Modules
                         //CantieriImportManager.ImportFromCsv(File.ReadAllText(_newImportFile, Encoding.GetEncoding(850)).Split('\r'), Convert.ToInt32(cmbFil.Value));
                         var errors = RepoManager.CantRepo.ImportFromCSV(File.ReadAllText(_newImportFile, Encoding.GetEncoding(850)).Split('\r'), Convert.ToInt32(cmbFil.Value));
 
-                        if(errors.Count > 0)
+                        if (errors.Count > 0)
                         {
-                            cUplImportCommand.JSProperties["cpImportError"] = String.Join(";\n",errors.Values);
+                            cUplImportCommand.JSProperties["cpImportError"] = String.Join(";\n", errors.Values);
                         }
 
                     }
@@ -828,7 +827,7 @@ namespace PowerWeb.Modules
                 if (currentType == typeof(ExportExcelGenericCant))
                     visibleFields = PowerWebService.GetGridViewVisibleFields(gvCant);
 
-                ExportExcelEngine.Export(currentSpecialized, cants, model,out path, visibleFields);
+                ExportExcelEngine.Export(currentSpecialized, cants, model, out path, visibleFields);
             }
         }
 

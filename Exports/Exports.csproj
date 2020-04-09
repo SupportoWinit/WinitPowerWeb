@@ -129,6 +129,7 @@
     <Compile Include="ExportTxtCustom\ExportTxtCG2Annuale.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtSCS.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtZucchetti.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtZucchettiSolaris.cs" />
     <Compile Include="ExportTxtCustom\IExportTxtCustom.cs" />
     <Compile Include="IExport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

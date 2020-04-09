@@ -1,32 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using Business;
 using Business.ExportExcelEngine;
 using Business.Repository;
+using Common;
 using DevExpress.Compression;
 using DevExpress.Web.ASPxCallback;
 using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxFormLayout;
+using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.ASPxPanel;
+using DevExpress.Web.ASPxUploadControl;
+using DevExpress.Web.Data;
 using DevExpress.XtraPrinting.Native;
 using Domain;
-using DevExpress.Web.ASPxGridView;
-using DevExpress.Web.ASPxEditors;
-using DevExpress.Web.Data;
-using Common;
-using Business;
-using DevExpress.Web.ASPxPanel;
 using Domain.Extensions;
-using Reports;
 using log4net;
-using DevExpress.Web.ASPxUploadControl;
-using System.Text;
+using Reports;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
-using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace PowerWeb.Modules
 {
@@ -773,7 +772,7 @@ namespace PowerWeb.Modules
                         //legge le Registrazioni per il Periodo Richiesto tra le quali generare eventualmente i Viaggi per i singoli collaboratori selezionati
                         var singleColRegIds = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(from, to, colId, false);
                         regIds.AddRange(singleColRegIds);
-                        
+
                     }
 
                     //Recupera le regv non bloccate all'interno del periodo selezionato e i passaggi
@@ -794,7 +793,7 @@ namespace PowerWeb.Modules
                                     toDeleteRegUIds.Contains(reg.Reg_Id));
 
                     regVs = regVs.Except(trips).ToList();
-                    
+
                     List<KeyValuePair<String, String>> errors = new List<KeyValuePair<string, string>>();
 
                     //Chiama il Calcolo dei Viaggi in RegV_Repository
@@ -803,7 +802,7 @@ namespace PowerWeb.Modules
                         BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] =
                             new KeyValuePair<double, string>(0, "Generazione Viaggi Iniziata");
                         //eseguo l'elaborazione ei viaggi
-                        
+
                         errors = RepoManager.Reg_VRepo.ElaborateTrips(regVs, true);
                     }
 

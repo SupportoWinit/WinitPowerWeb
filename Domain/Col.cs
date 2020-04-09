@@ -16,16 +16,16 @@ namespace Domain
     {
         public Col()
         {
+            this.Aut_Str = new HashSet<Aut_Str>();
             this.Col_Monte_Minuti = new HashSet<Col_Monte_Minuti>();
             this.Col_Note = new HashSet<Col_Note>();
             this.Col_Cant_Orario = new HashSet<Col_Cant_Orario>();
             this.Col_Var = new HashSet<Col_Var>();
+            this.Damage = new HashSet<Damage>();
             this.Pru_Col = new HashSet<Pru_Col>();
+            this.Regs = new HashSet<Reg>();
             this.Timesheet = new HashSet<Timesheet>();
             this.Utenti = new HashSet<Utenti>();
-            this.Regs = new HashSet<Reg>();
-            this.Aut_Str = new HashSet<Aut_Str>();
-            this.Damage = new HashSet<Damage>();
         }
     
         public int Col_Id { get; set; }
@@ -167,17 +167,17 @@ namespace Domain
         public Nullable<short> Soglia_Minima_Arrotondamento_Durata_Col { get; set; }
         public Nullable<System.TimeSpan> Limite_Entrata_Inizio_Pomeriggio_Col { get; set; }
     
+        public virtual ICollection<Aut_Str> Aut_Str { get; set; }
         public virtual ICollection<Col_Monte_Minuti> Col_Monte_Minuti { get; set; }
         public virtual ICollection<Col_Note> Col_Note { get; set; }
         public virtual ICollection<Col_Cant_Orario> Col_Cant_Orario { get; set; }
         public virtual Resp Resp { get; set; }
         public virtual Tab_Orari_Tipo Tab_Orari_Tipo { get; set; }
         public virtual ICollection<Col_Var> Col_Var { get; set; }
+        public virtual ICollection<Damage> Damage { get; set; }
         public virtual ICollection<Pru_Col> Pru_Col { get; set; }
+        public virtual ICollection<Reg> Regs { get; set; }
         public virtual ICollection<Timesheet> Timesheet { get; set; }
         public virtual ICollection<Utenti> Utenti { get; set; }
-        public virtual ICollection<Reg> Regs { get; set; }
-        public virtual ICollection<Aut_Str> Aut_Str { get; set; }
-        public virtual ICollection<Damage> Damage { get; set; }
     }
 }

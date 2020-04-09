@@ -93,16 +93,11 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <EntityDeploy Include="PowerWebModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PowerWebModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="packages.config" />
-    <None Include="PowerWebModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PowerWebModel.edmx</DependentUpon>
-      <LastGenOutput>PowerWebModel.Context.cs</LastGenOutput>
-    </None>
     <None Include="PowerWebModel.edmx.diagram">
       <DependentUpon>PowerWebModel.edmx</DependentUpon>
     </None>
@@ -121,6 +116,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PowerWebModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PowerWebModel.Context.cs</LastGenOutput>
+      <DependentUpon>PowerWebModel.edmx</DependentUpon>
+    </Content>
     <Content Include="Scripts\jszip.js" />
     <Content Include="Scripts\jszip.min.js" />
   </ItemGroup>

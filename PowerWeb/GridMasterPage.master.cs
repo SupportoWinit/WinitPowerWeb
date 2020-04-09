@@ -1,40 +1,37 @@
-﻿using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using DevExpress.Data.Linq;
-using DevExpress.UnitConversion;
-using DevExpress.Utils;
-using DevExpress.Web.ASPxPopupControl;
-using DevExpress.XtraPrinting.Native;
-using PowerWeb.Pages;
+﻿using Business;
 using Business.Repository;
-using Domain;
-using Business;
+using Common;
+using DevExpress.Data.Filtering;
+using DevExpress.Utils;
+using DevExpress.Web.ASPxCallbackPanel;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.ASPxGridView.Export;
-using PowerWeb.Modules;
-using DevExpress.Web.ASPxEditors;
-using Common;
-using DevExpress.Web.Data;
-using DevExpress.Web.ASPxTreeList;
-using System.Drawing;
-using System;
-using System.Reflection;
-using DevExpress.XtraReports.UI;
-using Reports;
-using DevExpress.XtraPrinting;
-using DevExpress.XtraReports.Parameters;
-using System.IO;
 using DevExpress.Web.ASPxTabControl;
-using System.Text;
-using DevExpress.Web.ASPxClasses;
-using DevExpress.Web.ASPxCallbackPanel;
-using System.Data;
+using DevExpress.Web.ASPxTreeList;
+using DevExpress.Web.Data;
+using DevExpress.XtraPrinting;
+using DevExpress.XtraPrinting.Native;
+using DevExpress.XtraReports.Parameters;
+using DevExpress.XtraReports.UI;
+using Domain;
 using Domain.Exceptions;
-using DevExpress.Data.Filtering;
+using PowerWeb.Modules;
+using PowerWeb.Pages;
+using Reports;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Linq.Dynamic;
+using System.Reflection;
+using System.Text;
+using System.Web;
+using System.Web.UI;
 using ImageSizeMode = DevExpress.XtraPrinting.ImageSizeMode;
 
 namespace PowerWeb
@@ -64,6 +61,26 @@ namespace PowerWeb
                 return printButtons;
             }
 
+        }
+
+        public void HideAllMasterPageFeatures()
+        {
+            cmbLayout.Visible = false;
+            btnDeleteLayout.Visible = false;
+            btnSaveLayout.Visible = false;
+            btnSavePrintLayout.Visible = false;
+            btnShowMap.Visible = false;
+            btnPrintXlsx.Visible = false;
+            btnPrint.Visible = false;
+            btnExportXLSX.Visible = false;
+            btnPrintPdf.Visible = false;
+            btnHelp.Visible = false;
+            btnPopulateGrid.Visible = false;
+            btnCustomizeColumns.Visible = false;
+            cbBatchMode.Visible = false;
+            cbxExpandAll.Visible = false;
+            btnUndo.Visible = false;
+            btnUpdate.Visible = false;
         }
 
         /// <summary>
@@ -480,7 +497,7 @@ namespace PowerWeb
 
             List<Tab_DataGrid> listLayout = null;
 
-            if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.OnlyUserDefinedViews,PowerWebContext.Current.User.Codice_Utente)) 
+            if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.OnlyUserDefinedViews, PowerWebContext.Current.User.Codice_Utente))
             {
                 listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID && (tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id)).OrderBy(tgd => tgd.Nome_Layout).ToList();
             }
@@ -865,7 +882,7 @@ namespace PowerWeb
                 cmbExportXLSXLayout.Items.Add(newListEditItem);
             }
 
-            
+
 
             cmbExportXLSXLayout.DataBindItems();
 
@@ -949,7 +966,7 @@ namespace PowerWeb
         //Imposta Visualizzazione Bottone ON/OFF in base la Valore del Flag Dflt_OnOffBtnVisible della Singola Funzione in tab_FUNZ
         {
 
-            if (GridPage != null && GridView != null )
+            if (GridPage != null && GridView != null)
             {
                 //Inizializza TUTTE le ToolTip COMUNI a TUTTE le PAGES
                 btnSaveLayout.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_SALVA_LAYOUT_GRID);
@@ -976,7 +993,7 @@ namespace PowerWeb
                 {
                     btnPrintXlsx.Visible = false;
                 }
-                
+
                 if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.DisablePdfExport, PowerWebContext.Current.User.Codice_Utente))
                 {
                     btnPrint.Visible = false;
@@ -992,7 +1009,7 @@ namespace PowerWeb
                 btnPrintXlsx.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_ESEGUI_STAMPA_EXCEL);
                 btnShowMap.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_APRI_MAPPA);
 
-               
+
 
                 //Inizializza le LABEL comuni a TUTTE le Pagina 
                 //(che verranno poi eventualmente rese NON visibili se qualla pagina non la gestisce)
@@ -1049,7 +1066,7 @@ namespace PowerWeb
                 //Verifica che sia stato definito almeno un Report per quella Pagina
                 ASPxGridView printGrid = GetPrintGrid();
                 Tab_Report currentReport = RepoManager.Tab_ReportRepo.FirstOrDefault(trr => trr.Nome_DataGrid == printGrid.ID);
-              
+
                 if (GridModule.EditFormTemplate != null)
                     GridView.Templates.EditForm = GridModule.EditFormTemplate;
 
@@ -1853,47 +1870,47 @@ namespace PowerWeb
 
                     //if (currentCantDomain != DomainEnum.ViewUpdate)
                     //{
-                        DomainEnum currentColDomain = DomainEnum.ViewUpdate;
+                    DomainEnum currentColDomain = DomainEnum.ViewUpdate;
 
-                        #region ColDomainDict update
+                    #region ColDomainDict update
 
-                        if (ColUtentiRespDictionary.ContainsKey(currentColId))
-                            currentColDomain = ColUtentiRespDictionary[currentColId];
+                    if (ColUtentiRespDictionary.ContainsKey(currentColId))
+                        currentColDomain = ColUtentiRespDictionary[currentColId];
+                    else
+                    {
+                        var colRespV = ColRespVs.SingleOrDefault(cr => cr.Col_Id == currentColId);
+                        if (colRespV != null)
+                        {
+                            var domainResp = PowerWebContext.Current.User.Utenti_Resp.SingleOrDefault(uresp => uresp.Resp_Id == colRespV.Resp_Id);
+                            if (domainResp != null)
+                            {
+                                currentColDomain = (DomainEnum)domainResp.Dominio_Utenti_Resp;
+
+                                if (!PowerWebContext.Current.User.Resp_Inclusive)
+                                    currentColDomain = DomainEnum.View;
+                            }
+                        }
+
+                        ColUtentiRespDictionary.Add(currentColId, currentColDomain);
+                    }
+
+                    #endregion
+
+                    if (currentCantDomain != DomainEnum.ViewUpdate || currentColDomain != DomainEnum.ViewUpdate)
+                    {
+                        if (currentCantDomain == DomainEnum.None && currentColDomain == DomainEnum.None)
+                            isVisible = false;
                         else
                         {
-                            var colRespV = ColRespVs.SingleOrDefault(cr => cr.Col_Id == currentColId);
-                            if (colRespV != null)
+                            if ("add" == buttonID || "addclone" == buttonID || "delete" == buttonID || "edit" == buttonID)
                             {
-                                var domainResp = PowerWebContext.Current.User.Utenti_Resp.SingleOrDefault(uresp => uresp.Resp_Id == colRespV.Resp_Id);
-                                if (domainResp != null)
-                                {
-                                    currentColDomain = (DomainEnum)domainResp.Dominio_Utenti_Resp;
-
-                                    if (!PowerWebContext.Current.User.Resp_Inclusive)
-                                        currentColDomain = DomainEnum.View;
-                                }
+                                if (currentCantDomain == DomainEnum.View || currentColDomain == DomainEnum.View)
+                                    isVisible = false;
                             }
 
-                            ColUtentiRespDictionary.Add(currentColId, currentColDomain);
                         }
+                    }
 
-                        #endregion
-
-                        if (currentCantDomain != DomainEnum.ViewUpdate || currentColDomain != DomainEnum.ViewUpdate)
-                        {
-                            if (currentCantDomain == DomainEnum.None && currentColDomain == DomainEnum.None)
-                                isVisible = false;
-                            else
-                            {
-                                if ("add" == buttonID || "addclone" == buttonID || "delete" == buttonID || "edit" == buttonID)
-                                {
-                                    if (currentCantDomain == DomainEnum.View || currentColDomain == DomainEnum.View)
-                                        isVisible = false;
-                                }
-
-                            }
-                        }
-                    
                 }
             }
 
@@ -2034,7 +2051,7 @@ namespace PowerWeb
                       && PowerWebContext.Current.User.Cli_Id.HasValue && e.ButtonID == "view")
                         isToView = false;
 
-                    if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.DisableViewRowButton,PowerWebContext.Current.User.Codice_Utente))
+                    if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.DisableViewRowButton, PowerWebContext.Current.User.Codice_Utente))
                     {
                         isToView = false;
                     }
@@ -2650,11 +2667,11 @@ namespace PowerWeb
                 CriteriaOperator op = CriteriaOperator.Parse(exportGrid.FilterExpression);
 
                 var regs = RepoManager.Reg_VRepo.Context.Database.SqlQuery<Reg_V>(PowerWebService.GenerateWhereQuery(typeof(Reg_V), exportGrid, RepoManager.Reg_VRepo.FilterText)).ToList();
-                
+
                 int currentModelId = Convert.ToInt32(cmbExportXLSXLayout.Value);
                 var currentModel = ExportXLSXModule.Models.Single(mdl => mdl.ExcelModel_Id == currentModelId);
 
-                ExportXLSXModule.ExportXLSX(currentModel, regs.Cast<Object>().ToList() );
+                ExportXLSXModule.ExportXLSX(currentModel, regs.Cast<Object>().ToList());
             }
             BusinessService.IsToCloseLoadingPanel[PowerWebContext.Current.User] = true;
 

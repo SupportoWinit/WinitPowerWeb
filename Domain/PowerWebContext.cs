@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Threading;
-using Domain;
-using System.Web.Security;
-using Common;
-using System.Globalization;
+﻿using Common;
 using log4net;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Web;
+using System.Web.Security;
 
 namespace Domain
 {
@@ -37,7 +35,7 @@ namespace Domain
                         return (PowerWebContext)data;
                     }
                     PowerWebContext context = new PowerWebContext();
-                    
+
                     Thread.SetData(Thread.GetNamedDataSlot("PowerWebContext"), context);
                     return context;
                 }
@@ -89,8 +87,6 @@ namespace Domain
         /// </summary>
         public DomainFilterEnum DomainFilter { get; set; }
 
-        
-
         public Tab_Aut UserLevel
         {
             get
@@ -103,9 +99,6 @@ namespace Domain
                 return _userLevel;
             }
         }
-
-
-       
 
         /// <summary>
         /// Aggiungiamo l'utente dalla sessione corrente inquanto ha effettuato il login
@@ -120,7 +113,7 @@ namespace Domain
         /// </summary>
         public void RemoveUser()
         {
-            _log.InfoFormat("Utente {0} ha effettuato il signout",User.Codice_Utente);
+            _log.InfoFormat("Utente {0} ha effettuato il signout", User.Codice_Utente);
 
             User = null;
         }
@@ -140,7 +133,6 @@ namespace Domain
 
         public static void LogOut()
         {
-
             if (PowerWebContext.Current != null)
             {
                 PowerWebContext.Current.RemoveUser();
@@ -153,6 +145,5 @@ namespace Domain
 
             HttpContext.Current.Response.Redirect(CommonService.BaseSiteUrl);
         }
-
     }
 }

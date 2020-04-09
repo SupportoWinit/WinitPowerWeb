@@ -16,9 +16,9 @@ namespace Domain
     {
         public Resp()
         {
-            this.Utenti_Resp = new HashSet<Utenti_Resp>();
-            this.Col = new HashSet<Col>();
             this.Aut_Str = new HashSet<Aut_Str>();
+            this.Col = new HashSet<Col>();
+            this.Utenti_Resp = new HashSet<Utenti_Resp>();
         }
     
         public int Resp_Id { get; set; }
@@ -29,8 +29,8 @@ namespace Domain
         public bool DisAbilitazione_Resp { get; set; }
         public string Note_Resp { get; set; }
     
-        public virtual ICollection<Utenti_Resp> Utenti_Resp { get; set; }
-        public virtual ICollection<Col> Col { get; set; }
         public virtual ICollection<Aut_Str> Aut_Str { get; set; }
+        public virtual ICollection<Col> Col { get; set; }
+        public virtual ICollection<Utenti_Resp> Utenti_Resp { get; set; }
     }
 }

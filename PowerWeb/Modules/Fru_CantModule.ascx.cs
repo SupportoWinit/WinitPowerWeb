@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Business.Repository;
+using Common;
+using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.ASPxPanel;
+using Domain;
+using log4net;
+using Reports;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using Domain;
-using Business.Repository;
-using DevExpress.Web.ASPxGridView;
-using Business;
-using Common;
-using DevExpress.Web.ASPxPanel;
-using Reports;
-using log4net;
 
 namespace PowerWeb.Modules
 {
@@ -181,10 +178,10 @@ namespace PowerWeb.Modules
         {
             ASPxGridView gvDetail = (ASPxGridView)sender;
             _log.Info(String.Format("FRU_CANT-Row Inserting by {0}", PowerWebContext.Current.User.Codice_Utente));
-            int fruId = Convert.ToInt32(gvDetail.GetMasterRowKeyValue());            
+            int fruId = Convert.ToInt32(gvDetail.GetMasterRowKeyValue());
             Fru_Cant newFruCant = RepoManager.Fru_CantRepo.Init();
             PowerWebService.FillEntityProperties(newFruCant, e.NewValues);
-            RepoManager.Fru_CantRepo.SetEntityBeforeAddOrUpdate(newFruCant);            
+            RepoManager.Fru_CantRepo.SetEntityBeforeAddOrUpdate(newFruCant);
             newFruCant.Fru_Id = fruId;
             RepoManager.Fru_CantRepo.Add(newFruCant, true);
 
@@ -244,7 +241,7 @@ namespace PowerWeb.Modules
         {
             if (e.Column.FieldName == CommonService.GetPropertyName(() => _fruStub.Data_Registrazione_Fru) ||
               e.Column.FieldName == CommonService.GetPropertyName(() => _fruStub.DataOraUltimaModifica_Fru))
-             
+
                 PowerWebService.GridHeaderFilterFillItems(e);
         }
 
@@ -259,6 +256,6 @@ namespace PowerWeb.Modules
         {
             get { return _log; }
         }
-       
+
     }
 }

@@ -2,24 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Hosting;
+using System.Web;
 
 namespace Business.BusinessServices.RegWriterService.Classes.Writer
 {
     public class TxtWriter : IWriter
     {
         private string _destinationPath;
-        private string DestinationPath
-        {
-            get
-            {
-                return System.Web.HttpContext.Current.Server.MapPath(_destinationPath);
+        private string DestinationPath => HttpContext.Current.Server.MapPath(_destinationPath);
 
-            }
-        }
 
         private string _fileNamePattern;
         private string TxtFullPath

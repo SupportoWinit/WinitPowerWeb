@@ -1755,6 +1755,9 @@ namespace Business.Repository.Custom
         /// <param name="message">La stringa da impostare come messaggio.</param>
         private void ManageElaborateMessageDictionaries(double percVal, string message)
         {
+            if (PowerWebContext.Current.User == null)
+                return;
+
             BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(percVal, message);
             BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(percVal, message);
         }

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System;
-using Common;
+﻿using Common;
 using Newtonsoft.Json.Linq;
-using Domain;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain
 {
@@ -135,8 +134,8 @@ namespace Domain
                 DateTime? retrunval = null;
 
                 //se ho qualche registarzione per quel cantiere mi ritorna la data max di quella reg
-                if (Reg.Any())
-                    retrunval = Reg.Max(regs => regs.Registrazione_Data_Ora_Fis_Reg.Date);
+                if (Regs.Any())
+                    retrunval = Regs.Max(regs => regs.Registrazione_Data_Ora_Fis_Reg.Date);
 
                 return retrunval;
             }
@@ -157,7 +156,7 @@ namespace Domain
         {
             JArray items = new JArray();
             JObject stub = null;
-            
+
             foreach (var cant in cants)
             {
                 stub = new JObject();

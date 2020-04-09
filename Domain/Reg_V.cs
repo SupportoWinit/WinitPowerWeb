@@ -16,6 +16,7 @@ namespace Domain
     {
         public int RegE { get; set; }
         public Nullable<int> RegU { get; set; }
+        public Nullable<int> CentroDiCosto_Id { get; set; }
         public Nullable<int> Cant_Id { get; set; }
         public string Cant_Mnemonic { get; set; }
         public string Cant_Desc { get; set; }

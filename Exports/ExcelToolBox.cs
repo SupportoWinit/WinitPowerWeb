@@ -1,8 +1,6 @@
 ﻿using Business;
 using Common;
-using Domain;
 using Ionic.Zip;
-using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -10,9 +8,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Exports
 {
@@ -1677,6 +1672,27 @@ namespace Exports
             ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[startCellRow, startCellColumn, endCellRow, endCellColumn].Style.Font.Bold = true;
         }
 
+        protected void RangeSetFontUnderline(int worksheetPosition, int startCellColumn, int startCellRow, int endCellColumn, int endCellRow)
+        {
+            #region Convalida input del metodo
+
+            // convalida input del metodo: affinché il metodo possa funzionare è necessario che il foglio excel sia istanziato, 
+            // la posizione richiesta sia nel range dei worksheet presenti nel workbook e il range deve essere valido
+            if (ExcelWorkbook == null)
+                throw new InvalidOperationException("Excel workbook not initialized");
+
+            if (worksheetPosition > WorksheetCount)
+                throw new InvalidOperationException("Worksheet position not in correct range");
+
+            if (startCellColumn > endCellColumn || startCellRow > endCellRow)
+                throw new InvalidOperationException("Range not valid");
+
+            #endregion
+
+            // impostazione del carattere bold
+            ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[startCellRow, startCellColumn, endCellRow, endCellColumn].Style.Font.UnderLine = true;
+        }
+
         /// <summary>
         ///Imposta il caratttere bold per il range specificato.
         /// </summary>
@@ -2293,7 +2309,7 @@ namespace Exports
             {
                 TimeSpan totalDuration = TimeSpan.FromMinutes(value);
 
-                result = String.Format("{0}{1}.{2}",(totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
+                result = String.Format("{0}{1}.{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
 
             }
             else //Sessantesimi
@@ -2344,7 +2360,6 @@ namespace Exports
                 i++;
             }
 
-            // ritorno del valore calcolato
             return returnPosition != -1 ? ++returnPosition : returnPosition;
         }
 

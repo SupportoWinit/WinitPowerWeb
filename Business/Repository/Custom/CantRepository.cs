@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BingMapsRESTToolkit;
+using Business.ImportModules.CantImportModule.Factory;
+using Business.MDBSchema;
+using Business.Synchronization.SynchronizatioManager.Implementations;
+using Common;
 using Data;
 using Domain;
-using System.Text;
-using Common;
-using Business.MDBSchema;
-using System.Linq.Expressions;
 using log4net;
-using System.Text.RegularExpressions;
-using BingMapsRESTToolkit;
-using System.Threading.Tasks;
-using System.Data.Entity.Infrastructure;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
-using Business.IocFactory.ClockAppSynchronizationFactory;
-using Business.Synchronization.SynchronizatioManager.Implementations;
-using Business.ImportModules.CantImportModule.Factory;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Business.Repository.Custom
 {
@@ -2383,6 +2382,11 @@ namespace Business.Repository.Custom
                     }
                 }
                 #endregion
+            }
+            else if (customizationVersion == CantImportTypeEnum.Solaris)
+            {
+                var importClass = CantImportFactory.CreateInstance(customizationVersion, inputCants);
+                var importErrors = importClass.Import();
             }
 
 

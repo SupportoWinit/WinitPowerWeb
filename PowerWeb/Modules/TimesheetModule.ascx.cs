@@ -1,33 +1,32 @@
-﻿using System;
+﻿using Business;
+using Business.BusinessExtension;
+using Business.Repository;
+using Common;
+using DevExpress.Data.PLinq.Helpers;
+using DevExpress.Utils;
+using DevExpress.Web.ASPxCallback;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
+using DevExpress.Web.ASPxFormLayout;
+using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.ASPxGridView.Export;
+using DevExpress.Web.ASPxPanel;
+using DevExpress.Web.Data;
+using Domain;
+using Exports.ExportExcelCustom;
+using log4net;
+using Reports;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Business.BusinessExtension;
-using DevExpress.Data.PLinq.Helpers;
-using DevExpress.Web.ASPxCallback;
-using DevExpress.Web.ASPxFormLayout;
-using DevExpress.Web.ASPxPanel;
-using DevExpress.Web.Data;
-using Domain;
-using Business;
-using Business.Repository;
-using DevExpress.Web.ASPxGridView;
-using System.Collections;
-using DevExpress.Web.ASPxEditors;
-using Common;
-using DevExpress.Web.ASPxClasses;
-using log4net;
-using DevExpress.Web.ASPxGridView.Export;
-using DevExpress.Utils;
-using Reports;
 using TableCell = System.Web.UI.WebControls.TableCell;
-using Exports.ExportExcelCustom;
-using System.IO;
-using Exports.ExportExcelCustom.ExportSpecialized;
 
 namespace PowerWeb.Modules
 {
@@ -129,7 +128,7 @@ namespace PowerWeb.Modules
         /// Il valore che assume l'opzione flaggata dall'utente per la visualizzazione delle ore divise per l'altra entità anagrafica
         /// </summary>
         private const string DividePlanForOtherEntityOptionValue = "OPZTS_DIVIDI_PER";
-        
+
         /// <summary>
         /// Il valore che assume l'opzione flaggata dall'utente per la utilizzare le ore fisiche nella generazione del cartellino
         /// </summary>
@@ -592,7 +591,7 @@ namespace PowerWeb.Modules
                 deTimesheet.Date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
 
                 // se si sta processando la prima apertura della pagina allora si imposta come default la griglia dei collaboratori
-                cmbEntityType.Value = CantEntityType;
+                cmbEntityType.Value = ColEntityType;
             }
 
             PowerWebService.FillGridLabels(typeof(Col), GridView);
@@ -939,7 +938,7 @@ namespace PowerWeb.Modules
 
                 // se si sta trattando l'export semplice del cartellino si passa anche il total controller
                 //if (exportToProcess is ExportTimesheetSimple)
-                    //((ExportTimesheetSimple)exportToProcess).TsTotalController = TsTotalController;
+                //((ExportTimesheetSimple)exportToProcess).TsTotalController = TsTotalController;
 
                 // lancio dell'export
                 exportToProcess.LaunchExport(TsmItems.AsQueryable());
@@ -2277,7 +2276,7 @@ namespace PowerWeb.Modules
                                     if (from < to)
                                     {
                                         totalMinutes = TimesheetModuleItem.GetLastMonthMinutesAmmount(cols.First(), from, to, false) + currentCol.Monte_Minuti;
-                                        
+
                                     }
                                     else
                                     {

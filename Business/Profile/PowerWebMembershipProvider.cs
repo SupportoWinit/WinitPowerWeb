@@ -1,18 +1,14 @@
-﻿using System;
-using System.Web.Security;
-using System.Collections.Specialized;
-using Domain;
+﻿using Business.DataClasses;
 using Business.Repository;
-using System.Linq;
-using log4net;
-using System.Threading;
-using System.Globalization;
-using System.Collections.Generic;
-using Data;
 using Common;
-using Business.DataClasses;
-using System.Text.RegularExpressions;
+using Domain;
+using log4net;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Web.Security;
 
 namespace Business.Profile
 {
@@ -178,12 +174,20 @@ namespace Business.Profile
 
                         if (String.IsNullOrEmpty(user.SecretQuestion))
                             result.completeSecretQuestion = true;
-
                     }
-
+                    else if (user.ChangePasswordOnLogin)
+                    {
+                        result.isValid = false;
+                        result.validationError = "Attenzione! La password utente ha superato la data di validità. E' necessario modificarla per poter effettuare l'accesso!";
+                    }
                     else if (isPassWordExpired && !RepoManager.ParamRepo.ParametersRow.BlockLoginOnUserPswExpired)
                     {
                         result.validationError = "<br>Attenzione! La password utente ha superato la data di validità.</br><br>Vi consigliamo di modificarla al prossimo accesso!</br>";
+                        result.isValid = true;
+                    }
+                    else if (expirationDate.Value.AddDays(-user.ChangePasswordWarningDays) < DateTime.Now)
+                    {
+                        result.validationError = "<br>Attenzione! La password utente si sta avvicinando alla scadenza.</br><br>Vi consigliamo di modificarla al prossimo accesso!</br>";
                         result.isValid = true;
                     }
 
@@ -197,9 +201,7 @@ namespace Business.Profile
                             result.fired = true;
                             result.isValid = false;
                         }
-
                     }
-
                 }
             }
 
@@ -223,26 +225,16 @@ namespace Business.Profile
                 return false;
             }
 
-            try
-            {
-                utente.PasswordHash_Utente = BusinessService.Encrypt(newPassword, utente.SaltKey_Utente);
-                utente.DataUltimoAgg_Psw_Utente = DateTime.Now;
-                RepoManager.UtentiRepo.SaveChanges();
+            utente.PasswordHash_Utente = BusinessService.Encrypt(newPassword, utente.SaltKey_Utente);
+            utente.DataUltimoAgg_Psw_Utente = DateTime.Now;
 
-                _log.InfoFormat("Correttamente modificata la password per l'utente {0}", userName);
+            if (utente.ChangePasswordOnLogin)
+                utente.ChangePasswordOnLogin = false;
 
-            }
-            catch (Exception ex)
-            {
-                _log.ErrorFormat("Errore durante la modifica della password per l'utente {0}", userName);
-
-                error = "Errore interno durante la modifica della password! Password non modificata!";
-
-                return false;
-            }
-
-
-            Utenti_History oldHistory = RepoManager.Utenti_HistoryRepo.DbSet.Where(his => his.Utenti_Id == utente.Utenti_Id).OrderByDescending(u => u.Data_Old_Change_Psw_Utenti_History).FirstOrDefault();
+            Utenti_History oldHistory = RepoManager.Utenti_HistoryRepo.DbSet
+                                                                      .Where(his => his.Utenti_Id == utente.Utenti_Id)
+                                                                      .OrderByDescending(u => u.Data_Old_Change_Psw_Utenti_History)
+                                                                      .FirstOrDefault();
 
             Utenti_History userHistory = new Utenti_History()
             {
@@ -253,25 +245,24 @@ namespace Business.Profile
                 Password_Hash_Utenti_History = utente.PasswordHash_Utente
             };
 
+            RepoManager.Utenti_HistoryRepo.Add(userHistory);
+
             try
             {
-                RepoManager.Utenti_HistoryRepo.Add(userHistory, true);
-
-                _log.InfoFormat("Creata nuova entità {0} per l'utente {1} dopo aver salvato correttamente la nuova password", nameof(Utenti_History), userName);
-
+                RepoManager.UtentiRepo.SaveChanges();
             }
             catch (DbUpdateException ex)
             {
                 _log.ErrorFormat("Errore durante il salvataggio della nuova entità {0} per l'utente {1} con exception {2}", nameof(Utenti_History), userName, ex.Message);
+                throw;
             }
             catch (Exception ex)
             {
                 _log.ErrorFormat("Errore generico durante l'inserimento di una nuova entità di tipo {0} per l'utente {1} con exception {2}", nameof(Utenti_History), userName, ex.Message);
+                throw;
             }
 
             return true;
-
-
         }
         public static void ResetDomainFilter(Utenti currentUser)
         {

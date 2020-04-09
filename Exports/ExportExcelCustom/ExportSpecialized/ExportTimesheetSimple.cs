@@ -1,15 +1,13 @@
 ﻿using Business.BusinessExtension;
+using Business.Repository;
+using Common;
+using Domain;
+using log4net;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Common;
-using Business;
 using System.Drawing;
-using Business.Repository;
-using System.IO;
-using log4net;
-using Newtonsoft.Json.Linq;
-using Domain;
+using System.Linq;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -26,7 +24,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(ExportTimesheetSimple));
 
-        private int rowIndex = 6;
+        private int worksheetIndex = 0;
+        private int rowIndex = 1;
         private int columnIndex = 1;
 
         private OfficeOpenXml.Style.ExcelBorderStyle borderStyle = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
@@ -37,11 +36,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private DateTime startMonth;
         private DateTime endMonth;
 
+        private bool _multiPagedExport = Convert.ToBoolean(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheetMultiPagedExport));
+
         #endregion
 
         #region Public Methods
 
-       
         public override void LaunchExport()
         {
             Param parameters = RepoManager.ParamRepo.ParametersRow;
@@ -61,35 +61,77 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     parameters.Cartellino_Visualizza_Motivazioni,
                                                     parameters.Cartellino_Visualizza_Viaggi,
                                                     parameters.Cartellino_Visualizza_Delta,
-                                                    false,
+                                                    parameters.Cartellino_Usa_Cartellino_Modificabile,
                                                     parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
                                                     Convert.ToBoolean(parameters.Cartellino_Visualizza_Totali_Settimanali),
                                                     false,
                                                     parameters.Cartellino_Visualizza_Piano));
 
 
-
             cartellini = cartellini.OrderBy(c => c.Key.CognomeNome_Col).ToDictionary(c => c.Key, d => d.Value);
 
             // per prima cosa si procede all'apertura del modello
-            ExcelWorkbookGenerateNew(ModelFilePath);
+            ExcelWorkbookGenerateNew();
+
+            if (!_multiPagedExport)
+            {
+                //Not multipagedExport
+                WorksheetCreateNew();
+                worksheetIndex++;
+
+                WriteTimesheetHeader();
+
+                rowIndex += 2;
+            }
 
             // una volta generato il file, se ci sono elementi da processare
             if (cartellini.Any())
             {
-
-                // si scrive la testata dell'export
-                CellInsertValue(1, 1, 1, ExportDate.ToString("MMMM yyyy"), ExcelInsertTypeEnum.Content);
-
                 foreach (var col in cartellini)
                 {
-                    WriteColName(col.Key);
+                    if (_multiPagedExport)
+                    {
+                        ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
+                        worksheetIndex++;
 
-                    WriteColHeader();
+                        WriteTimesheetHeader();
+
+                        rowIndex += 2;
+                    }
+
+                    WriteTimesheetColName(col.Key);
+
+                    WriteTimesheetColHeader();
 
                     WriteColTimesheet(col.Value);
 
                     rowIndex += 2;
+
+                    if (parameters.Cartellino_Usa_Cartellino_Modificabile)
+                    {
+                        WriteStrTimesheetTitle();
+
+                        WriteTimesheetColHeader();
+
+                        WriteStrTimesheet(col.Value);
+
+                        rowIndex += 2;
+                    }
+
+                    if (_multiPagedExport)
+                    {
+                        rowIndex = 1;
+                        columnIndex = 1;
+                    }
+                    else
+                    {
+                        rowIndex += 2;
+                    }
+                }
+
+                foreach (var worksheet in ExcelWorkbook.Workbook.Worksheets)
+                {
+                    worksheet.Cells.AutoFitColumns();
                 }
             }
         }
@@ -98,20 +140,37 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         #region Private Methods
 
-        private void WriteColName(Col col)
+        private void WriteTimesheetHeader()
         {
-            RangeUnion(1, 1, rowIndex, 5, rowIndex);
-            RangeSetFontBold(1, 1, rowIndex, 5, rowIndex);
-            CellInsertValue(1, 1, rowIndex, col.CognomeNome_Col, ExcelInsertTypeEnum.Content);
+            RangeUnion(worksheetIndex, 1, rowIndex, 34, rowIndex + 4);
+            CellInsertValue(worksheetIndex, 1, 1, ExportDate.ToString("MMMM yyyy").ToUpper(), ExcelInsertTypeEnum.Content);
+            RangeSetFontBold(worksheetIndex, 1, rowIndex, 34, rowIndex + 4);
+            RangeSetTextVerticalAlignment(worksheetIndex, 1, rowIndex, 34, rowIndex + 4, ExcelVerticalAlignment.Center);
+            RangeSetTextHorizontalAlignment(worksheetIndex, 1, rowIndex, 34, rowIndex + 4, ExcelHorizontalAlignment.Center);
+
+            rowIndex += 5;
+        }
+
+        private void WriteTimesheetTitle()
+        {
+            CellInsertValue(worksheetIndex, 1, rowIndex, "CLASSIC", ExcelInsertTypeEnum.Content);
+            rowIndex += 2;
+        }
+
+        private void WriteTimesheetColName(Col col)
+        {
+            RangeUnion(worksheetIndex, 1, rowIndex, 5, rowIndex);
+            RangeSetFontBold(worksheetIndex, 1, rowIndex, 5, rowIndex);
+            CellInsertValue(worksheetIndex, 1, rowIndex, col.CognomeNome_Col, ExcelInsertTypeEnum.Content);
 
             rowIndex++;
         }
 
-        private void WriteColHeader()
+        private void WriteTimesheetColHeader()
         {
             List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
 
-            RangeSetFontBold(1, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
+            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
 
             days.ForEach(day =>
             {
@@ -131,9 +190,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             rowIndex++;
         }
 
+        private void WriteStrTimesheetTitle()
+        {
+            CellInsertValue(worksheetIndex, 1, rowIndex, "SUDDIVISIONE ORE", ExcelInsertTypeEnum.Content);
+            RangeSetFontUnderline(worksheetIndex, 1, rowIndex, 1, rowIndex);
+
+            rowIndex += 2;
+        }
+
         private void WriteColTimesheet(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
-
             foreach (var justification in cartellini["justification"])
             {
                 var justificationDec = justification.Justification;
@@ -143,26 +209,26 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 justificationDec = justificationDec.ToUpper();
 
-                CellInsertValue(1, 1, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, 1, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);
 
-                foreach (var day in CommonService.GetDatesFromPeriod(startMonth,endMonth))
+                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
                     var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     var timeDuration = TimeSpan.FromHours(baseDuration);
 
                     string valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
 
-                    RangeSetBorders(1, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(1, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                 }
 
                 string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
 
-                RangeSetBorders(1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count+2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count+2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
 
-                RangeSetBorders(1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count+3, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count+3, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
 
 
                 rowIndex++;
@@ -170,38 +236,74 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             }
 
         }
+        private void WriteStrTimesheet(Dictionary<string, List<TimesheetModuleItem>> cartellini)
+        {
+            foreach (var justification in cartellini["straordinari"])
+            {
+                var justificationDesc = justification.Justification;
 
+                if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDesc))
+                    justificationDesc = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDesc).Decodifica_Tab;
+
+                justificationDesc = justificationDesc.ToUpper();
+
+                CellInsertValue(worksheetIndex, 1, rowIndex, justificationDesc, ExcelInsertTypeEnum.Content);
+
+                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                {
+                    var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
+                    var timeDuration = TimeSpan.FromHours(baseDuration);
+
+                    string valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+
+                    RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                }
+
+                string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
+
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
+
+
+                rowIndex++;
+
+            }
+
+        }
         #region Header
 
         private void WriteHeaderDayCell(DateTime date)
         {
-            CellInsertValue(1, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetValueFormat(1, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, "0");
-            RangeSetBackgroundColor(1, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, Color.LightGray, fillStyle);
+            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, "0");
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, Color.LightGray, fillStyle);
 
             if (date.DayOfWeek == DayOfWeek.Sunday)
             {
                 //Se giorno festivo
-                RangeSetFontColor(1, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
+                RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
             }
         }
 
         private void WriteHeaderTotalCell()
         {
 
-            CellInsertValue(1, columnIndex + 1, rowIndex, "Totale", ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetBackgroundColor(1, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
+            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "Totale", ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
 
         }
 
         private void WriteHeaderTotalDaysCell()
         {
-
-            CellInsertValue(1, columnIndex + 1, rowIndex, "Tot. Giorni", ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetBackgroundColor(1, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
+            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "Tot. Giorni", ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
 
         }
 

@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Business.Repository;
-using Domain;
-using DevExpress.Web.Data;
-using log4net;
-using Business;
-using System;
+﻿using Business.Repository;
 using DevExpress.Web.ASPxGridView;
-using Reports;
-using Common;
+using DevExpress.Web.Data;
+using Domain;
+using log4net;
+using System;
+using System.Linq;
 
 namespace PowerWeb.Modules
 {
@@ -163,7 +159,7 @@ namespace PowerWeb.Modules
 
         public override void HeaderFilterFillItems(object sender, ASPxGridViewHeaderFilterEventArgs e)
         //Gestione Filtri CUSTOM x i Campi DATA (va comunque definita vuota se non ce ne sono)
-        {            
+        {
         }
 
         public log4net.ILog Log

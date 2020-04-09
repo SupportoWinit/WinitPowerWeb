@@ -16,13 +16,14 @@ namespace Domain
     {
         public Cant()
         {
+            this.Cant_Note = new HashSet<Cant_Note>();
             this.Cant_Var = new HashSet<Cant_Var>();
             this.Col_Cant_Orario = new HashSet<Col_Cant_Orario>();
+            this.Damage = new HashSet<Damage>();
             this.Fru_Cant = new HashSet<Fru_Cant>();
             this.Param = new HashSet<Param>();
-            this.Reg = new HashSet<Reg>();
-            this.Cant_Note = new HashSet<Cant_Note>();
-            this.Damage = new HashSet<Damage>();
+            this.Regs = new HashSet<Reg>();
+            this.Cant_CentroDiCosto = new HashSet<Cant_CentroDiCosto>();
         }
     
         public int Cant_Id { get; set; }
@@ -169,13 +170,14 @@ namespace Domain
     
         public virtual Cli Cli { get; set; }
         public virtual Fil Fil { get; set; }
+        public virtual ICollection<Cant_Note> Cant_Note { get; set; }
         public virtual Tab_Orari_Tipo Tab_Orari_Tipo { get; set; }
         public virtual ICollection<Cant_Var> Cant_Var { get; set; }
         public virtual ICollection<Col_Cant_Orario> Col_Cant_Orario { get; set; }
+        public virtual ICollection<Damage> Damage { get; set; }
         public virtual ICollection<Fru_Cant> Fru_Cant { get; set; }
         public virtual ICollection<Param> Param { get; set; }
-        public virtual ICollection<Reg> Reg { get; set; }
-        public virtual ICollection<Cant_Note> Cant_Note { get; set; }
-        public virtual ICollection<Damage> Damage { get; set; }
+        public virtual ICollection<Reg> Regs { get; set; }
+        public virtual ICollection<Cant_CentroDiCosto> Cant_CentroDiCosto { get; set; }
     }
 }

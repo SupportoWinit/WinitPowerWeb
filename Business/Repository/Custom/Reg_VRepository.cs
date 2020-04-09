@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
+﻿using BingMapsRESTToolkit;
 using Business.BusinessExtension;
 using Business.XmlExportsData.Perfetto;
+using Common;
 using Data;
 using DevExpress.XtraPrinting.Native;
 using Domain;
-using System.Text;
-using Common;
-using System.Xml.Serialization;
-using System.Globalization;
-using BingMapsRESTToolkit;
 using log4net;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Business.Repository.Custom
 {
@@ -36,7 +36,7 @@ namespace Business.Repository.Custom
         {
             get
             {
-               
+
 
                 List<Tab_Decod> oLista = PowerWebContext.GetFromSession<List<Tab_Decod>>("Tab_Decods_Reg");
                 if (oLista == null)
@@ -210,6 +210,7 @@ namespace Business.Repository.Custom
                                                         //altrimenti i minuti della registrazione figurativa di entrata sono uguali al modulo * -1
                                                         currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegEMin * -1);
                                                 }
+
                                                 #endregion
 
                                                 #region 2.Arrotondo la Registrazione di Uscita
@@ -315,7 +316,6 @@ namespace Business.Repository.Custom
                                                                     entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
                                                                     entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
                                                                     0);
-
                                                                 }
 
                                                                 //se si ha una registrazione notturna ma il limite cade prima della mezzanotte
@@ -1571,11 +1571,11 @@ namespace Business.Repository.Custom
             // convalida input del meotodo, la data di arrivo deve essere maggiore della data di partenza
             if (to < from)
                 throw new ArgumentException("To date must be major than from date");
-            
+
             if (from.Year >= RepoManager.ParamRepo.ParametersRow.Data_Blocco_Reg.Value.Year)
                 from = RepoManager.ParamRepo.ParametersRow.Data_Blocco_Reg.Value;
 
-           
+
             int deltaTotale = 0;
 
             foreach (var data in CommonService.EachMonth(from.AddMonths(1), to))
@@ -1589,7 +1589,7 @@ namespace Business.Repository.Custom
                 deltaTotale += totalMonthMinutes.HasValue ? totalMonthMinutes.Value : 0;
 
             }
-            
+
             return deltaTotale;
         }
 
@@ -2520,11 +2520,8 @@ namespace Business.Repository.Custom
                                     RepoManager.CantRepo.UpdateGeoLocation(cantE);
                                 }
 
-
-
                                 newStartRequest.Latitude = cantE.LatitudineGps_Can;
                                 newStartRequest.Longitude = cantE.LongitudineGps_Can;
-
 
                                 if (CommonService.Nz(cantU.LatitudineGps_Can, 0) == 0 || CommonService.Nz(cantU.LongitudineGps_Can, 0) == 0)
                                 //Se Il Cantiere di FINE VIAGGIO (USCITA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
@@ -4573,7 +4570,7 @@ namespace Business.Repository.Custom
             //controllo di avere delle reg da inserire nell'Xml
             if (regVsToProcess.Any())
             {
-                
+
 
                 // viene recuperato il parametro della personalizzazione di export xml che indica sotto quale soglia kilometrica trattare i viaggi come ore lavorate
                 string kmParam = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RegExportToXmlEnum, "TreatTripAsWorkedUnderKM");
@@ -4989,7 +4986,7 @@ namespace Business.Repository.Custom
 
                             // calcolo il nome del file preparato per Perfetto
                             string currentFileName = String.Format("{0}{1}", cantNumber.ToString("0000"), XmlToPerfettoConstants.ReturnXmlExtension);
-                            
+
                             //contatore del file successivo
                             var nextFileNumber = cantNumber + 1;
 

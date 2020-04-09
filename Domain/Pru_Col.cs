@@ -23,7 +23,7 @@ namespace Domain
         public int Pru_Id { get; set; }
         public string Note_Pru_Col { get; set; }
     
-        public virtual Pru Pru { get; set; }
         public virtual Col Col { get; set; }
+        public virtual Pru Pru { get; set; }
     }
 }

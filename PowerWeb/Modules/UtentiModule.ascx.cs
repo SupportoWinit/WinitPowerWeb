@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using Business.Repository;
-using Domain;
+﻿using Business.Repository;
 using Common;
+using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
+using Domain;
 using log4net;
 using Reports;
 using System;
-using DevExpress.Web.ASPxGridView;
+using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Specialized;
 
 namespace PowerWeb.Modules
 {
@@ -79,9 +78,66 @@ namespace PowerWeb.Modules
             PowerWebService.FillGridLabels(typeof(Utenti), GridView);
             PowerWebService.FillComboboxes(gvUsers);
 
-            GridView.HtmlDataCellPrepared += GridView_HtmlDataCellPrepared;
-
             BindGrid();
+        }
+
+        public override void GridView_CellEditorInitialize(object sender, ASPxGridViewEditorEventArgs e)
+        {
+            //base.GridView_CellEditorInitialize(sender, e);
+
+            //if (e.Column.FieldName == CommonService.GetPropertyName(() => _utentiStub.SecretQuestion))
+            //{
+            //    var codUser = ((ASPxGridView)sender).GetRowValues(e.VisibleIndex, CommonService.GetPropertyName(() => _utentiStub.Codice_Utente)).ToString();
+            //    var currentUser = PowerWebContext.Current.User.Codice_Utente;
+
+            //    if (currentUser != codUser)
+            //    {
+            //        e.Editor.Style.Add("color", "transparent");
+            //        //e.Editor.Visible = false;
+            //        e.Column.EditFormSettings.CaptionLocation = ASPxColumnCaptionLocation.None;
+            //    }
+            //    else
+            //    {
+            //        e.Editor.Visible = true;
+            //        e.Column.EditFormSettings.CaptionLocation = ASPxColumnCaptionLocation.Default;
+            //    }
+            //}
+
+            //if (e.Column.FieldName == CommonService.GetPropertyName(() => _utentiStub.SecretAnswer))
+            //{
+            //    var codUser = ((ASPxGridView)sender).GetRowValues(e.VisibleIndex, CommonService.GetPropertyName(() => _utentiStub.Codice_Utente)).ToString();
+            //    var currentUser = PowerWebContext.Current.User.Codice_Utente;
+
+            //    if (currentUser != codUser)
+            //    {
+            //        e.Editor.Style.Add("color", "transparent");
+            //        //e.Editor.Visible = false;
+            //        e.Column.EditFormSettings.CaptionLocation = ASPxColumnCaptionLocation.Default;
+            //    }
+            //    else
+            //    {
+            //        e.Editor.Visible = true;
+            //        e.Column.EditFormSettings.CaptionLocation = ASPxColumnCaptionLocation.Default;
+            //    }
+            //}
+
+            //if (e.Column.FieldName == CommonService.GetPropertyName(() => _utentiStub.Password))
+            //{
+            //    var currentUser = PowerWebContext.Current.User;
+            //    var codUser = ((ASPxGridView)sender).GetRowValues(e.VisibleIndex, CommonService.GetPropertyName(() => _utentiStub.Codice_Utente)).ToString();
+
+            //    if (!(currentUser.Codice_Utente == codUser || currentUser.Liv_Utente >= 10))
+            //    {
+            //        e.Editor.Style.Add("color", "transparent");
+            //        //e.Editor.Visible = false;
+            //        e.Column.EditFormSettings.CaptionLocation = ASPxColumnCaptionLocation.None;
+            //    }
+            //    else
+            //    {
+            //        e.Editor.Visible = true;
+            //        e.Column.EditFormSettings.CaptionLocation = ASPxColumnCaptionLocation.Default;
+            //    }
+            //}
         }
 
         private void BindGrid()
@@ -142,8 +198,6 @@ namespace PowerWeb.Modules
                 }
             }
 
-
-
             PowerWebService.FillEntityProperties(user, e.NewValues);
             PowerWebService.FillEntityKey(user, e.Keys, KEYFIELDNAME);
             RepoManager.UtentiRepo.SetEntityBeforeAddOrUpdate(user);
@@ -187,12 +241,14 @@ namespace PowerWeb.Modules
             currentUser.N_GG_Val_Psw_Utente = 90;  //INSERIRE PARAMETROOOOOOOOOOOO
             currentUser.DataUltimoAgg_Psw_Utente = DateTime.Now;
 
-            RepoManager.UtentiRepo.SaveChanges();
-
             if (RepoManager.ParamRepo.ParametersRow.Abilita_Privacy)
             {
                 ManagePasswordChange(currentUser, newClearPassword as string, oldEncryptedPassword);
             }
+
+            RepoManager.UtentiRepo.SaveChanges();
+
+
 
             e.Cancel = true;
             gvUsers.CancelEdit();
@@ -209,39 +265,6 @@ namespace PowerWeb.Modules
             RepoManager.UtentiRepo.SaveChanges();
             e.Cancel = true;
             BindGrid();
-        }
-
-        public override void BatchUpdate(object sender, ASPxDataBatchUpdateEventArgs e)
-        {
-        }
-
-        void GridView_HtmlDataCellPrepared(object sender, ASPxGridViewTableDataCellEventArgs e)
-        {
-           
-
-            if(e.DataColumn.FieldName == CommonService.GetPropertyName(() => _utentiStub.SecretQuestion))
-            {
-                var codUser = ((ASPxGridView)sender).GetRowValues(e.VisibleIndex, CommonService.GetPropertyName(() => _utentiStub.Codice_Utente)).ToString();
-                var currentUser = PowerWebContext.Current.User.Codice_Utente;
-
-                if (currentUser != codUser)
-                {
-                    e.Cell.Style.Add("color", "transparent");
-                }
-
-            }
-
-            if (e.DataColumn.FieldName == CommonService.GetPropertyName(() => _utentiStub.SecretAnswer))
-            {
-                var codUser = ((ASPxGridView)sender).GetRowValues(e.VisibleIndex, CommonService.GetPropertyName(() => _utentiStub.Codice_Utente)).ToString();
-                var currentUser = PowerWebContext.Current.User.Codice_Utente;
-
-                if (currentUser != codUser)
-                {
-                    e.Cell.Style.Add("color", "transparent");
-                    e.DataColumn.EditFormSettings.Visible = DevExpress.Utils.DefaultBoolean.False;
-                }
-            }
         }
 
         #endregion
@@ -266,10 +289,6 @@ namespace PowerWeb.Modules
             get { return _log; }
         }
 
-
-
-
-
         /// <summary>
         /// Procedura che gestisce l'eventuale modifica della password mantenendo uno storico
         /// delle password precedenti (per un eventuale recupero)
@@ -285,13 +304,15 @@ namespace PowerWeb.Modules
             //Cripto la nuova passoword e controllo se è diversa da quella precedente
             string newEncrPassword = Business.BusinessService.Encrypt(newDecrPassword, currentUser.SaltKey_Utente);
 
-
             if (newEncrPassword == oldEncrPassword) //Controllo che la password inserita sia diversa da quella precedente
                 return;
-
+            else if (PowerWebContext.Current.User.Liv_Utente == 10)
+            {
+                currentUser.ChangePasswordOnLogin = true;
+            }
 
             DateTime minPswDate = DateTime.Now;
-            
+
             //Estrazione data minima da campo non nullable
             var date = RepoManager.Utenti_HistoryRepo.Find(his => his.Utenti_Id == currentUser.Utenti_Id).Max(c => (DateTime?)c.Data_Change_Psw_Utenti_History);
 
@@ -302,18 +323,16 @@ namespace PowerWeb.Modules
             //Creazione nuovo record
             Utenti_History newUserHistory = new Utenti_History()
             {
-
                 Utenti_Id = currentUser.Utenti_Id,
                 Data_Change_Psw_Utenti_History = DateTime.Now,
                 Data_Old_Change_Psw_Utenti_History = minPswDate,
                 Password_Hash_Utenti_History = oldEncrPassword,
                 Salt_Key_Utenti_History = currentUser.SaltKey_Utente
-
             };
-            
+
             try
             {
-                RepoManager.Utenti_HistoryRepo.Add(newUserHistory, true);
+                RepoManager.Utenti_HistoryRepo.Add(newUserHistory);
 
                 _log.InfoFormat("Aggiornata nuova password dall'utente {0} per l'utente {1} ", PowerWebContext.Current.User.Codice_Utente, currentUser.Codice_Utente);
                 _log.InfoFormat("Inserito nuovo record nella tabella UTENTI_HISTORY dall'utente {0}", PowerWebContext.Current.User.Codice_Utente, currentUser.Codice_Utente);
@@ -322,8 +341,6 @@ namespace PowerWeb.Modules
             {
                 _log.ErrorFormat("Errore durante la routine di aggiornamento della password per l'utente {0} con exception {1}", "", ex.Message);
             }
-            
         }
-
     }
 }

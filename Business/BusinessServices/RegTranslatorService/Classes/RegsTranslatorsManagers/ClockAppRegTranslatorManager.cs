@@ -2,9 +2,10 @@
 using Business.BusinessServices.RegTranslatorService.Enums;
 using Business.BusinessServices.RegTranslatorService.Helpers;
 using Business.BusinessServices.RegTranslatorService.Interfaces.RegsTranslatorsManagers;
-using Common;
+using Business.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslatorsManagers
 {
@@ -47,7 +48,7 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslators
                 {
                     foreach (var badgeCode in reg.RegistrationSquadra)
                     {
-                        if(reg.TransponderType == JsonRegTypeEnum.G)
+                        if (reg.TransponderType == JsonRegTypeEnum.G)
                             reg.DeviceCode = badgeCode;
                         else
                             reg.BadgeCode = badgeCode;
@@ -75,6 +76,23 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslators
         IEnumerable<string> TranslateJsonOfType_N(ClockAppReg reg)
         {
             List<string> currentRegLines = new List<string>();
+
+            if (reg.IdManualCant != default)
+            {
+                var fruAss = RepoManager.Fru_CantRepo.DbSet
+                                                     .Where(fc => fc.Cant_Id == reg.IdManualCant && fc.Abilitazione_Data_Inizio_Fru_Can <= reg.RegistrationDateTime)
+                                                     .OrderByDescending(fru => fru.Abilitazione_Data_Inizio_Fru_Can)
+                                                     .Select(fc => fc.Fru)
+                                                     .FirstOrDefault();
+
+                if (fruAss == null)
+                {
+                    throw new InvalidOperationException("nessuna unità fissa associata!");
+                }
+
+                reg.DeviceCode = fruAss.Codice_Fru;
+            }
+
 
             var nfcLines = ClockAppStringFormatter.CreateNfcOrQrCodeLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.Direction);
             var activityLines = ClockAppStringFormatter.CreateActivityLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.ActivityTypeCode);

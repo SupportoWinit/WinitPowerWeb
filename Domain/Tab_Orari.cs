@@ -23,6 +23,7 @@ namespace Domain
         public bool G5 { get; set; }
         public bool G6 { get; set; }
         public bool G7 { get; set; }
+        public int Sequenza { get; set; }
         public int Ripetizione { get; set; }
         public Nullable<int> Cant_Id { get; set; }
         public int Tab_Orari_Tipo_Id { get; set; }
@@ -31,7 +32,6 @@ namespace Domain
         public int Durata_Minuti { get; set; }
         public bool Usa_Pausa { get; set; }
         public Nullable<int> Col_Id { get; set; }
-        public int Sequenza { get; set; }
         public bool Orario_Mensile { get; set; }
     
         public virtual Tab_Orari_Tipo Tab_Orari_Tipo { get; set; }

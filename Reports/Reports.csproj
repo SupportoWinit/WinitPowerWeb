@@ -285,6 +285,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="XRColCartellino.resx">
       <DependentUpon>XRColCartellino.cs</DependentUpon>
     </EmbeddedResource>

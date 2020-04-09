@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Business;
+﻿using Business;
 using Business.BusinessExtension;
+using Business.ExportExcelEngine;
 using Business.Repository;
 using Common;
 using DevExpress.Web.ASPxCallback;
@@ -15,10 +9,16 @@ using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxFormLayout;
 using DevExpress.Web.ASPxGridView;
 using Domain;
-using Exports.ExportExcelCustom;
-using System.Runtime.Remoting;
-using Business.ExportExcelEngine;
 using Domain.Extensions;
+using Exports.ExportExcelCustom;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Remoting;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace PowerWeb.Modules
 {
@@ -1117,7 +1117,7 @@ namespace PowerWeb.Modules
                 {
                     var exportToProcess = (IExportExcelSpecialized<ActivityItem>)exportObject;
                     List<ActivityItem> itemList = BusinessService.PopulateActivityList(regVsToProcess.ToList());
-                    ExportExcelEngine.Export<ActivityItem>(exportToProcess, itemList, excelModel,out path);
+                    ExportExcelEngine.Export<ActivityItem>(exportToProcess, itemList, excelModel, out path);
                 }
                 else // se invece si sta processando un export custom
                 {

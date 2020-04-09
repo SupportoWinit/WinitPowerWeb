@@ -67,7 +67,6 @@ namespace Business
         }
 
         public bool Insert(TEntity entity)
-
         {
             try
             {
@@ -100,10 +99,10 @@ namespace Business
         {
             try
             {
-                if (_Context.Entry<TEntity>(entity).State == EntityState.Detached)
+                if (_Context.Entry(entity).State == EntityState.Detached)
                 {
                     _DbSet.Attach(entity);
-                    _Context.Entry<TEntity>(entity).State = EntityState.Modified;
+                    _Context.Entry(entity).State = EntityState.Modified;
                     _Context.SaveChanges();
                 }
 
@@ -121,7 +120,6 @@ namespace Business
             {
                 _DbSet.Remove(entity);
                 _Context.SaveChanges();
-
             }
             catch (Exception ex)
             {

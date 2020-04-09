@@ -30,7 +30,7 @@ namespace Domain
         public Nullable<int> Utenti_Id { get; set; }
         public Nullable<int> Tab_Funz_Id { get; set; }
     
-        public virtual Utenti Utenti { get; set; }
         public virtual Tab_Funz Tab_Funz { get; set; }
+        public virtual Utenti Utenti { get; set; }
     }
 }

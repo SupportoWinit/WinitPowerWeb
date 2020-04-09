@@ -23,7 +23,7 @@ namespace Domain
         public int Fru_Id { get; set; }
         public string Note_Fru_Can { get; set; }
     
-        public virtual Fru Fru { get; set; }
         public virtual Cant Cant { get; set; }
+        public virtual Fru Fru { get; set; }
     }
 }

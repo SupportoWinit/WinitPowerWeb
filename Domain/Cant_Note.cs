@@ -24,7 +24,7 @@ namespace Domain
         public string Nota_Can_Note { get; set; }
         public string Tipo_Nota_Can_Note { get; set; }
     
-        public virtual Utenti Utenti { get; set; }
         public virtual Cant Cant { get; set; }
+        public virtual Utenti Utenti { get; set; }
     }
 }

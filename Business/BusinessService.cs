@@ -81,12 +81,11 @@ namespace Business
             }
             else if (user.GetPassword() != password)
             {
-                string a = user.GetPassword();
                 loginValidationResult.AddFormErrors("passWord", "Attenzione,la password inserita è errata!");
                 loginValidationResult.isValid = false;
                 _log.InfoFormat("Tentativo di login fallito da parte dell'utente {0}; La password è errata", userName);
             }
-            else if (IsSuperUserCorrect(userName))
+            else if (!IsSuperUserCorrect(userName))
             {
                 loginValidationResult.AddFormErrors("userName", "Attenzione, l'utente inserito non è abilitato!");
                 loginValidationResult.isValid = false;
@@ -116,6 +115,7 @@ namespace Business
                     loginValidationResult.isValid = res.isValid;
                     loginValidationResult.isDoubleLoginAllowed = RepoManager.UtentiRepo.DbSet.First(u => u.Codice_Utente == userName).AllowSupervisedLogin;
                     loginValidationResult.validationError = res.validationError;
+
                     if (loginValidationResult.isValid && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EnableDoubleCheckLogin) == 1)
                     {
                         if (ValidateSuperUser(userName, password, new LoginValidationResult() { isValid = true }))
@@ -123,7 +123,6 @@ namespace Business
                             StartUserSession(userName, userName);
                         }
                     }
-
                 }
             }
 
@@ -158,6 +157,9 @@ namespace Business
 
         private static bool IsSuperUserCorrect(string username)
         {
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EnableDoubleCheckLogin) == 0)
+                return true;
+
             string filePath = HttpContext.Current.Server.MapPath(Common.Properties.Settings.Default.SuperUsersFilePath);
             XDocument doc = XDocument.Load(filePath);
 

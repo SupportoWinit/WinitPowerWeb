@@ -1,16 +1,17 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
-using Domain;
-using Business.Repository;
-using System.Data.Entity.Core.EntityClient;
-using Data;
-using Business.Repository.Custom;
-using System;
-using Business.Synchronization.SynchronizatioManager.Implementations;
-using Business.ExternalImports;
 using Business.BusinessServices.UserService;
 using Business.BusinessServices.UserService.Service;
+using Business.ExternalImports;
+using Business.Repository;
+using Business.Repository.Custom;
+using Business.Synchronization.SynchronizatioManager.Implementations;
+using Data;
+using Domain;
+using log4net;
+using Microsoft.Practices.Unity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity.Core.EntityClient;
 
 namespace Business.Infrastructure
 {
@@ -52,14 +53,14 @@ namespace Business.Infrastructure
             // GRUPPO REPOSITORY CUSTOM
             //
             container.RegisterType<ICant_VRepository, Cant_VRepository>(new UnityPerExecutionContextLifetimeManager());
-            container.RegisterType<ICol_VRepository, Col_VRepository>(new UnityPerExecutionContextLifetimeManager());  
-            container.RegisterType<ICantRepository, CantRepository>(new UnityPerExecutionContextLifetimeManager());            
+            container.RegisterType<ICol_VRepository, Col_VRepository>(new UnityPerExecutionContextLifetimeManager());
+            container.RegisterType<ICantRepository, CantRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ICant_NoteRepository, Cant_NoteRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ICant_VarRepository, Cant_VarRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ICliRepository, CliRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IColRepository, ColRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ICol_NoteRepository, Col_NoteRepository>(new UnityPerExecutionContextLifetimeManager());
-            container.RegisterType<IColCantOrarioRepository, ColCantOrarioRepository>(new UnityPerExecutionContextLifetimeManager());                       
+            container.RegisterType<IColCantOrarioRepository, ColCantOrarioRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ICol_VarRepository, Col_VarRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IFilRepository, FilRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IFruRepository, FruRepository>(new UnityPerExecutionContextLifetimeManager());
@@ -73,7 +74,7 @@ namespace Business.Infrastructure
             container.RegisterType<IReg_StoredRepository, Reg_StoredRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IReg_VRepository, Reg_VRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IRespRepository, RespRepository>(new UnityPerExecutionContextLifetimeManager());
-            container.RegisterType<IResourcesRepository, ResourcesRepository>(new UnityPerExecutionContextLifetimeManager());            
+            container.RegisterType<IResourcesRepository, ResourcesRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ITab_AutRepository, Tab_AutRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ITab_Chk_ImpRepository, Tab_Chk_ImpRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ITab_ComuniRepository, Tab_ComuniRepository>(new UnityPerExecutionContextLifetimeManager());
@@ -98,6 +99,7 @@ namespace Business.Infrastructure
             container.RegisterType<IDamageRepository, DamageRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ITab_DamageRepository, Tab_DamageRepository>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<ITab_Excel_ModelRepository, Tab_Excel_ModelRepository>(new UnityPerExecutionContextLifetimeManager());
+            container.RegisterType<ICentroDiCostoRepository, CentroDiCostoRepository>(new UnityPerExecutionContextLifetimeManager());
 
             //
             //
@@ -105,7 +107,7 @@ namespace Business.Infrastructure
             //
             container.RegisterType<IRepository<Cant_Fil_V>, GenericRepository<Cant_Fil_V>>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IRepository<Col_Monte_Minuti>, GenericRepository<Col_Monte_Minuti>>(new UnityPerExecutionContextLifetimeManager());
-            container.RegisterType<IRepository<Col_Resp_V>, GenericRepository<Col_Resp_V>>(new UnityPerExecutionContextLifetimeManager());            
+            container.RegisterType<IRepository<Col_Resp_V>, GenericRepository<Col_Resp_V>>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IRepository<Menu>, GenericRepository<Menu>>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IRepository<MetaDescriptor>, GenericRepository<MetaDescriptor>>(new UnityPerExecutionContextLifetimeManager());
             container.RegisterType<IRepository<MetaFieldDescriptor>, GenericRepository<MetaFieldDescriptor>>(new UnityPerExecutionContextLifetimeManager());
@@ -133,6 +135,10 @@ namespace Business.Infrastructure
                 //Registering object context
                 container.RegisterType<PowerWebEntities>(new UnityPerExecutionContextLifetimeManager(), connectionStringParam);
             }
+            else
+            {
+                LogManager.GetLogger(GetType()).Error("connection-string assente dal file di configurazione");
+            }
 
             container.RegisterType<SynchronizationManager<Cant>>(new UnityPerSessionContextLifeTimeManager());
             container.RegisterType<SynchronizationManager<Col>>(new UnityPerSessionContextLifeTimeManager());
@@ -142,7 +148,7 @@ namespace Business.Infrastructure
             container.RegisterType<ExternalImportFactory>(new UnityPerSessionContextLifeTimeManager()); //La factory per l'import da esterno deve esser instanziata ad ogni session
 
             container.RegisterType<IUserService, UserService>(new UnityPerExecutionContextLifetimeManager());
-            
+
         }
 
         #endregion

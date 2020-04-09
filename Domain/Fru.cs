@@ -16,10 +16,10 @@ namespace Domain
     {
         public Fru()
         {
+            this.Damage = new HashSet<Damage>();
             this.Fru_Cant = new HashSet<Fru_Cant>();
             this.PendingElab = new HashSet<PendingElab>();
-            this.Regs = new HashSet<Reg>();
-            this.Damage = new HashSet<Damage>();
+            this.Reg = new HashSet<Reg>();
         }
     
         public int Fru_Id { get; set; }
@@ -31,9 +31,9 @@ namespace Domain
         public string Note_Fru { get; set; }
         public bool Singola_Reg_Fru { get; set; }
     
+        public virtual ICollection<Damage> Damage { get; set; }
         public virtual ICollection<Fru_Cant> Fru_Cant { get; set; }
         public virtual ICollection<PendingElab> PendingElab { get; set; }
-        public virtual ICollection<Reg> Regs { get; set; }
-        public virtual ICollection<Damage> Damage { get; set; }
+        public virtual ICollection<Reg> Reg { get; set; }
     }
 }

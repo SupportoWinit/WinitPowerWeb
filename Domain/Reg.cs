@@ -16,7 +16,7 @@ namespace Domain
     {
         public Reg()
         {
-            this.ChildrenReg = new HashSet<Reg>();
+            this.Regs = new HashSet<Reg>();
         }
     
         public int Reg_Id { get; set; }
@@ -55,13 +55,15 @@ namespace Domain
         public Nullable<int> Stato_Attivita { get; set; }
         public Nullable<int> Ritardo_Durata { get; set; }
         public bool Ritardo_Mail_Sent { get; set; }
+        public Nullable<int> CentroDiCosto_Id { get; set; }
     
+        public virtual Cant Cant { get; set; }
         public virtual Col Col { get; set; }
         public virtual Fru Fru { get; set; }
         public virtual Pru Pru { get; set; }
-        public virtual ICollection<Reg> ChildrenReg { get; set; }
+        public virtual ICollection<Reg> Regs { get; set; }
         public virtual Reg ParentReg { get; set; }
         public virtual Tab_Decod Tab_Decod { get; set; }
-        public virtual Cant Cant { get; set; }
+        public virtual CentroDiCosto CentroDiCosto { get; set; }
     }
 }

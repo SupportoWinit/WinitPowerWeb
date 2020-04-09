@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxGridView" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 
 
+<%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxEditors" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <dx:ASPxGridView ID="gvAutStr" runat="server" AutoGenerateColumns="False" Width="100%"
     OnDataBinding="gvAutStr_OnDataBinding"
     OnInitNewRow="gvAutStr_OnInitNewRow"

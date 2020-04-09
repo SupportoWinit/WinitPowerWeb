@@ -14,7 +14,7 @@ namespace Domain
         {
             get { return (RoundingMethodEnum)Metodo_Arrotondamento_Col; }
         }
-        
+
         // CAMPI AGGIUNTIVI E/O CALCOLATI della Tabella COL
 
         public string CognomeNome_Col
@@ -209,7 +209,8 @@ namespace Domain
         /// <value>
         /// L'id del cantiere per il record di where is it.
         /// </value>
-        public int? WhereIsItCantId {
+        public int? WhereIsItCantId
+        {
             get
             {
                 // di default viene ritornato un valore nullo
@@ -222,7 +223,7 @@ namespace Domain
 
                 // ritorno del valore calcolato
                 return returnValue;
-            }            
+            }
         }
 
         /// <summary>
@@ -447,7 +448,8 @@ namespace Domain
         /// <value>
         /// Il valore del turno sull'ultima registrazione utile al record where is it.
         /// </value>
-        public string WhereIsItTurn {
+        public string WhereIsItTurn
+        {
             get
             {
                 // di default viene ritornato il valore stringa vuota
@@ -456,7 +458,7 @@ namespace Domain
                 // si recupera l'ultima registrazione ora e si ritorna il turno in essa contenuta
                 Reg lastReg = GetLastHourReg();
                 if (lastReg != default(Reg))
-                        returnValue = lastReg.Turno;
+                    returnValue = lastReg.Turno;
 
                 // ritorno del valore calcolato
                 return returnValue;
@@ -532,7 +534,7 @@ namespace Domain
         private Reg GetLastHourReg()
         {
             Reg returnReg = default(Reg);
-            
+
             if (Regs.Any(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Pass))
                 returnReg = Regs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Pass)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).Last();
 
@@ -554,7 +556,7 @@ namespace Domain
                 stub.Add("ColDes", col.CognomeNome_Col);
                 stub.Add("ColMatr", col.Pru_Col.Any() ? col.Pru_Col.OrderByDescending(c => c.Abilitazione_Data_Inizio_Pru_Col).First().Codice_Pru : "NA");
                 stub.Add("Disabilitato", col.DisAbilitazione_Col);
-                stub.Add("PowerWebColId",col.Col_Id);
+                stub.Add("PowerWebColId", col.Col_Id);
 
                 items.Add(stub);
 

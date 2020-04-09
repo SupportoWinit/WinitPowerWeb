@@ -24,7 +24,7 @@ namespace Domain
         public string Nota_Col_Note { get; set; }
         public string Tipo_Nota_Col_Note { get; set; }
     
-        public virtual Utenti Utenti { get; set; }
         public virtual Col Col { get; set; }
+        public virtual Utenti Utenti { get; set; }
     }
 }

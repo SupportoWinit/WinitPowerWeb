@@ -52,7 +52,7 @@ namespace Domain
         public decimal Minuti_G30_Orario { get; set; }
         public decimal Minuti_G31_Orario { get; set; }
     
-        public virtual Col Col { get; set; }
         public virtual Cant Cant { get; set; }
+        public virtual Col Col { get; set; }
     }
 }

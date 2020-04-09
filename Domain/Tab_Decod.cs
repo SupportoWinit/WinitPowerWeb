@@ -16,10 +16,10 @@ namespace Domain
     {
         public Tab_Decod()
         {
-            this.Tab_Dist = new HashSet<Tab_Dist>();
-            this.Regs = new HashSet<Reg>();
             this.Damage = new HashSet<Damage>();
+            this.Reg = new HashSet<Reg>();
             this.Tab_Damage = new HashSet<Tab_Damage>();
+            this.Tab_Dist = new HashSet<Tab_Dist>();
         }
     
         public int Tab_Decod_Id { get; set; }
@@ -29,9 +29,9 @@ namespace Domain
         public string Decodifica_Tab { get; set; }
         public string Campo1_Tab { get; set; }
     
-        public virtual ICollection<Tab_Dist> Tab_Dist { get; set; }
-        public virtual ICollection<Reg> Regs { get; set; }
         public virtual ICollection<Damage> Damage { get; set; }
+        public virtual ICollection<Reg> Reg { get; set; }
         public virtual ICollection<Tab_Damage> Tab_Damage { get; set; }
+        public virtual ICollection<Tab_Dist> Tab_Dist { get; set; }
     }
 }

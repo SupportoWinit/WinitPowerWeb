@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Common.Properties;
+using ExcelDataReader;
+using Ionic.Zip;
+using log4net;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq.Expressions;
-using System.Globalization;
 using System.Text.RegularExpressions;
-using Common.Properties;
 using System.Web;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Net.Mail;
-using System.Net;
-using log4net;
-using System.IO;
-using Ionic.Zip;
-using ExcelDataReader;
 
 namespace Common
 {
@@ -137,7 +137,7 @@ namespace Common
         private static readonly ILog _log = LogManager.GetLogger(typeof(CommonService));
 
         public static int residualMonthMinutes = 0;
-        
+
 
         public const string SESS_EDITFORMTEMPLATES = "EditFormTemplates";
 
@@ -312,7 +312,7 @@ namespace Common
             }
         }
 
-        
+
         #region DUPLICAZIONE ENTITA'
         /// <summary>
         ///  //Duplica un Record da una Entità ad un Altra (es CANTVAR/COLVAR e/ REG e REG_STORED)
@@ -479,11 +479,6 @@ namespace Common
 
         #region Routine Di Trattamento Stringhe
 
-        static public string ImpostaDoppioApice(string sValoreCampo)
-        {
-            return sValoreCampo.Replace("'", "''");
-        }
-
         static public string TogliPrincipaliAccentiAlleVocaliNellaStringa(string sStringa)
         {
             sStringa = sStringa.Replace("à", "a");
@@ -493,20 +488,6 @@ namespace Common
             sStringa = sStringa.Replace("ò", "o");
             sStringa = sStringa.Replace("ù", "u");
             return sStringa;
-        }
-
-        static public string TogliTuttiISegniDiacriticiNellaStringa(string sStringa)
-        {
-            //questa routine rimuove tutti i segni diacritici da consonanti e vocali
-            string sFormD = sStringa.Normalize(NormalizationForm.FormD);
-            StringBuilder oStringBuilder = new StringBuilder();
-            for (int i = 0; i < sFormD.Length; i++)
-            {
-                UnicodeCategory oUnicodeCategory = CharUnicodeInfo.GetUnicodeCategory(sFormD[i]);
-                if (oUnicodeCategory != UnicodeCategory.NonSpacingMark)
-                    oStringBuilder.Append(sFormD[i]);
-            }
-            return (oStringBuilder.ToString().Normalize(NormalizationForm.FormC));
         }
 
         #endregion
@@ -948,16 +929,6 @@ namespace Common
             return string.Format("{0}{1}", char.ToUpper(dayName[0]), dayName.Substring(1));
         }
 
-        /// <summary>
-        /// Restituisce la prima lettera del giorno della settimana della data passata.
-        /// </summary>
-        /// <param name="dateToProcess">La data da processare.</param>
-        /// <returns>La prima lettera del giorno della data passata.</returns>
-        public static string GetDayFirstLetter(DateTime dateToProcess)
-        {
-            string dayName = dateToProcess.ToString("ddd", CultureInfo.CurrentCulture);
-            return char.ToUpper(dayName[0]).ToString();
-        }
 
         /// <summary>
         /// Restituisce il nome intero del giorno della data passata.   
@@ -1000,17 +971,6 @@ namespace Common
         public static DateTime ComputeDateTime(DateTime dayDate, DateTime regTime)
         {
             return new DateTime(dayDate.Year, dayDate.Month, dayDate.Day, regTime.Hour, regTime.Minute, regTime.Second);
-        }
-
-        /// <summary>
-        /// Fornita una data e un'ora ne combina gli elementi in un nuovo date time.
-        /// </summary>
-        /// <param name="dayDate">La data da processare.</param>
-        /// <param name="regTime">L'ora da processare.</param>
-        /// <returns>La data e ora composta dalle parti passate come parametro.</returns>
-        public static DateTime ComputeDateTime(DateTime dayDate, TimeSpan regTime)
-        {
-            return new DateTime(dayDate.Year, dayDate.Month, dayDate.Day, regTime.Hours, regTime.Minutes, regTime.Seconds);
         }
 
         /// <summary>
@@ -1530,7 +1490,7 @@ namespace Common
             // ritorno del valore calcolato dal metodo
             return returnValue;
         }
-        
+
         #endregion
 
         #region Invio email        
@@ -1615,7 +1575,7 @@ namespace Common
         }
         #endregion
 
-        
+
     }
 
 }

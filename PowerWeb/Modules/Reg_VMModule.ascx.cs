@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI.WebControls;
+﻿using Business;
+using Business.ExportExcelEngine;
+using Business.Repository;
+using Common;
+using DevExpress.Data.Filtering;
+using DevExpress.Data.Linq;
+using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
+using DevExpress.Web.Data;
+using Domain;
 using Domain.Extensions;
 using Exports.ExportExcelGeneric;
 using Exports.ExportExcelSpecialized;
+using Exports.ExportTxtCustom;
 using log4net;
-using Business.Repository;
-using Common;
-using Domain;
-using Business.ExportExcelEngine;
 using Reports;
-using DevExpress.Web.Data;
+using System;
 using System.Collections;
-using DevExpress.Data.Filtering;
-using Business;
-using DevExpress.Data.Linq;
-using DevExpress.Web.ASPxEditors;
-using System.Web.UI;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 
 namespace PowerWeb.Modules
@@ -968,6 +969,8 @@ namespace PowerWeb.Modules
                 toAddRegsNew.Add(currentRegUNew);
             }
 
+            currentRegENew.CentroDiCosto_Id = (int?)e.NewValues[nameof(Reg.CentroDiCosto_Id)];
+
             RepoManager.RegRepo.Add(toAddRegsNew, true);
 
             // Le Ore dei Campi Date vengono sempre inizializzate a ZERO dal sistema
@@ -1161,11 +1164,14 @@ namespace PowerWeb.Modules
                 toAddRegsNew.Add(currentRegUNew);
             }
 
+            currentRegENew.CentroDiCosto_Id = (int?)e.NewValues[nameof(Reg.CentroDiCosto_Id)];
+
             // sono cancellate le reg solamente prima dell'aggiunta delle nuove popolate così da avere a disposizione i valori per il confronto
             // di modifica di cant_id e col_id
             RepoManager.RegRepo.Delete(toDeleteRegsOld, true);
 
             RepoManager.RegRepo.Add(toAddRegsNew, true);
+
             #endregion
 
             //
@@ -2184,6 +2190,11 @@ namespace PowerWeb.Modules
             cbmx_Init(sender, e, CommonService.GetPropertyName(() => _regVStub.Cant_Id));
         }
 
+        protected void cbmxCentroDiCosto_Id_Init(object sender, EventArgs e)
+        {
+            cbmx_Init(sender, e, CommonService.GetPropertyName(() => _regVStub.CentroDiCosto_Id));
+        }
+
         protected void cmbMotivazione_Reg_Id(object sender, EventArgs e)
         {
             //il sender è castato come  ASPxComboBox
@@ -2466,6 +2477,15 @@ namespace PowerWeb.Modules
 
             if (currentType != null)
             {
+
+                if (currentType == typeof(ExportTxtZucchettiSolaris))
+                {
+                    var export = new ExportTxtZucchettiSolaris(regs.Min(reg => reg.Data_Ora_Fis_E), (DateTime)(regs.Max(reg => reg.Data_Ora_Fis_U) ?? regs.Min(reg => reg.Data_Ora_Fis_E)));
+                    export.LaunchExport();
+                    BusinessService.IsToCloseLoadingPanel[PowerWebContext.Current.User] = true;
+                    export.ExportToResponse();
+                }
+
                 if (currentType == typeof(ExportExcelSpecializedExtendedReg_V))
                 {
                     var currentSpecialized = (IExportExcelSpecialized<Reg_V>)Activator.CreateInstance(currentType);

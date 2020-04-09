@@ -356,7 +356,6 @@
                     <ClearFilterButton Visible="True">
                         <Image Url="../Icons/Undo/Undo.png" />
                     </ClearFilterButton>
-
                 </dx:GridViewCommandColumn>
                 <dx:GridViewDataDateColumn FieldName="LastDateActiveFru" ReadOnly="True" VisibleIndex="1" />
                 <dx:GridViewDataTextColumn FieldName="LastFruCode" ReadOnly="True" VisibleIndex="2"></dx:GridViewDataTextColumn>
@@ -724,7 +723,6 @@
                 </dx:GridViewDataTextColumn>
                 <dx:GridViewDataTextColumn FieldName="Codice_Gestionale_Can" Visible="False">
                 </dx:GridViewDataTextColumn>
-
             </Columns>
         </dx:ASPxGridView>
     </tr>

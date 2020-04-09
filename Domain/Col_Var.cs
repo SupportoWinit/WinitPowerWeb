@@ -63,6 +63,7 @@ namespace Domain
         public string Fax_1_Rif_Col { get; set; }
         public string Fax_2_Col { get; set; }
         public string Fax_2_Rif_Col { get; set; }
+        public string Flag_Entrata_Col { get; set; }
         public string Flag_INPS_Col { get; set; }
         public Nullable<byte> Flag_NON_Esportare_Col { get; set; }
         public Nullable<int> Flag_Ore_Viaggi_Col { get; set; }
@@ -71,6 +72,7 @@ namespace Domain
         public Nullable<double> Indennita_Sanificazione_Col { get; set; }
         public Nullable<double> Indennita_Trasporto_Col { get; set; }
         public string Libretto_Sanitario_Col { get; set; }
+        public Nullable<System.TimeSpan> Limite_Entrata_Col { get; set; }
         public Nullable<System.TimeSpan> Limite_Inizio_Notte_Col { get; set; }
         public string Livello_Col { get; set; }
         public string Matricola_Col { get; set; }

@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Windows.Forms;
-using Business.BusinessExtension;
-using Business.Repository;
+﻿using Business.BusinessExtension;
 using Common;
-using DevExpress.Office.Utils;
-using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraReports.UI;
-using DevExpress.XtraRichEdit.Import.Html;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Linq;
 
 namespace Reports
 {
@@ -197,7 +189,8 @@ namespace Reports
         /// <param name="reportOptions">Le opzioni report da applicare.</param>
         private void ManageReportOptions(dynamic reportOptions)
         {
-            reportOptions = new {
+            reportOptions = new
+            {
                 showStrNot = false,
                 opzShowZeroAsEmptyString = false,
                 showDelta = true,
@@ -367,7 +360,7 @@ namespace Reports
                 {
                     File_Col.Visible = false;
                 }*/
-                }
+            }
         }
 
         /// <summary>

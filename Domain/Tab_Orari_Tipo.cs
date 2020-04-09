@@ -16,9 +16,9 @@ namespace Domain
     {
         public Tab_Orari_Tipo()
         {
-            this.Tab_Orari = new HashSet<Tab_Orari>();
-            this.Col = new HashSet<Col>();
             this.Cant = new HashSet<Cant>();
+            this.Col = new HashSet<Col>();
+            this.Tab_Orari = new HashSet<Tab_Orari>();
         }
     
         public int Tab_Orari_Tipo_Id { get; set; }
@@ -28,8 +28,8 @@ namespace Domain
         public string Tab_Orari_Tipo_Entita_Rif { get; set; }
         public bool Tab_Orari_Tipo_NotDiu_Auto { get; set; }
     
-        public virtual ICollection<Tab_Orari> Tab_Orari { get; set; }
-        public virtual ICollection<Col> Col { get; set; }
         public virtual ICollection<Cant> Cant { get; set; }
+        public virtual ICollection<Col> Col { get; set; }
+        public virtual ICollection<Tab_Orari> Tab_Orari { get; set; }
     }
 }

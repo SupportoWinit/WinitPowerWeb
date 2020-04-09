@@ -16,8 +16,8 @@ namespace Domain
     {
         public Cli()
         {
-            this.Utentis = new HashSet<Utenti>();
             this.Cant = new HashSet<Cant>();
+            this.Utenti = new HashSet<Utenti>();
         }
     
         public int Cli_Id { get; set; }
@@ -68,7 +68,7 @@ namespace Domain
         public string Telefono_4_Rif_Cli { get; set; }
         public string Valuta_Cli { get; set; }
     
-        public virtual ICollection<Utenti> Utentis { get; set; }
         public virtual ICollection<Cant> Cant { get; set; }
+        public virtual ICollection<Utenti> Utenti { get; set; }
     }
 }

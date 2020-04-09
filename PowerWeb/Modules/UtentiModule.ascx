@@ -86,9 +86,11 @@
         </dx:GridViewDataTextColumn>
         <dx:GridViewDataComboBoxColumn FieldName="Cli_Id" VisibleIndex="130" Visible="False">
         </dx:GridViewDataComboBoxColumn>
-        <dx:GridViewDataTextColumn FieldName ="SecretAnswer" Visible="False">
+        <dx:GridViewDataTextColumn FieldName ="SecretAnswer" VisibleIndex="121">
         </dx:GridViewDataTextColumn>
-        <dx:GridViewDataTextColumn FieldName ="SecretQuestion" Visible="False">
+        <dx:GridViewDataTextColumn FieldName ="SecretQuestion" VisibleIndex="122">
+        </dx:GridViewDataTextColumn>
+        <dx:GridViewDataTextColumn FieldName ="ChangePasswordWarningDays" VisibleIndex="123">
         </dx:GridViewDataTextColumn>
     </Columns>
 </dx:ASPxGridView>

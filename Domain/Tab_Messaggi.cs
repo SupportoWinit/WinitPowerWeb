@@ -16,10 +16,10 @@ namespace Domain
     {
         public int Tab_Messaggi_Id { get; set; }
         public int Applicazione_Tab_Messaggi_Id { get; set; }
-        public System.DateTime Data_Tab_Messaggi { get; set; }
-        public string Testo_Tab_Messaggi { get; set; }
-        public int Funzione_Tab_Messaggi_Id { get; set; }
         public Nullable<System.DateTime> Data_Ora_Elab_Tab_Messaggi { get; set; }
+        public System.DateTime Data_Tab_Messaggi { get; set; }
+        public int Funzione_Tab_Messaggi_Id { get; set; }
+        public string Testo_Tab_Messaggi { get; set; }
         public Nullable<int> Utente_Id { get; set; }
     
         public virtual Utenti Utenti { get; set; }

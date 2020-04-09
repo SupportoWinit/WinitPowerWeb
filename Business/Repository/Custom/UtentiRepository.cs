@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Domain;
+﻿using Common;
 using Data;
-using Common;
-using System.Linq.Expressions;
+using Domain;
+using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Data.OleDb;
-using Business.MDBSchema;
-using System.Data.Entity.SqlServer;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Business.Repository.Custom
 {
@@ -221,12 +217,7 @@ namespace Business.Repository.Custom
                     result.AddOrAppend(CommonService.GetPropertyName(() => entity.Password), BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_CAMPO_X_DEVE_ESSERE_MAGGIORE_UGUALE_Y, CommonService.GetPropertyName(() => entity.Password), "8"));
                 }
 
-                //Controllo che la password non contenga il codice utente
-                if (entity.Password.ToLower().Contains(entity.Codice_Utente.ToLower()))
-                {
-                    result.AddOrAppend(CommonService.GetPropertyName(() => entity.Password), BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_CAMPO_X_NON_DEVE_CONTENERE_CODICE_UTENTE, CommonService.GetPropertyName(() => entity.Password)));
-                }
-                
+
                 //
                 //6) Scrittura del Record di LOG
                 //

@@ -86,6 +86,9 @@
     <Compile Include="Cant.cs">
       <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cant_CentroDiCosto.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="Cant_Fil_V.cs">
       <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
     </Compile>
@@ -96,6 +99,9 @@
       <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="Cant_Var.cs">
+      <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CentroDiCosto.cs">
       <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="Cli.cs">
@@ -128,7 +134,9 @@
     <Compile Include="Exceptions\RowDeletingException.cs" />
     <Compile Include="Extensions\ActivityItem.cs" />
     <Compile Include="Extensions\Cant.cs" />
+    <Compile Include="Extensions\CantCentroDiCosto.cs" />
     <Compile Include="Extensions\Cant_V.cs" />
+    <Compile Include="Extensions\CentroDiCosto.cs" />
     <Compile Include="Extensions\Col.cs" />
     <Compile Include="Extensions\Cli.cs" />
     <Compile Include="Extensions\Col_V.cs" />

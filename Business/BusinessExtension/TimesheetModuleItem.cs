@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Business.Repository;
+﻿using Business.Repository;
 using Common;
 using Domain;
-using System.Data.Entity;
-using Microsoft.Practices.ObjectBuilder2;
 using log4net;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
+using Microsoft.Practices.ObjectBuilder2;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.BusinessExtension
 {
@@ -3127,18 +3124,17 @@ namespace Business.BusinessExtension
             if (col != default(Col) && HasColValidDates(col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, minDate, maxDate))
             {
                 // una volta generati i piani recupero (per uso successivo) il primo piano inserito
-                TimeSpan? nocturnStartHour = RepoManager.ParamRepo.ParametersRow.Cartellino_Inizio_Notturno;
+                TimeSpan? nocturnStartHour = RepoManager.ParamRepo.ParametersRow.Cartellino_Inizio_Notturno ?? TimeSpan.FromHours(0);
                 TimeSpan? nocturnStartHourModify = null;
-                TimeSpan? nocturnEndHour = RepoManager.ParamRepo.ParametersRow.Cartellino_Fine_Notturno;
+                TimeSpan? nocturnEndHour = RepoManager.ParamRepo.ParametersRow.Cartellino_Fine_Notturno ?? TimeSpan.FromHours(6); ;
                 if (colPlan != default(TimesheetModuleItem))
                 {
-                    nocturnStartHour = colPlan.NocturnsStartHour ?? TimeSpan.Zero;
-                    nocturnEndHour = colPlan.NocturnEndHour ?? TimeSpan.Zero;
+                    nocturnStartHour = colPlan.NocturnsStartHour ?? nocturnStartHour;
+                    nocturnEndHour = colPlan.NocturnEndHour ?? nocturnEndHour;
                 }
 
-                IQueryable<Reg_V> baseColRegVs = GetPeriodColRegVs(col, minDate, maxDate, false);
+                var baseColRegVs = GetPeriodColRegVs(col, minDate, maxDate, false).OrderBy(r => r.Data_Reg).ToList();
                 List<Reg_V> workedRegVs = new List<Reg_V>();
-                baseColRegVs.OrderBy(r => r.Data_Reg);
 
                 TimeSpan oraIn_Nott = nocturnStartHour.Value;
                 TimeSpan oraOut_Nott = nocturnEndHour.Value > nocturnStartHour.Value ? nocturnEndHour.Value : nocturnEndHour.Value.Add(new TimeSpan(1, 0, 0, 0));
@@ -3153,7 +3149,7 @@ namespace Business.BusinessExtension
                     // le ore diurne sono quelle che cominciano o finiscono nel lasso di tempo non notturno
                     var dayRegVsAll = workedRegVs.Where(regv =>
                     {
-                        if (!regv.Data_Ora_Fig_U.HasValue || !regv.Data_Ora_Fig_E.HasValue)
+                        if (!regv.Data_Ora_Fig_U.HasValue || !regv.Data_Ora_Fig_E.HasValue)  //Se non abbiamo E o U
                         {
                             return true;
                         }
@@ -3161,11 +3157,10 @@ namespace Business.BusinessExtension
                         TimeSpan oraE = regv.Data_Ora_Fig_E.Value.TimeOfDay;
                         TimeSpan oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay;
 
-                        if (regv.Data_Ora_Fig_U.Value.Date > regv.Data_Ora_Fig_E.Value.Date)
+                        if (regv.Data_Ora_Fig_U.Value.Date > regv.Data_Ora_Fig_E.Value.Date) //Se l' U è maggiore dell'entrata
                         {
-                            oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay.Add(new TimeSpan(1, 0, 0, 0));
+                            oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay.Add(new TimeSpan(1, 0, 0, 0)); //Aggiungo un giorno 
                         }
-
                         else
                         {
                             if (oraE <= nocturnEndHour.Value && oraU <= nocturnEndHour.Value)
@@ -3699,7 +3694,7 @@ namespace Business.BusinessExtension
                 {
                     totalDayMinutes = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).Select(regv => regv.Durata_Fig ?? 0).Sum();
                 }
-                
+
                 // inserisco la somma nella posizione corretta del dizionario con le durate
                 if (daysMinutes.ContainsKey(dataReg.Value))
                     daysMinutes[dataReg.Value] = new Tuple<double, TimeSpan?, TimeSpan?>(Convert.ToDouble(totalDayMinutes), null, null);
@@ -3857,7 +3852,7 @@ namespace Business.BusinessExtension
             // calcola e assegna alle rispettive variabili i piani divisi per diurne e notturne
             bool isFreeTimesheet = false;
             int freeTimesheetId = 0;
-            Dictionary<string, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> plans = RepoManager.Tab_OrariRepo.GetDevidedPlanMinutes(colId, firstMonthDate, lastMonthDate, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, out isFreeTimesheet, out freeTimesheetId);
+            var plans = RepoManager.Tab_OrariRepo.GetDevidedPlanMinutes(colId, firstMonthDate, lastMonthDate, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, out isFreeTimesheet, out freeTimesheetId);
             int tot_id = RepoManager.Tab_OrariRepo.GetTabOrariTipoIdFromEntity(colId);
             Tab_Orari_Tipo tot = null;
             if (tot_id != 0)

@@ -35,7 +35,7 @@ namespace Exports
                 _log.ErrorFormat(String.Format("Nessun export trovato per il tipo {0}", _model.Nome_Specializzato));
                 return false;
             }
-               
+
             try
             {
                 exportInstance = Activator.CreateInstance(exportType) as IExport;
@@ -57,7 +57,7 @@ namespace Exports
                 exportInstance.SaveToFileSystem();
 
                 if (exportInstance.Errors.Count > 0)
-                    errors=JArray.FromObject(exportInstance.Errors);
+                    errors = JArray.FromObject(exportInstance.Errors);
 
                 return true;
 

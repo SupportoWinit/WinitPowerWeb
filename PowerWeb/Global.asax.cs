@@ -1,16 +1,13 @@
-﻿using System;
-using System.Web;
-using System.Web.SessionState;
-using Business;
+﻿using Business;
 using Business.Infrastructure;
-using System.Web.Routing;
-using System.Web.Http;
 using log4net;
-using System.Web.ModelBinding;
-using PowerWeb.Api.ModelBinders;
 using Microsoft.AspNet.WebFormsDependencyInjection.Unity;
-using Bootstrap;
+using System;
 using System.Threading;
+using System.Web;
+using System.Web.Http;
+using System.Web.Routing;
+using System.Web.SessionState;
 
 namespace PowerWeb
 {
@@ -22,7 +19,7 @@ namespace PowerWeb
         {
             //log4net.ThreadContext.Properties["UserHostName"] = Request.UserHostName;
         }
-        
+
         void Application_BeginRequest(object sender, EventArgs e)
         {
             PowerWebConfig.Init();
@@ -49,16 +46,16 @@ namespace PowerWeb
 
             RouteTable.Routes.MapHttpRoute(
                name: "PowerWebAPI",
-               routeTemplate: "api/{controller}/{id}",
-               defaults: new { id = RouteParameter.Optional }
+               routeTemplate: "api/{controller}/{action}/{id}",
+               defaults: new { action = RouteParameter.Optional, id = RouteParameter.Optional }
                );
-            
+
             if (PowerWebConfig.IsConnectionStringSet)
             {
                 IoC.InitializeWith(new DependencyResolverFactory());
             }
 
-           
+
         }
 
         void Application_End(object sender, EventArgs e)
@@ -79,25 +76,23 @@ namespace PowerWeb
             if (ex.InnerException != null)
                 ex = Common.CommonService.GetInternalException(ex);
 
-            if (ex == null || ex is System.Threading.ThreadAbortException)
+            if (ex == null || ex is ThreadAbortException)
                 return;
-            
+
             _log.ErrorFormat("Errore non gestito!");
 
             _log.ErrorFormat("Tipo exception: {0}", ex.GetType().Name);
 
-            _log.ErrorFormat("Messaggio exception: {0}",ex.Message);
+            _log.ErrorFormat("Messaggio exception: {0}", ex.Message);
 
             _log.ErrorFormat("Tipo exception: {0}", ex.GetType().Name);
 
             _log.ErrorFormat(ex.StackTrace);
-            
-
         }
 
         void Session_Start(object sender, EventArgs e)
         {
-            
+
         }
 
         void Session_End(object sender, EventArgs e)
@@ -133,7 +128,7 @@ namespace PowerWeb
             config.Routes.MapHttpRoute(
             name: "PowerWebAPI",
             routeTemplate: "api/{controller}/{id}",
-            defaults: new { id = System.Web.Http.RouteParameter.Optional }
+            defaults: new { id = RouteParameter.Optional }
             );
         }
     }

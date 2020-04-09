@@ -299,6 +299,11 @@
                     <dx:ASPxComboBox Width="100%" ID="cbCant_Id" runat="server" Value='<%# Eval("Cant_Id") %>' OnInit="cbmxCant_Id_Init" />
                 </DataItemTemplate>
             </dx:GridViewDataComboBoxColumn>
+            <dx:GridViewDataComboBoxColumn FieldName="CentroDiCosto_Id" VisibleIndex="14" Width="30%" Visible="false">
+                <DataItemTemplate>
+                    <dx:ASPxComboBox Width="100%" ID="cbCentroDiCosto_Id" runat="server" Value='<%# Eval("CentroDiCosto_Id") %>' OnInit="cbmxCentroDiCosto_Id_Init" />
+                </DataItemTemplate>
+            </dx:GridViewDataComboBoxColumn>
             <dx:GridViewDataTextColumn FieldName="Data_Ora_Fis_E" VisibleIndex="4" Width="10%">
                 <DataItemTemplate>
                     <dx:ASPxDateEdit Width="100%" ID="teData_Ora_Fis_E" runat="server" Value='<%# Eval("Data_Ora_Fis_E") %>' DisplayFormatString="HH:mm" EditFormat="Time" OnInit="de_Init">

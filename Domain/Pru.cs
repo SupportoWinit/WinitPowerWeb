@@ -16,10 +16,10 @@ namespace Domain
     {
         public Pru()
         {
-            this.Pru_Col = new HashSet<Pru_Col>();
-            this.PendingElab = new HashSet<PendingElab>();
-            this.Regs = new HashSet<Reg>();
             this.Damage = new HashSet<Damage>();
+            this.PendingElab = new HashSet<PendingElab>();
+            this.Pru_Col = new HashSet<Pru_Col>();
+            this.Reg = new HashSet<Reg>();
         }
     
         public int Pru_Id { get; set; }
@@ -31,9 +31,9 @@ namespace Domain
         public string Note_Pru { get; set; }
         public bool Singola_Reg_Pru { get; set; }
     
-        public virtual ICollection<Pru_Col> Pru_Col { get; set; }
-        public virtual ICollection<PendingElab> PendingElab { get; set; }
-        public virtual ICollection<Reg> Regs { get; set; }
         public virtual ICollection<Damage> Damage { get; set; }
+        public virtual ICollection<PendingElab> PendingElab { get; set; }
+        public virtual ICollection<Pru_Col> Pru_Col { get; set; }
+        public virtual ICollection<Reg> Reg { get; set; }
     }
 }

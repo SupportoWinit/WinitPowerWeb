@@ -41,5 +41,7 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.JsonReg
         public string RegistrationNote { get; set; }
 
         public string[] RegistrationSquadra { get; set; }
+
+        public int IdManualCant { get; set; }
     }
 }

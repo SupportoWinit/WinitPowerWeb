@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.BusinessServices.RegTranslatorService.Helpers
 {
@@ -104,27 +102,27 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
 
             return activityLines;
         }
-        
+
         internal static IEnumerable<string> CreatePruCodeActivityLines(string deviceCode, string badgeCode, DateTime regDateTime, string pruCodeForActivity)
         {
             if (string.IsNullOrEmpty(pruCodeForActivity))
                 return Enumerable.Empty<string>();
-            
-                // costruzione della stringa da processare
-                string line = string.Format(EXTRA_INFO_STRING_FORMAT
-                , SEPARATOR
-                , deviceCode
-                , CommonService.AggiungiZeriASinistra(badgeCode, 10)
-                , regDateTime.Year
-                , regDateTime.Month.ToString("00")
-                , regDateTime.Day.ToString("00")
-                , regDateTime.Hour.ToString("00")
-                , regDateTime.Minute.ToString("00")
-                , " " //Reg direction per ora vuota
-                , INFOAGG //La keyword per capire che nella registrazione ci sono informazioni aggiuntive
-                , PRUCODE // Segnalazione pru
-                , pruCodeForActivity
-                );
+
+            // costruzione della stringa da processare
+            string line = string.Format(EXTRA_INFO_STRING_FORMAT
+            , SEPARATOR
+            , deviceCode
+            , CommonService.AggiungiZeriASinistra(badgeCode, 10)
+            , regDateTime.Year
+            , regDateTime.Month.ToString("00")
+            , regDateTime.Day.ToString("00")
+            , regDateTime.Hour.ToString("00")
+            , regDateTime.Minute.ToString("00")
+            , " " //Reg direction per ora vuota
+            , INFOAGG //La keyword per capire che nella registrazione ci sono informazioni aggiuntive
+            , PRUCODE // Segnalazione pru
+            , pruCodeForActivity
+            );
             // aggiunta della stringa alla lista di scrittura
 
             return new List<string>() { line };
@@ -132,6 +130,9 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
 
         internal static IEnumerable<string> CreateNfcOrQrCodeLines(string deviceCode, string badgeCode, DateTime regDateTime, string direction)
         {
+            if (String.IsNullOrEmpty(badgeCode))
+                return new List<string>();
+
             string line = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}"
                 , SEPARATOR
                 , deviceCode
@@ -165,8 +166,8 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
 
             return new List<string>() { line };
         }
-        
-        internal static IEnumerable<string> CreateTurnLines(string deviceCode, string badgeCode, DateTime regDateTime,string regDirection,string turnType)
+
+        internal static IEnumerable<string> CreateTurnLines(string deviceCode, string badgeCode, DateTime regDateTime, string regDirection, string turnType)
         {
             if (String.IsNullOrEmpty(turnType))
                 return Enumerable.Empty<string>();

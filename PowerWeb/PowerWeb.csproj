@@ -282,6 +282,7 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Compile Include="Api\CentroDiCostoController.cs" />
     <Content Include="App_Themes\DevEx\Editors\caChallengeImageBack.png" />
     <Content Include="App_Themes\DevEx\Editors\edtBtnBack.png" />
     <Content Include="App_Themes\DevEx\Editors\edtBtnDisabledBack.png" />
@@ -586,6 +587,7 @@
     <Content Include="Pages\Account\RegisterPage.aspx" />
     <Content Include="Pages\Account\ChangePasswordPage.aspx" />
     <Content Include="Pages\Aut_StrPage.aspx" />
+    <Content Include="Pages\CentroDiCostoPage.aspx" />
     <Content Include="Pages\ErrorPages\ErrorPage.aspx" />
     <Content Include="Pages\MonteMinutiPage.aspx" />
     <Content Include="Pages\SchedulesPage.aspx" />
@@ -1732,6 +1734,7 @@
     <Compile Include="Api\GenericUploadFileApi.cs" />
     <Compile Include="Api\GetRegistryDescriptionController.cs" />
     <Compile Include="Api\ImportController.cs" />
+    <Compile Include="Api\SolarisController.cs" />
     <Compile Include="GridWrapperPage.Master.cs">
       <DependentUpon>GridWrapperPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1878,6 +1881,13 @@
     </Compile>
     <Compile Include="Pages\CantPage.aspx.designer.cs">
       <DependentUpon>CantPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CentroDiCostoPage.aspx.cs">
+      <DependentUpon>CentroDiCostoPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CentroDiCostoPage.aspx.designer.cs">
+      <DependentUpon>CentroDiCostoPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Downloader.ashx.cs">
       <DependentUpon>Downloader.ashx</DependentUpon>

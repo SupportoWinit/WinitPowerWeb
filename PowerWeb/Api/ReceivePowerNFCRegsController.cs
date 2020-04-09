@@ -24,12 +24,12 @@ namespace PowerWeb.Api
         IRegTranslatorService _regTranslatorService;
         IRegWriterService _regWriterService;
 
-        public ReceivePowerNFCRegsController() : this(new RegTranslatorService(),new RegWriterService())
+        public ReceivePowerNFCRegsController() : this(new RegTranslatorService(), new RegWriterService())
         {
-            
+
         }
 
-        public ReceivePowerNFCRegsController(IRegTranslatorService regTranslatorService,IRegWriterService regWriterService)
+        public ReceivePowerNFCRegsController(IRegTranslatorService regTranslatorService, IRegWriterService regWriterService)
         {
             _regTranslatorService = regTranslatorService;
             _regWriterService = regWriterService;
@@ -44,8 +44,6 @@ namespace PowerWeb.Api
 
             if (!ValidatePayload(regs, responseMessage))
                 return responseMessage;
-
-           
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.IWell) == 1)
             {
@@ -88,15 +86,17 @@ namespace PowerWeb.Api
             finally
             {
                 string deviceCode = regs.First().DeviceCode;
-                _regWriterService.BackUpJsonRegs(regs,deviceCode);
+                _regWriterService.BackUpJsonRegs(regs, deviceCode);
             }
-            
+
             return responseMessage;
         }
 
+
+
         private bool ValidatePayload(IEnumerable<ClockAppReg> regs, HttpResponseMessage responseMessage)
         {
-            if(regs == null)
+            if (regs == null)
             {
                 responseMessage.ReasonPhrase = "Null payload!";
                 responseMessage.StatusCode = HttpStatusCode.InternalServerError;

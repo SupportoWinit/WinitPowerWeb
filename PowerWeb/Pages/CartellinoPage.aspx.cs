@@ -1,21 +1,21 @@
-﻿using System;
-using System.Web.Services;
-using System.Collections.Generic;
-using Business.Repository;
-using Domain;
-using Common;
-using System.Linq;
-using System.IO;
+﻿using Business;
 using Business.BusinessExtension;
-using Reports;
-using System.Globalization;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Business;
-using System.Dynamic;
-using System.Linq.Dynamic;
+using Business.Repository;
+using Common;
 using DevExpress.XtraReports.UI;
+using Domain;
 using Exports;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Reports;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Linq.Dynamic;
+using System.Web.Services;
 
 namespace PowerWeb.Pages
 {
@@ -30,7 +30,7 @@ namespace PowerWeb.Pages
 
         //DataSource della griglia dei collaboratori
         private static DevExtremeLinqServerRepository<Col> dataSource = null;
-        
+
 
         public static JObject _resources = null;
         public static JObject _motivazioni = null;
@@ -121,7 +121,7 @@ namespace PowerWeb.Pages
                 _exports = JArray.FromObject(printTmp);
 
                 _pageExcelModels = RepoManager.Tab_Excel_ModelRepo.Find(tem => tem.IsActive == true && tem.Pagina == "Cart", true).ToList();
-                
+
                 #endregion
 
                 #region COLONNE GRIGLIA COLLABORATORI
@@ -224,13 +224,13 @@ namespace PowerWeb.Pages
             JArray cartelliniDataSource = new JArray();
 
             #endregion
-            
+
             List<Col> collaboratori = RepoManager.ColRepo.Find(c => selectedCollab.Contains(c.Col_Id)).ToList();
-            
+
             try
             {
                 int index = 0;
-                
+
                 foreach (Col col in collaboratori)
                 {
                     Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,
@@ -243,8 +243,8 @@ namespace PowerWeb.Pages
                                                                                                                                calculateOrdStrTimesheet: optionsObj.useEditableCartellino,
                                                                                                                                devidePlanByDayNight: optionsObj.devidePlanByDayNight,
                                                                                                                                showWeeklyTotal: optionsObj.showWeeklyTotals,
-                                                                                                                                insertCorrectionRow: optionsObj.insertCorrectionRow,
-                                                                                                                                showPiano:optionsObj.showPiano);
+                                                                                                                               insertCorrectionRow: optionsObj.insertCorrectionRow,
+                                                                                                                               showPiano: optionsObj.showPiano);
 
                     JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
 
@@ -252,9 +252,9 @@ namespace PowerWeb.Pages
 
                     #region CARTELLINI PER STRAORDINARIO/NOTTURNO
 
-                    
-                        
-                    
+
+
+
                     #endregion
 
                     index++;
@@ -281,7 +281,7 @@ namespace PowerWeb.Pages
                 if (processingCol.Data_Ultimo_Cartellino_Elaborato == null || processingCol.Data_Ultimo_Cartellino_Elaborato < selectedPickerDate)
                 {
                     processingCol.Data_Ultimo_Cartellino_Elaborato = selectedPickerDate;
-                    
+
                 }
             }
             RepoManager.ColRepo.SaveChanges();
@@ -399,7 +399,7 @@ namespace PowerWeb.Pages
                         allowEditing = false,
                         width = 85
                     });
-                    
+
 
                     weekEndNumber++;
 
@@ -422,7 +422,7 @@ namespace PowerWeb.Pages
                 allowSorting = false,
             });
 
-            
+
             columns.Add(column);
 
             column = JObject.FromObject(new
@@ -466,7 +466,7 @@ namespace PowerWeb.Pages
             result.Add("ColId", col.Col_Id);
             result.Add("ColName", col.Cognome_Col);
             result.Add("ColSurname", col.Nome_Col);
-            
+
 
             if (options.useMonteMinuti)
             {
@@ -476,15 +476,15 @@ namespace PowerWeb.Pages
 
                 int totalHours = Math.Abs((int)monteMin.TotalHours);
                 int totalMinutes = Math.Abs((int)monteMin.Minutes);
-                 
-                result.Add("riportoOrePrecedenti", String.Format("{0}{1}:{2}",(monteMin< TimeSpan.Zero ?"-":"" ),totalHours.ToString("00"),totalMinutes.ToString("00")));
+
+                result.Add("riportoOrePrecedenti", String.Format("{0}{1}:{2}", (monteMin < TimeSpan.Zero ? "-" : ""), totalHours.ToString("00"), totalMinutes.ToString("00")));
             }
 
             //Per ogni riga del cartellino formatto i valori e li adatto al json
             cartellino.First().Value.ForEach(cartRow =>
             {
                 DateTime currentDate = date;
-                
+
                 JObject rowObject = JObject.FromObject(cartRow);
 
                 JObject row = new JObject();
@@ -534,7 +534,7 @@ namespace PowerWeb.Pages
                         var durationTime = TimeSpan.FromHours(double.Parse(totalString));
 
                         if (durationTime != TimeSpan.Zero)
-                            durationWeek = $"{(durationTime < TimeSpan.Zero ? "-" : "" )}{Math.Floor(durationTime.TotalHours).ToString("00")}:{durationTime.Minutes.ToString("00")}";
+                            durationWeek = $"{(durationTime < TimeSpan.Zero ? "-" : "")}{Math.Floor(durationTime.TotalHours).ToString("00")}:{durationTime.Minutes.ToString("00")}";
 
 
 
@@ -550,17 +550,17 @@ namespace PowerWeb.Pages
                 string totalHours = "-";
 
                 if (cartRow.TotalMinutes != 0)
-                    totalHours = ((cartRow.TotalMinutes < 0) ? "-" : "") + Math.Abs((int)TimeSpan.FromMinutes(cartRow. TotalMinutes).TotalHours).ToString("00") + ":" + Math.Abs(TimeSpan.FromMinutes(cartRow.TotalMinutes).Minutes).ToString("00");
+                    totalHours = ((cartRow.TotalMinutes < 0) ? "-" : "") + Math.Abs((int)TimeSpan.FromMinutes(cartRow.TotalMinutes).TotalHours).ToString("00") + ":" + Math.Abs(TimeSpan.FromMinutes(cartRow.TotalMinutes).Minutes).ToString("00");
 
                 row.Add("TotalHours", totalHours);
                 cartellinoSer.Add(row);
             });
 
-            if(cartellino.Count > 1)
+            if (cartellino.Count > 1)
             {
                 JArray editableCartArray = new JArray();
 
-                cartellino.Last().Value.ForEach(cartRow => 
+                cartellino.Last().Value.ForEach(cartRow =>
                 {
 
                     DateTime currentDate = date;
@@ -573,7 +573,7 @@ namespace PowerWeb.Pages
 
                     row.Add("justification", cartRow.Justification);
                     row.Add("codice", motivazione != null ? motivazione.Decodifica_Tab : cartRow.Justification);
-                    
+
                     int weekendNumber = 1;
 
                     foreach (var day in cartRow.DaysHours)
@@ -986,7 +986,7 @@ namespace PowerWeb.Pages
 
             if ((string)parameters["OldRowTotalTotal"] != "-")
             {
-                 _OldRowTotalTotal = TimeSpan.FromHours(int.Parse(oldRowTotalTotalString.First())) + TimeSpan.FromMinutes(int.Parse(oldRowTotalTotalString.Last()));
+                _OldRowTotalTotal = TimeSpan.FromHours(int.Parse(oldRowTotalTotalString.First())) + TimeSpan.FromMinutes(int.Parse(oldRowTotalTotalString.Last()));
             }
 
             #endregion
@@ -1388,7 +1388,7 @@ namespace PowerWeb.Pages
 
                         //Elimina le rettifiche presenti per il collaboratore-giorno-cantiere in questione
                         try
-                        { 
+                        {
                             RepoManager.RegRepo.DbSet.Where(r => r.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual && r.Registrazione_Data_Ora_Fis_Reg.Equals(_Date) && r.Col_Id == col.Col_Id && r.Cant_Id == cant.Cant_Id).DeleteFromQuery();
                         }
                         catch (Exception ex)
@@ -1760,98 +1760,63 @@ namespace PowerWeb.Pages
             return JsonConvert.SerializeObject(result);
         }
         [WebMethod]
-        public static string GenerateRangeRettifiche(object[] selectedCollab, object minValue, object maxValue, object selectedPickerDate)
+        public static string GenerateRangeRettifiche(IEnumerable<int> selectedCollab, int minValue, int maxValue, DateTime selectedPickerDate)
         {
-            #region DATA
-
-            DateTimeOffset dto = DateTimeOffset.Parse((string)selectedPickerDate);
-            DateTime selectedDate = DateTime.Parse(dto.DateTime.ToString("yyyy-MM-dd"));
-
-            #endregion
-
             #region COLLABORATORI
 
-            var selectedColsTmp = selectedCollab.Cast<int>().ToList();
-            List<Col> selectedCols = RepoManager.ColRepo.Find(col => selectedColsTmp.Contains(col.Col_Id), true).ToList();
+            List<Col> selectedCols = RepoManager.ColRepo.Find(col => selectedCollab.Contains(col.Col_Id), true).ToList();
 
             #endregion
-
-            int minLimit = (int)minValue;
-            int maxLimit = (int)maxValue;
 
             JObject response = new JObject();
             JObject error = null;
             JArray errors = new JArray();
 
-            DateTime monthFirstDay = CommonService.GetFirstMonthDay(selectedDate);
-            DateTime monthLastDay = CommonService.GetLastMonthDay(selectedDate);
-
-            // inizializzazione della lista di rettifiche da generare (i dati saranno aggiunti in blocco al termine del ciclo dei collaboratori)
-            List<Reg> correctionsToAdd = null;
-
+            DateTime monthFirstDay = CommonService.GetFirstMonthDay(selectedPickerDate);
+            DateTime monthLastDay = CommonService.GetLastMonthDay(selectedPickerDate);
 
             // ciclo su ogni collaboratore recuperato
             foreach (Col col in selectedCols)
             {
-                try
+                RepoManager.RegRepo.DeleteFromQuery(reg => reg.Registrazione_Data_Ora_Fis_Reg >= monthFirstDay
+                                                        && reg.Registrazione_Data_Ora_Fis_Reg <= monthLastDay
+                                                        && reg.Col_Id == col.Col_Id
+                                                        && reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimesheet);
+
+                var deltaCartellini = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, true, false, true, true, false, RepoManager.ParamRepo.ParametersRow.Cartellino_Visualizza_Delta, false)["justification"].Where(tm => tm.Justification == BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
+                var correctionsToAdd = new List<Reg>();
+
+                if (deltaCartellini.Any())
                 {
-                    RepoManager.RegRepo.DeleteFromQuery(reg => reg.Registrazione_Data_Ora_Fis_Reg >= monthFirstDay
-                    && reg.Registrazione_Data_Ora_Fis_Reg <= monthLastDay
-                    && reg.Col_Id == col.Col_Id
-                    && reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimesheet);
 
-                    List<TimesheetModuleItem> deltaCartellini = TimesheetModuleItem.GenerateCartellino(selectedDate, col, true, false, true, true, false, RepoManager.ParamRepo.ParametersRow.Cartellino_Visualizza_Delta, false)["justification"].Where(tm => tm.Justification == BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
-                    correctionsToAdd = new List<Reg>();
+                    var deltaCartellino = deltaCartellini.First();
 
-                    if (deltaCartellini.Any())
+                    // ciclo su tutti i giorni del mese in elaborazione
+                    for (int i = 1; i <= monthLastDay.Day; i++)
                     {
-                        #region Calcolo del totale delle ore previste
+                        string dayPropertyName = string.Format("{0}{1}", "Day", i.ToString("00"));
+                        int deltaDuration = CommonService.FromHoursToMinutes((double)deltaCartellino[dayPropertyName], deltaCartellino.IsDecimalHours);
 
-                        TimesheetModuleItem deltaCartellino = deltaCartellini.First();
-
-                        // ciclo su tutti i giorni del mese in elaborazione
-                        for (int i = 1; i <= monthLastDay.Day; i++)
+                        if (deltaDuration != 0 && deltaDuration >= minValue && deltaDuration <= maxValue)
                         {
-                            string dayPropertyName = string.Format("{0}{1}", "Day", i.ToString("00"));
-                            int deltaDuration = CommonService.FromHoursToMinutes((double)deltaCartellino[dayPropertyName], deltaCartellino.IsDecimalHours);
-
-                            if (deltaDuration != 0 && deltaDuration >= minLimit && deltaDuration <= maxLimit)
-                            {
-                                TimeSpan correctionDuration = TimeSpan.FromMinutes(Math.Abs(deltaDuration));
-                                CorrectionTypeEnum correctionDirection = deltaDuration > 0 ? CorrectionTypeEnum.CorrectionMinus : CorrectionTypeEnum.CorrectionPlus;
-                                var correctionDate = new DateTime(monthLastDay.Year, monthLastDay.Month, i);
-                                correctionsToAdd.Add(RepoManager.RegRepo.GenerateCorrectionReg(col.Col_Id, correctionDate, correctionDirection, correctionDuration));
-                            }
-
+                            TimeSpan correctionDuration = TimeSpan.FromMinutes(Math.Abs(deltaDuration));
+                            CorrectionTypeEnum correctionDirection = deltaDuration > 0 ? CorrectionTypeEnum.CorrectionMinus : CorrectionTypeEnum.CorrectionPlus;
+                            var correctionDate = new DateTime(monthLastDay.Year, monthLastDay.Month, i);
+                            correctionsToAdd.Add(RepoManager.RegRepo.GenerateCorrectionReg(col.Col_Id, correctionDate, correctionDirection, correctionDuration));
                         }
-
-                        #endregion
                     }
-                }
-                catch (Exception ex)
-                {
-                    error = new JObject();
-                    error.Add("Message", String.Format("Errore durante la generazione delle rettifiche per il collab. {0}", col.Codice_Collaboratore));
-                    errors.Add(error);
-                    _log.ErrorFormat("Errore durante la generazione delle rettifiche nel metodo {0} con exception {1} per il collaboratore {2}", new System.Diagnostics.StackTrace(ex).GetFrame(0).GetMethod().Name, ex.Message, col.Codice_Collaboratore);
 
+                    RepoManager.RegRepo.DbSet.AddRange(correctionsToAdd);
                 }
             }
 
-            #region Scrittura delle eventuali rettifiche su database
-
-            if (correctionsToAdd.Any())
-            {
-                RepoManager.RegRepo.Context.BulkInsert(correctionsToAdd);
-            }
-
-            #endregion
+            RepoManager.RegRepo.SaveChanges();
 
             response.Add("errors", errors);
 
             return JsonConvert.SerializeObject(response);
-
         }
+
         [WebMethod]
         public static string DeleteRettificheManuali(int?[] selectedCols, DateTime selectedMonth)
         {
@@ -2052,7 +2017,7 @@ namespace PowerWeb.Pages
         {
             return loadOptions[property] != null && loadOptions[property].HasValues ? loadOptions[property].ToObject<JArray>() : new JArray();
         }
-        
+
         /// <summary>
         /// Aggiunge al json della response tutti i campi della griglia (delta e totali vari)
         /// che necessitano di essere modificati dopo il salvataggio della nuova reg

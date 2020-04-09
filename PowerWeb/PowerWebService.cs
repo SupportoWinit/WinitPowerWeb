@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Business;
+using Business.Repository;
+using Common;
+using DevExpress.Data.Filtering;
 using DevExpress.Data.PLinq.Helpers;
+using DevExpress.Utils;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
-using System.Web;
-using Business;
-using System.Web.Security;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using Domain;
 using log4net;
 using PowerWeb.Modules;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Reflection;
-using Common;
-using Domain;
-using Business.Repository;
 using System.Data.Common;
-using DevExpress.Data.Filtering;
-using DevExpress.Web.ASPxEditors;
-using System.Threading;
+using System.Linq;
 using System.Linq.Dynamic;
-using DevExpress.Web.ASPxClasses;
-using DevExpress.Utils;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 
 namespace PowerWeb
@@ -440,7 +440,7 @@ namespace PowerWeb
 
                 detailGrid.Settings.ShowHeaderFilterButton = true;
 
-                if (PowerWebContext.Current != null && (BusinessService.IsToApplyDomainFilter() || PowerWebContext.Current.User.Col_Id!=null) && PowerWebContext.Current.User.Liv_Utente < 10)
+                if (PowerWebContext.Current != null && (BusinessService.IsToApplyDomainFilter() || PowerWebContext.Current.User.Col_Id != null) && PowerWebContext.Current.User.Liv_Utente < 10)
                     detailGrid.Settings.ShowFilterBar = GridViewStatusBarMode.Hidden;
                 else
                     detailGrid.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
@@ -754,20 +754,20 @@ namespace PowerWeb
                                 {
                                     //istanzia la stringa che costituirà il filtro 
                                     tmpFilter.Append("((");
-                                    
+
                                     var cantsQuery = RepoManager.CantRepo.DbSet.Where(RepoManager.CantRepo.Filter);         //Query filtro sui cantieri in base al filtro sulla filiale
                                     var regsQuery = RepoManager.RegRepo.DbSet.Where(RepoManager.RegRepo.Filter).Where(reg => reg.Col_Id != null);//Query filtro sulle reg in base al filtro sulla reg
 
                                     //Eseguo un join delle due query su cant_id ed estraggo solo i collaboratori
                                     //(In questo modo ho solo i collaboratori che hanno lavorato sui cantieri legati tramite filiale all'utente corrente)
-                                    var colIds = cantsQuery.Join(regsQuery, cant => cant.Cant_Id, reg => reg.Cant_Id, (cant, reg) =>reg.Col_Id).Distinct().ToList();
+                                    var colIds = cantsQuery.Join(regsQuery, cant => cant.Cant_Id, reg => reg.Cant_Id, (cant, reg) => reg.Col_Id).Distinct().ToList();
 
                                     int last = colIds.Count();
 
-                                    for(int i = 0; i < last; i++)
+                                    for (int i = 0; i < last; i++)
                                     {
-                                        tmpFilter.Append("Col_Id = "+ colIds[i].Value);
-                                        if(i+ 1 != last)
+                                        tmpFilter.Append("Col_Id = " + colIds[i].Value);
+                                        if (i + 1 != last)
                                             tmpFilter.Append(" OR ");
                                     }
                                 }
@@ -816,10 +816,10 @@ namespace PowerWeb
                                     }
                                 }
                                 #endregion
-                               
+
                                 tmpFilter.Append("))");
 
-                                filterExpression = tmpFilter.ToString() ;
+                                filterExpression = tmpFilter.ToString();
                             }
                             #endregion
                         }
@@ -870,15 +870,16 @@ namespace PowerWeb
                         {
                             defaultFilter = fieldGridLookup.DefaultFilterExpression;
                         }
-                    }else
+                    }
+                    else
                     {
                         defaultFilter = fieldGridLookup.DefaultFilterExpression;
                     }
 
-                    
-                   
+
+
                 }
-                    
+
 
             }
 
@@ -1142,7 +1143,7 @@ namespace PowerWeb
                 if (col != null)
                     gridView.Columns.Add(col);
             }
-            
+
 
         }
 
@@ -1257,5 +1258,5 @@ namespace PowerWeb
         #endregion
 
     }
-    
+
 }

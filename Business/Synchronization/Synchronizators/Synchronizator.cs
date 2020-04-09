@@ -1,10 +1,5 @@
 ﻿using Business.Synchronization.Collectors;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Synchronization.Synchronizators
 {
@@ -21,8 +16,6 @@ namespace Business.Synchronization.Synchronizators
             Synchronizer.Strategies = operations;
         }
 
-
-
         public void Synchronize()
         {
             Synchronizer.Synchronize();
@@ -32,7 +25,7 @@ namespace Business.Synchronization.Synchronizators
         {
             Collector = new DbChangeTrackerCollector<T>(context.ChangeTracker);
             Synchronizer.Collector = Collector;
-            
+
             Collector.Collect();
         }
     }

@@ -16,7 +16,7 @@ namespace Domain
     {
         public Tab_Funz()
         {
-            this.Menus = new HashSet<Menu>();
+            this.Menu = new HashSet<Menu>();
             this.Tab_Aut = new HashSet<Tab_Aut>();
         }
     
@@ -26,7 +26,7 @@ namespace Domain
         public string Nome_Tab_Funz { get; set; }
         public int Dflt_OnOffBtnVisible { get; set; }
     
-        public virtual ICollection<Menu> Menus { get; set; }
+        public virtual ICollection<Menu> Menu { get; set; }
         public virtual ICollection<Tab_Aut> Tab_Aut { get; set; }
     }
 }

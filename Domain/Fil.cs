@@ -16,8 +16,8 @@ namespace Domain
     {
         public Fil()
         {
-            this.Utenti_Fil = new HashSet<Utenti_Fil>();
             this.Cant = new HashSet<Cant>();
+            this.Utenti_Fil = new HashSet<Utenti_Fil>();
         }
     
         public int Fil_Id { get; set; }
@@ -28,7 +28,7 @@ namespace Domain
         public bool DisAbilitazione_Fil { get; set; }
         public string Note_Fil { get; set; }
     
-        public virtual ICollection<Utenti_Fil> Utenti_Fil { get; set; }
         public virtual ICollection<Cant> Cant { get; set; }
+        public virtual ICollection<Utenti_Fil> Utenti_Fil { get; set; }
     }
 }

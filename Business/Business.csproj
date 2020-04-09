@@ -163,6 +163,7 @@
     <!-- <Compile Include="BusinessServices\ImportCustomerService\Helpers\ImportCustomerHelper.cs" /> -->
     <!-- <Compile Include="BusinessServices\ImportCustomerService\Interfaces\ICustomerImport.cs" /> -->
     <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\ClockAppReg.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\SolarisReg.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\WinitJsonReg.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\ClockAppRegTranslatorManager.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\WinitJsonTranslatorManager.cs" />
@@ -190,6 +191,8 @@
     <Compile Include="HttpHub\HttpHubs\GeoBadgeHub.cs" />
     <Compile Include="HttpHub\HttpModule.cs" />
     <Compile Include="ImportModules\CantImportModule\Factory\CantImportFactory.cs" />
+    <Compile Include="ImportModules\CantImportModule\Imports\SolarisImport.cs" />
+    <Compile Include="ImportModules\CdcImportModule\CentroDiCostoImport.cs" />
     <Compile Include="ImportModules\ImportBase.cs" />
     <Compile Include="Infrastructure\UnityPerSessionContextLifeTimeManager.cs" />
     <Compile Include="IocFactory\ClockAppSynchronization\DictionaryEntityControllers.cs" />
@@ -263,9 +266,13 @@
     <Compile Include="Repository\Custom\Cant_VRepository.cs">
       <DependentUpon>ICant_VRepository.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Custom\CentroDiCostoRepository.cs">
+      <DependentUpon>ICentroDiCostoRepository.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\Custom\DamageRepository.cs">
       <DependentUpon>IDamageRepository.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Custom\ICentroDiCostoRepository.cs" />
     <Compile Include="Repository\Custom\IDamageRepository.cs" />
     <Compile Include="Repository\Custom\ITab_ExcelModelRepository.cs" />
     <Compile Include="Repository\Custom\ITab_DamageRepository.cs" />

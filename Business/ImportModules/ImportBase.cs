@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.ImportModules
 {
@@ -62,7 +60,7 @@ namespace Business.ImportModules
         {
             get
             {
-                return _rows.Skip(1).Select(row => row.Split(';')).ToList();
+                return _rows.Skip(1).Select(row => row.Replace("\n", "")).Select(row => row.Split(';')).ToList();
             }
         }
 
@@ -112,9 +110,17 @@ namespace Business.ImportModules
                 if (!ValidateRow())
                     continue;
 
-                ElaborateRow();
+                try
+                {
+                    ElaborateRow();
+                }
+                catch (Exception ex)
+                {
+
+                }
+
             }
-            
+
             Save();
 
             return _errors;
@@ -126,7 +132,7 @@ namespace Business.ImportModules
 
         protected virtual bool IsEmpty()
         {
-           return  _emptyRow.All(field => field == "");
+            return _emptyRow.All(field => field == "");
         }
 
         protected virtual void ReadHeader()
@@ -136,7 +142,7 @@ namespace Business.ImportModules
             string firstRow = _rows.First();
             string[] columns = firstRow.Split(';');
 
-            for (int colIndex = 0; colIndex < columns.Length - 1; colIndex++)
+            for (int colIndex = 0; colIndex < columns.Length; colIndex++)
                 _header.Add(columns[colIndex], colIndex);
 
             _rowIndex = 1;

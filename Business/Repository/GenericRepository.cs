@@ -1,21 +1,19 @@
-﻿using System;
+﻿using Business.MDBSchema;
+using Common;
+using Data;
+using Domain;
+using log4net;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
-using Business.MDBSchema;
-using Data;
-using log4net;
 using System.Reflection;
 using System.Text;
-using Common;
-using Domain;
-using System.Data.Entity;
 using System.Transactions;
-using System.Data.Entity.Validation;
-using System.Data.Entity.Core;
-using System.Data.Entity.Infrastructure;
 
 namespace Business.Repository
 {
@@ -41,7 +39,7 @@ namespace Business.Repository
 
         public ILog Log
         {
-            get { return _powerWebContext.Log; }
+            get { return LogManager.GetLogger(typeof(PowerWebEntities)); }
         }
 
         /// <summary>
@@ -579,10 +577,6 @@ namespace Business.Repository
             get { return _currentTransaction != null; }
         }
 
-        protected GenericRepository()
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 

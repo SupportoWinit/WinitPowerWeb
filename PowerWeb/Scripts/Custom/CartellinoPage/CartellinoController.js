@@ -1416,10 +1416,10 @@ cartellino.controller("cartellinoController", function ($scope) {
             jQuery("<div style=\'display: block; margin: 0 auto;\'></div>").dxButton({
                 text: "CONFERMA",
                 onClick(e) {
-                    if (_rettificaRangeSelector.getValue()[0] > 0 || _rettificaRangeSelector.getValue()[1] < 0) {
-                        DevExpress.ui.notify("Range delle rettifiche non valido!", "error", 2000);
-                        return;
-                    }
+                    //if (_rettificaRangeSelector.getValue()[0] > 0 || _rettificaRangeSelector.getValue()[1] < 0) {
+                    //    DevExpress.ui.notify("Range delle rettifiche non valido!", "error", 2000);
+                    //    return;
+                    //}
                     let data = {
                         minValue: _rettificaRangeSelector.getValue()[0],
                         maxValue: _rettificaRangeSelector.getValue()[1],
@@ -1567,6 +1567,7 @@ cartellino.controller("cartellinoController", function ($scope) {
     //Popup funzioni
     $scope.functionsPopupOptions = {
         contentTemplate: function (content) {
+            console.log($scope.cartellinoElabOptions.showRettifiche);
             jQuery("<div id='form'>").dxForm({
                 items: [
                     {
@@ -1690,11 +1691,11 @@ cartellino.controller("cartellinoController", function ($scope) {
                                 }, {
 
                                     template: $scope.cartellinoElabOptions.showRettifiche && function (data, itemElement) {
-
+                                        
                                         var row = jQuery("<div class=\'row\' style=\'padding:10px;border-radius: 25px;\'></div>");
 
                                         //Label 
-                                        jQuery('<div class=\'col-md-6\'>Generazione rettifiche tramite range slider </div>').appendTo(row);
+                                        jQuery('<div class=\'col-md-6\'>Generazione rettifiche parametriche </div>').appendTo(row);
 
                                         //Bottone
                                         jQuery('<div class=\'col-md-6\' id=\'genAutoRettButton\' style=\'float:right;margin-right:20px\'></div>').dxButton({

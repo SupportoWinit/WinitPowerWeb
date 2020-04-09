@@ -18,15 +18,15 @@ namespace Domain
         {
             this.Cant_Note = new HashSet<Cant_Note>();
             this.Col_Note = new HashSet<Col_Note>();
+            this.Menu_Tipo = new HashSet<Menu_Tipo>();
             this.Tab_Aut = new HashSet<Tab_Aut>();
             this.Tab_DataGrid = new HashSet<Tab_DataGrid>();
+            this.Tab_GridLookup = new HashSet<Tab_GridLookup>();
+            this.Tab_Messaggi = new HashSet<Tab_Messaggi>();
             this.Tab_Report = new HashSet<Tab_Report>();
             this.Utenti_Fil = new HashSet<Utenti_Fil>();
-            this.Utenti_Resp = new HashSet<Utenti_Resp>();
-            this.Tab_GridLookup = new HashSet<Tab_GridLookup>();
-            this.Menu_Tipo = new HashSet<Menu_Tipo>();
-            this.Tab_Messaggi = new HashSet<Tab_Messaggi>();
             this.Utenti_History = new HashSet<Utenti_History>();
+            this.Utenti_Resp = new HashSet<Utenti_Resp>();
         }
     
         public int Utenti_Id { get; set; }
@@ -49,22 +49,24 @@ namespace Domain
         public string SecretQuestion { get; set; }
         public string SecretAnswer { get; set; }
         public bool AllowSupervisedLogin { get; set; }
+        public bool ChangePasswordOnLogin { get; set; }
+        public int ChangePasswordWarningDays { get; set; }
     
         public virtual ICollection<Cant_Note> Cant_Note { get; set; }
-        public virtual ICollection<Col_Note> Col_Note { get; set; }
-        public virtual Lingue Lingue { get; set; }
-        public virtual ICollection<Tab_Aut> Tab_Aut { get; set; }
-        public virtual ICollection<Tab_DataGrid> Tab_DataGrid { get; set; }
-        public virtual ICollection<Tab_Report> Tab_Report { get; set; }
-        public virtual ICollection<Utenti_Fil> Utenti_Fil { get; set; }
-        public virtual ICollection<Utenti_Resp> Utenti_Resp { get; set; }
-        public virtual Versioni Versioni { get; set; }
-        public virtual ICollection<Tab_GridLookup> Tab_GridLookup { get; set; }
-        public virtual ICollection<Menu_Tipo> Menu_Tipo { get; set; }
-        public virtual Menu_Tipo Menu_Tipo1 { get; set; }
-        public virtual ICollection<Tab_Messaggi> Tab_Messaggi { get; set; }
         public virtual Cli Cli { get; set; }
         public virtual Col Col { get; set; }
+        public virtual ICollection<Col_Note> Col_Note { get; set; }
+        public virtual Lingue Lingue { get; set; }
+        public virtual ICollection<Menu_Tipo> Menu_Tipo { get; set; }
+        public virtual Menu_Tipo Menu_Tipo1 { get; set; }
+        public virtual ICollection<Tab_Aut> Tab_Aut { get; set; }
+        public virtual ICollection<Tab_DataGrid> Tab_DataGrid { get; set; }
+        public virtual ICollection<Tab_GridLookup> Tab_GridLookup { get; set; }
+        public virtual ICollection<Tab_Messaggi> Tab_Messaggi { get; set; }
+        public virtual ICollection<Tab_Report> Tab_Report { get; set; }
+        public virtual ICollection<Utenti_Fil> Utenti_Fil { get; set; }
         public virtual ICollection<Utenti_History> Utenti_History { get; set; }
+        public virtual ICollection<Utenti_Resp> Utenti_Resp { get; set; }
+        public virtual Versioni Versioni { get; set; }
     }
 }

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Business;
 using Business.LicenceServiceReference;
+using Business.Repository;
 using Common;
 using Domain;
-using Business.Repository;
-using Business;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PowerWeb.Modules
 {
@@ -57,12 +56,12 @@ namespace PowerWeb.Modules
             return isDisabled ? new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField) : new TabPageItemExtended(fieldName, PIFEnum, columnSpan);
         }
 
-        private static JObject GetEFTFieldJson(Tab_EditFormTemplate currentEFT, string fieldName,bool extra=false)
+        private static JObject GetEFTFieldJson(Tab_EditFormTemplate currentEFT, string fieldName, bool extra = false)
         {
             JObject ret = new JObject();
             bool isDisabled = false;
 
-            if (extra==true)
+            if (extra == true)
             {
                 JObject edOptions;
                 switch (fieldName)
@@ -70,7 +69,7 @@ namespace PowerWeb.Modules
                     case "Cognome_Assistito_Can":
 
                         edOptions = new JObject();
-                        edOptions.Add("value","");
+                        edOptions.Add("value", "");
                         ret.Add("editorOptions", edOptions);
                         break;
                     case "Tipo_Interv_Can":
@@ -1446,9 +1445,9 @@ namespace PowerWeb.Modules
 
                 oAttivazioniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.BlockLoginOnUserPswExpired)));
                 oAttivazioniTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
-                
+
                 templateDic.Add(attivazioniTPE, oAttivazioniTabList);
-            }   
+            }
             #endregion
             #region Gestione Lista dei Campi del TAB : PARAMETRI di PARAM
             TabPageExtended parametriTPE = new TabPageExtended
@@ -1534,7 +1533,7 @@ namespace PowerWeb.Modules
 
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Tolleranza_Limite_Entrata_Pomeriggio)));
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Limite_Entrata_Inizio_Pomeriggio)));
-                
+
                 templateDic.Add(arrotondamentiTPE, oArrotondamentiTabList);
             }
             #endregion
@@ -1617,12 +1616,12 @@ namespace PowerWeb.Modules
                 CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Visualizza_Delta)));
 
                 CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Visualizza_Viaggi)));
-                CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Visualizza_Totale)));              
+                CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Visualizza_Totale)));
 
                 CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Visualizza_Totali_Settimanali)));
                 CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Usa_Rettifiche_Auto)));
 
-                CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Abilita_Stampa_Cart_Editabile))); 
+                CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Abilita_Stampa_Cart_Editabile)));
                 CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Usa_Rettifiche_Manuali)));
 
                 CartellinoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Cartellino_Modalita_Compatta)));
@@ -1915,7 +1914,6 @@ namespace PowerWeb.Modules
                 //se vi sono dei clienti
                 if (clienti.Any() && !hideLombardaUnusedFields)
                 {
-
                     infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _regvStub.Codice_Cliente)));
                     infoTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
                     infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _regvStub.Cognome_Cli)));
@@ -1935,6 +1933,14 @@ namespace PowerWeb.Modules
 
                     infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _regvStub.Motivazione_Reg_Id), TabPageItemFieldTypeEnum.ColumnSpan, 2));
                     infoTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
+
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Solaris) == 1)
+                    {
+                        infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _regvStub.CentroDiCosto_Id), TabPageItemFieldTypeEnum.ColumnSpan, 2));
+                        infoTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
+
+                    }
+
                 }
 
                 infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_E)));
@@ -2005,6 +2011,7 @@ namespace PowerWeb.Modules
                     infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _regvStub.Activity_Evaluation)));
                     infoTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
                 }
+
 
                 templateDic.Add(generaliTPE, infoTabList);
             }
@@ -2458,10 +2465,6 @@ namespace PowerWeb.Modules
                 infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _tab_OrariStub.Sequenza)));
                 infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _tab_OrariStub.Ripetizione)));
 
-                infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _tab_OrariStub.Usa_Pausa)));
-                infoTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
-
-
                 templateDic.Add(generaliTPE, infoTabList);
             }
 
@@ -2624,7 +2627,7 @@ namespace PowerWeb.Modules
                 infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _utentiStub.Col_Id)));
 
                 infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _utentiStub.Cli_Id)));
-                infoTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
+                infoTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _utentiStub.ChangePasswordWarningDays)));
 
                 templateDic.Add(generaliTPE, infoTabList);
             }
@@ -2729,8 +2732,8 @@ namespace PowerWeb.Modules
             JObject form = new JObject();
             form.Add("colCount", 1);
             form.Add("showValidationSummary", true);
-            
-            
+
+
             JArray items = new JArray();
 
             JObject tabella = new JObject();
@@ -2753,17 +2756,17 @@ namespace PowerWeb.Modules
             if (ass_domiciliare_versione != default(Versioni) && PowerWebContext.Current.Versione.Versioni_Id == ass_domiciliare_versione.Versioni_Id)
             {
                 #region Gestione Lista dei Campi del TAB : ASSISTITO di CANT
-                
+
                 if (!IsEFTTabDisabled(currentEFT, "Assistito"))
                 {
                     singleTab = new JObject();
                     singleTab.Add("title", "Assistito");
                     singleTab.Add("colCount", 2);
-                    singleTab.Add("deferRendering",false);
+                    singleTab.Add("deferRendering", false);
                     tabFields = new JArray();
 
-                    
-                    tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Cognome_Assistito_Can),true));
+
+                    tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Cognome_Assistito_Can), true));
                     tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Nome_Assistito_Can)));
                     tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Livello_Assistito_Can)));
 
@@ -2824,7 +2827,7 @@ namespace PowerWeb.Modules
                 {
                     tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Descrizione_Can)));
                 }
-                    
+
 
                 tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Tipologia_Can)));
                 tabFields.Add(GetEFTFieldJson(currentEFT, CommonService.GetPropertyName(() => oCant.Cli_Id)));
@@ -3079,13 +3082,13 @@ namespace PowerWeb.Modules
             }
 
             #endregion
-            
+
 
             //Aggiungo il tutto all'oggetto form
             tabella.Add("tabs", tabs);
             items.Add(tabella);
             form.Add("items", items);
-            
+
             return form;
         }
     }

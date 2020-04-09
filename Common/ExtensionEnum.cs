@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 
 /* ATTENZIONE!!!!
@@ -160,7 +156,9 @@ namespace Common
         CartellinoCorrection,
         DisablePdfExportGrid,
         DisableExcelExportGrid,
-        BlockRestoreReg
+        BlockRestoreReg,
+        Solaris,
+        TimesheetMultiPagedExport
     }
 
     public enum ClockAppsOperationEnum
@@ -194,7 +192,7 @@ namespace Common
         Deny = 0,
         Allow = 1
     }
-    
+
     // raggruppamento Iniziale Vista Default Pagina CANT
     public enum DefaultGroupeViewInCatPageEnum
     {
@@ -339,7 +337,8 @@ namespace Common
         Dugoni = 2,
         GeneraleCantiere = 3,
         GeneraleAssistito = 4,
-        NoAssociazione = 5
+        NoAssociazione = 5,
+        Solaris = 6
     }
 
     // tipo di importazione anagrafiche collaboratori da excel

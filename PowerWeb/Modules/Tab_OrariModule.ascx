@@ -308,7 +308,6 @@
                                                     <dx:GridViewDataSpinEditColumn FieldName="Sequenza" VisibleIndex="130" Width="8%">
                                                         <PropertiesSpinEdit DisplayFormatString="g"></PropertiesSpinEdit>
                                                     </dx:GridViewDataSpinEditColumn>
-                                                    <dx:GridViewDataCheckColumn FieldName="Usa_Pausa" VisibleIndex="140" Width="6%" />
                                                     <dx:GridViewDataCheckColumn FieldName="Orario_Mensile" VisibleIndex="140" Width="6%" />
                                                 </Columns>
                                             </dx:ASPxGridView>
