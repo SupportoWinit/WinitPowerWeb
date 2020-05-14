@@ -158,7 +158,8 @@ namespace Common
         DisableExcelExportGrid,
         BlockRestoreReg,
         Solaris,
-        TimesheetMultiPagedExport
+        TimesheetMultiPagedExport,
+        Casp
     }
 
     public enum ClockAppsOperationEnum

@@ -44,6 +44,9 @@
   <!-- CustomChecksEnum= 1 corrisponde ad abilitare il Check Custom x Mosaico-->
   <!-- ********************************************************************************************************************************************-->
 
+  <!-- ********************************************************CASP******************************************************************************-->
+  <c ID="CustomizationEnum.Casp" Des="Gestione arrotondamenti custom per il cliente CASP" Value="0" />
+  
   <!-- ********************************************************IMPORT ACCESS CUSTOM******************************************************************************-->
   <c ID="CustomizationEnum.CustomImportFromAccessEnum" Des="Import custom da Access" Value="0" />
   <!-- CustomImportFromAccessEnum= 1 corrisponde ad abilitare l'import Custom x Mosaico-->

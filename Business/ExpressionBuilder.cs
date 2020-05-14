@@ -344,8 +344,6 @@ namespace Business
             {
                 if (IsNullableType(left.Type))
                 {
-
-
                     if (IsNullableType(left.Type) && !IsNullableType(right.Type))
                     {
                         right = Expression.Convert(right, left.Type);

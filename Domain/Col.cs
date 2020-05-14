@@ -11,7 +11,7 @@ namespace Domain
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Col
     {
         public Col()
@@ -27,7 +27,7 @@ namespace Domain
             this.Timesheet = new HashSet<Timesheet>();
             this.Utenti = new HashSet<Utenti>();
         }
-    
+
         public int Col_Id { get; set; }
         public Nullable<short> Arrot_Durata_Col { get; set; }
         public Nullable<short> ArrotF_Col { get; set; }
@@ -166,7 +166,8 @@ namespace Domain
         public Nullable<System.TimeSpan> Tolleranza_Limite_Uscita_Mattina_Col { get; set; }
         public Nullable<short> Soglia_Minima_Arrotondamento_Durata_Col { get; set; }
         public Nullable<System.TimeSpan> Limite_Entrata_Inizio_Pomeriggio_Col { get; set; }
-    
+
+
         public virtual ICollection<Aut_Str> Aut_Str { get; set; }
         public virtual ICollection<Col_Monte_Minuti> Col_Monte_Minuti { get; set; }
         public virtual ICollection<Col_Note> Col_Note { get; set; }

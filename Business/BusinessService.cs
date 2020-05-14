@@ -970,7 +970,6 @@ namespace Business
                     location = (Location)response.ResourceSets.First().Resources.First();
 
                 }
-
             }
             catch (Exception ex)
             {

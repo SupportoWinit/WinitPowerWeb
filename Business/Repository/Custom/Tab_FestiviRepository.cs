@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using Common;
 using Data;
 using Domain;
-using System.Text;
-using Common;
-using Business.MDBSchema;
+using System;
+using System.Collections.Generic;
 
 namespace Business.Repository.Custom
 {

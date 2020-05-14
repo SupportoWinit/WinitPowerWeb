@@ -2664,14 +2664,28 @@ namespace PowerWeb
             {
                 List<Object> items = new List<Object>();
 
-                CriteriaOperator op = CriteriaOperator.Parse(exportGrid.FilterExpression);
-
-                var regs = RepoManager.Reg_VRepo.Context.Database.SqlQuery<Reg_V>(PowerWebService.GenerateWhereQuery(typeof(Reg_V), exportGrid, RepoManager.Reg_VRepo.FilterText)).ToList();
-
                 int currentModelId = Convert.ToInt32(cmbExportXLSXLayout.Value);
                 var currentModel = ExportXLSXModule.Models.Single(mdl => mdl.ExcelModel_Id == currentModelId);
 
-                ExportXLSXModule.ExportXLSX(currentModel, regs.Cast<Object>().ToList());
+                CriteriaOperator op = CriteriaOperator.Parse(exportGrid.FilterExpression);
+
+                var exportEntityType = Type.GetType($"Domain.{currentModel.Nome_Entity},Domain");
+
+                if (exportEntityType == typeof(Cant))
+                {
+                    var sqlWhere = DevExpress.Data.Filtering.CriteriaToWhereClauseHelper.GetMsSqlWhere(op);
+                    var cants = RepoManager.Reg_VRepo.Context.Database.SqlQuery<Cant>(PowerWebService.GenerateWhereQuery(typeof(Cant), exportGrid, string.Empty)).ToList();
+
+                    ExportXLSXModule.ExportXLSX(currentModel, cants.Cast<Object>().ToList());
+                }
+                else
+                {
+
+                    var regs = RepoManager.Reg_VRepo.Context.Database.SqlQuery<Reg_V>(PowerWebService.GenerateWhereQuery(typeof(Reg_V), exportGrid, RepoManager.Reg_VRepo.FilterText)).ToList();
+
+                    ExportXLSXModule.ExportXLSX(currentModel, regs.Cast<Object>().ToList());
+                }
+
             }
             BusinessService.IsToCloseLoadingPanel[PowerWebContext.Current.User] = true;
 

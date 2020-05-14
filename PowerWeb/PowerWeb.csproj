@@ -282,6 +282,7 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Compile Include="Api\ActivitiesController.cs" />
     <Compile Include="Api\CentroDiCostoController.cs" />
     <Content Include="App_Themes\DevEx\Editors\caChallengeImageBack.png" />
     <Content Include="App_Themes\DevEx\Editors\edtBtnBack.png" />
@@ -2614,7 +2615,6 @@
     <Folder Include="Account\App_Data\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_GlobalResources\" />
-    <Folder Include="FilesInput\" />
     <Folder Include="ImportedCSV\" />
     <Folder Include="Logo\" />
     <Folder Include="Log\" />

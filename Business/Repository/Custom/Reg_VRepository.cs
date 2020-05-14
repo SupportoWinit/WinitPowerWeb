@@ -27,11 +27,6 @@ namespace Business.Repository.Custom
 
         }
 
-        public int A(int ab)
-        {
-            return 1;
-        }
-
         private static List<Tab_Decod> Tab_Decods
         {
             get
@@ -214,6 +209,7 @@ namespace Business.Repository.Custom
                                                 #endregion
 
                                                 #region 2.Arrotondo la Registrazione di Uscita
+
                                                 //se sono in presenza di una registrazione di uscita
                                                 if (currentRegU != null)
                                                 {
@@ -396,7 +392,7 @@ namespace Business.Repository.Custom
                                                             // se la registrazione è a cavallo del limite d'uscita e in tolleranza
                                                             // allora l'ora figurativa viene spostata al limite d'uscita
                                                             if ((currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value)
-                                                                && (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay.Subtract(exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value) <= exitLimitAfternoonTollerance.Duration()))
+                                                                && (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay.Subtract(exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value) > exitLimitAfternoonTollerance.Duration()))
                                                             {
                                                                 currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
@@ -452,9 +448,147 @@ namespace Business.Repository.Custom
 
                                                 #endregion
 
-                                            }
-                                            #endregion
+                                                //Personalizzazione casp
+                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1)
+                                                {
+                                                    if (currentRegU != null)
+                                                    {
+                                                        if (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Sunday && !RepoManager.Tab_FestiviRepo.IsHolidayOrNotWorkDays(currentRegU.Registrazione_Data_Ora_Fis_Reg.Date))
+                                                        {
 
+                                                            var mondayFridayPause = 90; //Minuti
+                                                            var saturdayPause = 30; //Minuti
+                                                            var extraTimePause = 60; //Minuti
+
+                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > new TimeSpan(17, 25, 0))
+                                                            {
+                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fis_Reg;
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
+
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg.Subtract(TimeSpan.FromMinutes(extraTimePause));
+                                                                }
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < new TimeSpan(16, 30, 0)
+                                                                && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Saturday
+                                                                || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Sunday))
+                                                            {
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg - TimeSpan.FromMinutes(mondayFridayPause);
+                                                                }
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < new TimeSpan(15, 30, 0)
+                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
+                                                                 || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
+                                                            {
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg - TimeSpan.FromMinutes(saturdayPause);
+                                                                }
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= new TimeSpan(16, 30, 0)
+                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= new TimeSpan(17, 25, 0)
+                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Saturday
+                                                                 || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Sunday))
+                                                            {
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Year,
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Month,
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Day,
+                                                                    16, 30, 0);
+
+                                                                //Se abbiamo almeno 4 ore di lavoro allora  tolgo la pausa pranzo
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(mondayFridayPause));
+                                                                }
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > new TimeSpan(17, 25, 0)
+                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.DayOfWeek != DayOfWeek.Saturday
+                                                                 || currentRegU.Registrazione_Data_Ora_Fis_Reg.DayOfWeek != DayOfWeek.Sunday))
+                                                            {
+                                                                //Aggiugere scaglioni di mezz'ora
+                                                                var startRounding = new TimeSpan(17, 30, 0);
+                                                                double amount = 30;
+
+                                                                var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - startRounding).TotalMinutes;
+                                                                var multiplier = Math.Ceiling(extraMinutes / 30);
+                                                                var totalAmountToAdd = TimeSpan.FromMinutes(amount * multiplier);
+
+                                                                var exitTime = startRounding.Add(totalAmountToAdd);
+                                                                var newExit = new DateTime(
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Year,
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Month,
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Day,
+                                                                    exitTime.Hours,
+                                                                    exitTime.Minutes,
+                                                                    0);
+
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = newExit;
+
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(mondayFridayPause));
+                                                                }
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= new TimeSpan(15, 30, 0)
+                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= new TimeSpan(16, 25, 0)
+                                                                && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
+                                                                 || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
+                                                            {
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(
+                                                                     currentRegU.Registrazione_Data_Ora_Fis_Reg.Year,
+                                                                     currentRegU.Registrazione_Data_Ora_Fis_Reg.Month,
+                                                                     currentRegU.Registrazione_Data_Ora_Fis_Reg.Day,
+                                                                     15, 30, 0);
+
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(saturdayPause));
+                                                                }
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > new TimeSpan(16, 25, 0)
+                                                                && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
+                                                                 || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
+                                                            {
+                                                                var startRounding = new TimeSpan(16, 30, 0);
+                                                                double amount = 30;
+
+                                                                var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - startRounding).TotalMinutes;
+                                                                var multiplier = Math.Ceiling(extraMinutes / 30);
+                                                                var totalAmountToAdd = TimeSpan.FromMinutes(amount * multiplier);
+
+                                                                var exitTime = startRounding.Add(totalAmountToAdd);
+                                                                var newExit = new DateTime(
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Year,
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Month,
+                                                                    currentRegU.Registrazione_Data_Ora_Fis_Reg.Day,
+                                                                    exitTime.Hours,
+                                                                    exitTime.Minutes,
+                                                                    0);
+
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = newExit;
+
+                                                                if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(saturdayPause));
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fis_Reg;
+                                                            currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
+                                                        }
+
+                                                    }
+                                                }
+
+                                            }
+
+                                            #endregion
 
                                         }
                                     }
@@ -463,8 +597,7 @@ namespace Business.Repository.Custom
 
                             #region 4.Gestione dei ritardi
 
-                            if (utilizzoLimiteEntrata == (int)UtilizzoLimiteEntrata.Ritardo ||
-                                utilizzoLimiteEntrata == (int)UtilizzoLimiteEntrata.LimiteEntrataERitardo)
+                            if (utilizzoLimiteEntrata == (int)UtilizzoLimiteEntrata.Ritardo || utilizzoLimiteEntrata == (int)UtilizzoLimiteEntrata.LimiteEntrataERitardo)
                             {
                                 bool isfirstAfternoonReg = true,
                                      isFirstMorningReg = true;
@@ -555,6 +688,7 @@ namespace Business.Repository.Custom
                         }
                     }
                 }
+
                 RepoManager.RegRepo.Context.BulkUpdate(regs);
             }
             return errors;
@@ -3148,6 +3282,7 @@ namespace Business.Repository.Custom
                     }
                 }
             }
+
             return distRow;
         }
 
@@ -4545,7 +4680,6 @@ namespace Business.Repository.Custom
         /// </returns>
         public string PrepareXmlExportToPerfetto(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder)
         {
-
             #region Temporary Constants
 
             const string documentNamespace = "Document.ImpiantiNet.Rapportini.INRapportini.Rapportino";
@@ -4570,8 +4704,6 @@ namespace Business.Repository.Custom
             //controllo di avere delle reg da inserire nell'Xml
             if (regVsToProcess.Any())
             {
-
-
                 // viene recuperato il parametro della personalizzazione di export xml che indica sotto quale soglia kilometrica trattare i viaggi come ore lavorate
                 string kmParam = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RegExportToXmlEnum, "TreatTripAsWorkedUnderKM");
                 decimal kmThreshold = 0m;
@@ -4629,6 +4761,7 @@ namespace Business.Repository.Custom
                             var regvsByDateAndColOrdered = regvsByDateAndCol.OrderBy(regv => regv.Registrazione_Tipo_Reg).ThenBy(regv => regv.Data_Ora_Fis_E).ToList();
                             foreach (Reg_V regv in regvsByDateAndColOrdered)
                             {
+
                                 // inizializzazione della variabile che indica l'intenzione di processare la registrazione (di default la si processa)
                                 bool isToProcess = true;
 
@@ -5149,7 +5282,6 @@ namespace Business.Repository.Custom
                 isOnSameMunicipality = true;
 
 
-            // ritorno del valore calcolato dal metodo
             return isOnSameMunicipality;
         }
 

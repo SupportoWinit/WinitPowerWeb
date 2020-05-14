@@ -2011,6 +2011,7 @@ namespace Business.BusinessExtension
                             TimeSpan? nocturnStartHour = null;
                             TimeSpan? nocturnStartHourModify = null;
                             TimeSpan? nocturnEndHour = null;
+
                             if (firstPlan != default(TimesheetModuleItem))
                             {
                                 nocturnStartHour = firstPlan.NocturnsStartHour;

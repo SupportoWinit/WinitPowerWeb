@@ -1,20 +1,19 @@
-﻿using System;
+﻿using Business;
+using Business.ExternalImport;
+using Business.Repository;
+using Common;
+using DevExpress.Web.ASPxCallback;
+using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxUploadControl;
+using Domain;
+using log4net;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
-using log4net;
-using Business.Repository;
-using System.IO;
-using Common;
-using Domain;
-using Business;
 using System.Web.UI;
-using DevExpress.Web.ASPxUploadControl;
-using DevExpress.Web.ASPxClasses;
-using DevExpress.Web.ASPxCallback;
-using Business.ExternalImports;
-using Business.ExternalImport;
 
 namespace PowerWeb.Modules
 {
@@ -23,7 +22,7 @@ namespace PowerWeb.Modules
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(ElaborateModule));
 
-        
+
 
         /// <summary>
         /// Restituisce true se ci sono dei file da importare o reg sospese nella cartelle configurata
@@ -233,7 +232,7 @@ namespace PowerWeb.Modules
 
             // per sicurezza è ricalcolato l'elenco dei file da elaborare e la presenza dei file
             CalcolaFilesRegDaImportare();
-            
+
             List<KeyValuePair<String, String>> importErrors = new List<KeyValuePair<string, string>>();
 
             try
@@ -492,8 +491,6 @@ namespace PowerWeb.Modules
             {
                 _log.Error(ex.Message);
             }
-
-
         }
 
         protected void cPing_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
@@ -656,7 +653,7 @@ namespace PowerWeb.Modules
                 {
                     // calcolo delle reg_v nel periodo richiesto
                     IQueryable<Reg_V> regVsToProcess = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg >= from && regv.Data_Reg <= to & regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass
-                        && (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip) && regv.Col_Id != 0);
+                        && (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Att) && regv.Col_Id != 0);
 
                     // se sono presenti delle reg_v da processare
                     if (regVsToProcess.Any())

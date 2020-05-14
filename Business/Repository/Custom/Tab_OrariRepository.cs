@@ -382,7 +382,7 @@ namespace Business.Repository.Custom
                         TimeSpan midnight = new TimeSpan(0, 0, 0);
 
 
-                        if (pDate >= startValidDate && pDate <= endValidDate)
+                        if (pDate >= startValidDate && pDate < endValidDate)
                         {
                             if (tabOrariTipoId != 0)
                             {
@@ -396,7 +396,7 @@ namespace Business.Repository.Custom
 
                                     //TRADUZIONE BLOCCO DI CODICE: Se i campi entrata uscita dell'orario sono diversi da null 
                                                                     //allora se l'entrata è maggiore dell'uscita(orario notturno)
-                                                                               //allora determino l'orario del giorno con il calcolo fino a mezzanotte e da mezzanotte in poi
+                                                                                //allora determino l'orario del giorno con il calcolo fino a mezzanotte e da mezzanotte in poi
                                                                                 //altrimenti la durata della giornata è determinata come differenza tra uscita ed entrata
                                                                     //altrimenti se lentrata e l'uscita sono null
                                                                                 //allora la durata è data la durata del piano orario
