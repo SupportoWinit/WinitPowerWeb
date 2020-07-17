@@ -9,29 +9,31 @@
 
 namespace Data
 {
-    using Domain;
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
-
+    using Domain;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
+    
     public partial class PowerWebEntities : DbContext
     {
         public PowerWebEntities()
-            : base("name=PowerWebEntities")
+            : base("name=Entities")
         {
         }
 
         public PowerWebEntities(string connectionString)
-           : base(connectionString)
+            : base(connectionString)
         {
+
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<Aut_Str> Aut_Str { get; set; }
         public virtual DbSet<Cant> Cant { get; set; }
         public virtual DbSet<Cant_Note> Cant_Note { get; set; }
@@ -92,57 +94,57 @@ namespace Data
         public virtual DbSet<CentroDiCosto> CentroDiCosto { get; set; }
         public virtual DbSet<Cant_CentroDiCosto> Cant_CentroDiCosto { get; set; }
         public virtual DbSet<Reg_V> Reg_V { get; set; }
-
+    
         public virtual int Archive(Nullable<System.DateTime> from, Nullable<System.DateTime> to)
         {
             var fromParameter = from.HasValue ?
                 new ObjectParameter("From", from) :
                 new ObjectParameter("From", typeof(System.DateTime));
-
+    
             var toParameter = to.HasValue ?
                 new ObjectParameter("To", to) :
                 new ObjectParameter("To", typeof(System.DateTime));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Archive", fromParameter, toParameter);
         }
-
+    
         public virtual int Reg_Delete(string xML)
         {
             var xMLParameter = xML != null ?
                 new ObjectParameter("XML", xML) :
                 new ObjectParameter("XML", typeof(string));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Reg_Delete", xMLParameter);
         }
-
+    
         public virtual int Reg_Insert(string xML)
         {
             var xMLParameter = xML != null ?
                 new ObjectParameter("XML", xML) :
                 new ObjectParameter("XML", typeof(string));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Reg_Insert", xMLParameter);
         }
-
+    
         public virtual int Reg_Update(string xML)
         {
             var xMLParameter = xML != null ?
                 new ObjectParameter("XML", xML) :
                 new ObjectParameter("XML", typeof(string));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Reg_Update", xMLParameter);
         }
-
+    
         public virtual int Restore(Nullable<System.DateTime> from, Nullable<System.DateTime> to)
         {
             var fromParameter = from.HasValue ?
                 new ObjectParameter("From", from) :
                 new ObjectParameter("From", typeof(System.DateTime));
-
+    
             var toParameter = to.HasValue ?
                 new ObjectParameter("To", to) :
                 new ObjectParameter("To", typeof(System.DateTime));
-
+    
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Restore", fromParameter, toParameter);
         }
     }
