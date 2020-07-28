@@ -14,10 +14,17 @@
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
     <!-- ********************************************************CASP******************************************************************************-->
   <c ID="CustomizationEnum.Casp" Des="Gestione arrotondamenti custom per il cliente CASP" Value="1" >
-    <param Name="WeekMaxSchedule" Value="17:25:0" />    <!--ora massima di uscita nella settimana, orario estivo-->
-    <param Name="WeekMinSchedule" Value="16:30:0" />
-    <param Name="SaturdayMaxSchedule" Value="16:25:0" />
-    <param Name="SaturdayMinSchedule" Value="15:30:0" />
+    <param Name="elaborateSummerStartDate" Value="20/06/2020" />
+    <param Name="elaborateWinterStartDate" Value="25/06/2020" />    
+    <param Name="summerWeekMaxSchedule" Value="12:30:0" />
+    <param Name="summerWeekMinSchedule" Value="11:30:0" />
+    <param Name="summerSaturdayMaxSchedule" Value="11:30:0" />
+    <param Name="summerSaturdayMinSchedule" Value="12:30:0" />
+    <param Name="winterWeekMaxSchedule" Value="17:25:0" />
+    <param Name="winterWeekMinSchedule" Value="16:30:0" />
+    <param Name="winterSaturdayMaxSchedule" Value="16:25:0" />
+    <param Name="winterSaturdayMinSchedule" Value="15:30:0" />
+    
   </c>
   <!-- ****************************************ABILITAZIONE LANCIO IMPORT ASSISTITI CUSTOM*******************************************************-->
   <c ID="CustomizationEnum.LaunchImportCantVersionEnum" Des="Abilitazione Lancio Import Assistiti Custom" Value="3" />

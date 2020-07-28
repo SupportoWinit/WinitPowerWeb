@@ -42,6 +42,7 @@ namespace Business.Repository.Custom
                 return oLista;
             }
         }
+        
 
         #region Dati elaborate per tab messaggi
 
@@ -460,12 +461,37 @@ namespace Business.Repository.Custom
                                                             var saturdayPause = 30; //Minuti
                                                             var extraTimePause = 60; //Minuti
 
-                                                            var WeekMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "WeekMaxSchedule"));
-                                                            var WeekMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "WeekMinSchedule"));
-                                                            var SaturdayMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "SaturdayMaxSchedule"));
-                                                            var SaturdayMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "SaturdayMinSchedule"));
+                                                            DateTime elaborateStartDate = new DateTime();
+                                                            TimeSpan weekMaxSchedule = new TimeSpan();
+                                                            TimeSpan weekMinSchedule = new TimeSpan();
+                                                            TimeSpan saturdayMaxSchedule = new TimeSpan();
+                                                            TimeSpan saturdayMinSchedule = new TimeSpan();
+                                                            var winterDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateWinterStartDate"));
+                                                            var summerDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateSummerStartDate"));
+                                                            
 
-                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > WeekMaxSchedule) //17:25
+                                                            if (IsBetween(currentRegE.Registrazione_Data_Ora_Fis_Reg.Date, summerDate, winterDate))
+                                                            {
+                                                                elaborateStartDate = summerDate;
+                                                                weekMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerWeekMaxSchedule"));
+                                                                weekMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerWeekMinSchedule"));
+                                                                saturdayMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerSaturdayMaxSchedule"));
+                                                                saturdayMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerSaturdayMinSchedule"));
+                                                            }
+                                                            else
+                                                            {
+                                                                elaborateStartDate = winterDate;
+                                                                weekMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterWeekMaxSchedule"));
+                                                                weekMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterWeekMinSchedule"));
+                                                                saturdayMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterSaturdayMaxSchedule"));
+                                                                saturdayMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterSaturdayMinSchedule"));
+
+
+                                                            }
+
+
+
+                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > weekMaxSchedule) //17:25
                                                             {
                                                                 currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fis_Reg;
                                                                 currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
@@ -474,8 +500,8 @@ namespace Business.Repository.Custom
                                                                 {
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg.Subtract(TimeSpan.FromMinutes(extraTimePause));
                                                                 }
-                                                            } 
-                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < WeekMinSchedule //16:30
+                                                            }
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < weekMinSchedule //16:30
                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Saturday
                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Sunday))
                                                             {
@@ -484,7 +510,7 @@ namespace Business.Repository.Custom
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg - TimeSpan.FromMinutes(mondayFridayPause);
                                                                 }
                                                             }
-                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < SaturdayMinSchedule //15:30
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < saturdayMinSchedule //15:30
                                                                  && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
                                                                  || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
                                                             {
@@ -493,8 +519,8 @@ namespace Business.Repository.Custom
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg - TimeSpan.FromMinutes(saturdayPause);
                                                                 }
                                                             }
-                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= WeekMinSchedule //16:30
-                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= WeekMaxSchedule //17:25
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= weekMinSchedule //16:30
+                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= weekMaxSchedule //17:25
                                                                  && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Saturday
                                                                  && currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Sunday))
                                                             {
@@ -502,7 +528,7 @@ namespace Business.Repository.Custom
                                                                     currentRegU.Registrazione_Data_Ora_Fis_Reg.Year,
                                                                     currentRegU.Registrazione_Data_Ora_Fis_Reg.Month,
                                                                     currentRegU.Registrazione_Data_Ora_Fis_Reg.Day,
-                                                                    WeekMinSchedule.Hours, WeekMinSchedule.Minutes, WeekMinSchedule.Seconds);
+                                                                    weekMinSchedule.Hours, weekMinSchedule.Minutes, weekMinSchedule.Seconds);
 
                                                                 //Se abbiamo almeno 4 ore di lavoro allora  tolgo la pausa pranzo
                                                                 if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
@@ -510,12 +536,12 @@ namespace Business.Repository.Custom
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(mondayFridayPause));
                                                                 }
                                                             }
-                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > WeekMaxSchedule //17:25
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > weekMaxSchedule //17:25
                                                                  && (currentRegU.Registrazione_Data_Ora_Fis_Reg.DayOfWeek != DayOfWeek.Saturday
                                                                  && currentRegU.Registrazione_Data_Ora_Fis_Reg.DayOfWeek != DayOfWeek.Sunday))
                                                             {
                                                                 //Aggiugere scaglioni di mezz'ora
-                                                                var startRounding = WeekMaxSchedule.Add(new TimeSpan(0, 5, 0));
+                                                                var startRounding = weekMaxSchedule.Add(new TimeSpan(0, 5, 0));
                                                                 double amount = 30;
 
                                                                 var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - startRounding).TotalMinutes;
@@ -535,11 +561,11 @@ namespace Business.Repository.Custom
 
                                                                 if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
                                                                 {
-                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(mondayFridayPause+extraTimePause));
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(mondayFridayPause + extraTimePause));
                                                                 }
                                                             }
-                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= SaturdayMinSchedule //15:30
-                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= SaturdayMaxSchedule //16:25
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= saturdayMinSchedule //15:30
+                                                                 && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= saturdayMaxSchedule //16:25
                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
                                                                  || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
                                                             {
@@ -547,18 +573,18 @@ namespace Business.Repository.Custom
                                                                      currentRegU.Registrazione_Data_Ora_Fis_Reg.Year,
                                                                      currentRegU.Registrazione_Data_Ora_Fis_Reg.Month,
                                                                      currentRegU.Registrazione_Data_Ora_Fis_Reg.Day,
-                                                                     SaturdayMinSchedule.Hours, SaturdayMinSchedule.Minutes, SaturdayMinSchedule.Seconds);
+                                                                     saturdayMinSchedule.Hours, saturdayMinSchedule.Minutes, saturdayMinSchedule.Seconds);
 
                                                                 if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
                                                                 {
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(saturdayPause));
                                                                 }
                                                             }
-                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > SaturdayMaxSchedule //16:25
+                                                            else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > saturdayMaxSchedule //16:25
                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
                                                                  || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
                                                             {
-                                                                var startRounding = SaturdayMaxSchedule.Add(new TimeSpan(0,5,0));
+                                                                var startRounding = saturdayMaxSchedule.Add(new TimeSpan(0, 5, 0));
                                                                 double amount = 30;
 
                                                                 var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - startRounding).TotalMinutes;
@@ -578,7 +604,7 @@ namespace Business.Repository.Custom
 
                                                                 if (currentRegU.Registrazione_Data_Ora_Fis_Reg - currentRegE.Registrazione_Data_Ora_Fis_Reg > TimeSpan.FromHours(6))
                                                                 {
-                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(saturdayPause+extraTimePause));
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Subtract(TimeSpan.FromMinutes(saturdayPause + extraTimePause));
                                                                 }
                                                             }
                                                         }
@@ -587,9 +613,9 @@ namespace Business.Repository.Custom
                                                             currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fis_Reg;
                                                             currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
                                                         }
-
                                                     }
                                                 }
+
 
                                             }
 
@@ -697,6 +723,12 @@ namespace Business.Repository.Custom
                 RepoManager.RegRepo.Context.BulkUpdate(regs);
             }
             return errors;
+        }
+               
+        public static bool IsBetween(DateTime item, DateTime start, DateTime end)
+        {
+            return Comparer<DateTime>.Default.Compare(item, start) >= 0
+                && Comparer<DateTime>.Default.Compare(item, end) <= 0;
         }
 
 
@@ -4671,7 +4703,7 @@ namespace Business.Repository.Custom
 
             //Invia le mail
             return CommonService.sendMail(RepoManager.ParamRepo.ParametersRow.CompanyEmail, "WINIT - Chiamate " + company + " " + DateTime.Today.ToString("d MMMM yyyy"), mailBody, "supporto@win-it.it", "WINIT", new string[] { });
-        }
+        } 
 
         #region Gestione Exports Xml Reg_V
 
@@ -5767,5 +5799,8 @@ namespace Business.Repository.Custom
 
         #endregion
 
+        
     }
+    
+
 }
