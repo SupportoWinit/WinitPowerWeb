@@ -15,6 +15,7 @@ namespace Business.BusinessServices.UserService.Service
             LoginValidationResult result = new LoginValidationResult();
 
             bool isValid = BusinessService.ValidateUser(loginRequest.UserName, loginRequest.Password, result);
+            
 
             if (loginRequest.DoubleCheck)
             {

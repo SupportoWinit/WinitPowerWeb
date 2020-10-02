@@ -2276,7 +2276,7 @@ namespace PowerWeb.Modules
         {
             // Recupero della griglia
             ASPxGridView editGrid = (ASPxGridView)sender;
-
+            
             // recupero della colonna da processare
             GridViewColumn sameDayColumn = editGrid.Columns[CommonService.GetPropertyName(() => _regVStub.IsUTimeSameDayE)];
 

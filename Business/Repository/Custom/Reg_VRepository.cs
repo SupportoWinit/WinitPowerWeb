@@ -467,8 +467,7 @@ namespace Business.Repository.Custom
                                                             TimeSpan saturdayMaxSchedule = new TimeSpan();
                                                             TimeSpan saturdayMinSchedule = new TimeSpan();
                                                             var winterDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateWinterStartDate"));
-                                                            var summerDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateSummerStartDate"));
-                                                            
+                                                            var summerDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateSummerStartDate"));                                                            
 
                                                             if (IsBetween(currentRegE.Registrazione_Data_Ora_Fis_Reg.Date, summerDate, winterDate))
                                                             {
@@ -485,13 +484,9 @@ namespace Business.Repository.Custom
                                                                 weekMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterWeekMinSchedule"));
                                                                 saturdayMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterSaturdayMaxSchedule"));
                                                                 saturdayMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterSaturdayMinSchedule"));
-
-
                                                             }
 
-
-
-                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > weekMaxSchedule) //17:25
+                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > new TimeSpan(17, 25, 0)) //17:25
                                                             {
                                                                 currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fis_Reg;
                                                                 currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
@@ -544,8 +539,9 @@ namespace Business.Repository.Custom
                                                                 var startRounding = weekMaxSchedule.Add(new TimeSpan(0, 5, 0));
                                                                 double amount = 30;
 
-                                                                var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - startRounding).TotalMinutes;
+                                                                var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - weekMaxSchedule).TotalMinutes;
                                                                 var multiplier = Math.Ceiling(extraMinutes / 30);
+                                                                multiplier += 1;
                                                                 var totalAmountToAdd = TimeSpan.FromMinutes(amount * multiplier);
 
                                                                 var exitTime = startRounding.Add(totalAmountToAdd);

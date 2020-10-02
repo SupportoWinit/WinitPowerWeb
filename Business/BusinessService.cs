@@ -71,6 +71,7 @@ namespace Business
 
         public static bool ValidateUser(string userName, string password, LoginValidationResult loginValidationResult)
         {
+
             var user = Membership.GetUser(userName);
 
             if (user == null)

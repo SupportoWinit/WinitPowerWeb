@@ -299,7 +299,7 @@
                     <dx:ASPxComboBox Width="100%" ID="cbCant_Id" runat="server" Value='<%# Eval("Cant_Id") %>' OnInit="cbmxCant_Id_Init" />
                 </DataItemTemplate>
             </dx:GridViewDataComboBoxColumn>
-            <dx:GridViewDataComboBoxColumn FieldName="CentroDiCosto_Id" VisibleIndex="14" Width="30%" Visible="false">
+            <dx:GridViewDataComboBoxColumn FieldName="CentroDiCosto_Id" VisibleIndex="14" Width="30%" Visible="true">
                 <DataItemTemplate>
                     <dx:ASPxComboBox Width="100%" ID="cbCentroDiCosto_Id" runat="server" Value='<%# Eval("CentroDiCosto_Id") %>' OnInit="cbmxCentroDiCosto_Id_Init" />
                 </DataItemTemplate>
