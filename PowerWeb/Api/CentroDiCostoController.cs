@@ -28,7 +28,7 @@ public class CentroDiCostoController : ApiController
 
         var children = RepoManager.CantRepo.DbSet.AsNoTracking()
                                                  .Where(c => c.Codice_Cantiere.Contains(@params.filter)
-                                                          || c.Descrizione_Can.Contains(@params.filter))
+                                                          || c.Descrizione_Can.Contains(@params.filter)).Where(c=>c.DisAbilitazione_Can==false)
                                                  .Select(c => new Child
                                                  {
                                                      Id = c.Cant_Id,
