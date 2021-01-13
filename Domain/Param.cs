@@ -164,7 +164,8 @@ namespace Domain
         public bool Abilita_Sincronizzazione_Entità { get; set; }
         public bool Abilita_Import_Esterno { get; set; }
         public Nullable<short> Soglia_Minima_Arrotondamento_Durata { get; set; }
-    
+        public Nullable<int> Tolleranza_Limite_Entrata { get; set; }
+
         public virtual Cant Cant { get; set; }
     }
 }

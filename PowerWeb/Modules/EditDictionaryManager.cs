@@ -1534,6 +1534,9 @@ namespace PowerWeb.Modules
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Tolleranza_Limite_Entrata_Pomeriggio)));
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Limite_Entrata_Inizio_Pomeriggio)));
 
+                oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _paramStub.Tolleranza_Limite_Entrata)));
+                oArrotondamentiTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
+
                 templateDic.Add(arrotondamentiTPE, oArrotondamentiTabList);
             }
             #endregion

@@ -95,6 +95,7 @@ namespace Business.Repository.Custom
                 int utilizzoLimiteEntrata = RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Entrata;
                 int utilizzoLimiteUscita = RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita;
                 int delayTollerance;
+                int delayMorningTollerance;
 
                 // calcolo del mezzogiorno (utilizzato per la divisione mattutina e pomeridiana del limite d'entrata)
                 TimeSpan midDay = RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio ?? new TimeSpan(12, 0, 0);
@@ -114,6 +115,9 @@ namespace Business.Repository.Custom
 
                         //Recupera la tolleranza del ritardo dal COL o dai PARAM, altrimenti la setta a 0
                         delayTollerance = currentCol.Ritardo_Tolleranza_Minuti_Col ?? (RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti ?? 0);
+
+                        //Recupera la tolleranza limite d'entrata dai PARAM, altrimenti la setta a 0
+                        delayMorningTollerance = RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata ?? 0;
 
                         if (currentCol != null)
                         {
@@ -275,9 +279,9 @@ namespace Business.Repository.Custom
                                                             
 
                                                             // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SheduleRoundingDiff) == 1)
+                                                            if (delayMorningTollerance!=0)
                                                             {
-                                                                if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(delayTollerance)))
+                                                                if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(delayMorningTollerance)))
                                                                     currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
                                                                         currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
                                                                         currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,

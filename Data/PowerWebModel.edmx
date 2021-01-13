@@ -1000,6 +1000,7 @@
           <Property Name="Abilita_Sincronizzazione_Entità" Type="bit" Nullable="false" />
           <Property Name="Abilita_Import_Esterno" Type="bit" Nullable="false" />
           <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="smallint" />
+          <Property Name="Tolleranza_Limite_Entrata" Type="int" />
         </EntityType>
         <EntityType Name="PendingElab">
           <Key>
@@ -4452,6 +4453,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Abilita_Import_Esterno" Type="Boolean" Nullable="false" />
           <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="Int16" />
           <NavigationProperty Name="Cant" Relationship="Self.FK_Param_Cant" FromRole="Param" ToRole="Cant" />
+          <Property Name="Tolleranza_Limite_Entrata" Type="Int32" />
         </EntityType>
         <EntityType Name="PendingElab">
           <Key>
@@ -7459,6 +7461,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Param">
             <EntityTypeMapping TypeName="PowerWebModel.Param">
               <MappingFragment StoreEntitySet="Param">
+                <ScalarProperty Name="Tolleranza_Limite_Entrata" ColumnName="Tolleranza_Limite_Entrata" />
                 <ScalarProperty Name="Param_Id" ColumnName="Param_Id" />
                 <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
                 <ScalarProperty Name="Abilita_Arrotondamenti" ColumnName="Abilita_Arrotondamenti" />
