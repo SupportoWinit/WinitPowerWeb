@@ -278,6 +278,7 @@ namespace PowerWeb.Modules
                 int start = gvRegVMEdit.PageIndex * gvRegVMEdit.SettingsPager.PageSize;
                 //come indice di fine è il numero di reg_v
                 int end = EditRegVs.Count;
+     
 
                 //inizializzaione della nuova regV
                 Reg_V newRegV = new Reg_V();
@@ -332,6 +333,8 @@ namespace PowerWeb.Modules
 
                     int actEvaluationId = Convert.ToInt32(cbActivity_Evaluation.Value);
 
+                    
+
                     //se è attiviata la personalizzazione per Alitalia e l'utente è affiliato al cliente Alitalia
                     if ((RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CustomerOnlyMultipleEditEvaluationEnum) == (int)CustomerOnlyMultipleEditEvaluationEnum.Enabled) &&
                         (PowerWebContext.Current.User.Cli_Id.HasValue))
@@ -359,8 +362,14 @@ namespace PowerWeb.Modules
                     {
                         if (teData_Ora_Fis_E == null || teData_Ora_Fis_U == null)
                             continue;
-
-                        newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId);
+                        if (teData_Ora_Fis_U.Date.TimeOfDay.Equals(new TimeSpan(00, 00, 00, 000)))
+                        {                            
+                            newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId);
+                            DateTime middleNightU = new DateTime(EditRegVs[0].Data_Ora_Fis_E.Year, EditRegVs[0].Data_Ora_Fis_E.Month, EditRegVs[0].Data_Ora_Fis_E.Day, teData_Ora_Fis_U.Date.Hour, teData_Ora_Fis_U.Date.Minute, 01);
+                            newRegV.Data_Ora_Fis_U = middleNightU;  
+                        }
+                        else
+                            newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId);
                     }
                     // viene in ogni caso controllata se cambia solamente una reg non nuova; in caso la reg sia nuova viene comunque aggiunta per l'elaborazione
                     if (checkChanged && newRegV.RegE != 0)

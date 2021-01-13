@@ -159,7 +159,8 @@ namespace Common
         BlockRestoreReg,
         Solaris,
         TimesheetMultiPagedExport,
-        Casp
+        Casp,
+        SheduleRoundingDiff
     }
 
     public enum ClockAppsOperationEnum

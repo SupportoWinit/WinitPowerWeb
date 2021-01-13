@@ -42,7 +42,7 @@ namespace Business.Repository.Custom
                 return oLista;
             }
         }
-        
+
 
         #region Dati elaborate per tab messaggi
 
@@ -177,9 +177,11 @@ namespace Business.Repository.Custom
                                             //viene impostata la data ed ora FIGURATIVA uguale a quella fisica
                                             currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fis_Reg;
 
+                                            if (currentCant.Raggruppamento1_Can is null)
+                                                currentCant.Raggruppamento1_Can = "";
                                             #region ARROTONDAMENTO ENTRATA/USCITA
                                             //se si è nel caso di arrotondamento sull'entrata ed uscita
-                                            if (roundingEnum == RoundingMethodEnum.StartEnd)
+                                            if (roundingEnum == RoundingMethodEnum.StartEnd && !currentCant.Raggruppamento1_Can.Equals("5"))
                                             {
                                                 #region 1.Arrotondo la Registrazione di Entrata
 
@@ -270,14 +272,28 @@ namespace Business.Repository.Custom
                                                             if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
                                                                 fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
 
+                                                            
+
                                                             // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                            if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
+                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SheduleRoundingDiff) == 1)
+                                                            {
+                                                                if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(delayTollerance)))
+                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                        0);
+                                                            }
+                                                            else if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
+                                                            {
                                                                 currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                    entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                    entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                    0);
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                        0);
+                                                            }
                                                         }
                                                         else if (currentRegV.Data_Ora_Fis_E.TimeOfDay >= midDay && entryLimitConfig[EntryLimitTypeEnum.Afternoon].IsConfigured)
                                                         {
@@ -449,8 +465,9 @@ namespace Business.Repository.Custom
 
                                                 #endregion
 
+                                                
                                                 //Personalizzazione casp
-                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1)
+                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1 && !currentCant.Raggruppamento1_Can.Equals("5"))
                                                 {
                                                     if (currentRegU != null)
                                                     {
@@ -467,7 +484,7 @@ namespace Business.Repository.Custom
                                                             TimeSpan saturdayMaxSchedule = new TimeSpan();
                                                             TimeSpan saturdayMinSchedule = new TimeSpan();
                                                             var winterDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateWinterStartDate"));
-                                                            var summerDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateSummerStartDate"));                                                            
+                                                            var summerDate = DateTime.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "elaborateSummerStartDate"));
 
                                                             if (IsBetween(currentRegE.Registrazione_Data_Ora_Fis_Reg.Date, summerDate, winterDate))
                                                             {
@@ -610,9 +627,8 @@ namespace Business.Repository.Custom
                                                             currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
                                                         }
                                                     }
+
                                                 }
-
-
                                             }
 
                                             #endregion
@@ -720,7 +736,7 @@ namespace Business.Repository.Custom
             }
             return errors;
         }
-               
+
         public static bool IsBetween(DateTime item, DateTime start, DateTime end)
         {
             return Comparer<DateTime>.Default.Compare(item, start) >= 0
@@ -4699,7 +4715,7 @@ namespace Business.Repository.Custom
 
             //Invia le mail
             return CommonService.sendMail(RepoManager.ParamRepo.ParametersRow.CompanyEmail, "WINIT - Chiamate " + company + " " + DateTime.Today.ToString("d MMMM yyyy"), mailBody, "supporto@win-it.it", "WINIT", new string[] { });
-        } 
+        }
 
         #region Gestione Exports Xml Reg_V
 
@@ -5795,8 +5811,8 @@ namespace Business.Repository.Custom
 
         #endregion
 
-        
+
     }
-    
+
 
 }
