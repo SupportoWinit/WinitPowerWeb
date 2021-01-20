@@ -616,6 +616,10 @@ namespace Business.Repository.Custom
 
             try
             {
+                //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede)
+                    DetachAllEntities();
+
                 DbSet.First().Elaborate_Semaforo = true;
                 SaveChanges();
             }
@@ -632,8 +636,15 @@ namespace Business.Repository.Custom
         {
             try
             {
-                DbSet.First().Elaborate_Semaforo = false;
-                SaveChanges();
+                //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
+                if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede)
+                    DetachAllEntities();
+                else {
+                    DbSet.First().Elaborate_Semaforo = false;
+                    SaveChanges();
+                }
+
+                
             }
             catch (Exception ex)
             {

@@ -354,7 +354,7 @@ namespace PowerWeb.Modules
                             }
 
                             //viene creata una nuova nuova registrazione
-                            newRegV = initReg_V(regE, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId);
+                            newRegV = initReg_V(regE, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId,"");
                         }
                     }
 
@@ -362,14 +362,8 @@ namespace PowerWeb.Modules
                     {
                         if (teData_Ora_Fis_E == null || teData_Ora_Fis_U == null)
                             continue;
-                        if (teData_Ora_Fis_U.Date.TimeOfDay.Equals(new TimeSpan(00, 00, 00, 000)))
-                        {                            
-                            newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId);
-                            DateTime middleNightU = new DateTime(EditRegVs[0].Data_Ora_Fis_E.Year, EditRegVs[0].Data_Ora_Fis_E.Month, EditRegVs[0].Data_Ora_Fis_E.Day, teData_Ora_Fis_U.Date.Hour, teData_Ora_Fis_U.Date.Minute, 01);
-                            newRegV.Data_Ora_Fis_U = middleNightU;  
-                        }
-                        else
-                            newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId);
+                       
+                            newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, teData_Ora_Fis_U.Text);
                     }
                     // viene in ogni caso controllata se cambia solamente una reg non nuova; in caso la reg sia nuova viene comunque aggiunta per l'elaborazione
                     if (checkChanged && newRegV.RegE != 0)
@@ -524,7 +518,7 @@ namespace PowerWeb.Modules
         /// <param name="actEvaluationId">The act evaluation identifier.</param>
         /// <returns></returns>
         private Reg_V initReg_V(int regE, int regU, DateTime data_Ora_Fis_E, DateTime data_Ora_Fis_U, int cantId, int motivazioneId,
-            bool isUTimeSameDayE, bool blockedReg, int registrazioneStatoReg, string entrataEU, string uscitaEU, int actEvaluationId)
+            bool isUTimeSameDayE, bool blockedReg, int registrazioneStatoReg, string entrataEU, string uscitaEU, int actEvaluationId, string valueU)
         {
             Reg_V oldRegV = null;
             if (regE != 0)
@@ -590,6 +584,14 @@ namespace PowerWeb.Modules
             }
 
             currTimeOfDay = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, 0);
+
+            if (RepoManager.ParamRepo.First().Abilita_Notturno == true && valueU != "")
+            {
+                DateTime middleNightU = new DateTime(currTimeOfDay.Year, currTimeOfDay.Month, currTimeOfDay.Day, currTimeOfDay.Hour, currTimeOfDay.Minute, 01);
+                newRegV.Data_Ora_Fis_U = middleNightU;
+                currTimeOfDay = middleNightU;
+            }
+                
 
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay)
             {

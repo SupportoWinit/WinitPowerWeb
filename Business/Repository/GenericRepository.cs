@@ -91,6 +91,19 @@ namespace Business.Repository
         {
             return DbSet.Create();
         }
+        
+
+        public virtual void DetachAllEntities()
+        {
+            var changedEntriesCopy = _context.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added ||
+                            e.State == EntityState.Modified ||
+                            e.State == EntityState.Deleted)
+                .ToList();
+
+            foreach (var entry in changedEntriesCopy)
+                entry.State = EntityState.Detached;
+        }
 
         #region UPDATE
 

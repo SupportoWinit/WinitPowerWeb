@@ -100,6 +100,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP_1003.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportImporti.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportHoursReport.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportMovitrento.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportRegSemplice.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoSimple.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
