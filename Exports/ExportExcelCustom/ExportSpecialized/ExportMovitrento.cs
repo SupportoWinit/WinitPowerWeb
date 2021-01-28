@@ -157,41 +157,64 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 // si generano i giorni del mese relativi al periodo in esecuzione
                 List<DateTime> monthDates = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
 
+                // inizializzazione dell'indice di scrittura delle registrazioni
+                int writeIndex = 2;
+                int position = 2;
+                DateTime previusDate = new DateTime();
+                string dateName = "";
+                bool dateChecked = false;
+
                 // inizializzazione del foglio excel da processare
                 ExcelWorkbookGenerateNew(ExcelModelFilePath);
 
-                // inizializzazione dell'indice di scrittura delle registrazioni
-                int writeIndex = 2;
 
                 // si processano le registrazioni ore abbinate raggruppate per collaboratore
-                foreach (IGrouping<string, Reg_V> regVsByCol in entitiesToExport.Where(regv => (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None) || (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass).GroupBy(regv => regv.Col_Mnemonic))
+                foreach (var regVsByDate in entitiesToExport.Where(regv => (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None) || (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass).GroupBy(regv => regv.Data_Reg.Value.Month == monthDates.FirstOrDefault().Month))
                 {
-                    // viene reucuperato il collaboratore che si sta processando
-                    int currentColId = Convert.ToInt32(regVsByCol.First().Col_Id);
-                    Col currentCol = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == currentColId);
 
-                    // si elabora il collaboratore solamente se il dato è stato trovato
-                    if (currentCol != default(Col))
+                    foreach (DateTime monthDate in monthDates)
                     {
-                        // per ogni collaboratore da processare si processano tutti i giorni del mese
-                        foreach (DateTime monthDate in monthDates)
+                        // se per il collaboratore sono presenti delle registrazioni in giornata allora si procede
+                        // alla loro scrittura; altrimenti si riporta il giorno come giorno non lavorato
+                        if (regVsByDate.Any(regv => regv.Data_Reg == monthDate))
                         {
-                            // se per il collaboratore sono presenti delle registrazioni in giornata allora si procede
-                            // alla loro scrittura; altrimenti si riporta il giorno come giorno non lavorato
-                            if (regVsByCol.Any(regv => regv.Data_Reg == monthDate))
-                            {
-                                // si recuperano tutte le registrazioni del giorno che si sta processando
-                                var dayColRegVs = regVsByCol.Where(regv => regv.Data_Reg == monthDate);
+                            dateChecked = true;
+                            // si recuperano tutte le registrazioni del giorno che si sta processando
+                            var dayColRegVs = regVsByDate.Where(regv => regv.Data_Reg == monthDate);
 
-                                foreach (Reg_V regVToWrite in dayColRegVs)
-                                    WriteRegV(regVToWrite, monthDate, writeIndex++, currentCol);
+                            foreach (Reg_V regVToWrite in dayColRegVs)
+                            {
+                                if (monthDate.Date != previusDate.Date)
+                                {
+                                    dateName = monthDate.ToString("dd-MM-yyyy");
+                                    WorksheetCopy("Generale", dateName, position++);
+                                    previusDate = monthDate;
+                                    writeIndex = 2;
+                                }
+                                int currentColId = Convert.ToInt32(regVToWrite.Col_Id);
+                                Col currentCol = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == currentColId);
+                                WriteRegV(dateName, regVToWrite, monthDate, writeIndex++, currentCol);
                             }
-                            else // non sono presenti registrazioni nella giornata, si procede alla scrittura del giorno non lavorato
-                                WriteRegV(null, monthDate, writeIndex++, currentCol);
+                            CheckEmptyReg(entitiesToExport, monthDate, writeIndex, dateName);
                         }
+                        else if(dateChecked==false)
+                        {
+                            if (monthDate.Date != previusDate.Date)
+                            {
+                                dateName = monthDate.ToString("dd-MM-yyyy");
+                                WorksheetCopy("Generale", dateName, position++);
+                                previusDate = monthDate;
+                                writeIndex = 2;
+                            }
+                            CheckEmptyReg(entitiesToExport, monthDate, writeIndex, dateName);
+                        }
+
                     }
+
+
                 }
 
+                WorksheetDelete("Generale");
                 // esporto quanto generato (in caso di assenza reg_v il file modello) sulla risposta del browser
                 ExcelWorkbookSaveToResponse(HttpContext.Current.Response, System.IO.Path.GetFileName(ExcelModelFilePath), true);
 
@@ -222,46 +245,65 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         /// <param name="dateToProcess">La data da scrivere.</param>
         /// <param name="writeIndex">L'indice riga di scrittura</param>
         /// <param name="processingCol">Il collaboratore che si sta processando.</param>
-        private void WriteRegV(Reg_V regvToWrite, DateTime dateToProcess, int writeIndex, Col processingCol)
+        private void WriteRegV(string sheetName, Reg_V regvToWrite, DateTime dateToProcess, int writeIndex, Col processingCol)
         {
-            CellInsertValue(1, 2, writeIndex, processingCol.Codice_Collaboratore, ExcelInsertTypeEnum.Content);
-            CellInsertValue(1, 3, writeIndex, processingCol.CognomeNome_Col, ExcelInsertTypeEnum.Content);
+            CellInsertValue(sheetName, 2, writeIndex, processingCol.Codice_Collaboratore, ExcelInsertTypeEnum.Content);
+            CellInsertValue(sheetName, 3, writeIndex, processingCol.CognomeNome_Col, ExcelInsertTypeEnum.Content);
+
             if (regvToWrite != null)
             {
                 //CellInsertValue(1, ?, writeIndex, regvToWrite.Cant_Mnemonic, ExcelInsertTypeEnum.Content);
-                CellInsertValue(1, 4, writeIndex, regvToWrite.Cant_Desc, ExcelInsertTypeEnum.Content);
+                CellInsertValue(sheetName, 4, writeIndex, regvToWrite.Cant_Desc, ExcelInsertTypeEnum.Content);
 
-                
+
                 TimeSpan? currentTime = regvToWrite.Data_Ora_Fig_E != null ? regvToWrite.Data_Ora_Fig_E.Value.TimeOfDay : (TimeSpan?)null;
-                if(currentTime!=null)
+                if (currentTime != null)
                 {
                     var currentTimeCent = CommonService.GetDoubleFromTimeSpan((TimeSpan)currentTime, true);
-                    CellInsertValue(1, 5, writeIndex, currentTimeCent, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(sheetName, 5, writeIndex, currentTimeCent, ExcelInsertTypeEnum.Content);
                 }
-                
+
                 currentTime = regvToWrite.Data_Ora_Fig_U != null ? regvToWrite.Data_Ora_Fig_U.Value.TimeOfDay : (TimeSpan?)null;
                 if (currentTime != null)
                 {
                     var currentTimeCent = CommonService.GetDoubleFromTimeSpan((TimeSpan)currentTime, true);
-                    CellInsertValue(1, 6, writeIndex, currentTimeCent, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(sheetName, 6, writeIndex, currentTimeCent, ExcelInsertTypeEnum.Content);
                     var durataCentTime = CommonService.GetDoubleFromTimeSpan(TimeSpan.Parse(regvToWrite.Durata_Fig_HH_S), true);
-                    CellInsertValue(1, 7, writeIndex, durataCentTime, ExcelInsertTypeEnum.Content);
-                }               
-                
+                    CellInsertValue(sheetName, 7, writeIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                }
+
 
             }
             else
             {
-                CellInsertValue(1, 5, writeIndex, 0, ExcelInsertTypeEnum.Content);
-                CellInsertValue(1, 6, writeIndex, 0, ExcelInsertTypeEnum.Content);
-                CellInsertValue(1, 7, writeIndex, 0, ExcelInsertTypeEnum.Content);
+                CellInsertValue(sheetName, 5, writeIndex, 0, ExcelInsertTypeEnum.Content);
+                CellInsertValue(sheetName, 6, writeIndex, 0, ExcelInsertTypeEnum.Content);
+                CellInsertValue(sheetName, 7, writeIndex, 0, ExcelInsertTypeEnum.Content);
             }
-            CellInsertValue(1, 1, writeIndex, dateToProcess, ExcelInsertTypeEnum.Content);
+            CellInsertValue(sheetName, 1, writeIndex, dateToProcess, ExcelInsertTypeEnum.Content);
             //CellInsertValue(1, 5, writeIndex, dateToProcess.ToString("ddddd"), ExcelInsertTypeEnum.Content);
 
         }
 
+
+
         #endregion
+        private void CheckEmptyReg(IQueryable<Reg_V> entitiesToExport,DateTime monthDate, int writeIndex, string dateName)
+        {
+            // si generano i giorni del mese relativi al periodo in esecuzione
+            List<DateTime> monthDates = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
+
+            foreach (IGrouping<string, Reg_V> regVsByCol in entitiesToExport.Where(regv => (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None) || (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass).GroupBy(regv => regv.Col_Mnemonic))
+            {
+                if (!regVsByCol.Any(regv => regv.Data_Reg == monthDate))
+                {
+                    int currentColId = Convert.ToInt32(regVsByCol.First().Col_Id);
+                    Col currentCol = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == currentColId);
+                    WriteRegV(dateName, null, monthDate, writeIndex++, currentCol);
+                }
+
+            }
+        }
 
     }
 }

@@ -595,7 +595,7 @@ namespace PowerWeb.Modules
 
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay)
             {
-                newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, data_Ora_Fis_U.Second);
+                newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, currTimeOfDay.Second);
             }
             else if (newRegV.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration)
             {

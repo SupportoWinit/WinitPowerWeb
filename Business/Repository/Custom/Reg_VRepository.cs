@@ -274,9 +274,7 @@ namespace Business.Repository.Custom
                                                         {
                                                             //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
                                                             if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
-                                                                fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
-
-                                                            
+                                                                fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;                                                            
 
                                                             // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
                                                             if (delayMorningTollerance!=0)
