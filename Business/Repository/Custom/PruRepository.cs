@@ -21,7 +21,7 @@ namespace Business.Repository.Custom
         private static DateTime DataOraRecord;
 
         private static void ResetSession()
-        {           
+        {
         }
 
         public override Pru Init()
@@ -53,14 +53,15 @@ namespace Business.Repository.Custom
                 base.Delete(entity, saveChanges);
         }
 
-        public override Dictionary<string, string> Check(Pru entity, bool isNew = false, bool isResetSession = true){
+        public override Dictionary<string, string> Check(Pru entity, bool isNew = false, bool isResetSession = true)
+        {
             Dictionary<string, string> result = new Dictionary<string, string>();
             //Serve x Rileggere i Dati ATTUALI dal DB per fare i controlli allineati alle ultima Modifiche fatte sul DB
             if (isResetSession)
                 ResetSession();
 
             try
-            {                        
+            {
                 //Leggo la DataOraUltimaModifica ATTUALE dal REcord del DB per verificare che nessuno abbia modificato il Record nel frattempo
 
                 if (!isNew)
@@ -104,7 +105,7 @@ namespace Business.Repository.Custom
                 }
                 else
                 {
-                    
+
                     entity.N_Serie_Pru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(entity.N_Serie_Pru, 10);
                     if (RepoManager.PruRepo.FirstOrDefault(x => x.N_Serie_Pru == entity.N_Serie_Pru && x.Codice_Pru != entity.Codice_Pru && entity.Pru_Id != x.Pru_Id) != null)
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.N_Serie_Pru),
@@ -128,12 +129,12 @@ namespace Business.Repository.Custom
                     if (entity.Codice_Pru.Length > 10)
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Pru),
                         BusinessService.GetLocalizedString(PowerWebResources.ERR_LUNGHEZZA_CAMPO_X_DEVE_ESSERE_MINORE_UGUALE_Y,
-                        PowerWebResources.FLD_CODICE_PRU, PowerWebResources.VALORE_10 ));
+                        PowerWebResources.FLD_CODICE_PRU, PowerWebResources.VALORE_10));
                 if (CommonService.Nz(entity.N_Serie_Pru, "") != "")
                     if (entity.N_Serie_Pru.Length > 10)
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.N_Serie_Pru),
                         BusinessService.GetLocalizedString(PowerWebResources.ERR_LUNGHEZZA_CAMPO_X_DEVE_ESSERE_MINORE_UGUALE_Y,
-                        PowerWebResources.FLD_N_SERIE_PRU, PowerWebResources.VALORE_10 ));
+                        PowerWebResources.FLD_N_SERIE_PRU, PowerWebResources.VALORE_10));
                 //
                 //5) verifico, per una serie di campi, che il valore del campo sia presente nella relativa Tabella
                 //
@@ -174,24 +175,24 @@ namespace Business.Repository.Custom
         }
 
         public override Dictionary<string, string> CheckForImport(Pru entity)
-            {
-                Dictionary<string, string> result = new Dictionary<string, string>();
-                //Verifico SOLO x IMPORT la Validità delle eventuali Date Ricevute
-                if (entity.Data_Registrazione_Pru < new DateTime(2000, 01, 01))
-                    result.AddOrAppend(CommonService.GetPropertyName(() => entity.DataOraUltimaModifica_Pru),
-                       BusinessService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_CONTIENE_VALORI_NON_VALIDI, PowerWebResources.FLD_DATA_REGISTRAZIONE_PRU));
-                if (entity.DataOraUltimaModifica_Pru < new DateTime(2000, 01, 01))
-                    result.AddOrAppend(CommonService.GetPropertyName(() => entity.DataOraUltimaModifica_Pru),
-                       BusinessService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_CONTIENE_VALORI_NON_VALIDI, PowerWebResources.FLD_DATAORAULTIMAMODIFICA_PRU));
-                if (String.IsNullOrEmpty(entity.N_Serie_Pru))
-                    if (!String.IsNullOrEmpty(entity.Codice_Pru))
-                        entity.N_Serie_Pru = "0";
-                entity.N_Serie_Pru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(entity.N_Serie_Pru, 10);
-                entity.Codice_Pru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(entity.Codice_Pru, 10);
-            
-                WriteCheckLog(entity, result, Log);
-                return result;
-            }
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            //Verifico SOLO x IMPORT la Validità delle eventuali Date Ricevute
+            if (entity.Data_Registrazione_Pru < new DateTime(2000, 01, 01))
+                result.AddOrAppend(CommonService.GetPropertyName(() => entity.DataOraUltimaModifica_Pru),
+                   BusinessService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_CONTIENE_VALORI_NON_VALIDI, PowerWebResources.FLD_DATA_REGISTRAZIONE_PRU));
+            if (entity.DataOraUltimaModifica_Pru < new DateTime(2000, 01, 01))
+                result.AddOrAppend(CommonService.GetPropertyName(() => entity.DataOraUltimaModifica_Pru),
+                   BusinessService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_CONTIENE_VALORI_NON_VALIDI, PowerWebResources.FLD_DATAORAULTIMAMODIFICA_PRU));
+            if (String.IsNullOrEmpty(entity.N_Serie_Pru))
+                if (!String.IsNullOrEmpty(entity.Codice_Pru))
+                    entity.N_Serie_Pru = "0";
+            entity.N_Serie_Pru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(entity.N_Serie_Pru, 10);
+            entity.Codice_Pru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(entity.Codice_Pru, 10);
+
+            WriteCheckLog(entity, result, Log);
+            return result;
+        }
 
         public override List<Dictionary<String, String>> ImportFromDataSet(PowerMDBDataSet oDataSet, bool onlyErrors = false)
         {
@@ -234,7 +235,7 @@ namespace Business.Repository.Custom
                         if (countRec == 1)
                             currentDictionary = Check(oNewRecord, true, true);
                         else
-                            currentDictionary = Check(oNewRecord, true, false);                           
+                            currentDictionary = Check(oNewRecord, true, false);
 
                         //Verifico se ci sono stati errori
                         if (currentDictionary.Keys.Count == 0 && importDictionary.Keys.Count == 0)
@@ -305,24 +306,25 @@ namespace Business.Repository.Custom
             int Progr = 0;
             Dictionary<string, string> errors = new Dictionary<string, string>();
             List<Pru> presentPrus = RepoManager.PruRepo.GetAll(true).ToList();
+            List<Fru> presentFrus = RepoManager.FruRepo.GetAll(true).ToList();
             List<Pru> toAddPrus = new List<Pru>();
             String[] splittedLine = new String[inputFile.Length];
-           
+
 
             foreach (string inputLine in inputFile)
-            {               
+            {
 
                 if (!inputLine.StartsWith("*") && inputLine.Trim().Length != 0)
                 {
-                   //nel caso in cui ho un file genrato da COMO controllo se sono in presenza di MLC O COM
-                    if ((inputLine.IndexOf("MLC"))!=-1)
+                    //nel caso in cui ho un file genrato da COMO controllo se sono in presenza di MLC O COM
+                    if ((inputLine.IndexOf("MLC")) != -1)
                     {
                         //estraggo la matricola del dispositivo
                         var matricolaDispositivo = inputLine.Substring(inputLine.IndexOf("MLC") + 11, 5);
                         splittedLine = matricolaDispositivo.Split(';');
                     }
 
-                    else if (inputLine.IndexOf("COM")!=-1)
+                    else if (inputLine.IndexOf("COM") != -1)
                     {
                         //estraggo la matricola del dispositivo
                         var matricolaDispositivo = inputLine.Substring(inputLine.IndexOf("COM") + 11, 5);
@@ -359,8 +361,8 @@ namespace Business.Repository.Custom
                                 errors = Check(currentPru, true, false);
 
                                 //Verifico se ci sono stati errori
-                                if (errors.Keys.Count == 0 )
-                                toAddPrus.Add(currentPru);
+                                if (errors.Keys.Count == 0)
+                                    toAddPrus.Add(currentPru);
                             }
                             else
                             {
@@ -378,7 +380,7 @@ namespace Business.Repository.Custom
                             errors.Add(inputLine + Progr, BusinessService.GetLocalizedString(PowerWebResources.ERR_MATRICOLA_GIA_PRESENTE_NELLA_TABELLA));
                         }
                     }
-                  
+
                     else if (splittedLine.Length == 2)
                     //Tratta il caso in cui il File di TXT contiene oltre alla MATRICOLA ache il N° di Serie dell'Unità Portatile
                     {
@@ -386,7 +388,7 @@ namespace Business.Repository.Custom
                         string firstKeyToSearch = CommonService.AggiungiSpaziASinistraSeStringaNumerica(splittedLine[0].Trim(), 10);
                         string secondKeyToSearch = CommonService.AggiungiSpaziASinistraSeStringaNumerica(splittedLine[1].Trim(), 10);
 
-                        if (!presentPrus.Any(Pru => Pru.Codice_Pru == firstKeyToSearch || Pru.N_Serie_Pru == secondKeyToSearch))
+                        if (!presentPrus.Any(Pru => Pru.Codice_Pru == firstKeyToSearch || Pru.N_Serie_Pru == secondKeyToSearch) && !presentFrus.Any(Fru => Fru.Codice_Fru == firstKeyToSearch || Fru.N_Serie_Fru == secondKeyToSearch))
                         {
                             if (!toAddPrus.Any(Pru => Pru.Codice_Pru == firstKeyToSearch || Pru.N_Serie_Pru == secondKeyToSearch))
                             {
@@ -424,7 +426,7 @@ namespace Business.Repository.Custom
                         }
                     }
                     else
-                        //Caso in cui il Tracciato RECORD NON Corrisponde a quello rpevisto (che deve avere 1 o 2 Campi da trattare
+                    //Caso in cui il Tracciato RECORD NON Corrisponde a quello rpevisto (che deve avere 1 o 2 Campi da trattare
                     {
                         Progr = Progr + 1;
                         //serve nel caso in cui ci siano + Righe con Valori UGUALI

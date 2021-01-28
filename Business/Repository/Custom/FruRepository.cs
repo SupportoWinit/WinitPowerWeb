@@ -383,6 +383,7 @@ namespace Business.Repository.Custom
             string sTipoAss = string.Empty;
             Dictionary<string, string> errors = new Dictionary<string, string>();
             List<Fru> presentFrus = RepoManager.FruRepo.GetAll(true).ToList();
+            List<Pru> presentPrus = RepoManager.PruRepo.GetAll(true).ToList();
             List<Fru> toAddFrus = new List<Fru>();
             String[] splittedLine = new String[inputFile.Length];
 
@@ -453,7 +454,7 @@ namespace Business.Repository.Custom
                         string firstKeyToSearch = CommonService.AggiungiSpaziASinistraSeStringaNumerica(splittedLine[0].Trim(), 10);
                         string secondKeyToSearch = CommonService.AggiungiSpaziASinistraSeStringaNumerica(splittedLine[1].Trim(), 10);
 
-                        if (!presentFrus.Any(fru => fru.Codice_Fru == firstKeyToSearch || fru.N_Serie_Fru == secondKeyToSearch))
+                        if (!presentFrus.Any(fru => fru.Codice_Fru == firstKeyToSearch || fru.N_Serie_Fru == secondKeyToSearch) && !presentPrus.Any(pru=>pru.Codice_Pru==firstKeyToSearch || pru.N_Serie_Pru==secondKeyToSearch))
                         {
                             if (!toAddFrus.Any(fru => fru.Codice_Fru == firstKeyToSearch || fru.N_Serie_Fru == secondKeyToSearch))
                             {
