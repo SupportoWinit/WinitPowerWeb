@@ -3323,6 +3323,14 @@ namespace Business.BusinessExtension
 
                     #endregion
 
+                    int customizationVersionTrip = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheeetTotalWithoutMonthlyMinutes);
+                    if (customizationVersionTrip == (int)TripHourIsWorkedHoursEnum.DoNotUse)
+                        dayRegVs = dayRegVs.Where(d => d.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip).ToList();
+
+                    int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
+                    if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse)
+                        dayRegVs = dayRegVs.Where(d => d.Motivazione_Reg_Id == null).ToList();
+
                     // inserimento delle ore diurne calcolate,
                     tsmItems.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, dayRegVs, BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_DIURNE), minDate, maxDate, 0, 0, false));
 
@@ -3833,11 +3841,12 @@ namespace Business.BusinessExtension
         {
             // inizializzazione del valore di ritorno del metodo
             List<TimesheetModuleItem> cartelliniList = new List<TimesheetModuleItem>();
+            
             // dichiarazione dei vari cartellini da utilizzare e visualizzare
             TimesheetModuleItem dayPlan,
                 nightPlan,
                 dayWorked,
-                nightWorked,
+                nightWorked,                
                 tsOrdDiurne = new TimesheetModuleItem(isDecimalHours),
                 tsStrDiurne = new TimesheetModuleItem(isDecimalHours),
                 tsFestDiu = new TimesheetModuleItem(isDecimalHours),

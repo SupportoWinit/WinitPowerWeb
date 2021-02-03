@@ -337,7 +337,7 @@ namespace Business.Repository.Custom
             RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
             regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
             #endregion
-
+                        
             if (regs.Any())
             {
 

@@ -311,6 +311,11 @@
 	<c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="1" />
 	<!--JustificationHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore con motivazione all'interno delle ore lavorate
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
+
+  <!-- *******************************************VIAGGI COME ONL*********************************************************-->
+  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
+  <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
+		TripHourIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
   
 	<!-- *******************************************MONTE MINUTI TOTALE NEL CARTELLINO*********************************************************-->		
 	<c ID="CustomizationEnum.TimesheeetTotalWithoutMonthlyMinutes" Des="Indica se visualizzare nel cartellino il totale delle ore senza il monte minuti" Value="0" />

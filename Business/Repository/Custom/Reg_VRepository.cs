@@ -4175,9 +4175,11 @@ namespace Business.Repository.Custom
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.Data_Reg),
                        BusinessService.GetLocalizedString(PowerWebResources.ERR_DATA_REG_MINORE_DI_DATA_BLOCCO));
                 }
-
+                
                 // viene recuperato il cantiere collegato alla reg_v (utilizzato su più controlli)
                 var currentCant = RepoManager.CantRepo.SingleOrDefault(cant => cant.Cant_Id == entity.Cant_Id);
+
+                
 
                 // Se si sta elaborando una reg_v che ha una ora di uscita ed è collegata a un cantiere attività 
                 // allora viene generato un errore di check; in caso contrario si procede correttamente con le verifiche

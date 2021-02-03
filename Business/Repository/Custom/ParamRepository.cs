@@ -619,9 +619,12 @@ namespace Business.Repository.Custom
                 //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede)
                     DetachAllEntities();
+                else
+                {
+                    DbSet.First().Elaborate_Semaforo = true;
+                    SaveChanges();
+                }                    
 
-                DbSet.First().Elaborate_Semaforo = true;
-                SaveChanges();
             }
             catch (Exception ex)
             {

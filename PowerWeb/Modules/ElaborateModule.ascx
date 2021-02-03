@@ -252,6 +252,22 @@
         cPing.PerformCallback();
     }
 
+    function btnDeleteTrips_onClick(s, e) {
+        var to = deTo.GetDate();
+        var from = deFrom.GetDate();
+        
+        
+        if (to != null && from != null && to >= from) {
+            
+                DisplayJConfirm("Power", btnDeleteTrips.cpMessage, function (r) {
+                    if (r) {
+                        tPing.SetEnabled(true);
+                        cTrips.PerformCallback("deleteTrips");
+                    }
+                });            
+        } else DisplayDialogError('Power', btnDeleteTrips.cpErrorMessage);
+    }
+
 
     function cPing_OnCallbackComplete(s, e) {
         if (e.result != null) {
@@ -401,6 +417,18 @@
                                             <ClientSideEvents Click="btnTrips_onClick" />
                                         </dx:ASPxButton>
                                     </td>
+                                     <tr  >
+                                    <td style="padding-left: 5px;" />
+                                    <td style="padding-left: 5px;" />
+                                    <td style="padding-left: 5px;" />
+                                    <td style="padding-left: 5px;" />
+                                    <td style="padding-left: 50px;" />
+                                         <td style="padding-left: 5px; width: 25%;">
+                                            <dx:ASPxButton ID="BtnDeleteTrips" runat="server" AutoPostBack="False" ClientInstanceName="btnDeleteTrips" UseSubmitBehavior="False" Width="100%" OnCustomJSProperties="BtnDeleteTrips_OnCustomJSProperties">
+                                                <ClientSideEvents Click="btnDeleteTrips_onClick" />
+                                            </dx:ASPxButton>
+                                        </td>
+                                    </tr>
                                 </tr>
                                 <tr>
                                     <td style="padding-left: 5px;" />

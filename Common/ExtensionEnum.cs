@@ -113,6 +113,7 @@ namespace Common
         CustomElaborateRegs,
         CustomExportsBackgroundColorEnum,
         JustificationHourIsWorkedHoursEnum,
+        TripHourIsWorkedHoursEnum,
         TimesheeetTotalWithoutMonthlyMinutes,
         ManageOrderCodeSimpleExport,
         ShowDescriptionJustTimesheet,
@@ -159,8 +160,7 @@ namespace Common
         BlockRestoreReg,
         Solaris,
         TimesheetMultiPagedExport,
-        Casp,
-        SheduleRoundingDiff
+        Casp        
     }
 
     public enum ClockAppsOperationEnum
@@ -740,6 +740,24 @@ namespace Common
 
         /// <summary>
         /// Saranno utilizzate le ore con motivazione all'interno delle ore lavorate
+        /// </summary>
+        Use = 1
+
+    }
+
+    /// <summary>
+    /// Indica se utilizzare o meno le ore viaggio all'interno delle ore lavorate
+    /// </summary>
+    public enum TripHourIsWorkedHoursEnum
+    {
+
+        /// <summary>
+        /// Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
+        /// </summary>
+        DoNotUse = 0,
+
+        /// <summary>
+        /// Saranno utilizzate le ore viaggio all'interno delle ore lavorate
         /// </summary>
         Use = 1
 

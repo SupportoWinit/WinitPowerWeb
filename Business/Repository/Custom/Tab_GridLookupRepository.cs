@@ -322,7 +322,7 @@ namespace Business.Repository.Custom
         private static string GetSQLWhereQuery(List<Tab_GridLookup> tabGridLookups, String value, int? beginIndex = null, int? endIndex = null, string campoDbReport = "")
         {
             //viene stratto il primo valore della tab grid look up corrispondente al nome del combo
-            var mainTGL = tabGridLookups.First();
+            var mainTGL = tabGridLookups.First();            
 
             String keyField = mainTGL.NomeCampo;
             //viene estratto il campo su cui aggiornare il db

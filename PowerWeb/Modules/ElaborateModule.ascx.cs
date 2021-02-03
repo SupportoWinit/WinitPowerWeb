@@ -66,6 +66,8 @@ namespace PowerWeb.Modules
                  notificationActive = RepoManager.ParamRepo.ParametersRow.Abilita_Notifiche,
                  delayActive = RepoManager.ParamRepo.ParametersRow.Abilita_Arrotondamenti,
                  chiamateActive = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowSendChiamateButtons) == (int)ShowSendChiamateButtons.Show;
+            BtnDeleteTrips.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_LANCIO_DELETE_VIAGGI);
+            BtnDeleteTrips.ClientVisible = RepoManager.ParamRepo.ParametersRow.Abilita_Viaggi;
 
             // verifico la presenza di file da importare ed aggiorno di conseguenza le proprietà
             CalcolaFilesRegDaImportare();
@@ -424,74 +426,128 @@ namespace PowerWeb.Modules
 
         protected void cTrips_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
         {
-
-            try
+            if (e.Parameter == "deleteTrips")
             {
-                BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(0, "Elaborazione Viaggi Iniziata");
-
-                DateTime from = deFrom.Date;
-                if (deTo.Date == DateTime.MinValue)
-                    deTo.Date = deFrom.Date;
-                // la data di destinazione è il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
-                DateTime to = new DateTime(deTo.Date.Year, deTo.Date.Month, deTo.Date.Day, 23, 59, 0);
-
-                if (from != DateTime.MinValue && to != DateTime.MinValue)
+                try
                 {
-                    // effettuazione della garbage collection prima di partire con l'elaborazione (occupazione molto alta di memoria)
-                    GC.Collect();
+                    BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(0, "Elaborazione Viaggi Iniziata");
 
-                    // aggiornamento delle date con i parmetri del notturno
-                    BusinessService.ManageNocturneStartEndDate(ref from, ref to);
+                    DateTime from = deFrom.Date;
+                    if (deTo.Date == DateTime.MinValue)
+                        deTo.Date = deFrom.Date;
+                    // la data di destinazione è il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
+                    DateTime to = new DateTime(deTo.Date.Year, deTo.Date.Month, deTo.Date.Day, 23, 59, 0);
 
-                    // l'unità minima di elaborazione è un giorno e quindi se le date/ore in elaborazione sono uguali
-                    // allora l'ora to viene spostato al giorno successivo (a inizio giornata così da comprendere solo il giorno
-                    // in elaborazione)
-                    if (from == to)
+                    if (from != DateTime.MinValue && to != DateTime.MinValue)
                     {
-                        to = to.AddDays(1);
-                        to = to.AddMinutes(1);
+                        BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] =
+                            new KeyValuePair<double, string>(0, "Cancellazione Viaggi Iniziata");                       
+
+                        List<Reg> tripsToDelete = new List<Reg>();
+
+                        var colList = RepoManager.ColRepo.GetAll().Where(c => c.DisAbilitazione_Col == false);
+
+                        foreach (var col in colList)
+                        {
+                            //legge le Registrazioni per il Periodo Richiesto tra le quali generare eventualmente i Viaggi per i singoli collaboratori selezionati
+
+                            RepoManager.RegRepo.DeleteFromQuery(reg => reg.Registrazione_Data_Ora_Fis_Reg >= from &&
+                                        reg.Registrazione_Data_Ora_Fis_Reg <= to &&
+                                        reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip &&
+                                       reg.Col_Id == col.Col_Id);
+                        }
+
+
+
+
+
+
+                        String message = BusinessService.GetLocalizedString(PowerWebResources.STR_ELABORAZIONE_TERMINATA);
+
+                        e.Result = message;
+
+                        // effettuazione della garbage collection prima di partire con l'elaborazione (occupazione molto alta di memoria)
+                        GC.Collect();
                     }
-
-                    //legge le Registrazioni per il Periodo Richiesto tra le quali generare eventualmente i Viaggi
-                    var regIds = RepoManager.RegRepo.Find(r => r.Registrazione_Data_Ora_Fis_Reg >= from && r.Registrazione_Data_Ora_Fis_Reg <= to && !r.Registrazione_Bloccata, true).Select(reg => reg.Reg_Id).ToList();
-
-
-                    //legge la Vista Logica delle Registrazioni per il Periodo Richiesto tra le quali generare eventualmente i Viaggi 
-                    IEnumerable<Reg_V> regVs = RepoManager.Reg_VRepo.Find(regv => (regv.Data_Ora_Fis_E >= from && regv.Data_Ora_Fis_U <= to && !regv.Registrazione_Bloccata)
-                                                                                  && regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true).ToList();
-                    regVs = regVs.Where(regv => regIds.Contains(regv.RegE)).ToList();
-
-                    List<KeyValuePair<String, String>> errors = new List<KeyValuePair<string, string>>();
-
-                    //Chiama il Calcolo dei Viaggi in RegV_Repository
-                    if (regVs.Count() > 0)
-                    {
-                        BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(0, "Generazione Viaggi Iniziata");
-
-                        errors = RepoManager.Reg_VRepo.ElaborateTrips(regVs, true);
-                    }
-
-                    if (BusinessService.ElaborateStatusDictionary.ContainsKey(PowerWebContext.Current.User))
-                        BusinessService.ElaborateStatusDictionary.Remove(PowerWebContext.Current.User);
-
-                    String message = BusinessService.GetLocalizedString(PowerWebResources.STR_ELABORAZIONE_TERMINATA);
-
-                    if (errors.Count > 0)
-                    {
-                        RepoManager.Tab_MessaggiRepo.InsertMessages(errors, ApplicationMessageEnum.ElaborateTrips, FunctionMessageEnum.ElaborateTrips, PowerWebContext.Current.User.Utenti_Id, DateTime.Now);
-                        message = BusinessService.GetLocalizedString(PowerWebResources.STR_ELABORAZIONE_TERMINATA_CON_SEGNALAZIONI);
-                    }
-                    e.Result = message;
-
-                    // effettuazione della garbage collection prima di partire con l'elaborazione (occupazione molto alta di memoria)
-                    GC.Collect();
+                }
+                catch (Exception ex)
+                {
+                    _log.Error(ex.Message);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                _log.Error(ex.Message);
+
+                try
+                {
+                    BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(0, "Elaborazione Viaggi Iniziata");
+
+                    DateTime from = deFrom.Date;
+                    if (deTo.Date == DateTime.MinValue)
+                        deTo.Date = deFrom.Date;
+                    // la data di destinazione è il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
+                    DateTime to = new DateTime(deTo.Date.Year, deTo.Date.Month, deTo.Date.Day, 23, 59, 0);
+
+                    if (from != DateTime.MinValue && to != DateTime.MinValue)
+                    {
+                        // effettuazione della garbage collection prima di partire con l'elaborazione (occupazione molto alta di memoria)
+                        GC.Collect();
+
+                        // aggiornamento delle date con i parmetri del notturno
+                        BusinessService.ManageNocturneStartEndDate(ref from, ref to);
+
+                        // l'unità minima di elaborazione è un giorno e quindi se le date/ore in elaborazione sono uguali
+                        // allora l'ora to viene spostato al giorno successivo (a inizio giornata così da comprendere solo il giorno
+                        // in elaborazione)
+                        if (from == to)
+                        {
+                            to = to.AddDays(1);
+                            to = to.AddMinutes(1);
+                        }
+
+
+                        //legge le Registrazioni per il Periodo Richiesto tra le quali generare eventualmente i Viaggi
+                        var regIds = RepoManager.RegRepo.Find(r => r.Registrazione_Data_Ora_Fis_Reg >= from && r.Registrazione_Data_Ora_Fis_Reg <= to && !r.Registrazione_Bloccata, true).Select(reg => reg.Reg_Id).ToList();
+
+
+                        //legge la Vista Logica delle Registrazioni per il Periodo Richiesto tra le quali generare eventualmente i Viaggi 
+                        IEnumerable<Reg_V> regVs = RepoManager.Reg_VRepo.Find(regv => (regv.Data_Ora_Fis_E >= from && regv.Data_Ora_Fis_U <= to && !regv.Registrazione_Bloccata)
+                                                                                      && regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true).ToList();
+                        regVs = regVs.Where(regv => regIds.Contains(regv.RegE)).ToList();
+
+                        List<KeyValuePair<String, String>> errors = new List<KeyValuePair<string, string>>();
+
+                        //Chiama il Calcolo dei Viaggi in RegV_Repository
+                        if (regVs.Count() > 0)
+                        {
+                            BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(0, "Generazione Viaggi Iniziata");
+
+                            errors = RepoManager.Reg_VRepo.ElaborateTrips(regVs, true);
+                        }
+
+                        if (BusinessService.ElaborateStatusDictionary.ContainsKey(PowerWebContext.Current.User))
+                            BusinessService.ElaborateStatusDictionary.Remove(PowerWebContext.Current.User);
+
+                        String message = BusinessService.GetLocalizedString(PowerWebResources.STR_ELABORAZIONE_TERMINATA);
+
+                        if (errors.Count > 0)
+                        {
+                            RepoManager.Tab_MessaggiRepo.InsertMessages(errors, ApplicationMessageEnum.ElaborateTrips, FunctionMessageEnum.ElaborateTrips, PowerWebContext.Current.User.Utenti_Id, DateTime.Now);
+                            message = BusinessService.GetLocalizedString(PowerWebResources.STR_ELABORAZIONE_TERMINATA_CON_SEGNALAZIONI);
+                        }
+
+                        e.Result = message;
+
+                        // effettuazione della garbage collection prima di partire con l'elaborazione (occupazione molto alta di memoria)
+                        GC.Collect();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.Error(ex.Message);
+                }
             }
-        }
+        }       
 
         protected void cPing_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
         {
@@ -597,6 +653,22 @@ namespace PowerWeb.Modules
             btnImportFromServer.ClientEnabled = (RepoManager.ParamRepo.ParametersRow.Abilita_Import_Esterno) ? true : HasFilesToImportAndSuspended;
             btnDeleteSuspended.ClientEnabled = HasSuspended;
             btnImportFromServer.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_IMPORT_SERVER_TXT);
+        }
+
+        protected void BtnDeleteTrips_OnCustomJSProperties(object sender, CustomJSPropertiesEventArgs e)
+        {
+            if (!e.Properties.ContainsKey("cpMessage"))
+                e.Properties.Add("cpMessage",
+                    BusinessService.GetLocalizedString(PowerWebResources.STR_DOMANDA_CONFERMA_AGGIORNAMENTO));
+
+            if (!e.Properties.ContainsKey("cpErrorMessage"))
+                e.Properties.Add("cpErrorMessage",
+                    BusinessService.GetLocalizedString(PowerWebResources.STR_PERIODO_NON_CORRETTO));
+
+
+            if (!e.Properties.ContainsKey("cpErrorMessageCol"))
+                e.Properties.Add("cpErrorMessageCol",
+                    BusinessService.GetLocalizedString(PowerWebResources.STR_COLLABORATORE_NON_SEL));
         }
 
 
@@ -765,4 +837,5 @@ namespace PowerWeb.Modules
         #endregion
 
     }
-}
+    
+} 

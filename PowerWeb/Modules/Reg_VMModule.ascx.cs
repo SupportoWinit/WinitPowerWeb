@@ -278,7 +278,7 @@ namespace PowerWeb.Modules
                 int start = gvRegVMEdit.PageIndex * gvRegVMEdit.SettingsPager.PageSize;
                 //come indice di fine è il numero di reg_v
                 int end = EditRegVs.Count;
-     
+
 
                 //inizializzaione della nuova regV
                 Reg_V newRegV = new Reg_V();
@@ -333,7 +333,7 @@ namespace PowerWeb.Modules
 
                     int actEvaluationId = Convert.ToInt32(cbActivity_Evaluation.Value);
 
-                    
+
 
                     //se è attiviata la personalizzazione per Alitalia e l'utente è affiliato al cliente Alitalia
                     if ((RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CustomerOnlyMultipleEditEvaluationEnum) == (int)CustomerOnlyMultipleEditEvaluationEnum.Enabled) &&
@@ -354,7 +354,7 @@ namespace PowerWeb.Modules
                             }
 
                             //viene creata una nuova nuova registrazione
-                            newRegV = initReg_V(regE, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId,"");
+                            newRegV = initReg_V(regE, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, "");
                         }
                     }
 
@@ -362,8 +362,8 @@ namespace PowerWeb.Modules
                     {
                         if (teData_Ora_Fis_E == null || teData_Ora_Fis_U == null)
                             continue;
-                       
-                            newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, teData_Ora_Fis_U.Text);
+
+                        newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, teData_Ora_Fis_U.Text);
                     }
                     // viene in ogni caso controllata se cambia solamente una reg non nuova; in caso la reg sia nuova viene comunque aggiunta per l'elaborazione
                     if (checkChanged && newRegV.RegE != 0)
@@ -591,7 +591,7 @@ namespace PowerWeb.Modules
                 newRegV.Data_Ora_Fis_U = middleNightU;
                 currTimeOfDay = middleNightU;
             }
-                
+
 
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay)
             {
@@ -1033,7 +1033,7 @@ namespace PowerWeb.Modules
             }
 
             //Recupero la Data  della Registrazione 
-            DateTime dayDateOld = Convert.ToDateTime(e.OldValues[CommonService.GetPropertyName(() => _regVStub.Data_Reg)]).Date;
+            DateTime dayDateOld = Convert.ToDateTime(e.OldValues[CommonService.GetPropertyName(() => _regVStub.Data_Reg)]).Date;           
 
             //Inizializzo i Dati delle REG di Entrata e Uscita da eliminare                                       
             DateTime dateTimeEFisOld = DateTime.MinValue;
@@ -2287,7 +2287,7 @@ namespace PowerWeb.Modules
         {
             // Recupero della griglia
             ASPxGridView editGrid = (ASPxGridView)sender;
-            
+
             // recupero della colonna da processare
             GridViewColumn sameDayColumn = editGrid.Columns[CommonService.GetPropertyName(() => _regVStub.IsUTimeSameDayE)];
 
