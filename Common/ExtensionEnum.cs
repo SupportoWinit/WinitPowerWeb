@@ -160,7 +160,9 @@ namespace Common
         BlockRestoreReg,
         Solaris,
         TimesheetMultiPagedExport,
-        Casp        
+        Casp,
+        ExcludeAwayHoursInExport,
+        ScSExportBudget
     }
 
     public enum ClockAppsOperationEnum

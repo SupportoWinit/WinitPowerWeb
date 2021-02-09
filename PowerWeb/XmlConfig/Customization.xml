@@ -336,8 +336,19 @@
 	<c ID="CustomizationEnum.EnableActivityEvaluationEnum" Des="Indica se è attiva la gestione della valutazione delle attività" Value="0" />
 	<!--EnableActivityEvaluationEnum=0 La valutazione delle attività risulta disabilitata
 		EnableActivityEvaluationEnum=1 La valutazione delle attività risulta abilitata-->
-	
-	<!-- *******************************************AUTORIZZAZIONE STRAORDINARI NEL CARTELLINO*********************************************************-->		
+
+  <!-- *******************************************ORE TRASFERTA NOT IN EXP ORE/BUDGET CANT'*********************************************************-->
+  <c ID="CustomizationEnum.ExcludeAwayHoursInExport" Des="Indica se usare le reg con motivazione 'TRA' (trasferta) nel export ore/budget" Value="1" />
+  <!--ExcludeAwayHoursInExport=0 Include le ore TRA dall'export
+		ExcludeAwayHoursInExport=1 Esclude le ore TRA dall'export-->
+
+  <!-- *******************************************ORE TRASFERTA NOT IN EXP ORE/BUDGET CANT'*********************************************************-->
+  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="1" />
+  <!--ScSExportBudget=0 disattiva l'export
+		ScSExportBudget=1 attiva l'export-->
+  
+
+  <!-- *******************************************AUTORIZZAZIONE STRAORDINARI NEL CARTELLINO*********************************************************-->		
 	<c ID="CustomizationEnum.TimesheetRecoveryHoursTypeEnum" Des="Indica il tipo di recupero da applicare al cartellino in caso di attivazione dell'autorizzazione straordinari" Value="0" />
 	<!--TimesheetRecoveryHoursTypeEnum=0 Non sarà applicato il reucpero nella definizione dell'autorizzazione straordinario
 		TimesheetRecoveryHoursTypeEnum=1 Sarà applicato il recupero settimanale nella definizione dell'autorizzazione stroardinario-->

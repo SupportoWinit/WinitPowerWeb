@@ -160,6 +160,11 @@ namespace Exports.ExportExcelCustom
             get; set;
         }
 
+        public virtual bool IsDecimalHour
+        {
+            get; set;
+        }
+
         #endregion
 
         #endregion

@@ -308,7 +308,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             if (ModelFirstEntity == ExcelModelSelectionTypeEnum.Cant)
                                 oreAggiuntive = RepoManager.Tab_OrariRepo.GetMonthlyPlanDuration(firstMonthDate, groupedRegV.Key, "Can");
-
+                            
 
                             foreach (DateTime monthDay in CommonService.EachDay(firstMonthDate, lastMonthDate))
                             {
@@ -449,7 +449,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
+            
             // ritorno del valore calcolato dal metodo
             return entityDescription;
         }
@@ -963,8 +963,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 CellInsertValue(worksheetName, executionUColumn.Value, rowIndex, cObject.ExecutionHourU, ExcelInsertTypeEnum.HhmmTime);
                             if (executionDurationColumn != null)
                             {
-                                CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, cObject.ExecutionDuration, ExcelInsertTypeEnum.HhmmTime);
-
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                                {
+                                    var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)cObject.ExecutionDuration, true);
+                                    CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                                }
+                                else
+                                {
+                                    CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, cObject.ExecutionDuration, ExcelInsertTypeEnum.HhmmTime);
+                                }
                                 // se sto inserendo la durata di esecizione allora la sommo ai minuti totali della giornata
                                 totalExecutionDuration += Convert.ToInt32(cObject.ExecutionDuration.HasValue ? cObject.ExecutionDuration.Value.TotalMinutes : TimeSpan.Zero.TotalMinutes);
                             }
@@ -974,8 +981,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 CellInsertValue(worksheetName, previsionalUColumn.Value, rowIndex, cObject.PrevisionalHourU, ExcelInsertTypeEnum.HhmmTime);
                             if (previsionalDurationColumn != null)
                             {
-                                CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, cObject.PrevisionalDuration, ExcelInsertTypeEnum.HhmmTime);
-
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                                {
+                                    var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)cObject.PrevisionalDuration, true);
+                                    CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                                }
+                                else
+                                {
+                                    CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, cObject.PrevisionalDuration, ExcelInsertTypeEnum.HhmmTime);
+                                }  
                                 // se sto inserendo la durata di previsione allora la sommo ai minuti totali della giornata
                                 totalPrevisionalDuration += Convert.ToInt32(cObject.PrevisionalDuration.HasValue ? cObject.PrevisionalDuration.Value.TotalMinutes : TimeSpan.Zero.TotalMinutes);
                             }
@@ -1001,9 +1015,20 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             }
                             if (confrontationDurationColumn != null)
                             {
-                                CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDuration, ExcelInsertTypeEnum.HhmmTime);
-                                if (!String.IsNullOrEmpty(cObject.ConfrontationDurationNumberFormat))
-                                    CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDurationNumberFormat);
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                                {
+                                    var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)cObject.ConfrontationDuration, true);
+                                    CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                                    if (!String.IsNullOrEmpty(cObject.ConfrontationDurationNumberFormat))
+                                        CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, -durataCentTime, ExcelInsertTypeEnum.Content);
+                                }
+                                else
+                                {
+                                    CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDuration, ExcelInsertTypeEnum.HhmmTime);
+                                    if (!String.IsNullOrEmpty(cObject.ConfrontationDurationNumberFormat))
+                                        CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDurationNumberFormat);
+                                }                               
+                                
 
                                 // se sto inserendo la durata di previsione allora la sommo ai minuti totali della giornata
                                 int confDurationPartial = Convert.ToInt32(cObject.ConfrontationDuration.HasValue ? cObject.ConfrontationDuration.Value.TotalMinutes : TimeSpan.Zero.TotalMinutes);
@@ -1077,16 +1102,28 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             CellInsertValue(worksheetName, 2, rowIndex, BusinessService.GetLocalizedString(PowerWebResources.STR_TOTALE).ToUpper(), ExcelInsertTypeEnum.Content);
                             CellInsertValue(worksheetName, 3, rowIndex, dateToElaborate, ExcelInsertTypeEnum.Content);
                             CellSetNumberFormat(worksheetName, 3, rowIndex, DateNumberFormat);
-                            //Inserisce un Timespan fittizzio per far prendere alla cella il formato giusto, poi la sovrascrive con la formula
-                            CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, new TimeSpan(0), ExcelInsertTypeEnum.HhmmTime);
-                            CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, String.Format("=SUM({0}{1}:{0}{2})", CommonService.GetColumnName(executionDurationColumn.Value - 1), firstObjectRow, rowIndex - 1), ExcelInsertTypeEnum.Formula);
-                            //Inserisce un Timespan fittizzio per far prendere alla cella il formato giusto, poi la sovrascrive con la formula
-                            CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, new TimeSpan(0), ExcelInsertTypeEnum.HhmmTime);
-                            CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, String.Format("=SUM({0}{1}:{0}{2})", CommonService.GetColumnName(previsionalDurationColumn.Value - 1), firstObjectRow, rowIndex - 1), ExcelInsertTypeEnum.Formula);
-                            //Inserisce un Timespan fittizzio per far prendere alla cella il formato giusto, poi la sovrascrive con la stringa
-                            CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, new TimeSpan(0), ExcelInsertTypeEnum.HhmmTime);
-                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(totalConfrontationDuration));
-                            CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, String.Format("{0}{1}:{2}", totalConfrontationDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                            {
+                                CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, String.Format("=SUM({0}{1}:{0}{2})", CommonService.GetColumnName(executionDurationColumn.Value - 1), firstObjectRow, rowIndex - 1), ExcelInsertTypeEnum.Formula);
+                                CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, String.Format("=SUM({0}{1}:{0}{2})", CommonService.GetColumnName(previsionalDurationColumn.Value - 1), firstObjectRow, rowIndex - 1), ExcelInsertTypeEnum.Formula);
+                                TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(totalConfrontationDuration));
+                                var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                                CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                            }
+                            else
+                            {
+                                //Inserisce un Timespan fittizzio per far prendere alla cella il formato giusto, poi la sovrascrive con la formula
+                                CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, new TimeSpan(0), ExcelInsertTypeEnum.HhmmTime);
+                                CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, String.Format("=SUM({0}{1}:{0}{2})", CommonService.GetColumnName(executionDurationColumn.Value - 1), firstObjectRow, rowIndex - 1), ExcelInsertTypeEnum.Formula);
+                                //Inserisce un Timespan fittizzio per far prendere alla cella il formato giusto, poi la sovrascrive con la formula
+                                CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, new TimeSpan(0), ExcelInsertTypeEnum.HhmmTime);
+                                CellInsertValue(worksheetName, previsionalDurationColumn.Value, rowIndex, String.Format("=SUM({0}{1}:{0}{2})", CommonService.GetColumnName(previsionalDurationColumn.Value - 1), firstObjectRow, rowIndex - 1), ExcelInsertTypeEnum.Formula);
+                                //Inserisce un Timespan fittizzio per far prendere alla cella il formato giusto, poi la sovrascrive con la stringa
+                                CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, new TimeSpan(0), ExcelInsertTypeEnum.HhmmTime);
+                                TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(totalConfrontationDuration));
+                                CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, String.Format("{0}{1}:{2}", totalConfrontationDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                            }                               
+                           
 
                             if ((RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.InserimentoNumeroInterventi) == (int)InserimentoNumeroInterventi.Includi))
                             {
@@ -1113,8 +1150,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             // formatta la cella a seconda del valore
                             if (totalConfrontationDuration < 0)
                             {
-                                CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, rowIndex, NegativeTimeFormat);
-                                RangeSetFontColor(worksheetName, confrontationDurationColumn.Value, rowIndex, confrontationDurationColumn.Value, rowIndex, _anomalyDeltaColor);
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                                {
+                                    TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(totalConfrontationDuration));
+                                    var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                                    CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, -durataCentTime, ExcelInsertTypeEnum.Content);
+                                    RangeSetFontColor(worksheetName, confrontationDurationColumn.Value, rowIndex, confrontationDurationColumn.Value, rowIndex, _anomalyDeltaColor);
+                                }
+                                else
+                                {
+                                    CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, rowIndex, NegativeTimeFormat);
+                                    RangeSetFontColor(worksheetName, confrontationDurationColumn.Value, rowIndex, confrontationDurationColumn.Value, rowIndex, _anomalyDeltaColor);
+                                }                                
                             }
                             else
                                 RangeSetFontColor(worksheetName, confrontationDurationColumn.Value, rowIndex, confrontationDurationColumn.Value, rowIndex, _normalDeltaColor);
@@ -1496,8 +1543,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     //calcolo dei totali della durata mensile
                     if (executionDurationColumn != null)
                     {
-                        TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalEffectiveDuration));
-                        CellInsertValue(worksheetName, executionDurationColumn.Value, totalRowIndex, String.Format("{0}{1}:{2}", entityTotalEffectiveDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                        {
+                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalEffectiveDuration));
+                            var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                            CellInsertValue(worksheetName, executionDurationColumn.Value, totalRowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                        }
+                        else
+                        {
+                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalEffectiveDuration));
+                            CellInsertValue(worksheetName, executionDurationColumn.Value, totalRowIndex, String.Format("{0}{1}:{2}", entityTotalEffectiveDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                        }                            
 
                         //vengono inseite formattati i totali delle ore previste
                         RangeSetFontColor(worksheetName, executionDurationColumn.Value, totalRowIndex, executionDurationColumn.Value, totalRowIndex, _normalPrevisionalHour);
@@ -1509,8 +1565,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     //calcolo dei totali delle ore previste
                     if (previsionalDurationColumn != null)
                     {
-                        TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalPrevisionalDuration));
-                        CellInsertValue(worksheetName, previsionalDurationColumn.Value, totalRowIndex, String.Format("{0}{1}:{2}", entityTotalPrevisionalDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                        {
+                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalPrevisionalDuration));
+                            var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                            CellInsertValue(worksheetName, previsionalDurationColumn.Value, totalRowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                        }
+                        else
+                        {
+                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalPrevisionalDuration));
+                            CellInsertValue(worksheetName, previsionalDurationColumn.Value, totalRowIndex, String.Format("{0}{1}:{2}", entityTotalPrevisionalDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                        }                        
 
                         //vengono inseite formattati i totali delle ore previste
                         RangeSetFontColor(worksheetName, previsionalDurationColumn.Value, totalRowIndex, previsionalDurationColumn.Value, totalRowIndex, _normalPrevisionalHour);
@@ -1550,8 +1615,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     // Scrive il totale mensile del confronto della durata
                     if (confrontationDurationColumn != null)
                     {
-                        TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalConfrontationDuration));
-                        CellInsertValue(worksheetName, confrontationDurationColumn.Value, totalRowIndex, String.Format("{0}{1}:{2}", entityTotalConfrontationDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
+                        {
+                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalConfrontationDuration));
+                            var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                            CellInsertValue(worksheetName, confrontationDurationColumn.Value, totalRowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
+                        }
+                        else
+                        {
+                            TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalConfrontationDuration));
+                            CellInsertValue(worksheetName, confrontationDurationColumn.Value, totalRowIndex, String.Format("{0}{1}:{2}", entityTotalConfrontationDuration < 0 ? "-" : "", (int)time.TotalHours, time.Minutes.ToString("00")), ExcelInsertTypeEnum.HhmmTime);
+                        }
+                        
 
                         // Formatta la cella a seconda del valore del totale
                         if (entityTotalConfrontationDuration < 0)
@@ -1994,6 +2069,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             IEnumerable<Reg_V> dayRegVs = allDayRegVs.Where(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass
                                                                     && regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass);
 
+            //se la custumization è attiva si escludono le reg 'TRASFERTA'
+            if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExcludeAwayHoursInExport) == 1)
+                dayRegVs = dayRegVs.Where(r => r.Motivazione_Reg_Cod != "TRA");
+
             // inizializzazione del valore di ritorno del metodo
             var confrontations = new List<ConfrontationObject>();
 
@@ -2006,11 +2085,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             // inizializzazione della lista che contiene l'elenco dei timesheets utilizzati nell'elaborazione del giorno
             var usedTimesheetIds = new List<long>();
 
+             
+
             #region Ealborazione delle registrazioni
 
             // per ogni registrazione da processare
             foreach (var dayRegV in dayRegVs)
             {
+
                 // calcolo dell'id dell'altra entità rispetto a quella attualmente in processo
                 int otherEntityId = GetOtherEntityId(dayRegV);
 
@@ -2056,9 +2138,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             break;
                     }
                 DateTime minutesToAdd = DateTime.Today.AddMinutes(Convert.ToDouble(regvDuration));
-                confrontationsByOtherEntity[otherEntityId].ExecutionDuration = confrontationsByOtherEntity[otherEntityId].ExecutionDuration == null
-                                                                                    ? TimeSpan.Zero.Add(minutesToAdd.TimeOfDay)
-                                                                                    : confrontationsByOtherEntity[otherEntityId].ExecutionDuration.Value.Add(minutesToAdd.TimeOfDay);
+                if (regvDuration > 0)
+                {                    
+                    confrontationsByOtherEntity[otherEntityId].ExecutionDuration = confrontationsByOtherEntity[otherEntityId].ExecutionDuration == null
+                                                                                        ? TimeSpan.Zero.Add(minutesToAdd.TimeOfDay)
+                                                                                        : confrontationsByOtherEntity[otherEntityId].ExecutionDuration.Value.Add(minutesToAdd.TimeOfDay);
+                }
+                else
+                {
+                     confrontationsByOtherEntity[otherEntityId].ExecutionDuration = confrontationsByOtherEntity[otherEntityId].ExecutionDuration == null
+                                                                                        ? TimeSpan.Zero.Add(minutesToAdd.TimeOfDay)
+                                                                                        : confrontationsByOtherEntity[otherEntityId].ExecutionDuration.Value.Add(TimeSpan.FromMinutes((double)regvDuration));
+                }
 
 
                 // si recupera l'orario associato alla presente registrazione; nel caso dell'analisi per durata si tratta dell'orario
