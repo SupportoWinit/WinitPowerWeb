@@ -4581,6 +4581,10 @@ namespace Business.BusinessExtension
             //Filtra i cartellini su cui calcolare il totale
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
+            int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse)
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+
             TimesheetModuleItem colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
 
             if (!isByOtherEntity)
