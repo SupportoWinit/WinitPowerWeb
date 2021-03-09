@@ -180,13 +180,17 @@
     <Compile Include="BusinessServices\RegWriterService\Service\RegWriterService.cs" />
     <Compile Include="BusinessServices\UserService\IUserService.cs" />
     <Compile Include="BusinessServices\UserService\Service\UserService.cs" />
+    <Compile Include="DataClasses\FlutterAppDTOs\FlutterAppReg.cs" />
     <Compile Include="DataClasses\GeoBadgeDTOs\GeoBadgeReg.cs" />
     <Compile Include="DataClasses\SupportClasses\RegsByDay.cs" />
     <Compile Include="DataClasses\WebApiDataClasses\WinitPasswordChangeDTO.cs" />
     <Compile Include="ExternalImport\ExternalImportFactory.cs" />
     <Compile Include="ExternalImport\ExternalImportManager.cs" />
     <Compile Include="ExternalImport\IExternalImport.cs" />
+    <Compile Include="ExternalImport\Implementations\FlutterAppExternalImport.cs" />
     <Compile Include="ExternalImport\Implementations\GeoBadgeExternalImport.cs" />
+    <Compile Include="HttpHub\FlutterAppHttpModule.cs" />
+    <Compile Include="HttpHub\HttpHubs\FlutterAppHub.cs" />
     <Compile Include="HttpHub\HttpHubs\GeoBadgeHub.cs" />
     <Compile Include="HttpHub\HttpModule.cs" />
     <Compile Include="ImportModules\CantImportModule\Factory\CantImportFactory.cs" />
@@ -251,6 +255,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RegFileCreators\FlutterAppRegFileCreator.cs" />
     <Compile Include="RegFileCreators\GeoBadgeRegFileCreator.cs" />
     <Compile Include="RegFileCreators\IRegFileCreator.cs" />
     <Compile Include="Repository\Custom\Aut_StrRepository.cs">

@@ -337,7 +337,7 @@ namespace Business.Repository.Custom
             RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
             regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
             #endregion
-                        
+
             if (regs.Any())
             {
 
@@ -2292,7 +2292,7 @@ namespace Business.Repository.Custom
                 //le registrazioni vengono regruppate per collaboratore
                 foreach (var regByCol in regsToClose.GroupBy(reg => reg.Col_Id))
                 {
-                    var a= regByCol.Key;
+                    var a = regByCol.Key;
                     //le registrazioni raggruppate per collaboratore vengono ragruppate per data
                     foreach (var regByColDate in regByCol.GroupBy(reg => reg.Registrazione_Data_Ora_Fis_Reg.Date))
                     {
@@ -2338,7 +2338,7 @@ namespace Business.Repository.Custom
                                     Cant currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentRegCantId);
 
                                     //se il cantiere attuale è una sede e il successivo no viene effettuata una chiususra
-                                    if ((nextRegCant != default(Cant) && currentRegCant != default(Cant) ))
+                                    if ((nextRegCant != default(Cant) && currentRegCant != default(Cant)))
                                     {
                                         //se la registrazione corrente è una sede
                                         if (currentRegCant.Tipo_Cantiere_Can == "SEDE")
@@ -2432,9 +2432,9 @@ namespace Business.Repository.Custom
                 #endregion
                 #endregion
 
-               
 
-                if(closures.Count!=0)
+
+                if (closures.Count != 0)
                 {
                     //le registrazioni che effettuano una chiusura vengono aggiunte al database
                     Add(closures, true);
@@ -2445,7 +2445,7 @@ namespace Business.Repository.Custom
                     //vengonoa aggiunte le registrazioni di chiusura nella lista delle registrazioni da processare.
                     regs.AddRange(closures);
                 }
-               
+
 
             }
 
@@ -5204,6 +5204,7 @@ namespace Business.Repository.Custom
                         // - se la matricola del dispositivo è una fru allora è lei la fru, altrimenti sicuramente il badge
                         Pru regPru = (Pru)(machineRegistry is Pru ? machineRegistry : badgeRegistry);
                         Fru regFru = (Fru)(machineRegistry is Fru ? machineRegistry : badgeRegistry);
+                        var motivation = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Chiave_Tab == currentPreReg.Motivate);
 
                         #endregion
 
@@ -5220,8 +5221,9 @@ namespace Business.Repository.Custom
                             Data_Registrazione_Reg = DateTime.UtcNow,
                             DataOraUltimaModifica_Reg = DateTime.UtcNow,
                             Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                            Registrazione_Badge_Originale = currentPreReg.BadgeCode
-                        });
+                            Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                            Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                        }) ;
 
                         #endregion
 
@@ -6231,6 +6233,13 @@ namespace Business.Repository.Custom
                 RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3]),
                     Convert.ToInt32(splittedLine[4]), Convert.ToInt32(splittedLine[5]), Convert.ToInt32(splittedLine[6]), 00); // data e or timbratura
                 RegistrationDirection = null; // direzione della timbratura
+
+                if (regLine.Contains("[Motivazione]"))
+                {
+                    Motivate = splittedLine[8].Split('=')[1];
+                }
+
+
                 if (euCustVersion == (int)ImportFlagEUEnum.Import)
                 {
                     //lunghezza uguale a 10 per registrazioni TAG e GPS con la selezione dell' entrata e dell'uscita
@@ -6355,6 +6364,8 @@ namespace Business.Repository.Custom
             /// solamente se <see cref="AdditionalInfoType"/> è valorizzata a <see cref="AdditionalInfoEnum.Squadra"/>.
             /// </value>
             public string[] SquadraArray { get; set; }
+
+            public string Motivate { get; set; }
 
             #endregion
 

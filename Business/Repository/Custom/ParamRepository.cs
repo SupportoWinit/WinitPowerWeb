@@ -669,6 +669,20 @@ namespace Business.Repository.Custom
             }
         }
 
+        public void SaveFlutterAppRegIndex(int index)
+        {
+            try
+            {
+                var paramRow = DbSet.First();
+                paramRow.Indice_Timbrature_FlutterApp = ParametersRow.Indice_Timbrature_FlutterApp = index;
+                SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Errore durante il salvataggio del seguente indice ({0}) riguardante pa procedura di scarico timbrature FlutterApp : {1}", index, ex.Message);
+            }
+        }
+
         #region Gestione XML Import esterno
 
         public string GetConnectionHost(string fullName)

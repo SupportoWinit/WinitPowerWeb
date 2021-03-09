@@ -161,6 +161,7 @@ namespace Domain
         public Nullable<System.TimeSpan> Tolleranza_Limite_Uscita_Pomeriggio { get; set; }
         public Nullable<System.TimeSpan> Tolleranza_Limite_Uscita_Mattina { get; set; }
         public int Indice_Timbrature_GeoBadge { get; set; }
+        public int Indice_Timbrature_FlutterApp { get; set; }
         public bool Abilita_Sincronizzazione_Entità { get; set; }
         public bool Abilita_Import_Esterno { get; set; }
         public Nullable<short> Soglia_Minima_Arrotondamento_Durata { get; set; }

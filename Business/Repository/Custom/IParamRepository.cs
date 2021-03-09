@@ -109,5 +109,11 @@ namespace Business.Repository.Custom
         /// </value>
         Tuple<bool, NocturneTypeEnum, TimeSpan,TimeSpan> NocturneGeneralConfiguration { get; }
 
+        /// <summary>
+        /// Salva l'ultimo indice per lo scarico aggiornato delle timbrature dal server BackEndFlutter
+        /// </summary>
+        /// <param name="index">L'indice corrente</param>
+        void SaveFlutterAppRegIndex(int index);
+
     }
 }
