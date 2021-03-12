@@ -2143,6 +2143,8 @@ namespace PowerWeb.Modules
 
         }
 
+
+
         /// <summary>
         /// Setta le etichette del collaboratore e data sopra la griglia di edit multiplo
         /// </summary>

@@ -166,6 +166,7 @@ namespace Domain
         public Nullable<System.TimeSpan> Tolleranza_Limite_Uscita_Mattina_Col { get; set; }
         public Nullable<short> Soglia_Minima_Arrotondamento_Durata_Col { get; set; }
         public Nullable<System.TimeSpan> Limite_Entrata_Inizio_Pomeriggio_Col { get; set; }
+        public Nullable<System.TimeSpan> Tolleranza_Limite_Entrata_Col { get; set; }
 
 
         public virtual ICollection<Aut_Str> Aut_Str { get; set; }

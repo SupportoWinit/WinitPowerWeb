@@ -427,6 +427,8 @@ namespace PowerWeb.Modules
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Tolleranza_Limite_Uscita_Mattina_Cant), TabPageItemFieldTypeEnum.NotInGroup));
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Tolleranza_Limite_Uscita_Pomeriggio_Cant), TabPageItemFieldTypeEnum.NotInGroup));
 
+                oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Tolleranza_Limite_Entrata_Cant), TabPageItemFieldTypeEnum.NotInGroup));
+
 
                 oArrotondamentiTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
                 oArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Tolleranza_Limite_Entrata_Pomeriggio_Cant), TabPageItemFieldTypeEnum.NotInGroup));
@@ -1023,6 +1025,8 @@ namespace PowerWeb.Modules
 
                 ArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Ritardo_Tolleranza_Minuti_Col), TabPageItemFieldTypeEnum.NotInGroup));
                 ArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Tolleranza_Limite_Entrata_Pomeriggio_Col), TabPageItemFieldTypeEnum.NotInGroup));
+
+                ArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Tolleranza_Limite_Entrata_Col), TabPageItemFieldTypeEnum.NotInGroup));
 
                 ArrotondamentiTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Limite_Entrata_Inizio_Pomeriggio_Col), TabPageItemFieldTypeEnum.NotInGroup));
                 ArrotondamentiTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));

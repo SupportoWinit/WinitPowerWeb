@@ -666,6 +666,16 @@
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataComboBoxColumn FieldName="Tolleranza_Limite_Uscita_Mattina_Cant" Visible="False">
                 </dx:GridViewDataComboBoxColumn>
+
+                
+
+                <dx:GridViewDataTextColumn FieldName="Tolleranza_Limite_Entrata_Cant" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+
                 <dx:GridViewDataComboBoxColumn FieldName="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Visible="False">
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataTimeEditColumn FieldName="Turno1_Can" Visible="False">
@@ -719,6 +729,9 @@
                         <MaskSettings Mask="00:00" IncludeLiterals="None" />
                     </PropertiesTextEdit>
                 </dx:GridViewDataTextColumn>
+
+                
+
                 <dx:GridViewDataTextColumn FieldName="Codice_Commessa_Can" Visible="False">
                 </dx:GridViewDataTextColumn>
                 <dx:GridViewDataTextColumn FieldName="Codice_Gestionale_Can" Visible="False">

@@ -868,6 +868,14 @@
                         <MaskSettings Mask="00:00" IncludeLiterals="None" />
                     </PropertiesTextEdit>
                 </dx:GridViewDataTextColumn>
+
+                 <dx:GridViewDataTextColumn FieldName="Tolleranza_Limite_Entrata_Col" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+
                 <dx:GridViewDataTextColumn FieldName="Limite_Uscita_Mattina_Col" Visible="False">
                     <PropertiesTextEdit>
                         <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>

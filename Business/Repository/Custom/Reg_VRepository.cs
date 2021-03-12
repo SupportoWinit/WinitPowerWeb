@@ -135,6 +135,7 @@ namespace Business.Repository.Custom
                                     {
                                         TimeSpan minEntryHour = currentCant.Limite_Entrata_Mattina_Cant.HasValue ? currentCant.Limite_Entrata_Mattina_Cant.Value : TimeSpan.Zero;
 
+
                                         //Recupero i Parametri di Arrotondamento del Collaboratore
                                         RoundingMethodEnum roundingEnum = currentCol.RoundingMethodEnum;
                                         int thresholdStart = currentCol.SogliaI_Col.HasValue ? currentCol.SogliaI_Col.Value : -1;
@@ -274,10 +275,10 @@ namespace Business.Repository.Custom
                                                         {
                                                             //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
                                                             if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
-                                                                fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;                                                            
+                                                                fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
 
                                                             // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                            if (delayMorningTollerance!=0)
+                                                            if (delayMorningTollerance != 0)
                                                             {
                                                                 if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(delayMorningTollerance)))
                                                                     currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
@@ -296,6 +297,42 @@ namespace Business.Repository.Custom
                                                                         entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
                                                                         0);
                                                             }
+
+                                                            //limite d'entrata su cant
+                                                            if (currentCant.Limite_Entrata_Mattina_Cant != null || currentCol.Limite_Entrata_Mattina_Col != null)
+                                                            {
+                                                                TimeSpan entryLimit = new TimeSpan();
+
+                                                                if (currentCol.Limite_Entrata_Mattina_Col != null)
+                                                                {
+                                                                    entryLimit = currentCol.Limite_Entrata_Mattina_Col.Value.Add((TimeSpan)currentCol.Tolleranza_Limite_Entrata_Col);
+                                                                    if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimit)
+                                                                    {
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        currentCol.Limite_Entrata_Mattina_Col.Value.Hours,
+                                                                        currentCol.Limite_Entrata_Mattina_Col.Value.Minutes,
+                                                                        0);
+                                                                    }
+                                                                }
+                                                                else if (currentCant.Limite_Entrata_Mattina_Cant != null)
+                                                                {
+                                                                    entryLimit = currentCant.Limite_Entrata_Mattina_Cant.Value.Add((TimeSpan)currentCant.Tolleranza_Limite_Entrata_Cant);
+
+                                                                    if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimit)
+                                                                    {
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        currentCant.Limite_Entrata_Mattina_Cant.Value.Hours,
+                                                                        currentCant.Limite_Entrata_Mattina_Cant.Value.Minutes,
+                                                                        0);
+                                                                    }
+                                                                }
+
+                                                            }
+
                                                         }
                                                         else if (currentRegV.Data_Ora_Fis_E.TimeOfDay >= midDay && entryLimitConfig[EntryLimitTypeEnum.Afternoon].IsConfigured)
                                                         {
@@ -467,7 +504,7 @@ namespace Business.Repository.Custom
 
                                                 #endregion
 
-                                                
+
                                                 //Personalizzazione casp
                                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1 && !currentCant.Raggruppamento1_Can.Equals("5"))
                                                 {
@@ -1410,23 +1447,23 @@ namespace Business.Repository.Custom
                     // ciclo di elaborazione delle date del periodo
                     periodDates.ForEach(date =>
                     {
-                        // recupero, tra i Col_Orario recuperati quello relativo al mese/anno del giorno in elaborazione
-                        var freeTimesheet = colFreeTimesheets.FirstOrDefault(cft => cft.Anno_Orario == date.Year && cft.Mese_Orario == date.Month);
+                    // recupero, tra i Col_Orario recuperati quello relativo al mese/anno del giorno in elaborazione
+                    var freeTimesheet = colFreeTimesheets.FirstOrDefault(cft => cft.Anno_Orario == date.Year && cft.Mese_Orario == date.Month);
 
-                        // ritorno dell'id della Col_Orario collegato
-                        tmpFreeTimeSheetId = tmpFreeTimeSheetId == 0 ? freeTimesheet.Col_Cant_Orario_Id : tmpFreeTimeSheetId;
+                    // ritorno dell'id della Col_Orario collegato
+                    tmpFreeTimeSheetId = tmpFreeTimeSheetId == 0 ? freeTimesheet.Col_Cant_Orario_Id : tmpFreeTimeSheetId;
 
-                        // se l'orario è stato trovato allora si recupera la durata
-                        double duration = 0; // valore di default in caso di mancanza orario
+                    // se l'orario è stato trovato allora si recupera la durata
+                    double duration = 0; // valore di default in caso di mancanza orario
                         if (freeTimesheet != null)
                         {
-                            // si recupera la durata dalla proprietà che la contiene corrispodente al giorno
-                            // in elaborazione
-                            duration = Convert.ToDouble(CommonService.GetPropertyValue(freeTimesheet, RepoManager.ColCantOrarioRepo.GetPropertyNameFromDate(date)));
+                        // si recupera la durata dalla proprietà che la contiene corrispodente al giorno
+                        // in elaborazione
+                        duration = Convert.ToDouble(CommonService.GetPropertyValue(freeTimesheet, RepoManager.ColCantOrarioRepo.GetPropertyNameFromDate(date)));
                         }
 
-                        // generazione della nuova reg_v con la durata calcolata
-                        result.Add(new Reg_V()
+                    // generazione della nuova reg_v con la durata calcolata
+                    result.Add(new Reg_V()
                         {
                             RegE = counter--,
                             RegU = counter--,
@@ -1993,7 +2030,7 @@ namespace Business.Repository.Custom
                         var regvs = regvsList.Where(regv => regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Pass || (regv.RegU != null && (regv.Registrazione_Stato_Reg & (int)RegStateEnum.Ass) == (int)RegStateEnum.Ass)).ToList();
                         //recupero da Param i Flag_Ore_Viaggi (se vale 0 NON devo trattare i Viaggi)
                         int paramTripHours = RepoManager.ParamRepo.ParametersRow.Flag_Ore_Viaggi.HasValue ? RepoManager.ParamRepo.ParametersRow.Flag_Ore_Viaggi.Value : 0; // 0 means skip checks
-                        //recupero da Param la Durata_Pausa
+                                                                                                                                                                           //recupero da Param la Durata_Pausa
                         TimeSpan paramPauseTime = RepoManager.ParamRepo.ParametersRow.Durata_Pausa.HasValue ? RepoManager.ParamRepo.ParametersRow.Durata_Pausa.Value : TimeSpan.Zero;
                         //Crea la Lista vuota in cui scrivere le Nuove Registrazioni dei Viaggi
                         var trips = new List<Reg>();
@@ -2260,7 +2297,7 @@ namespace Business.Repository.Custom
                         var tripEFisDateTime = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? new DateTime(lastRegV.Data_Ora_Fis_U.Value.Year, lastRegV.Data_Ora_Fis_U.Value.Month, lastRegV.Data_Ora_Fis_U.Value.Day, lastRegV.Data_Ora_Fis_U.Value.Hour, lastRegV.Data_Ora_Fis_U.Value.Minute, 59) : new DateTime(lastRegV.Data_Ora_Fis_E.Year, lastRegV.Data_Ora_Fis_E.Month, lastRegV.Data_Ora_Fis_E.Day, lastRegV.Data_Ora_Fis_E.Hour, lastRegV.Data_Ora_Fis_E.Minute, 59);
                         //l'ora figurativa di inizio viaggio è calcolata dall 'ora figurativa della ragistrazione precedente
                         var tripEFigDateTime = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fis_U : lastRegV.Data_Ora_Fis_E; //DA VERIFICARE
-                        //var tripEFigDateTime =lastRegV.Data_Ora_Fig_U;
+                                                                                                                                                             //var tripEFigDateTime =lastRegV.Data_Ora_Fig_U;
 
                         //se il viaggio ha un'ora valida di inizio
                         //viene calcolata l'ora di entrata figurativa prendendola dalle ore figurative
@@ -2921,10 +2958,10 @@ namespace Business.Repository.Custom
             {
                 // Altrimenti controlla se sono attivi i viaggi di inizio/fine "standard"
                 if (paramTripHours == (int)FlagTripHoursParamEnum.AllExceptTwo)   //(1)
-                //Nel caso in cui in Scheda PARAM sia abilitata la gestione dei Viaggi da/a Casa per Tutti Eccetto i Col Esclusi
+                                                                                  //Nel caso in cui in Scheda PARAM sia abilitata la gestione dei Viaggi da/a Casa per Tutti Eccetto i Col Esclusi
                 {
                     if (currentCol.Flag_Ore_Viaggi_Col_Inizio_Fine != (int)FlagTripHoursColStartEndEnum.AllExceptTwo)  // <> 2
-                        //Tratta solo i Collaboratore che NON sono da Escludere
+                                                                                                                       //Tratta solo i Collaboratore che NON sono da Escludere
                         tripList.AddRange(ElaborateStartEndTrips(orderedCurrentTripsByMotByColByDate, currentCol, elaborateUserId, elaborateDateTime, application));
                 }
                 else if (paramTripHours == (int)FlagTripHoursParamEnum.OnlyOne)
@@ -4175,11 +4212,11 @@ namespace Business.Repository.Custom
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.Data_Reg),
                        BusinessService.GetLocalizedString(PowerWebResources.ERR_DATA_REG_MINORE_DI_DATA_BLOCCO));
                 }
-                
+
                 // viene recuperato il cantiere collegato alla reg_v (utilizzato su più controlli)
                 var currentCant = RepoManager.CantRepo.SingleOrDefault(cant => cant.Cant_Id == entity.Cant_Id);
 
-                
+
 
                 // Se si sta elaborando una reg_v che ha una ora di uscita ed è collegata a un cantiere attività 
                 // allora viene generato un errore di check; in caso contrario si procede correttamente con le verifiche

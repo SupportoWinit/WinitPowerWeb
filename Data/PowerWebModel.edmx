@@ -162,6 +162,7 @@
           <Property Name="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Type="time" Precision="7" />
           <Property Name="Tolleranza_Limite_Uscita_Mattina_Cant" Type="time" Precision="7" />
           <Property Name="IdTerminale" Type="int" />
+          <Property Name="Tolleranza_Limite_Entrata_Cant" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="Cant_CentroDiCosto">
           <Key>
@@ -519,6 +520,7 @@
           <Property Name="Tolleranza_Limite_Uscita_Mattina_Col" Type="time" Precision="7" />
           <Property Name="Soglia_Minima_Arrotondamento_Durata_Col" Type="smallint" />
           <Property Name="Limite_Entrata_Inizio_Pomeriggio_Col" Type="time" Precision="7" />
+          <Property Name="Tolleranza_Limite_Entrata_Col" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="Col_Cant_Orario">
           <Key>
@@ -3584,6 +3586,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <NavigationProperty Name="Param" Relationship="Self.FK_Param_Cant" FromRole="Cant" ToRole="Param" />
           <NavigationProperty Name="Regs" Relationship="Self.FK_Reg_Cant" FromRole="Cant" ToRole="Reg" />
           <NavigationProperty Name="Cant_CentroDiCosto" Relationship="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" FromRole="Cant" ToRole="Cant_CentroDiCosto" />
+          <Property Name="Tolleranza_Limite_Entrata_Cant" Type="Time" Precision="7" />
         </EntityType>
         <EntityType Name="Cant_Note">
           <Key>
@@ -3940,6 +3943,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <NavigationProperty Name="Regs" Relationship="Self.FK_Reg_Col" FromRole="Col" ToRole="Reg" />
           <NavigationProperty Name="Timesheet" Relationship="Self.FK_Timesheet_Col" FromRole="Col" ToRole="Timesheet" />
           <NavigationProperty Name="Utenti" Relationship="Self.FK_Utenti_Col" FromRole="Col" ToRole="Utenti" />
+          <Property Name="Tolleranza_Limite_Entrata_Col" Type="Time" Precision="7" />
         </EntityType>
         <EntityType Name="Col_Cant_Orario">
           <Key>
@@ -6632,6 +6636,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Cant">
             <EntityTypeMapping TypeName="PowerWebModel.Cant">
               <MappingFragment StoreEntitySet="Cant">
+                <ScalarProperty Name="Tolleranza_Limite_Entrata_Cant" ColumnName="Tolleranza_Limite_Entrata_Cant" />
                 <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
                 <ScalarProperty Name="Arrot_Durata_Can" ColumnName="Arrot_Durata_Can" />
                 <ScalarProperty Name="Canone_Mensile_Fascia1_Can" ColumnName="Canone_Mensile_Fascia1_Can" />
@@ -6978,6 +6983,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Col">
             <EntityTypeMapping TypeName="PowerWebModel.Col">
               <MappingFragment StoreEntitySet="Col">
+                <ScalarProperty Name="Tolleranza_Limite_Entrata_Col" ColumnName="Tolleranza_Limite_Entrata_Col" />
                 <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
                 <ScalarProperty Name="Arrot_Durata_Col" ColumnName="Arrot_Durata_Col" />
                 <ScalarProperty Name="ArrotF_Col" ColumnName="ArrotF_Col" />

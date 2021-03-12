@@ -166,6 +166,7 @@ namespace Domain
         public Nullable<System.TimeSpan> Limite_Uscita_Pomeriggio_Cant { get; set; }
         public Nullable<System.TimeSpan> Tolleranza_Limite_Uscita_Pomeriggio_Cant { get; set; }
         public Nullable<System.TimeSpan> Tolleranza_Limite_Uscita_Mattina_Cant { get; set; }
+        public Nullable<System.TimeSpan> Tolleranza_Limite_Entrata_Cant { get; set; }
         public Nullable<int> IdTerminale { get; set; }
     
         public virtual Cli Cli { get; set; }
