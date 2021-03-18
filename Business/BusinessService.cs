@@ -1016,37 +1016,54 @@ namespace Business
                             cantToEdit.Indirizzo_Can = address.AddressLine;
                             cantToEdit.Cap_Can = address.PostalCode;
                             cantToEdit.Luogo_Can = address.Locality;
-                            string provinciaCan = address.FormattedAddress.Substring(address.FormattedAddress.Length - 2);
 
+                            //string Provincia_Can = RepoManager.Tab_ProvRepo.First(p => p.Descrizione_Prov == address.AdminDistrict2).Sigla_Prov;
+
+                            string Provincia_Can = address.AdminDistrict2;
+
+                            //string provinciaCan = address.FormattedAddress.Substring(address.FormattedAddress.Length - 2);
+                            //
                             //a causa della ma interpretazione da parte di BING delle provincie, per far si che quest'ultime vengano trovate nella tabella delle province 
                             //si ha la necessità di effetturare una conversione da cosa restituisce BING a quello presente in tabella province
-                            switch (provinciaCan)
+                            switch (Provincia_Can)
                             {
-                                case "za":
-                                    cantToEdit.Provincia_Can = "MB";
+                                case "Florence":
+                                    Provincia_Can = "Firenze";
                                     break;
-                                case "as":
-                                    cantToEdit.Provincia_Can = "CI";
+                                case "Genoa":
+                                    Provincia_Can = "Genova";
                                     break;
-                                case "ni":
-                                    cantToEdit.Provincia_Can = "BT";
+                                case "Mantua":
+                                    Provincia_Can = "Mantova";
                                     break;
-                                case "ra":
-                                    cantToEdit.Provincia_Can = "OG";
+                                case "Milan":
+                                    Provincia_Can = "Milano";
                                     break;
-                                case "mo":
-                                    cantToEdit.Provincia_Can = "FM";
+                                case "Naples":
+                                    Provincia_Can = "Napoli";
                                     break;
-                                case "no":
-                                    cantToEdit.Provincia_Can = "VS";
+                                case "Padua":
+                                    Provincia_Can = "Padova";
                                     break;
-                                case "io":
-                                    cantToEdit.Provincia_Can = "OT";
+                                case "Rome":
+                                    Provincia_Can = "Roma";
+                                    break;
+                                case "Syracuse":
+                                    Provincia_Can = "Siracusa";
+                                    break;
+                                case "Turin":
+                                    Provincia_Can = "Torino";
+                                    break;
+                                case "Venice":
+                                    Provincia_Can = "Venezia";
                                     break;
                                 default:
-                                    cantToEdit.Provincia_Can = provinciaCan.ToUpper();
+                                    Provincia_Can = Provincia_Can;
                                     break;
                             }
+
+                            cantToEdit.Provincia_Can = RepoManager.Tab_ProvRepo.First(p => p.Descrizione_Prov == Provincia_Can).Sigla_Prov;
+
                             //se la provincia non viene trovata nella corrispondente tabella viene marcata come non disponibile
                             if (CantRepository.Tab_Provs.SingleOrDefault(u => u.Sigla_Prov == cantToEdit.Provincia_Can) == null)
                             {

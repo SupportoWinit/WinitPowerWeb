@@ -207,7 +207,7 @@ namespace PowerWeb.Modules
 
         protected void cImportFormServer_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
         {
-
+                       
             var semaphore = RepoManager.ParamRepo.IsElaborationReady();
 
             if (!RepoManager.ParamRepo.LockElaboration() || !semaphore)

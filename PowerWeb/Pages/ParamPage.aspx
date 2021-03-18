@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="PowerWeb - Parametri" Language="C#" MasterPageFile="~/GridMasterPage.master" AutoEventWireup="true"
     CodeBehind="ParamPage.aspx.cs" Inherits="PowerWeb.Pages.ParamPage" EnableSessionState="ReadOnly" %>
+<%@ MasterType  virtualPath="~/GridMasterPage.master"%>
 
 <%@ Register TagPrefix="pw" TagName="ParamModule" Src="~/Modules/ParamModule.ascx" %>
 
