@@ -361,9 +361,33 @@ namespace PowerWeb.Modules
             gvCol.KeyFieldName = Keyfieldname;
             IQueryable<Col> currDataSource = Enumerable.Empty<Col>().AsQueryable();
             var emptyList = Enumerable.Empty<Col>();
+            List<Col> colList = new List<Col>();
+
             if (IsToPopulateGrid)
             {
-                currDataSource = RepoManager.ColRepo.GetAll(true).AsQueryable();
+                if(PowerWebContext.Current.User.Resp_Inclusive)
+                {
+                    //viene estratto l'ide dello user che ha fatto l'accesso a Powerweb
+                    int userId = PowerWebContext.Current.User.Utenti_Id;
+
+                    //filtro solo i responsabili che corrispondo all'utente che ha effettuato l'accesso 
+                    var userRespIds = RepoManager.Utenti_RespRepo.Find(r => r.Utenti_Id == userId).ToList();
+
+                    foreach (var item in userRespIds)
+                    {
+                        var col = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Resp_Id == item.Resp_Id);
+
+                        colList.AddRange(col);
+                    }
+
+                    currDataSource = colList.AsQueryable();
+
+                }
+                else
+                {
+                    currDataSource = RepoManager.ColRepo.GetAll(true).AsQueryable();
+                }
+
                 gvCol.DataSource = currDataSource.Any() ? currDataSource : emptyList;
             }
             else

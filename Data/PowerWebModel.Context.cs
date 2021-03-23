@@ -28,12 +28,11 @@ namespace Data
         {
 
         }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<Aut_Str> Aut_Str { get; set; }
         public virtual DbSet<Cant> Cant { get; set; }
         public virtual DbSet<Cant_Note> Cant_Note { get; set; }

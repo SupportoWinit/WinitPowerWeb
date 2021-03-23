@@ -1025,6 +1025,8 @@
                 </dx:GridViewDataTextColumn>
                 <dx:GridViewDataTextColumn FieldName="Telefono_4_Rif_Col" Visible="False">
                 </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Email_Col" Visible="False">
+                </dx:GridViewDataTextColumn>
                 <dx:GridViewDataComboBoxColumn FieldName="Tipo_Arrotondamento_Col" Visible="False">
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataComboBoxColumn FieldName="Tipo_Col" Visible="False">

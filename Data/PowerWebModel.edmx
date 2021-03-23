@@ -521,6 +521,7 @@
           <Property Name="Soglia_Minima_Arrotondamento_Durata_Col" Type="smallint" />
           <Property Name="Limite_Entrata_Inizio_Pomeriggio_Col" Type="time" Precision="7" />
           <Property Name="Tolleranza_Limite_Entrata_Col" Type="time" Precision="7" />
+          <Property Name="Email_Col" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Col_Cant_Orario">
           <Key>
@@ -1903,6 +1904,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="N_Serie_Fru" Type="nvarchar" MaxLength="10" />
           <Property Name="Costo_Orario_Fig" Type="float" />
           <Property Name="Costo_Orario_Fis" Type="float" />
+          <Property Name="Raggruppamento1_Can" Type="nvarchar" MaxLength="50" />
+          <Property Name="Raggruppamento2_Can" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK__Cant_Cent__Cant___2843D2B2">
           <End Role="Cant" Type="Self.Cant" Multiplicity="1" />
@@ -3136,7 +3139,9 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
     [Reg_V].[Ritardo_Mail_Sent] AS [Ritardo_Mail_Sent], 
     [Reg_V].[N_Serie_Fru] AS [N_Serie_Fru], 
     [Reg_V].[Costo_Orario_Fig] AS [Costo_Orario_Fig], 
-    [Reg_V].[Costo_Orario_Fis] AS [Costo_Orario_Fis]
+    [Reg_V].[Costo_Orario_Fis] AS [Costo_Orario_Fis], 
+    [Reg_V].[Raggruppamento1_Can] AS [Raggruppamento1_Can], 
+    [Reg_V].[Raggruppamento2_Can] AS [Raggruppamento2_Can]
     FROM [dbo].[Reg_V] AS [Reg_V]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__Cant_Cent__Cant___2843D2B2" Association="Self.FK__Cant_Cent__Cant___2843D2B2">
@@ -3944,6 +3949,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <NavigationProperty Name="Timesheet" Relationship="Self.FK_Timesheet_Col" FromRole="Col" ToRole="Timesheet" />
           <NavigationProperty Name="Utenti" Relationship="Self.FK_Utenti_Col" FromRole="Col" ToRole="Utenti" />
           <Property Name="Tolleranza_Limite_Entrata_Col" Type="Time" Precision="7" />
+          <Property Name="Email_Col" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Col_Cant_Orario">
           <Key>
@@ -6613,6 +6619,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="N_Serie_Fru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Costo_Orario_Fig" Type="Double" />
           <Property Name="Costo_Orario_Fis" Type="Double" />
+          <Property Name="Raggruppamento1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Raggruppamento2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6983,6 +6991,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Col">
             <EntityTypeMapping TypeName="PowerWebModel.Col">
               <MappingFragment StoreEntitySet="Col">
+                <ScalarProperty Name="Email_Col" ColumnName="Email_Col" />
                 <ScalarProperty Name="Tolleranza_Limite_Entrata_Col" ColumnName="Tolleranza_Limite_Entrata_Col" />
                 <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
                 <ScalarProperty Name="Arrot_Durata_Col" ColumnName="Arrot_Durata_Col" />
@@ -8457,6 +8466,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Reg_V">
             <EntityTypeMapping TypeName="PowerWebModel.Reg_V">
               <MappingFragment StoreEntitySet="Reg_V">
+                <ScalarProperty Name="Raggruppamento2_Can" ColumnName="Raggruppamento2_Can" />
+                <ScalarProperty Name="Raggruppamento1_Can" ColumnName="Raggruppamento1_Can" />
                 <ScalarProperty Name="Costo_Orario_Fis" ColumnName="Costo_Orario_Fis" />
                 <ScalarProperty Name="Costo_Orario_Fig" ColumnName="Costo_Orario_Fig" />
                 <ScalarProperty Name="N_Serie_Fru" ColumnName="N_Serie_Fru" />

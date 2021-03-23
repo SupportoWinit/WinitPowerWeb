@@ -219,6 +219,14 @@ namespace PowerWeb.Modules
             newTabAut.Utenti = newUser;
             RepoManager.Tab_AutRepo.Add(newTabAut, true);
 
+            if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UserIsResp)==1)
+            {
+                Resp newResp = RepoManager.RespRepo.Init();
+                newResp.Codice_Resp = newUser.Codice_Utente;
+                newResp.Data_Registrazione_Resp = DateTime.Now;
+                RepoManager.RespRepo.Add(newResp,true);
+            }
+
             e.Cancel = true;
             gvUsers.CancelEdit();
             BindGrid();

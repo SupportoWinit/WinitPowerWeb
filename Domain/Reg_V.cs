@@ -83,6 +83,8 @@ namespace Domain
         public Nullable<int> Ritardo_Durata { get; set; }
         public bool Ritardo_Mail_Sent { get; set; }
         public string N_Serie_Fru { get; set; }
+        public string Raggruppamento1_Can { get; set; }
+        public string Raggruppamento2_Can { get; set; }
         public Nullable<double> Costo_Orario_Fig { get; set; }
         public Nullable<double> Costo_Orario_Fis { get; set; }
     }

@@ -162,7 +162,8 @@ namespace Common
         TimesheetMultiPagedExport,
         Casp,
         ExcludeAwayHoursInExport,
-        ScSExportBudget
+        ScSExportBudget,
+        UserIsResp
     }
 
     public enum ClockAppsOperationEnum

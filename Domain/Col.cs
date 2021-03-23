@@ -76,6 +76,7 @@ namespace Domain
         public string Fax_1_Rif_Col { get; set; }
         public string Fax_2_Col { get; set; }
         public string Fax_2_Rif_Col { get; set; }
+        public string Email_Col { get; set; }
         public string Flag_INPS_Col { get; set; }
         public Nullable<byte> Flag_NON_Esportare_Col { get; set; }
         public Nullable<int> Flag_Ore_Viaggi_Col { get; set; }

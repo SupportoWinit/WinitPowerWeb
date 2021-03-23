@@ -56,6 +56,8 @@ namespace PowerWeb.Pages
 
                 dataSource = new DevExtremeLinqServerRepository<Col>(RepoManager.ColRepo);
 
+                
+
                 _exportContext = new ExportContext();
 
                 #region OPZIONI CARTELLINO

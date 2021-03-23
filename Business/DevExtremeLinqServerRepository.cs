@@ -33,7 +33,7 @@ namespace Business
         {
             _DbSet = repository.DbSet;
 
-            _Context = repository.Context;
+            _Context = repository.Context;            
 
         }
 

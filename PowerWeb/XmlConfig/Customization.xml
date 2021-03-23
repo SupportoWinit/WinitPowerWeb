@@ -509,4 +509,9 @@
   <c ID="CustomizationEnum.DoNotShowDisabledColCantId" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="0"/>
     <!--	DoNotShowDisabledColCantId = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
 			DoNotShowDisabledColCantId = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
+  
+  <!-- ********************************************************CREAZIONE RESPONSABILE DA UTENTE************************************************************************************** -->
+  <c ID="CustomizationEnum.UserIsResp" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="1"/>
+  <!--	UserIsResp = 0 non attiva funzionalità
+			UserIsResp = 1 attiva funzionalità-->
 </Customizations>

@@ -828,7 +828,7 @@ namespace PowerWeb.Modules
                             Ritardo_Mail_Sent = r.Ritardo_Mail_Sent,
                             N_Serie_Fru = r.N_Serie_Fru,
                             Costo_Orario_Fig = r.Costo_Orario_Fig,
-                            Costo_Orario_Fis = r.Costo_Orario_Fis
+                            Costo_Orario_Fis = r.Costo_Orario_Fis                            
                         });
 
                         e.QueryableSource = newQueryable.AsQueryable();

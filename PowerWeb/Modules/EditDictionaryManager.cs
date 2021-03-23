@@ -932,6 +932,8 @@ namespace PowerWeb.Modules
                 TelTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Fax_2_Col), TabPageItemFieldTypeEnum.NotInGroup));
                 TelTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Fax_2_Rif_Col), TabPageItemFieldTypeEnum.NotInGroup));
 
+                TelTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Email_Col), TabPageItemFieldTypeEnum.NotInGroup));
+
                 templateDic.Add(telFaxTPE, TelTabList);
             }
             #endregion

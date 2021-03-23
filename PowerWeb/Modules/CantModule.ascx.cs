@@ -269,9 +269,32 @@ namespace PowerWeb.Modules
             gvCant.KeyFieldName = KEYFIELDNAME;
             IQueryable<Cant> currDataSource = Enumerable.Empty<Cant>().AsQueryable();
             var emptyList = Enumerable.Empty<Cant>();
+            List<Cant> cantList = new List<Cant>();
+
             if (IsToPopulateGrid)
             {
-                currDataSource = RepoManager.CantRepo.GetAll(true).AsQueryable();
+                if (PowerWebContext.Current.User.Fil_Inclusive)
+                {
+                    //viene estratto l'ide dello user che ha fatto l'accesso a Powerweb
+                    int userId = PowerWebContext.Current.User.Utenti_Id;
+
+                    //filtro solo i responsabili che corrispondo all'utente che ha effettuato l'accesso 
+                    var userFilIds = RepoManager.Utenti_FilRepo.Find(r => r.Utenti_Id == userId).ToList();
+
+                    foreach (var item in userFilIds)
+                    {
+                        var can = RepoManager.CantRepo.GetAllQueryable().Where(c => c.Fil_Id == item.Fil_Id).ToList();
+
+                        cantList.AddRange(can);
+                    }
+
+                    currDataSource = cantList.AsQueryable();
+
+                }
+                else
+                {
+                    currDataSource = RepoManager.CantRepo.GetAll(true).AsQueryable();
+                }               
                 gvCant.DataSource = currDataSource.Any() ? currDataSource : emptyList;
             }
             else
