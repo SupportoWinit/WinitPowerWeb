@@ -504,9 +504,9 @@ namespace Business.Repository.Custom
 
                                                 #endregion
 
-
-                                                //Personalizzazione casp
-                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1 && !currentCant.Raggruppamento1_Can.Equals("5"))
+                                             
+                                                    //Personalizzazione casp
+                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1 && !currentCant.Raggruppamento1_Can.Equals("5"))
                                                 {
                                                     if (currentRegU != null)
                                                     {
@@ -1310,6 +1310,8 @@ namespace Business.Repository.Custom
 
 
         #endregion
+
+
 
         #region Elaborazione Cartellino
 

@@ -163,7 +163,7 @@ namespace Common
         Casp,
         ExcludeAwayHoursInExport,
         ScSExportBudget,
-        UserIsResp
+        UserIsResp,
     }
 
     public enum ClockAppsOperationEnum
@@ -1467,7 +1467,9 @@ namespace Common
         /// <summary>
         /// Tipo di gruppo composto da timbrature solo GPS
         /// </summary>
-        OnlyGps
+        OnlyGps,
+
+        TagActivityGps
 
     }
 

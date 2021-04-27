@@ -36,7 +36,7 @@ namespace Business.RegFileCreators
 
             foreach (var fluReg in unEncodedRegs)
             {
-                string regRow = "";                
+                string regRow = "";
 
                 #region Reg senza coordinate
 
@@ -50,7 +50,7 @@ namespace Business.RegFileCreators
                     fluReg.Value.First().Registrazione_Data_Ora_Orig.Hour.ToString("00"),
                     fluReg.Value.First().Registrazione_Data_Ora_Orig.Minute.ToString("00"),
                     fluReg.Value.First().verso,
-                    "[Motivazione]="+ fluReg.Value.First().motivazione
+                    fluReg.Value.First().motivazione != "" ? "[Motivazione]=" + fluReg.Value.First().motivazione : null
                 );
                 regsToWrite.Add(regRow);
 

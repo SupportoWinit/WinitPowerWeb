@@ -2260,7 +2260,7 @@ namespace Business.Repository.Custom
             #endregion
 
             #region CHIUSURA AUTOMATICA REGISTRAIZONI
-
+           
 
             #region CHIUSURA AUTOMATICA SUL CANTIERE SEDE
             // Se è attiva la personalizzazione che prevede  la chiusura automatica sul cantiere sede
@@ -2399,6 +2399,7 @@ namespace Business.Repository.Custom
 
                                     // si procede alla generazione della chiusura solamente se i cantieri della registrazione attuale è una sede e la successiva no
                                     if (currentRegCant != default(Cant))
+                                    {
 
                                         //se si tratta di un cantiere tipo sede
                                         if (currentRegCant.Tipo_Cantiere_Can == "SEDE" && !doNotClose)
@@ -2421,6 +2422,8 @@ namespace Business.Repository.Custom
                                             closures.Add(newReg);
 
                                         }
+
+                                    }
                                 }
                             }
 
@@ -2430,6 +2433,9 @@ namespace Business.Repository.Custom
 
                 }
                 #endregion
+
+
+
                 #endregion
 
 
@@ -4884,8 +4890,10 @@ namespace Business.Repository.Custom
                 _log.Info("FASE DI IMPORT COMPLETATA.\n");
 
                 #endregion
-
                 bool isToElaborate = true;
+
+                isToElaborate  = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AvoidElaborateOnImport) == 1 ? false : true;                
+
 
                 BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, String.Format("Salvataggio Terminato, Avvio elaborazione", toAddRegs.Count));
 
@@ -5210,20 +5218,40 @@ namespace Business.Repository.Custom
 
                         #region Generazione della reg e aggiunta della stessa all'elenco di reg da aggiungere
 
-
-                        regsToAdd.Add(new Reg
+                        if(motivation==null)
                         {
-                            Fru_Id = regFru.Fru_Id,
-                            Pru_Id = regPru.Pru_Id,
-                            Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
-                            Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
-                            Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
-                            Data_Registrazione_Reg = DateTime.UtcNow,
-                            DataOraUltimaModifica_Reg = DateTime.UtcNow,
-                            Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                            Registrazione_Badge_Originale = currentPreReg.BadgeCode,
-                            Motivazione_Reg_Id = motivation.Tab_Decod_Id
-                        }) ;
+                            regsToAdd.Add(new Reg
+                            {
+                                Fru_Id = regFru.Fru_Id,
+                                Pru_Id = regPru.Pru_Id,
+                                Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
+                                Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
+                                Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
+                                Data_Registrazione_Reg = DateTime.UtcNow,
+                                DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                Flag_EU_Reg = currentPreReg.RegistrationDirection,
+                                Registrazione_Badge_Originale = currentPreReg.BadgeCode
+                            });
+                        }
+                        else
+                        {
+                            regsToAdd.Add(new Reg
+                            {
+                                Fru_Id = regFru.Fru_Id,
+                                Pru_Id = regPru.Pru_Id,
+                                Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
+                                Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
+                                Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
+                                Data_Registrazione_Reg = DateTime.UtcNow,
+                                DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                Flag_EU_Reg = currentPreReg.RegistrationDirection,
+                                Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                                Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                            });
+                        }
+
+
+                        
 
                         #endregion
 
@@ -5480,6 +5508,10 @@ namespace Business.Repository.Custom
                 // il numero massimo di linee nel gruppo per la registrazione corrente
                 int currentGroupMax = 0;
 
+                int counterTag = 0;
+
+                
+
                 //Recupera il cantiere marcato come centro del raggio di lavoro
                 Cant centro_gps = RepoManager.CantRepo.SingleOrDefault(cant => cant.Tipo_Cantiere_Can == "OPERATIVO");
 
@@ -5490,15 +5522,20 @@ namespace Business.Repository.Custom
                 {
                     try
                     {
-
-
+                        bool activity = false;
                         // lettura dei dati di timbratura GPS
                         var currentGpsPreReg = new GpsPreReg(gpsLine);
 
+                        if (currentGpsPreReg.BadgeCode != null)
+                            if (currentGpsPreReg.BadgeCode.Contains("ATTIV"))
+                                activity = true;
+                        
+
                         // se si sta processando un nuovo blocco gps
                         // allora si inizializzano i dati di gestione di un nuovo blocco gps
-                        if (!gpsRegGroup.Any())
+                        if (!gpsRegGroup.Any() || activity)
                         {
+                            counterTag++;
 
                             #region Convalida della prima registrazione del gruppo
 
@@ -5557,6 +5594,13 @@ namespace Business.Repository.Custom
 
                             currentGroupFlagEU = currentGpsPreReg.RegistrationDirection;
 
+                            if(counterTag>1)
+                            {
+                                currentGroupMax++;
+                                currentGroupType = GpsGruopTypeEnum.TagActivityGps;
+                                counterTag = 0;
+                            }
+
                             // aggiunta della prima registrazione al gruppo gps
                             gpsRegGroup.Add(currentGpsPreReg);
 
@@ -5574,6 +5618,7 @@ namespace Business.Repository.Custom
 
                             // aggiunta della linea gps al gruppo
                             gpsRegGroup.Add(currentGpsPreReg);
+                            counterTag = 0;
 
                             #region Controllo di coerenza della linea GPS diversa dalla prima
 
@@ -5621,6 +5666,22 @@ namespace Business.Repository.Custom
                                         if (currentGpsPreReg.IsTagReferenced)
                                             isLastGood = false;
                                         else
+                                        {
+                                            GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
+
+                                            if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
+                                                isLastGood = false;
+                                        }
+
+                                        break;
+                                    case GpsGruopTypeEnum.TagActivityGps: // registrazione tag + attività e gps
+
+                                        // per essere coerente tutte le timbrature devono essere tag referenced;
+                                        // altrimenti, se si sta trattando la terza timbratura non può trattarsi dello stesso tipo linea della
+                                        // precedente
+                                        if (!currentGpsPreReg.IsTagReferenced)
+                                            isLastGood = false;
+                                        else if (gpsRegGroup.Count() == 4)
                                         {
                                             GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
 
@@ -5696,6 +5757,7 @@ namespace Business.Repository.Custom
                                     newReg.Data_Registrazione_Reg = DateTime.UtcNow;
                                     newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
 
+                                   
                                     // nelle registrazioni da gps la fru id è sempre a null
                                     newReg.Fru_Id = null;
 
@@ -5706,7 +5768,14 @@ namespace Business.Repository.Custom
                                     // - sarà la matricola del tag in caso di presenza anagrafica pru e assegnazione in base al tipo anagrafica; in caso
                                     //   non sia presente viene utilizzata la device
                                     string pruCode;
-                                    if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
+                                    string fruCode="";
+
+                                    if(currentGroupType== GpsGruopTypeEnum.TagActivityGps)
+                                    {
+                                        fruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
+                                        pruCode= CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                    }
+                                    else if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
                                     {
                                         switch (tagAndGpsAssType)
                                         {
@@ -5753,6 +5822,10 @@ namespace Business.Repository.Custom
 
                                         // viene normalizzato per la ricerca il codice del badge e si verifica la presenza dello stesso tra le fru
                                         string normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+
+                                        if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                            normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
+
                                         bool isBadgeFru = RepoManager.FruRepo.DbSet.Any(fru => fru.Codice_Fru == normalizedBadgeCode);
 
                                         // se richiesto dai parametri, imposta la registrazione come passaggio
@@ -5786,6 +5859,11 @@ namespace Business.Repository.Custom
                                         //Importo le timbrature solo se sono all'interno del raggi di lavoro (customization ImportGPSOnlyInWorkingRange)
                                         if (isRegInWorkingRange)
                                         {
+                                            if(currentGroupType== GpsGruopTypeEnum.TagActivityGps)
+                                            {
+                                                var motivationId = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Campo1_Tab == fruCode).Tab_Decod_Id;
+                                                newReg.Motivazione_Reg_Id = motivationId;
+                                            }
                                             // l'anagrafica fissa viene impostata secondo la seguente logica :
                                             // - viene imposta l'unità fissa con l'anagrafica del tag se il tag è impostato per designare l'unità fissa o se l'anagrafica di appartenenza
                                             //   e il tag è presente tra i fru e il gruppo in elaborazione è tag e gps 
@@ -5865,6 +5943,7 @@ namespace Business.Repository.Custom
 
                                     // reinizializzazione del gruppo GPS
                                     gpsRegGroup = new List<GpsPreReg>();
+                                    counterTag = 0;
 
                                     #endregion
                                 }
@@ -6029,14 +6108,16 @@ namespace Business.Repository.Custom
             public GpsPreReg(string gpsLine)
             {
                 // salvataggio della linea originale di provenienza
-                OriginalGpsLine = gpsLine;
+                OriginalGpsLine = gpsLine;               
+
 
                 // split della linea sul punto e virgola
-                string[] splittedLine = gpsLine.Split(';');
+                string[] splittedLine = gpsLine.Split(';');                
+                    
 
                 // si calcola se la registrazione è un tag o meno;
                 // si tratta di una registrazione tag quando i valori di tipo direzione coordinate e direzione coordinate (utlimi due valori) sono vuoti
-                if (String.IsNullOrEmpty(splittedLine[8].Trim()) && String.IsNullOrEmpty(splittedLine[9].Trim()) || (splittedLine[8] == "U" || splittedLine[8] == "E"))
+                if (String.IsNullOrEmpty(splittedLine[8].Trim()) && String.IsNullOrEmpty(splittedLine[9].Trim()) || (splittedLine[8] == "U" || splittedLine[8] == "E") || String.IsNullOrEmpty(splittedLine[8].Trim()) && (splittedLine[9].Trim().Contains('*')))
                     IsTag = true;
                 else
                     IsTag = false;
@@ -6088,7 +6169,7 @@ namespace Business.Repository.Custom
                     }
 
                     //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
-                    if (splittedLine.IsValidIndex(10))
+                    if (splittedLine.IsValidIndex(10) && !splittedLine[10].Contains('*'))
                     {
                         RegistrationDirection = splittedLine[10];
                     }

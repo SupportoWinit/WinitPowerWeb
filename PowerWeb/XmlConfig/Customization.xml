@@ -45,11 +45,10 @@
           Cant_Id
           Data_Ora_Fig_U-->
   	<!-- ********************************************************IMPORT CON O SENZA ELABORAZIONE******************************************************************************-->
-  <c ID="CustomizationEnum.AvoidElaborateOnImport" Des="Non elabora automaticamente le reg in fase di import" Value="0" />
+  <c ID="CustomizationEnum.AvoidElaborateOnImport" Des="Non elabora automaticamente le reg in fase di import" Value="1" />
   <!-- ********************************************************RETTIFICA PAUSA PRANZO******************************************************************************-->
 <c Value="1" Des="Crea una rettifica per la pausa pranzo se inferiore al parametro durante l'elaborazione" ID="CustomizationEnum.RettificaPausaPranzo"/>
-<!-- ********************************************************IMPORT CON O SENZA ELABORAZIONE******************************************************************************-->
-<c Value="0" Des="Non elabora automaticamente le reg in fase di import" ID="CustomizationEnum.AvoidElaborateOnImport"/>
+
   <!-- ********************************************************CHECK CUSTOM******************************************************************************-->
   <c ID="CustomizationEnum.CustomChecksEnum" Des="Check custom sulle Reg_V" Value="0" />
   <!-- CustomChecksEnum= 1 corrisponde ad abilitare il Check Custom x Mosaico-->
@@ -127,7 +126,7 @@
   ImportFlagEUEnum=1 Indica di non importare il flag E/U anche se presente -->
  
  <!-- ********************************************************VISUALIZZAZIONE FLAG_EU*********************************************************-->
-  <c ID="CustomizationEnum.ShowFlagEUInFormEnum" Des="Indica se visualizzare o meno il flag E/U nella form delle reg" Value="1" />
+  <c ID="CustomizationEnum.ShowFlagEUInFormEnum" Des="Indica se visualizzare o meno il flag E/U nella form delle reg" Value="0" />
   <!-- ShowFlagEUInFormEnum=0 Indica di non visualizzare i dati nella form delle reg
   ShowFlagEUInFormEnum=1 Indica di visualizzare i dati nella form delle reg -->
  
@@ -382,9 +381,10 @@
 		ColImportTypeEnum=1 Indica di visualizzare la maschera di import collaboratore specifica per il cliente UniLabor-->
  
 	<!-- ********************************************************TIPO IMPORT COLLABORATORI*********************************************************-->
-	<c ID="CustomizationEnum.ColImportTypeEnum" Des="Indica quale tipo di import dei collaboratori fare" Value="0" />
+	<c ID="CustomizationEnum.ColImportTypeEnum" Des="Indica quale tipo di import dei collaboratori fare" Value="2" />
 	<!-- ColImportTypeEnum=0 Indica che non c'è nessun import impostato
-		ColImportTypeEnum=1 Indica che l'import impostato è quello specifico per il cliente UniLabor-->
+		ColImportTypeEnum=1 Indica che l'import impostato è quello specifico per il cliente UniLabor
+    ColImportTypeEnum= Indica che l'import generale-->
 
 	<!-- ****************************************************ARROTONDAMENTI NELLE ORE ORDINARIE*****************************************************-->
 	<c ID="CustomizationEnum.NoArrotInOrdinaryEnum" Des="Indica se gli arrotondamenti vengono contati come ore ordinarie o meno nel cartellino" Value="0" />
@@ -401,10 +401,10 @@
   <!--  PauseDeductionOnlyFascia5=0 Indica che il controllo non viene effettuato
         PauseDeductionOnlyFascia5=1 Indica che la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5-->
 		
-		<!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE*********************************************************-->
+		<!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE SU CANT SEDE*********************************************************-->
   <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="0" />
   <!--  AutoClosuresEnum=0 Indica di non chiudere le timbrature in modo automatico
-        AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+        AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede--> 
 		
 		
 		<!-- ********************************************************PERMETTERE VIAGGI DI DURATA ZERO*********************************************************-->
@@ -511,7 +511,8 @@
 			DoNotShowDisabledColCantId = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
   
   <!-- ********************************************************CREAZIONE RESPONSABILE DA UTENTE************************************************************************************** -->
-  <c ID="CustomizationEnum.UserIsResp" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="1"/>
+  <c ID="CustomizationEnum.UserIsResp" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="0"/>
   <!--	UserIsResp = 0 non attiva funzionalità
 			UserIsResp = 1 attiva funzionalità-->
+  
 </Customizations>
