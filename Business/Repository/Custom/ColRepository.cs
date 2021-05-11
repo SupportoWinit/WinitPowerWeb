@@ -1664,7 +1664,7 @@ namespace Business.Repository.Custom
                                 #region CONTROLLO INSERIMENTO BADGE
 
                                 //Eventuale associazione
-                                if (badge != "" && badge.Length == 10)
+                                if (badge != "" && badge.Length == 5)
                                 {
 
                                     Pru currPru = RepoManager.PruRepo.SingleOrDefault(pru => pru.Codice_Pru == badge);

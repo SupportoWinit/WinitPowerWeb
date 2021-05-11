@@ -164,6 +164,7 @@ namespace Common
         ExcludeAwayHoursInExport,
         ScSExportBudget,
         UserIsResp,
+        OrderElaborateRegByCant
     }
 
     public enum ClockAppsOperationEnum

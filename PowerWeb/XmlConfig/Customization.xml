@@ -509,6 +509,11 @@
   <c ID="CustomizationEnum.DoNotShowDisabledColCantId" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="0"/>
     <!--	DoNotShowDisabledColCantId = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
 			DoNotShowDisabledColCantId = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
+
+  <!-- ********************************************************ORDINAMENTO REG ELABORATE ANCHE PER CANTIERE************************************************************************************** -->
+  <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica di ordinare le reg anche in base al cantiere " Value="1"/>
+  <!--	OrderEalborateRegByCant = 0 Disattiva
+			OrderEalborateRegByCant = 1 Attiva-->
   
   <!-- ********************************************************CREAZIONE RESPONSABILE DA UTENTE************************************************************************************** -->
   <c ID="CustomizationEnum.UserIsResp" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="0"/>

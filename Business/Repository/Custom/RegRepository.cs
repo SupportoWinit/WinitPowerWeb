@@ -875,6 +875,10 @@ namespace Business.Repository.Custom
                 // si ordinano le registrazioni del gruppo per motivazione e data/ora
                 // di modo da abbinare le timbrature coerentemente con la motivazione inserita
                 List<Reg> orderedColRegs = colGroup.OrderBy(reg => reg.Motivazione_Reg_Id).ThenBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.OrderElaborateRegByCant) == 1) {
+                    orderedColRegs = orderedColRegs.OrderBy(reg => reg.Registrazione_Badge_Originale).ToList();
+                }
+
 
                 // inizializzazione della variabile utilizzata per salvare la timbratura precedente rispetto a quella
                 // correntemente processata dal ciclo
@@ -2892,6 +2896,8 @@ namespace Business.Repository.Custom
         private HashSet<Reg> AdjustFisRegByCol(IEnumerable<Reg> regsToProcess)
         //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
         {
+
+                      
 
             var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();
             regsByDate.ForEach(byDateList =>
