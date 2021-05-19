@@ -1583,6 +1583,7 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="ExcelModels\ExportMovitrento.xlsx" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\download.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />

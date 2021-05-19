@@ -45,7 +45,7 @@
           Cant_Id
           Data_Ora_Fig_U-->
   	<!-- ********************************************************IMPORT CON O SENZA ELABORAZIONE******************************************************************************-->
-  <c ID="CustomizationEnum.AvoidElaborateOnImport" Des="Non elabora automaticamente le reg in fase di import" Value="1" />
+  <c ID="CustomizationEnum.AvoidElaborateOnImport" Des="Non elabora automaticamente le reg in fase di import" Value="0" />
   <!-- ********************************************************RETTIFICA PAUSA PRANZO******************************************************************************-->
 <c Value="1" Des="Crea una rettifica per la pausa pranzo se inferiore al parametro durante l'elaborazione" ID="CustomizationEnum.RettificaPausaPranzo"/>
 

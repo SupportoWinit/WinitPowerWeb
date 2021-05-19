@@ -875,8 +875,9 @@ namespace Business.Repository.Custom
                 // si ordinano le registrazioni del gruppo per motivazione e data/ora
                 // di modo da abbinare le timbrature coerentemente con la motivazione inserita
                 List<Reg> orderedColRegs = colGroup.OrderBy(reg => reg.Motivazione_Reg_Id).ThenBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.OrderElaborateRegByCant) == 1) {
-                    orderedColRegs = orderedColRegs.OrderBy(reg => reg.Registrazione_Badge_Originale).ToList();
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.OrderElaborateRegByCant) == 1)
+                {
+                    //orderedColRegs = orderedColRegs.OrderBy(reg => reg.Cant_Id).ToList();
                 }
 
 
@@ -2264,7 +2265,7 @@ namespace Business.Repository.Custom
             #endregion
 
             #region CHIUSURA AUTOMATICA REGISTRAIZONI
-           
+
 
             #region CHIUSURA AUTOMATICA SUL CANTIERE SEDE
             // Se è attiva la personalizzazione che prevede  la chiusura automatica sul cantiere sede
@@ -2897,7 +2898,7 @@ namespace Business.Repository.Custom
         //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
         {
 
-                      
+
 
             var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();
             regsByDate.ForEach(byDateList =>
@@ -4869,7 +4870,8 @@ namespace Business.Repository.Custom
 
                     _log.Info("Aggiunta di un secondo alle registrazioni da importare");
 
-                    toAddRegs = AdjustFisRegByCol(toAddRegs);
+                    //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.OrderElaborateRegByCant) == 0)
+                        toAddRegs = AdjustFisRegByCol(toAddRegs);
 
                     _log.Info("Aggiunta di un secondo alle registrazioni da importare terminata");
 
@@ -4898,7 +4900,7 @@ namespace Business.Repository.Custom
                 #endregion
                 bool isToElaborate = true;
 
-                isToElaborate  = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AvoidElaborateOnImport) == 1 ? false : true;                
+                isToElaborate = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AvoidElaborateOnImport) == 1 ? false : true;
 
 
                 BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, String.Format("Salvataggio Terminato, Avvio elaborazione", toAddRegs.Count));
@@ -5224,7 +5226,7 @@ namespace Business.Repository.Custom
 
                         #region Generazione della reg e aggiunta della stessa all'elenco di reg da aggiungere
 
-                        if(motivation==null)
+                        if (motivation == null)
                         {
                             regsToAdd.Add(new Reg
                             {
@@ -5257,7 +5259,7 @@ namespace Business.Repository.Custom
                         }
 
 
-                        
+
 
                         #endregion
 
@@ -5516,7 +5518,7 @@ namespace Business.Repository.Custom
 
                 int counterTag = 0;
 
-                
+
 
                 //Recupera il cantiere marcato come centro del raggio di lavoro
                 Cant centro_gps = RepoManager.CantRepo.SingleOrDefault(cant => cant.Tipo_Cantiere_Can == "OPERATIVO");
@@ -5535,7 +5537,7 @@ namespace Business.Repository.Custom
                         if (currentGpsPreReg.BadgeCode != null)
                             if (currentGpsPreReg.BadgeCode.Contains("ATTIV"))
                                 activity = true;
-                        
+
 
                         // se si sta processando un nuovo blocco gps
                         // allora si inizializzano i dati di gestione di un nuovo blocco gps
@@ -5600,7 +5602,7 @@ namespace Business.Repository.Custom
 
                             currentGroupFlagEU = currentGpsPreReg.RegistrationDirection;
 
-                            if(counterTag>1)
+                            if (counterTag > 1)
                             {
                                 currentGroupMax++;
                                 currentGroupType = GpsGruopTypeEnum.TagActivityGps;
@@ -5763,7 +5765,7 @@ namespace Business.Repository.Custom
                                     newReg.Data_Registrazione_Reg = DateTime.UtcNow;
                                     newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
 
-                                   
+
                                     // nelle registrazioni da gps la fru id è sempre a null
                                     newReg.Fru_Id = null;
 
@@ -5774,12 +5776,12 @@ namespace Business.Repository.Custom
                                     // - sarà la matricola del tag in caso di presenza anagrafica pru e assegnazione in base al tipo anagrafica; in caso
                                     //   non sia presente viene utilizzata la device
                                     string pruCode;
-                                    string fruCode="";
+                                    string fruCode = "";
 
-                                    if(currentGroupType== GpsGruopTypeEnum.TagActivityGps)
+                                    if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
                                     {
                                         fruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
-                                        pruCode= CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
                                     }
                                     else if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
                                     {
@@ -5865,7 +5867,7 @@ namespace Business.Repository.Custom
                                         //Importo le timbrature solo se sono all'interno del raggi di lavoro (customization ImportGPSOnlyInWorkingRange)
                                         if (isRegInWorkingRange)
                                         {
-                                            if(currentGroupType== GpsGruopTypeEnum.TagActivityGps)
+                                            if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
                                             {
                                                 var motivationId = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Campo1_Tab == fruCode).Tab_Decod_Id;
                                                 newReg.Motivazione_Reg_Id = motivationId;
@@ -6114,12 +6116,12 @@ namespace Business.Repository.Custom
             public GpsPreReg(string gpsLine)
             {
                 // salvataggio della linea originale di provenienza
-                OriginalGpsLine = gpsLine;               
+                OriginalGpsLine = gpsLine;
 
 
                 // split della linea sul punto e virgola
-                string[] splittedLine = gpsLine.Split(';');                
-                    
+                string[] splittedLine = gpsLine.Split(';');
+
 
                 // si calcola se la registrazione è un tag o meno;
                 // si tratta di una registrazione tag quando i valori di tipo direzione coordinate e direzione coordinate (utlimi due valori) sono vuoti

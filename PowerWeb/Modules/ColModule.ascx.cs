@@ -1556,6 +1556,8 @@ namespace PowerWeb.Modules
 
                     //recupero delle registrazioni da elaborare
                     IEnumerable<Reg> colRegs = RepoManager.RegRepo.Find(r => r.Registrazione_Data_Ora_Fis_Reg >= from && r.Registrazione_Data_Ora_Fis_Reg <= to && r.Col_Id == colId).ToList();
+                    //colRegs = colRegs.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();
+
 
                     // se ci sono delle registrazioni da processare si aggiungono alle registrazioni da elaborare
                     if (colRegs.Any())
