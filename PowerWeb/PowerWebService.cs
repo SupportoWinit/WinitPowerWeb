@@ -691,18 +691,23 @@ namespace PowerWeb
                     if (searchName.Equals("Tab_Orari_Tipo_Id"))
                     {
                         string entity = "";
-                        switch (comboBox.Page.AppRelativeVirtualPath.Split('/').Last())
-                        {
-                            case "ColPage.aspx":
-                                entity = "Col";
-                                break;
-                            case "CantPage.aspx":
-                                entity = "Can";
-                                break;
-                            default:
-                                throw new Exception();
 
+                        if (comboBox.Page != null)
+                        {
+                            switch (comboBox.Page.AppRelativeVirtualPath.Split('/').Last())
+                            {
+                                case "ColPage.aspx":
+                                    entity = "Col";
+                                    break;
+                                case "CantPage.aspx":
+                                    entity = "Can";
+                                    break;
+                                default:
+                                    throw new Exception();
+                            }
                         }
+                        
+
                         filterExpression = string.Format("{0}{1}{2}{1}", filterExpression, '"', entity);
                     }
                     else if (searchName.Equals("Col_Id"))

@@ -463,9 +463,26 @@ namespace PowerWeb.Modules
             };
             if (!IsEFTTabDisabled(currentEFT, importiTPE.Name))
             {
-                List<TabPageItemExtended> oImportiTabList = new List<TabPageItemExtended>();
 
-                templateDic.Add(importiTPE, oImportiTabList);
+                List<TabPageItemExtended> ParametriTabList = new List<TabPageItemExtended>();
+
+              
+
+
+
+
+                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Retribuzione_Lorda_Col), TabPageItemFieldTypeEnum.NotInGroup));
+                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Retribuzione_Netta_Col), TabPageItemFieldTypeEnum.NotInGroup));
+
+                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Trattenuta_Vitto_Col), TabPageItemFieldTypeEnum.NotInGroup));
+                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Indennita_Sanificazione_Col), TabPageItemFieldTypeEnum.NotInGroup));
+
+                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Indennita_Trasporto_Col), TabPageItemFieldTypeEnum.NotInGroup));
+                //ParametriTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
+
+                templateDic.Add(importiTPE, ParametriTabList);
+
+               
             }
 
             #endregion
@@ -479,6 +496,21 @@ namespace PowerWeb.Modules
             if (!IsEFTTabDisabled(currentEFT, turniTPE.Name))
             {
                 List<TabPageItemExtended> oTurniTabList = new List<TabPageItemExtended>();
+
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno1_Can), TabPageItemFieldTypeEnum.NotInGroup));
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno2_Can), TabPageItemFieldTypeEnum.NotInGroup));
+
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno3_Can), TabPageItemFieldTypeEnum.NotInGroup));
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno4_Can), TabPageItemFieldTypeEnum.NotInGroup));
+
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno5_Can), TabPageItemFieldTypeEnum.NotInGroup));
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno6_Can), TabPageItemFieldTypeEnum.NotInGroup));
+
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno7_Can), TabPageItemFieldTypeEnum.NotInGroup));
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno8_Can), TabPageItemFieldTypeEnum.NotInGroup));
+
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno9_Can), TabPageItemFieldTypeEnum.NotInGroup));
+                oTurniTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Turno10_Can), TabPageItemFieldTypeEnum.NotInGroup));
 
                 templateDic.Add(turniTPE, oTurniTabList);
             }

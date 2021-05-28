@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="ef980e669bea473caa5f409a021e0774" Name="Diagram1" ZoomLevel="82">
         <EntityTypeShape EntityType="PowerWebModel.Aut_Str" Width="1.5" PointX="3" PointY="62.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerWebModel.Cant" Width="1.5" PointX="9" PointY="13.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_Note" Width="1.5" PointX="19.5" PointY="60.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_Var" Width="1.5" PointX="11.25" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cli" Width="1.5" PointX="6.75" PointY="21.375" IsExpanded="true" />
@@ -24,7 +23,6 @@
         <EntityTypeShape EntityType="PowerWebModel.Menu_Tipo" Width="1.5" PointX="19.5" PointY="56.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.MetaDescriptor" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.MetaFieldDescriptor" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerWebModel.Param" Width="1.5" PointX="11.25" PointY="78.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.PendingElab" Width="1.5" PointX="11.25" PointY="75.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Pru" Width="1.5" PointX="9" PointY="95.375" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Pru_Col" Width="1.5" PointX="11.25" PointY="66.875" IsExpanded="true" />
@@ -64,16 +62,6 @@
         <EntityTypeShape EntityType="PowerWebModel.Col_V" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="PowerWebModel.FK_Aut_Str_Col" ManuallyRouted="false" />
         <AssociationConnector Association="PowerWebModel.FK_Aut_Str_Resp" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Cant_Cli" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Cant_Fil" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Cant_NoteCant" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Cant_Tab_Orari_Tipo" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Cant_Var_Cant" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Col_Orario_Cant" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Damage_Cant" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Fru_Cant_Cant" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Param_Cant" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerWebModel.FK_Reg_Cant" ManuallyRouted="false" />
         <AssociationConnector Association="PowerWebModel.FK_Cant_Note_Utenti" ManuallyRouted="false" />
         <AssociationConnector Association="PowerWebModel.FK_Utenti_Cli" ManuallyRouted="false" />
         <AssociationConnector Association="PowerWebModel.FK_Col_Monte_Minuti_Col" ManuallyRouted="false" />
@@ -130,9 +118,21 @@
         <EntityTypeShape EntityType="PowerWebModel.CentroDiCosto" Width="1.5" PointX="5.375" PointY="12.875" />
         <AssociationConnector Association="PowerWebModel.FK__Reg__CentroDiCos__2937F6EB" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_CentroDiCosto" Width="1.5" PointX="14.25" PointY="26.25" />
-        <AssociationConnector Association="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" />
         <AssociationConnector Association="PowerWebModel.FK__Cant_Cent__Centr__274FAE79" />
         <EntityTypeShape EntityType="PowerWebModel.Reg_V" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PowerWebModel.Cant" Width="1.5" PointX="17" PointY="22.375" />
+        <AssociationConnector Association="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Cli" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Fil" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_NoteCant" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Tab_Orari_Tipo" />
+        <AssociationConnector Association="PowerWebModel.FK_Cant_Var_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Col_Orario_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Damage_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Fru_Cant_Cant" />
+        <AssociationConnector Association="PowerWebModel.FK_Reg_Cant" />
+        <EntityTypeShape EntityType="PowerWebModel.Param" Width="1.5" PointX="19.25" PointY="20.375" />
+        <AssociationConnector Association="PowerWebModel.FK_Param_Cant" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

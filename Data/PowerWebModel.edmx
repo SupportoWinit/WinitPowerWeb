@@ -163,6 +163,16 @@
           <Property Name="Tolleranza_Limite_Uscita_Mattina_Cant" Type="time" Precision="7" />
           <Property Name="IdTerminale" Type="int" />
           <Property Name="Tolleranza_Limite_Entrata_Cant" Type="time" Precision="7" />
+          <Property Name="Importo1" Type="float" />
+          <Property Name="Importo2" Type="float" />
+          <Property Name="Importo3" Type="float" />
+          <Property Name="Importo4" Type="float" />
+          <Property Name="Importo5" Type="float" />
+          <Property Name="Importo6" Type="float" />
+          <Property Name="Importo7" Type="float" />
+          <Property Name="Importo8" Type="float" />
+          <Property Name="Importo9" Type="float" />
+          <Property Name="Importo10" Type="float" />
         </EntityType>
         <EntityType Name="Cant_CentroDiCosto">
           <Key>
@@ -1004,6 +1014,7 @@
           <Property Name="Abilita_Import_Esterno" Type="bit" Nullable="false" />
           <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="smallint" />
           <Property Name="Tolleranza_Limite_Entrata" Type="int" />
+          <Property Name="Indice_Timbrature_FlutterApp" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PendingElab">
           <Key>
@@ -1507,8 +1518,8 @@
           <Property Name="DisAbilitazione_Versioni" Type="bit" Nullable="false" />
           <Property Name="Nome_Versioni" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Power.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Power.dbo.Cant_Fil_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Cant_Fil_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1517,8 +1528,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Cant_Id" Type="int" Nullable="false" />
           <Property Name="Fil_Id" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Power.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Power.dbo.Cant_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Cant_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1662,8 +1673,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Abilitazione_Data_Inizio_Fru_Can" Type="date" Nullable="false" />
           <Property Name="N_Serie_Fru" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Power.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Power.dbo.Col_Resp_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Col_Resp_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1672,8 +1683,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Col_Id" Type="int" Nullable="false" />
           <Property Name="Resp_Id" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Power.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Power.dbo.Col_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Col_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1819,8 +1830,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Raggruppamento2_Col" Type="nvarchar" MaxLength="50" />
           <Property Name="Residenza_Provincia_GEN_Col" Type="nvarchar" MaxLength="4" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Power.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Reg_V">
           <Key>
             <PropertyRef Name="RegE" />
@@ -3435,164 +3446,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <NavigationProperty Name="Col" Relationship="Self.FK_Aut_Str_Col" FromRole="Aut_Str" ToRole="Col" />
           <NavigationProperty Name="Resp" Relationship="Self.FK_Aut_Str_Resp" FromRole="Aut_Str" ToRole="Resp" />
         </EntityType>
-        <EntityType Name="Cant">
-          <Key>
-            <PropertyRef Name="Cant_Id" />
-          </Key>
-          <Property Name="Cant_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Arrot_Durata_Can" Type="Int16" />
-          <Property Name="Canone_Mensile_Fascia1_Can" Type="Double" />
-          <Property Name="Canone_Mensile_Fascia2_Can" Type="Double" />
-          <Property Name="Cap_Can" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Cap_Nascita_Can" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Cli_Id" Type="Int32" />
-          <Property Name="Cod_Fisc_Can" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Cantiere" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Codice_Luogo_Nascita_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Luogo_Residenza_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Voucher_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Cognome_Assistito_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Contributo_Disabili_Fascia1_Can" Type="Double" />
-          <Property Name="Contributo_Disabili_Fascia2_Can" Type="Double" />
-          <Property Name="Costo_Mezzora_Prescuola_Can" Type="Double" />
-          <Property Name="Costo_Orario_Can" Type="Double" />
-          <Property Name="Data_Isee_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Nascita_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Fine_1_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Fine_2_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Fine_3_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Fine_4_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Fine_5_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Inizio_1_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Inizio_2_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Inizio_3_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Inizio_4_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Rapporto_Inizio_5_Can" Type="DateTime" Precision="0" />
-          <Property Name="Data_Registrazione_Can" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DataOraUltimaModifica_Can" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DataVarGps_Can" Type="DateTime" Precision="0" />
-          <Property Name="Descrizione_Can" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="DisAbilitazione_Can" Type="Boolean" Nullable="false" />
-          <Property Name="Durata_Max_Gruppo_Notte_Ril_Can" Type="Time" Precision="0" />
-          <Property Name="Durata_Max_Gruppo_Ril_Can" Type="Time" Precision="0" />
-          <Property Name="Durata_Max_Ril_Can" Type="Time" Precision="0" />
-          <Property Name="Durata_Min_Ril_Can" Type="Time" Precision="0" />
-          <Property Name="Fax_1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Fax_1_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Fax_2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Fax_2_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Fil_Id" Type="Int32" />
-          <Property Name="Flag_NON_Esportare_Can" Type="Byte" />
-          <Property Name="FlagGps_Can" Type="Int32" Nullable="false" />
-          <Property Name="Gestione_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Indirizzo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LatitudineGps_Can" Type="Double" Nullable="false" />
-          <Property Name="Limite_Inizio_Notte_Can" Type="Time" Precision="0" />
-          <Property Name="Livello_Assistito_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="LongitudineGps_Can" Type="Double" Nullable="false" />
-          <Property Name="Luogo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Luogo_Nascita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Mensa_Can" Type="Boolean" Nullable="false" />
-          <Property Name="Metodo_Arrotondamento_Can" Type="Int32" Nullable="false" />
-          <Property Name="Minuti_Tolleranza_Can" Type="Int16" />
-          <Property Name="Minuti_Tolleranza_F_Can" Type="Int16" />
-          <Property Name="Nazione_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Nazione_Nascita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Nome_Assistito_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Note_Can" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Nr_Isee_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Numero_Bimbi_Fascia_Can" Type="Int16" />
-          <Property Name="Numero_GG_Lavorativi" Type="Int16" />
-          <Property Name="Numero_Utenti_Fascia1_Can" Type="Int16" />
-          <Property Name="Numero_Utenti_Fascia2_Can" Type="Int16" />
-          <Property Name="Numero_Utenti_PreScuola_Can" Type="Int16" />
-          <Property Name="Numero_Utenti_PostScuola_1Mezzora_Can" Type="Int16" />
-          <Property Name="Numero_Utenti_PostScuola_2Mezzora_Can" Type="Int16" />
-          <Property Name="Ore_Massime_Can" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="Percentuale_Can" Type="Single" />
-          <Property Name="Percentuale_Servizio_1_Can" Type="Single" />
-          <Property Name="Percentuale_Servizio_2_Can" Type="Single" />
-          <Property Name="Percentuale_Servizio_3_Can" Type="Single" />
-          <Property Name="Percentuale_Servizio_4_Can" Type="Single" />
-          <Property Name="Percentuale_Servizio_5_Can" Type="Single" />
-          <Property Name="Provincia_Can" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Provincia_Nascita_Can" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="RaggioGps_Can" Type="Int16" />
-          <Property Name="Raggruppamento1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Raggruppamento2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Residenza_Interno_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Residenza_Localita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sesso_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Singola_Reg" Type="Boolean" Nullable="false" />
-          <Property Name="Soglia_Arrot_Fig_Can" Type="Int16" />
-          <Property Name="Soglia_Arrot_Fig_F_Can" Type="Int16" />
-          <Property Name="Soglia_Durata_Can" Type="Int16" />
-          <Property Name="Telefono_1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_1_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_2_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_3_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_3_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_4_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Telefono_4_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Arrotondamento_Can" Type="Int32" Nullable="false" />
-          <Property Name="Tipo_Calcolo_Viaggi_Can" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Cantiere_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Interv_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Servizio_1_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Servizio_2_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Servizio_3_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Servizio_4_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Servizio_5_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Tipologia_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="TipoNotturno_Can" Type="Int32" Nullable="false" />
-          <Property Name="Turno1_Can" Type="Time" Precision="0" />
-          <Property Name="Turno2_Can" Type="Time" Precision="0" />
-          <Property Name="Turno3_Can" Type="Time" Precision="0" />
-          <Property Name="Turno4_Can" Type="Time" Precision="0" />
-          <Property Name="Turno5_Can" Type="Time" Precision="0" />
-          <Property Name="Turno6_Can" Type="Time" Precision="0" />
-          <Property Name="Turno7_Can" Type="Time" Precision="0" />
-          <Property Name="Turno8_Can" Type="Time" Precision="0" />
-          <Property Name="Turno9_Can" Type="Time" Precision="0" />
-          <Property Name="Turno10_Can" Type="Time" Precision="0" />
-          <Property Name="Zona_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Domicilio_Cap_Can" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Domicilio_Indirizzo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Domicilio_Interno_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Domicilio_Localita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Domicilio_Luogo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Domicilio_Provincia_Can" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Domicilio_Luogo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Tab_Orari_Tipo_Id" Type="Int32" />
-          <Property Name="Frazione_Can" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Limite_Entrata_Mattina_Cant" Type="Time" Precision="0" />
-          <Property Name="Limite_Entrata_Pomeriggio_Cant" Type="Time" Precision="0" />
-          <Property Name="Tolleranza_Limite_Entrata_Pomeriggio_Cant" Type="Time" Precision="0" />
-          <Property Name="Tempo_Attivita_Can" Type="Time" Precision="0" />
-          <Property Name="Codice_Commessa_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Gestionale_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Durata_Notturno_Can" Type="Time" Precision="7" />
-          <Property Name="Cant_Padre_Id" Type="Int32" />
-          <Property Name="Codice_in_clockApp" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="Limite_Uscita_Mattina_Cant" Type="Time" Precision="7" />
-          <Property Name="Limite_Uscita_Pomeriggio_Cant" Type="Time" Precision="7" />
-          <Property Name="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Type="Time" Precision="7" />
-          <Property Name="Tolleranza_Limite_Uscita_Mattina_Cant" Type="Time" Precision="7" />
-          <Property Name="IdTerminale" Type="Int32" />
-          <NavigationProperty Name="Cli" Relationship="Self.FK_Cant_Cli" FromRole="Cant" ToRole="Cli" />
-          <NavigationProperty Name="Fil" Relationship="Self.FK_Cant_Fil" FromRole="Cant" ToRole="Fil" />
-          <NavigationProperty Name="Cant_Note" Relationship="Self.FK_Cant_NoteCant" FromRole="Cant" ToRole="Cant_Note" />
-          <NavigationProperty Name="Tab_Orari_Tipo" Relationship="Self.FK_Cant_Tab_Orari_Tipo" FromRole="Cant" ToRole="Tab_Orari_Tipo" />
-          <NavigationProperty Name="Cant_Var" Relationship="Self.FK_Cant_Var_Cant" FromRole="Cant" ToRole="Cant_Var" />
-          <NavigationProperty Name="Col_Cant_Orario" Relationship="Self.FK_Col_Orario_Cant" FromRole="Cant" ToRole="Col_Cant_Orario" />
-          <NavigationProperty Name="Damage" Relationship="Self.FK_Damage_Cant" FromRole="Cant" ToRole="Damage" />
-          <NavigationProperty Name="Fru_Cant" Relationship="Self.FK_Fru_Cant_Cant" FromRole="Cant" ToRole="Fru_Cant" />
-          <NavigationProperty Name="Param" Relationship="Self.FK_Param_Cant" FromRole="Cant" ToRole="Param" />
-          <NavigationProperty Name="Regs" Relationship="Self.FK_Reg_Cant" FromRole="Cant" ToRole="Reg" />
-          <NavigationProperty Name="Cant_CentroDiCosto" Relationship="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" FromRole="Cant" ToRole="Cant_CentroDiCosto" />
-          <Property Name="Tolleranza_Limite_Entrata_Cant" Type="Time" Precision="7" />
-        </EntityType>
         <EntityType Name="Cant_Note">
           <Key>
             <PropertyRef Name="Cant_Note_Id" />
@@ -3606,8 +3459,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Utenti_Id" Type="Int32" Nullable="false" />
           <Property Name="Nota_Can_Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Tipo_Nota_Can_Note" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Cant_NoteCant" FromRole="Cant_Note" ToRole="Cant" />
           <NavigationProperty Name="Utenti" Relationship="Self.FK_Cant_Note_Utenti" FromRole="Cant_Note" ToRole="Utenti" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Cant_NoteCant" FromRole="Cant_Note" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Cant_Var">
           <Key>
@@ -3738,7 +3591,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Limite_Entrata_Pomeriggio_Cant" Type="Time" Precision="0" />
           <Property Name="Tolleranza_Limite_Entrata_Pomeriggio_Cant" Type="Time" Precision="0" />
           <Property Name="Tempo_Attivita_Can" Type="Time" Precision="0" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Cant_Var_Cant" FromRole="Cant_Var" ToRole="Cant" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Cant_Var_Cant" FromRole="Cant_Var" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Cli">
           <Key>
@@ -3791,8 +3644,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Telefono_4_Cli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Telefono_4_Rif_Cli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Valuta_Cli" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Cant_Cli" FromRole="Cli" ToRole="Cant" />
           <NavigationProperty Name="Utenti" Relationship="Self.FK_Utenti_Cli" FromRole="Cli" ToRole="Utenti" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Cant_Cli" FromRole="Cli" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Col">
           <Key>
@@ -3992,8 +3845,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Minuti_G29_Orario" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
           <Property Name="Minuti_G30_Orario" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
           <Property Name="Minuti_G31_Orario" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Col_Orario_Cant" FromRole="Col_Cant_Orario" ToRole="Cant" />
           <NavigationProperty Name="Col" Relationship="Self.FK_Col_Orario_Col" FromRole="Col_Cant_Orario" ToRole="Col" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Col_Orario_Cant" FromRole="Col_Cant_Orario" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Col_Monte_Minuti">
           <Key>
@@ -4184,12 +4037,12 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Image_Attachment" Type="Boolean" />
           <Property Name="MultimediaFileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Tab_Decod_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Damage_Cant" FromRole="Damage" ToRole="Cant" />
           <NavigationProperty Name="Col" Relationship="Self.FK_Damage_Col" FromRole="Damage" ToRole="Col" />
           <NavigationProperty Name="Fru" Relationship="Self.FK_Damage_Fru" FromRole="Damage" ToRole="Fru" />
           <NavigationProperty Name="Pru" Relationship="Self.FK_Damage_Pru" FromRole="Damage" ToRole="Pru" />
           <NavigationProperty Name="Tab_Damage" Relationship="Self.FK_Damage_Tab_Damage" FromRole="Damage" ToRole="Tab_Damage" />
           <NavigationProperty Name="Tab_Decod" Relationship="Self.FK_Damage_Tab_Decod" FromRole="Damage" ToRole="Tab_Decod" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Damage_Cant" FromRole="Damage" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Fil">
           <Key>
@@ -4202,8 +4055,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Descrizione_Fil" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DisAbilitazione_Fil" Type="Boolean" Nullable="false" />
           <Property Name="Note_Fil" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Cant_Fil" FromRole="Fil" ToRole="Cant" />
           <NavigationProperty Name="Utenti_Fil" Relationship="Self.FK_Utenti_Fil_Fil" FromRole="Fil" ToRole="Utenti_Fil" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Cant_Fil" FromRole="Fil" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Fru">
           <Key>
@@ -4234,8 +4087,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="DisAbilitazione_Fru_Can" Type="Boolean" Nullable="false" />
           <Property Name="Fru_Id" Type="Int32" Nullable="false" />
           <Property Name="Note_Fru_Can" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Fru_Cant_Cant" FromRole="Fru_Cant" ToRole="Cant" />
           <NavigationProperty Name="Fru" Relationship="Self.FK_Fru_Cant_Fru" FromRole="Fru_Cant" ToRole="Fru" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Fru_Cant_Cant" FromRole="Fru_Cant" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Lingue">
           <Key>
@@ -4307,163 +4160,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="DecimalPlaces" Type="Int32" Nullable="false" />
           <Property Name="AllowHeaderFilter" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MetaDescriptor" Relationship="Self.FK_MetaFieldDescriptor_MetaDescriptor" FromRole="MetaFieldDescriptor" ToRole="MetaDescriptor" />
-        </EntityType>
-        <EntityType Name="Param">
-          <Key>
-            <PropertyRef Name="Param_Id" />
-          </Key>
-          <Property Name="Param_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ActivationDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Abilita_Arrotondamenti" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Att" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Aut_Str" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Cartellino" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Confronto_Ore_Budget" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_GPS" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Monte_Minuti" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Notifiche" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Notturno" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Orari" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Pass" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Privacy" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Schedulatore" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Viaggi" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Where_Is_It" Type="Boolean" Nullable="false" />
-          <Property Name="Attiva_Num_Aut_Can" Type="Boolean" Nullable="false" />
-          <Property Name="Attiva_Num_Aut_Col" Type="Boolean" Nullable="false" />
-          <Property Name="Aut_Str_Tipo" Type="Int32" />
-          <Property Name="BingKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Cant_Id" Type="Int32" />
-          <Property Name="Cantiere_Timbrature_GPS_Non_Valide" Type="Int32" />
-          <Property Name="Cartellino_Divisione_Piano_Notturno_Diurno" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Arrotondamenti" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Piano" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Ore" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Motivazioni" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Delta" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Totale" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Inizio_Notturno" Type="Time" Precision="0" />
-          <Property Name="Cartellino_Fine_Notturno" Type="Time" Precision="0" />
-          <Property Name="Cartellino_Visualizza_Viaggi" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Usa_Cartellino_Modificabile" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Modalita_Compatta" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Dividi_Altra_Anagrafica" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Usa_Rettifiche_Cartellino" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Usa_Rettifiche_Manuali" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Usa_Rettifiche_Auto" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Abilita_Stampa_Cart_Editabile" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Abilita_Divisione_Cantiere" Type="Boolean" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Totali_Settimanali" Type="Int32" Nullable="false" />
-          <Property Name="Cartellino_Totale_Prima_Colonna" Type="Boolean" Nullable="false" />
-          <Property Name="Codice_Cliente" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="ComboBoxDelay" Type="Int32" Nullable="false" />
-          <Property Name="ComboboxRowsPerPage" Type="Int32" Nullable="false" />
-          <Property Name="CompanyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyLogo" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Ctrl_Tab_Comuni" Type="Int32" />
-          <Property Name="Ctrl_Codice_Fisc" Type="Int32" />
-          <Property Name="Ctrl_Codice_IBAN" Type="Int32" />
-          <Property Name="Ctrl_Sovrap_Pass" Type="Boolean" />
-          <Property Name="Data_Blocco_Reg" Type="DateTime" Precision="0" />
-          <Property Name="Data_Registrazione" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Data_Stored_Reg" Type="DateTime" Precision="0" />
-          <Property Name="DataOraUltimaModifica" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Default_Abilitati" Type="Boolean" Nullable="false" />
-          <Property Name="Default_Durata_Giornata" Type="Time" Precision="0" />
-          <Property Name="Default_Ora_Inizio_Giornata" Type="Time" Precision="0" />
-          <Property Name="Default_Durata_Max_Gruppo_Notte_Ril" Type="Time" Precision="0" />
-          <Property Name="Default_Durata_Max_Gruppo_Ril" Type="Time" Precision="0" />
-          <Property Name="Default_Durata_Max_Ril" Type="Time" Precision="0" />
-          <Property Name="Default_Durata_Min_Ril" Type="Time" Precision="0" />
-          <Property Name="Default_Minuti_Arrot_I" Type="Int16" />
-          <Property Name="Default_Minuti_Arrot_F" Type="Int16" />
-          <Property Name="Default_Minuti_Durata" Type="Int16" />
-          <Property Name="Default_Soglia_Arrot_I" Type="Int16" />
-          <Property Name="Default_Soglia_Arrot_F" Type="Int16" />
-          <Property Name="Default_Soglia_Durata" Type="Int16" />
-          <Property Name="Dflt_DoRefresh_Grid" Type="Boolean" Nullable="false" />
-          <Property Name="Dflt_Include_Activities" Type="Boolean" Nullable="false" />
-          <Property Name="Dflt_Include_Blocked" Type="Boolean" Nullable="false" />
-          <Property Name="Dflt_Include_Pass" Type="Boolean" Nullable="false" />
-          <Property Name="Dflt_Include_Trips" Type="Boolean" Nullable="false" />
-          <Property Name="DomainFilter" Type="Int32" Nullable="false" />
-          <Property Name="Durata_Quadratura_Rettifiche_Auto" Type="Time" Precision="0" />
-          <Property Name="Durata_Massima_Viaggio" Type="Time" Precision="0" />
-          <Property Name="Durata_Minima_Viaggio" Type="Time" Precision="0" />
-          <Property Name="Durata_Notturno" Type="Time" Precision="7" />
-          <Property Name="Durata_Pausa" Type="Time" Precision="0" />
-          <Property Name="Elaborate_Semaforo" Type="Boolean" Nullable="false" />
-          <Property Name="Fascia_Ore_Viaggi_1_Inizio" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_1_Fine" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_2_Inizio" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_2_Fine" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_3_Inizio" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_3_Fine" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_4_Inizio" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_4_Fine" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_5_Inizio" Type="Time" Precision="0" />
-          <Property Name="Fascia_Ore_Viaggi_5_Fine" Type="Time" Precision="0" />
-          <Property Name="File_Cant_Var" Type="Boolean" Nullable="false" />
-          <Property Name="File_Col_Var" Type="Boolean" Nullable="false" />
-          <Property Name="Flag_Calcolo_Viaggi" Type="Boolean" Nullable="false" />
-          <Property Name="Flag_GPS" Type="Int32" Nullable="false" />
-          <Property Name="Flag_Ore_Viaggi" Type="Int32" />
-          <Property Name="Flag_Ore_Viaggi_Inizio_Fine" Type="Int32" />
-          <Property Name="Flag_Monte_Ore" Type="Int32" Nullable="false" />
-          <Property Name="GG_X_Allarmi" Type="Int16" />
-          <Property Name="Gestione_SottoCantieri" Type="Boolean" />
-          <Property Name="Importazione_timbrature_GPS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Limite_Entrata_Mattina" Type="Time" Precision="0" />
-          <Property Name="Limite_Entrata_Pomeriggio" Type="Time" Precision="0" />
-          <Property Name="Limite_Entrata_Inizio_Pomeriggio" Type="Time" Precision="7" />
-          <Property Name="Limite_Entrata_Usa_Orario" Type="Boolean" Nullable="false" />
-          <Property Name="MaxElab_ImportChunkSize" Type="Int32" Nullable="false" />
-          <Property Name="MDBPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Mesi_Validita_Reg" Type="Byte" Nullable="false" />
-          <Property Name="Metodo_Arrotondamento" Type="Int32" Nullable="false" />
-          <Property Name="ModuleType" Type="Int32" Nullable="false" />
-          <Property Name="Pausa_Viaggio" Type="Boolean" />
-          <Property Name="PercorsoFotoCol" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="PublicKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RaggioGpsDefault" Type="Double" />
-          <Property Name="Ritardo_Tolleranza_Minuti" Type="Int32" />
-          <Property Name="RowsPerComboBox" Type="Int32" Nullable="false" />
-          <Property Name="RowsPerPage" Type="Int32" Nullable="false" />
-          <Property Name="Sabato_Feriale" Type="Boolean" Nullable="false" />
-          <Property Name="StoredChunkSize" Type="Int32" />
-          <Property Name="Tempo_Doppia_Reg" Type="Int16" />
-          <Property Name="Tipo_Arrotondamento" Type="Int32" Nullable="false" />
-          <Property Name="Tipo_Assegnazione_KMMinuti" Type="Int32" Nullable="false" />
-          <Property Name="Tipo_Assegnazione_KMMinuti_Inizio_Fine_G" Type="Int32" Nullable="false" />
-          <Property Name="Tipo_Ass_Tag_Gps" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Chiusura_Causali" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Tipo_Monte_Ore" Type="Int32" Nullable="false" />
-          <Property Name="TipoNotturno" Type="Int32" Nullable="false" />
-          <Property Name="Tipo_Viaggio" Type="Byte" Nullable="false" />
-          <Property Name="Tolleranza_Limite_Entrata_Pomeriggio" Type="Time" Precision="0" />
-          <Property Name="Utilizzo_Limite_Entrata" Type="Int32" Nullable="false" />
-          <Property Name="Utilizzo_Fasce_Viaggi" Type="Byte" />
-          <Property Name="Cartellino_Abilita_Modifica" Type="Boolean" Nullable="false" />
-          <Property Name="Sincronizzazione_ClockApp" Type="Boolean" Nullable="false" />
-          <Property Name="Url_ClockAppsManager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BlockLoginOnUserPswExpired" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordExpirationDays" Type="Int32" />
-          <Property Name="ImportaFileTimbratureSospese" Type="Boolean" Nullable="false" />
-          <Property Name="Utilizzo_Limite_Uscita" Type="Int32" Nullable="false" />
-          <Property Name="Limite_Uscita_Pomeriggio" Type="Time" Precision="0" />
-          <Property Name="Limite_Uscita_Mattina" Type="Time" Precision="0" />
-          <Property Name="Limite_Uscita_Usa_Orario" Type="Boolean" Nullable="false" />
-          <Property Name="Tolleranza_Limite_Uscita_Pomeriggio" Type="Time" Precision="7" />
-          <Property Name="Tolleranza_Limite_Uscita_Mattina" Type="Time" Precision="7" />
-          <Property Name="Indice_Timbrature_GeoBadge" Type="Int32" Nullable="false" />
-          <Property Name="Abilita_Sincronizzazione_Entità" Type="Boolean" Nullable="false" />
-          <Property Name="Abilita_Import_Esterno" Type="Boolean" Nullable="false" />
-          <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="Int16" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Param_Cant" FromRole="Param" ToRole="Cant" />
-          <Property Name="Tolleranza_Limite_Entrata" Type="Int32" />
         </EntityType>
         <EntityType Name="PendingElab">
           <Key>
@@ -4551,7 +4247,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Ritardo_Durata" Type="Int32" />
           <Property Name="Ritardo_Mail_Sent" Type="Boolean" Nullable="false" />
           <Property Name="CentroDiCosto_Id" Type="Int32" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Reg_Cant" FromRole="Reg" ToRole="Cant" />
           <NavigationProperty Name="Col" Relationship="Self.FK_Reg_Col" FromRole="Reg" ToRole="Col" />
           <NavigationProperty Name="Fru" Relationship="Self.FK_Reg_Fru" FromRole="Reg" ToRole="Fru" />
           <NavigationProperty Name="Pru" Relationship="Self.FK_Reg_Pru" FromRole="Reg" ToRole="Pru" />
@@ -4559,6 +4254,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <NavigationProperty Name="ParentReg" Relationship="Self.FK_Reg_Reg" FromRole="Reg1" ToRole="Reg" />
           <NavigationProperty Name="Tab_Decod" Relationship="Self.FK_Reg_Tab_Decod" FromRole="Reg" ToRole="Tab_Decod" />
           <NavigationProperty Name="CentroDiCosto" Relationship="PowerWebModel.FK__Reg__CentroDiCos__2937F6EB" FromRole="Reg" ToRole="CentroDiCosto" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Reg_Cant" FromRole="Reg" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Reg_Stored">
           <Key>
@@ -4853,9 +4549,9 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Tab_Orari_Tipo_Fine_Not" Type="Time" Precision="3" />
           <Property Name="Tab_Orari_Tipo_Entita_Rif" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Tab_Orari_Tipo_NotDiu_Auto" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Cant" Relationship="Self.FK_Cant_Tab_Orari_Tipo" FromRole="Tab_Orari_Tipo" ToRole="Cant" />
           <NavigationProperty Name="Col" Relationship="Self.FK_Col_Tab_Orari_Tipo" FromRole="Tab_Orari_Tipo" ToRole="Col" />
           <NavigationProperty Name="Tab_Orari" Relationship="Self.fk_Tab_Orari_Tipo" FromRole="Tab_Orari_Tipo" ToRole="Tab_Orari" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Cant_Tab_Orari_Tipo" FromRole="Tab_Orari_Tipo" ToRole="Cant" />
         </EntityType>
         <EntityType Name="Tab_Prov">
           <Key>
@@ -5362,126 +5058,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
             </Principal>
             <Dependent Role="Aut_Str">
               <PropertyRef Name="Aut_Str_Resp_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cant_Cli">
-          <End Role="Cli" Type="Self.Cli" Multiplicity="0..1" />
-          <End Role="Cant" Type="Self.Cant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cli">
-              <PropertyRef Name="Cli_Id" />
-            </Principal>
-            <Dependent Role="Cant">
-              <PropertyRef Name="Cli_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cant_Fil">
-          <End Role="Fil" Type="Self.Fil" Multiplicity="0..1" />
-          <End Role="Cant" Type="Self.Cant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fil">
-              <PropertyRef Name="Fil_Id" />
-            </Principal>
-            <Dependent Role="Cant">
-              <PropertyRef Name="Fil_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cant_NoteCant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="1" />
-          <End Role="Cant_Note" Type="Self.Cant_Note" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Cant_Note">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cant_Tab_Orari_Tipo">
-          <End Role="Tab_Orari_Tipo" Type="Self.Tab_Orari_Tipo" Multiplicity="0..1" />
-          <End Role="Cant" Type="Self.Cant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tab_Orari_Tipo">
-              <PropertyRef Name="Tab_Orari_Tipo_Id" />
-            </Principal>
-            <Dependent Role="Cant">
-              <PropertyRef Name="Tab_Orari_Tipo_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cant_Var_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="1" />
-          <End Role="Cant_Var" Type="Self.Cant_Var" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Cant_Var">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Col_Orario_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="0..1" />
-          <End Role="Col_Cant_Orario" Type="Self.Col_Cant_Orario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Col_Cant_Orario">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Damage_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="0..1" />
-          <End Role="Damage" Type="Self.Damage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Damage">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Fru_Cant_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="1" />
-          <End Role="Fru_Cant" Type="Self.Fru_Cant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Fru_Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Param_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="0..1" />
-          <End Role="Param" Type="Self.Param" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Param">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Reg_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="0..1" />
-          <End Role="Reg" Type="Self.Reg" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Reg">
-              <PropertyRef Name="Cant_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6129,7 +5705,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Aut_Str" EntityType="Self.Aut_Str" />
-          <EntitySet Name="Cant" EntityType="Self.Cant" />
           <EntitySet Name="Cant_Note" EntityType="Self.Cant_Note" />
           <EntitySet Name="Cant_Var" EntityType="Self.Cant_Var" />
           <EntitySet Name="Cli" EntityType="Self.Cli" />
@@ -6147,7 +5722,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySet Name="Menu_Tipo" EntityType="Self.Menu_Tipo" />
           <EntitySet Name="MetaDescriptor" EntityType="Self.MetaDescriptor" />
           <EntitySet Name="MetaFieldDescriptor" EntityType="Self.MetaFieldDescriptor" />
-          <EntitySet Name="Param" EntityType="Self.Param" />
           <EntitySet Name="PendingElab" EntityType="Self.PendingElab" />
           <EntitySet Name="Pru" EntityType="Self.Pru" />
           <EntitySet Name="Pru_Col" EntityType="Self.Pru_Col" />
@@ -6192,46 +5766,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <AssociationSet Name="FK_Aut_Str_Resp" Association="Self.FK_Aut_Str_Resp">
             <End Role="Resp" EntitySet="Resp" />
             <End Role="Aut_Str" EntitySet="Aut_Str" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cant_Cli" Association="Self.FK_Cant_Cli">
-            <End Role="Cli" EntitySet="Cli" />
-            <End Role="Cant" EntitySet="Cant" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cant_Fil" Association="Self.FK_Cant_Fil">
-            <End Role="Fil" EntitySet="Fil" />
-            <End Role="Cant" EntitySet="Cant" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cant_NoteCant" Association="Self.FK_Cant_NoteCant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Cant_Note" EntitySet="Cant_Note" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cant_Tab_Orari_Tipo" Association="Self.FK_Cant_Tab_Orari_Tipo">
-            <End Role="Tab_Orari_Tipo" EntitySet="Tab_Orari_Tipo" />
-            <End Role="Cant" EntitySet="Cant" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cant_Var_Cant" Association="Self.FK_Cant_Var_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Cant_Var" EntitySet="Cant_Var" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Col_Orario_Cant" Association="Self.FK_Col_Orario_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Col_Cant_Orario" EntitySet="Col_Cant_Orario" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Damage_Cant" Association="Self.FK_Damage_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Damage" EntitySet="Damage" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Fru_Cant_Cant" Association="Self.FK_Fru_Cant_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Fru_Cant" EntitySet="Fru_Cant" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Param_Cant" Association="Self.FK_Param_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Param" EntitySet="Param" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reg_Cant" Association="Self.FK_Reg_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Reg" EntitySet="Reg" />
           </AssociationSet>
           <AssociationSet Name="FK_Cant_Note_Utenti" Association="Self.FK_Cant_Note_Utenti">
             <End Role="Utenti" EntitySet="Utenti" />
@@ -6468,15 +6002,57 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
             <End Role="Reg" EntitySet="Reg" />
           </AssociationSet>
           <EntitySet Name="Cant_CentroDiCosto" EntityType="PowerWebModel.Cant_CentroDiCosto" />
-          <AssociationSet Name="FK__Cant_Cent__Cant___2843D2B2" Association="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Cant_CentroDiCosto" EntitySet="Cant_CentroDiCosto" />
-          </AssociationSet>
           <AssociationSet Name="FK__Cant_Cent__Centr__274FAE79" Association="PowerWebModel.FK__Cant_Cent__Centr__274FAE79">
             <End Role="CentroDiCosto" EntitySet="CentroDiCosto" />
             <End Role="Cant_CentroDiCosto" EntitySet="Cant_CentroDiCosto" />
           </AssociationSet>
           <EntitySet Name="Reg_V" EntityType="PowerWebModel.Reg_V" />
+          <EntitySet Name="Cant" EntityType="PowerWebModel.Cant" />
+          <AssociationSet Name="FK__Cant_Cent__Cant___2843D2B2" Association="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Cant_CentroDiCosto" EntitySet="Cant_CentroDiCosto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cant_Cli" Association="PowerWebModel.FK_Cant_Cli">
+            <End Role="Cli" EntitySet="Cli" />
+            <End Role="Cant" EntitySet="Cant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cant_Fil" Association="PowerWebModel.FK_Cant_Fil">
+            <End Role="Fil" EntitySet="Fil" />
+            <End Role="Cant" EntitySet="Cant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cant_NoteCant" Association="PowerWebModel.FK_Cant_NoteCant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Cant_Note" EntitySet="Cant_Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cant_Tab_Orari_Tipo" Association="PowerWebModel.FK_Cant_Tab_Orari_Tipo">
+            <End Role="Tab_Orari_Tipo" EntitySet="Tab_Orari_Tipo" />
+            <End Role="Cant" EntitySet="Cant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cant_Var_Cant" Association="PowerWebModel.FK_Cant_Var_Cant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Cant_Var" EntitySet="Cant_Var" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Col_Orario_Cant" Association="PowerWebModel.FK_Col_Orario_Cant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Col_Cant_Orario" EntitySet="Col_Cant_Orario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Damage_Cant" Association="PowerWebModel.FK_Damage_Cant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Damage" EntitySet="Damage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fru_Cant_Cant" Association="PowerWebModel.FK_Fru_Cant_Cant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Fru_Cant" EntitySet="Fru_Cant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reg_Cant" Association="PowerWebModel.FK_Reg_Cant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Reg" EntitySet="Reg" />
+          </AssociationSet>
+          <EntitySet Name="Param" EntityType="PowerWebModel.Param" />
+          <AssociationSet Name="FK_Param_Cant" Association="PowerWebModel.FK_Param_Cant">
+            <End Role="Cant" EntitySet="Cant" />
+            <End Role="Param" EntitySet="Param" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CentroDiCosto">
           <Key>
@@ -6509,21 +6085,9 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Cant_CentroDiCosto_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Cant_Id" Type="Int32" Nullable="false" />
           <Property Name="CentroDiCosto_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" FromRole="Cant_CentroDiCosto" ToRole="Cant" />
           <NavigationProperty Name="CentroDiCosto" Relationship="PowerWebModel.FK__Cant_Cent__Centr__274FAE79" FromRole="Cant_CentroDiCosto" ToRole="CentroDiCosto" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" FromRole="Cant_CentroDiCosto" ToRole="Cant" />
         </EntityType>
-        <Association Name="FK__Cant_Cent__Cant___2843D2B2">
-          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="1" />
-          <End Type="PowerWebModel.Cant_CentroDiCosto" Role="Cant_CentroDiCosto" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Cant_CentroDiCosto">
-              <PropertyRef Name="Cant_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Cant_Cent__Centr__274FAE79">
           <End Type="PowerWebModel.CentroDiCosto" Role="CentroDiCosto" Multiplicity="1" />
           <End Type="PowerWebModel.Cant_CentroDiCosto" Role="Cant_CentroDiCosto" Multiplicity="*" />
@@ -6622,6 +6186,464 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Raggruppamento1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Raggruppamento2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Cant">
+          <Key>
+            <PropertyRef Name="Cant_Id" />
+          </Key>
+          <Property Name="Cant_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Arrot_Durata_Can" Type="Int16" />
+          <Property Name="Canone_Mensile_Fascia1_Can" Type="Double" />
+          <Property Name="Canone_Mensile_Fascia2_Can" Type="Double" />
+          <Property Name="Cap_Can" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Cap_Nascita_Can" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Cli_Id" Type="Int32" />
+          <Property Name="Cod_Fisc_Can" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Cantiere" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Luogo_Nascita_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Luogo_Residenza_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Voucher_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cognome_Assistito_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contributo_Disabili_Fascia1_Can" Type="Double" />
+          <Property Name="Contributo_Disabili_Fascia2_Can" Type="Double" />
+          <Property Name="Costo_Mezzora_Prescuola_Can" Type="Double" />
+          <Property Name="Costo_Orario_Can" Type="Double" />
+          <Property Name="Data_Isee_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Nascita_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Fine_1_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Fine_2_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Fine_3_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Fine_4_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Fine_5_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Inizio_1_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Inizio_2_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Inizio_3_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Inizio_4_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Rapporto_Inizio_5_Can" Type="DateTime" Precision="0" />
+          <Property Name="Data_Registrazione_Can" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DataOraUltimaModifica_Can" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DataVarGps_Can" Type="DateTime" Precision="0" />
+          <Property Name="Descrizione_Can" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisAbilitazione_Can" Type="Boolean" Nullable="false" />
+          <Property Name="Durata_Max_Gruppo_Notte_Ril_Can" Type="Time" Precision="0" />
+          <Property Name="Durata_Max_Gruppo_Ril_Can" Type="Time" Precision="0" />
+          <Property Name="Durata_Max_Ril_Can" Type="Time" Precision="0" />
+          <Property Name="Durata_Min_Ril_Can" Type="Time" Precision="0" />
+          <Property Name="Fax_1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax_1_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax_2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax_2_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fil_Id" Type="Int32" />
+          <Property Name="Flag_NON_Esportare_Can" Type="Byte" />
+          <Property Name="FlagGps_Can" Type="Int32" Nullable="false" />
+          <Property Name="Gestione_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Indirizzo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LatitudineGps_Can" Type="Double" Nullable="false" />
+          <Property Name="Limite_Inizio_Notte_Can" Type="Time" Precision="0" />
+          <Property Name="Livello_Assistito_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LongitudineGps_Can" Type="Double" Nullable="false" />
+          <Property Name="Luogo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Luogo_Nascita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mensa_Can" Type="Boolean" Nullable="false" />
+          <Property Name="Metodo_Arrotondamento_Can" Type="Int32" Nullable="false" />
+          <Property Name="Minuti_Tolleranza_Can" Type="Int16" />
+          <Property Name="Minuti_Tolleranza_F_Can" Type="Int16" />
+          <Property Name="Nazione_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Nazione_Nascita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Nome_Assistito_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Note_Can" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nr_Isee_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Numero_Bimbi_Fascia_Can" Type="Int16" />
+          <Property Name="Numero_GG_Lavorativi" Type="Int16" />
+          <Property Name="Numero_Utenti_Fascia1_Can" Type="Int16" />
+          <Property Name="Numero_Utenti_Fascia2_Can" Type="Int16" />
+          <Property Name="Numero_Utenti_PreScuola_Can" Type="Int16" />
+          <Property Name="Numero_Utenti_PostScuola_1Mezzora_Can" Type="Int16" />
+          <Property Name="Numero_Utenti_PostScuola_2Mezzora_Can" Type="Int16" />
+          <Property Name="Ore_Massime_Can" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Percentuale_Can" Type="Single" />
+          <Property Name="Percentuale_Servizio_1_Can" Type="Single" />
+          <Property Name="Percentuale_Servizio_2_Can" Type="Single" />
+          <Property Name="Percentuale_Servizio_3_Can" Type="Single" />
+          <Property Name="Percentuale_Servizio_4_Can" Type="Single" />
+          <Property Name="Percentuale_Servizio_5_Can" Type="Single" />
+          <Property Name="Provincia_Can" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Provincia_Nascita_Can" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="RaggioGps_Can" Type="Int16" />
+          <Property Name="Raggruppamento1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Raggruppamento2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Residenza_Interno_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Residenza_Localita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sesso_Can" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Singola_Reg" Type="Boolean" Nullable="false" />
+          <Property Name="Soglia_Arrot_Fig_Can" Type="Int16" />
+          <Property Name="Soglia_Arrot_Fig_F_Can" Type="Int16" />
+          <Property Name="Soglia_Durata_Can" Type="Int16" />
+          <Property Name="Telefono_1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_1_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_2_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_3_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_3_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_4_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono_4_Rif_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Arrotondamento_Can" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Calcolo_Viaggi_Can" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Cantiere_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Interv_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Servizio_1_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Servizio_2_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Servizio_3_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Servizio_4_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Servizio_5_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Tipologia_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TipoNotturno_Can" Type="Int32" Nullable="false" />
+          <Property Name="Turno1_Can" Type="Time" Precision="0" />
+          <Property Name="Turno2_Can" Type="Time" Precision="0" />
+          <Property Name="Turno3_Can" Type="Time" Precision="0" />
+          <Property Name="Turno4_Can" Type="Time" Precision="0" />
+          <Property Name="Turno5_Can" Type="Time" Precision="0" />
+          <Property Name="Turno6_Can" Type="Time" Precision="0" />
+          <Property Name="Turno7_Can" Type="Time" Precision="0" />
+          <Property Name="Turno8_Can" Type="Time" Precision="0" />
+          <Property Name="Turno9_Can" Type="Time" Precision="0" />
+          <Property Name="Turno10_Can" Type="Time" Precision="0" />
+          <Property Name="Zona_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Domicilio_Cap_Can" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Domicilio_Indirizzo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Domicilio_Interno_Can" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Domicilio_Localita_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Domicilio_Luogo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Domicilio_Provincia_Can" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Domicilio_Luogo_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tab_Orari_Tipo_Id" Type="Int32" />
+          <Property Name="Frazione_Can" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Limite_Entrata_Mattina_Cant" Type="Time" Precision="0" />
+          <Property Name="Limite_Entrata_Pomeriggio_Cant" Type="Time" Precision="0" />
+          <Property Name="Tolleranza_Limite_Entrata_Pomeriggio_Cant" Type="Time" Precision="0" />
+          <Property Name="Tempo_Attivita_Can" Type="Time" Precision="0" />
+          <Property Name="Codice_Commessa_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Gestionale_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Durata_Notturno_Can" Type="Time" Precision="7" />
+          <Property Name="Cant_Padre_Id" Type="Int32" />
+          <Property Name="Codice_in_clockApp" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Limite_Uscita_Mattina_Cant" Type="Time" Precision="7" />
+          <Property Name="Limite_Uscita_Pomeriggio_Cant" Type="Time" Precision="7" />
+          <Property Name="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Type="Time" Precision="7" />
+          <Property Name="Tolleranza_Limite_Uscita_Mattina_Cant" Type="Time" Precision="7" />
+          <Property Name="IdTerminale" Type="Int32" />
+          <Property Name="Tolleranza_Limite_Entrata_Cant" Type="Time" Precision="7" />
+          <Property Name="Importo1" Type="Double" />
+          <Property Name="Importo2" Type="Double" />
+          <Property Name="Importo3" Type="Double" />
+          <Property Name="Importo4" Type="Double" />
+          <Property Name="Importo5" Type="Double" />
+          <Property Name="Importo6" Type="Double" />
+          <Property Name="Importo7" Type="Double" />
+          <Property Name="Importo8" Type="Double" />
+          <Property Name="Importo9" Type="Double" />
+          <Property Name="Importo10" Type="Double" />
+          <NavigationProperty Name="Cant_CentroDiCosto" Relationship="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" FromRole="Cant" ToRole="Cant_CentroDiCosto" />
+          <NavigationProperty Name="Cli" Relationship="PowerWebModel.FK_Cant_Cli" FromRole="Cant" ToRole="Cli" />
+          <NavigationProperty Name="Fil" Relationship="PowerWebModel.FK_Cant_Fil" FromRole="Cant" ToRole="Fil" />
+          <NavigationProperty Name="Cant_Note" Relationship="PowerWebModel.FK_Cant_NoteCant" FromRole="Cant" ToRole="Cant_Note" />
+          <NavigationProperty Name="Tab_Orari_Tipo" Relationship="PowerWebModel.FK_Cant_Tab_Orari_Tipo" FromRole="Cant" ToRole="Tab_Orari_Tipo" />
+          <NavigationProperty Name="Cant_Var" Relationship="PowerWebModel.FK_Cant_Var_Cant" FromRole="Cant" ToRole="Cant_Var" />
+          <NavigationProperty Name="Col_Cant_Orario" Relationship="PowerWebModel.FK_Col_Orario_Cant" FromRole="Cant" ToRole="Col_Cant_Orario" />
+          <NavigationProperty Name="Damage" Relationship="PowerWebModel.FK_Damage_Cant" FromRole="Cant" ToRole="Damage" />
+          <NavigationProperty Name="Fru_Cant" Relationship="PowerWebModel.FK_Fru_Cant_Cant" FromRole="Cant" ToRole="Fru_Cant" />
+          <NavigationProperty Name="Reg" Relationship="PowerWebModel.FK_Reg_Cant" FromRole="Cant" ToRole="Reg" />
+          <NavigationProperty Name="Param" Relationship="PowerWebModel.FK_Param_Cant" FromRole="Cant" ToRole="Param" />
+        </EntityType>
+        <Association Name="FK__Cant_Cent__Cant___2843D2B2">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="1" />
+          <End Type="PowerWebModel.Cant_CentroDiCosto" Role="Cant_CentroDiCosto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Cant_CentroDiCosto">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cant_Cli">
+          <End Type="PowerWebModel.Cli" Role="Cli" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cli">
+              <PropertyRef Name="Cli_Id" />
+            </Principal>
+            <Dependent Role="Cant">
+              <PropertyRef Name="Cli_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cant_Fil">
+          <End Type="PowerWebModel.Fil" Role="Fil" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fil">
+              <PropertyRef Name="Fil_Id" />
+            </Principal>
+            <Dependent Role="Cant">
+              <PropertyRef Name="Fil_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cant_NoteCant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="1" />
+          <End Type="PowerWebModel.Cant_Note" Role="Cant_Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Cant_Note">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cant_Tab_Orari_Tipo">
+          <End Type="PowerWebModel.Tab_Orari_Tipo" Role="Tab_Orari_Tipo" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tab_Orari_Tipo">
+              <PropertyRef Name="Tab_Orari_Tipo_Id" />
+            </Principal>
+            <Dependent Role="Cant">
+              <PropertyRef Name="Tab_Orari_Tipo_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cant_Var_Cant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="1" />
+          <End Type="PowerWebModel.Cant_Var" Role="Cant_Var" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Cant_Var">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Col_Orario_Cant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Col_Cant_Orario" Role="Col_Cant_Orario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Col_Cant_Orario">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Damage_Cant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Damage" Role="Damage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Damage">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fru_Cant_Cant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="1" />
+          <End Type="PowerWebModel.Fru_Cant" Role="Fru_Cant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Fru_Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reg_Cant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Reg" Role="Reg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Reg">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Param">
+          <Key>
+            <PropertyRef Name="Param_Id" />
+          </Key>
+          <Property Name="Param_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActivationDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Abilita_Arrotondamenti" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Att" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Aut_Str" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Cartellino" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Confronto_Ore_Budget" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_GPS" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Monte_Minuti" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Notifiche" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Notturno" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Orari" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Pass" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Privacy" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Schedulatore" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Viaggi" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Where_Is_It" Type="Boolean" Nullable="false" />
+          <Property Name="Attiva_Num_Aut_Can" Type="Boolean" Nullable="false" />
+          <Property Name="Attiva_Num_Aut_Col" Type="Boolean" Nullable="false" />
+          <Property Name="Aut_Str_Tipo" Type="Int32" />
+          <Property Name="BingKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cant_Id" Type="Int32" />
+          <Property Name="Cantiere_Timbrature_GPS_Non_Valide" Type="Int32" />
+          <Property Name="Cartellino_Divisione_Piano_Notturno_Diurno" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Arrotondamenti" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Piano" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Ore" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Motivazioni" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Delta" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Totale" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Inizio_Notturno" Type="Time" Precision="0" />
+          <Property Name="Cartellino_Fine_Notturno" Type="Time" Precision="0" />
+          <Property Name="Cartellino_Visualizza_Viaggi" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Usa_Cartellino_Modificabile" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Modalita_Compatta" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Dividi_Altra_Anagrafica" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Usa_Rettifiche_Cartellino" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Usa_Rettifiche_Manuali" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Usa_Rettifiche_Auto" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Abilita_Stampa_Cart_Editabile" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Abilita_Divisione_Cantiere" Type="Boolean" Nullable="false" />
+          <Property Name="Cartellino_Visualizza_Totali_Settimanali" Type="Int32" Nullable="false" />
+          <Property Name="Cartellino_Totale_Prima_Colonna" Type="Boolean" Nullable="false" />
+          <Property Name="Codice_Cliente" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ComboBoxDelay" Type="Int32" Nullable="false" />
+          <Property Name="ComboboxRowsPerPage" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyLogo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Ctrl_Tab_Comuni" Type="Int32" />
+          <Property Name="Ctrl_Codice_Fisc" Type="Int32" />
+          <Property Name="Ctrl_Codice_IBAN" Type="Int32" />
+          <Property Name="Ctrl_Sovrap_Pass" Type="Boolean" />
+          <Property Name="Data_Blocco_Reg" Type="DateTime" Precision="0" />
+          <Property Name="Data_Registrazione" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Data_Stored_Reg" Type="DateTime" Precision="0" />
+          <Property Name="DataOraUltimaModifica" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Default_Abilitati" Type="Boolean" Nullable="false" />
+          <Property Name="Default_Durata_Giornata" Type="Time" Precision="0" />
+          <Property Name="Default_Ora_Inizio_Giornata" Type="Time" Precision="0" />
+          <Property Name="Default_Durata_Max_Gruppo_Notte_Ril" Type="Time" Precision="0" />
+          <Property Name="Default_Durata_Max_Gruppo_Ril" Type="Time" Precision="0" />
+          <Property Name="Default_Durata_Max_Ril" Type="Time" Precision="0" />
+          <Property Name="Default_Durata_Min_Ril" Type="Time" Precision="0" />
+          <Property Name="Default_Minuti_Arrot_I" Type="Int16" />
+          <Property Name="Default_Minuti_Arrot_F" Type="Int16" />
+          <Property Name="Default_Minuti_Durata" Type="Int16" />
+          <Property Name="Default_Soglia_Arrot_I" Type="Int16" />
+          <Property Name="Default_Soglia_Arrot_F" Type="Int16" />
+          <Property Name="Default_Soglia_Durata" Type="Int16" />
+          <Property Name="Dflt_DoRefresh_Grid" Type="Boolean" Nullable="false" />
+          <Property Name="Dflt_Include_Activities" Type="Boolean" Nullable="false" />
+          <Property Name="Dflt_Include_Blocked" Type="Boolean" Nullable="false" />
+          <Property Name="Dflt_Include_Pass" Type="Boolean" Nullable="false" />
+          <Property Name="Dflt_Include_Trips" Type="Boolean" Nullable="false" />
+          <Property Name="DomainFilter" Type="Int32" Nullable="false" />
+          <Property Name="Durata_Quadratura_Rettifiche_Auto" Type="Time" Precision="0" />
+          <Property Name="Durata_Massima_Viaggio" Type="Time" Precision="0" />
+          <Property Name="Durata_Minima_Viaggio" Type="Time" Precision="0" />
+          <Property Name="Durata_Notturno" Type="Time" Precision="7" />
+          <Property Name="Durata_Pausa" Type="Time" Precision="0" />
+          <Property Name="Elaborate_Semaforo" Type="Boolean" Nullable="false" />
+          <Property Name="Fascia_Ore_Viaggi_1_Inizio" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_1_Fine" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_2_Inizio" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_2_Fine" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_3_Inizio" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_3_Fine" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_4_Inizio" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_4_Fine" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_5_Inizio" Type="Time" Precision="0" />
+          <Property Name="Fascia_Ore_Viaggi_5_Fine" Type="Time" Precision="0" />
+          <Property Name="File_Cant_Var" Type="Boolean" Nullable="false" />
+          <Property Name="File_Col_Var" Type="Boolean" Nullable="false" />
+          <Property Name="Flag_Calcolo_Viaggi" Type="Boolean" Nullable="false" />
+          <Property Name="Flag_GPS" Type="Int32" Nullable="false" />
+          <Property Name="Flag_Ore_Viaggi" Type="Int32" />
+          <Property Name="Flag_Ore_Viaggi_Inizio_Fine" Type="Int32" />
+          <Property Name="Flag_Monte_Ore" Type="Int32" Nullable="false" />
+          <Property Name="GG_X_Allarmi" Type="Int16" />
+          <Property Name="Gestione_SottoCantieri" Type="Boolean" />
+          <Property Name="Importazione_timbrature_GPS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Limite_Entrata_Mattina" Type="Time" Precision="0" />
+          <Property Name="Limite_Entrata_Pomeriggio" Type="Time" Precision="0" />
+          <Property Name="Limite_Entrata_Inizio_Pomeriggio" Type="Time" Precision="7" />
+          <Property Name="Limite_Entrata_Usa_Orario" Type="Boolean" Nullable="false" />
+          <Property Name="MaxElab_ImportChunkSize" Type="Int32" Nullable="false" />
+          <Property Name="MDBPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mesi_Validita_Reg" Type="Byte" Nullable="false" />
+          <Property Name="Metodo_Arrotondamento" Type="Int32" Nullable="false" />
+          <Property Name="ModuleType" Type="Int32" Nullable="false" />
+          <Property Name="Pausa_Viaggio" Type="Boolean" />
+          <Property Name="PercorsoFotoCol" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PublicKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RaggioGpsDefault" Type="Double" />
+          <Property Name="Ritardo_Tolleranza_Minuti" Type="Int32" />
+          <Property Name="RowsPerComboBox" Type="Int32" Nullable="false" />
+          <Property Name="RowsPerPage" Type="Int32" Nullable="false" />
+          <Property Name="Sabato_Feriale" Type="Boolean" Nullable="false" />
+          <Property Name="StoredChunkSize" Type="Int32" />
+          <Property Name="Tempo_Doppia_Reg" Type="Int16" />
+          <Property Name="Tipo_Arrotondamento" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Assegnazione_KMMinuti" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Assegnazione_KMMinuti_Inizio_Fine_G" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Ass_Tag_Gps" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Chiusura_Causali" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Monte_Ore" Type="Int32" Nullable="false" />
+          <Property Name="TipoNotturno" Type="Int32" Nullable="false" />
+          <Property Name="Tipo_Viaggio" Type="Byte" Nullable="false" />
+          <Property Name="Tolleranza_Limite_Entrata_Pomeriggio" Type="Time" Precision="0" />
+          <Property Name="Utilizzo_Limite_Entrata" Type="Int32" Nullable="false" />
+          <Property Name="Utilizzo_Fasce_Viaggi" Type="Byte" />
+          <Property Name="Cartellino_Abilita_Modifica" Type="Boolean" Nullable="false" />
+          <Property Name="Sincronizzazione_ClockApp" Type="Boolean" Nullable="false" />
+          <Property Name="Url_ClockAppsManager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BlockLoginOnUserPswExpired" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordExpirationDays" Type="Int32" />
+          <Property Name="ImportaFileTimbratureSospese" Type="Boolean" Nullable="false" />
+          <Property Name="Utilizzo_Limite_Uscita" Type="Int32" Nullable="false" />
+          <Property Name="Limite_Uscita_Pomeriggio" Type="Time" Precision="0" />
+          <Property Name="Limite_Uscita_Mattina" Type="Time" Precision="0" />
+          <Property Name="Limite_Uscita_Usa_Orario" Type="Boolean" Nullable="false" />
+          <Property Name="Tolleranza_Limite_Uscita_Pomeriggio" Type="Time" Precision="7" />
+          <Property Name="Tolleranza_Limite_Uscita_Mattina" Type="Time" Precision="7" />
+          <Property Name="Indice_Timbrature_GeoBadge" Type="Int32" Nullable="false" />
+          <Property Name="Abilita_Sincronizzazione_Entità" Type="Boolean" Nullable="false" />
+          <Property Name="Abilita_Import_Esterno" Type="Boolean" Nullable="false" />
+          <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="Int16" />
+          <Property Name="Tolleranza_Limite_Entrata" Type="Int32" />
+          <Property Name="Indice_Timbrature_FlutterApp" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Param_Cant" FromRole="Param" ToRole="Cant" />
+        </EntityType>
+        <Association Name="FK_Param_Cant">
+          <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="0..1" />
+          <End Type="PowerWebModel.Param" Role="Param" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cant">
+              <PropertyRef Name="Cant_Id" />
+            </Principal>
+            <Dependent Role="Param">
+              <PropertyRef Name="Cant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6638,154 +6660,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
                 <ScalarProperty Name="Aut_Str_Data_Fine" ColumnName="Aut_Str_Data_Fine" />
                 <ScalarProperty Name="Aut_Str_Num_Ore" ColumnName="Aut_Str_Num_Ore" />
                 <ScalarProperty Name="Aut_Str_Note" ColumnName="Aut_Str_Note" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cant">
-            <EntityTypeMapping TypeName="PowerWebModel.Cant">
-              <MappingFragment StoreEntitySet="Cant">
-                <ScalarProperty Name="Tolleranza_Limite_Entrata_Cant" ColumnName="Tolleranza_Limite_Entrata_Cant" />
-                <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
-                <ScalarProperty Name="Arrot_Durata_Can" ColumnName="Arrot_Durata_Can" />
-                <ScalarProperty Name="Canone_Mensile_Fascia1_Can" ColumnName="Canone_Mensile_Fascia1_Can" />
-                <ScalarProperty Name="Canone_Mensile_Fascia2_Can" ColumnName="Canone_Mensile_Fascia2_Can" />
-                <ScalarProperty Name="Cap_Can" ColumnName="Cap_Can" />
-                <ScalarProperty Name="Cap_Nascita_Can" ColumnName="Cap_Nascita_Can" />
-                <ScalarProperty Name="Cli_Id" ColumnName="Cli_Id" />
-                <ScalarProperty Name="Cod_Fisc_Can" ColumnName="Cod_Fisc_Can" />
-                <ScalarProperty Name="Codice_Cantiere" ColumnName="Codice_Cantiere" />
-                <ScalarProperty Name="Codice_Luogo_Nascita_Can" ColumnName="Codice_Luogo_Nascita_Can" />
-                <ScalarProperty Name="Codice_Luogo_Residenza_Can" ColumnName="Codice_Luogo_Residenza_Can" />
-                <ScalarProperty Name="Codice_Voucher_Can" ColumnName="Codice_Voucher_Can" />
-                <ScalarProperty Name="Cognome_Assistito_Can" ColumnName="Cognome_Assistito_Can" />
-                <ScalarProperty Name="Contributo_Disabili_Fascia1_Can" ColumnName="Contributo_Disabili_Fascia1_Can" />
-                <ScalarProperty Name="Contributo_Disabili_Fascia2_Can" ColumnName="Contributo_Disabili_Fascia2_Can" />
-                <ScalarProperty Name="Costo_Mezzora_Prescuola_Can" ColumnName="Costo_Mezzora_Prescuola_Can" />
-                <ScalarProperty Name="Costo_Orario_Can" ColumnName="Costo_Orario_Can" />
-                <ScalarProperty Name="Data_Isee_Can" ColumnName="Data_Isee_Can" />
-                <ScalarProperty Name="Data_Nascita_Can" ColumnName="Data_Nascita_Can" />
-                <ScalarProperty Name="Data_Rapporto_Fine_1_Can" ColumnName="Data_Rapporto_Fine_1_Can" />
-                <ScalarProperty Name="Data_Rapporto_Fine_2_Can" ColumnName="Data_Rapporto_Fine_2_Can" />
-                <ScalarProperty Name="Data_Rapporto_Fine_3_Can" ColumnName="Data_Rapporto_Fine_3_Can" />
-                <ScalarProperty Name="Data_Rapporto_Fine_4_Can" ColumnName="Data_Rapporto_Fine_4_Can" />
-                <ScalarProperty Name="Data_Rapporto_Fine_5_Can" ColumnName="Data_Rapporto_Fine_5_Can" />
-                <ScalarProperty Name="Data_Rapporto_Inizio_1_Can" ColumnName="Data_Rapporto_Inizio_1_Can" />
-                <ScalarProperty Name="Data_Rapporto_Inizio_2_Can" ColumnName="Data_Rapporto_Inizio_2_Can" />
-                <ScalarProperty Name="Data_Rapporto_Inizio_3_Can" ColumnName="Data_Rapporto_Inizio_3_Can" />
-                <ScalarProperty Name="Data_Rapporto_Inizio_4_Can" ColumnName="Data_Rapporto_Inizio_4_Can" />
-                <ScalarProperty Name="Data_Rapporto_Inizio_5_Can" ColumnName="Data_Rapporto_Inizio_5_Can" />
-                <ScalarProperty Name="Data_Registrazione_Can" ColumnName="Data_Registrazione_Can" />
-                <ScalarProperty Name="DataOraUltimaModifica_Can" ColumnName="DataOraUltimaModifica_Can" />
-                <ScalarProperty Name="DataVarGps_Can" ColumnName="DataVarGps_Can" />
-                <ScalarProperty Name="Descrizione_Can" ColumnName="Descrizione_Can" />
-                <ScalarProperty Name="DisAbilitazione_Can" ColumnName="DisAbilitazione_Can" />
-                <ScalarProperty Name="Durata_Max_Gruppo_Notte_Ril_Can" ColumnName="Durata_Max_Gruppo_Notte_Ril_Can" />
-                <ScalarProperty Name="Durata_Max_Gruppo_Ril_Can" ColumnName="Durata_Max_Gruppo_Ril_Can" />
-                <ScalarProperty Name="Durata_Max_Ril_Can" ColumnName="Durata_Max_Ril_Can" />
-                <ScalarProperty Name="Durata_Min_Ril_Can" ColumnName="Durata_Min_Ril_Can" />
-                <ScalarProperty Name="Fax_1_Can" ColumnName="Fax_1_Can" />
-                <ScalarProperty Name="Fax_1_Rif_Can" ColumnName="Fax_1_Rif_Can" />
-                <ScalarProperty Name="Fax_2_Can" ColumnName="Fax_2_Can" />
-                <ScalarProperty Name="Fax_2_Rif_Can" ColumnName="Fax_2_Rif_Can" />
-                <ScalarProperty Name="Fil_Id" ColumnName="Fil_Id" />
-                <ScalarProperty Name="Flag_NON_Esportare_Can" ColumnName="Flag_NON_Esportare_Can" />
-                <ScalarProperty Name="FlagGps_Can" ColumnName="FlagGps_Can" />
-                <ScalarProperty Name="Gestione_Can" ColumnName="Gestione_Can" />
-                <ScalarProperty Name="Indirizzo_Can" ColumnName="Indirizzo_Can" />
-                <ScalarProperty Name="LatitudineGps_Can" ColumnName="LatitudineGps_Can" />
-                <ScalarProperty Name="Limite_Inizio_Notte_Can" ColumnName="Limite_Inizio_Notte_Can" />
-                <ScalarProperty Name="Livello_Assistito_Can" ColumnName="Livello_Assistito_Can" />
-                <ScalarProperty Name="LongitudineGps_Can" ColumnName="LongitudineGps_Can" />
-                <ScalarProperty Name="Luogo_Can" ColumnName="Luogo_Can" />
-                <ScalarProperty Name="Luogo_Nascita_Can" ColumnName="Luogo_Nascita_Can" />
-                <ScalarProperty Name="Mensa_Can" ColumnName="Mensa_Can" />
-                <ScalarProperty Name="Metodo_Arrotondamento_Can" ColumnName="Metodo_Arrotondamento_Can" />
-                <ScalarProperty Name="Minuti_Tolleranza_Can" ColumnName="Minuti_Tolleranza_Can" />
-                <ScalarProperty Name="Minuti_Tolleranza_F_Can" ColumnName="Minuti_Tolleranza_F_Can" />
-                <ScalarProperty Name="Nazione_Can" ColumnName="Nazione_Can" />
-                <ScalarProperty Name="Nazione_Nascita_Can" ColumnName="Nazione_Nascita_Can" />
-                <ScalarProperty Name="Nome_Assistito_Can" ColumnName="Nome_Assistito_Can" />
-                <ScalarProperty Name="Note_Can" ColumnName="Note_Can" />
-                <ScalarProperty Name="Nr_Isee_Can" ColumnName="Nr_Isee_Can" />
-                <ScalarProperty Name="Numero_Bimbi_Fascia_Can" ColumnName="Numero_Bimbi_Fascia_Can" />
-                <ScalarProperty Name="Numero_GG_Lavorativi" ColumnName="Numero_GG_Lavorativi" />
-                <ScalarProperty Name="Numero_Utenti_Fascia1_Can" ColumnName="Numero_Utenti_Fascia1_Can" />
-                <ScalarProperty Name="Numero_Utenti_Fascia2_Can" ColumnName="Numero_Utenti_Fascia2_Can" />
-                <ScalarProperty Name="Numero_Utenti_PreScuola_Can" ColumnName="Numero_Utenti_PreScuola_Can" />
-                <ScalarProperty Name="Numero_Utenti_PostScuola_1Mezzora_Can" ColumnName="Numero_Utenti_PostScuola_1Mezzora_Can" />
-                <ScalarProperty Name="Numero_Utenti_PostScuola_2Mezzora_Can" ColumnName="Numero_Utenti_PostScuola_2Mezzora_Can" />
-                <ScalarProperty Name="Ore_Massime_Can" ColumnName="Ore_Massime_Can" />
-                <ScalarProperty Name="Percentuale_Can" ColumnName="Percentuale_Can" />
-                <ScalarProperty Name="Percentuale_Servizio_1_Can" ColumnName="Percentuale_Servizio_1_Can" />
-                <ScalarProperty Name="Percentuale_Servizio_2_Can" ColumnName="Percentuale_Servizio_2_Can" />
-                <ScalarProperty Name="Percentuale_Servizio_3_Can" ColumnName="Percentuale_Servizio_3_Can" />
-                <ScalarProperty Name="Percentuale_Servizio_4_Can" ColumnName="Percentuale_Servizio_4_Can" />
-                <ScalarProperty Name="Percentuale_Servizio_5_Can" ColumnName="Percentuale_Servizio_5_Can" />
-                <ScalarProperty Name="Provincia_Can" ColumnName="Provincia_Can" />
-                <ScalarProperty Name="Provincia_Nascita_Can" ColumnName="Provincia_Nascita_Can" />
-                <ScalarProperty Name="RaggioGps_Can" ColumnName="RaggioGps_Can" />
-                <ScalarProperty Name="Raggruppamento1_Can" ColumnName="Raggruppamento1_Can" />
-                <ScalarProperty Name="Raggruppamento2_Can" ColumnName="Raggruppamento2_Can" />
-                <ScalarProperty Name="Residenza_Interno_Can" ColumnName="Residenza_Interno_Can" />
-                <ScalarProperty Name="Residenza_Localita_Can" ColumnName="Residenza_Localita_Can" />
-                <ScalarProperty Name="Sesso_Can" ColumnName="Sesso_Can" />
-                <ScalarProperty Name="Singola_Reg" ColumnName="Singola_Reg" />
-                <ScalarProperty Name="Soglia_Arrot_Fig_Can" ColumnName="Soglia_Arrot_Fig_Can" />
-                <ScalarProperty Name="Soglia_Arrot_Fig_F_Can" ColumnName="Soglia_Arrot_Fig_F_Can" />
-                <ScalarProperty Name="Soglia_Durata_Can" ColumnName="Soglia_Durata_Can" />
-                <ScalarProperty Name="Telefono_1_Can" ColumnName="Telefono_1_Can" />
-                <ScalarProperty Name="Telefono_1_Rif_Can" ColumnName="Telefono_1_Rif_Can" />
-                <ScalarProperty Name="Telefono_2_Can" ColumnName="Telefono_2_Can" />
-                <ScalarProperty Name="Telefono_2_Rif_Can" ColumnName="Telefono_2_Rif_Can" />
-                <ScalarProperty Name="Telefono_3_Can" ColumnName="Telefono_3_Can" />
-                <ScalarProperty Name="Telefono_3_Rif_Can" ColumnName="Telefono_3_Rif_Can" />
-                <ScalarProperty Name="Telefono_4_Can" ColumnName="Telefono_4_Can" />
-                <ScalarProperty Name="Telefono_4_Rif_Can" ColumnName="Telefono_4_Rif_Can" />
-                <ScalarProperty Name="Tipo_Arrotondamento_Can" ColumnName="Tipo_Arrotondamento_Can" />
-                <ScalarProperty Name="Tipo_Calcolo_Viaggi_Can" ColumnName="Tipo_Calcolo_Viaggi_Can" />
-                <ScalarProperty Name="Tipo_Cantiere_Can" ColumnName="Tipo_Cantiere_Can" />
-                <ScalarProperty Name="Tipo_Interv_Can" ColumnName="Tipo_Interv_Can" />
-                <ScalarProperty Name="Tipo_Servizio_1_Can" ColumnName="Tipo_Servizio_1_Can" />
-                <ScalarProperty Name="Tipo_Servizio_2_Can" ColumnName="Tipo_Servizio_2_Can" />
-                <ScalarProperty Name="Tipo_Servizio_3_Can" ColumnName="Tipo_Servizio_3_Can" />
-                <ScalarProperty Name="Tipo_Servizio_4_Can" ColumnName="Tipo_Servizio_4_Can" />
-                <ScalarProperty Name="Tipo_Servizio_5_Can" ColumnName="Tipo_Servizio_5_Can" />
-                <ScalarProperty Name="Tipologia_Can" ColumnName="Tipologia_Can" />
-                <ScalarProperty Name="TipoNotturno_Can" ColumnName="TipoNotturno_Can" />
-                <ScalarProperty Name="Turno1_Can" ColumnName="Turno1_Can" />
-                <ScalarProperty Name="Turno2_Can" ColumnName="Turno2_Can" />
-                <ScalarProperty Name="Turno3_Can" ColumnName="Turno3_Can" />
-                <ScalarProperty Name="Turno4_Can" ColumnName="Turno4_Can" />
-                <ScalarProperty Name="Turno5_Can" ColumnName="Turno5_Can" />
-                <ScalarProperty Name="Turno6_Can" ColumnName="Turno6_Can" />
-                <ScalarProperty Name="Turno7_Can" ColumnName="Turno7_Can" />
-                <ScalarProperty Name="Turno8_Can" ColumnName="Turno8_Can" />
-                <ScalarProperty Name="Turno9_Can" ColumnName="Turno9_Can" />
-                <ScalarProperty Name="Turno10_Can" ColumnName="Turno10_Can" />
-                <ScalarProperty Name="Zona_Can" ColumnName="Zona_Can" />
-                <ScalarProperty Name="Domicilio_Cap_Can" ColumnName="Domicilio_Cap_Can" />
-                <ScalarProperty Name="Domicilio_Indirizzo_Can" ColumnName="Domicilio_Indirizzo_Can" />
-                <ScalarProperty Name="Domicilio_Interno_Can" ColumnName="Domicilio_Interno_Can" />
-                <ScalarProperty Name="Domicilio_Localita_Can" ColumnName="Domicilio_Localita_Can" />
-                <ScalarProperty Name="Domicilio_Luogo_Can" ColumnName="Domicilio_Luogo_Can" />
-                <ScalarProperty Name="Domicilio_Provincia_Can" ColumnName="Domicilio_Provincia_Can" />
-                <ScalarProperty Name="Codice_Domicilio_Luogo_Can" ColumnName="Codice_Domicilio_Luogo_Can" />
-                <ScalarProperty Name="Tab_Orari_Tipo_Id" ColumnName="Tab_Orari_Tipo_Id" />
-                <ScalarProperty Name="Frazione_Can" ColumnName="Frazione_Can" />
-                <ScalarProperty Name="Limite_Entrata_Mattina_Cant" ColumnName="Limite_Entrata_Mattina_Cant" />
-                <ScalarProperty Name="Limite_Entrata_Pomeriggio_Cant" ColumnName="Limite_Entrata_Pomeriggio_Cant" />
-                <ScalarProperty Name="Tolleranza_Limite_Entrata_Pomeriggio_Cant" ColumnName="Tolleranza_Limite_Entrata_Pomeriggio_Cant" />
-                <ScalarProperty Name="Tempo_Attivita_Can" ColumnName="Tempo_Attivita_Can" />
-                <ScalarProperty Name="Codice_Commessa_Can" ColumnName="Codice_Commessa_Can" />
-                <ScalarProperty Name="Codice_Gestionale_Can" ColumnName="Codice_Gestionale_Can" />
-                <ScalarProperty Name="Durata_Notturno_Can" ColumnName="Durata_Notturno_Can" />
-                <ScalarProperty Name="Cant_Padre_Id" ColumnName="Cant_Padre_Id" />
-                <ScalarProperty Name="Codice_in_clockApp" ColumnName="Codice_in_clockApp" />
-                <ScalarProperty Name="Limite_Uscita_Mattina_Cant" ColumnName="Limite_Uscita_Mattina_Cant" />
-                <ScalarProperty Name="Limite_Uscita_Pomeriggio_Cant" ColumnName="Limite_Uscita_Pomeriggio_Cant" />
-                <ScalarProperty Name="Tolleranza_Limite_Uscita_Pomeriggio_Cant" ColumnName="Tolleranza_Limite_Uscita_Pomeriggio_Cant" />
-                <ScalarProperty Name="Tolleranza_Limite_Uscita_Mattina_Cant" ColumnName="Tolleranza_Limite_Uscita_Mattina_Cant" />
-                <ScalarProperty Name="IdTerminale" ColumnName="IdTerminale" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7470,163 +7344,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
                 <ScalarProperty Name="EditFormat" ColumnName="EditFormat" />
                 <ScalarProperty Name="DecimalPlaces" ColumnName="DecimalPlaces" />
                 <ScalarProperty Name="AllowHeaderFilter" ColumnName="AllowHeaderFilter" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Param">
-            <EntityTypeMapping TypeName="PowerWebModel.Param">
-              <MappingFragment StoreEntitySet="Param">
-                <ScalarProperty Name="Tolleranza_Limite_Entrata" ColumnName="Tolleranza_Limite_Entrata" />
-                <ScalarProperty Name="Param_Id" ColumnName="Param_Id" />
-                <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
-                <ScalarProperty Name="Abilita_Arrotondamenti" ColumnName="Abilita_Arrotondamenti" />
-                <ScalarProperty Name="Abilita_Att" ColumnName="Abilita_Att" />
-                <ScalarProperty Name="Abilita_Aut_Str" ColumnName="Abilita_Aut_Str" />
-                <ScalarProperty Name="Abilita_Cartellino" ColumnName="Abilita_Cartellino" />
-                <ScalarProperty Name="Abilita_Confronto_Ore_Budget" ColumnName="Abilita_Confronto_Ore_Budget" />
-                <ScalarProperty Name="Abilita_GPS" ColumnName="Abilita_GPS" />
-                <ScalarProperty Name="Abilita_Monte_Minuti" ColumnName="Abilita_Monte_Minuti" />
-                <ScalarProperty Name="Abilita_Notifiche" ColumnName="Abilita_Notifiche" />
-                <ScalarProperty Name="Abilita_Notturno" ColumnName="Abilita_Notturno" />
-                <ScalarProperty Name="Abilita_Orari" ColumnName="Abilita_Orari" />
-                <ScalarProperty Name="Abilita_Pass" ColumnName="Abilita_Pass" />
-                <ScalarProperty Name="Abilita_Privacy" ColumnName="Abilita_Privacy" />
-                <ScalarProperty Name="Abilita_Schedulatore" ColumnName="Abilita_Schedulatore" />
-                <ScalarProperty Name="Abilita_Viaggi" ColumnName="Abilita_Viaggi" />
-                <ScalarProperty Name="Abilita_Where_Is_It" ColumnName="Abilita_Where_Is_It" />
-                <ScalarProperty Name="Attiva_Num_Aut_Can" ColumnName="Attiva_Num_Aut_Can" />
-                <ScalarProperty Name="Attiva_Num_Aut_Col" ColumnName="Attiva_Num_Aut_Col" />
-                <ScalarProperty Name="Aut_Str_Tipo" ColumnName="Aut_Str_Tipo" />
-                <ScalarProperty Name="BingKey" ColumnName="BingKey" />
-                <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
-                <ScalarProperty Name="Cantiere_Timbrature_GPS_Non_Valide" ColumnName="Cantiere_Timbrature_GPS_Non_Valide" />
-                <ScalarProperty Name="Cartellino_Divisione_Piano_Notturno_Diurno" ColumnName="Cartellino_Divisione_Piano_Notturno_Diurno" />
-                <ScalarProperty Name="Cartellino_Visualizza_Arrotondamenti" ColumnName="Cartellino_Visualizza_Arrotondamenti" />
-                <ScalarProperty Name="Cartellino_Visualizza_Piano" ColumnName="Cartellino_Visualizza_Piano" />
-                <ScalarProperty Name="Cartellino_Visualizza_Ore" ColumnName="Cartellino_Visualizza_Ore" />
-                <ScalarProperty Name="Cartellino_Visualizza_Motivazioni" ColumnName="Cartellino_Visualizza_Motivazioni" />
-                <ScalarProperty Name="Cartellino_Visualizza_Delta" ColumnName="Cartellino_Visualizza_Delta" />
-                <ScalarProperty Name="Cartellino_Visualizza_Totale" ColumnName="Cartellino_Visualizza_Totale" />
-                <ScalarProperty Name="Cartellino_Inizio_Notturno" ColumnName="Cartellino_Inizio_Notturno" />
-                <ScalarProperty Name="Cartellino_Fine_Notturno" ColumnName="Cartellino_Fine_Notturno" />
-                <ScalarProperty Name="Cartellino_Visualizza_Viaggi" ColumnName="Cartellino_Visualizza_Viaggi" />
-                <ScalarProperty Name="Cartellino_Usa_Cartellino_Modificabile" ColumnName="Cartellino_Usa_Cartellino_Modificabile" />
-                <ScalarProperty Name="Cartellino_Modalita_Compatta" ColumnName="Cartellino_Modalita_Compatta" />
-                <ScalarProperty Name="Cartellino_Dividi_Altra_Anagrafica" ColumnName="Cartellino_Dividi_Altra_Anagrafica" />
-                <ScalarProperty Name="Cartellino_Usa_Rettifiche_Cartellino" ColumnName="Cartellino_Usa_Rettifiche_Cartellino" />
-                <ScalarProperty Name="Cartellino_Usa_Rettifiche_Manuali" ColumnName="Cartellino_Usa_Rettifiche_Manuali" />
-                <ScalarProperty Name="Cartellino_Usa_Rettifiche_Auto" ColumnName="Cartellino_Usa_Rettifiche_Auto" />
-                <ScalarProperty Name="Cartellino_Abilita_Stampa_Cart_Editabile" ColumnName="Cartellino_Abilita_Stampa_Cart_Editabile" />
-                <ScalarProperty Name="Cartellino_Abilita_Divisione_Cantiere" ColumnName="Cartellino_Abilita_Divisione_Cantiere" />
-                <ScalarProperty Name="Cartellino_Visualizza_Totali_Settimanali" ColumnName="Cartellino_Visualizza_Totali_Settimanali" />
-                <ScalarProperty Name="Cartellino_Totale_Prima_Colonna" ColumnName="Cartellino_Totale_Prima_Colonna" />
-                <ScalarProperty Name="Codice_Cliente" ColumnName="Codice_Cliente" />
-                <ScalarProperty Name="ComboBoxDelay" ColumnName="ComboBoxDelay" />
-                <ScalarProperty Name="ComboboxRowsPerPage" ColumnName="ComboboxRowsPerPage" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
-                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
-                <ScalarProperty Name="CompanyInfo" ColumnName="CompanyInfo" />
-                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
-                <ScalarProperty Name="Ctrl_Tab_Comuni" ColumnName="Ctrl_Tab_Comuni" />
-                <ScalarProperty Name="Ctrl_Codice_Fisc" ColumnName="Ctrl_Codice_Fisc" />
-                <ScalarProperty Name="Ctrl_Codice_IBAN" ColumnName="Ctrl_Codice_IBAN" />
-                <ScalarProperty Name="Ctrl_Sovrap_Pass" ColumnName="Ctrl_Sovrap_Pass" />
-                <ScalarProperty Name="Data_Blocco_Reg" ColumnName="Data_Blocco_Reg" />
-                <ScalarProperty Name="Data_Registrazione" ColumnName="Data_Registrazione" />
-                <ScalarProperty Name="Data_Stored_Reg" ColumnName="Data_Stored_Reg" />
-                <ScalarProperty Name="DataOraUltimaModifica" ColumnName="DataOraUltimaModifica" />
-                <ScalarProperty Name="Default_Abilitati" ColumnName="Default_Abilitati" />
-                <ScalarProperty Name="Default_Durata_Giornata" ColumnName="Default_Durata_Giornata" />
-                <ScalarProperty Name="Default_Ora_Inizio_Giornata" ColumnName="Default_Ora_Inizio_Giornata" />
-                <ScalarProperty Name="Default_Durata_Max_Gruppo_Notte_Ril" ColumnName="Default_Durata_Max_Gruppo_Notte_Ril" />
-                <ScalarProperty Name="Default_Durata_Max_Gruppo_Ril" ColumnName="Default_Durata_Max_Gruppo_Ril" />
-                <ScalarProperty Name="Default_Durata_Max_Ril" ColumnName="Default_Durata_Max_Ril" />
-                <ScalarProperty Name="Default_Durata_Min_Ril" ColumnName="Default_Durata_Min_Ril" />
-                <ScalarProperty Name="Default_Minuti_Arrot_I" ColumnName="Default_Minuti_Arrot_I" />
-                <ScalarProperty Name="Default_Minuti_Arrot_F" ColumnName="Default_Minuti_Arrot_F" />
-                <ScalarProperty Name="Default_Minuti_Durata" ColumnName="Default_Minuti_Durata" />
-                <ScalarProperty Name="Default_Soglia_Arrot_I" ColumnName="Default_Soglia_Arrot_I" />
-                <ScalarProperty Name="Default_Soglia_Arrot_F" ColumnName="Default_Soglia_Arrot_F" />
-                <ScalarProperty Name="Default_Soglia_Durata" ColumnName="Default_Soglia_Durata" />
-                <ScalarProperty Name="Dflt_DoRefresh_Grid" ColumnName="Dflt_DoRefresh_Grid" />
-                <ScalarProperty Name="Dflt_Include_Activities" ColumnName="Dflt_Include_Activities" />
-                <ScalarProperty Name="Dflt_Include_Blocked" ColumnName="Dflt_Include_Blocked" />
-                <ScalarProperty Name="Dflt_Include_Pass" ColumnName="Dflt_Include_Pass" />
-                <ScalarProperty Name="Dflt_Include_Trips" ColumnName="Dflt_Include_Trips" />
-                <ScalarProperty Name="DomainFilter" ColumnName="DomainFilter" />
-                <ScalarProperty Name="Durata_Quadratura_Rettifiche_Auto" ColumnName="Durata_Quadratura_Rettifiche_Auto" />
-                <ScalarProperty Name="Durata_Massima_Viaggio" ColumnName="Durata_Massima_Viaggio" />
-                <ScalarProperty Name="Durata_Minima_Viaggio" ColumnName="Durata_Minima_Viaggio" />
-                <ScalarProperty Name="Durata_Notturno" ColumnName="Durata_Notturno" />
-                <ScalarProperty Name="Durata_Pausa" ColumnName="Durata_Pausa" />
-                <ScalarProperty Name="Elaborate_Semaforo" ColumnName="Elaborate_Semaforo" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_1_Inizio" ColumnName="Fascia_Ore_Viaggi_1_Inizio" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_1_Fine" ColumnName="Fascia_Ore_Viaggi_1_Fine" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_2_Inizio" ColumnName="Fascia_Ore_Viaggi_2_Inizio" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_2_Fine" ColumnName="Fascia_Ore_Viaggi_2_Fine" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_3_Inizio" ColumnName="Fascia_Ore_Viaggi_3_Inizio" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_3_Fine" ColumnName="Fascia_Ore_Viaggi_3_Fine" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_4_Inizio" ColumnName="Fascia_Ore_Viaggi_4_Inizio" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_4_Fine" ColumnName="Fascia_Ore_Viaggi_4_Fine" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_5_Inizio" ColumnName="Fascia_Ore_Viaggi_5_Inizio" />
-                <ScalarProperty Name="Fascia_Ore_Viaggi_5_Fine" ColumnName="Fascia_Ore_Viaggi_5_Fine" />
-                <ScalarProperty Name="File_Cant_Var" ColumnName="File_Cant_Var" />
-                <ScalarProperty Name="File_Col_Var" ColumnName="File_Col_Var" />
-                <ScalarProperty Name="Flag_Calcolo_Viaggi" ColumnName="Flag_Calcolo_Viaggi" />
-                <ScalarProperty Name="Flag_GPS" ColumnName="Flag_GPS" />
-                <ScalarProperty Name="Flag_Ore_Viaggi" ColumnName="Flag_Ore_Viaggi" />
-                <ScalarProperty Name="Flag_Ore_Viaggi_Inizio_Fine" ColumnName="Flag_Ore_Viaggi_Inizio_Fine" />
-                <ScalarProperty Name="Flag_Monte_Ore" ColumnName="Flag_Monte_Ore" />
-                <ScalarProperty Name="GG_X_Allarmi" ColumnName="GG_X_Allarmi" />
-                <ScalarProperty Name="Gestione_SottoCantieri" ColumnName="Gestione_SottoCantieri" />
-                <ScalarProperty Name="Importazione_timbrature_GPS" ColumnName="Importazione_timbrature_GPS" />
-                <ScalarProperty Name="Limite_Entrata_Mattina" ColumnName="Limite_Entrata_Mattina" />
-                <ScalarProperty Name="Limite_Entrata_Pomeriggio" ColumnName="Limite_Entrata_Pomeriggio" />
-                <ScalarProperty Name="Limite_Entrata_Inizio_Pomeriggio" ColumnName="Limite_Entrata_Inizio_Pomeriggio" />
-                <ScalarProperty Name="Limite_Entrata_Usa_Orario" ColumnName="Limite_Entrata_Usa_Orario" />
-                <ScalarProperty Name="MaxElab_ImportChunkSize" ColumnName="MaxElab_ImportChunkSize" />
-                <ScalarProperty Name="MDBPath" ColumnName="MDBPath" />
-                <ScalarProperty Name="Mesi_Validita_Reg" ColumnName="Mesi_Validita_Reg" />
-                <ScalarProperty Name="Metodo_Arrotondamento" ColumnName="Metodo_Arrotondamento" />
-                <ScalarProperty Name="ModuleType" ColumnName="ModuleType" />
-                <ScalarProperty Name="Pausa_Viaggio" ColumnName="Pausa_Viaggio" />
-                <ScalarProperty Name="PercorsoFotoCol" ColumnName="PercorsoFotoCol" />
-                <ScalarProperty Name="PublicKey" ColumnName="PublicKey" />
-                <ScalarProperty Name="RaggioGpsDefault" ColumnName="RaggioGpsDefault" />
-                <ScalarProperty Name="Ritardo_Tolleranza_Minuti" ColumnName="Ritardo_Tolleranza_Minuti" />
-                <ScalarProperty Name="RowsPerComboBox" ColumnName="RowsPerComboBox" />
-                <ScalarProperty Name="RowsPerPage" ColumnName="RowsPerPage" />
-                <ScalarProperty Name="Sabato_Feriale" ColumnName="Sabato_Feriale" />
-                <ScalarProperty Name="StoredChunkSize" ColumnName="StoredChunkSize" />
-                <ScalarProperty Name="Tempo_Doppia_Reg" ColumnName="Tempo_Doppia_Reg" />
-                <ScalarProperty Name="Tipo_Arrotondamento" ColumnName="Tipo_Arrotondamento" />
-                <ScalarProperty Name="Tipo_Assegnazione_KMMinuti" ColumnName="Tipo_Assegnazione_KMMinuti" />
-                <ScalarProperty Name="Tipo_Assegnazione_KMMinuti_Inizio_Fine_G" ColumnName="Tipo_Assegnazione_KMMinuti_Inizio_Fine_G" />
-                <ScalarProperty Name="Tipo_Ass_Tag_Gps" ColumnName="Tipo_Ass_Tag_Gps" />
-                <ScalarProperty Name="Tipo_Chiusura_Causali" ColumnName="Tipo_Chiusura_Causali" />
-                <ScalarProperty Name="Tipo_Monte_Ore" ColumnName="Tipo_Monte_Ore" />
-                <ScalarProperty Name="TipoNotturno" ColumnName="TipoNotturno" />
-                <ScalarProperty Name="Tipo_Viaggio" ColumnName="Tipo_Viaggio" />
-                <ScalarProperty Name="Tolleranza_Limite_Entrata_Pomeriggio" ColumnName="Tolleranza_Limite_Entrata_Pomeriggio" />
-                <ScalarProperty Name="Utilizzo_Limite_Entrata" ColumnName="Utilizzo_Limite_Entrata" />
-                <ScalarProperty Name="Utilizzo_Fasce_Viaggi" ColumnName="Utilizzo_Fasce_Viaggi" />
-                <ScalarProperty Name="Cartellino_Abilita_Modifica" ColumnName="Cartellino_Abilita_Modifica" />
-                <ScalarProperty Name="Sincronizzazione_ClockApp" ColumnName="Sincronizzazione_ClockApp" />
-                <ScalarProperty Name="Url_ClockAppsManager" ColumnName="Url ClockAppsManager" />
-                <ScalarProperty Name="BlockLoginOnUserPswExpired" ColumnName="BlockLoginOnUserPswExpired" />
-                <ScalarProperty Name="PasswordExpirationDays" ColumnName="PasswordExpirationDays" />
-                <ScalarProperty Name="ImportaFileTimbratureSospese" ColumnName="ImportaFileTimbratureSospese" />
-                <ScalarProperty Name="Utilizzo_Limite_Uscita" ColumnName="Utilizzo_Limite_Uscita" />
-                <ScalarProperty Name="Limite_Uscita_Pomeriggio" ColumnName="Limite_Uscita_Pomeriggio" />
-                <ScalarProperty Name="Limite_Uscita_Mattina" ColumnName="Limite_Uscita_Mattina" />
-                <ScalarProperty Name="Limite_Uscita_Usa_Orario" ColumnName="Limite_Uscita_Usa_Orario" />
-                <ScalarProperty Name="Tolleranza_Limite_Uscita_Pomeriggio" ColumnName="Tolleranza_Limite_Uscita_Pomeriggio" />
-                <ScalarProperty Name="Tolleranza_Limite_Uscita_Mattina" ColumnName="Tolleranza_Limite_Uscita_Mattina" />
-                <ScalarProperty Name="Indice_Timbrature_GeoBadge" ColumnName="Indice_Timbrature_GeoBadge" />
-                <ScalarProperty Name="Abilita_Sincronizzazione_Entità" ColumnName="Abilita_Sincronizzazione_Entità" />
-                <ScalarProperty Name="Abilita_Import_Esterno" ColumnName="Abilita_Import_Esterno" />
-                <ScalarProperty Name="Soglia_Minima_Arrotondamento_Durata" ColumnName="Soglia_Minima_Arrotondamento_Durata" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8539,6 +8256,322 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
                 <ScalarProperty Name="CentroDiCosto_Id" ColumnName="CentroDiCosto_Id" />
                 <ScalarProperty Name="RegU" ColumnName="RegU" />
                 <ScalarProperty Name="RegE" ColumnName="RegE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cant">
+            <EntityTypeMapping TypeName="PowerWebModel.Cant">
+              <MappingFragment StoreEntitySet="Cant">
+                <ScalarProperty Name="Importo10" ColumnName="Importo10" />
+                <ScalarProperty Name="Importo9" ColumnName="Importo9" />
+                <ScalarProperty Name="Importo8" ColumnName="Importo8" />
+                <ScalarProperty Name="Importo7" ColumnName="Importo7" />
+                <ScalarProperty Name="Importo6" ColumnName="Importo6" />
+                <ScalarProperty Name="Importo5" ColumnName="Importo5" />
+                <ScalarProperty Name="Importo4" ColumnName="Importo4" />
+                <ScalarProperty Name="Importo3" ColumnName="Importo3" />
+                <ScalarProperty Name="Importo2" ColumnName="Importo2" />
+                <ScalarProperty Name="Importo1" ColumnName="Importo1" />
+                <ScalarProperty Name="Tolleranza_Limite_Entrata_Cant" ColumnName="Tolleranza_Limite_Entrata_Cant" />
+                <ScalarProperty Name="IdTerminale" ColumnName="IdTerminale" />
+                <ScalarProperty Name="Tolleranza_Limite_Uscita_Mattina_Cant" ColumnName="Tolleranza_Limite_Uscita_Mattina_Cant" />
+                <ScalarProperty Name="Tolleranza_Limite_Uscita_Pomeriggio_Cant" ColumnName="Tolleranza_Limite_Uscita_Pomeriggio_Cant" />
+                <ScalarProperty Name="Limite_Uscita_Pomeriggio_Cant" ColumnName="Limite_Uscita_Pomeriggio_Cant" />
+                <ScalarProperty Name="Limite_Uscita_Mattina_Cant" ColumnName="Limite_Uscita_Mattina_Cant" />
+                <ScalarProperty Name="Codice_in_clockApp" ColumnName="Codice_in_clockApp" />
+                <ScalarProperty Name="Cant_Padre_Id" ColumnName="Cant_Padre_Id" />
+                <ScalarProperty Name="Durata_Notturno_Can" ColumnName="Durata_Notturno_Can" />
+                <ScalarProperty Name="Codice_Gestionale_Can" ColumnName="Codice_Gestionale_Can" />
+                <ScalarProperty Name="Codice_Commessa_Can" ColumnName="Codice_Commessa_Can" />
+                <ScalarProperty Name="Tempo_Attivita_Can" ColumnName="Tempo_Attivita_Can" />
+                <ScalarProperty Name="Tolleranza_Limite_Entrata_Pomeriggio_Cant" ColumnName="Tolleranza_Limite_Entrata_Pomeriggio_Cant" />
+                <ScalarProperty Name="Limite_Entrata_Pomeriggio_Cant" ColumnName="Limite_Entrata_Pomeriggio_Cant" />
+                <ScalarProperty Name="Limite_Entrata_Mattina_Cant" ColumnName="Limite_Entrata_Mattina_Cant" />
+                <ScalarProperty Name="Frazione_Can" ColumnName="Frazione_Can" />
+                <ScalarProperty Name="Tab_Orari_Tipo_Id" ColumnName="Tab_Orari_Tipo_Id" />
+                <ScalarProperty Name="Codice_Domicilio_Luogo_Can" ColumnName="Codice_Domicilio_Luogo_Can" />
+                <ScalarProperty Name="Domicilio_Provincia_Can" ColumnName="Domicilio_Provincia_Can" />
+                <ScalarProperty Name="Domicilio_Luogo_Can" ColumnName="Domicilio_Luogo_Can" />
+                <ScalarProperty Name="Domicilio_Localita_Can" ColumnName="Domicilio_Localita_Can" />
+                <ScalarProperty Name="Domicilio_Interno_Can" ColumnName="Domicilio_Interno_Can" />
+                <ScalarProperty Name="Domicilio_Indirizzo_Can" ColumnName="Domicilio_Indirizzo_Can" />
+                <ScalarProperty Name="Domicilio_Cap_Can" ColumnName="Domicilio_Cap_Can" />
+                <ScalarProperty Name="Zona_Can" ColumnName="Zona_Can" />
+                <ScalarProperty Name="Turno10_Can" ColumnName="Turno10_Can" />
+                <ScalarProperty Name="Turno9_Can" ColumnName="Turno9_Can" />
+                <ScalarProperty Name="Turno8_Can" ColumnName="Turno8_Can" />
+                <ScalarProperty Name="Turno7_Can" ColumnName="Turno7_Can" />
+                <ScalarProperty Name="Turno6_Can" ColumnName="Turno6_Can" />
+                <ScalarProperty Name="Turno5_Can" ColumnName="Turno5_Can" />
+                <ScalarProperty Name="Turno4_Can" ColumnName="Turno4_Can" />
+                <ScalarProperty Name="Turno3_Can" ColumnName="Turno3_Can" />
+                <ScalarProperty Name="Turno2_Can" ColumnName="Turno2_Can" />
+                <ScalarProperty Name="Turno1_Can" ColumnName="Turno1_Can" />
+                <ScalarProperty Name="TipoNotturno_Can" ColumnName="TipoNotturno_Can" />
+                <ScalarProperty Name="Tipologia_Can" ColumnName="Tipologia_Can" />
+                <ScalarProperty Name="Tipo_Servizio_5_Can" ColumnName="Tipo_Servizio_5_Can" />
+                <ScalarProperty Name="Tipo_Servizio_4_Can" ColumnName="Tipo_Servizio_4_Can" />
+                <ScalarProperty Name="Tipo_Servizio_3_Can" ColumnName="Tipo_Servizio_3_Can" />
+                <ScalarProperty Name="Tipo_Servizio_2_Can" ColumnName="Tipo_Servizio_2_Can" />
+                <ScalarProperty Name="Tipo_Servizio_1_Can" ColumnName="Tipo_Servizio_1_Can" />
+                <ScalarProperty Name="Tipo_Interv_Can" ColumnName="Tipo_Interv_Can" />
+                <ScalarProperty Name="Tipo_Cantiere_Can" ColumnName="Tipo_Cantiere_Can" />
+                <ScalarProperty Name="Tipo_Calcolo_Viaggi_Can" ColumnName="Tipo_Calcolo_Viaggi_Can" />
+                <ScalarProperty Name="Tipo_Arrotondamento_Can" ColumnName="Tipo_Arrotondamento_Can" />
+                <ScalarProperty Name="Telefono_4_Rif_Can" ColumnName="Telefono_4_Rif_Can" />
+                <ScalarProperty Name="Telefono_4_Can" ColumnName="Telefono_4_Can" />
+                <ScalarProperty Name="Telefono_3_Rif_Can" ColumnName="Telefono_3_Rif_Can" />
+                <ScalarProperty Name="Telefono_3_Can" ColumnName="Telefono_3_Can" />
+                <ScalarProperty Name="Telefono_2_Rif_Can" ColumnName="Telefono_2_Rif_Can" />
+                <ScalarProperty Name="Telefono_2_Can" ColumnName="Telefono_2_Can" />
+                <ScalarProperty Name="Telefono_1_Rif_Can" ColumnName="Telefono_1_Rif_Can" />
+                <ScalarProperty Name="Telefono_1_Can" ColumnName="Telefono_1_Can" />
+                <ScalarProperty Name="Soglia_Durata_Can" ColumnName="Soglia_Durata_Can" />
+                <ScalarProperty Name="Soglia_Arrot_Fig_F_Can" ColumnName="Soglia_Arrot_Fig_F_Can" />
+                <ScalarProperty Name="Soglia_Arrot_Fig_Can" ColumnName="Soglia_Arrot_Fig_Can" />
+                <ScalarProperty Name="Singola_Reg" ColumnName="Singola_Reg" />
+                <ScalarProperty Name="Sesso_Can" ColumnName="Sesso_Can" />
+                <ScalarProperty Name="Residenza_Localita_Can" ColumnName="Residenza_Localita_Can" />
+                <ScalarProperty Name="Residenza_Interno_Can" ColumnName="Residenza_Interno_Can" />
+                <ScalarProperty Name="Raggruppamento2_Can" ColumnName="Raggruppamento2_Can" />
+                <ScalarProperty Name="Raggruppamento1_Can" ColumnName="Raggruppamento1_Can" />
+                <ScalarProperty Name="RaggioGps_Can" ColumnName="RaggioGps_Can" />
+                <ScalarProperty Name="Provincia_Nascita_Can" ColumnName="Provincia_Nascita_Can" />
+                <ScalarProperty Name="Provincia_Can" ColumnName="Provincia_Can" />
+                <ScalarProperty Name="Percentuale_Servizio_5_Can" ColumnName="Percentuale_Servizio_5_Can" />
+                <ScalarProperty Name="Percentuale_Servizio_4_Can" ColumnName="Percentuale_Servizio_4_Can" />
+                <ScalarProperty Name="Percentuale_Servizio_3_Can" ColumnName="Percentuale_Servizio_3_Can" />
+                <ScalarProperty Name="Percentuale_Servizio_2_Can" ColumnName="Percentuale_Servizio_2_Can" />
+                <ScalarProperty Name="Percentuale_Servizio_1_Can" ColumnName="Percentuale_Servizio_1_Can" />
+                <ScalarProperty Name="Percentuale_Can" ColumnName="Percentuale_Can" />
+                <ScalarProperty Name="Ore_Massime_Can" ColumnName="Ore_Massime_Can" />
+                <ScalarProperty Name="Numero_Utenti_PostScuola_2Mezzora_Can" ColumnName="Numero_Utenti_PostScuola_2Mezzora_Can" />
+                <ScalarProperty Name="Numero_Utenti_PostScuola_1Mezzora_Can" ColumnName="Numero_Utenti_PostScuola_1Mezzora_Can" />
+                <ScalarProperty Name="Numero_Utenti_PreScuola_Can" ColumnName="Numero_Utenti_PreScuola_Can" />
+                <ScalarProperty Name="Numero_Utenti_Fascia2_Can" ColumnName="Numero_Utenti_Fascia2_Can" />
+                <ScalarProperty Name="Numero_Utenti_Fascia1_Can" ColumnName="Numero_Utenti_Fascia1_Can" />
+                <ScalarProperty Name="Numero_GG_Lavorativi" ColumnName="Numero_GG_Lavorativi" />
+                <ScalarProperty Name="Numero_Bimbi_Fascia_Can" ColumnName="Numero_Bimbi_Fascia_Can" />
+                <ScalarProperty Name="Nr_Isee_Can" ColumnName="Nr_Isee_Can" />
+                <ScalarProperty Name="Note_Can" ColumnName="Note_Can" />
+                <ScalarProperty Name="Nome_Assistito_Can" ColumnName="Nome_Assistito_Can" />
+                <ScalarProperty Name="Nazione_Nascita_Can" ColumnName="Nazione_Nascita_Can" />
+                <ScalarProperty Name="Nazione_Can" ColumnName="Nazione_Can" />
+                <ScalarProperty Name="Minuti_Tolleranza_F_Can" ColumnName="Minuti_Tolleranza_F_Can" />
+                <ScalarProperty Name="Minuti_Tolleranza_Can" ColumnName="Minuti_Tolleranza_Can" />
+                <ScalarProperty Name="Metodo_Arrotondamento_Can" ColumnName="Metodo_Arrotondamento_Can" />
+                <ScalarProperty Name="Mensa_Can" ColumnName="Mensa_Can" />
+                <ScalarProperty Name="Luogo_Nascita_Can" ColumnName="Luogo_Nascita_Can" />
+                <ScalarProperty Name="Luogo_Can" ColumnName="Luogo_Can" />
+                <ScalarProperty Name="LongitudineGps_Can" ColumnName="LongitudineGps_Can" />
+                <ScalarProperty Name="Livello_Assistito_Can" ColumnName="Livello_Assistito_Can" />
+                <ScalarProperty Name="Limite_Inizio_Notte_Can" ColumnName="Limite_Inizio_Notte_Can" />
+                <ScalarProperty Name="LatitudineGps_Can" ColumnName="LatitudineGps_Can" />
+                <ScalarProperty Name="Indirizzo_Can" ColumnName="Indirizzo_Can" />
+                <ScalarProperty Name="Gestione_Can" ColumnName="Gestione_Can" />
+                <ScalarProperty Name="FlagGps_Can" ColumnName="FlagGps_Can" />
+                <ScalarProperty Name="Flag_NON_Esportare_Can" ColumnName="Flag_NON_Esportare_Can" />
+                <ScalarProperty Name="Fil_Id" ColumnName="Fil_Id" />
+                <ScalarProperty Name="Fax_2_Rif_Can" ColumnName="Fax_2_Rif_Can" />
+                <ScalarProperty Name="Fax_2_Can" ColumnName="Fax_2_Can" />
+                <ScalarProperty Name="Fax_1_Rif_Can" ColumnName="Fax_1_Rif_Can" />
+                <ScalarProperty Name="Fax_1_Can" ColumnName="Fax_1_Can" />
+                <ScalarProperty Name="Durata_Min_Ril_Can" ColumnName="Durata_Min_Ril_Can" />
+                <ScalarProperty Name="Durata_Max_Ril_Can" ColumnName="Durata_Max_Ril_Can" />
+                <ScalarProperty Name="Durata_Max_Gruppo_Ril_Can" ColumnName="Durata_Max_Gruppo_Ril_Can" />
+                <ScalarProperty Name="Durata_Max_Gruppo_Notte_Ril_Can" ColumnName="Durata_Max_Gruppo_Notte_Ril_Can" />
+                <ScalarProperty Name="DisAbilitazione_Can" ColumnName="DisAbilitazione_Can" />
+                <ScalarProperty Name="Descrizione_Can" ColumnName="Descrizione_Can" />
+                <ScalarProperty Name="DataVarGps_Can" ColumnName="DataVarGps_Can" />
+                <ScalarProperty Name="DataOraUltimaModifica_Can" ColumnName="DataOraUltimaModifica_Can" />
+                <ScalarProperty Name="Data_Registrazione_Can" ColumnName="Data_Registrazione_Can" />
+                <ScalarProperty Name="Data_Rapporto_Inizio_5_Can" ColumnName="Data_Rapporto_Inizio_5_Can" />
+                <ScalarProperty Name="Data_Rapporto_Inizio_4_Can" ColumnName="Data_Rapporto_Inizio_4_Can" />
+                <ScalarProperty Name="Data_Rapporto_Inizio_3_Can" ColumnName="Data_Rapporto_Inizio_3_Can" />
+                <ScalarProperty Name="Data_Rapporto_Inizio_2_Can" ColumnName="Data_Rapporto_Inizio_2_Can" />
+                <ScalarProperty Name="Data_Rapporto_Inizio_1_Can" ColumnName="Data_Rapporto_Inizio_1_Can" />
+                <ScalarProperty Name="Data_Rapporto_Fine_5_Can" ColumnName="Data_Rapporto_Fine_5_Can" />
+                <ScalarProperty Name="Data_Rapporto_Fine_4_Can" ColumnName="Data_Rapporto_Fine_4_Can" />
+                <ScalarProperty Name="Data_Rapporto_Fine_3_Can" ColumnName="Data_Rapporto_Fine_3_Can" />
+                <ScalarProperty Name="Data_Rapporto_Fine_2_Can" ColumnName="Data_Rapporto_Fine_2_Can" />
+                <ScalarProperty Name="Data_Rapporto_Fine_1_Can" ColumnName="Data_Rapporto_Fine_1_Can" />
+                <ScalarProperty Name="Data_Nascita_Can" ColumnName="Data_Nascita_Can" />
+                <ScalarProperty Name="Data_Isee_Can" ColumnName="Data_Isee_Can" />
+                <ScalarProperty Name="Costo_Orario_Can" ColumnName="Costo_Orario_Can" />
+                <ScalarProperty Name="Costo_Mezzora_Prescuola_Can" ColumnName="Costo_Mezzora_Prescuola_Can" />
+                <ScalarProperty Name="Contributo_Disabili_Fascia2_Can" ColumnName="Contributo_Disabili_Fascia2_Can" />
+                <ScalarProperty Name="Contributo_Disabili_Fascia1_Can" ColumnName="Contributo_Disabili_Fascia1_Can" />
+                <ScalarProperty Name="Cognome_Assistito_Can" ColumnName="Cognome_Assistito_Can" />
+                <ScalarProperty Name="Codice_Voucher_Can" ColumnName="Codice_Voucher_Can" />
+                <ScalarProperty Name="Codice_Luogo_Residenza_Can" ColumnName="Codice_Luogo_Residenza_Can" />
+                <ScalarProperty Name="Codice_Luogo_Nascita_Can" ColumnName="Codice_Luogo_Nascita_Can" />
+                <ScalarProperty Name="Codice_Cantiere" ColumnName="Codice_Cantiere" />
+                <ScalarProperty Name="Cod_Fisc_Can" ColumnName="Cod_Fisc_Can" />
+                <ScalarProperty Name="Cli_Id" ColumnName="Cli_Id" />
+                <ScalarProperty Name="Cap_Nascita_Can" ColumnName="Cap_Nascita_Can" />
+                <ScalarProperty Name="Cap_Can" ColumnName="Cap_Can" />
+                <ScalarProperty Name="Canone_Mensile_Fascia2_Can" ColumnName="Canone_Mensile_Fascia2_Can" />
+                <ScalarProperty Name="Canone_Mensile_Fascia1_Can" ColumnName="Canone_Mensile_Fascia1_Can" />
+                <ScalarProperty Name="Arrot_Durata_Can" ColumnName="Arrot_Durata_Can" />
+                <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Param">
+            <EntityTypeMapping TypeName="PowerWebModel.Param">
+              <MappingFragment StoreEntitySet="Param">
+                <ScalarProperty Name="Indice_Timbrature_FlutterApp" ColumnName="Indice_Timbrature_FlutterApp" />
+                <ScalarProperty Name="Tolleranza_Limite_Entrata" ColumnName="Tolleranza_Limite_Entrata" />
+                <ScalarProperty Name="Soglia_Minima_Arrotondamento_Durata" ColumnName="Soglia_Minima_Arrotondamento_Durata" />
+                <ScalarProperty Name="Abilita_Import_Esterno" ColumnName="Abilita_Import_Esterno" />
+                <ScalarProperty Name="Abilita_Sincronizzazione_Entità" ColumnName="Abilita_Sincronizzazione_Entità" />
+                <ScalarProperty Name="Indice_Timbrature_GeoBadge" ColumnName="Indice_Timbrature_GeoBadge" />
+                <ScalarProperty Name="Tolleranza_Limite_Uscita_Mattina" ColumnName="Tolleranza_Limite_Uscita_Mattina" />
+                <ScalarProperty Name="Tolleranza_Limite_Uscita_Pomeriggio" ColumnName="Tolleranza_Limite_Uscita_Pomeriggio" />
+                <ScalarProperty Name="Limite_Uscita_Usa_Orario" ColumnName="Limite_Uscita_Usa_Orario" />
+                <ScalarProperty Name="Limite_Uscita_Mattina" ColumnName="Limite_Uscita_Mattina" />
+                <ScalarProperty Name="Limite_Uscita_Pomeriggio" ColumnName="Limite_Uscita_Pomeriggio" />
+                <ScalarProperty Name="Utilizzo_Limite_Uscita" ColumnName="Utilizzo_Limite_Uscita" />
+                <ScalarProperty Name="ImportaFileTimbratureSospese" ColumnName="ImportaFileTimbratureSospese" />
+                <ScalarProperty Name="PasswordExpirationDays" ColumnName="PasswordExpirationDays" />
+                <ScalarProperty Name="BlockLoginOnUserPswExpired" ColumnName="BlockLoginOnUserPswExpired" />
+                <ScalarProperty Name="Url_ClockAppsManager" ColumnName="Url ClockAppsManager" />
+                <ScalarProperty Name="Sincronizzazione_ClockApp" ColumnName="Sincronizzazione_ClockApp" />
+                <ScalarProperty Name="Cartellino_Abilita_Modifica" ColumnName="Cartellino_Abilita_Modifica" />
+                <ScalarProperty Name="Utilizzo_Fasce_Viaggi" ColumnName="Utilizzo_Fasce_Viaggi" />
+                <ScalarProperty Name="Utilizzo_Limite_Entrata" ColumnName="Utilizzo_Limite_Entrata" />
+                <ScalarProperty Name="Tolleranza_Limite_Entrata_Pomeriggio" ColumnName="Tolleranza_Limite_Entrata_Pomeriggio" />
+                <ScalarProperty Name="Tipo_Viaggio" ColumnName="Tipo_Viaggio" />
+                <ScalarProperty Name="TipoNotturno" ColumnName="TipoNotturno" />
+                <ScalarProperty Name="Tipo_Monte_Ore" ColumnName="Tipo_Monte_Ore" />
+                <ScalarProperty Name="Tipo_Chiusura_Causali" ColumnName="Tipo_Chiusura_Causali" />
+                <ScalarProperty Name="Tipo_Ass_Tag_Gps" ColumnName="Tipo_Ass_Tag_Gps" />
+                <ScalarProperty Name="Tipo_Assegnazione_KMMinuti_Inizio_Fine_G" ColumnName="Tipo_Assegnazione_KMMinuti_Inizio_Fine_G" />
+                <ScalarProperty Name="Tipo_Assegnazione_KMMinuti" ColumnName="Tipo_Assegnazione_KMMinuti" />
+                <ScalarProperty Name="Tipo_Arrotondamento" ColumnName="Tipo_Arrotondamento" />
+                <ScalarProperty Name="Tempo_Doppia_Reg" ColumnName="Tempo_Doppia_Reg" />
+                <ScalarProperty Name="StoredChunkSize" ColumnName="StoredChunkSize" />
+                <ScalarProperty Name="Sabato_Feriale" ColumnName="Sabato_Feriale" />
+                <ScalarProperty Name="RowsPerPage" ColumnName="RowsPerPage" />
+                <ScalarProperty Name="RowsPerComboBox" ColumnName="RowsPerComboBox" />
+                <ScalarProperty Name="Ritardo_Tolleranza_Minuti" ColumnName="Ritardo_Tolleranza_Minuti" />
+                <ScalarProperty Name="RaggioGpsDefault" ColumnName="RaggioGpsDefault" />
+                <ScalarProperty Name="PublicKey" ColumnName="PublicKey" />
+                <ScalarProperty Name="PercorsoFotoCol" ColumnName="PercorsoFotoCol" />
+                <ScalarProperty Name="Pausa_Viaggio" ColumnName="Pausa_Viaggio" />
+                <ScalarProperty Name="ModuleType" ColumnName="ModuleType" />
+                <ScalarProperty Name="Metodo_Arrotondamento" ColumnName="Metodo_Arrotondamento" />
+                <ScalarProperty Name="Mesi_Validita_Reg" ColumnName="Mesi_Validita_Reg" />
+                <ScalarProperty Name="MDBPath" ColumnName="MDBPath" />
+                <ScalarProperty Name="MaxElab_ImportChunkSize" ColumnName="MaxElab_ImportChunkSize" />
+                <ScalarProperty Name="Limite_Entrata_Usa_Orario" ColumnName="Limite_Entrata_Usa_Orario" />
+                <ScalarProperty Name="Limite_Entrata_Inizio_Pomeriggio" ColumnName="Limite_Entrata_Inizio_Pomeriggio" />
+                <ScalarProperty Name="Limite_Entrata_Pomeriggio" ColumnName="Limite_Entrata_Pomeriggio" />
+                <ScalarProperty Name="Limite_Entrata_Mattina" ColumnName="Limite_Entrata_Mattina" />
+                <ScalarProperty Name="Importazione_timbrature_GPS" ColumnName="Importazione_timbrature_GPS" />
+                <ScalarProperty Name="Gestione_SottoCantieri" ColumnName="Gestione_SottoCantieri" />
+                <ScalarProperty Name="GG_X_Allarmi" ColumnName="GG_X_Allarmi" />
+                <ScalarProperty Name="Flag_Monte_Ore" ColumnName="Flag_Monte_Ore" />
+                <ScalarProperty Name="Flag_Ore_Viaggi_Inizio_Fine" ColumnName="Flag_Ore_Viaggi_Inizio_Fine" />
+                <ScalarProperty Name="Flag_Ore_Viaggi" ColumnName="Flag_Ore_Viaggi" />
+                <ScalarProperty Name="Flag_GPS" ColumnName="Flag_GPS" />
+                <ScalarProperty Name="Flag_Calcolo_Viaggi" ColumnName="Flag_Calcolo_Viaggi" />
+                <ScalarProperty Name="File_Col_Var" ColumnName="File_Col_Var" />
+                <ScalarProperty Name="File_Cant_Var" ColumnName="File_Cant_Var" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_5_Fine" ColumnName="Fascia_Ore_Viaggi_5_Fine" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_5_Inizio" ColumnName="Fascia_Ore_Viaggi_5_Inizio" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_4_Fine" ColumnName="Fascia_Ore_Viaggi_4_Fine" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_4_Inizio" ColumnName="Fascia_Ore_Viaggi_4_Inizio" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_3_Fine" ColumnName="Fascia_Ore_Viaggi_3_Fine" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_3_Inizio" ColumnName="Fascia_Ore_Viaggi_3_Inizio" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_2_Fine" ColumnName="Fascia_Ore_Viaggi_2_Fine" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_2_Inizio" ColumnName="Fascia_Ore_Viaggi_2_Inizio" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_1_Fine" ColumnName="Fascia_Ore_Viaggi_1_Fine" />
+                <ScalarProperty Name="Fascia_Ore_Viaggi_1_Inizio" ColumnName="Fascia_Ore_Viaggi_1_Inizio" />
+                <ScalarProperty Name="Elaborate_Semaforo" ColumnName="Elaborate_Semaforo" />
+                <ScalarProperty Name="Durata_Pausa" ColumnName="Durata_Pausa" />
+                <ScalarProperty Name="Durata_Notturno" ColumnName="Durata_Notturno" />
+                <ScalarProperty Name="Durata_Minima_Viaggio" ColumnName="Durata_Minima_Viaggio" />
+                <ScalarProperty Name="Durata_Massima_Viaggio" ColumnName="Durata_Massima_Viaggio" />
+                <ScalarProperty Name="Durata_Quadratura_Rettifiche_Auto" ColumnName="Durata_Quadratura_Rettifiche_Auto" />
+                <ScalarProperty Name="DomainFilter" ColumnName="DomainFilter" />
+                <ScalarProperty Name="Dflt_Include_Trips" ColumnName="Dflt_Include_Trips" />
+                <ScalarProperty Name="Dflt_Include_Pass" ColumnName="Dflt_Include_Pass" />
+                <ScalarProperty Name="Dflt_Include_Blocked" ColumnName="Dflt_Include_Blocked" />
+                <ScalarProperty Name="Dflt_Include_Activities" ColumnName="Dflt_Include_Activities" />
+                <ScalarProperty Name="Dflt_DoRefresh_Grid" ColumnName="Dflt_DoRefresh_Grid" />
+                <ScalarProperty Name="Default_Soglia_Durata" ColumnName="Default_Soglia_Durata" />
+                <ScalarProperty Name="Default_Soglia_Arrot_F" ColumnName="Default_Soglia_Arrot_F" />
+                <ScalarProperty Name="Default_Soglia_Arrot_I" ColumnName="Default_Soglia_Arrot_I" />
+                <ScalarProperty Name="Default_Minuti_Durata" ColumnName="Default_Minuti_Durata" />
+                <ScalarProperty Name="Default_Minuti_Arrot_F" ColumnName="Default_Minuti_Arrot_F" />
+                <ScalarProperty Name="Default_Minuti_Arrot_I" ColumnName="Default_Minuti_Arrot_I" />
+                <ScalarProperty Name="Default_Durata_Min_Ril" ColumnName="Default_Durata_Min_Ril" />
+                <ScalarProperty Name="Default_Durata_Max_Ril" ColumnName="Default_Durata_Max_Ril" />
+                <ScalarProperty Name="Default_Durata_Max_Gruppo_Ril" ColumnName="Default_Durata_Max_Gruppo_Ril" />
+                <ScalarProperty Name="Default_Durata_Max_Gruppo_Notte_Ril" ColumnName="Default_Durata_Max_Gruppo_Notte_Ril" />
+                <ScalarProperty Name="Default_Ora_Inizio_Giornata" ColumnName="Default_Ora_Inizio_Giornata" />
+                <ScalarProperty Name="Default_Durata_Giornata" ColumnName="Default_Durata_Giornata" />
+                <ScalarProperty Name="Default_Abilitati" ColumnName="Default_Abilitati" />
+                <ScalarProperty Name="DataOraUltimaModifica" ColumnName="DataOraUltimaModifica" />
+                <ScalarProperty Name="Data_Stored_Reg" ColumnName="Data_Stored_Reg" />
+                <ScalarProperty Name="Data_Registrazione" ColumnName="Data_Registrazione" />
+                <ScalarProperty Name="Data_Blocco_Reg" ColumnName="Data_Blocco_Reg" />
+                <ScalarProperty Name="Ctrl_Sovrap_Pass" ColumnName="Ctrl_Sovrap_Pass" />
+                <ScalarProperty Name="Ctrl_Codice_IBAN" ColumnName="Ctrl_Codice_IBAN" />
+                <ScalarProperty Name="Ctrl_Codice_Fisc" ColumnName="Ctrl_Codice_Fisc" />
+                <ScalarProperty Name="Ctrl_Tab_Comuni" ColumnName="Ctrl_Tab_Comuni" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyInfo" ColumnName="CompanyInfo" />
+                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="ComboboxRowsPerPage" ColumnName="ComboboxRowsPerPage" />
+                <ScalarProperty Name="ComboBoxDelay" ColumnName="ComboBoxDelay" />
+                <ScalarProperty Name="Codice_Cliente" ColumnName="Codice_Cliente" />
+                <ScalarProperty Name="Cartellino_Totale_Prima_Colonna" ColumnName="Cartellino_Totale_Prima_Colonna" />
+                <ScalarProperty Name="Cartellino_Visualizza_Totali_Settimanali" ColumnName="Cartellino_Visualizza_Totali_Settimanali" />
+                <ScalarProperty Name="Cartellino_Abilita_Divisione_Cantiere" ColumnName="Cartellino_Abilita_Divisione_Cantiere" />
+                <ScalarProperty Name="Cartellino_Abilita_Stampa_Cart_Editabile" ColumnName="Cartellino_Abilita_Stampa_Cart_Editabile" />
+                <ScalarProperty Name="Cartellino_Usa_Rettifiche_Auto" ColumnName="Cartellino_Usa_Rettifiche_Auto" />
+                <ScalarProperty Name="Cartellino_Usa_Rettifiche_Manuali" ColumnName="Cartellino_Usa_Rettifiche_Manuali" />
+                <ScalarProperty Name="Cartellino_Usa_Rettifiche_Cartellino" ColumnName="Cartellino_Usa_Rettifiche_Cartellino" />
+                <ScalarProperty Name="Cartellino_Dividi_Altra_Anagrafica" ColumnName="Cartellino_Dividi_Altra_Anagrafica" />
+                <ScalarProperty Name="Cartellino_Modalita_Compatta" ColumnName="Cartellino_Modalita_Compatta" />
+                <ScalarProperty Name="Cartellino_Usa_Cartellino_Modificabile" ColumnName="Cartellino_Usa_Cartellino_Modificabile" />
+                <ScalarProperty Name="Cartellino_Visualizza_Viaggi" ColumnName="Cartellino_Visualizza_Viaggi" />
+                <ScalarProperty Name="Cartellino_Fine_Notturno" ColumnName="Cartellino_Fine_Notturno" />
+                <ScalarProperty Name="Cartellino_Inizio_Notturno" ColumnName="Cartellino_Inizio_Notturno" />
+                <ScalarProperty Name="Cartellino_Visualizza_Totale" ColumnName="Cartellino_Visualizza_Totale" />
+                <ScalarProperty Name="Cartellino_Visualizza_Delta" ColumnName="Cartellino_Visualizza_Delta" />
+                <ScalarProperty Name="Cartellino_Visualizza_Motivazioni" ColumnName="Cartellino_Visualizza_Motivazioni" />
+                <ScalarProperty Name="Cartellino_Visualizza_Ore" ColumnName="Cartellino_Visualizza_Ore" />
+                <ScalarProperty Name="Cartellino_Visualizza_Piano" ColumnName="Cartellino_Visualizza_Piano" />
+                <ScalarProperty Name="Cartellino_Visualizza_Arrotondamenti" ColumnName="Cartellino_Visualizza_Arrotondamenti" />
+                <ScalarProperty Name="Cartellino_Divisione_Piano_Notturno_Diurno" ColumnName="Cartellino_Divisione_Piano_Notturno_Diurno" />
+                <ScalarProperty Name="Cantiere_Timbrature_GPS_Non_Valide" ColumnName="Cantiere_Timbrature_GPS_Non_Valide" />
+                <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
+                <ScalarProperty Name="BingKey" ColumnName="BingKey" />
+                <ScalarProperty Name="Aut_Str_Tipo" ColumnName="Aut_Str_Tipo" />
+                <ScalarProperty Name="Attiva_Num_Aut_Col" ColumnName="Attiva_Num_Aut_Col" />
+                <ScalarProperty Name="Attiva_Num_Aut_Can" ColumnName="Attiva_Num_Aut_Can" />
+                <ScalarProperty Name="Abilita_Where_Is_It" ColumnName="Abilita_Where_Is_It" />
+                <ScalarProperty Name="Abilita_Viaggi" ColumnName="Abilita_Viaggi" />
+                <ScalarProperty Name="Abilita_Schedulatore" ColumnName="Abilita_Schedulatore" />
+                <ScalarProperty Name="Abilita_Privacy" ColumnName="Abilita_Privacy" />
+                <ScalarProperty Name="Abilita_Pass" ColumnName="Abilita_Pass" />
+                <ScalarProperty Name="Abilita_Orari" ColumnName="Abilita_Orari" />
+                <ScalarProperty Name="Abilita_Notturno" ColumnName="Abilita_Notturno" />
+                <ScalarProperty Name="Abilita_Notifiche" ColumnName="Abilita_Notifiche" />
+                <ScalarProperty Name="Abilita_Monte_Minuti" ColumnName="Abilita_Monte_Minuti" />
+                <ScalarProperty Name="Abilita_GPS" ColumnName="Abilita_GPS" />
+                <ScalarProperty Name="Abilita_Confronto_Ore_Budget" ColumnName="Abilita_Confronto_Ore_Budget" />
+                <ScalarProperty Name="Abilita_Cartellino" ColumnName="Abilita_Cartellino" />
+                <ScalarProperty Name="Abilita_Aut_Str" ColumnName="Abilita_Aut_Str" />
+                <ScalarProperty Name="Abilita_Att" ColumnName="Abilita_Att" />
+                <ScalarProperty Name="Abilita_Arrotondamenti" ColumnName="Abilita_Arrotondamenti" />
+                <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
+                <ScalarProperty Name="Param_Id" ColumnName="Param_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
