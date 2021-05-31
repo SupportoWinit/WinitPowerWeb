@@ -41,9 +41,9 @@
  <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="1">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="Bergamo" />
-      <pw value="Bergamo2020!" />
-      <idTenant value="1874" />
+      <uid  value="MarsonSrl" />
+      <pw value="Marson2017W!" />
+      <idTenant value="1888" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />

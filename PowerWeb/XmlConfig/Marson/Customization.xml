@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Customizations>
+
+  <!-- ******************************************************************************************************************************************-->
+
+
+  <!-- Elenco delle Personalizzazioni Previste/Attivate-->
+
+
+  <!-- ID = contiene il corrispondente ENUM e relativa opzione che identifica il tipo di Personalizzazione -->
+
+
+  <!-- DES = contiene una descrizione che descrive il tipo di Personalizzazione cui si riferisce l'enum -->
+
+
+  <!-- VALUE= contiene il Valore assegnato a quella personalizzazione = 0 Personalizzazione NON attivata <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
+
+
+  <!-- *******************************************************************************************************************************************-->
+
+
+  <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
+
+
+  <c Value="0" Des="Raggruppamento iniziale pagina cantiere su vista default(no raggruppamenti)" ID="CustomizationEnum.DefaultGroupViewInCantPage"/>
+
+  <c Value="0" Des="Abilita la possibilità di effettuare il login al di sotto di un supervisore" ID="CustomizationEnum.EnableDoubleCheckLogin"/>
+  
+  <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
+
+
+  <!--VISUALIZZAZIONE BOTTINI MASTERPAGE-->
+  
+   <c Value="1" Des="" ID="CustomizationEnum.DisableExcelExport">
+    <param Value="1" Name="winit.admin"/>
+    <param Value="1" Name="cesarino.gaddoni"/>
+	<param Value="1" Name="francesco.cadeddu"/>
+	<param Value="1" Name="	nicola.gallignani"/>
+  </c>
+
+  <c Value="0" Des="" ID="CustomizationEnum.DisableExcelExportGrid">
+    <param Value="1" Name="winit.admin"/>
+    <param Value="1" Name="cesarino.gaddoni"/>
+	<param Value="1" Name="francesco.cadeddu"/>
+	<param Value="1" Name="	nicola.gallignani"/>
+  </c>
+
+  <c Value="1" Des="" ID="CustomizationEnum.DisablePdfExport"> 
+    <param Value="1" Name="winit.admin"/>
+	<param Value="1" Name="cesarino.gaddoni"/>
+	<param Value="1" Name="francesco.cadeddu"/>
+	<param Value="1" Name="	nicola.gallignani"/>
+  </c>
+
+  <c Value="0" Des="" ID="CustomizationEnum.DisablePdfExportGrid">
+    <param Value="1" Name="winit.admin"/>
+    <param Value="1" Name="cesarino.gaddoni"/>
+	<param Value="1" Name="francesco.cadeddu"/>
+	<param Value="1" Name="	nicola.gallignani"/>
+  </c>
+  
+  <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
+  
+  <!-- ****************************************ABILITAZIONE LANCIO IMPORT ASSISTITI CUSTOM*******************************************************-->
+
+
+  <c Value="3" Des="Abilitazione Lancio Import Assistiti Custom" ID="CustomizationEnum.LaunchImportCantVersionEnum"/>
+
+  <!-- LaunchImportCantVersionEnum = 1 corrisponde ad abilitare l'Import Custom x Mosaico LaunchImportCantVersionEnum = 2 corrisponde ad abilitare l'Import Custom x Dugoni-->
+
+
+  <!-- ****************************************************CLONAZIONE CAMPI NELLE REG_V**************************************************************-->
+
+
+  <c Value="0" Des="Campi da NON clonare" ID="CustomizationEnum.CloneTypeEnum"/>
+
+  <!-- CloneTypeEnum = 1 Non si clonano per le REG_V i valori dei campi Data_Ora_Fis_U Durata_Fis_HH_S Cant_Id Data_Ora_Fig_U-->
+
+
+  <!-- ********************************************************CHECK CUSTOM******************************************************************************-->
+
+
+  <c Value="0" Des="Check custom sulle Reg_V" ID="CustomizationEnum.CustomChecksEnum"/>
+
+  <!-- CustomChecksEnum= 1 corrisponde ad abilitare il Check Custom x Mosaico-->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************IMPORT ACCESS CUSTOM******************************************************************************-->
+
+
+  <c Value="0" Des="Import custom da Access" ID="CustomizationEnum.CustomImportFromAccessEnum"/>
+
+  <!-- CustomImportFromAccessEnum= 1 corrisponde ad abilitare l'import Custom x Mosaico-->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************FLAG GPS IN INIT CANT******************************************************************************-->
+
+
+  <c Value="0" Des="Impostazione del flag nella init dei cantieri" ID="CustomizationEnum.CustomFlagGpsCantInitEnum"/>
+
+  <!-- CustomFlagGpsCantIniEnumt= 1 corrisponde a valorizzare a 1 il flag gps nella init dei cantieri -->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************NON COLORAZIONE ATTIVITA' MODIFICATE IN GRIGLIA*********************************************************-->
+
+
+  <c Value="0" Des="Non colorazione delle ore modificate per le attività" ID="CustomizationEnum.NoColorForEditedActivityEnum"/>
+
+  <!-- NoColorForEditedActivityEnum= 1 corrisponde a non colorare le ore delle attività modificate (attivo per Mosaico) -->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************NON CREAZIONE VIAGGIO IN CASO DI MANCATA RIGA TABELLA DISTANZE (SOLO GIS)*********************************************************-->
+
+
+  <c Value="0" Des="Non creazione viaggi in caso di mancata riga tabella distanze (solo gis)" ID="CustomizationEnum.NoCreateTripsWithoutTabDistRowEnum"/>
+
+  <!-- NoCreateTripsWithoutTabDistRowEnum= 1 corrisponde alla non creazione dei viaggi senza un corrispettivo record nella tabella distanze (solo GIS) -->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************EXPORT EXCEL*********************************************************-->
+
+
+  <c Value="0" Des="Indica il formato di estenzione del file per l'export Excell" ID="CustomizationEnum.ExportExcelEnum"/>
+
+  <!-- ExportExcelEnum= 1 corrisponde all'estenzione xls del file per l'export Excel -->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************EDIT FROM TEMPLATE*********************************************************-->
+
+
+  <c Value="0" Des="Indica i campi da mostrare nell'edit from template" ID="CustomizationEnum.EditManager"/>
+
+  <!-- EditManager= 1 corrisponde a mostrare o no alcuni parametri nell edit from template -->
+
+
+  <!-- ********************************************************CALCOLO DA TAB DISTANZE*********************************************************-->
+
+
+  <c Value="0" Des="Indica le informazioni da prendere in generazione viaggi" ID="CustomizationEnum.CalculateTripDataEnum"/>
+
+  <!-- CalculateTripDataEnum=0 corrisponde a calcolare orario e distanza nelle reg per i viaggi CalculateTripDataEnum=1 corrisponde a calcolare solamente la distanza in km nelle reg per i viaggi -->
+
+
+  <!-- ********************************************************************************************************************************************-->
+
+
+  <!-- ********************************************************NON VERIFICA DURATA MAX/MIN VIAGGI SU CANT ONL*********************************************************-->
+
+
+  <c Value="0" Des="Indica di non effettuare il controllo di durata minima/massima del viaggio da cantieri ONL" ID="CustomizationEnum.NoTripsMaxMinDurationControlONLCantEnum"/>
+
+  <!-- NoTripsMaxMinDurationControlONLEnum=0 corrisponde ad effettuare sempre il controllo (se richiesto da param) NoTripsMaxMinDurationControlONLCantEnum=1 Indica di non effettuare il controllo di durata minima/massima del viaggio da cantieri ONL -->
+
+
+  <!-- ********************************************************IMPORT ACCESS RESPONSABILE CANTIERE*********************************************************-->
+
+
+  <!-- RespColDiCantInRaggruppamento1Enum=0 corrisponde al non caricamento del campo access RespColDiCantInRaggruppamento1Enum=1 Indica di caricare il valore del campo resp_col di cant in raggruppamento1_can (import access) -->
+
+
+  <!-- ********************************************************IMPORT ACCESS RESPONSABILE CANTIERE*********************************************************-->
+
+
+  <c Value="0" Des="Indica di caricare il valore del campo resp_col di cant in raggruppamento1_can (import access)" ID="CustomizationEnum.RespColDiCantInRaggruppamento1Enum"/>
+
+  <!-- RespColDiCantInRaggruppamento1Enum=0 corrisponde al non caricamento del campo access RespColDiCantInRaggruppamento1Enum=1 Indica di caricare il valore del campo resp_col di cant in raggruppamento1_can (import access) -->
+
+
+  <!-- ********************************************************TIPO IMPORTAZIONE DA ACCESS*********************************************************-->
+
+
+  <c Value="0" Des="Indica il tipo di importazione da access da utilizzare" ID="CustomizationEnum.AccessImportTypeEnum"/>
+
+  <!-- AccessImportTypeEnum=0 corrisponde all'import standard AccessImportTypeEnum=1 corrisponde all'import per Mosaico -->
+
+
+  <!-- ********************************************************IMPORTAZIONE ASSISTITI*********************************************************-->
+
+
+  <c Value="3" Des="Indica il tipo di importazione cantieri (assistiti) da excel" ID="CustomizationEnum.CantImportTypeEnum"/>
+
+  <!-- CantImportTypeEnum=0 nessun import CantImportTypeEnum=1 corrisponde all'import per Mosaico CantImportTypeEnum=2 corrisponde all'import per Dugoni-->
+
+
+  <!-- ********************************************************IMPORTAZIONE REGISTRAZIONI BLOCCATE*********************************************************-->
+
+
+  <c Value="0" Des="Indica se gestire o meno le registrazioni bloccate in fase di import txt" ID="CustomizationEnum.ImportBlockedRegsEnum"/>
+
+  <!-- ImportBlockedRegsEnum=0 non bloccare le registrazioni in fase di import (+ vecchie dell'ultima registrata per coll) ImportBlockedRegsEnum=1 blocca le registrazioni in fase di import (+ vecchie dell'ultima registrata per coll) -->
+
+
+  <!-- ********************************************************IMPORTAZIONE FLAG_EU*********************************************************-->
+
+
+  <c Value="0" Des="Indica come trattare il flag E/U in import" ID="CustomizationEnum.ImportFlagEUEnum"/>
+
+  <!-- ImportFlagEUEnum=0 Indica di importare il flag E/U come da standard ImportFlagEUEnum=1 Indica di non importare il flag E/U anche se presente -->
+
+
+  <!-- ********************************************************VISUALIZZAZIONE FLAG_EU*********************************************************-->
+
+
+  <c Value="1" Des="Indica se visualizzare o meno il flag E/U nella form delle reg" ID="CustomizationEnum.ShowFlagEUInFormEnum"/>
+
+  <!-- ShowFlagEUInFormEnum=0 Indica di non visualizzare i dati nella form delle reg ShowFlagEUInFormEnum=1 Indica di visualizzare i dati nella form delle reg -->
+
+
+  <!-- ********************************************************GESTIONE RETTIFICHE*********************************************************-->
+
+
+
+  -<c Value="1" Des="Indica se l'applicativo utilizza le rettifiche o meno" ID="CustomizationEnum.UseCorrectionEnum">
+
+    <param Value="-5" Name="DefaultMinValue"/>
+
+    <param Value="5" Name="DefaultMaxValue"/>
+
+  </c>
+
+  <!-- UseCorrectionEnum=0 Indica che l'applicativo non utilizza la gestione delle rettifiche UseCorrectionEnum=1 Indica che l'applicativo utilizza la gestione delle rettifiche -->
+
+
+  <!-- ********************************************************VISUALIZZAZIONE CARTELLINO*********************************************************-->
+
+
+  <c Value="0" Des="Indica se visualizzare o meno la divisione delle ore notturne/diurne nel cartellino" ID="CustomizationEnum.ShowNocturnAndDayTimesheetEnum"/>
+
+  <!-- ShowNocturnAndDayTimesheetEnum=0 Indica che la divisione, anche se presente, non sarà visualizzata ShowNocturnAndDayTimesheetEnum=1 Indica che la divisione, se sono correttamente presenti le ore, sarà visualizzata -->
+
+
+  <c Value="0" Des="Indica se visualizzare o meno i viaggi in una riga separata rispetto alle ore lavorate nel cartellino" ID="CustomizationEnum.ShowTimesheetTripHoursSameRowEnum"/>
+
+  <!-- ShowTimesheetTripHoursSameRowEnum=0 Indica che i viaggi saranno visualizzati come ore separate rispetto alle ore lavorate all'interno del cartellino ShowNocturnAndDayTimesheetEnum=1 Indica che la divisione, se sono correttamente presenti le ore, sarà visualizzata -->
+
+
+  <c Value="1" Des="Indica se visualizzare o meno le rettifiche all'interno del cartellino" ID="CustomizationEnum.ShowCorrectionOnTimesheetEnum"/>
+
+  <!-- ShowCorrectionOnTimesheetEnum=0 Indica che le rettifiche non saranno riportate all'interno del cartellino ShowCorrectionOnTimesheetEnum=1 Indica che le rettifiche, se presenti, saranno visualizzate all'interno del cartellino -->
+
+
+  <c Value="1" Des="Indica se visualizzare o meno le ore non lavorate all'interno del cartellino" ID="CustomizationEnum.ShowONLOnTimesheetEnum"/>
+
+  <!-- ShowONLOnTimesheetEnum=0 Indica che le ore non lavorate non saranno riportate all'interno del cartellino ShowONLOnTimesheetEnum=1 Indica che le ore non lavorate, se presenti, saranno visualizzate all'interno del cartellino -->
+
+
+  <!-- ********************************************************GESTIONE AGGIORNAMENTO AUTOMATICO VISTE*********************************************************-->
+
+
+  <c Value="1" Des="Indica se è attivato o no l'aggiornamento automatico delle viste delle Reg_VM" ID="CustomizationEnum.AutomaticDateTimeView"/>
+
+  <!-- AutomaticDateTimeView=0 Indica che l'applicativo non aggiorna in modo automatico le viste AutomaticDateTimeView=1 Indica che l'applicativo aggiorna in modo automatico le viste delle Reg_Vm -->
+
+
+  <!-- ********************************************************GESTIONE PERSONALIZZAZIONE ALL'EXPORT 56*********************************************************-->
+
+
+  <c Value="0" Des="Indica la versione dell'export 56 presente nell'applicativo" ID="CustomizationEnum.Export56VersionEnum"/>
+
+  <!-- Export56VersionEnum=0 Indica l'utilizzo della versione standard dell'export 56 Export56VersionEnum=1 Indica l'utilizzo della versione Kleo dell'export 56 -->
+
+
+  <!-- ********************************************************GESTIONE DELL'USO DI DATI STORICI NELL'EXPORT 56*********************************************************-->
+
+
+  <c Value="0" Des="Indica se utilizzare i dati anagrafici su base storica (cant var/col var) o sui dati anagrafici correnti" ID="CustomizationEnum.Export56HistoricUseEnum"/>
+
+  <!-- Export56HistoricUseEnum=0 indica l'utilizzo dei dati sul base storica Export56HistoricUseEnum=1 Indica l'utilizzo sempre della versione corrente -->
+
+
+  <!-- ********************************************************CUSTOMIZZAZIONI PER LA VISUALIZZAZIONE DEI TOTALI DEL CARTELLINO*********************************************************-->
+
+
+  <!-- ********************************************************NASCONDIMENTO DELTA*********************************************************-->
+
+
+  <c Value="0" Des="Indica se nascondere o visualizzare il delta nei totali del cartellino" ID="CustomizationEnum.HideDeltaTotalTimehseetEnum"/>
+
+  <!-- HideDeltaTotalTimehseetEnum=0 Indica di visualizzare il delta nei totali del cartellino HideDeltaTotalTimehseetEnum=1 Indica di nascondere il delta nei totali del cartellino -->
+
+
+  <c Value="0" Des="Indica se nascondere o visualizzare il piano nei totali del cartellino" ID="CustomizationEnum.HidePlanTotalTimesheetEnum"/>
+
+  <!-- HidePlanTotalTimesheetEnum=0 Indica di visualizzare il piano nei totali del cartellino HidePlanTotalTimesheetEnum=1 Indica di nascondere il piano nei totali del cartellino -->
+
+
+  <c Value="0" Des="Indica se nascondere o visualizzare il totale nei totali del cartellino" ID="CustomizationEnum.HidelTotalTotalTimehsheetEnum"/>
+
+  <!-- HidelTotalTotalTimehsheetEnum=0 Indica di visualizzare il totale nei totali del cartellino HidelTotalTotalTimehsheetEnum=1 Indica di nascondere il totale nei totali del cartellino -->
+
+
+  <c Value="1" Des="Indica se nascondere o visualizzare i dati addizionali nei totali del cartellino" ID="CustomizationEnum.HidelAdditionalTotalTimehsheetEnum"/>
+
+  <!-- HidelAdditionalTotalTimehsheetEnum=0 Indica di visualizzare i dati addizionali nei totali del cartellino HidelAdditionalTotalTimehsheetEnum=1 Indica di nascondere i dati addizionali nei totali del cartellino -->
+
+
+  <!-- ********************************************************CUSTOMIZZAZIONI PER LA VISUALIZZAZIONE DEl PULSANTE DI CORREZIONE AUTOMATICA*********************************************************-->
+
+
+  <c Value="0" Des="Indica se nascondere o visualizzare il pulsante di correzione automatica" ID="CustomizationEnum.ShowAutomaticCorrectionButtonEnum"/>
+
+  <!-- ShowAutomaticCorretionButtonEnum=0 Indica di non visualizzare il bottone ShowAutomaticCorretionButtonEnum=1 Indica di visualizzare il bottone -->
+
+
+  <!-- ********************************************************CUSTOMIZZAZIONI PER LA CORREZIONE AUTOMATICA*********************************************************-->
+
+
+
+  -<c Value="2" Des="Indica quale correzione automatica attivare (utilizzata solo in caso di ShowAutomaticCorrectionButtonEnum != 0)" ID="CustomizationEnum.AutomaticCorrectionEnum">
+
+    <param Value="2" Name="MinutesNumber"/>
+
+    <param Value="30" Name="DayMinutesTollerance"/>
+
+    <param Value="60" Name="AverageMinutesTollerance"/>
+
+    <param Value="5" Name="HistoryDay"/>
+
+    <param Value="3" Name="AverageBaseThreshold"/>
+
+  </c>
+
+  <!-- AutomaticCorrectionEnum=0 Indica di non attivare nessuna correzione automatica AutomaticCorrectionEnum=1 Indica di attivare la correzione di aggiunta dei 2 minuti AutomaticCorrectionEnum=2 Indica di attivare la correzione su base storica-->
+
+
+  <!-- ********************************************************CUSTOMIZZAZIONI PER L'EXPORT STANDARD DEL CARTELLINO*********************************************************-->
+
+
+  <c Value="0" Des="Indica come visualizzare gli zeri all'interno dell'export standard del cartellino" ID="CustomizationEnum.TimesheetExportZeroValueFormatEnum"/>
+
+  <!-- TimesheetExportZeroValueFormatEnum=0 Indica di visualizzare gli zeri senza interventi TimesheetExportZeroValueFormatEnum=1 Indica di visualizzare gli zeri come valori nulli -->
+
+
+  <!-- ********************************************************GENERAZIONE VIAGGI STESSO COMUNE SOTTO-KILOMETRAGGIO*********************************************************-->
+
+
+
+  -<c Value="0" Des="Indica se attivare il controllo di non creazione viaggio nello stesso comune sotto un certo kilometraggio" ID="CustomizationEnum.NoCreateTripOnSameMunicipalityUnderKmEnum">
+
+    <param Value="10" Name="KmThreshold"/>
+
+  </c>
+
+  <!-- NoCreateTripOnSameMunicipalityUnderKmEnum=0 Indica di generare il viaggio senza effettuare alcun controllo su stesso comune e kilometraggio NoCreateTripOnSameMunicipalityUnderKmEnum=1 Indica di generare i viaggi che cominciano e terminano nello stesso comune solo se superiori a i km come parametro -->
+
+
+  <!-- ********************************************************ESPORTAZIONE XML DELLE TIMBRATURE*********************************************************-->
+
+
+  <c Value="0" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" ID="CustomizationEnum.RegExportToXmlEnum"/>
+
+  <!-- RegExportToXmlEnum=0 Indica che l'esportazione xml delle timbrature non è attiva RegExportToXmlEnum=1 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Perfetto -->
+
+
+  <c Value="0" Des="Indica se evitare l'accoppiamento di registrazioni per stesso giorno, cantiere, collaboratore se in numero dispari" ID="CustomizationEnum.DoNotCoupleIfDayOddsRegsEnum"/>
+
+  <c Value="0" Des="Indica se utilizzare il titolo della vista salvata del report come report title" ID="CustomizationEnum.ReportTitleUsingSavedNameEnum"/>
+
+  <c Value="0" Des="Indica eventuali personalizzazioni all'edit form template dell'anagrafica cantieri" ID="CustomizationEnum.CantEditFormTemplateEnum"/>
+
+
+  -<c Value="0" Des="Indica se accoppiare o meno le registrazioni di giorni con meno di parametro giorni" ID="CustomizationEnum.DoNotCoupleIfDaysRegVUnderEnum">
+
+    <param Value="4" Name="MinimunReg"/>
+
+  </c>
+
+  <c Value="0" Des="Indica se visualizzare i coll attivi senza tuimbrature nel modulo delle errate" ID="CustomizationEnum.ErrModuleShowEmptyColEnum"/>
+
+  <c Value="0" Des="Indica il tipo di modifica da applicare al modulo di gestione delle errate" ID="CustomizationEnum.EditTypeErrModuleEnum"/>
+
+  <c Value="4" Des="Indica il livello di autorizzazione di default per le funzioni non esplicitamente caricate in tab_aut" ID="CustomizationEnum.DefaultFunzAuthLevelEnum"/>
+
+  <c Value="0" Des="Mostra la combobox dei collaboratori all'interno dell'elaborazione viaggi e export 56 nel ColModule" ID="CustomizationEnum.ShowComboColEnum"/>
+
+  <c Value="0" Des="Indica se colorare o meno tutta la riga per le registrazioni di tipo attività o viaggio" ID="CustomizationEnum.ColorAllLinesForTripAndActivityEnum"/>
+
+  <c Value="0" Des="Indica se visualizzare o meno i secondi nelle colonne ora del modulo delle errate" ID="CustomizationEnum.ShowSecondsInHoursErrModuleEnum"/>
+
+  <c Value="0" Des="Indica se è attiva ed il tipo di una eventuale elaborazione custom delle timbrature (affiancata allo standard)" ID="CustomizationEnum.CustomElaborateRegs"/>
+
+  <c Value="0" Des="Indica se applicare o meno i colori di sfondo nella generazione degli export custom" ID="CustomizationEnum.CustomExportsBackgroundColorEnum"/>
+
+  <c Value="1" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum"/>
+
+  <c Value="0" Des="Indica se visualizzare nel cartellino il totale delle ore senza il monte minuti" ID="CustomizationEnum.TimesheeetTotalWithoutMonthlyMinutes"/>
+
+  <c Value="0" Des="Indica se popolare il codice commessa nell'export semplice" ID="CustomizationEnum.ManageOrderCodeSimpleExport"/>
+
+  <c Value="0" Des="Indica se visualizzare nelle regisrazioni del cartellino la descrizione o il codice della motivazione" ID="CustomizationEnum.ShowDescriptionJustTimesheet"/>
+
+  <c Value="0" Des="Indica se è attiva la gestione della valutazione delle attività" ID="CustomizationEnum.EnableActivityEvaluationEnum"/>
+
+  <c Value="0" Des="Indica il tipo di recupero da applicare al cartellino in caso di attivazione dell'autorizzazione straordinari" ID="CustomizationEnum.TimesheetRecoveryHoursTypeEnum"/>
+
+  <c Value="0" Des="Indica se nascondere o meno il pulsante di annullamento dell'operazione nella modifica multipla delle errate" ID="CustomizationEnum.HideCancelButtonInMultipleEditRegsEnum"/>
+
+
+  -<c Value="0" Des="Vieta o meno l'inserimento manuale di registrazioni programmate con data posteriore alla fine del mese o a parametro giorni dalla data odierna" ID="CustomizationEnum.PreventFutureRegEnum">
+
+    <param Value="15" Name="NumDays"/>
+
+    <param Value="1" Name="EndOfMonth"/>
+
+  </c>
+
+  <c Value="0" Des="Indica se nascondere o visualizzare le motivazioni nei totali del cartellino" ID="CustomizationEnum.HideJustificationTotalTimehsheetEnum"/>
+
+  <c Value="0" Des="Indica se nascondere o visualizzare le straordinarie notturne nei totali del cartellino" ID="CustomizationEnum.HideStrNoctTotalTimehseetEnum"/>
+
+  <c Value="0" Des="Indica quali sezioni del report del cartellino nascondere" ID="CustomizationEnum.HideReportSectionTimehsheetEnum"/>
+
+  <c Value="0" Des="Indica se è attiva durante la modifica veloce del solo edit della valutazione attività" ID="CustomizationEnum.CustomerOnlyMultipleEditEvaluationEnum"/>
+
+  <c Value="0" Des="Indica se è si possono inserire descrizioni dei cantieri maggiori di 50 caratteri" ID="CustomizationEnum.CanDescriptionOver50Enum"/>
+
+  <c Value="0" Des="Indica quale tipo di maschera di import dei collaboratori visualizzare" ID="CustomizationEnum.LaunchImportColVersionEnum"/>
+
+  <c Value="0" Des="Indica quale tipo di import dei collaboratori fare" ID="CustomizationEnum.ColImportTypeEnum"/>
+
+  <c Value="0" Des="Indica se gli arrotondamenti vengono contati come ore ordinarie o meno nel cartellino" ID="CustomizationEnum.NoArrotInOrdinaryEnum"/>
+
+  <c Value="0" Des="Indica il nome della compagnia su cui effettuare l'export su perfetto" ID="CustomizationEnum.ComapanyNameEnum"/>
+
+  <c Value="0" Des="Indica se la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5" ID="CustomizationEnum.PauseDeductionOnlyFascia5"/>
+
+  <c Value="0" Des="Genera i viaggi di inizio/fine giornata SOLO KILOMETRICI partendo/arrivando dal cantiere SEDE" ID="CustomizationEnum.CG2Trips"/>
+
+  <c Value="0" Des="Indica se nascondere o visualizzare le straordinarie nei totali del cartellino" ID="CustomizationEnum.HideStrTotalTimesheetEnum"/>
+
+  <c Value="0" Des="Indica se chiudere le timbrature in modo automatico" ID="CustomizationEnum.AutoClosuresEnum"/>
+
+  <c Value="0" Des="Indica se consentire registrazioni di durata zero" ID="CustomizationEnum.AllowZeroDurationRegs"/>
+
+  <c Value="0" Des="Selezione del metodo di ordinamento dell'Export base del cartellino" ID="CustomizationEnum.SortExportTimesheetSimple"/>
+
+  <c Value="0" Des="Indica se detrarre la pausa pranzo solo dal viaggio più lungo o cumulativamente da tutti i viaggi (fino ad esaurimento pausa)" ID="CustomizationEnum.PauseDetractionOnlyLongestTrip"/>
+
+  <c Value="1" Des="Indica se controllare se le registrazioni sono già presenti prima di inserirle" ID="CustomizationEnum.CheckIfRegvAlreadyPresentEnum"/>
+
+  <c Value="0" Des="Indica se contemplare anche i passaggi nel WhereIsIt" ID="CustomizationEnum.PassagesInWhereIsIt"/>
+
+  <c Value="0" Des="Indica quali registrazioni visulizzare nel modulo Tracking" ID="CustomizationEnum.TrackingRegsToShow"/>
+
+  <c Value="0" Des="Indica quali cartellini esportare nell'Export semplice del cartellino" ID="CustomizationEnum.TimesheetSimpleExport"/>
+
+  <c Value="0" Des="Indica se dividere il piano per notturno e diurno nel cartellino" ID="CustomizationEnum.DividePlanDayNight"/>
+
+  <c Value="0" Des="Importa solo le registrazioni GPS che rientrano nel raggio (in metri) impostato nel parametro rispetto al cantiere con Tipo_Cantiere_Can = 'OPERATIVO'" ID="CustomizationEnum.ImportGPSOnlyInWorkingRange"/>
+
+  <c Value="0" Des="Indica come visualizzare nel tracking le registrazioni consecutive all'interno dello stesso cantiere" ID="CustomizationEnum.TrackingConsecutiveRegsInSameCant"/>
+
+  <c Value="0" Des="Indica se includere le ore notturne all'internod elle ore diurne nella divisione del cartellino " ID="CustomizationEnum.IncludeNocturnInDayHours"/>
+
+  <c Value="0" Des="Indica come formattare le celle nel'export semplice del cartellino " ID="CustomizationEnum.FormattingExportTimeSheetSimple"/>
+
+  <c Value="0" Des="Indica se inserire oppure no il numero di interventi nell'esport del confronto ore budget" ID="CustomizationEnum.InserimentoNumeroInterventi"/>
+
+  <c Value="0" Des="Indica se visualizzare i bottoni di invio chiamate nel modulo elaborate" ID="CustomizationEnum.ShowSendChiamateButtons"/>
+
+  <c Value="0" Des="Indica se il campo Id_Cliente è obbligatorio nell'anagrafica dei cantieri" ID="CustomizationEnum.CantClientIdRequired"/>
+
+  <c Value="0" Des="Indica di calcolare l'importo totale delle ore nell'export Hour Report" ID="CustomizationEnum.CalcoloImporti"/>
+
+  <c Value="0" Des="Indica se disabilitare il controllo del codice fiscale a 16 caratteri" ID="CustomizationEnum.DisabilitaCodiceFiscale16Caratteri"/>
+
+  <c Value="0" Des="Indica se colorare il deltaFigFis a seconda del suo valore" ID="CustomizationEnum.ColorDeltaFigFisEnum"/>
+
+  <c Value="0" Des="Indica se nascondere i campi non utilizzati da Lombarda nella form della manutenzione timbrature" ID="CustomizationEnum.HideLombardaUnusedFieldsRegVEnum"/>
+
+  <c Value="1" Des="Indica se sommare le motivazioni nel totale del report delle timbrature per collaboratore" ID="CustomizationEnum.SumJustificationsInRegVReport"/>
+
+  <c Value="0" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" ID="CustomizationEnum.DoNotShowDisabledColCantId"/>
+
+</Customizations>

@@ -698,6 +698,36 @@
                 </dx:GridViewDataTimeEditColumn>
                 <dx:GridViewDataTimeEditColumn FieldName="Turno10_Can" Visible="False">
                 </dx:GridViewDataTimeEditColumn>
+
+
+                  <dx:GridViewDataSpinEditColumn FieldName="Importo1" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo2" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo3" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo4" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+              
+
+
+                <dx:GridViewDataTextColumn FieldName="Importo5" Visible="False">
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Importo6" Visible="False">
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Importo7" Visible="False">
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Importo8" Visible="False">
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Importo9" Visible="False">
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Importo10" Visible="False">
+                </dx:GridViewDataTextColumn>
+
                 <dx:GridViewDataDateColumn FieldName="LastReg" ReadOnly="True" VisibleIndex="5" />
                 <dx:GridViewDataComboBoxColumn FieldName="Zona_Can" Visible="False">
                 </dx:GridViewDataComboBoxColumn>

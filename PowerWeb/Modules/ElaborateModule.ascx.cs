@@ -259,6 +259,9 @@ namespace PowerWeb.Modules
             // backup dei files processati
             BusinessService.BackupProcessedFiles(FilesRegDaImportare, backupFolder);
 
+            if(FilesRegDaImportare==null)
+            e.Result = "Non ci sono registrazioni da importare";
+
             // se si sono verificati degli errori
             if (importErrors.Count > 0)
             {

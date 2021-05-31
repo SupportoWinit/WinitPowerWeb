@@ -3696,22 +3696,24 @@ namespace Business
             // inizializzazione del valore di ritorno del metodo
             var regToImport = new List<string>();
 
-            // ciclo sui files da processare e recupero delle rimbrature in essa contenuta
-            foreach (var fileToImport in filesToProcess)
+            if (filesToProcess != null)
             {
-                // viene ricontrollata la presenza del file
-                if (File.Exists(fileToImport))
+                // ciclo sui files da processare e recupero delle rimbrature in essa contenuta
+                foreach (var fileToImport in filesToProcess)
                 {
-                    // lettura di tutto il contenuto del file e posizionamento delle righe (non gps e commenti esclusi) nell'array nell'array
-                    string[] fileRegs = File.ReadAllLines(fileToImport);
+                    // viene ricontrollata la presenza del file
+                    if (File.Exists(fileToImport))
+                    {
+                        // lettura di tutto il contenuto del file e posizionamento delle righe (non gps e commenti esclusi) nell'array nell'array
+                        string[] fileRegs = File.ReadAllLines(fileToImport);
 
-                    IEnumerable<string> filteredFileRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && !IsRegLineGps(regStr)).ToList();
+                        IEnumerable<string> filteredFileRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && !IsRegLineGps(regStr)).ToList();
 
-                    if (filteredFileRegs.Any())
-                        regToImport.AddRange(filteredFileRegs);
+                        if (filteredFileRegs.Any())
+                            regToImport.AddRange(filteredFileRegs);
+                    }
                 }
             }
-
             // ritorno del valore calcolato dal metodo
             return regToImport;
         }
@@ -3728,58 +3730,62 @@ namespace Business
             // inizializzazione del valore di ritorno del metodo
             var regToImport = new List<string>();
             List<KeyValuePair<String, String>> GPS_Duplicates = new List<KeyValuePair<string, string>>();
-            // ciclo sui files da processare e recupero delle rimbrature in essa contenuta
-            foreach (var fileToImport in filesToProcess)
+
+            if (filesToProcess != null)
             {
-                // viene ricontrollata la presenza del file
-                if (File.Exists(fileToImport))
+                // ciclo sui files da processare e recupero delle rimbrature in essa contenuta
+                foreach (var fileToImport in filesToProcess)
                 {
-                    // lettura di tutto il contenuto del file e posizionamento delle righe (non gps e commenti esclusi) nell'array nell'array
-                    string[] fileRegs = File.ReadAllLines(fileToImport);
-                    string[] fileRegsDistinct = File.ReadAllLines(fileToImport).Distinct().ToArray();
-                    List<string> filteredFileRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && IsRegLineGps(regStr)).ToList();
-                    if (filteredFileRegs.Any())
+                    // viene ricontrollata la presenza del file
+                    if (File.Exists(fileToImport))
                     {
-
-                        #region Filtraggio righe duplicate causa errore firmware
-
-                        if (filteredFileRegs.Count() > 3)
+                        // lettura di tutto il contenuto del file e posizionamento delle righe (non gps e commenti esclusi) nell'array nell'array
+                        string[] fileRegs = File.ReadAllLines(fileToImport);
+                        string[] fileRegsDistinct = File.ReadAllLines(fileToImport).Distinct().ToArray();
+                        List<string> filteredFileRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && IsRegLineGps(regStr)).ToList();
+                        if (filteredFileRegs.Any())
                         {
-                            for (int i = 3; i < filteredFileRegs.Count(); i++)
-                            {
-                                if (filteredFileRegs.ElementAt(i) == filteredFileRegs.ElementAt(i - 2))
-                                {
-                                    GPS_Duplicates.Add(new KeyValuePair<string, string>(String.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_LINEA_GPS_X_DUPLICATA)),
-                                        filteredFileRegs[i]));
 
-                                    filteredFileRegs[i] = " ";
+                            #region Filtraggio righe duplicate causa errore firmware
+
+                            if (filteredFileRegs.Count() > 3)
+                            {
+                                for (int i = 3; i < filteredFileRegs.Count(); i++)
+                                {
+                                    if (filteredFileRegs.ElementAt(i) == filteredFileRegs.ElementAt(i - 2))
+                                    {
+                                        GPS_Duplicates.Add(new KeyValuePair<string, string>(String.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_LINEA_GPS_X_DUPLICATA)),
+                                            filteredFileRegs[i]));
+
+                                        filteredFileRegs[i] = " ";
+                                    }
                                 }
                             }
+
+                            #endregion
+
+                            regToImport.AddRange(filteredFileRegs.Where(regStr => regStr != " ").ToList());
                         }
-
-                        #endregion
-
-                        regToImport.AddRange(filteredFileRegs.Where(regStr => regStr != " ").ToList());
                     }
                 }
-            }
 
-            #region Creazione file reg. duplicate
+                #region Creazione file reg. duplicate
 
-            if (GPS_Duplicates.Count > 0)
-            {
-                string duplicateGpsLines = HttpContext.Current.Server.MapPath(Path.Combine(Common.Properties.Settings.Default.Files_Input_Path + "Reg_GPS_Errate" + "\\", String.Format("{0}_{1}.txt", "Registrazioni GPS duplicate", DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss"))));
-                if (!Directory.Exists(HttpContext.Current.Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path + "Reg_GPS_Errate" + "\\")))
+                if (GPS_Duplicates.Count > 0)
                 {
-                    Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path + "Reg_GPS_Errate" + "\\"));
+                    string duplicateGpsLines = HttpContext.Current.Server.MapPath(Path.Combine(Common.Properties.Settings.Default.Files_Input_Path + "Reg_GPS_Errate" + "\\", String.Format("{0}_{1}.txt", "Registrazioni GPS duplicate", DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss"))));
+                    if (!Directory.Exists(HttpContext.Current.Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path + "Reg_GPS_Errate" + "\\")))
+                    {
+                        Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path + "Reg_GPS_Errate" + "\\"));
+                    }
+                    else
+                    {
+                        BusinessService.CreateSuspendedRegFile(duplicateGpsLines, GPS_Duplicates);
+                    }
                 }
-                else
-                {
-                    BusinessService.CreateSuspendedRegFile(duplicateGpsLines, GPS_Duplicates);
-                }
-            }
 
-            #endregion
+                #endregion
+            }
 
             // ritorno del valore calcolato dal metodo
             return regToImport;
@@ -3897,18 +3903,21 @@ namespace Business
             if (!Directory.Exists(backupFolderPath))
                 Directory.CreateDirectory(backupFolderPath);
 
-            // ciclo di elaborazione dei file in lista
-            foreach (string filePath in processedFiles)
+            if (processedFiles != null)
             {
-                // calcolo del percorso completo del file nella cartella di backup
-                string backupFilePath = Path.Combine(backupFolderPath, Path.GetFileName(filePath));
+                // ciclo di elaborazione dei file in lista
+                foreach (string filePath in processedFiles)
+                {
+                    // calcolo del percorso completo del file nella cartella di backup
+                    string backupFilePath = Path.Combine(backupFolderPath, Path.GetFileName(filePath));
 
-                // se esiste già un file con lo stesso nome nella cartella di backup allora lo cancello
-                if (File.Exists(backupFilePath))
-                    File.Delete(backupFilePath);
+                    // se esiste già un file con lo stesso nome nella cartella di backup allora lo cancello
+                    if (File.Exists(backupFilePath))
+                        File.Delete(backupFilePath);
 
-                // spostamento del file processato nella cartella di backup
-                File.Move(filePath, backupFilePath);
+                    // spostamento del file processato nella cartella di backup
+                    File.Move(filePath, backupFilePath);
+                }
             }
         }
 

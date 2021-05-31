@@ -459,30 +459,32 @@ namespace PowerWeb.Modules
             {
                 Name = "Importi",
                 Caption = BusinessService.GetLocalizedString(PowerWebResources.STR_IMPORTI),
-                Columns = 1,
+                Columns = 2,
             };
             if (!IsEFTTabDisabled(currentEFT, importiTPE.Name))
             {
 
                 List<TabPageItemExtended> ParametriTabList = new List<TabPageItemExtended>();
 
-              
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo1), TabPageItemFieldTypeEnum.NotInGroup));
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo2), TabPageItemFieldTypeEnum.NotInGroup));
 
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo3), TabPageItemFieldTypeEnum.NotInGroup));
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo4), TabPageItemFieldTypeEnum.NotInGroup));
 
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo5), TabPageItemFieldTypeEnum.NotInGroup));
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo6), TabPageItemFieldTypeEnum.NotInGroup));
 
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo7), TabPageItemFieldTypeEnum.NotInGroup));
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo8), TabPageItemFieldTypeEnum.NotInGroup));
 
-                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Retribuzione_Lorda_Col), TabPageItemFieldTypeEnum.NotInGroup));
-                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Retribuzione_Netta_Col), TabPageItemFieldTypeEnum.NotInGroup));
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo9), TabPageItemFieldTypeEnum.NotInGroup));
+                ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => oCant.Importo10), TabPageItemFieldTypeEnum.NotInGroup));
 
-                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Trattenuta_Vitto_Col), TabPageItemFieldTypeEnum.NotInGroup));
-                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Indennita_Sanificazione_Col), TabPageItemFieldTypeEnum.NotInGroup));
-
-                //ParametriTabList.Add(GetEFTField(currentEFT, CommonService.GetPropertyName(() => _colStub.Indennita_Trasporto_Col), TabPageItemFieldTypeEnum.NotInGroup));
-                //ParametriTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
+                ParametriTabList.Add(new TabPageItemExtended(null, TabPageItemFieldTypeEnum.EmptyField));
 
                 templateDic.Add(importiTPE, ParametriTabList);
 
-               
             }
 
             #endregion
