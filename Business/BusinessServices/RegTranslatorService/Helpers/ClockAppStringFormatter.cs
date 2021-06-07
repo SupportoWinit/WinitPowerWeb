@@ -34,6 +34,8 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
         {
             string direzioneCardinaleLatitudine = "N";
             string direzioneCardinaleLongitudine = "E";
+            string longitudeLine = "";
+            string latitudeLine = "";
 
             if (latitude < 0)
                 direzioneCardinaleLatitudine = "S";
@@ -41,34 +43,36 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
             if (longitude < 0)
                 direzioneCardinaleLongitudine = "O";
 
-            string latitudeLine = string.Format(GPS_STRING_FORMAT
-                , SEPARATOR
-                , deviceCode
-                , CommonService.AggiungiZeriASinistra(latitude.ToString("00.0000000").Remove(2, 1), 10)
-                , regDateTime.Year
-                , regDateTime.Month.ToString("00")
-                , regDateTime.Day.ToString("00")
-                , regDateTime.Hour.ToString("00")
-                , regDateTime.Minute.ToString("00")
-                , NO_TAG_REFERENCE //se è solo GPS, non è tagReferenced, altrimenti sì
-                , MARKER_LATITUDINE
-                , direzioneCardinaleLatitudine
-                );
+            if (latitude != 0 && longitude != 0) { 
+                latitudeLine = string.Format(GPS_STRING_FORMAT
+                    , SEPARATOR
+                    , deviceCode
+                    , CommonService.AggiungiZeriASinistra(latitude.ToString("00.0000000").Remove(2, 1), 10)
+                    , regDateTime.Year
+                    , regDateTime.Month.ToString("00")
+                    , regDateTime.Day.ToString("00")
+                    , regDateTime.Hour.ToString("00")
+                    , regDateTime.Minute.ToString("00")
+                    , NO_TAG_REFERENCE //se è solo GPS, non è tagReferenced, altrimenti sì
+                    , MARKER_LATITUDINE
+                    , direzioneCardinaleLatitudine
+                    );
 
-            string longitudeLine = string.Format(GPS_STRING_FORMAT
-                , SEPARATOR
-                , deviceCode
-                , CommonService.AggiungiZeriASinistra(longitude.ToString("00.0000000").Remove(2, 1), 10)
-                , regDateTime.Year
-                , regDateTime.Month.ToString("00")
-                , regDateTime.Day.ToString("00")
-                , regDateTime.Hour.ToString("00")
-                , regDateTime.Minute.ToString("00")
-                , NO_TAG_REFERENCE //se è solo GPS, non è tagReferenced, altrimenti sì
-                , MARKER_LONGITUDINE
-                , direzioneCardinaleLongitudine
-                );
-
+                longitudeLine = string.Format(GPS_STRING_FORMAT
+                    , SEPARATOR
+                    , deviceCode
+                    , CommonService.AggiungiZeriASinistra(longitude.ToString("00.0000000").Remove(2, 1), 10)
+                    , regDateTime.Year
+                    , regDateTime.Month.ToString("00")
+                    , regDateTime.Day.ToString("00")
+                    , regDateTime.Hour.ToString("00")
+                    , regDateTime.Minute.ToString("00")
+                    , NO_TAG_REFERENCE //se è solo GPS, non è tagReferenced, altrimenti sì
+                    , MARKER_LONGITUDINE
+                    , direzioneCardinaleLongitudine
+                    );
+            }
+            
             return new List<string>() { latitudeLine, longitudeLine };
         }
 
