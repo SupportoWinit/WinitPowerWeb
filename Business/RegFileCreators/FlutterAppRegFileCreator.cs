@@ -12,6 +12,11 @@ namespace Business.RegFileCreators
     class FlutterAppRegFileCreator : IRegFileCreator<FlutterAppReg>
     {
         string fileNamePatter;
+        private static readonly int MARKER_LATITUDINE = 0;
+        private static readonly int MARKER_LONGITUDINE = 1;
+        private static readonly int TAG_REFERENCE = 1;
+        private static readonly int NO_TAG_REFERENCE = 0;
+
 
         public FlutterAppRegFileCreator()
         {
@@ -37,7 +42,7 @@ namespace Business.RegFileCreators
 
             foreach (var regs in unEncodedRegs)
             {
-                FlutterOrderedReg var = new FlutterOrderedReg(regs.CodiceFru,regs.Value.First().CodicePru,regs.Value.First().Registrazione_Data_Ora_Orig,regs.Value.First().verso,regs.Value.First().motivazione);
+                FlutterOrderedReg var = new FlutterOrderedReg(regs.CodiceFru,regs.Value.First().CodicePru,regs.Value.First().Registrazione_Data_Ora_Orig,regs.Value.First().verso,regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine);
                 regsToOrder.Add(var);
             }
 
@@ -45,22 +50,58 @@ namespace Business.RegFileCreators
 
             foreach (var fluReg in regsToOrder)
             {
-                string regRow = "";
-                #region Reg senza coordinate
+                if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                {
+                    string regRow = "";
+                    #region Reg con coordinate
 
 
-                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
-                    fluReg.CodiceFru,
-                    fluReg.CodicePru,
-                    fluReg.Data.Year,
-                    fluReg.Data.Month.ToString("00"),
-                    fluReg.Data.Day.ToString("00"),
-                    fluReg.Data.Hour.ToString("00"),
-                    fluReg.Data.Minute.ToString("00"),
-                    fluReg.Verso,
-                    fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
-                );
-                regsToWrite.Add(regRow);
+                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                        fluReg.CodiceFru,
+                        AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                        fluReg.Data.Year,
+                        fluReg.Data.Month.ToString("00"),
+                        fluReg.Data.Day.ToString("00"),
+                        fluReg.Data.Hour.ToString("00"),
+                        fluReg.Data.Minute.ToString("00"),
+                        NO_TAG_REFERENCE,
+                        MARKER_LATITUDINE,
+                        "N"
+                    );
+                    regsToWrite.Add(regRow);
+                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                        fluReg.CodiceFru,
+                        AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                        fluReg.Data.Year,
+                        fluReg.Data.Month.ToString("00"),
+                        fluReg.Data.Day.ToString("00"),
+                        fluReg.Data.Hour.ToString("00"),
+                        fluReg.Data.Minute.ToString("00"),
+                        NO_TAG_REFERENCE,
+                        MARKER_LONGITUDINE,
+                        "E"
+                    );
+                    regsToWrite.Add(regRow);
+                }
+                else {
+                    string regRow = "";
+                    #region Reg senza coordinate
+
+
+                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                        fluReg.CodiceFru,
+                        fluReg.CodicePru,
+                        fluReg.Data.Year,
+                        fluReg.Data.Month.ToString("00"),
+                        fluReg.Data.Day.ToString("00"),
+                        fluReg.Data.Hour.ToString("00"),
+                        fluReg.Data.Minute.ToString("00"),
+                        fluReg.Verso,
+                        fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                    );
+                    regsToWrite.Add(regRow); 
+                }
+                
 
 
                 #endregion
@@ -94,5 +135,16 @@ namespace Business.RegFileCreators
 
             File.WriteAllLines(fileNamePatter, regsToWrite.ToArray());
         }
+        public static string AggiungiZeriASinistra(string sStringa, int iLunghezzaStringa)
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return CompletaASinistra(sStringa, iLunghezzaStringa, '0');
+        }
+        static public string CompletaASinistra(string sStringa, int iLunghezzaStringa, char completatore = ' ')
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return sStringa.PadLeft(iLunghezzaStringa, completatore);
+        }
     }
 }
+#endregion

@@ -49,6 +49,16 @@
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
     </OperationStrategy>
   </ExternalImport>
+
+  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
+    <HostConfig host="backend.winitsrl.eu" protocol="http" />
+    <ExtraInfos>
+      <IdCliente  value="9" />
+    </ExtraInfos>
+    <OperationStrategy >
+      <getTimbrature  value="/app/ws/Winit" />
+    </OperationStrategy>
+  </ExternalImport>
   
 </Configuration>
 
