@@ -24,12 +24,20 @@ namespace Business.DataClasses.FlutterAppDTOs
         [JsonProperty("Motivazione")]
         public string Motivazione { get; set; }
 
-        public FlutterOrderedReg(string Fru,string Pru,DateTime data,string verso,string motivazione) {
+        [JsonProperty("Latitudine")]
+        public double Latitudine { get; set; }
+
+        [JsonProperty("Longitudine")]
+        public double Longitudine { get; set; }
+
+        public FlutterOrderedReg(string Fru,string Pru,DateTime data,string verso,string motivazione,double latitudine, double longitudine) {
             CodiceFru = Fru;
             CodicePru = Pru;
             Data = data;
             Verso = verso;
             Motivazione = motivazione;
+            Latitudine = latitudine;
+            Longitudine = longitudine;
         }
     }
 }
