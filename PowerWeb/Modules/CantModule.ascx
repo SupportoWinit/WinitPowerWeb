@@ -678,28 +678,67 @@
 
                 <dx:GridViewDataComboBoxColumn FieldName="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Visible="False">
                 </dx:GridViewDataComboBoxColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno1_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno2_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno3_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno4_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno5_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno6_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno7_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno8_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno9_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
-                <dx:GridViewDataTimeEditColumn FieldName="Turno10_Can" Visible="False">
-                </dx:GridViewDataTimeEditColumn>
 
-
+                 <dx:GridViewDataTextColumn FieldName="Turno1_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+              <dx:GridViewDataTextColumn FieldName="Turno2_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno3_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno4_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno5_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno6_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno7_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno8_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno9_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
+                <dx:GridViewDataTextColumn FieldName="Turno10_Can" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
                   <dx:GridViewDataSpinEditColumn FieldName="Importo1" Visible="False">
                     <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
                 </dx:GridViewDataSpinEditColumn>
@@ -712,22 +751,24 @@
                 <dx:GridViewDataSpinEditColumn FieldName="Importo4" Visible="False">
                     <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
                 </dx:GridViewDataSpinEditColumn>
-              
-
-
-                <dx:GridViewDataTextColumn FieldName="Importo5" Visible="False">
-                </dx:GridViewDataTextColumn>
-                <dx:GridViewDataTextColumn FieldName="Importo6" Visible="False">
-                </dx:GridViewDataTextColumn>
-                <dx:GridViewDataTextColumn FieldName="Importo7" Visible="False">
-                </dx:GridViewDataTextColumn>
-                <dx:GridViewDataTextColumn FieldName="Importo8" Visible="False">
-                </dx:GridViewDataTextColumn>
-                <dx:GridViewDataTextColumn FieldName="Importo9" Visible="False">
-                </dx:GridViewDataTextColumn>
-                <dx:GridViewDataTextColumn FieldName="Importo10" Visible="False">
-                </dx:GridViewDataTextColumn>
-
+                  <dx:GridViewDataSpinEditColumn FieldName="Importo5" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo6" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo7" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo8" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                  <dx:GridViewDataSpinEditColumn FieldName="Importo9" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
+                <dx:GridViewDataSpinEditColumn FieldName="Importo10" Visible="False">
+                    <PropertiesSpinEdit DecimalPlaces="2" DisplayFormatString="g" />
+                </dx:GridViewDataSpinEditColumn>
                 <dx:GridViewDataDateColumn FieldName="LastReg" ReadOnly="True" VisibleIndex="5" />
                 <dx:GridViewDataComboBoxColumn FieldName="Zona_Can" Visible="False">
                 </dx:GridViewDataComboBoxColumn>
