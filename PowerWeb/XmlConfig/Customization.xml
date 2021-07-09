@@ -395,6 +395,11 @@
 	<c ID="CustomizationEnum.ComapanyNameEnum" Des="Indica il nome della compagnia su cui effettuare l'export su perfetto" Value="0" />
 		<!--ComapanyNameEnum=0 Export verso Perfetto da parte di Sogedi
 			ComapanyNameEnum=1 Export verso Perfetto da parte di Tiseco-->
+
+  <!-- ****************************************************EXPORT CON TEMPO CORRETTO**************************************************************-->
+  <c ID="CustomizationEnum.ExportRigthTime" Des="Indica il di utilizzare il tempo corretto e non ore piano" Value="1" />
+  <!--ExportRigthTime=0 Export con tempo corretto
+			ExportRigthTime=1 Export senza tempo corretto-->
   	
   <!-- ********************************************************DEDUZIONE PAUSA SOLO DA 5^ FASCIA******************************************************** -->
   <c ID="CustomizationEnum.PauseDeductionOnlyFascia5" Des="Indica se la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5" Value="0" />
@@ -514,5 +519,9 @@
   <c ID="CustomizationEnum.UserIsResp" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="0"/>
   <!--	UserIsResp = 0 non attiva funzionalità
 			UserIsResp = 1 attiva funzionalità-->
+  <!-- ********************************************************VISUALIZZAZIONE COLLABORATORE SENZA ORE************************************************************************************** -->
+  <c ID="CustomizationEnum.CollabNoHours" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="1"/>
+  <!--	CollabNoHours = 0 non attiva funzionalità
+			CollabNoHours = 1 attiva funzionalità-->
   
 </Customizations>

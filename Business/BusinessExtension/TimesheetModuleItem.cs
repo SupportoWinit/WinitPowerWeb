@@ -1473,6 +1473,40 @@ namespace Business.BusinessExtension
 
         }
 
+        public void PopulateHoursWithDateNew(List<TimeSpan> ore,List<DateTime> giorni)
+        {
+            // generazione del nuovo oggetto che andrà a popolare i giorni dell'oggetto timesheet attuale
+            var newDaysHours = new Dictionary<int, Tuple<double, TimeSpan?, TimeSpan?>>();
+            int i = 0;
+
+            // per ogni data passata come parametro
+            foreach (var day in giorni)
+            {
+                int j = 0;
+                foreach (var hours in ore) {
+                    //controllo di essere nel punto giusto della lista
+                    if (i == j) {
+                        //se ho un valore lo inserisco nella tabella altrimenti inserisco un valore a zero
+                        if (hours.TotalMinutes > 0)
+                        {
+                            Tuple<double, TimeSpan?, TimeSpan?> prova1 = new Tuple<double, TimeSpan?, TimeSpan?>(hours.TotalMinutes, null, null);
+                            newDaysHours.Add(day.Day, prova1);
+                        }
+                        else {
+                            Tuple<double, TimeSpan?, TimeSpan?> prova1 = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                            newDaysHours.Add(day.Day, prova1);
+                        }
+                    }
+                    j++;
+                }
+                i++;
+            }
+
+            // inserimento delle ore calcolate all'interno dell'oggetto timesheet corrente
+            DaysHours = newDaysHours;
+
+        }
+
         /// <summary>
         /// Metodo che inserisce nell'oggetto timesheet corrente i valori del collaboratore passato come parametro.
         /// </summary>
@@ -1859,7 +1893,7 @@ namespace Business.BusinessExtension
 
             foreach (var firstMonthDate in firstMonthDateList)
             {
-                timesheetList.AddRange(GenerateTimeSheet(firstMonthDate, true, false, "", false, null, col, addBlockedDateMinutes: addBlockedDateMinutes));
+                timesheetList.AddRange(GenerateTimeSheet(firstMonthDate, false, false, "", false, null, col, addBlockedDateMinutes: addBlockedDateMinutes));
 
                 TimesheetTotalController totalController = new TimesheetTotalController(timesheetList, false, "Col");
                 var res = totalController.GetMonthDeltaHoursForMonthlyMinutesWithAutStr(col.Col_Id, from, to);
@@ -3601,6 +3635,33 @@ namespace Business.BusinessExtension
             return planTimesheetItem;
         }
 
+        /// <summary>
+        /// Genera un nuovo timesheet item di tipo ore corrette a partire dai dati passati come parametro
+        /// </summary>
+        /// <param name="isDecimalHours">Indica se impostare la visualizzazione del timesheet item in decimali o sessantesimi</param>
+        /// <param name="planMinutes">L'elenco dei minuti per mese da inserire in orario</param>
+        /// <param name="isFromFreeTimesheet"><c>true</c> se il dato proviene dalla tabella Col_Orario; altrimenti <c>false</c></param>
+        /// <param name="freeTimesheetId">L'id dell'eventuale record della tabella Col_Orario di provenienza.</param>
+        /// <param name="colId">L'id del collaboratore a cui l'elemento timesheet in generazione fa riferimento</param>
+        /// <param name="firstMonthDate">Il primo giorno del mese oggetto del timesheet item in generazione</param>
+        /// <param name="cantId">L'id del cantiere da inserire nell'oggetto timesheet in generazione (se nessun cantiere l'id sarà 0)</param>
+        /// <returns>L'oggetto timesheet item generato utilizzando i parametri generati</returns>
+        public static TimesheetModuleItem GenerateNewPartPermTimesheet(bool isDecimalHours, List<TimeSpan> ore,List<DateTime> giorni,
+            bool isFromFreeTimesheet, int freeTimesheetId, int colId, DateTime firstMonthDate, int cantId, PlanTypeEnum planType = PlanTypeEnum.Normal)
+        {
+            var planTimesheetItem = new TimesheetModuleItem(isDecimalHours);
+            planTimesheetItem.StartDate = firstMonthDate;
+            planTimesheetItem.PopulateHoursWithDateNew(ore,giorni);
+            planTimesheetItem.IsFromFreeTimeSheet = false;
+            planTimesheetItem.FreeTimeSheetId = 0;
+            planTimesheetItem.InsertColValues(colId);
+            planTimesheetItem.InsertCantValues(cantId);
+            planTimesheetItem.Order = 0;
+
+            planTimesheetItem.Justification = BusinessService.GetLocalizedString(PowerWebResources.LBL_PARTPERM);
+            return planTimesheetItem;
+        }
+
 
 
         private static List<TimesheetModuleItem> GenerateRegVTimesheetsByOtherEntity(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
@@ -3779,7 +3840,11 @@ namespace Business.BusinessExtension
                 foreach (var timesheet in timesheetsToTotalize)
                 {
                     //dayTotal += (Math.Truncate((double)timesheet[dayName]) * 60) + Math.Round(((double)timesheet[dayName] - Math.Truncate((double)timesheet[dayName])) * 100);
-                    dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+                    //con questo if non sommo al totale il tempo corretto
+                    if (timesheet.Justification != "Tempo Corretto") { 
+                        dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+                    }
+                    
                 }
 
                 if (daysMinutes.ContainsKey(processingDate))
@@ -3802,7 +3867,11 @@ namespace Business.BusinessExtension
                     foreach (var timesheet in timesheetsToTotalize)
                     {
                         //dayTotal += (Math.Truncate((double)timesheet[dayName]) * 60) + Math.Round(((double)timesheet[dayName] - Math.Truncate((double)timesheet[dayName])) * 100);
-                        dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+
+                        if (timesheet.Justification != "Tempo Corretto")
+                        {
+                            dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+                        }
                     }
 
                     if (daysMinutes.ContainsKey(currDate))
@@ -4055,7 +4124,7 @@ namespace Business.BusinessExtension
         /// <param name="cantId">L'id del cantiere a cui fanno riferimento le registrazioni da inserire nel timesheet; se 0 sarà trattato come non specificato.</param>
         /// <param name="requestedForWeeklyTotals">Indica che il piano è richiesto per un calcolo che prevede i totali settimanali.</param>
         /// <returns>L'oggetto timesheet rapporesentante i parametri passati al metodo.</returns>
-        private static TimesheetModuleItem subtractTimesheets(int colId, bool isDecimalHours, TimesheetModuleItem timesheet1, TimesheetModuleItem timesheet2, string timesheetJustification, DateTime firstMonthDate,
+        private static TimesheetModuleItem subtractTimesheets(int colId, bool isDecimalHours, TimesheetModuleItem timesheet1, TimesheetModuleItem timesheet2,TimesheetModuleItem timesheet3, string timesheetJustification, DateTime firstMonthDate,
             DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals)
         {
             // inizializzazione del valore di ritorno del metodo
@@ -4087,7 +4156,7 @@ namespace Business.BusinessExtension
 
             // inizializzazione del piano vuoto in cui andare a compilare i totali per giornata
             var daysMinutes = RepoManager.Tab_OrariRepo.GetEmptyMinutesPlan(startDate, endDate, requestedForWeeklyTotals);
-            double dayTotal, today1, today2;
+            double dayTotal, today1, today2, today3;
 
             if (startDate < firstMonthDate)
             {
@@ -4096,11 +4165,15 @@ namespace Business.BusinessExtension
                     //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
                     today1 = CommonService.FromHoursToMinutes((double)timesheet1["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet1["DayMinus" + i]) * 60) + Math.Round(((double)timesheet1["DayMinus" + i] - Math.Truncate((double)timesheet1["DayMinus" + i])) * 100);
                     today2 = CommonService.FromHoursToMinutes((double)timesheet2["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
-
+                    today3 = CommonService.FromHoursToMinutes((double)timesheet3["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
                     //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
                     if (has_orario)
                     {
                         dayTotal = today1 - today2;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else if (today3 != 0) {
+                        dayTotal = today1 - today3;
                         dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
                     }
                     else
@@ -4123,12 +4196,17 @@ namespace Business.BusinessExtension
                 //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
                 today1 = CommonService.FromHoursToMinutes((double)timesheet1["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet1["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet1["Day" + i.ToString("00")] - Math.Truncate((double)timesheet1["Day" + i.ToString("00")])) * 100);
                 today2 = CommonService.FromHoursToMinutes((double)timesheet2["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet2["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet2["Day" + i.ToString("00")] - Math.Truncate((double)timesheet2["Day" + i.ToString("00")])) * 100);
-
-                //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                today3 = CommonService.FromHoursToMinutes((double)timesheet3["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet2["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet2["Day" + i.ToString("00")] - Math.Truncate((double)timesheet2["Day" + i.ToString("00")])) * 100);
+                                                                                                                        //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
                 if (has_orario)
                 {
                     dayTotal = today1 - today2;
-                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, processingDate, colId);
+                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                }
+                else if (today3 != 0)
+                {
+                    dayTotal = today1 - today3;
+                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
                 }
                 else
                 {
@@ -4151,12 +4229,17 @@ namespace Business.BusinessExtension
                     //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
                     today1 = CommonService.FromHoursToMinutes((double)timesheet1["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet1["DayPlus" + i]) * 60) + Math.Round(((double)timesheet1["DayPlus" + i] - Math.Truncate((double)timesheet1["DayPlus" + i])) * 100);
                     today2 = CommonService.FromHoursToMinutes((double)timesheet2["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet2["DayPlus" + i]) * 60) + Math.Round(((double)timesheet2["DayPlus" + i] - Math.Truncate((double)timesheet2["DayPlus" + i])) * 100);
-
+                    today3 = CommonService.FromHoursToMinutes((double)timesheet3["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
                     //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
                     if (has_orario)
                     {
                         dayTotal = today1 - today2;
-                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, processingDate, colId);
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else if (today3 != 0)
+                    {
+                        dayTotal = today1 - today3;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
                     }
                     else
                     {
@@ -4473,6 +4556,7 @@ namespace Business.BusinessExtension
                             if (justConf != default(Tab_Decod))
                                 displayJustfification = justConf.Decodifica_Tab;
                         }
+                            
                         if (isByOtherEntity)
                         {
                             // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
@@ -4500,6 +4584,142 @@ namespace Business.BusinessExtension
                                 usaFisiche: false));
                         }
                     }
+                }
+            }
+            #endregion
+            
+            #region TEMPO CORRETTO
+            TimesheetModuleItem colRigth = null;
+            if (calculateWorkedHours)
+            {
+                //Recupera le registrazioni di tipo motivazione
+                var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+                Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> OreCorrette = null;
+                //Se sono presenti motivazioni, genera i relativi cartellini
+                if (justificationRegVs.Any())
+                {
+                    //inizializzo le varibili: i cantieri, l'inizio del mese, le liste 
+                    var cant = RepoManager.CantRepo.GetAll();
+                    DateTime data = minDate;
+                    int CantId = 0;
+                    int ColId = 0;
+                    List <TimeSpan> list = new List<TimeSpan>();
+                    List <DateTime> giorni = new List<DateTime>();
+                    //ciclo per i giorni del mese
+                    foreach (var date in planMinutes[0])
+                    {
+                        List<int> cantieri = new List<int>();
+                        float totale = 0;
+                        //ciclo in base alle registrazioni del collaboratore ed in base al giorno corrente
+                        foreach (Reg_V registration in justificationRegVs.Where(regv => regv.Col_Id == colPlan.ColId && DateTime.Compare(regv.Data_Ora_Fig_EDate.Value, date.Key) == 0))
+                        {
+                            if (ColId == 0)
+                            {
+                                ColId = registration.Col_Id.Value;
+                            }
+                            int i = 1;
+                            //creo ii totale per cantiere
+                            foreach (var cants in cant.Where(cantv => cantv.Cant_Id == registration.Cant_Id))
+                            {
+                                bool single = true;
+                                if (cantieri.Count == 0) {
+                                    cantieri.Add(cants.Cant_Id);
+                                }
+                                else {
+                                    foreach (int id in cantieri) {
+                                        if (cants.Cant_Id == id) {
+                                            single = false;
+                                        }
+                                    } 
+                                    cantieri.Add(cants.Cant_Id);
+                                }
+
+                                if (single) {
+                                    if (CantId == 0)
+                                    {
+                                        CantId = cants.Cant_Id;
+                                    }
+                                    //creo la lista contente quante persone hanno lavorato nella stessa stanza lo stesso giorno
+                                    List<Reg> reg = new List<Reg>();
+                                    foreach (Reg Try in RepoManager.RegRepo.GetAll().Where(regv => regv.Col_Id != registration.Col_Id && regv.Cant_Id == cants.Cant_Id && regv.Registrazione_Data_Ora_Fis_Reg.DayOfYear.Equals(date.Key.DayOfYear)))
+                                    {
+                                        reg.Add(Try);
+                                    }
+                                    int collab = 0;
+                                    //se altri hanno lavorato nella stessa stanza divido il tempo previsto
+                                    foreach (Reg ciclo in reg)
+                                    {
+                                        if (collab == 0)
+                                        {
+                                            i++;
+                                            collab = ciclo.Col_Id.Value;
+                                        }
+                                        else if (collab != 0)
+                                        {
+                                            if (collab != ciclo.Col_Id.Value)
+                                            {
+                                                collab = ciclo.Col_Id.Value;
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+
+                                    //in base alla motivazione prendo una quantità di tempo diversa
+                                    if (registration.Motivazione_Reg_Cod == "PART")
+                                    {
+                                        if (cants.Turno1_Can.Value != null)
+                                        {
+                                            int conversione = (int)cants.Turno1_Can.Value.TotalMinutes;
+                                            float ris = conversione / i;
+                                            //TimeSpan? converted = TimeSpan.FromMinutes(ris);
+                                            if (totale == 0)
+                                            {
+                                                totale = ris;
+                                            }
+                                            else
+                                            {
+                                                totale += ris;
+                                            }
+                                        }
+                                    }
+                                    else if (registration.Motivazione_Reg_Cod == "FERM")
+                                    {
+                                        int conversione = (int)cants.Turno2_Can.Value.TotalMinutes;
+                                        float ris = conversione / i;
+                                        //TimeSpan? converted = TimeSpan.FromMinutes(ris);
+                                        if (cants.Turno1_Can.Value != null)
+                                        {
+                                            if (totale == 0)
+                                            {
+                                                totale = ris;
+                                            }
+                                            else
+                                            {
+                                                totale += ris;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                                
+                            
+                        }
+                        //creo le liste con i dati e le date
+                        if (totale != 0)
+                        {
+                            TimeSpan? converted = TimeSpan.FromMinutes(totale);
+                            list.Add(converted.Value);
+                        }
+                        else {
+                            list.Add(TimeSpan.MinValue);
+                        }
+                        giorni.Add(data);
+                        data = data.AddDays(1);
+                    }
+                    //OreCorrette.Add(0, planMinutes);
+                    colRigth = GenerateNewPartPermTimesheet(isDecimalHours, list,giorni, true, 0, ColId, minDate, CantId);
+                    justificationCartellini.Add(colRigth);
                 }
             }
             #endregion
@@ -4597,12 +4817,25 @@ namespace Business.BusinessExtension
 
             if (calculateDelta)
             {
-                TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
-                colDelta.setCurrentMonthMonteMinuti();
-                if (!isByOtherEntity)
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1 && colRigth != null)
                 {
-                    justificationCartellini.Add(colDelta);
+                    TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_ECCEDENZA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                    colDelta.setCurrentMonthMonteMinuti();
+                    if (!isByOtherEntity)
+                    {
+                        justificationCartellini.Add(colDelta);
+                    }
                 }
+                else {
+                    colRigth = colPlan;
+                    TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan,colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                    colDelta.setCurrentMonthMonteMinuti();
+                    if (!isByOtherEntity)
+                    {
+                        justificationCartellini.Add(colDelta);
+                    }
+                }
+                
             }
             #endregion
 

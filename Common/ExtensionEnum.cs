@@ -163,7 +163,9 @@ namespace Common
         Casp,
         ExcludeAwayHoursInExport,
         ScSExportBudget,
+        ExportRigthTime,
         UserIsResp,
+        CollabNoHours,
         OrderElaborateRegByCant
     }
 
@@ -983,6 +985,7 @@ namespace Common
         None,
         Duration,
         StartEnd,
+        Disabled = 9
     }
 
     public enum RegTypeEnum

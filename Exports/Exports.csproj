@@ -103,6 +103,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportMovitrento.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportRegSemplice.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoSimple.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportSSSPartPerm.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimple.cs" />
     <Compile Include="ExportExcelCustom\IExportExcelCustom.cs" />

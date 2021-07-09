@@ -493,6 +493,19 @@ namespace Business.Repository.Custom
                                 errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
                                     , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication));
                                 _log.Info(String.Format("Arrotondamento di {0} regs terminato", regVs.Count()));
+                            } else if (roundingParamEnum == RoundingMethodEnum.Disabled) {
+                                //se non servono gli arrotondamenti imposto i parametri a zero così da toglierli
+                                RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento = 0;
+                                RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Entrata = 0;
+                                RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita = 0;
+                                RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio = TimeSpan.MinValue;
+                                RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti = 0;
+                                RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = 0;
+                                _log.Info(String.Format("Tolgo gli arrotondamenti a {0} regV", regVs.Count()));
+                                errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication));
+
+                                _log.Info(String.Format("Arrotondamento tolti per {0} regs", regVs.Count()));
                             }
 
                             CommitWork();
@@ -709,8 +722,9 @@ namespace Business.Repository.Custom
 
                 if (colIds.Count() > 0)
                     regVs = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= from && (regv.Data_Ora_Fis_U <= to || (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Pass && regv.Data_Ora_Fis_E <= to)) &&
-                        regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && colIds.Contains((int)regv.Col_Id) &&
-                        !regv.Registrazione_Bloccata && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true).ToList();
+                          regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && colIds.Contains((int)regv.Col_Id) &&
+                         !regv.Registrazione_Bloccata && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true).ToList();
+                
                 else
                 {
                     int colId = 0;
@@ -757,10 +771,10 @@ namespace Business.Repository.Custom
                 // leggo le reg_v che rientrano nei giorni richiesti, associati e con il collaboratore presente nelle registrazioni
                 // passate come paremtro e non bloccate (ottimizzando la ricerca per un solo collaboratore e per più di un
                 // collaboratore) e non attività
-                if (colIds.Count() > 1)
+                if (colIds.Count() > 1)   
                     regVs = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= from && (regv.Data_Ora_Fis_U <= to || (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Pass && regv.Data_Ora_Fis_E <= to) || (regv.Data_Ora_Fis_U == null && regv.Registrazione_Stato_Reg == (int)RegStateEnum.None && regv.Data_Ora_Fis_E < to)) &&
-                        colIds.Contains(regv.Col_Id) &&
-                        !regv.Registrazione_Bloccata && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true).ToList();
+                          colIds.Contains(regv.Col_Id) &&
+                          !regv.Registrazione_Bloccata && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true).ToList();
                 else
                 {
                     int colId = colIds.FirstOrDefault() ?? 0;

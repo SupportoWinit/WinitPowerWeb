@@ -139,24 +139,27 @@ namespace Exports
             string filePath = string.Format("{0}{1}.{2}", DownloadPath, FileName, Extension);
 
             var workbookFileInfo = new FileInfo(filePath);
-            ExcelWorkbook.SaveAs(workbookFileInfo);
+            if (ExcelWorkbook.Workbook.Worksheets.Count > 0) { 
+                ExcelWorkbook.SaveAs(workbookFileInfo);
 
-            if (IsToZip)
-            {
-                Extension = "zip";
-
-                using (ZipFile zipFile = new ZipFile())
+                if (IsToZip)
                 {
-                    zipFile.AddFile(filePath, @"\");
+                    Extension = "zip";
 
-                    zipFile.Save(string.Format("{0}{1}.{2}", DownloadPath, FileName, Extension));
+                    using (ZipFile zipFile = new ZipFile())
+                    {
+                        zipFile.AddFile(filePath, @"\");
 
-                    File.Delete(filePath);
+                        zipFile.Save(string.Format("{0}{1}.{2}", DownloadPath, FileName, Extension));
 
+                        File.Delete(filePath);
+
+                    }
                 }
-            }
 
-            ExcelWorkbook.Dispose();
+                ExcelWorkbook.Dispose();
+            }
+            
 
         }
 

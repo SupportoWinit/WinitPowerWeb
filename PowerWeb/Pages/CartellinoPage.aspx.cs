@@ -169,6 +169,7 @@ namespace PowerWeb.Pages
                 colonna.Add("falseText", "No");
                 colonna.Add("trueText", "Sì");
                 _colColumns.Add(colonna);
+
                 field = RepoManager.ResourcesRepo.GetResourcesDictionaryString("FLD_GRUPPO_TAB");
                 colonna = new JObject();
                 colonna.Add("dataField", "Raggruppamento1_Col");
@@ -232,34 +233,31 @@ namespace PowerWeb.Pages
             try
             {
                 int index = 0;
-
+                DateTime startMonth = CommonService.GetFirstMonthDay(selectedPickerDate);
+                DateTime endMonth = CommonService.GetLastMonthDay(selectedPickerDate);
                 foreach (Col col in collaboratori)
                 {
-                    Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,
-                                                                                                                               isDecimalHours: false,
-                                                                                                                               isByOtherEntity: optionsObj.devideByOtherEntity,
-                                                                                                                               calculateWorkedHours: optionsObj.showOre,
-                                                                                                                               calculateJustifications: optionsObj.showJust,
-                                                                                                                               calculateTrips: optionsObj.showViaggi,
-                                                                                                                               calculateDelta: optionsObj.showDelta,
-                                                                                                                               calculateOrdStrTimesheet: optionsObj.useEditableCartellino,
-                                                                                                                               devidePlanByDayNight: optionsObj.devidePlanByDayNight,
-                                                                                                                               showWeeklyTotal: optionsObj.showWeeklyTotals,
-                                                                                                                               insertCorrectionRow: optionsObj.insertCorrectionRow,
-                                                                                                                               showPiano: optionsObj.showPiano);
+                    IEnumerable<int> lis = new List<int>();
+                    lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
+                    if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
+                    { 
+                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,
+                                                                                                                               isDecimalHours: false,                                                                                   showPiano: optionsObj.showPiano);
 
-                    JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
+                        JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
 
-                    cartelliniDataSource.Add(serCartellino);
+                        cartelliniDataSource.Add(serCartellino);
 
-                    #region CARTELLINI PER STRAORDINARIO/NOTTURNO
+                        #region CARTELLINI PER STRAORDINARIO/NOTTURNO
 
 
 
 
-                    #endregion
+                        #endregion
 
-                    index++;
+                        index++;
+                    }
+                        
                 }
             }
 

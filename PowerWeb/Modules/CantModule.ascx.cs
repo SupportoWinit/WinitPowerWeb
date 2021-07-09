@@ -270,7 +270,6 @@ namespace PowerWeb.Modules
             IQueryable<Cant> currDataSource = Enumerable.Empty<Cant>().AsQueryable();
             var emptyList = Enumerable.Empty<Cant>();
             List<Cant> cantList = new List<Cant>();
-
             if (IsToPopulateGrid)
             {
                 if (PowerWebContext.Current.User.Fil_Inclusive)
