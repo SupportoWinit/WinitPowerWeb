@@ -164,10 +164,12 @@
     <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\ClockAppReg.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\SolarisReg.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\JsonReg\WinitJsonReg.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\FlutterAppRegTranslatorManager.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\ClockAppRegTranslatorManager.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\RegsTranslatorsManagers\WinitJsonTranslatorManager.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Classes\TranslatedRegs\TranslatedStringRegs.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Enums\JsonRegTypeEnum.cs" />
+    <Compile Include="BusinessServices\RegTranslatorService\Helpers\FlutterAppStringFormatter.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Helpers\ClockAppStringFormatter.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Interfaces\JsonReg\IJsonReg.cs" />
     <Compile Include="BusinessServices\RegTranslatorService\Interfaces\RegsTranslatorsManagers\IRegTranslatorManager.cs" />

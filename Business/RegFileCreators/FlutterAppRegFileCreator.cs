@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Business.BusinessServices.RegTranslatorService.Interfaces.RegsTranslatorsManagers;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Business.BusinessServices.RegTranslatorService.Helpers;
 
 namespace Business.RegFileCreators
 {
@@ -16,7 +18,11 @@ namespace Business.RegFileCreators
         private static readonly int MARKER_LONGITUDINE = 1;
         private static readonly int TAG_REFERENCE = 1;
         private static readonly int NO_TAG_REFERENCE = 0;
+        private static readonly string SEPARATOR = ";";
+        private static readonly string INFOAGG = "INFOAGG";
+        private static readonly string TIPO_ATTIVITA = "TIPOATT";
 
+        private static readonly string EXTRA_INFO_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}{11}{0}";
 
         public FlutterAppRegFileCreator()
         {
@@ -42,7 +48,7 @@ namespace Business.RegFileCreators
 
             foreach (var regs in unEncodedRegs)
             {
-                FlutterOrderedReg var = new FlutterOrderedReg(regs.CodiceFru,regs.Value.First().CodicePru,regs.Value.First().Registrazione_Data_Ora_Orig,regs.Value.First().verso,regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine);
+                FlutterOrderedReg var = new FlutterOrderedReg(regs.CodiceFru,regs.Value.First().CodicePru,regs.Value.First().Registrazione_Data_Ora_Orig,regs.Value.First().verso,regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine,regs.Value.First().Attivita);
                 regsToOrder.Add(var);
             }
 
@@ -50,11 +56,15 @@ namespace Business.RegFileCreators
 
             foreach (var fluReg in regsToOrder)
             {
-                if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                String activityLines = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, fluReg.CodicePru, fluReg.Data, " ");
+                if (activityLines != "")
                 {
-                    string regRow = "";
+                    regsToWrite.Add(activityLines);
+                }
+                string regRow = "";
+                if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                {   
                     #region Reg con coordinate
-
 
                     regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
                         fluReg.CodiceFru,
@@ -81,12 +91,9 @@ namespace Business.RegFileCreators
                         MARKER_LONGITUDINE,
                         "E"
                     );
-                    regsToWrite.Add(regRow);
                 }
                 else {
-                    string regRow = "";
                     #region Reg senza coordinate
-
 
                     regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                         fluReg.CodiceFru,
@@ -99,11 +106,11 @@ namespace Business.RegFileCreators
                         fluReg.Verso,
                         fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                     );
-                    regsToWrite.Add(regRow); 
                 }
+
+                regsToWrite.Add(regRow);
                 
-
-
+                
                 #endregion
 
             }

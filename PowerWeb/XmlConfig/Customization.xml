@@ -520,8 +520,8 @@
   <!--	UserIsResp = 0 non attiva funzionalità
 			UserIsResp = 1 attiva funzionalità-->
   <!-- ********************************************************VISUALIZZAZIONE COLLABORATORE SENZA ORE************************************************************************************** -->
-  <c ID="CustomizationEnum.CollabNoHours" Des="la creazione di un utente crea un responsabile omonimo per filtrare col in regV e cartellino" Value="1"/>
-  <!--	CollabNoHours = 0 non attiva funzionalità
-			CollabNoHours = 1 attiva funzionalità-->
+  <c ID="CustomizationEnum.CollabNoHours" Des="Comprendi i collaboratori senza ore nel cartellino" Value="0"/>
+  <!--	CollabNoHours = 0 non li conta
+			CollabNoHours = 1 li conta-->
   
 </Customizations>

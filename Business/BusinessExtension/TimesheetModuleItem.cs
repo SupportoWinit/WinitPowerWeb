@@ -4663,47 +4663,53 @@ namespace Business.BusinessExtension
                                             }
                                         }
                                     }
-
-
-                                    //in base alla motivazione prendo una quantità di tempo diversa
-                                    if (registration.Motivazione_Reg_Cod == "PART")
-                                    {
-                                        if (cants.Turno1_Can.Value != null)
+                                    //se la durata della registrazione è minore di 5 non inserisco il tempo stimato nel tempo corretto
+                                    if (registration.Durata_Fig > 5) { 
+                                        //in base alla motivazione prendo una quantità di tempo diversa
+                                        if (registration.Motivazione_Reg_Cod == "PART")
                                         {
-                                            int conversione = (int)cants.Turno1_Can.Value.TotalMinutes;
+                                            if (cants.Turno1_Can.Value != null)
+                                            {
+                                                int conversione = (int)cants.Turno1_Can.Value.TotalMinutes;
+                                                float ris = conversione / i;
+                                                if (conversione % i == 1) {
+                                                    ris += 1;
+                                                }
+                                                //TimeSpan? converted = TimeSpan.FromMinutes(ris);
+                                                if (totale == 0)
+                                                {
+                                                    totale = ris;
+                                                }
+                                                else
+                                                {
+                                                    totale += ris;
+                                                }
+                                            }
+                                        }
+                                        else if (registration.Motivazione_Reg_Cod == "FERM")
+                                        {
+                                            int conversione = (int)cants.Turno2_Can.Value.TotalMinutes;
                                             float ris = conversione / i;
-                                            //TimeSpan? converted = TimeSpan.FromMinutes(ris);
-                                            if (totale == 0)
+                                            if (conversione % i == 1)
                                             {
-                                                totale = ris;
+                                                ris += 1;
                                             }
-                                            else
+                                            if (cants.Turno1_Can.Value != null)
                                             {
-                                                totale += ris;
-                                            }
-                                        }
-                                    }
-                                    else if (registration.Motivazione_Reg_Cod == "FERM")
-                                    {
-                                        int conversione = (int)cants.Turno2_Can.Value.TotalMinutes;
-                                        float ris = conversione / i;
-                                        //TimeSpan? converted = TimeSpan.FromMinutes(ris);
-                                        if (cants.Turno1_Can.Value != null)
-                                        {
-                                            if (totale == 0)
-                                            {
-                                                totale = ris;
-                                            }
-                                            else
-                                            {
-                                                totale += ris;
+                                                if (totale == 0)
+                                                {
+                                                    totale = ris;
+                                                }
+                                                else
+                                                {
+                                                    totale += ris;
+                                                }
                                             }
                                         }
                                     }
+                                    
                                 }
-                            }
-                                
-                            
+                            } 
                         }
                         //creo le liste con i dati e le date
                         if (totale != 0)

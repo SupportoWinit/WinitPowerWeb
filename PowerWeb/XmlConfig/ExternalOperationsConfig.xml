@@ -38,7 +38,7 @@
   </Synch>
 
 
- <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="1">
+ <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
       <uid  value="Bergamo" />
@@ -53,7 +53,7 @@
   <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
     <HostConfig host="backend.winitsrl.eu" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="9" />
+      <IdCliente  value="16" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

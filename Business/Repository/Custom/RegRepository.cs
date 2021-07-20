@@ -5657,6 +5657,7 @@ namespace Business.Repository.Custom
                             bool hasInvalidCoordinates = false;
 
                             // se si tratta di una linea con timbratura tag allora la linea non è sicuramente coerente
+                            
                             if (currentGpsPreReg.IsTag)
                                 isLastGood = false;
                             else

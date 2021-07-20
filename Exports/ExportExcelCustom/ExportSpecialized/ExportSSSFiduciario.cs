@@ -17,7 +17,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
      * 
      */
 
-    public class ExportSSSPartPerm : ExcelToolBox
+    public class ExportSSSFiduciario : ExcelToolBox
     {
 
         #region Constants
@@ -55,7 +55,26 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (Col col in collaboratori) {
                 IEnumerable<int> lis = new List<int>();
                 lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
-                if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1) {
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 0)
+                {
+                     if (lis.Count() > 0)
+                    {
+                        cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
+                                                    col,
+                                                    true,
+                                                    false,
+                                                    parameters.Cartellino_Visualizza_Ore,
+                                                    parameters.Cartellino_Visualizza_Motivazioni,
+                                                    parameters.Cartellino_Visualizza_Viaggi,
+                                                    parameters.Cartellino_Visualizza_Delta,
+                                                    parameters.Cartellino_Usa_Cartellino_Modificabile,
+                                                    parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                    Convert.ToBoolean(parameters.Cartellino_Visualizza_Totali_Settimanali),
+                                                    false,
+                                                    parameters.Cartellino_Visualizza_Piano));
+                    }
+                }
+                else {
                     cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                     col,
                                                     true,
@@ -69,7 +88,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     Convert.ToBoolean(parameters.Cartellino_Visualizza_Totali_Settimanali),
                                                     false,
                                                     parameters.Cartellino_Visualizza_Piano));
-                }
+                }  
             }
                 
 
@@ -166,6 +185,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
 
             RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
+            
+            WriteHeaderTotalCell();
+
+            columnIndex++;
+            
+            WriteHeaderTotalFest();
+
+            columnIndex++;
+
+            WriteHeaderTotalFer();
+
+            columnIndex++;
 
             days.ForEach(day =>
             {
@@ -173,20 +204,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 columnIndex++;
             });
-
-            WriteHeaderTotalCell();
-
-            columnIndex++;
-
             //WriteHeaderTotalDaysCell();
 
             //columnIndex++;
-
-            WriteHeaderTotalFest();
-
-            columnIndex++;
-
-            WriteHeaderTotalFer();
 
             columnIndex = 1;
 
@@ -200,7 +220,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             {
                 var justificationDec = justification.Justification;
 
-                if (justificationDec != "PART" && justificationDec != "FERM" && justificationDec != "OL" && justificationDec != "Ore Piano") { 
+                if (justificationDec != "PART" && justificationDec != "FERM" && justificationDec != "OL" && justificationDec != "Ore Piano" && justificationDec != "Totale" && justificationDec != "Eccedenza") { 
                     if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
                         justificationDec = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDec).Decodifica_Tab;
 
@@ -223,8 +243,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 valueToPrint = "-" + valueToPrint;
                             }
 
-                            RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                            CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                            RangeSetBorders(worksheetIndex, columnIndex + day.Day+3, rowIndex, columnIndex + day.Day+3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex + day.Day+3, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                             if (day.DayOfWeek.ToString() == "Sunday")
                             {
                                 if (totaleF == 0)
@@ -268,15 +288,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         totalFer = "-" + totalFer;
                     }
                     string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
+                    
 
-                    RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(worksheetIndex, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
 
-                    RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, totalF, ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(worksheetIndex, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, 3, rowIndex, totalF, ExcelInsertTypeEnum.Content);
 
-                    RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, totalFer, ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(worksheetIndex, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, 4, rowIndex, totalFer, ExcelInsertTypeEnum.Content);
 
                     rowIndex++;
                 }
@@ -288,9 +309,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private void WriteHeaderDayCell(DateTime date)
         {
             CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
-            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, "0");
-            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 1, rowIndex, Color.LightGray, fillStyle);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 4, rowIndex, "0");
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, date.Day + 4, rowIndex, Color.LightGray, fillStyle);
 
             if (date.DayOfWeek == DayOfWeek.Sunday)
             {

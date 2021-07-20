@@ -55,5 +55,8 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("Longitudine")]
         public double Longitudine { get; set; }
+
+        [JsonProperty("Attivita")]
+        public string Attivita { get; set; }
     }
 }
