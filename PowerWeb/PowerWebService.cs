@@ -702,6 +702,9 @@ namespace PowerWeb
                                 case "CantPage.aspx":
                                     entity = "Can";
                                     break;
+                                case "CliPage.aspx":
+                                    entity = "Cli";
+                                    break;
                                 default:
                                     throw new Exception();
                             }
@@ -948,24 +951,36 @@ namespace PowerWeb
         public static void FillGridLabels(Type type, ASPxGridView grid)
         //Carica le Colonne delle Griglie (con le relative Labels in lingua )
         {
-            foreach (var column in grid.Columns.OfType<GridViewDataColumn>())
-                column.Caption = BusinessService.GetLocalizedString(column.FieldName, ResourceTypeEnum.Field);
+            try {
+                foreach (var column in grid.Columns.OfType<GridViewDataColumn>())
+                {
+                    column.Caption = BusinessService.GetLocalizedString(column.FieldName, ResourceTypeEnum.Field);
+                }
+            } catch (Exception e) { 
+            }
+            
+                
+                //column.Caption = BusinessService.GetLocalizedString(column.FieldName, ResourceTypeEnum.Field);
 
             var dateTimeColumns = grid.Columns.OfType<GridViewDataDateColumn>();
-            foreach (var col in dateTimeColumns)
-            {
-                //Tolta questa impostazione x poter scrivere le Date come si vuole (dd/mm/yyyy e/o dd/mm/yy 
-                //ma anche e soprattutto per lasciare BLANK quando non la si scrive altrimenti a video si vedeva in INS 01/01/0100)
-                //col.PropertiesDateEdit.UseMaskBehavior = true;
-
-                if (col.PropertiesDateEdit.EditFormat == EditFormat.DateTime)
+            try {
+                foreach (var col in dateTimeColumns)
                 {
-                    String formatDateTime = Common.Properties.Settings.Default.DateTimeDisplayFormatString;
-                    if (Thread.CurrentThread.CurrentCulture.Name.EndsWith("US"))
-                        formatDateTime = Common.Properties.Settings.Default.DateTimeDisplayFormatString_en_US;
-                    col.PropertiesDateEdit.DisplayFormatString = col.PropertiesDateEdit.EditFormatString = formatDateTime;
+                    //Tolta questa impostazione x poter scrivere le Date come si vuole (dd/mm/yyyy e/o dd/mm/yy 
+                    //ma anche e soprattutto per lasciare BLANK quando non la si scrive altrimenti a video si vedeva in INS 01/01/0100)
+                    //col.PropertiesDateEdit.UseMaskBehavior = true;
+
+                    if (col.PropertiesDateEdit.EditFormat == EditFormat.DateTime)
+                    {
+                        String formatDateTime = Common.Properties.Settings.Default.DateTimeDisplayFormatString;
+                        if (Thread.CurrentThread.CurrentCulture.Name.EndsWith("US"))
+                            formatDateTime = Common.Properties.Settings.Default.DateTimeDisplayFormatString_en_US;
+                        col.PropertiesDateEdit.DisplayFormatString = col.PropertiesDateEdit.EditFormatString = formatDateTime;
+                    }
                 }
+            } catch (Exception e) { 
             }
+            
         }
 
         public static void GridHeaderFilterFillItems(ASPxGridViewHeaderFilterEventArgs e)

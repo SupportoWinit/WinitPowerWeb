@@ -338,6 +338,7 @@ namespace Business.Profile
 
                 PowerWebContext.Current.CantsIds = RepoManager.CantRepo.DbSet.AsNoTracking().Where(RepoManager.CantRepo.Filter).Select(cant => cant.Cant_Id).ToList();
                 PowerWebContext.Current.ColsIds = RepoManager.ColRepo.DbSet.AsNoTracking().Where(RepoManager.ColRepo.Filter).Select(col => col.Col_Id).ToList();
+                PowerWebContext.Current.ClisIds = RepoManager.CliRepo.DbSet.AsNoTracking().Where(RepoManager.CliRepo.Filter).Select(cli => cli.Cli_Id).ToList();
 
             }
         }

@@ -31,7 +31,7 @@ using TableCell = System.Web.UI.WebControls.TableCell;
 namespace PowerWeb.Modules
 {
 
-    public partial class TimesheetModule : BaseGridModule, ILogModule, IDoubleGridModule, IPrintModule, IExportXLSXModule
+    public partial class TimesheetModule : BaseGridModule, ILogModule, IDoubleGridModule, IQuadGridModule, IPrintModule, IExportXLSXModule
     {
 
         #region Private Constants
@@ -47,6 +47,11 @@ namespace PowerWeb.Modules
         private const string ColKeyFieldName = "Col_Id";
 
         /// <summary>
+        /// Il campo chiave della griglia dei clienti
+        /// </summary>
+        private const string CliKeyFieldName = "Cli_Id";
+
+        /// <summary>
         /// L'entità di riferimento del collaboratore (codice)
         /// </summary>
         private const string ColEntityType = "Col";
@@ -55,6 +60,11 @@ namespace PowerWeb.Modules
         /// L'entità di riferimento del cantiere (codice)
         /// </summary>
         private const string CantEntityType = "Can";
+
+        /// <summary>
+        /// L'entità di riferimento del cliente (codice)
+        /// </summary>
+        private const string CliEntityType = "Cli";
 
         /// <summary>
         /// Il nome della tabella delle entità selezionabili all'interno della Tab_Decod
@@ -432,6 +442,52 @@ namespace PowerWeb.Modules
             }
         }
 
+        public ASPxGridView GridView3
+        {
+            get { return gvColSel; }
+        }
+
+        public PowerFormTemplate EditFormTemplate3
+        {
+            get
+            {
+                PowerFormTemplate template = PowerWebContext.GetFromSession<PowerFormTemplate>("PowerFormTemplate_" + GridView3.ID);
+                if (template == null)
+                {
+                    var templateDic = EditDictionaryManager.GetEditDictionaryCol();
+
+                    template = new PowerFormTemplate(this, templateDic);
+                    // template = PowerWebService.GeneratePowerFormTemplate(this, templateDic, MetaFieldDescriptors);
+
+                    PowerWebContext.SetToSession<PowerFormTemplate>("PowerFormTemplate_" + GridView3.ID, template);
+                }
+                return template;
+            }
+        }
+
+        public ASPxGridView GridView4
+        {
+            get { return null; }
+        }
+
+        public PowerFormTemplate EditFormTemplate4
+        {
+            get
+            {
+                PowerFormTemplate template = PowerWebContext.GetFromSession<PowerFormTemplate>("PowerFormTemplate_" + GridView4.ID);
+                if (template == null)
+                {
+                    var templateDic = EditDictionaryManager.GetEditDictionaryCli();
+
+                    template = new PowerFormTemplate(this, templateDic);
+                    // template = PowerWebService.GeneratePowerFormTemplate(this, templateDic, MetaFieldDescriptors);
+
+                    PowerWebContext.SetToSession<PowerFormTemplate>("PowerFormTemplate_" + GridView4.ID, template);
+                }
+                return template;
+            }
+        }
+
         public override ASPxGridView GridView
         {
             get { return gvColSel; }
@@ -442,7 +498,7 @@ namespace PowerWeb.Modules
             get
             {
                 PowerFormTemplate template =
-    PowerWebContext.GetFromSession<PowerFormTemplate>("PowerFormTemplate_" + GridView.ID);
+                PowerWebContext.GetFromSession<PowerFormTemplate>("PowerFormTemplate_" + GridView.ID);
                 if (template == null)
                 {
                     var templateDic = EditDictionaryManager.GetEditDictionaryCol();
@@ -557,6 +613,7 @@ namespace PowerWeb.Modules
         {
             gvColSel.JSProperties["cpPageChanged"] = 0;
             gvCantSel.JSProperties["cpPageChanged"] = 0;
+            //gvCliSel.JSProperties["cpPageChanged"] = 0;
 
             // le seguenti funzioni di calcolo della griglia del cartellino sono state spostate
             // in questo evento in quanto, nel ciclo di vita della pagina, nel metoto onload sono già
@@ -579,6 +636,7 @@ namespace PowerWeb.Modules
         {
             GridView.KeyFieldName = ColKeyFieldName;
             GridView2.KeyFieldName = CantKeyFieldName;
+            //GridView4.KeyFieldName = CliKeyFieldName;
 
             if (!Page.IsPostBack && !Page.IsCallback)
             {
@@ -598,6 +656,9 @@ namespace PowerWeb.Modules
             PowerWebService.FillComboboxes(gvColSel);
             PowerWebService.FillGridLabels(typeof(Cant), GridView2);
             PowerWebService.FillComboboxes(gvCantSel);
+            //PowerWebService.FillGridLabels(typeof(Cli), GridView4);
+            //PowerWebService.FillComboboxes(gvCliSel);
+
             // bind del combobox del tipo entità da ricercare per il cartellino
             PowerWebService.FillComboboxes(cmbEntityType, "Tipo_Entita_Timesheet");
             if (!cmbEntityType.ReadOnly)
@@ -827,6 +888,62 @@ namespace PowerWeb.Modules
         /// <param name="sender">Il mittente dell'evento</param>
         /// <param name="e">I parametri dell'evento</param>
         protected void gvCantSel_OnCustomJSProperties(object sender, ASPxGridViewClientJSPropertiesEventArgs e)
+        {
+            SetGridRowsState(sender, e);
+        }
+
+        #endregion
+
+        #region Gestion DataGrid Master dei Clienti
+
+        /// <summary>
+        /// Evento scatenato al cambio pagine della griglia clienti; utilizzata per segnalare quanto avvenuto lato client.
+        /// </summary>
+        /// <param name="sender">The source of the event</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data</param>
+        protected void gvCli_OnPageIndexChanged(object sender, EventArgs e)
+        {
+            ManageGridIndexPageChanged(sender);
+        }
+
+        /// <summary>
+        /// Evento scatenato all'inizializzazione del checkbox di selezione di tutta la griglia; Imposta il check del checkbox mittente in base alla selezione effettuata.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void cbAllCli_Init(object sender, EventArgs e)
+        {
+            InitSelectAllCheckbox(sender);
+        }
+
+        /// <summary>
+        /// Evento scatenato all'inizializzazione del checkbox di selezione della pagina corrente; Imposta il check del checkbox mittente in base alla selezione di pagina effettuata.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void cbPageCli_Init(object sender, EventArgs e)
+        {
+            InitPageSelectorCheckbox(sender);
+        }
+
+        /// <summary>
+        /// Evento scatenato alla richiesta di una proprietà JS dell'oggetto checkbox di selezione dell'intera griglia;
+        /// Viene imposta la domanda in lingua da visualizzare nella conferma che sarà richiesta.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CustomJSPropertiesEventArgs"/> instance containing the event data.</param>
+        protected void cbAllCli_OnCustomJSProperties(object sender, CustomJSPropertiesEventArgs e)
+        {
+            SetSelectAllConfirmationMessage(e);
+        }
+
+        /// <summary>
+        /// Evento scatenato alla richiesta di una proprietà JS dell'oggetto griglia dei Clienti;
+        /// Riporta per il lato client dell'applicativo il numero di record selezionati e il numero di record contenuti in griglia
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void gvCliSel_OnCustomJSProperties(object sender, ASPxGridViewClientJSPropertiesEventArgs e)
         {
             SetGridRowsState(sender, e);
         }

@@ -80,13 +80,17 @@ namespace PowerWeb.Modules
 
         protected void Page_Init(object sender, EventArgs e)
         {
-            PowerWebService.FillGridLabels(typeof(Cli), gvCli);
-            PowerWebService.FillComboboxes(gvCli);
+            
             //Carica i Campi in CASCADE
             GridViewDataComboBoxColumn domLuogo = gvCli.Columns["Domicilio_Luogo_Cli"] as GridViewDataComboBoxColumn;
             domLuogo.PropertiesComboBox.ClientSideEvents.SelectedIndexChanged = "OnDomLuogoChanged";
             GridViewDataComboBoxColumn resLuogo = gvCli.Columns["Residenza_Luogo_Cli"] as GridViewDataComboBoxColumn;
-            resLuogo.PropertiesComboBox.ClientSideEvents.SelectedIndexChanged = "OnResLuogoChanged";            
+            resLuogo.PropertiesComboBox.ClientSideEvents.SelectedIndexChanged = "OnResLuogoChanged";
+
+            gvCli.DataBind();
+
+            PowerWebService.FillGridLabels(typeof(Cli), gvCli);
+            PowerWebService.FillComboboxes(gvCli);
 
             BindGrid();
         }

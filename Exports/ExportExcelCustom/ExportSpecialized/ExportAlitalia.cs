@@ -53,7 +53,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             throw new NotImplementedException();
         }
 
-        public override void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds)
+        public override void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds, IEnumerable<int> selectedCliIds)
         {
             IQueryable<Reg_V> entitiesToExport = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Att && selectedCantIds.Any(val => val == regv.Att_Id));
 

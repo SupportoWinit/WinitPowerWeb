@@ -166,7 +166,13 @@ namespace Common
         ExportRigthTime,
         UserIsResp,
         CollabNoHours,
-        OrderElaborateRegByCant
+        OrderElaborateRegByCant,
+        Overtime,
+        ExportStr,
+        ImportDouble,
+        AutoClosuresFirstLast,
+        PausaPranzoIsWorkedHoursEnum,
+        AutoClosures
     }
 
     public enum ClockAppsOperationEnum
@@ -1392,7 +1398,12 @@ namespace Common
         /// <summary>
         /// Richiesta selezione primaria del cantiere
         /// </summary>
-        Cant
+        Cant,
+
+        /// <summary>
+        /// Richiesta selezione primaria del cliente
+        /// </summary>
+        Cli
     }
 
     /// <summary>

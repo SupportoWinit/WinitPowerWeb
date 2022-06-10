@@ -267,6 +267,7 @@ namespace PowerWeb.Modules
             // E' utilizzata una lista vuota in caso di mancata presenza record o di mancato populate grid per
             // evitare errori nel pulsante di inserimento
             gvCant.KeyFieldName = KEYFIELDNAME;
+            IsToPopulateGrid = true;
             IQueryable<Cant> currDataSource = Enumerable.Empty<Cant>().AsQueryable();
             var emptyList = Enumerable.Empty<Cant>();
             List<Cant> cantList = new List<Cant>();
@@ -286,9 +287,13 @@ namespace PowerWeb.Modules
 
                         cantList.AddRange(can);
                     }
-
-                    currDataSource = cantList.AsQueryable();
-
+                    if (cantList.Count == 0)
+                    {
+                        currDataSource = RepoManager.CantRepo.GetAll(true).AsQueryable();
+                    }
+                    else {
+                        currDataSource = cantList.AsQueryable();
+                    }
                 }
                 else
                 {

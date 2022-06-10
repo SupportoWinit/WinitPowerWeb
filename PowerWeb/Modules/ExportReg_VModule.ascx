@@ -216,6 +216,105 @@
         EnableOrDisableBtnExport();
     }
 
+    // ----------------------------------- gestione della selezione dei clienti in griglia ---------------------------------------
+    var _selectNumberCli = 0;
+    var _selectNumberOverPageCli = 0;
+    var selectionTypeCli = "none";
+    var _handleCli = true;
+
+    function OnGridCliSelectionChanged(s, e) {
+
+        cbAllCli.SetChecked(s.GetSelectedRowCount() == s.cpVisibleRowCount);
+
+        if (e.isChangedOnServer == false) {
+            if (e.isAllRecordsOnPage && e.isSelected) {
+                _selectNumberOverPageCli = s.GetVisibleRowsOnPage();
+                _selectNumberCli = _selectNumberCli + s.GetVisibleRowsOnPage(); // when all rows are selected within the page
+            }
+            else if (e.isAllRecordsOnPage && !e.isSelected) {
+                _selectNumberCli = _selectNumberCli - s.GetVisibleRowsOnPage(); // when all rows are deselected within the page
+                if (_selectNumberCli == 0)
+                    _selectNumberOverPageCli = 0;
+            }
+            else if (!e.isAllRecordsOnPage && e.isSelected) {
+                selectionTypeCli = "sRow#Cli";
+
+                _selectNumberCli++; // when one row is selected
+                _selectNumberOverPageCli++;
+            }
+            else if (!e.isAllRecordsOnPage && !e.isSelected) {
+                selectionTypeCli = "uRow#Cli";
+
+                _selectNumberCli--; // when one row is deselected
+                _selectNumberOverPageCli--;
+            }
+
+            if (_handleCli) { // if the selection wasn’t performed by clicking the cbPageCol
+                cbPageCli.SetChecked(_selectNumberOverPageCli == s.GetVisibleRowsOnPage()); // let’s change the cbPageCol state if needed
+                _handleCli = false;
+            }
+
+            _handleCli = true;
+        }
+        else {
+            cbPageCli.SetChecked(cbAllCli.GetChecked()); // if the selection was performed on the server, let’s check cbPageCol
+        }
+
+        gridMasterSelectionChange.PerformCallback(selectionTypeCli + '#' + s.GetSelectedRowCount());
+    }
+
+    function OnGridCliEndCallback(s, e) {
+        if (grid3.cpPageChanged == 1) {
+            _selectNumberOverPageCli = 0;
+        }
+
+        if (selectionTypeCli == 'sAll#Cli')
+            _selectNumberCli = s.cpVisibleRowCount;
+        else if (selectionTypeCli == 'uAll#Cli') {
+            _selectNumberCli = 0;
+        }
+    }
+
+    function OnAllCliCheckedChanged(s, e) {
+        if (s.GetChecked()) {
+            DisplayJConfirm('Power', s.cpMessage, function (r) {
+                if (r) {
+                    grid3.SelectRows();
+                    selectionTypeCli = "sAll#Cli";
+                }
+                else {
+                    s.SetChecked(false);
+                    selectionTypeCli = "uAll#Cli";
+                    grid3.UnselectRows();
+                }
+            });
+        }
+        else {
+            s.SetChecked(false);
+            selectionTypeCli = "uAll#Cli";
+            grid3.UnselectRows();
+        }
+
+        // gestione dell'abilitazione/disabilitazione del tasto di lancio export
+        EnableOrDisableBtnExport();
+    }
+
+    function OnPageCliCheckedChanged(s, e) {
+        _handleCli = false;
+
+        if (s.GetChecked()) {
+            selectionTypeCli = "sPage#Cli";
+            grid3.SelectAllRowsOnPage();
+        }
+
+        else {
+            selectionTypeCli = "uPage#Cli";
+            grid3.UnselectAllRowsOnPage();
+        }
+
+        // gestione dell'abilitazione/disabilitazione del tasto di lancio export
+        EnableOrDisableBtnExport();
+    }
     // ----------------------------------- gestione nascondimento/visualizzazione e scambio griglie ---------------------------------------
     // nel caricamento della pagina mi occupo della visualizzazione o meno delle griglie; della disabilitazione o meno del pulsante di lancio export;
     // e di nascondere alcuni pulsanti standard

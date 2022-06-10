@@ -30,8 +30,35 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
             private static readonly string NFC_QRCODE_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}";
             private static readonly string GPS_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}{0}";
             private static readonly string EXTRA_INFO_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}{11}{0}";
+            private static readonly string FIRST_INFO_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}";
             #endregion
 
+        internal static string CreateFirstActivityLines(string deviceCode, string badgeCode, DateTime regDateTime, string activityTypeCode)
+            {
+                if (String.IsNullOrEmpty(activityTypeCode))
+                    return "";
+
+                string activityLines = "";
+
+                foreach (string actType in activityTypeCode.Split(','))
+                {
+                    // costruzione della stringa da processare
+                    string line = string.Format(FIRST_INFO_STRING_FORMAT
+                        , SEPARATOR
+                        , deviceCode
+                        , activityTypeCode//CommonService.AggiungiZeriASinistra(badgeCode, 10)
+                        , regDateTime.Year
+                        , regDateTime.Month.ToString("00")
+                        , regDateTime.Day.ToString("00")
+                        , regDateTime.Hour.ToString("00")
+                        , regDateTime.Minute.ToString("00")
+                        , "0" //Reg direction per ora vuota
+                        );
+                    // aggiunta della stringa alla lista di scrittura
+                    activityLines = line;
+                }
+                return activityLines;
+            }
             internal static string CreateActivityLines(string deviceCode, string badgeCode, DateTime regDateTime, string activityTypeCode)
             {
                 if (String.IsNullOrEmpty(activityTypeCode))
@@ -45,7 +72,7 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
                     string line = string.Format(EXTRA_INFO_STRING_FORMAT
                         , SEPARATOR
                         , deviceCode
-                        , "Att001"//CommonService.AggiungiZeriASinistra(badgeCode, 10)
+                        , activityTypeCode//CommonService.AggiungiZeriASinistra(badgeCode, 10)
                         , regDateTime.Year
                         , regDateTime.Month.ToString("00")
                         , regDateTime.Day.ToString("00")
@@ -61,5 +88,32 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
                 }
                 return activityLines;
             }
-        }
+            internal static IEnumerable<string> CreatePruCodeActivityLines(string deviceCode, string badgeCode, DateTime regDateTime, string pruCodeForActivity)
+            {
+            if (string.IsNullOrEmpty(badgeCode)) {
+                return null;
+            }
+                    
+
+                // costruzione della stringa da processare
+                string line = string.Format(EXTRA_INFO_STRING_FORMAT
+                , SEPARATOR
+                , deviceCode
+                , CommonService.AggiungiZeriASinistra(badgeCode, 10)
+                , regDateTime.Year
+                , regDateTime.Month.ToString("00")
+                , regDateTime.Day.ToString("00")
+                , regDateTime.Hour.ToString("00")
+                , regDateTime.Minute.ToString("00")
+                , " " //Reg direction per ora vuota
+                , INFOAGG //La keyword per capire che nella registrazione ci sono informazioni aggiuntive
+                , PRUCODE // Segnalazione pru
+                , pruCodeForActivity
+                );
+                // aggiunta della stringa alla lista di scrittura
+
+                return new List<string>() { line };
+            }
+
     }
+}

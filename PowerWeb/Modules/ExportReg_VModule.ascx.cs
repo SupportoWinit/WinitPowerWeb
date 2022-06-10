@@ -22,7 +22,7 @@ using System.Web.UI.WebControls;
 
 namespace PowerWeb.Modules
 {
-    public partial class ExportReg_VModule : BaseGridModule, IDoubleGridModule
+    public partial class ExportReg_VModule : BaseGridModule, IDoubleGridModule, IQuadGridModule
     {
 
         #region Private Constants
@@ -51,6 +51,10 @@ namespace PowerWeb.Modules
         /// Il campo chiave della griglia dei cantieri
         /// </summary>
         const string CantKeyFieldName = "Cant_Id";
+        /// <summary>
+        /// Il campo chiave della griglia dei clienti
+        /// </summary>
+        const string CliKeyFieldName = "Cli_Id";
 
         #endregion
 
@@ -107,6 +111,30 @@ namespace PowerWeb.Modules
         }
 
         /// <summary>
+        /// Recupera o imposta l'elenco degli id cliente selezionati nella griglia
+        /// </summary>
+        protected List<int> SelectedClisId
+        {
+            get
+            {
+                var clisel = PowerWebContext.GetFromSession<List<int>>("SelectedClisId" + gvCliExport.ID);
+                if (clisel == null)
+                {
+                    clisel = new List<int>();
+                    PowerWebContext.SetToSession("SelectedCantsId" + gvCliExport.ID, clisel);
+                }
+                return clisel;
+            }
+
+            set
+            {
+                List<int> list = value;
+                if (list != null)
+                    PowerWebContext.SetToSession("SelectedClisId" + gvCliExport.ID, list);
+            }
+        }
+
+        /// <summary>
         /// Recupera o imposta l'elenco di collaboratori da visualizzare all'interno della griglia di selezione
         /// </summary>
         protected List<Col> Cols
@@ -151,6 +179,28 @@ namespace PowerWeb.Modules
         }
 
         /// <summary>
+        /// Recupera o imposta l'elenco dei clienti da visualizzare all'interno della griglia di selezione
+        /// </summary>
+        protected List<Cli> Clis
+        {
+            get
+            {
+                List<Cli> clis = PowerWebContext.GetFromSession<List<Cli>>("clis_" + gvCliExport.ID);
+                if (clis == null)
+                {
+                    clis = RepoManager.CliRepo.GetAll(true).ToList();
+                    PowerWebContext.SetToSession<List<Cli>>("clis_" + gvCliExport.ID, clis);
+                }
+
+                return clis;
+            }
+            set
+            {
+                PowerWebContext.SetToSession<List<Cli>>("clis_" + gvCliExport.ID, value);
+            }
+        }
+
+        /// <summary>
         /// Recupera o imposta in/da sessione l'entità di selezione primaria indicata con il combobox.
         /// </summary>
         /// <value>
@@ -186,8 +236,16 @@ namespace PowerWeb.Modules
         {
             get { return gvCantExport; }
         }
+        public ASPxGridView GridView3 => throw new NotImplementedException();
+
+        public ASPxGridView GridView4
+        {
+            get { return gvCliExport; }
+        }
 
         public PowerFormTemplate EditFormTemplate2 { get; private set; }
+        public PowerFormTemplate EditFormTemplate3 { get; private set; }
+        public PowerFormTemplate EditFormTemplate4 { get; private set; }
 
         #endregion
 
@@ -210,6 +268,7 @@ namespace PowerWeb.Modules
 
                 PowerWebService.FillGridLabels(typeof(Col), GridView);
                 PowerWebService.FillGridLabels(typeof(Cant), GridView2);
+                //PowerWebService.FillGridLabels(typeof(Cli), GridView4);
 
                 // alla prima apertura viene effettuata l'inizializzazione della sessione
                 ResetSession();
@@ -228,6 +287,7 @@ namespace PowerWeb.Modules
 
             PowerWebService.FillComboboxes(gvColExport);
             PowerWebService.FillComboboxes(gvCantExport);
+            // PowerWebService.FillComboboxes(gvCliExport);
 
             // impostazione in lingua delle etichette
             LocalizeModuleLabels();
@@ -253,11 +313,16 @@ namespace PowerWeb.Modules
             // al reset della sessione viene reinizializzata la lista degli id dei cantieri selezionati
             SelectedCantsId = new List<int>();
 
+            // al reset della sessione viene reinizializzata la lista degli id dei clienti selezionati
+            //SelectedClisId = new List<int>();
+
             // al reset della sessione sono puliti i filtri e le selezioni sulle griglie (tutte)
             gvColExport.FilterExpression = String.Empty;
             gvCantExport.FilterExpression = String.Empty;
+            //gvCliExport.FilterExpression = String.Empty;
             gvColExport.Selection.UnselectAll();
             gvCantExport.Selection.UnselectAll();
+            //gvCliExport.Selection.UnselectAll();
         }
 
         #endregion
@@ -405,6 +470,19 @@ namespace PowerWeb.Modules
         }
 
         /// <summary>
+        /// Effettua il data bind della griglia clienti
+        /// </summary>
+        /// <param name="isToRefresh"><c>true</c> se deve essere effettuato anche il refresh oltre che l'impostazione del data source.</param>
+        /// <param name="emptyDataSource"><c>true</c> se deve essere impostato forzatamente un datasource vuoto per la griglia; altrimenti <c>false</c></param>
+        private void BindCliGrid(bool isToRefresh = false, bool emptyDataSource = false)
+        {
+            gvCliExport.KeyFieldName = CliKeyFieldName;
+            gvCliExport.DataSource = emptyDataSource ? new List<Cli>() : Clis;
+            if ((!Page.IsPostBack && !Page.IsCallback) || isToRefresh)
+                gvCliExport.DataBind();
+        }
+
+        /// <summary>
         /// Effettua il bind della griglia master (quella dell'entità primaria da visualizzare per la selezione).
         /// </summary>
         /// <param name="refreshPrimary"Se impostato a true rieffettua completamente il bind dei dati sulla griglia principale.</param>
@@ -416,11 +494,18 @@ namespace PowerWeb.Modules
                 case ExcelModelSelectionTypeEnum.Cant:
                     BindCantGrid(refreshPrimary);
                     BindColGrid(emptyDataSource: true);
+                    //BindCliGrid(emptyDataSource: true);
                     break;
                 case ExcelModelSelectionTypeEnum.Col:
                     BindColGrid(refreshPrimary);
                     BindCantGrid(emptyDataSource: true);
+                    //BindCliGrid(emptyDataSource: true);
                     break;
+                    //case ExcelModelSelectionTypeEnum.Cli:
+                    //    BindCliGrid(refreshPrimary);
+                    //    BindCantGrid(emptyDataSource: true);
+                    //    BindColGrid(emptyDataSource: true);
+                    //    break;
             }
         }
 
@@ -543,6 +628,9 @@ namespace PowerWeb.Modules
                     case "Can":
                         returnValue = ExcelModelSelectionTypeEnum.Cant;
                         break;
+                    // case "Cli":
+                    //     returnValue = ExcelModelSelectionTypeEnum.Cli;
+                    //     break;
                     default:
                         returnValue = ExcelModelSelectionTypeEnum.None;
                         break;
@@ -586,11 +674,12 @@ namespace PowerWeb.Modules
         /// Imposta le proprietà di selezione delle entità in base alla griglia master e ritorna lo stato di selezione completa di entrambe le entità.
         /// </summary>
         /// <returns>Una coppia di valori in cui il primo identifica la completa selezione dei collaboratori e l'altro la completa selezione dei cantieri</returns>
-        private Tuple<bool, bool> SetEntitiesSelection()
+        private Tuple<bool, bool, bool> SetEntitiesSelection()
         {
             // calcolo del tipo master di selezione e in base a tale dato impostazione dei parametri di all per le griglie
             bool allCols = false;
             bool allCants = false;
+            bool allClis = false;
             switch (CurrentFirstEntity)
             {
                 case ExcelModelSelectionTypeEnum.Col: // griglia master collaboratori
@@ -633,12 +722,18 @@ namespace PowerWeb.Modules
                         SelectedColsId = new List<int>();
 
                     break;
+                //case ExcelModelSelectionTypeEnum.Cli: //griglia master clienti
+                //    if (gvCliExport.VisibleRowCount == SelectedClisId.Count)
+                //        allClis = true;
+                //    else
+                //        SelectedClisId = gvCliExport.GetSelectedFieldValues("Cli_Id").Cast<int>().ToList();
+                //    break;
                 default: // griglia master di tipo non riconosciuto
                     throw new InvalidOperationException("Master grid type not known");
             }
 
             // ritorno della completa selezione dei valori
-            return new Tuple<bool, bool>(allCols, allCants);
+            return new Tuple<bool, bool, bool>(allCols, allCants, allClis);
         }
 
         /// <summary>
@@ -652,14 +747,23 @@ namespace PowerWeb.Modules
             var selectedPeriodDate = dePeriodo.Date;
 
             // calcolo del tipo master di selezione e in base a tale dato impostazione dei parametri di all per le griglie
-            Tuple<bool, bool> allSelectedEntities = SetEntitiesSelection();
+            Tuple<bool, bool, bool> allSelectedEntities = SetEntitiesSelection();
             bool allCols = allSelectedEntities.Item1;
             bool allCants = allSelectedEntities.Item2;
-
-            return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg.HasValue && regv.Data_Reg.Value.Month == selectedPeriodDate.Month &&
+            bool allClis = allSelectedEntities.Item3;
+            if (CurrentFirstEntity == ExcelModelSelectionTypeEnum.Cli)
+            {
+                return RepoManager.Reg_VRepo.GetAllQueryable(regV => regV.Data_Reg.HasValue && regV.Data_Reg.Value.Month == selectedPeriodDate.Month &&
+                    regV.Data_Reg.Value.Year == selectedPeriodDate.Year && regV.Col_Id.HasValue && regV.Cant_Id.HasValue);// && SelectedClisId.Contains(regV.Cli_Id.Value));
+            }
+            else
+            {
+                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg.HasValue && regv.Data_Reg.Value.Month == selectedPeriodDate.Month &&
                 regv.Data_Reg.Value.Year == selectedPeriodDate.Year && regv.Col_Id.HasValue && regv.Cant_Id.HasValue &&
                 (allCols || SelectedColsId.Contains(regv.Col_Id.Value)) &&
-                (allCants || SelectedCantsId.Contains(regv.Cant_Id.Value)));
+                (allCants || SelectedCantsId.Contains(regv.Cant_Id.Value))); //&&
+                                                                             //(allClis || SelectedClisId.Contains(regv.Cli_Id.Value))); ;
+            }
         }
 
         /// <summary>
@@ -681,6 +785,9 @@ namespace PowerWeb.Modules
                     break;
                 case ExcelModelSelectionTypeEnum.Col:
                     isMasterGrid = gridId == gvColExport.ID;
+                    break;
+                case ExcelModelSelectionTypeEnum.Cli:
+                    isMasterGrid = gridId == gvCliExport.ID;
                     break;
                 default:
                     isMasterGrid = false;
@@ -717,6 +824,9 @@ namespace PowerWeb.Modules
                 case ExcelModelSelectionTypeEnum.Col:
                     BtnUltSel.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_ATTIVA_ULTERIORI_SELEZIONI_CANT);
                     break;
+                case ExcelModelSelectionTypeEnum.Cli:
+                    BtnUltSel.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_ATTIVA_ULTERIORI_SELEZIONI_CLI);
+                    break;
                 default:
                     BtnUltSel.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_ATTIVA_ULTERIORI_SELEZIONI);
                     break;
@@ -736,6 +846,9 @@ namespace PowerWeb.Modules
                     break;
                 case ExcelModelSelectionTypeEnum.Col:
                     LblOtherSelectionState.Text = gvCantExport.FilterExpression == String.Empty ? BusinessService.GetLocalizedString(PowerWebResources.LBL_ULTERIORI_SELEZIONI_NON_ATTIVE) : BusinessService.GetLocalizedString(PowerWebResources.LBL_ULTERIORI_SELEZIONI_ATTIVE);
+                    break;
+                case ExcelModelSelectionTypeEnum.Cli:
+                    LblOtherSelectionState.Text = gvCliExport.FilterExpression == String.Empty ? BusinessService.GetLocalizedString(PowerWebResources.LBL_ULTERIORI_SELEZIONI_NON_ATTIVE) : BusinessService.GetLocalizedString(PowerWebResources.LBL_ULTERIORI_SELEZIONI_ATTIVE);
                     break;
                 default:
                     LblOtherSelectionState.Text = String.Empty;
@@ -759,11 +872,28 @@ namespace PowerWeb.Modules
             string sourceName = e.Parameter.Split('#')[1];
 
             var selectedRowsCount = Convert.ToInt32(e.Parameter.Split('#').Last());
-
-            ASPxGridView grid = sourceName == "Col" ? gvColExport : gvCantExport;
+            ASPxGridView grid;
+            var keyFieldName = "";
 
             // calcolo della chiave in base alla griglia origine
-            var keyFieldName = sourceName == "Col" ? "Col_Id" : "Cant_Id";
+            if (sourceName == "Col")
+            {
+                grid = gvColExport;
+                keyFieldName = "Col_Id";
+            }
+            else
+            {
+                grid = gvCantExport;
+                keyFieldName = "Cant_Id";
+            }
+            //else
+            //{
+            //    grid = gvCliExport;
+            //    keyFieldName = "Cli_Id";
+            //}
+
+            // ASPxGridView grid = sourceName == "Col" ? gvColExport : gvCantExport;
+            // var keyFieldName = sourceName == "Col" ? "Col_Id" : "Cant_Id";
 
             var selctionType = e.Parameter.Split('#').First();
             switch (selctionType)
@@ -773,6 +903,8 @@ namespace PowerWeb.Modules
                         SelectedColsId = new List<int>();
                     else
                         SelectedCantsId = new List<int>();
+                    //else
+                    //    SelectedClisId = new List<int>();
                     for (int i = 0; i < grid.VisibleRowCount; i++)
                     {
                         var entityId = Convert.ToInt32(grid.GetRowValues(i, keyFieldName));
@@ -780,6 +912,8 @@ namespace PowerWeb.Modules
                             SelectedColsId.Add(entityId);
                         else
                             SelectedCantsId.Add(entityId);
+                        //else
+                        //    SelectedClisId.Add(entityId);
                     }
                     break;
                 case "uAll":
@@ -787,6 +921,8 @@ namespace PowerWeb.Modules
                         SelectedColsId = new List<int>();
                     else
                         SelectedCantsId = new List<int>();
+                    //else
+                    //    SelectedClisId = new List<int>();
                     break;
                 case "sPage":
                     for (int i = grid.VisibleStartIndex; i < grid.VisibleStartIndex + grid.SettingsPager.PageSize; i++)
@@ -802,6 +938,11 @@ namespace PowerWeb.Modules
                             if (!SelectedCantsId.Contains(gridIdValue))
                                 SelectedCantsId.Add(gridIdValue);
                         }
+                        //else
+                        //{
+                        //    if (!SelectedClisId.Contains(gridIdValue))
+                        //        SelectedClisId.Add(gridIdValue);
+                        //}
                     }
                     break;
                 case "uPage":
@@ -818,6 +959,11 @@ namespace PowerWeb.Modules
                             if (SelectedCantsId.Contains(gridIdValue))
                                 SelectedCantsId.Remove(gridIdValue);
                         }
+                        // else
+                        // {
+                        //     if (SelectedClisId.Contains(gridIdValue))
+                        //         SelectedClisId.Remove(gridIdValue);
+                        // }
                     }
                     break;
                 case "sRow":
@@ -834,6 +980,11 @@ namespace PowerWeb.Modules
                             if (grid.Selection.IsRowSelected(i) && !SelectedCantsId.Contains(gridIdValue))
                                 SelectedCantsId.Add(gridIdValue);
                         }
+                        //else
+                        //{
+                        //    if (grid.Selection.IsRowSelected(i) && !SelectedClisId.Contains(gridIdValue))
+                        //        SelectedClisId.Add(gridIdValue);
+                        //}
                     }
                     break;
                 case "uRow":
@@ -850,6 +1001,11 @@ namespace PowerWeb.Modules
                             if (!grid.Selection.IsRowSelected(i) && SelectedCantsId.Contains(gridIdValue))
                                 SelectedCantsId.Remove(gridIdValue);
                         }
+                        //else
+                        //{
+                        //    if (!grid.Selection.IsRowSelected(i) && SelectedClisId.Contains(gridIdValue))
+                        //        SelectedClisId.Remove(gridIdValue);
+                        //}
                     }
                     break;
             }
@@ -973,6 +1129,62 @@ namespace PowerWeb.Modules
 
         #endregion
 
+        #region Gestion selezione clienti in grilgia
+
+        /// <summary>
+        /// Evento scatenato al cambio pagine della griglia clienti; utilizzata per segnalare quanto avvenuto lato client.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void gvCliExport_OnPageIndexChanged(object sender, EventArgs e)
+        {
+            ManageGridIndexPageChanged(sender);
+        }
+
+        /// <summary>
+        /// Evento scatenato all'inizializzazione del checkbox di selezione di tutta la griglia; Imposta il check del checkbox mittente in base alla selezione effettuata.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void cbAllCli_Init(object sender, EventArgs e)
+        {
+            InitSelectAllCheckbox(sender);
+        }
+
+        /// <summary>
+        /// Evento scatenato all'inizializzazione del checkbox di selezione della pagina corrente; Imposta il check del checkbox mittente in base alla selezione di pagina effettuata.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void cbPageCli_Init(object sender, EventArgs e)
+        {
+            InitPageSelectorCheckbox(sender);
+        }
+
+        /// <summary>
+        /// Evento scatenato alla richiesta di un proprietà JS dell'oggetto checkbox di selezione dell'intera griglia;
+        /// Viene impostata la domanda in lingua da visualizzare nella conferma che sarà richiesta.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CustomJSPropertiesEventArgs"/> instance containing the event data.</param>
+        protected void cbAllCli_OnCustomJSProperties(object sender, CustomJSPropertiesEventArgs e)
+        {
+            SetSelectAllConfirmationMessage(e);
+        }
+
+        /// <summary>
+        /// Evento scatenato alla richiesta di una proprietà JS dell'oggetto griglia dei Clienti;
+        /// Riporta per il lato client dell'applicativo il numero di record selezionati e il numero di record contenuti in griglia.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ASPxGridViewClientJSPropertiesEventArgs"/> instance containing the event data.</param>
+        protected void gvCliExport_OnCustomJSProperties(object sender, ASPxGridViewClientJSPropertiesEventArgs e)
+        {
+            SetGridRowsState(sender, e);
+        }
+
+        #endregion
+
         #region Selezione e cambio tipo export
 
         /// <summary>
@@ -1050,6 +1262,19 @@ namespace PowerWeb.Modules
             ShowOrHideUnusedGridElements((ASPxGridView)sender, CurrentFirstEntity != ExcelModelSelectionTypeEnum.Cant);
         }
 
+        /// <summary>
+        /// Evento scatenato alla inizializzione della griglia dei clienti; si occpua di
+        /// visualizzare o nascondere eventuali blocchi non utilizzati quando slave (cioè vuota).
+        /// </summary>
+        /// <param name="sender">The source of the event</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        protected void gvCliExport_OnInit(object sender, EventArgs e)
+        {
+            // se sto selezionando i collaboratori allora visualizzo i dati utili;
+            // altrimenti li nascondo
+            ShowOrHideUnusedGridElements((ASPxGridView)sender, CurrentFirstEntity != ExcelModelSelectionTypeEnum.Cli);
+        }
+
         #endregion
 
         #region Lancio export
@@ -1072,11 +1297,19 @@ namespace PowerWeb.Modules
             IQueryable<Reg_V> regVsToProcess = null;
             if (!excelModel.Utilizza_Solo_Selezione)
                 regVsToProcess = GetRegVsFromSelection();
-            else
-                SetEntitiesSelection();
+               else
+                 SetEntitiesSelection();
+
+            //try
+            //{
+            //    int x = regVsToProcess.Count();
+            //}
+            //catch (Exception z) { }
+            //Commentata in data 09/06 perchè andava a generare un eccezione nel caso in cui l'export sia di tipo solo selezione
+            
 
             // calcolo del nome dell'export specializzato (Tab_Excel_Model.Nome_Specializzato) e del nome file modello (Tab_Excel_Model.ModelFilePath)
-            string exportSpecializedName = GetExcelSelectionSpecializedName(excelModel);
+            string exportSpecializedName = excelModel.Nome_Specializzato;
             string exportModelName = GetExcelSelectionModelName(excelModel);
 
             // recupera il tipo di selezione (Tab_Excel_Model.Tipo_Selezione) - attualmente Col/Can/NULL   
@@ -1147,7 +1380,7 @@ namespace PowerWeb.Modules
                     if (!excelModel.Utilizza_Solo_Selezione)
                         exportToProcess.LaunchExport(regVsToProcess);
                     else
-                        exportToProcess.LaunchExport(SelectedColsId, SelectedCantsId);
+                        exportToProcess.LaunchExport(SelectedColsId, SelectedCantsId, SelectedClisId);
                 }
             }
         }

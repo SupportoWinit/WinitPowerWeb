@@ -134,6 +134,7 @@
     <Compile Include="Damage.cs">
       <DependentUpon>PowerWebEntitiesGenerator.tt</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\Cli_V.cs" />
     <Compile Include="Exceptions\RowDeletingException.cs" />
     <Compile Include="Extensions\ActivityItem.cs" />
     <Compile Include="Extensions\Cant.cs" />

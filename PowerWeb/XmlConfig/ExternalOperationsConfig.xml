@@ -21,7 +21,7 @@
     </OperationStrategy>
   </Synch>
 
-  <Synch company="ClockAppManager" class="Business.Synchronization.Implementations.ClockAppManagerSynchronizer`1,Business" enabled="1" >
+  <Synch company="ClockAppManager" class="Business.Synchronization.Implementations.ClockAppManagerSynchronizer`1,Business" enabled="0" >
     <HostConfig host="localhost" port="52947" protocol="http"/>
     <ExtraInfos>
     </ExtraInfos>
@@ -30,7 +30,7 @@
       <modify  value="/api/ManagePowerWebCant" />
       <delete  value="/api/ManagePowerWebCant" />
     </OperationStrategy>
-    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="1">
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
       <create  value="/api/ManagePowerWebCol" />
       <modify  value="/api/ManagePowerWebCol" />
       <delete  value="/api/ManagePowerWebCol" />
@@ -50,10 +50,10 @@
     </OperationStrategy>
   </ExternalImport>
 
-  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
+  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="0">
     <HostConfig host="backend.winitsrl.eu" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="16" />
+      <IdCliente  value="51" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

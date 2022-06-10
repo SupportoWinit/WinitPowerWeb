@@ -276,10 +276,14 @@
     <Compile Include="Repository\Custom\CentroDiCostoRepository.cs">
       <DependentUpon>ICentroDiCostoRepository.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Custom\CliRepository - Copia.cs">
+      <DependentUpon>ICli_VRepository.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\Custom\DamageRepository.cs">
       <DependentUpon>IDamageRepository.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\Custom\ICentroDiCostoRepository.cs" />
+    <Compile Include="Repository\Custom\ICli_VRepository.cs" />
     <Compile Include="Repository\Custom\IDamageRepository.cs" />
     <Compile Include="Repository\Custom\ITab_ExcelModelRepository.cs" />
     <Compile Include="Repository\Custom\ITab_DamageRepository.cs" />

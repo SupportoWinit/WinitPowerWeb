@@ -116,6 +116,19 @@ namespace PowerWeb
             }
         }
 
+        public Dictionary<Int32, DomainEnum> CliUntentiRespDictionary
+        {
+            get
+            {
+                var cliUtentiRespDict = PowerWebContext.GetFromSession<Dictionary<Int32, DomainEnum>>("General_CliUtentiRespDictionary");
+                if (cliUtentiRespDict == null)
+                {
+                    cliUtentiRespDict = new Dictionary<Int32, DomainEnum>();
+                    PowerWebContext.SetToSession<Dictionary<Int32, DomainEnum>>("General_CliUtentiRespDictionary", cliUtentiRespDict);
+                }
+                return cliUtentiRespDict;
+            }
+        }
 
         public List<Cant_Fil_V> CantFilVs
         {
@@ -181,6 +194,15 @@ namespace PowerWeb
             {
                 if (GridPage != null)
                     return GridPage.TripleGridModule;
+                return null;
+            }
+        }
+        public IQuadGridModule QuadGridModule
+        {
+            get
+            {
+                if (GridPage != null)
+                    return GridPage.QuadGridModule;
                 return null;
             }
         }
@@ -541,14 +563,16 @@ namespace PowerWeb
 
                         var currentLayout2 = DoubleGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == DoubleGridModule.GridView2.ID && currentLayout.Nome_Layout == tdg.Nome_Layout) : null;
                         var currentLayout3 = TripleGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == TripleGridModule.GridView3.ID && currentLayout.Nome_Layout == tdg.Nome_Layout) : null;
-                        ManageDoubleAndTripleGridLayout(currentLayout2, currentLayout3);
+                        var currentLayout4 = QuadGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID && currentLayout.Nome_Layout == tdg.Nome_Layout) : null;
+
+                        ManageDoubleAndTripleGridLayout(currentLayout2, currentLayout3, currentLayout4);
                         cmbLayout.SelectedIndex = listLayout.IndexOf(currentLayout) + 1;
                     }
                     else // in caso sia rimasto attivo solamente il layout di default, si carica quello
                     {
                         GridView.LoadClientLayout(PowerWebContext.GetFromSession<String>("GridLayout_" + GridView.ID));
 
-                        ManageDoubleAndTripleGridLayout(null, null);
+                        ManageDoubleAndTripleGridLayout(null, null, null);
                     }
                 }
             }
@@ -928,6 +952,8 @@ namespace PowerWeb
                         PowerWebContext.SetToSession<String>("GridLayout2_" + DoubleGridModule.GridView2.ID, DoubleGridModule.GridView2.SaveClientLayout());
                     if (TripleGridModule != null)
                         PowerWebContext.SetToSession<String>("GridLayout3_" + TripleGridModule.GridView3.ID, TripleGridModule.GridView3.SaveClientLayout());
+                    if (QuadGridModule != null)
+                        PowerWebContext.SetToSession<String>("GridLayout4_" + QuadGridModule.GridView4.ID, QuadGridModule.GridView4.SaveClientLayout());
                     BindLayoutCombo(true);
                     #region Gestione del nascondimento e check di default del batch edit mode
 
@@ -1107,6 +1133,20 @@ namespace PowerWeb
                     PowerWebService.InitGrid(TripleGridModule.GridView3);
                 }
 
+                if (QuadGridModule != null)
+                {
+                    // se sono all'interno di un quad grid module allora rinomino lato client anche la quarta griglia
+                    QuadGridModule.GridView4.ClientInstanceName = "grid4";
+                    // se sono all'interno di un quad grid module allora preparo la customization window
+                    QuadGridModule.GridView4.SettingsBehavior.EnableCustomizationWindow = true;
+                    QuadGridModule.GridView4.ClientSideEvents.CustomizationWindowCloseUp = "grid_OnCustomizationWindowCloseUp";
+                    QuadGridModule.GridView4.SettingsPopup.CustomizationWindow.Height = new System.Web.UI.WebControls.Unit(250, System.Web.UI.WebControls.UnitType.Pixel);
+                    QuadGridModule.GridView4.SettingsPopup.CustomizationWindow.Width = new System.Web.UI.WebControls.Unit(200, System.Web.UI.WebControls.UnitType.Pixel);
+                    QuadGridModule.GridView4.ParseValue += new ASPxParseValueEventHandler(GridView_ParseValue);
+                    QuadGridModule.GridView4.Templates.EditForm = QuadGridModule.EditFormTemplate4;
+                    PowerWebService.InitGrid(QuadGridModule.GridView4);
+                }
+
                 #region IMPOSTAZIONI SETTATE QUANDO SI ESEGUE LA INIT della SINGOLA PAGINA
                 GridView.ParseValue += new ASPxParseValueEventHandler(GridView_ParseValue);
                 GridView.HeaderFilterFillItems += GridModule.HeaderFilterFillItems;
@@ -1143,11 +1183,17 @@ namespace PowerWeb
                         PowerWebContext.SetToSession<List<Col>>("DomainColList", null);
                         PowerWebContext.SetToSession<List<Cant>>("General_ColUtentiRespDictionary", null);
                     }
+                    if (GridModule.EntityType == typeof(Cli))
+                    {
+                        PowerWebContext.SetToSession<List<Cli>>("DomainCliList", null);
+                        PowerWebContext.SetToSession<List<Cli>>("General_CliUtentiRespDictionary", null);
+                    }
                     if (GridModule.EntityType == typeof(Reg_V))
                     {
                         PowerWebContext.SetToSession<List<Reg_V>>("DomainRegVList", null);
                         PowerWebContext.SetToSession<List<Cant>>("General_ColUtentiRespDictionary", null);
                         PowerWebContext.SetToSession<List<Cant>>("General_CantUtentiFilDictionary", null);
+                        PowerWebContext.SetToSession<List<Cli>>("General_CliUtentiFilDictionary", null);
                     }
                 }
 
@@ -1195,7 +1241,7 @@ namespace PowerWeb
                         }
 
                         // gestione del layout per le griglie doppie
-                        ManageDoubleAndTripleGridLayout(null, null);
+                        ManageDoubleAndTripleGridLayout(null, null, null);
 
                     }
                 }
@@ -2498,6 +2544,9 @@ namespace PowerWeb
                                 case "Cant_Id":
                                     gh.GroupFields.Add(new GroupField("Cant_Mnemonic"));
                                     break;
+                                case "Cli_Id":
+                                    gh.GroupFields.Add(new GroupField("Cli_Mnemonic"));
+                                    break;
                                 default:
                                     gh.GroupFields.Add(new GroupField(group.Field));
                                     break;
@@ -2782,6 +2831,21 @@ namespace PowerWeb
                                     TripleGridModule.GridView3.LoadClientLayout(currentLayout3.Layout_DataGrid);
                                 }
                             }
+                            if (QuadGridModule != null)
+                            {
+                                var currentLayout4 = RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID && currentLayout.Nome_Layout == tdg.Nome_Layout);
+
+                                if (currentLayout4 != null)
+                                {
+                                    currentLayout4.Data_Layout_DataGrid = DateTime.UtcNow;
+
+                                    UpdateDataRegInLayout(currentLayout4);
+
+                                    RepoManager.Tab_DataGridRepo.Update(currentLayout4, true);
+
+                                    QuadGridModule.GridView4.LoadClientLayout(currentLayout4.Layout_DataGrid);
+                                }
+                            }
                         }
                         else
                         {
@@ -2793,7 +2857,7 @@ namespace PowerWeb
                                 GridView.DataBind();
                             }
 
-                            ManageDoubleAndTripleGridLayout(null, null);
+                            ManageDoubleAndTripleGridLayout(null, null, null);
                         }
 
                         BindLayoutCombo();
@@ -2821,6 +2885,7 @@ namespace PowerWeb
                         String currentLayout = GridPage.GridModule.GridView.SaveClientLayout();
                         String currentLayout2 = DoubleGridModule != null ? DoubleGridModule.GridView2.SaveClientLayout() : null;
                         String currentLayout3 = TripleGridModule != null ? TripleGridModule.GridView3.SaveClientLayout() : null;
+                        String currentLayout4 = QuadGridModule != null ? QuadGridModule.GridView4.SaveClientLayout() : null;
 
                         if (cmbLayout.Text.ToUpper() != "DEFAULT")
                         {
@@ -2837,6 +2902,10 @@ namespace PowerWeb
                                 // in caso di triple grid module allora recupero il layout da modificare per la terza griglia
                                 var savedLayout3 = TripleGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == TripleGridModule.GridView3.ID
                                    && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == null) : null;
+
+                                // in caso di quad grid module allora recupero il layout da modificare per la terza griglia
+                                var savedLayout4 = QuadGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID
+                                    && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == null) : null;
 
                                 if (savedLayout == null)
                                 {
@@ -2871,6 +2940,17 @@ namespace PowerWeb
                                             Data_Layout_DataGrid = DateTime.UtcNow,
                                         }, true);
                                     }
+                                    // se sono in una quad grid module allora salvo anche la quarta vista
+                                    if (QuadGridModule != null)
+                                    {
+                                        RepoManager.Tab_DataGridRepo.Add(new Tab_DataGrid
+                                        {
+                                            Nome_DataGrid = QuadGridModule.GridView4.ID,
+                                            Layout_DataGrid = currentLayout4,
+                                            Nome_Layout = cmbLayout.Text,
+                                            Data_Layout_DataGrid = DateTime.UtcNow,
+                                        }, true);
+                                    }
                                 }
                                 else
                                 {
@@ -2893,6 +2973,14 @@ namespace PowerWeb
                                         savedLayout3.Data_Layout_DataGrid = DateTime.UtcNow;
                                         RepoManager.Tab_DataGridRepo.Update(savedLayout3, true);
                                     }
+
+                                    // se sono in una quad grid module aggiorno anche il relativo layout
+                                    if (QuadGridModule != null)
+                                    {
+                                        savedLayout4.Layout_DataGrid = currentLayout4;
+                                        savedLayout4.Data_Layout_DataGrid = DateTime.UtcNow;
+                                        RepoManager.Tab_DataGridRepo.Update(savedLayout4, true);
+                                    }
                                 }
                             }
                             else
@@ -2908,6 +2996,10 @@ namespace PowerWeb
                                 // in caso di triple grid module allora recupero il layout da modificare per la terza griglia
                                 var savedLayout3 = TripleGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == TripleGridModule.GridView3.ID
                                    && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id) : null;
+
+                                // in caso di quad grid module  allora recupero il layout da modificare per la quarta griglia
+                                var savedLayout4 = QuadGridModule != null ? RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID
+                                    && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id) : null;
 
                                 if (savedLayout == null)
                                 {
@@ -2939,6 +3031,18 @@ namespace PowerWeb
                                         {
                                             Nome_DataGrid = TripleGridModule.GridView3.ID,
                                             Layout_DataGrid = currentLayout3,
+                                            Nome_Layout = cmbLayout.Text,
+                                            Data_Layout_DataGrid = DateTime.UtcNow,
+                                        }, true);
+                                    }
+
+                                    // se sono in un quad grid module allora salvo anche la quarta vista
+                                    if (QuadGridModule != null)
+                                    {
+                                        RepoManager.Tab_DataGridRepo.Add(new Tab_DataGrid
+                                        {
+                                            Nome_DataGrid = QuadGridModule.GridView4.ID,
+                                            Layout_DataGrid = currentLayout4,
                                             Nome_Layout = cmbLayout.Text,
                                             Data_Layout_DataGrid = DateTime.UtcNow,
                                         }, true);
@@ -2997,6 +3101,13 @@ namespace PowerWeb
                                 RepoManager.Tab_DataGridRepo.Delete(toDeleteTDG3, false);
                             }
 
+                            if (QuadGridModule != null)
+                            {
+                                var toDeleteTDG4 = RepoManager.Tab_DataGridRepo.SingleOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID
+                                    && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == null);
+                                RepoManager.Tab_DataGridRepo.Delete(toDeleteTDG4, false);
+                            }
+
                             RepoManager.Tab_DataGridRepo.Delete(toDeleteTDG, true);
                         }
                         else
@@ -3018,6 +3129,13 @@ namespace PowerWeb
                                     var toDeleteTDG3 = RepoManager.Tab_DataGridRepo.SingleOrDefault(tdg => tdg.Nome_DataGrid == TripleGridModule.GridView3.ID
                                    && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id);
                                     RepoManager.Tab_DataGridRepo.Delete(toDeleteTDG3, false);
+                                }
+
+                                if (QuadGridModule != null)
+                                {
+                                    var toDeleteTDG4 = RepoManager.Tab_DataGridRepo.SingleOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID
+                                        && tdg.Nome_Layout == cmbLayout.Text && tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id);
+                                    RepoManager.Tab_DataGridRepo.Delete(toDeleteTDG4, false);
                                 }
 
                                 //Se il LaYout è SUO allora Viene Cancellato
@@ -3054,7 +3172,7 @@ namespace PowerWeb
             }
         }
 
-        private void ManageDoubleAndTripleGridLayout(Tab_DataGrid currentLayout2, Tab_DataGrid currentLayout3)
+        private void ManageDoubleAndTripleGridLayout(Tab_DataGrid currentLayout2, Tab_DataGrid currentLayout3, Tab_DataGrid currentLayout4)
         {
             // se sono in una double grid allora carico anche il layout di default
             if (DoubleGridModule != null)
@@ -3087,6 +3205,22 @@ namespace PowerWeb
                     TripleGridModule.GridView3.FilterExpression = TripleGridModule.DefaultFilter.ToString();
                     TripleGridModule.GridView3.FilterEnabled = true;
                     TripleGridModule.GridView3.DataBind();
+                }
+            }
+
+            // se sono in una quad grid allora carico anche il layout di default
+            if (QuadGridModule != null)
+            {
+                if (currentLayout4 == null)
+                    QuadGridModule.GridView4.LoadClientLayout(PowerWebContext.GetFromSession<String>("GridLayout4_" + QuadGridModule.GridView4.ID));
+                else
+                    QuadGridModule.GridView4.LoadClientLayout(currentLayout4.Layout_DataGrid);
+
+                if (!ReferenceEquals(QuadGridModule.DefaultFilter, null))
+                {
+                    QuadGridModule.GridView4.FilterExpression = QuadGridModule.DefaultFilter.ToString();
+                    QuadGridModule.GridView4.FilterEnabled = true;
+                    QuadGridModule.GridView4.DataBind();
                 }
             }
         }
@@ -3260,6 +3394,13 @@ namespace PowerWeb
                                     Tab_Report toDeleteReport3 = RepoManager.Tab_ReportRepo.SingleOrDefault(tdg => tdg.Nome_DataGrid == TripleGridModule.GridView3.ID
                                    && tdg.Nome_Report == currentPrintLayoutName && tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id);
                                     RepoManager.Tab_ReportRepo.Delete(toDeleteReport3, false);
+                                }
+
+                                if (QuadGridModule != null)
+                                {
+                                    Tab_Report toDeleteReport4 = RepoManager.Tab_ReportRepo.SingleOrDefault(tdg => tdg.Nome_DataGrid == QuadGridModule.GridView4.ID
+                                        && tdg.Nome_Report == currentPrintLayoutName && tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id);
+                                    RepoManager.Tab_ReportRepo.Delete(toDeleteReport4, false);
                                 }
                             }
                             else

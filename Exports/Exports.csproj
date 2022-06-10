@@ -92,6 +92,7 @@
     <Compile Include="ExportContext.cs" />
     <Compile Include="ExportExcelCustom\ExcelToolbox.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAec.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\Export06.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\Export17.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportImporti.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportHoursReport.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportMovitrento.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportPerFatture.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportRegSemplice.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoSimple.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportSSSFiduciario.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="ExportTxtCustom\ExportTxtCG2.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2Annuale.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtSCS.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtVecomp.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtZucchetti.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtZucchettiSolaris.cs" />
     <Compile Include="ExportTxtCustom\IExportTxtCustom.cs" />

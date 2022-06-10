@@ -42,5 +42,13 @@ namespace PowerWeb.Pages
             }
         }
 
+        public IQuadGridModule QuadGridModule
+        {
+            get
+            {
+                return null;
+            }
+        }
+
     }
 }

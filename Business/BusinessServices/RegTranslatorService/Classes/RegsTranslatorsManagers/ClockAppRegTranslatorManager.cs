@@ -123,12 +123,14 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslators
             List<string> currentRegLines = new List<string>();
 
             var gpsLines = ClockAppStringFormatter.CreateGpsLines(reg.DeviceCode, reg.Latitude, reg.Longitude, reg.RegistrationDateTime);
+            var firstActLine = ClockAppStringFormatter.CreateFirstActivityLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.PruCodeForActivity);
             var activityLines = ClockAppStringFormatter.CreateActivityLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.ActivityTypeCode);
             var pruCodeActivityLines = ClockAppStringFormatter.CreatePruCodeActivityLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.PruCodeForActivity);
             var turnLines = ClockAppStringFormatter.CreateTurnLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.Direction, reg.TurnCode);
             var subCantLines = ClockAppStringFormatter.CreateSubCantLines(reg.DeviceCode, reg.BadgeCode, reg.RegistrationDateTime, reg.Direction, reg.SubCantCode, reg.SubCantDesc);
 
             currentRegLines.AddRange(gpsLines);
+            currentRegLines.Add(firstActLine);
             currentRegLines.AddRange(activityLines);
             currentRegLines.AddRange(pruCodeActivityLines);
             currentRegLines.AddRange(turnLines);

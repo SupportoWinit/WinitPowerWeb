@@ -500,58 +500,117 @@ namespace PowerWeb.Modules
                             lastId = 1;
                             if (lastRegV != null)
                                 lastId = lastRegV.RegE;
-
-                            // calcolo dell'elenco delle giornate da inserire
-                            var colCalendar = RepoManager.Tab_OrariRepo.GetPlanTimes(colId, dateStart, dateEnd, null, null);
-
-                            // se è stato ritornato un calendario
-                            if (colCalendar.Any())
+                            //controllo se è stato selezionato un cantiere
+                            //se è stato selezionato vado a creare le reg assegnando il cantiere selzionato
+                            if (cantId != 0)
                             {
-                                // inizializzazione della lista di reg_v che poi andrà aggiunta al data source
-                                var regVsToAdd = new List<Reg_V>();
+                                // calcolo dell'elenco delle giornate da inserire
+                                var colCalendar = RepoManager.Tab_OrariRepo.GetPlanTimes(colId, dateStart, dateEnd, null, null);
 
-                                // ciclo di elaborazione delle date ritornate e generazione delle reg_v secondo l'orario recuperato
-                                foreach (var dayCalendar in colCalendar)
+                                // se è stato ritornato un calendario
+                                if (colCalendar.Any())
                                 {
-                                    // se è stato previsto del lavoro nella giornata che si sta processando
-                                    if (dayCalendar.Value.Any())
+                                    // inizializzazione della lista di reg_v che poi andrà aggiunta al data source
+                                    var regVsToAdd = new List<Reg_V>();
+
+                                    // ciclo di elaborazione delle date ritornate e generazione delle reg_v secondo l'orario recuperato
+                                    foreach (var dayCalendar in colCalendar)
                                     {
-                                        // allora per ogni orario viene generata una reg_v con i dati selezionati
-                                        foreach (var detailCalendar in dayCalendar.Value)
+                                        // se è stato previsto del lavoro nella giornata che si sta processando
+                                        if (dayCalendar.Value.Any())
                                         {
-                                            var newRegV = RepoManager.Reg_VRepo.Init();
-                                            newRegV.RegE = ++lastId;
-                                            newRegV.Col_Id = colId;
-                                            newRegV.Cant_Id = cantId;
-                                            newRegV.Motivazione_Reg_Id = motId == 0 ? (int?) null : motId;
-                                            newRegV.Data_Reg = dayCalendar.Key;
-
-                                            var dataOraFisE = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item1.Hours, detailCalendar.Item1.Minutes, 0);
-                                            var dataOraFisU = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
-
-                                            // se è richiesto l'inserimento di una registrazione solo durata
-                                            // allora inserisco i corrispettivi dati; altrimenti procedo con una registrazione standard entrata/uscita
-                                            if (dataOraFisE.TimeOfDay == TimeSpan.Zero && dataOraFisU.TimeOfDay != TimeSpan.Zero)
+                                            // allora per ogni orario viene generata una reg_v con i dati selezionati
+                                            foreach (var detailCalendar in dayCalendar.Value)
                                             {
-                                                newRegV.Durata_Fis_HH_C = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, dataOraFisU.TimeOfDay.Hours, 
-                                                    dataOraFisU.TimeOfDay.Minutes, dataOraFisU.TimeOfDay.Seconds);
-                                                newRegV.Registrazione_Stato_Reg = (int) RegStateEnum.Ass;
-                                                newRegV.Registrazione_Tipo_Reg = (int) RegTypeEnum.Duration;
-                                            }
-                                            else
-                                            {
-                                                newRegV.Data_Ora_Fis_E = dataOraFisE;
-                                                newRegV.Data_Ora_Fis_U = dataOraFisU;
-                                            }
+                                                var newRegV = RepoManager.Reg_VRepo.Init();
+                                                newRegV.RegE = ++lastId;
+                                                newRegV.Col_Id = colId;
+                                                newRegV.Cant_Id = cantId;
+                                                newRegV.Motivazione_Reg_Id = motId == 0 ? (int?)null : motId;
+                                                newRegV.Data_Reg = dayCalendar.Key;
 
-                                            regVsToAdd.Add(newRegV);
+                                                var dataOraFisE = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item1.Hours, detailCalendar.Item1.Minutes, 0);
+                                                var dataOraFisU = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
+
+                                                // se è richiesto l'inserimento di una registrazione solo durata
+                                                // allora inserisco i corrispettivi dati; altrimenti procedo con una registrazione standard entrata/uscita
+                                                if (dataOraFisE.TimeOfDay == TimeSpan.Zero && dataOraFisU.TimeOfDay != TimeSpan.Zero)
+                                                {
+                                                    newRegV.Durata_Fis_HH_C = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, dataOraFisU.TimeOfDay.Hours,
+                                                        dataOraFisU.TimeOfDay.Minutes, dataOraFisU.TimeOfDay.Seconds);
+                                                    newRegV.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                                                    newRegV.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
+                                                }
+                                                else
+                                                {
+                                                    newRegV.Data_Ora_Fis_E = dataOraFisE;
+                                                    newRegV.Data_Ora_Fis_U = dataOraFisU;
+                                                }
+
+                                                regVsToAdd.Add(newRegV);
+                                            }
                                         }
                                     }
-                                }
 
-                                // aggiunta delle regV calcolate al data source dell'elenco
-                                RegVs.AddRange(regVsToAdd);
+                                    // aggiunta delle regV calcolate al data source dell'elenco
+                                    RegVs.AddRange(regVsToAdd);
+                                }
                             }
+                            //in caso contrario vado ad assegnare il cantiere selezionato nell'orario
+                            else {
+                                // calcolo dell'elenco delle giornate da inserire
+                                var colCalendars = RepoManager.Tab_OrariRepo.GetPlanTimesNew(colId, dateStart, dateEnd, null, null);
+
+                                // se è stato ritornato un calendario
+                                if (colCalendars.Any())
+                                {
+                                    // inizializzazione della lista di reg_v che poi andrà aggiunta al data source
+                                    var regVsToAdd = new List<Reg_V>();
+
+                                    // ciclo di elaborazione delle date ritornate e generazione delle reg_v secondo l'orario recuperato
+                                    foreach (var dayCalendar in colCalendars)
+                                    {
+                                        // se è stato previsto del lavoro nella giornata che si sta processando
+                                        if (dayCalendar.Value.Any())
+                                        {
+                                            // allora per ogni orario viene generata una reg_v con i dati selezionati
+                                            foreach (var detailCalendar in dayCalendar.Value)
+                                            {
+                                                var newRegV = RepoManager.Reg_VRepo.Init();
+                                                newRegV.RegE = ++lastId;
+                                                newRegV.Col_Id = colId;
+                                                newRegV.Cant_Id = detailCalendar.Item1;
+                                                newRegV.Motivazione_Reg_Id = motId == 0 ? (int?)null : motId;
+                                                newRegV.Data_Reg = dayCalendar.Key;
+
+                                                var dataOraFisE = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
+                                                var dataOraFisU = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item3.Hours, detailCalendar.Item3.Minutes, 0);
+
+                                                // se è richiesto l'inserimento di una registrazione solo durata
+                                                // allora inserisco i corrispettivi dati; altrimenti procedo con una registrazione standard entrata/uscita
+                                                if (dataOraFisE.TimeOfDay == TimeSpan.Zero && dataOraFisU.TimeOfDay != TimeSpan.Zero)
+                                                {
+                                                    newRegV.Durata_Fis_HH_C = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, dataOraFisU.TimeOfDay.Hours,
+                                                        dataOraFisU.TimeOfDay.Minutes, dataOraFisU.TimeOfDay.Seconds);
+                                                    newRegV.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                                                    newRegV.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
+                                                }
+                                                else
+                                                {
+                                                    newRegV.Data_Ora_Fis_E = dataOraFisE;
+                                                    newRegV.Data_Ora_Fis_U = dataOraFisU;
+                                                }
+
+                                                regVsToAdd.Add(newRegV);
+                                            }
+                                        }
+                                    }
+
+                                    // aggiunta delle regV calcolate al data source dell'elenco
+                                    RegVs.AddRange(regVsToAdd);
+                                }
+                            }
+                            
                         }
 
                         #endregion

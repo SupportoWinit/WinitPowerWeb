@@ -30,7 +30,12 @@ namespace PowerWeb.Pages
         public ITripleGridModule TripleGridModule
         {
             get { return null; }
-        }      
+        }
+
+        public IQuadGridModule QuadGridModule
+        {
+            get { return null; }
+        }
 
         public ILogModule LogModule
         {

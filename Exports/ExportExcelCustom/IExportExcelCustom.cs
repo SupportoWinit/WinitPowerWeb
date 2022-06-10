@@ -22,7 +22,7 @@ namespace Exports.ExportExcelCustom
         /// </summary>
         /// <param name="selectedColIds">L'elenco degli id collaboratore selezionati per l'export.</param>
         /// <param name="selectedCantIds">L'elenco degli id cantiere selezionati per l'export.</param>
-        void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds);
+        void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds, IEnumerable<int> selectedCliIds);
 
         /// <summary>
         /// Salva l'excel in un determinato percorso  su disco.

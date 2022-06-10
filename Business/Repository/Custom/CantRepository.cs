@@ -2465,7 +2465,12 @@ namespace Business.Repository.Custom
 
                 // impostazione della descrizione del cantiere di default se non è stato recuperato indirizzo o CAP, come indirizzo + CAP altrimenti
                 // newCant.Descrizione_Can = BusinessService.GetLocalizedString(PowerWebResources.STR_DEFAULT_CANT_GPS_DES);
-                newCant.Descrizione_Can = (newCant.Indirizzo_Can == null || newCant.Cap_Can == null) ? BusinessService.GetLocalizedString(PowerWebResources.STR_DEFAULT_CANT_GPS_DES) : String.Format("{0}, {1} - {2}", newCant.Indirizzo_Can, newCant.Luogo_Can, newCant.Cap_Can);
+                if (newCant.Indirizzo_Can != null || newCant.Cap_Can != null || newCant.Luogo_Can != null) {
+                    newCant.Descrizione_Can = String.Format("{0}, {1} - {2}", newCant.Indirizzo_Can, newCant.Luogo_Can, newCant.Cap_Can);
+                } else {
+                    newCant.Descrizione_Can = BusinessService.GetLocalizedString(PowerWebResources.STR_DEFAULT_CANT_GPS_DES);
+                }
+                //newCant.Descrizione_Can = (newCant.Indirizzo_Can == null || newCant.Cap_Can == null) ? BusinessService.GetLocalizedString(PowerWebResources.STR_DEFAULT_CANT_GPS_DES) : String.Format("{0}, {1} - {2}", newCant.Indirizzo_Can, newCant.Luogo_Can, newCant.Cap_Can);
 
                 // inserimento del codice del cantiere; se esiste la numerazione automatica del cantiere alla si procede con la stessa
                 // (naturalmente solo se tutti i cantieri sono numerici); altrimenti si procede alla generazione

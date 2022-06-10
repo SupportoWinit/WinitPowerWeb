@@ -340,7 +340,7 @@
         <PanelCollection>
             <dx:PanelContent ID="PanelContent1" runat="server">
                 <dxwschs:ASPxScheduler ID="scTabOrari" runat="server" ClientInstanceName="scTabOrari" Width="100%" ActiveViewType="Timeline">
-                    <ResourceColorSchemas>
+                    <%--<ResourceColorSchemas>
                         <cc1:SchedulerColorSchema Cell="255, 244, 188" CellBorder="243, 228, 177" CellBorderDark="234, 208, 152" CellLight="255, 255, 213" CellLightBorder="255, 239, 199" CellLightBorderDark="246, 219, 162"></cc1:SchedulerColorSchema>
                         <cc1:SchedulerColorSchema Cell="Control" CellBorder="ControlDark" CellBorderDark="ControlDark" CellLight="Window" CellLightBorder="ControlDark" CellLightBorderDark="ControlDark"></cc1:SchedulerColorSchema>
                         <cc1:SchedulerColorSchema Cell="179, 212, 151" CellBorder="168, 203, 138" CellBorderDark="140, 180, 104" CellLight="213, 236, 188" CellLightBorder="205, 228, 180" CellLightBorderDark="186, 209, 162"></cc1:SchedulerColorSchema>
@@ -403,7 +403,7 @@
                                 <cc1:TimeScaleFixedInterval Enabled="False"></cc1:TimeScaleFixedInterval>
                             </Scales>
                         </TimelineView>
-                    </Views>
+                    </Views>--%>
                     <%--<ClientSideEvents EndCallback="scTabOrari_OnEndCallback" />--%>
                 </dxwschs:ASPxScheduler>
             </dx:PanelContent>

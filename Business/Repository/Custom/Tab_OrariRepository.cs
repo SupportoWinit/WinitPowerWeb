@@ -260,8 +260,10 @@ namespace Business.Repository.Custom
         {
             // sposto avanti la data di inzio in base alla sequenza di modo da poter
             // gestire le alternanze rispetto alla data di inzio stessa
-            var newDtInizio = timesheet.Data_Inizio.AddDays(timesheet.Sequenza * 7);
-
+            DateTime newDtInizio = timesheet.Data_Inizio.AddDays(timesheet.Sequenza * 7); ;
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1) {
+                newDtInizio = timesheet.Data_Inizio.AddDays(timesheet.Sequenza * 1);
+            }
             TimeSpan delta = i - newDtInizio;
             return ((delta.Days / 7) % timesheet.Ripetizione) == 0 && delta.Days >= 0;
         }
@@ -485,7 +487,7 @@ namespace Business.Repository.Custom
             }
 
             // ritorno del valore del metodo
-            return returnDictionary;
+             return returnDictionary;
         }
 
 
@@ -986,6 +988,113 @@ namespace Business.Repository.Custom
         }
 
         /// <summary>
+        /// Per il collaboratore e l'intervallo di date specificato questo metodo si occupa di ricercare all'interno
+        /// della tab orari quanto configurato e ritorna un elenco di date in cui, per ogni data, sono specificati gli orari previsti.
+        /// </summary>
+        /// <param name="colId">L'id del collaboratore da ricercare.</param>
+        /// <param name="startDate">La data di partenza per la costruzione della lista (questa data sarà compresa nell'elenco).</param>
+        /// <param name="endDate">La data di termine per la costruzione della lista (questa data sarà compresa nell'elenco).</param>
+        /// <param name="dateStartCol">La data di inizio disponibilità del collaboratore (quando il collaboratore non è disponibile le ore previste sono 0)</param>
+        /// <param name="dateEndCol">la data di fine disponibilità del collaboratore (quando il collaboratore non è disponibile le ore previste sono 0)</param>
+        /// <returns>
+        /// Un dizionario con chiave la data dell'intervallo e come valore una lista di coppie di ore entrata/uscita e l'ora di inizio e fine notturno; in caso
+        /// di problemi nel calcolo (periodo errato o dati non presenti, viene restituito un dizionario vuoto).
+        /// </returns>
+        public Dictionary<DateTime, List<Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>>> GetPlanTimesNew(int colId, DateTime startDate, DateTime endDate, DateTime? dateStartCol, DateTime? dateEndCol)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnDictionary = new Dictionary<DateTime, List<Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>>>();
+
+            // recupero dell'id della tab orari tipo a partire dall'id collaboratore passato come parametro
+            int tabOrariTipoId = GetTabOrariTipoIdFromEntity(colId);
+
+            // calcolo dell'elenco di date del periodo
+            var periodDates = CommonService.GetDatesFromPeriod(startDate, endDate);
+
+            #region Calcolo delle date di validità di periodo in base alle date di disponibilità del collaboratore
+
+            // sono calcolate le date limite in cui generare ore previste, contenendo il perido tra startDate ed endDate
+            // con le eventuali date di inizio e fine disponibilità del collaboratore
+            var startValidDate = startDate;
+            var endValidDate = endDate;
+
+            // se la data di inizio validità è valorizzata ed è superiore alla data di inizio del periodo da calcolare, allora la data di inizio limite è impostata
+            // al valore di inizio disponibilità del collaboratore
+            // (se il collaboratore è stato assunto dopo la data di inzio di produzione del piano allora le ore previste prima della data di assunzione sono a 0)
+            if (dateStartCol.HasValue && dateStartCol.Value > startDate)
+                startValidDate = dateStartCol.Value;
+
+            // se la data di fine validità è valorizzata ed è inferiore alla data di fine del periodo da calcolare, allora la data di fine limite è impostata
+            // al valore di fine disponibilità del collaboratore
+            // (se il collaboratore è stato licenziato prima della data di fine di produzione del piano allora le ore previste dopo la data di licenziamento sono a 0)
+            if (dateEndCol.HasValue && dateEndCol.Value < endDate)
+                endValidDate = dateEndCol.Value;
+
+            // se il collaboratore ha una data di inizio disponibilità superiore alla data di termine del periodo da processare
+            // o se ha una data di termine disponibilità inferiore alla data di inizio del periodo da elaborare
+            // allora non dovrà essere generata nessuna ora prevista
+            // (se il collaboratore è stato licenziato prima del periodo in ricerca o se è stato assunto dopo il periodo in ricerca, tutte le ore previste sono a 0
+            if ((dateStartCol.HasValue && dateStartCol.Value > endDate) || (dateEndCol.HasValue && dateEndCol.Value < startDate))
+            {
+                startValidDate = DateTime.MaxValue;
+                endValidDate = DateTime.MinValue;
+            }
+
+            #endregion
+
+            // se è stato generato un periodo di date valido
+            if (periodDates.Any())
+            {
+                // dal tipo orario calcolato si recuperano le eventuali date di inizio e fine notturno
+                var tipoOrario = RepoManager.Tab_OrariTipoRepo.FirstOrDefault(to => to.Tab_Orari_Tipo_Id == tabOrariTipoId);
+
+                // si procede con l'elaborazione solamente se l'orario è stato trovato
+                if (tipoOrario != default(Tab_Orari_Tipo))
+                {
+
+                    TimeSpan? nocturnInitHour = tipoOrario.Tab_Orari_Tipo_Inizio_Not;
+                    TimeSpan? nocturnEndHour = tipoOrario.Tab_Orari_Tipo_Fine_Not;
+
+                    // viene recuperato dai parametri l'eventuale default di inzio della giornata
+                    var defaultInitDay = RepoManager.ParamRepo.ParametersRow.Default_Ora_Inizio_Giornata ?? new TimeSpan(0, 0, 0);
+
+                    // inserimento del periodo di date all'interno del dizionario
+                    periodDates.ForEach(pDate => returnDictionary.Add(pDate, new List<Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>>()));
+
+                    // per ogni data da elaborare
+                    periodDates.ForEach(pDate =>
+                    {
+                        // per la data in elaborazione si recupera l'elenco degli orari
+                        var validTimeSheet = GetDatePlanDetail(pDate, tabOrariTipoId, colId);
+
+                        // inizializzazione della lista da aggiungere al dizionario;
+                        // si inserisce una durata che non sia 0 solamente se la data attualmente in elaborazione è compresa nel periodo di validità del collaboratore
+                        var plan = validTimeSheet.Select(timeSheet =>
+                        {
+                            if (pDate >= startValidDate && pDate <= endValidDate)
+                                if (timeSheet.Ora_E != null && timeSheet.Ora_U != null)
+                                    return new Tuple<int, TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(timeSheet.Cant_Id.Value ,timeSheet.Ora_E.Value,
+                                        timeSheet.Ora_U.Value, nocturnInitHour, nocturnEndHour);
+                                else
+                                    return new Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(timeSheet.Cant_Id.Value, defaultInitDay,
+                                        defaultInitDay.Add(timeSheet.DisplayedDuration), nocturnInitHour, nocturnEndHour);
+                            else // in caso non si sia nell'intervallo valido si ritorna il valore null
+                                return null;
+                        }
+                            ).ToList();
+
+                        // aggiunta della lista calcolata a partire dai timesheet nel dizionario nella data in elaborazione
+                        returnDictionary[pDate] = plan;
+
+                    });
+                }
+            }
+
+            // ritorno del valore del metodo
+            return returnDictionary;
+        }
+
+        /// <summary>
         /// Recupera l'id della tab orari tipo collegata al collaboratore passato come parametro.
         /// In caso il collaboratore non sia stato trovato o la tab_orari configurata nel collaboratore
         /// non sia presente il metodo ritorna valore 0
@@ -1052,8 +1161,9 @@ namespace Business.Repository.Custom
             if (validTimesheet.Any())
             {
                 var lastTimesheetDate = validTimesheet.Max(tor => tor.Data_Inizio);
-                validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
-
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) {
+                    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
+                }
                 // per ognuno degli orari recuperati viene verificato se si tratta di un orario valido per la data
                 // (cioè se rispetta giorno/ripetizione, non si tratta di un giorno festivo (solo per i collaboratori) e sia flaggato il giorno corretto); se si tratta di un orario
                 // valido allora lo si aggiunge all'elenco

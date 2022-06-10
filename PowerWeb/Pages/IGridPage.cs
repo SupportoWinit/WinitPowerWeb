@@ -12,5 +12,6 @@ namespace PowerWeb.Pages
         IGridModule GridModule { get; }
         IDoubleGridModule DoubleGridModule { get; }
         ITripleGridModule TripleGridModule { get; }
+        IQuadGridModule QuadGridModule { get; }
     }
 }

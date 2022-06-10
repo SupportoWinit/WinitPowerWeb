@@ -30,6 +30,11 @@ namespace PowerWeb.Pages
             get { return null; }
         }
 
+        public IQuadGridModule QuadGridModule
+        {
+            get { return null; }
+        }
+
         public IPrintModule PrintModule
         {
             get { return mdlTimesheetModule; }

@@ -513,9 +513,11 @@ namespace Business.Repository.Custom
                                                         if (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek != DayOfWeek.Sunday && !RepoManager.Tab_FestiviRepo.IsHolidayOrNotWorkDays(currentRegU.Registrazione_Data_Ora_Fis_Reg.Date))
                                                         {
 
-                                                            var mondayFridayPause = 90; //Minuti
-                                                            var saturdayPause = 30; //Minuti
-                                                            var extraTimePause = 60; //Minuti
+                                                            var mondayFridayPause = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "mondayFridayPause")); //Minuti
+                                                            var saturdayPause = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "saturdayPause")); //Minuti
+                                                            var extraTimePause = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "extraTimePause")); //Minuti
+                                                            double amount = double.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "amount"));
+                                                            var startRounding = new TimeSpan();
 
                                                             DateTime elaborateStartDate = new DateTime();
                                                             TimeSpan weekMaxSchedule = new TimeSpan();
@@ -532,6 +534,7 @@ namespace Business.Repository.Custom
                                                                 weekMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerWeekMinSchedule"));
                                                                 saturdayMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerSaturdayMaxSchedule"));
                                                                 saturdayMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "summerSaturdayMinSchedule"));
+                                                                startRounding = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "SummerStartArrot"));
                                                             }
                                                             else
                                                             {
@@ -540,6 +543,8 @@ namespace Business.Repository.Custom
                                                                 weekMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterWeekMinSchedule"));
                                                                 saturdayMaxSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterSaturdayMaxSchedule"));
                                                                 saturdayMinSchedule = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "winterSaturdayMinSchedule"));
+                                                                startRounding = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.Casp, "SummerStartArrot"));
+
                                                             }
 
                                                             if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > new TimeSpan(17, 25, 0)) //17:25
@@ -592,8 +597,8 @@ namespace Business.Repository.Custom
                                                                  && currentRegU.Registrazione_Data_Ora_Fis_Reg.DayOfWeek != DayOfWeek.Sunday))
                                                             {
                                                                 //Aggiugere scaglioni di mezz'ora
-                                                                var startRounding = weekMaxSchedule.Add(new TimeSpan(0, 5, 0));
-                                                                double amount = 30;
+                                                                startRounding = weekMaxSchedule.Add(new TimeSpan(0, 5, 0));
+                                                                amount = 30;
 
                                                                 var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - weekMaxSchedule).TotalMinutes;
                                                                 var multiplier = Math.Ceiling(extraMinutes / 30);
@@ -636,8 +641,8 @@ namespace Business.Repository.Custom
                                                                 && (currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Saturday
                                                                  || currentRegU.Registrazione_Data_Ora_Fis_Reg.Date.DayOfWeek == DayOfWeek.Sunday))
                                                             {
-                                                                var startRounding = saturdayMaxSchedule.Add(new TimeSpan(0, 5, 0));
-                                                                double amount = 30;
+                                                                startRounding = saturdayMaxSchedule.Add(new TimeSpan(0, 5, 0));
+                                                                amount = 30;
 
                                                                 var extraMinutes = (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay - startRounding).TotalMinutes;
                                                                 var multiplier = Math.Ceiling(extraMinutes / 30);
@@ -881,7 +886,7 @@ namespace Business.Repository.Custom
                                         minutesDuration = 60;
                                     }
 
-                                    if (minutesWorked > fromHourThresholdDuration) //Inserire parametro
+                                   if (minutesWorked <= fromHourThresholdDuration) //Inserire parametro
                                         continue;
 
                                     int moduleMinutes = minutesWorked % minutesDuration;
@@ -2225,6 +2230,7 @@ namespace Business.Repository.Custom
                     //se i cantieri sono UGUALI e NON ho attivo il parametro ->NO CALCOLO VIAGGIO
                     //se i cantieri sono UGUALI ed E' attivo il parametro ->CALCOLO VAGGIO
 
+                    
                     if (differentCant || paramTripType == (int)FlagTripTypeEnum.SameCant)
                     //Crea un Viaggio nel caso in cui il Cantiere sia Cambiato oppure se sono previsti anche i Viaggi fra Cantieri Uguali 
                     {
@@ -2246,7 +2252,20 @@ namespace Business.Repository.Custom
                         // ONL (ore non lavorate); in questo caso la destinazione il cantiere della registrazione successiva a quella in processo
                         if (dummyCantId != null) // recupero del cantiere dai parametri
                         {
-                            newRegE.Cant_Id = newRegU.Cant_Id = dummyCantId.Value;
+                            var nextRegV = (position + 1) < orderedCurrentTripsByMotByColByDate.Count() ? orderedCurrentTripsByMotByColByDate.ElementAt(position + 1) : null;
+                            if (currentRegV == null)
+                            {
+                                newRegE.Cant_Id = dummyCantId.Value;
+                            }
+                            else if (nextRegV == null)
+                            {
+                                newRegU.Cant_Id = dummyCantId.Value;
+                            }
+                            else {
+                                newRegE.Cant_Id = currentRegV.Cant_Id;
+                                newRegU.Cant_Id = nextRegV.Cant_Id;
+                            }
+                            
                         }
                         else // recupero del cantiere dalla destinazione
                         {
@@ -2254,8 +2273,15 @@ namespace Business.Repository.Custom
                             // di tipo ONL (ore non lavorate)
                             if (!isToOnl)
                             {
+                                    var nextRegV = (position + 1) < orderedCurrentTripsByMotByColByDate.Count() ? orderedCurrentTripsByMotByColByDate.ElementAt(position + 1) : null;
                                 //Il cantiere di destinazione della nuova reg è uguale al cantiere della registrazione corrente
-                                newRegE.Cant_Id = newRegU.Cant_Id = currentRegV.Cant_Id;
+                                if (nextRegV != null)
+                                {
+                                    newRegE.Cant_Id = currentRegV.Cant_Id;
+                                    newRegU.Cant_Id = nextRegV.Cant_Id;
+                                }
+                                else
+                                    newRegE.Cant_Id = newRegU.Cant_Id = currentRegV.Cant_Id;
                             }
                             else
                             {
@@ -2324,6 +2350,7 @@ namespace Business.Repository.Custom
                         newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
                         newRegU.Col_Id = currentCol.Col_Id;
                         newRegU.Att_Id = newRegU.Cant_Id;
+                        newRegU.Cant_Id = currentRegV.Cant_Id;
 
                         //per l'uso della stored procedure inserico i riferimenti 
                         newRegE.RiferimentoRRN_Att = lastRegV.RegE;
@@ -3561,7 +3588,7 @@ namespace Business.Repository.Custom
                                 RepoManager.CantRepo.UpdateGeoLocation(cant);
                             }
 
-                            endGeocodeResult.Longitude = cant.LatitudineGps_Can;
+                            endGeocodeResult.Latitude = cant.LatitudineGps_Can;
                             endGeocodeResult.Longitude = cant.LongitudineGps_Can;
 
                             // se sono disponibili LAT/LONG sia della partenza che della destinazione
@@ -4341,7 +4368,7 @@ namespace Business.Repository.Custom
                         var timespan = entity.Data_Ora_Fis_U - entity.Data_Ora_Fis_E;
 
                         //se è attiva la personalizzazione di chiususra delle timbrature sulla sede
-                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede)
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1)
                         {
                             //viene controllato che la durata non sia negativa ma può essere 0
                             if (timespan == null || timespan < new TimeSpan(0, 0, 0))

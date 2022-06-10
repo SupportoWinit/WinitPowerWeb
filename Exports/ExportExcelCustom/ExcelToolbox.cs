@@ -182,7 +182,8 @@ namespace Exports.ExportExcelCustom
         /// </summary>
         /// <param name="selectedColIds">L'elenco degli id collaboratore selezionati per l'export.</param>
         /// <param name="selectedCantIds">L'elenco degli id cantiere selezionati per l'export.</param>
-        public abstract void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds);
+        /// <param name="selectedCliIds">L'elenco degli id cliente selezionati per l'export.</param>
+        public abstract void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds, IEnumerable<int> selectedCliIds);
 
         /// <summary>
         /// Salva il foglio excel in lavorazione nel percorso specificato.
@@ -372,6 +373,29 @@ namespace Exports.ExportExcelCustom
 
             // si ritorna true se esiste un foglio con il nome passato come parametro nell'excel attuale
             return ExcelWorkbook.Workbook.Worksheets.Any(ws => ws.Name == worksheetName);
+        }
+
+        /// <summary>
+        /// /// Determina il numero del foglio di lavoro in base al nome passato come parametro
+        /// </summary>
+        /// <param name="worksheetName">Il nome del foglio di lavoro da cercare.</param>
+        /// <returns>Numero del foglio di lavoro cercato.</returns>
+        protected int WorksheetNumberFromName(string worksheetName)
+        {
+            // convalida input del metodo: affinchè il metodo possa funzionare è necessario che il foglio excel sia istanziato
+            if (ExcelWorkbook == null)
+                throw new InvalidOperationException("Excel workbook not initialized");
+
+            int worksheetNumber = 0;
+
+            for (int i = 1; i <= ExcelWorkbook.Workbook.Worksheets.Count(); i++)
+            {
+                if (ExcelWorkbook.Workbook.Worksheets[i].Name == worksheetName)
+                    worksheetNumber = i;
+            }
+
+            // ritorna il numero del worksheet cercato
+            return worksheetNumber;
         }
 
         /// <summary>

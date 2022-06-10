@@ -864,24 +864,24 @@ namespace Business
                 // Eseguo IMport delle Registrazioni Sospese in INPUT_FISICO 
                 tableName = "InputFisico";
 
-                if (toNotImportTables.SingleOrDefault(x => x.Nome_Tabella_Tab_Check_Imp == tableName) == null)
-                {
-                    using (InputFisicoTableAdapter tableAdapter = new InputFisicoTableAdapter())
-                    {
-                        if (myAccessConn.State == ConnectionState.Broken)
-                            myAccessConn = new OleDbConnection(strAccessConn);
-                        tableAdapter.Connection = myAccessConn;
-                        tableAdapter.Fill(currentDS.InputFisico);
-                        Stopwatch sw = new Stopwatch();
-                        sw.Start();
-                        var regErrors = RepoManager.RegRepo.ImportFromDataSet(currentDS, tableName);
-                        if (regErrors.Count > 0)
-                            errors.Add(tableName, regErrors);
-                        sw.Stop();
-                        oLog.DebugFormat("Ho impiegato {0} per importare la tabella {1}.",
-                            CommonService.Get_MMM_SS_FFF_FormattedString(sw.Elapsed), tableName);
-                    }
-                }
+              // if (toNotImportTables.SingleOrDefault(x => x.Nome_Tabella_Tab_Check_Imp == tableName) == null)
+              // {
+              //     using (InputFisicoTableAdapter tableAdapter = new InputFisicoTableAdapter())
+              //     {
+              //         if (myAccessConn.State == ConnectionState.Broken)
+              //             myAccessConn = new OleDbConnection(strAccessConn);
+              //         tableAdapter.Connection = myAccessConn;
+              //         tableAdapter.Fill(currentDS.InputFisico);
+              //         Stopwatch sw = new Stopwatch();
+              //         sw.Start();
+              //         var regErrors = RepoManager.RegRepo.ImportFromDataSet(currentDS, tableName);
+              //         if (regErrors.Count > 0)
+              //             errors.Add(tableName, regErrors);
+              //         sw.Stop();
+              //         oLog.DebugFormat("Ho impiegato {0} per importare la tabella {1}.",
+              //             CommonService.Get_MMM_SS_FFF_FormattedString(sw.Elapsed), tableName);
+              //     }
+              // }
                 #endregion
 
                 //Segnalo la Fine dell'IMPORT da ACCESS

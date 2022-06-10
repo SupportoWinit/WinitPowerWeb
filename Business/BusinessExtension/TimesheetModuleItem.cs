@@ -1473,7 +1473,7 @@ namespace Business.BusinessExtension
 
         }
 
-        public void PopulateHoursWithDateNew(List<TimeSpan> ore,List<DateTime> giorni)
+        public void PopulateHoursWithDateNew(List<TimeSpan> ore, List<DateTime> giorni)
         {
             // generazione del nuovo oggetto che andrà a popolare i giorni dell'oggetto timesheet attuale
             var newDaysHours = new Dictionary<int, Tuple<double, TimeSpan?, TimeSpan?>>();
@@ -1483,16 +1483,19 @@ namespace Business.BusinessExtension
             foreach (var day in giorni)
             {
                 int j = 0;
-                foreach (var hours in ore) {
+                foreach (var hours in ore)
+                {
                     //controllo di essere nel punto giusto della lista
-                    if (i == j) {
+                    if (i == j)
+                    {
                         //se ho un valore lo inserisco nella tabella altrimenti inserisco un valore a zero
                         if (hours.TotalMinutes > 0)
                         {
                             Tuple<double, TimeSpan?, TimeSpan?> prova1 = new Tuple<double, TimeSpan?, TimeSpan?>(hours.TotalMinutes, null, null);
                             newDaysHours.Add(day.Day, prova1);
                         }
-                        else {
+                        else
+                        {
                             Tuple<double, TimeSpan?, TimeSpan?> prova1 = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
                             newDaysHours.Add(day.Day, prova1);
                         }
@@ -3364,6 +3367,8 @@ namespace Business.BusinessExtension
                     int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
                     if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse)
                         dayRegVs = dayRegVs.Where(d => d.Motivazione_Reg_Id == null).ToList();
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+                        dayRegVs = dayRegVs.Where(d => d.Motivazione_Reg_Cod != "Pausa Pranzo").ToList();
 
                     // inserimento delle ore diurne calcolate,
                     tsmItems.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, dayRegVs, BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_DIURNE), minDate, maxDate, 0, 0, false));
@@ -3635,23 +3640,52 @@ namespace Business.BusinessExtension
             return planTimesheetItem;
         }
 
-        /// <summary>
-        /// Genera un nuovo timesheet item di tipo ore corrette a partire dai dati passati come parametro
-        /// </summary>
-        /// <param name="isDecimalHours">Indica se impostare la visualizzazione del timesheet item in decimali o sessantesimi</param>
-        /// <param name="planMinutes">L'elenco dei minuti per mese da inserire in orario</param>
-        /// <param name="isFromFreeTimesheet"><c>true</c> se il dato proviene dalla tabella Col_Orario; altrimenti <c>false</c></param>
-        /// <param name="freeTimesheetId">L'id dell'eventuale record della tabella Col_Orario di provenienza.</param>
-        /// <param name="colId">L'id del collaboratore a cui l'elemento timesheet in generazione fa riferimento</param>
-        /// <param name="firstMonthDate">Il primo giorno del mese oggetto del timesheet item in generazione</param>
-        /// <param name="cantId">L'id del cantiere da inserire nell'oggetto timesheet in generazione (se nessun cantiere l'id sarà 0)</param>
-        /// <returns>L'oggetto timesheet item generato utilizzando i parametri generati</returns>
-        public static TimesheetModuleItem GenerateNewPartPermTimesheet(bool isDecimalHours, List<TimeSpan> ore,List<DateTime> giorni,
+            public static TimesheetModuleItem GenerateNewPlanTimesheetExport(bool isDecimalHours,
+            bool isFromFreeTimesheet, int freeTimesheetId, int colId, DateTime firstMonthDate, int cantId, PlanTypeEnum planType = PlanTypeEnum.Normal)
+            {
+                var planTimesheetItem = new TimesheetModuleItem(isDecimalHours);
+                planTimesheetItem.StartDate = firstMonthDate;
+                //planTimesheetItem.PopulateHoursWithDate();
+                planTimesheetItem.IsFromFreeTimeSheet = isFromFreeTimesheet;
+                planTimesheetItem.FreeTimeSheetId = freeTimesheetId;
+                planTimesheetItem.InsertColValues(colId);
+                planTimesheetItem.InsertCantValues(cantId);
+                planTimesheetItem.Order = 0;
+
+                switch (planType)
+                {
+                    case PlanTypeEnum.Normal:
+                        planTimesheetItem.Justification = BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN);
+                        break;
+                    case PlanTypeEnum.Day:
+                        planTimesheetItem.Justification = BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY);
+                        break;
+                    case PlanTypeEnum.Night:
+                        planTimesheetItem.Justification = BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT);
+                        break;
+                    default:
+                        break;
+                }
+                return planTimesheetItem;
+            }
+
+            /// <summary>
+            /// Genera un nuovo timesheet item di tipo ore corrette a partire dai dati passati come parametro
+            /// </summary>
+            /// <param name="isDecimalHours">Indica se impostare la visualizzazione del timesheet item in decimali o sessantesimi</param>
+            /// <param name="planMinutes">L'elenco dei minuti per mese da inserire in orario</param>
+            /// <param name="isFromFreeTimesheet"><c>true</c> se il dato proviene dalla tabella Col_Orario; altrimenti <c>false</c></param>
+            /// <param name="freeTimesheetId">L'id dell'eventuale record della tabella Col_Orario di provenienza.</param>
+            /// <param name="colId">L'id del collaboratore a cui l'elemento timesheet in generazione fa riferimento</param>
+            /// <param name="firstMonthDate">Il primo giorno del mese oggetto del timesheet item in generazione</param>
+            /// <param name="cantId">L'id del cantiere da inserire nell'oggetto timesheet in generazione (se nessun cantiere l'id sarà 0)</param>
+            /// <returns>L'oggetto timesheet item generato utilizzando i parametri generati</returns>
+            public static TimesheetModuleItem GenerateNewPartPermTimesheet(bool isDecimalHours, List<TimeSpan> ore, List<DateTime> giorni,
             bool isFromFreeTimesheet, int freeTimesheetId, int colId, DateTime firstMonthDate, int cantId, PlanTypeEnum planType = PlanTypeEnum.Normal)
         {
             var planTimesheetItem = new TimesheetModuleItem(isDecimalHours);
             planTimesheetItem.StartDate = firstMonthDate;
-            planTimesheetItem.PopulateHoursWithDateNew(ore,giorni);
+            planTimesheetItem.PopulateHoursWithDateNew(ore, giorni);
             planTimesheetItem.IsFromFreeTimeSheet = false;
             planTimesheetItem.FreeTimeSheetId = 0;
             planTimesheetItem.InsertColValues(colId);
@@ -3661,7 +3695,6 @@ namespace Business.BusinessExtension
             planTimesheetItem.Justification = BusinessService.GetLocalizedString(PowerWebResources.LBL_PARTPERM);
             return planTimesheetItem;
         }
-
 
 
         private static List<TimesheetModuleItem> GenerateRegVTimesheetsByOtherEntity(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
@@ -3685,6 +3718,44 @@ namespace Business.BusinessExtension
                 // aggiungo il timesheet specifico del cantiere alla list di ritorno
                 returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
             }
+
+            // ritorno del valore calcolato dal metodo
+            return returnList;
+        }
+
+        private static List<TimesheetModuleItem> GenerateDeltaRegVTimesheetsByOtherEntity(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> minutes, TimesheetModuleItem colRigth, int freeTimesheetId, bool isFromFreeTimesheet, List<TimesheetModuleItem> cartellini, bool usaFisiche = false, List<int> cantList = null)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnList = new List<TimesheetModuleItem>();
+
+            // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
+            var cantIdList = regVsToSplit.Select(regv => regv.Cant_Id).Distinct().ToList();
+            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            {
+                cantIdList = cantList.Cast<int?>().ToList();
+            }
+            // per ogni id cantiere presente nella lista
+            foreach (var listCantId in cantIdList)
+            {
+                // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                var currentCantId = listCantId ?? 0;
+                bool controllo = false;
+                TimesheetModuleItem colPlan = new TimesheetModuleItem(isDecimalHours);
+
+                try {
+                    var temp = minutes.First(m => m.Key == currentCantId);
+                    colPlan = GenerateNewPlanTimesheet(isDecimalHours, temp.Value, isFromFreeTimesheet, freeTimesheetId, col.Col_Id, firstMonthDate, minutes.First().Key);
+
+                    TimesheetModuleItem colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartellini.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), firstMonthDate, lastMonthDate, ++timesheetOrder, 0, requestedForWeeklyTotals);
+                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                    //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                    returnList.Add(subtractTimesheetsExport(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), firstMonthDate, lastMonthDate, ++timesheetOrder, currentCantId, requestedForWeeklyTotals));
+                }
+                catch (Exception e) { 
+                }
+            }
+            //TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), firstMonthDate, lastMonthDate, ++timesheetOrder, 0, requestedForWeeklyTotals);
 
             // ritorno del valore calcolato dal metodo
             return returnList;
@@ -4110,6 +4181,347 @@ namespace Business.BusinessExtension
             return cartelliniList;
         }
 
+        private static TimesheetModuleItem GenerateNewEditableTimesheetExport(int colId, int cantId, bool isDecimalHours, DateTime firstMonthDate, DateTime lastMonthDate, TimesheetModuleItem plan, TimesheetModuleItem worked)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            List<TimesheetModuleItem> cartelliniList = new List<TimesheetModuleItem>();
+
+            // dichiarazione dei vari cartellini da utilizzare e visualizzare
+            TimesheetModuleItem dayPlan,
+                nightPlan,
+                dayWorked,
+                nightWorked,
+                tsOrdDiurne = new TimesheetModuleItem(isDecimalHours),
+                tsStrDiurne = new TimesheetModuleItem(isDecimalHours),
+                tsFestDiu = new TimesheetModuleItem(isDecimalHours),
+                tsStrFest = new TimesheetModuleItem(isDecimalHours),
+                tsOrdNot = new TimesheetModuleItem(isDecimalHours),
+                tsStrNot = new TimesheetModuleItem(isDecimalHours),
+                tsStrNotFest = new TimesheetModuleItem(isDecimalHours),
+                tsOrdNotFest = new TimesheetModuleItem(isDecimalHours);
+
+            // recupara il collaboratore da elaborare
+            Col col = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == colId);
+
+            // calcola e assegna alle rispettive variabili i piani divisi per diurne e notturne
+            bool isFreeTimesheet = false;
+            int freeTimesheetId = 0;
+            var plans = RepoManager.Tab_OrariRepo.GetDevidedPlanMinutes(colId, firstMonthDate, lastMonthDate, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, out isFreeTimesheet, out freeTimesheetId);
+            int tot_id = RepoManager.Tab_OrariRepo.GetTabOrariTipoIdFromEntity(colId);
+            Tab_Orari_Tipo tot = null;
+            if (tot_id != 0)
+            {
+                tot = RepoManager.Tab_OrariTipoRepo.First(ot => ot.Tab_Orari_Tipo_Id == tot_id);
+            }
+            bool assignNotDiuAutomatically;
+
+            if (tot != null)
+            {
+                assignNotDiuAutomatically = tot.Tab_Orari_Tipo_NotDiu_Auto;
+            }
+            else
+            {
+                assignNotDiuAutomatically = true;
+            }
+
+
+            dayPlan = plan;
+            nightPlan = GenerateNewPlanTimesheet(isDecimalHours, plans[NightTimesheetKey], isFreeTimesheet, freeTimesheetId, colId, firstMonthDate, 0, PlanTypeEnum.Night);
+
+            // calcola e assegna alle rispettive variabili i cartellini delle ore lavorate divise per diurne e notturne
+            List<TimesheetModuleItem> dayNightTimesheets = GenerateDayNightTimesheets(firstMonthDate, isDecimalHours, colId, plan);
+            //if (!dayNightTimesheets.Any())
+            //{
+            //    return cartelliniList;
+            //}
+            dayWorked = worked;
+            nightWorked = dayNightTimesheets.Last();
+
+            double ordDiu, strDiu, ordNot, strNot;
+            DateTime processingDate = firstMonthDate;
+
+            //Calcola i cartellini per ogni giorno del mese
+            for (int i = 1, lastDay = lastMonthDate.Day; i <= lastDay; i++)
+            {
+                ordDiu = 0;
+                strDiu = 0;
+                ordNot = 0;
+                strNot = 0;
+                double pianoNotturne = (double)nightPlan["Day" + i.ToString("00")];
+                double pianoDiurne = (double)dayPlan["Day" + i.ToString("00")];
+                double effettiveDiurne = (double)dayWorked["Day" + i.ToString("00")];
+                double effettiveNotturne = (double)nightWorked["Day" + i.ToString("00")];
+
+
+                /* ASSEGNAZIONE AUTOMATICA PIANO DIURNO/NOTTURNO */
+                // Se il flag sul orarioTipo è attivato e l'orario è solo durata
+                // decide se il piano è diurno o notturno a seconda delle ore lavorative diurne e notturne effettuate
+                if (assignNotDiuAutomatically)
+                {
+                    if (pianoNotturne == 0 && effettiveNotturne > effettiveDiurne)
+                    {
+                        pianoNotturne = pianoDiurne;
+                        pianoDiurne = 0;
+                    }
+                }
+
+                /* AGGIUSTAMENTI PIANI */
+                //Se ho fatto meno diurne XOR meno notturne del previsto, bisogna aggiustare i piani
+                //per evitare di segnare straordinarie che non sono state fatte
+
+                if (effettiveDiurne <= pianoDiurne && effettiveNotturne > pianoNotturne)
+                {
+                    pianoNotturne = CommonService.SumDoubleHours(pianoNotturne, CommonService.SubtractDoubleHours(pianoDiurne, effettiveDiurne));
+                }
+
+                else if (effettiveNotturne <= pianoNotturne && effettiveDiurne > pianoDiurne)
+                {
+                    pianoDiurne = CommonService.SumDoubleHours(pianoDiurne, CommonService.SubtractDoubleHours(pianoNotturne, effettiveNotturne));
+                }
+
+                /* DIVISIONE ORDINARIE/STRAORDINARIE */
+                //Se ci sono più ore lavorate che piano, assegna lo straordinario
+                //Altrimenti non c'è straordinario
+
+                if (effettiveDiurne > pianoDiurne)
+                {
+                    strDiu = CommonService.SubtractDoubleHours(effettiveDiurne, pianoDiurne, isDecimalHours);
+                    ordDiu = pianoDiurne;
+                }
+                else
+                {
+                    strDiu = 0;
+                    ordDiu = effettiveDiurne;
+                }
+
+                if (effettiveNotturne > pianoNotturne)
+                {
+                    strNot = CommonService.SubtractDoubleHours(effettiveNotturne, pianoNotturne);
+                    ordNot = pianoNotturne;
+                }
+                else
+                {
+                    strNot = 0;
+                    ordNot = effettiveNotturne;
+                }
+
+
+                /* ASSEGNAZIONE FESTIVO */
+                //Se la giornata in elaborazione è festiva, le ore appena suddivise vanno nei cartellini festivi
+                //Altrimenti vanno nei cartellini non festivi
+
+                if (RepoManager.Tab_FestiviRepo.IsHolidayOrNotWorkDays(processingDate))
+                {
+                    tsOrdDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsOrdDiurne["Day" + i.ToString("00")] = 0;
+                    tsStrDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(strDiu, isDecimalHours));
+                    //tsStrDiurne["Day" + i.ToString("00")] = 0;
+                    tsOrdNot.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsOrdNot["Day" + i.ToString("00")] = 0;
+                    tsStrNot.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsStrNot["Day" + i.ToString("00")] = 0;
+                    tsFestDiu.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsFestDiu["Day" + i.ToString("00")] = ordDiu;
+                    tsStrFest.SetHoursValue(i, CommonService.FromHoursToMinutes(strDiu, isDecimalHours));
+                    //tsStrFest["Day" + i.ToString("00")] = strDiu;
+                    tsOrdNotFest.SetHoursValue(i, CommonService.FromHoursToMinutes(ordNot, isDecimalHours));
+                    //tsOrdNotFest["Day" + i.ToString("00")] = ordNot;
+                    tsStrNotFest.SetHoursValue(i, CommonService.FromHoursToMinutes(strNot, isDecimalHours));
+                    //tsStrNotFest["Day" + i.ToString("00")] = strNot;
+                }
+                else
+                {
+                    tsOrdDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsOrdDiurne["Day" + i.ToString("00")] = ordDiu;
+                    tsStrDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(strDiu, isDecimalHours));
+                    //tsStrDiurne["Day" + i.ToString("00")] = strDiu;
+                    tsOrdNot.SetHoursValue(i, CommonService.FromHoursToMinutes(ordNot, isDecimalHours));
+                    //tsOrdNot["Day" + i.ToString("00")] = ordNot;
+                    tsStrNot.SetHoursValue(i, CommonService.FromHoursToMinutes(strNot, isDecimalHours));
+                    //tsStrNot["Day" + i.ToString("00")] = strNot;
+                    tsFestDiu.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsFestDiu["Day" + i.ToString("00")] = 0;
+                    tsStrFest.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsStrFest["Day" + i.ToString("00")] = 0;
+                    tsOrdNotFest.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsOrdNotFest["Day" + i.ToString("00")] = 0;
+                    tsStrNotFest.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsStrNotFest["Day" + i.ToString("00")] = 0;
+                }
+
+                //Aumenta di un giorno la data in elaborazione
+                processingDate = processingDate.AddDays(1);
+            }
+
+            //Imposta la motivazione dei cartellini utilizzando la Tab_Decod come resources (ci sarà bisogno di fare il processo inverso al salvataggio del cartellino)
+            tsOrdDiurne.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_DIU").Decodifica_Tab;
+            tsStrDiurne.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_DIU").Decodifica_Tab;
+            tsOrdNot.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_NOT").Decodifica_Tab;
+            tsStrNot.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_NOT").Decodifica_Tab;
+            tsFestDiu.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_DIU_FEST").Decodifica_Tab;
+            tsStrFest.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_DIU_FEST").Decodifica_Tab;
+            tsOrdNotFest.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_NOT_FEST").Decodifica_Tab;
+            tsStrNotFest.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_NOT_FEST").Decodifica_Tab;
+
+            //Aggiunge tutti i cartellini alla lista di ritorno
+            //cartelliniList.Add(tsOrdDiurne);
+            cartelliniList.Add(tsStrDiurne);
+            //cartelliniList.Add(tsOrdNot);
+            //cartelliniList.Add(tsStrNot);
+            //cartelliniList.Add(tsFestDiu);
+            //cartelliniList.Add(tsStrFest);
+            //cartelliniList.Add(tsOrdNotFest);
+            //cartelliniList.Add(tsStrNotFest);
+
+            //Assegna a tutti i cartellini le impostazioni di base
+            foreach (var cartellino in cartelliniList)
+            {
+                cartellino.IsFromFreeTimeSheet = false;
+                cartellino.FreeTimeSheetId = 0;
+                cartellino.InsertColValues(colId);
+                cartellino.StartDate = firstMonthDate;
+                cartellino.InsertCantValues(cantId);
+            }
+
+            return tsStrDiurne;
+        }
+
+        private static TimesheetModuleItem GenerateNewEditableTimesheetExportStr(int colId, int cantId, bool isDecimalHours, DateTime firstMonthDate, DateTime lastMonthDate, TimesheetModuleItem worked)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            List<TimesheetModuleItem> cartelliniList = new List<TimesheetModuleItem>();
+
+            // dichiarazione dei vari cartellini da utilizzare e visualizzare
+            TimesheetModuleItem dayPlan,
+                nightPlan,
+                dayWorked,
+                nightWorked,
+                tsOrdDiurne = new TimesheetModuleItem(isDecimalHours),
+                tsStrDiurne = new TimesheetModuleItem(isDecimalHours),
+                tsFestDiu = new TimesheetModuleItem(isDecimalHours),
+                tsStrFest = new TimesheetModuleItem(isDecimalHours),
+                tsOrdNot = new TimesheetModuleItem(isDecimalHours),
+                tsStrNot = new TimesheetModuleItem(isDecimalHours),
+                tsStrNotFest = new TimesheetModuleItem(isDecimalHours),
+                tsOrdNotFest = new TimesheetModuleItem(isDecimalHours);
+
+            // recupara il collaboratore da elaborare
+            Col col = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == colId);
+
+            // calcola e assegna alle rispettive variabili i piani divisi per diurne e notturne
+            bool isFreeTimesheet = false;
+            int freeTimesheetId = 0;
+            var plans = RepoManager.Tab_OrariRepo.GetDevidedPlanMinutes(colId, firstMonthDate, lastMonthDate, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, out isFreeTimesheet, out freeTimesheetId);
+            int tot_id = RepoManager.Tab_OrariRepo.GetTabOrariTipoIdFromEntity(colId);
+            Tab_Orari_Tipo tot = null;
+            if (tot_id != 0)
+            {
+                tot = RepoManager.Tab_OrariTipoRepo.First(ot => ot.Tab_Orari_Tipo_Id == tot_id);
+            }
+            bool assignNotDiuAutomatically;
+
+            if (tot != null)
+            {
+                assignNotDiuAutomatically = tot.Tab_Orari_Tipo_NotDiu_Auto;
+            }
+            else
+            {
+                assignNotDiuAutomatically = true;
+            }
+
+            nightPlan = GenerateNewPlanTimesheet(isDecimalHours, plans[NightTimesheetKey], isFreeTimesheet, freeTimesheetId, colId, firstMonthDate, 0, PlanTypeEnum.Night);
+
+            // calcola e assegna alle rispettive variabili i cartellini delle ore lavorate divise per diurne e notturne
+            //if (!dayNightTimesheets.Any())
+            //{
+            //    return cartelliniList;
+            //}
+            dayWorked = worked;
+
+            double ordDiu, strDiu, ordNot, strNot;
+            DateTime processingDate = firstMonthDate;
+
+            //Calcola i cartellini per ogni giorno del mese
+            for (int i = 1, lastDay = lastMonthDate.Day; i <= lastDay; i++)
+            {
+                double pianoNotturne = (double)nightPlan["Day" + i.ToString("00")];
+                double effettiveDiurne = (double)dayWorked["Day" + i.ToString("00")];
+                strDiu = 0;
+                ordDiu = effettiveDiurne;
+
+                /* ASSEGNAZIONE FESTIVO */
+                //Se la giornata in elaborazione è festiva, le ore appena suddivise vanno nei cartellini festivi
+                //Altrimenti vanno nei cartellini non festivi
+
+                if (RepoManager.Tab_FestiviRepo.IsHolidayOrNotWorkDays(processingDate))
+                {
+                    tsOrdDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsOrdDiurne["Day" + i.ToString("00")] = 0;
+                    tsStrDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsStrDiurne["Day" + i.ToString("00")] = 0;
+                    tsOrdNot.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsOrdNot["Day" + i.ToString("00")] = 0;
+                    tsStrNot.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsStrNot["Day" + i.ToString("00")] = 0;
+                    tsFestDiu.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsFestDiu["Day" + i.ToString("00")] = ordDiu;
+                    tsStrFest.SetHoursValue(i, CommonService.FromHoursToMinutes(strDiu, isDecimalHours));
+                    //tsStrFest["Day" + i.ToString("00")] = strDiu;
+                }
+                else
+                {
+                    tsOrdDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsOrdDiurne["Day" + i.ToString("00")] = ordDiu;
+                    tsStrDiurne.SetHoursValue(i, CommonService.FromHoursToMinutes(ordDiu, isDecimalHours));
+                    //tsStrDiurne["Day" + i.ToString("00")] = strDiu;
+                    tsFestDiu.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsFestDiu["Day" + i.ToString("00")] = 0;
+                    tsStrFest.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsStrFest["Day" + i.ToString("00")] = 0;
+                    tsOrdNotFest.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsOrdNotFest["Day" + i.ToString("00")] = 0;
+                    tsStrNotFest.SetHoursValue(i, CommonService.FromHoursToMinutes(0, isDecimalHours));
+                    //tsStrNotFest["Day" + i.ToString("00")] = 0;
+                }
+
+                //Aumenta di un giorno la data in elaborazione
+                processingDate = processingDate.AddDays(1);
+            }
+
+            //Imposta la motivazione dei cartellini utilizzando la Tab_Decod come resources (ci sarà bisogno di fare il processo inverso al salvataggio del cartellino)
+            tsOrdDiurne.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_DIU").Decodifica_Tab;
+            tsStrDiurne.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_DIU").Decodifica_Tab;
+            tsOrdNot.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_NOT").Decodifica_Tab;
+            tsStrNot.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_NOT").Decodifica_Tab;
+            tsFestDiu.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_DIU_FEST").Decodifica_Tab;
+            tsStrFest.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_DIU_FEST").Decodifica_Tab;
+            tsOrdNotFest.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_ORD_NOT_FEST").Decodifica_Tab;
+            tsStrNotFest.Justification = RepoManager.Tab_DecodRepo.Single(td => td.Nome_Tab == "EDITABLE_TIMESHEET_JUSTIFICATION" && td.Chiave_Tab == "LBL_STR_NOT_FEST").Decodifica_Tab;
+
+            //Aggiunge tutti i cartellini alla lista di ritorno
+            cartelliniList.Add(tsOrdDiurne);
+            //cartelliniList.Add(tsStrDiurne);
+            //cartelliniList.Add(tsOrdNot);
+            //cartelliniList.Add(tsStrNot);
+            //cartelliniList.Add(tsFestDiu);
+            //cartelliniList.Add(tsStrFest);
+            //cartelliniList.Add(tsOrdNotFest);
+            //cartelliniList.Add(tsStrNotFest);
+
+            //Assegna a tutti i cartellini le impostazioni di base
+            foreach (var cartellino in cartelliniList)
+            {
+                cartellino.IsFromFreeTimeSheet = false;
+                cartellino.FreeTimeSheetId = 0;
+                cartellino.InsertColValues(colId);
+                cartellino.StartDate = firstMonthDate;
+                cartellino.InsertCantValues(cantId);
+                tsOrdDiurne = cartellino;
+            }
+
+            return tsOrdDiurne;
+        }
+
 
         /// <summary>
         /// Genera un nuovo timesheet di utilizzando le registrazioni passate come parametro per la motivazione passata come parametro.
@@ -4267,6 +4679,153 @@ namespace Business.BusinessExtension
 
             return newTimesheet;
         }
+
+        private static TimesheetModuleItem subtractTimesheetsExport(int colId, bool isDecimalHours, TimesheetModuleItem timesheet1, TimesheetModuleItem timesheet2, TimesheetModuleItem timesheet3, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newTimesheet = new TimesheetModuleItem(isDecimalHours);
+
+            // inserimento della data che indica il mese di elaborazione
+            newTimesheet.StartDate = firstMonthDate;
+            DateTime processingDate = firstMonthDate;
+            DateTime startDate = firstMonthDate;
+            DateTime endDate = lastMonthDate;
+
+            //Se il collaboratore non ha piano orario non deve essere calcolato il delta;
+            //Per fare ciò viene settato un booleano che verrà utilizzato durante il relat. calcolo
+            var currentCol = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == colId);
+            bool has_orario = currentCol.Tab_Orari_Tipo_Id.HasValue ? true : false;
+
+            if (requestedForWeeklyTotals && startDate.Date == CommonService.GetFirstMonthDay(startDate) && startDate.DayOfWeek != DayOfWeek.Monday)
+            {
+                startDate = CommonService.GetLastDayOfWeekInMonth(startDate.AddMonths(-1), DayOfWeek.Monday);
+            }
+
+            if (requestedForWeeklyTotals && endDate.Date == CommonService.GetLastMonthDay(endDate) && endDate.DayOfWeek != DayOfWeek.Sunday)
+            {
+                endDate = CommonService.GetFirstDayOfWeekInMonth(endDate.AddMonths(1), DayOfWeek.Sunday);
+
+                // la data di fine viene portata alle 23:59 così da recuperare anche le timbrature della giornata di fine
+                endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59);
+            }
+
+            // inizializzazione del piano vuoto in cui andare a compilare i totali per giornata
+            var daysMinutes = RepoManager.Tab_OrariRepo.GetEmptyMinutesPlan(startDate, endDate, requestedForWeeklyTotals);
+            double dayTotal, today1, today2, today3;
+
+            if (startDate < firstMonthDate)
+            {
+                for (int i = firstMonthDate.AddTicks(-1 * startDate.Ticks).Day - 1; i > 0; i--)
+                {
+                    //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
+                    today1 = CommonService.FromHoursToMinutes((double)timesheet1["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet1["DayMinus" + i]) * 60) + Math.Round(((double)timesheet1["DayMinus" + i] - Math.Truncate((double)timesheet1["DayMinus" + i])) * 100);
+                    today2 = CommonService.FromHoursToMinutes((double)timesheet2["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
+                    today3 = CommonService.FromHoursToMinutes((double)timesheet3["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
+                    //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                    if (has_orario)
+                    {
+                        dayTotal = today1 - today2;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else if (today3 != 0)
+                    {
+                        dayTotal = today1 - today3;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else
+                    {
+                        dayTotal = 0;
+                    }
+
+
+                    if (daysMinutes.ContainsKey(firstMonthDate.AddDays(-1 * i).Date))
+                    {
+                        daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    }
+                    startDate = startDate.AddDays(1);
+                }
+            }
+
+            // per ogni giorno del mese calcolo i totali e inserisco nel 'piano'
+            for (int i = 1; i <= lastMonthDate.Day; i++)
+            {
+                //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
+                today1 = CommonService.FromHoursToMinutes((double)timesheet1["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet1["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet1["Day" + i.ToString("00")] - Math.Truncate((double)timesheet1["Day" + i.ToString("00")])) * 100);
+                today2 = CommonService.FromHoursToMinutes((double)timesheet2["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet2["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet2["Day" + i.ToString("00")] - Math.Truncate((double)timesheet2["Day" + i.ToString("00")])) * 100);
+                today3 = CommonService.FromHoursToMinutes((double)timesheet3["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet2["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet2["Day" + i.ToString("00")] - Math.Truncate((double)timesheet2["Day" + i.ToString("00")])) * 100);
+                                                                                                                        //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                if (has_orario)
+                {
+                    dayTotal = today1 - today2;
+                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                }
+                else if (today3 != 0)
+                {
+                    dayTotal = today1 - today3;
+                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                }
+                else
+                {
+                    dayTotal = 0;
+                }
+
+
+                if (daysMinutes.ContainsKey(processingDate))
+                {
+                    daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                }
+
+                processingDate = processingDate.AddDays(1);
+            }
+
+            if (endDate > lastMonthDate)
+            {
+                for (int i = 1, j = endDate.Day; i <= j; i++)
+                {
+                    //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
+                    today1 = CommonService.FromHoursToMinutes((double)timesheet1["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet1["DayPlus" + i]) * 60) + Math.Round(((double)timesheet1["DayPlus" + i] - Math.Truncate((double)timesheet1["DayPlus" + i])) * 100);
+                    today2 = CommonService.FromHoursToMinutes((double)timesheet2["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet2["DayPlus" + i]) * 60) + Math.Round(((double)timesheet2["DayPlus" + i] - Math.Truncate((double)timesheet2["DayPlus" + i])) * 100);
+                    today3 = CommonService.FromHoursToMinutes((double)timesheet3["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
+                    //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                    if (has_orario)
+                    {
+                        dayTotal = today1 - today2;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else if (today3 != 0)
+                    {
+                        dayTotal = today1 - today3;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else
+                    {
+                        dayTotal = 0;
+                    }
+
+
+                    if (daysMinutes.ContainsKey(lastMonthDate.AddDays(i).Date))
+                    {
+                        daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    }
+
+                    endDate.AddDays(1);
+                }
+            }
+
+            // inserimento del calcolo dei totali all'interno dell'oggetto timesheet
+            newTimesheet.PopulateHoursWithDate(daysMinutes);
+            newTimesheet.IsFromFreeTimeSheet = false;
+            newTimesheet.FreeTimeSheetId = 0;
+            newTimesheet.InsertColValues(colId);
+            newTimesheet.InsertCantValues(cantId);
+            newTimesheet.Justification = timesheetJustification;
+            newTimesheet.Order = timesheetOrder;
+
+            return newTimesheet;
+        }
+
+
 
         /// <summary>
         /// Indica se le date di inzio e fine disponibilità del collaboratore sono valide nel periodo specificato.
@@ -4462,7 +5021,8 @@ namespace Business.BusinessExtension
             DateTime minDate = CommonService.GetFirstMonthDay(selectedDate);
             DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
-
+            List<Reg_V> workedRegVs = new List<Reg_V>();
+            string just = "";
 
 
 
@@ -4519,13 +5079,20 @@ namespace Business.BusinessExtension
 
             if (calculateWorkedHours)
             {
-                List<Reg_V> workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
                 string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
                 Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
-                string just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
+                just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
                 if (isByOtherEntity)
                 {
-                    justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                    }
+                    else {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                    }
+                   
                 }
                 else
                 {
@@ -4533,7 +5100,7 @@ namespace Business.BusinessExtension
                 }
             }
             #endregion
-
+            List<TimesheetModuleItem> straordinariCartellini = new List<TimesheetModuleItem>();
             #region MOTIVAZIONI
 
             if (calculateJustifications)
@@ -4547,6 +5114,7 @@ namespace Business.BusinessExtension
                     //Cicla per ogni singola motivazione e ne crea il cartellino
                     foreach (string justification in justificationRegVs.Select(regv => regv.Motivazione_Reg_Cod).Distinct().ToList())
                     {
+                        
                         // con il codice della motivazione si ricercano i dati nell'apposita tabella per il recupero della descrizione se richiesto da apposita personalizzazione
                         string displayJustfification = justification;
                         ShowDescriptionJustTimesheet showDescriptionJust = (ShowDescriptionJustTimesheet)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDescriptionJustTimesheet);
@@ -4556,33 +5124,34 @@ namespace Business.BusinessExtension
                             if (justConf != default(Tab_Decod))
                                 displayJustfification = justConf.Decodifica_Tab;
                         }
-                            
-                        if (isByOtherEntity)
-                        {
-                            // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
-                                col,
-                                isDecimalHours,
-                                justification,
-                                minDate,
-                                maxDate,
-                                ++tsOrder,
-                                showWeeklyTotal,
-                                usaFisiche: false));
-                        }
-                        else
-                        {
-                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
-                                isDecimalHours,
-                                justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
-                                displayJustfification,
-                                minDate,
-                                maxDate,
-                                ++tsOrder,
-                                0,
-                                requestedForWeeklyTotals: showWeeklyTotal,
-                                usaFisiche: false));
-                        }
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1 && displayJustfification != "PAU") {
+                            if (isByOtherEntity)
+                            {
+                                // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
+                                    col,
+                                    isDecimalHours,
+                                    justification,
+                                    minDate,
+                                    maxDate,
+                                    ++tsOrder,
+                                    showWeeklyTotal,
+                                    usaFisiche: false));
+                            }
+                            else
+                            {
+                                justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
+                                    isDecimalHours,
+                                    justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
+                                    displayJustfification,
+                                    minDate,
+                                    maxDate,
+                                    ++tsOrder,
+                                    0,
+                                    requestedForWeeklyTotals: showWeeklyTotal,
+                                    usaFisiche: false));
+                            }
+                        } 
                     }
                 }
             }
@@ -4590,7 +5159,7 @@ namespace Business.BusinessExtension
             
             #region TEMPO CORRETTO
             TimesheetModuleItem colRigth = null;
-            if (calculateWorkedHours)
+            if (calculateWorkedHours && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1)
             {
                 //Recupera le registrazioni di tipo motivazione
                 var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
@@ -4810,6 +5379,10 @@ namespace Business.BusinessExtension
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
             if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse)
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa Pranzo").ToList();
+            }
+
 
             TimesheetModuleItem colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
 
@@ -4848,16 +5421,59 @@ namespace Business.BusinessExtension
             cartellini.Add("justification", justificationCartellini);
             #endregion
 
+            
+
+
             #region CARTELLINI PER ORDINARIE/STRAORDINARIE
             if (calculateOrdStrTimesheet)
             {
-                List<TimesheetModuleItem> straordinariCartellini = new List<TimesheetModuleItem>();
-
 
 
                 #region CARTELLINI DA ELABORARE
 
-                if (colPlan != null)
+                if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && colPlan.CantDesc != null) {
+                    List<int> cantList = null;
+                    var returnList = new List<TimesheetModuleItem>();
+
+                    // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
+                    var cantIdList = baseColRegVs.Select(regv => regv.Cant_Id).Distinct().ToList();
+                    if (just == "Rettifiche Manu." || just == "Rettifiche Auto.")
+                    {
+                        cantIdList = cantList.Cast<int?>().ToList();
+                    }
+                    // per ogni id cantiere presente nella lista
+                    foreach (var listCantId in cantIdList)
+                    {
+                        // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                        var currentCantId = listCantId ?? 0;
+                        bool error = false;
+                        try {
+                            var temp = planMinutes.First(m => m.Key == currentCantId);
+                        }
+                        catch (Exception e) {
+                            error = true;
+                        }
+                        if (error)
+                        {
+                            TimesheetModuleItem Total = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.C ant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            returnList.Add(GenerateNewEditableTimesheetExportStr(col.Col_Id, currentCantId, isDecimalHours, minDate, maxDate, Total));
+                        }
+                        else {
+                            TimesheetModuleItem Plans = GenerateNewPlanTimesheet(isDecimalHours, planMinutes.First(m => m.Key == currentCantId).Value, isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, planMinutes.First(m => m.Key == currentCantId).Key);
+                            TimesheetModuleItem Totals = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.C ant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            returnList.Add(GenerateNewEditableTimesheetExport(col.Col_Id, currentCantId, isDecimalHours, minDate, maxDate, Plans, Totals));
+                        }
+                        
+                    }
+                    //List<TimesheetModuleItem> generatedStraordinariCartellini = GenerateNewEditableTimesheet(col.Col_Id, isDecimalHours, minDate, maxDate, colPlan);
+                    // Salva immediatamente i cartellini a db
+                    straordinariCartellini.AddRange(returnList);
+                }
+                else if (colPlan != null)
                 {
                     List<TimesheetModuleItem> generatedStraordinariCartellini = GenerateNewEditableTimesheet(col.Col_Id, isDecimalHours, minDate, maxDate, colPlan);
                     // Salva immediatamente i cartellini a db
@@ -4869,9 +5485,51 @@ namespace Business.BusinessExtension
                 cartellini.Add("straordinari", straordinariCartellini);
             }
             #endregion
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && colPlan.CantDesc != null)
+            {
+                List<TimesheetModuleItem> deltaCartellini = new List<TimesheetModuleItem>();
+                deltaCartellini.AddRange(GenerateDeltaRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes, colRigth, freeTimesheetId, isFromFreeTimesheet, cartelliniToTotalize));
+                cartellini.Add("delta", deltaCartellini);
 
+                //cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
+                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+                //{
+                //    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                //
+                //}
+                var cartelliniToInitializeExport = new List<TimesheetModuleItem>();
+                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
+                Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
+                just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
+                if (isByOtherEntity)
+                {
+                    cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                }
+                cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
+                TotaleCartellini.Add(colTotal);
+                cartellini.Add("totale", TotaleCartellini);
+
+                TimesheetModuleItem colTotalStr = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, straordinariCartellini, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+
+                List<TimesheetModuleItem> StrCartellini = new List<TimesheetModuleItem>();
+                StrCartellini.Add(colTotalStr);
+                cartellini.Add("Totstraordinari", StrCartellini);
+            }
 
             return cartellini;
+        }
+        public static int durataCamere(int colId, List<Reg_V> lista)
+        {
+            int somma = 0;
+
+            var data = lista.GroupBy(x => x.Data_Ora_Fig_E)
+                        .Select(x => x.Key).ToList();
+
+
+            return somma;
         }
 
         private static void saveStrordinariCartellini(List<TimesheetModuleItem> generatedStraordinariCartellini)

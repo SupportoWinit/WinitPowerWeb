@@ -51,6 +51,19 @@ namespace Business.Repository.Custom
         /// di problemi nel calcolo (periodo errato o dati non presenti, viene restituito un dizionario vuoto).</returns>
         Dictionary<DateTime, List<Tuple<TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>>> GetPlanTimes(int colId, DateTime startDate, DateTime endDate, DateTime? dateStartCol, DateTime? dateEndCol);
 
+        /// <summary>
+        /// Per il collaboratore e l'intervallo di date specificato questo metodo si occupa di ricercare all'interno
+        /// della tab orari quanto configurato e ritorna un elenco di date in cui, per ogni data, sono specificati gli orari previsti.
+        /// </summary>
+        /// <param name="colId">L'id del collaboratore da ricercare.</param>
+        /// <param name="startDate">La data di partenza per la costruzione della lista (questa data sarà compresa nell'elenco).</param>
+        /// <param name="endDate">La data di termine per la costruzione della lista (questa data sarà compresa nell'elenco).</param>
+        /// <param name="dateStartCol">La data di inizio disponibilità del collaboratore (quando il collaboratore non è disponibile le ore previste sono 0)</param>
+        /// <param name="dateEndCol">la data di fine disponibilità del collaboratore (quando il collaboratore non è disponibile le ore previste sono 0)</param>
+        /// <returns>Un dizionario con chiave la data dell'intervallo e come valore una lista di coppie di ore entrata/uscita e l'ora di inizio e fine notturno; in caso
+        /// di problemi nel calcolo (periodo errato o dati non presenti, viene restituito un dizionario vuoto).</returns>
+        Dictionary<DateTime, List<Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>>> GetPlanTimesNew(int colId, DateTime startDate, DateTime endDate, DateTime? dateStartCol, DateTime? dateEndCol);
+
 
         /// <summary>
         /// Recupera l'id della tab orari tipo collegata al collaboratore passato come parametro.

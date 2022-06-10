@@ -174,7 +174,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         /// </summary>
         /// <param name="selectedColIds">L'elenco degli id collaboratore selezionati per l'export.</param>
         /// <param name="selectedCantIds">L'elenco degli id cantiere selezionati per l'export.</param>
-        public override void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds)
+        public override void LaunchExport(IEnumerable<int> selectedColIds, IEnumerable<int> selectedCantIds, IEnumerable<int> selectedCliIds)
         {
             // si procede con l'elaborazione solamente se sono stati selezionati dei collaboratori
             if (selectedColIds.Any())

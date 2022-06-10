@@ -58,5 +58,8 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("Attivita")]
         public string Attivita { get; set; }
+
+        [JsonProperty("Squadra")]
+        public string Squadra { get; set; }
     }
 }

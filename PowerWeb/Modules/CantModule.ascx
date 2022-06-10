@@ -664,21 +664,25 @@
                 </dx:GridViewDataComboBoxColumn>
                 <dx:GridViewDataComboBoxColumn FieldName="TipoNotturno_Can" Visible="False">
                 </dx:GridViewDataComboBoxColumn>
-                <dx:GridViewDataComboBoxColumn FieldName="Tolleranza_Limite_Uscita_Mattina_Cant" Visible="False">
-                </dx:GridViewDataComboBoxColumn>
 
-                
-
+                <dx:GridViewDataTextColumn FieldName="Tolleranza_Limite_Uscita_Mattina_Cant" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>      
                 <dx:GridViewDataTextColumn FieldName="Tolleranza_Limite_Entrata_Cant" Visible="False">
                     <PropertiesTextEdit>
                         <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
                         <MaskSettings Mask="00:00" IncludeLiterals="None" />
                     </PropertiesTextEdit>
                 </dx:GridViewDataTextColumn>
-
-                <dx:GridViewDataComboBoxColumn FieldName="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Visible="False">
-                </dx:GridViewDataComboBoxColumn>
-
+                <dx:GridViewDataTextColumn FieldName="Tolleranza_Limite_Uscita_Pomeriggio_Cant" Visible="False">
+                    <PropertiesTextEdit>
+                        <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                        <MaskSettings Mask="00:00" IncludeLiterals="None" />
+                    </PropertiesTextEdit>
+                </dx:GridViewDataTextColumn>
                  <dx:GridViewDataTextColumn FieldName="Turno1_Can" Visible="False">
                     <PropertiesTextEdit>
                         <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>

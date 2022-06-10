@@ -61,6 +61,7 @@ namespace Domain
         public List<Resp> Resps { get; set; }
         public List<int> ColsIds { get; set; }
         public List<int> CantsIds { get; set; }
+        public List<int> ClisIds { get; set; }
         public CultureInfo UserCultureInfo { get { return new CultureInfo(Lingua.Sigla_Lingue); } }
 
 

@@ -1357,7 +1357,7 @@
             this.xrLine2});
             this.Inizio_Col.Dpi = 254F;
             this.Inizio_Col.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
-            new DevExpress.XtraReports.UI.GroupField("ColId", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
+            new DevExpress.XtraReports.UI.GroupField("ColDesc", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
             new DevExpress.XtraReports.UI.GroupField("StartDate", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
             this.Inizio_Col.HeightF = 304.2707F;
             this.Inizio_Col.Name = "Inizio_Col";

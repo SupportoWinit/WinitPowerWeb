@@ -62,5 +62,29 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslators
 
             return activityLines;
         }
+        internal static IEnumerable<string> CreatePruCodeActivityLines(string deviceCode, string badgeCode, DateTime regDateTime, string pruCodeForActivity)
+        {
+            if (string.IsNullOrEmpty(pruCodeForActivity))
+                return Enumerable.Empty<string>();
+
+            // costruzione della stringa da processare
+            string line = string.Format(EXTRA_INFO_STRING_FORMAT
+            , SEPARATOR
+            , deviceCode
+            , CommonService.AggiungiZeriASinistra(badgeCode, 10)
+            , regDateTime.Year
+            , regDateTime.Month.ToString("00")
+            , regDateTime.Day.ToString("00")
+            , regDateTime.Hour.ToString("00")
+            , regDateTime.Minute.ToString("00")
+            , " " //Reg direction per ora vuota
+            , INFOAGG //La keyword per capire che nella registrazione ci sono informazioni aggiuntive
+            , PRUCODE // Segnalazione pru
+            , pruCodeForActivity
+            );
+            // aggiunta della stringa alla lista di scrittura
+
+            return new List<string>() { line };
+        }
     }
 }

@@ -42,4 +42,10 @@ namespace PowerWeb.Modules
 
         PowerFormTemplate EditFormTemplate3 { get; }
     }
+
+    public interface IQuadGridModule : ITripleGridModule
+    {
+        ASPxGridView GridView4 { get; }
+        PowerFormTemplate EditFormTemplate4 { get; }
+    }
 }

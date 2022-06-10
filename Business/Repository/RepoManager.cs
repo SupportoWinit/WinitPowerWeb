@@ -32,6 +32,10 @@ namespace Business.Repository
         {
             get { return IoC.Resolve<ICliRepository>(); }
         }
+        public static ICli_VRepository Cli_VRepo
+        {
+            get { return IoC.Resolve<ICli_VRepository>(); }
+        }
         public static IColRepository ColRepo
         {
             get { return IoC.Resolve<IColRepository>(); }

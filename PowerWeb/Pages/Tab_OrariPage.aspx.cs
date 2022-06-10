@@ -26,6 +26,11 @@ namespace PowerWeb.Pages
             get { return null; }
         }
 
+        public IQuadGridModule QuadGridModule
+        {
+            get { return null; }
+        }
+
         public ILogModule LogModule
         {
             get { return mdlTab_OrariModule; }

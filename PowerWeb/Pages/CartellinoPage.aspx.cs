@@ -228,7 +228,15 @@ namespace PowerWeb.Pages
 
             #endregion
 
+            Param parameters = RepoManager.ParamRepo.ParametersRow;
+
             List<Col> collaboratori = RepoManager.ColRepo.Find(c => selectedCollab.Contains(c.Col_Id)).ToList();
+            bool str = false;
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Overtime) == 1)
+            {
+                str = true;
+                
+            }
 
             try
             {
@@ -240,9 +248,9 @@ namespace PowerWeb.Pages
                     IEnumerable<int> lis = new List<int>();
                     lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
                     if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
-                    { 
+                    {
                         Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,
-                                                                                                                               isDecimalHours: false,                                                                                   showPiano: optionsObj.showPiano);
+                                                                                                                               isDecimalHours: false, showPiano: optionsObj.showPiano , calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni);
 
                         JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
 
@@ -1905,7 +1913,7 @@ namespace PowerWeb.Pages
 
             foreach (Col col in collaboratori)
             {
-                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col)["justification"]);
+                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col,true)["justification"]);
             }
 
             var timesheetColReport = new XRColCartellino(cartellini, null, null, optionsObj);

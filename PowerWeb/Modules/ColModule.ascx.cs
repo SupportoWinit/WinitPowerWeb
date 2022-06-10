@@ -359,6 +359,7 @@ namespace PowerWeb.Modules
             // E' utilizzata una lista vuota in caso di mancata presenza record o di mancato populate grid per
             // evitare errori nel pulsante di inserimento
             gvCol.KeyFieldName = Keyfieldname;
+            IsToPopulateGrid = true;
             IQueryable<Col> currDataSource = Enumerable.Empty<Col>().AsQueryable();
             var emptyList = Enumerable.Empty<Col>();
             List<Col> colList = new List<Col>();
@@ -379,9 +380,13 @@ namespace PowerWeb.Modules
 
                         colList.AddRange(col);
                     }
-
-                    currDataSource = colList.AsQueryable();
-
+                    if (colList.Count == 0)
+                    {
+                        currDataSource = RepoManager.ColRepo.GetAll(true).AsQueryable();
+                    }
+                    else {
+                        currDataSource = colList.AsQueryable();
+                    }
                 }
                 else
                 {
