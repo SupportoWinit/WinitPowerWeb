@@ -3825,15 +3825,71 @@ namespace Business.BusinessExtension
             foreach (var dataReg in timesheetRegVs.Select(regv => regv.Data_Reg).Distinct().ToList())
             {
                 int totalDayMinutes;
+                int totalPausaPranzo;
                 // Se viene richiesto di calcolare il cartellino con le ore fisiche, si calcola la somma totale delle durate fisiche
                 if (usaFisiche)
                 {
-                    totalDayMinutes = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).Select(regv => regv.Durata_Fis ?? 0).Sum();
+                    totalDayMinutes = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).Select(regv => regv.Durata_Fis ?? 0).Sum();              
                 }
                 //Altrimenti si calcola la somma totale delle durate figurative
                 else
                 {
                     totalDayMinutes = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).Select(regv => regv.Durata_Fig ?? 0).Sum();
+                }
+
+                // inserisco la somma nella posizione corretta del dizionario con le durate
+                if (daysMinutes.ContainsKey(dataReg.Value))
+                    daysMinutes[dataReg.Value] = new Tuple<double, TimeSpan?, TimeSpan?>(Convert.ToDouble(totalDayMinutes), null, null);
+            }
+
+            // inserimento del calcolo dei totali all'interno dell'oggetto timesheet
+            newTimesheet.PopulateHoursWithDate(daysMinutes);
+            newTimesheet.IsFromFreeTimeSheet = false;
+            newTimesheet.FreeTimeSheetId = 0;
+            newTimesheet.InsertColValues(colId);
+            newTimesheet.InsertCantValues(cantId);
+            newTimesheet.Justification = timesheetJustification;
+            newTimesheet.Order = timesheetOrder;
+            // ritorno del valore del metodo
+            return newTimesheet;
+        }
+
+        private static TimesheetModuleItem GenerateNewRegTimesheetTotal(int colId, bool isDecimalHours, List<Reg_V> timesheetRegVs, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals, bool usaFisiche = false)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newTimesheet = new TimesheetModuleItem(isDecimalHours);
+
+            // inserimento della data che indica il mese di elaborazione
+            newTimesheet.StartDate = firstMonthDate;
+
+            // inizializzazione del piano vuoto in cui andare a compilare i dati calcolati dalle reg_v
+            var daysMinutes = RepoManager.Tab_OrariRepo.GetEmptyMinutesPlan(firstMonthDate, lastMonthDate, requestedForWeeklyTotals);
+
+            // per ogni giorno delle reg_v passate da processare si compila il piano inizializzato
+            foreach (var dataReg in timesheetRegVs.Select(regv => regv.Data_Reg).Distinct().ToList())
+            {
+                int totalDayMinutes;
+                int totalPausaPranzo;
+                // Se viene richiesto di calcolare il cartellino con le ore fisiche, si calcola la somma totale delle durate fisiche
+                if (usaFisiche)
+                {
+                    totalDayMinutes = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).Select(regv => regv.Durata_Fis ?? 0).Sum();
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubstractPausaPranzo) == 1)
+                    {
+                        totalPausaPranzo = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value && regv.Motivazione_Reg_Cod == "PAU").Select(regv => regv.Durata_Fis ?? 0).Sum();
+                        totalDayMinutes = totalDayMinutes - totalPausaPranzo;
+                    }
+                }
+                //Altrimenti si calcola la somma totale delle durate figurative
+                else
+                {
+                    totalDayMinutes = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).Select(regv => regv.Durata_Fig ?? 0).Sum();
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubstractPausaPranzo) == 1)
+                    {
+                        totalPausaPranzo = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value && regv.Motivazione_Reg_Cod == "PAU").Select(regv => regv.Durata_Fig ?? 0).Sum();
+                        totalDayMinutes -= totalPausaPranzo * 2;
+                    }
                 }
 
                 // inserisco la somma nella posizione corretta del dizionario con le durate
@@ -5096,7 +5152,14 @@ namespace Business.BusinessExtension
                 }
                 else
                 {
-                    justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubstractPausaPranzo) == 1)
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, baseColRegVs.ToList(), just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    }
+                    else {
+                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    }
+                    
                 }
             }
             #endregion

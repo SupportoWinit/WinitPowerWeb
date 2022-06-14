@@ -172,7 +172,8 @@ namespace Common
         ImportDouble,
         AutoClosuresFirstLast,
         PausaPranzoIsWorkedHoursEnum,
-        AutoClosures
+        AutoClosures,
+        SubstractPausaPranzo
     }
 
     public enum ClockAppsOperationEnum

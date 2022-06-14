@@ -327,6 +327,11 @@
   <!--PausaPranzoIsWorkedHoursEnum=0 Non saranno utilizzate le ore con pausa pranzo all'interno delle ore lavorate
 		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore con pausa pranzo all'interno delle ore lavorate -->
 
+  <!-- *******************************************SOTTRARRE PAUSA PRANZO DAL TOTALE DELLA GIORNATA*********************************************************-->
+  <c ID="CustomizationEnum.SubstractPausaPranzo" Des="Indica se utilizzare o meno la pausa pranzo come se fosse ore lavorate" Value="1" />
+  <!--SubstractPausaPranzo=0 Non sottrae la pausa pranzo dal totale delle ore
+		SubstractPausaPranzo=1 Sottrae la pausa pranzo dal totale delle ore -->
+
   <!-- *******************************************VIAGGI COME ONL*********************************************************-->
   <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
   <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
@@ -423,7 +428,7 @@
         PauseDeductionOnlyFascia5=1 Indica che la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5-->
 
   <!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE SU CANT SEDE*********************************************************-->
-  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="0" />
+  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="1" />
   <!--  AutoClosuresEnum=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 

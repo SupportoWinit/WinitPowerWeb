@@ -1872,6 +1872,8 @@ namespace Business.Repository.Custom
                             columnsNumber.Add("LATITUDINE", Array.IndexOf(splittedRow, "LATITUDINE"));
                             columnsNumber.Add("LONGITUDINE", Array.IndexOf(splittedRow, "LONGITUDINE"));
                             columnsNumber.Add("NOTE", Array.IndexOf(splittedRow, "NOTE"));
+                            columnsNumber.Add("PROVINCIA", Array.IndexOf(splittedRow, "PROVINCIA"));
+                            columnsNumber.Add("CAP", Array.IndexOf(splittedRow, "CAP"));
 
 
 
@@ -1913,6 +1915,8 @@ namespace Business.Repository.Custom
                             string latit = splittedLine[columnsNumber["LATITUDINE"]].Trim();
                             string longi = splittedLine[columnsNumber["LONGITUDINE"]].Trim();
                             string note = splittedLine[columnsNumber["NOTE"]].Trim();
+                            string provincia = splittedLine[columnsNumber["PROVINCIA"]].Trim();
+                            string cap = splittedLine[columnsNumber["CAP"]].Trim();
 
                             #endregion
 
@@ -1973,7 +1977,7 @@ namespace Business.Repository.Custom
                                     catch (Exception) { }
                                 }
 
-                                if (fru_matr != "" && (fru_matr.Length == 10) && data_associazione != null)
+                                if (fru_matr != "" && (fru_matr.Length == 10 || fru_matr.Length == 5) && data_associazione != null)
                                 {
                                     Fru currentFru = RepoManager.FruRepo.FirstOrDefault(f => f.Codice_Fru.Trim() == fru_matr);
                                     Fru_Cant fru_cant = RepoManager.Fru_CantRepo.Init();
@@ -1997,6 +2001,15 @@ namespace Business.Repository.Custom
                                     }
 
                                     cantiere.Fru_Cant.Add(fru_cant);
+                                }
+                                if (comune != "" && via != "" && provincia != "" && cap.Length == 5) {
+                                    string indirizzo = String.Format("{0} {1} {2} {3}", via, cap, comune, provincia);
+                                    Location geocode = BusinessService.GetGeocode(indirizzo);
+                                    if (geocode != null)
+                                    {
+                                        cantiere.LatitudineGps_Can = geocode.Point.Coordinates[0];
+                                        cantiere.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                                    }
                                 }
 
                                 #endregion
