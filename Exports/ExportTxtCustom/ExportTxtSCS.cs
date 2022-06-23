@@ -63,6 +63,7 @@ namespace Exports.ExportTxtCustom
         private static readonly string _filler3 = new string(' ', 22);
         private static readonly string _filler4 = new string(' ', 2);
         private const string _filler5 = "E";
+        private static readonly string _filler6 = new string(' ', 21);
 
 
         #endregion
@@ -227,27 +228,52 @@ namespace Exports.ExportTxtCustom
                             }
                             
                             maxDurationFromPlan = colPlan.GetDayMinutes(day.Key.Value.Day);
-
-                            foreach (var motKey in daysDictionary.Where(c => c.Value != 0).ToList())
+                            if (currentCantCode.Length == 4)
                             {
-                                TxtLines.Add(string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}",
-                                _codiceTracciato,        //0
-                                _anno,                   //1
-                                _mese,                   //2
-                                _filler1,                //3
-                                _codiceAzienda,          //4
-                                col.Matricola_Col,        //5
-                                _filler2,                //6
-                                motKey.Key,                 //7
-                                currentDay,                  //8
-                                CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 9),              //9
-                                _filler3,                //10
-                                _tipoEvento,             //11
-                                _filler4,                //12
-                                currentCantCode,         //13
-                                _filler5                 //14
-                                ));
+                                foreach (var motKey in daysDictionary.Where(c => c.Value != 0).ToList())
+                                {
+                                    TxtLines.Add(string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}",
+                                    _codiceTracciato,        //0
+                                    _anno,                   //1
+                                    _mese,                   //2
+                                    _filler1,                //3
+                                    _codiceAzienda,          //4
+                                    col.Matricola_Col,        //5
+                                    _filler2,                //6
+                                    motKey.Key,                 //7
+                                    currentDay,                  //8
+                                    CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 9),              //9
+                                    _filler6,                //10
+                                    _tipoEvento,             //11
+                                    _filler4,                //12
+                                    currentCantCode,         //13
+                                    _filler5                 //14
+                                    ));
+                                }
                             }
+                            else {
+                                foreach (var motKey in daysDictionary.Where(c => c.Value != 0).ToList())
+                                {
+                                    TxtLines.Add(string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}",
+                                    _codiceTracciato,        //0
+                                    _anno,                   //1
+                                    _mese,                   //2
+                                    _filler1,                //3
+                                    _codiceAzienda,          //4
+                                    col.Matricola_Col,        //5
+                                    _filler2,                //6
+                                    motKey.Key,                 //7
+                                    currentDay,                  //8
+                                    CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 9),              //9
+                                    _filler3,                //10
+                                    _tipoEvento,             //11
+                                    _filler4,                //12
+                                    currentCantCode,         //13
+                                    _filler5                 //14
+                                    ));
+                                }
+                            }
+                            
 
                         }
                     }

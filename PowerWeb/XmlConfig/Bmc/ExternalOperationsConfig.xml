@@ -38,22 +38,22 @@
   </Synch>
 
 
- <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
+  <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="Bergamo" />
-      <pw value="Bergamo2020!" />
-      <idTenant value="1874" />
+      <uid  value="DolomitiServizi" />
+      <pw value="Dolomiti2021!" />
+      <idTenant value="1902" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
     </OperationStrategy>
   </ExternalImport>
-
+  
   <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="0">
-    <HostConfig host="backend.winitsrl.eu" protocol="http" />
+    <HostConfig host="backendflutterapps.winitsrl.eu" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="49" />
+      <IdCliente  value="36" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

@@ -50,6 +50,7 @@ namespace Exports.ExportTxtCustom
 
                 var cartellinoEditabileConvertito = TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                                                  collaboratore,
+                                                                                 isByOtherEntity:false,
                                                                                  isDecimalHours: true,
                                                                                  calculateWorkedHours: true,
                                                                                  calculateJustifications: true,
@@ -67,6 +68,7 @@ namespace Exports.ExportTxtCustom
                 //Recupera il cartellino delle motivazioni (no piano, totale e figurative)
                 var justifications = TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                                                  collaboratore,
+                                                                                 isByOtherEntity:false,
                                                                                  isDecimalHours: true,
                                                                                  calculateWorkedHours: true,
                                                                                  calculateJustifications: true,

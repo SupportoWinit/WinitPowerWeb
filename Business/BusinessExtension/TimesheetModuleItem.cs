@@ -5071,7 +5071,7 @@ namespace Business.BusinessExtension
             return isAutStrConfigured;
         }
 
-        public static Dictionary<string, List<TimesheetModuleItem>> GenerateCartellino(DateTime selectedDate, Col col, bool isDecimalHours = false, bool isByOtherEntity = false, bool calculateWorkedHours = true, bool calculateJustifications = true, bool calculateTrips = true, bool calculateDelta = true, bool calculateOrdStrTimesheet = false, bool devidePlanByDayNight = false, bool showWeeklyTotal = false, bool insertCorrectionRow = false, bool showPiano = true)
+        public static Dictionary<string, List<TimesheetModuleItem>> GenerateCartellino(DateTime selectedDate, Col col, bool isByOtherEntity, bool isDecimalHours = false,  bool calculateWorkedHours = true, bool calculateJustifications = true, bool calculateTrips = true, bool calculateDelta = true, bool calculateOrdStrTimesheet = false, bool devidePlanByDayNight = false, bool showWeeklyTotal = false, bool insertCorrectionRow = false, bool showPiano = true)
         {
             // calcolo, a partire dalla data passata come parametro, l'inzio e la fine del mese in elaborazione
             DateTime minDate = CommonService.GetFirstMonthDay(selectedDate);

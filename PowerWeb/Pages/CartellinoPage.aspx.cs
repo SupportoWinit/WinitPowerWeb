@@ -249,7 +249,7 @@ namespace PowerWeb.Pages
                     lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
                     if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
                     {
-                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,
+                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,isByOtherEntity:optionsObj.devideByOtherEntity,
                                                                                                                                isDecimalHours: false, showPiano: optionsObj.showPiano , calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni);
 
                         JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);

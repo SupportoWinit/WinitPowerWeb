@@ -253,13 +253,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     if (RepoManager.ParamRepo.ParametersRow.Cartellino_Abilita_Stampa_Cart_Editabile)
                     {
-                        var cart = TimesheetModuleItem.GenerateCartellino(ExportPeriod, col, calculateOrdStrTimesheet: true);
+                        var cart = TimesheetModuleItem.GenerateCartellino(ExportPeriod, col, calculateOrdStrTimesheet: true, isByOtherEntity:false);
                         timesheetList.AddRange(cart["justification"]);
                         timesheetList.AddRange(cart["straordinari"]);
                     }
                     else
                     {
-                        timesheetList.AddRange(TimesheetModuleItem.GenerateCartellino(ExportPeriod, col)["justification"]);
+                        timesheetList.AddRange(TimesheetModuleItem.GenerateCartellino(ExportPeriod, col, isByOtherEntity:false)["justification"]);
                     }
 
                 }

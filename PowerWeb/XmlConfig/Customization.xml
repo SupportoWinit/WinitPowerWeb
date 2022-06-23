@@ -551,7 +551,7 @@
       Overtime = 1 visualizza gli straordinari-->
 
   <!--<********************************************************EXPORT CONFRONTE ORE STRAORDINARIE************************************************************-->
-  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="1"/>
+  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="0"/>
   <!-- ExportStr = 0 non visualizza gli straordinari
       ExportStr = 1 visualizza gli straordinari-->
   <!--<********************************************************IMPORTAZIONE TIMBRATURE NELLO STESSO MINUTO************************************************************-->
