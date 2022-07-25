@@ -3742,7 +3742,9 @@ namespace Business
                         // lettura di tutto il contenuto del file e posizionamento delle righe (non gps e commenti esclusi) nell'array nell'array
                         string[] fileRegs = File.ReadAllLines(fileToImport);
                         string[] fileRegsDistinct = File.ReadAllLines(fileToImport).Distinct().ToArray();
-                        List<string> filteredFileRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && IsRegLineGps(regStr)).ToList();
+
+                        List<string> filteredFileRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && IsRegLineGps(regStr) && !regStr.StartsWith("8") && !regStr.StartsWith("7")).ToList();
+                        List<string> filteredAppRegs = fileRegs.Where(regStr => !regStr.StartsWith("*") && IsRegLineGps(regStr) && (regStr.StartsWith("8") || regStr.StartsWith("7"))).ToList();
                         if (filteredFileRegs.Any())
                         {
 
@@ -3765,6 +3767,9 @@ namespace Business
                             #endregion
 
                             regToImport.AddRange(filteredFileRegs.Where(regStr => regStr != " ").ToList());
+                        }
+                        if(filteredAppRegs.Any()){
+                            regToImport.AddRange(filteredAppRegs.Where(regStr => regStr != " ").ToList());
                         }
                     }
                 }

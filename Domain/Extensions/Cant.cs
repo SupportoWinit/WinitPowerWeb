@@ -132,7 +132,7 @@ namespace Domain
             get
             {
                 DateTime? retrunval = null;
-
+                
                 //se ho qualche registarzione per quel cantiere mi ritorna la data max di quella reg
                 if (Reg.Any())
                     retrunval = Reg.Max(regs => regs.Registrazione_Data_Ora_Fis_Reg.Date);

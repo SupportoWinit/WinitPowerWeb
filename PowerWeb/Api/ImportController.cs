@@ -72,7 +72,7 @@ namespace PowerWeb.Api
                             // recupero tutte le timbrature non gps presenti nei file da importare
                             List<string> regNoGpsToImport = BusinessService.GetRegsNoGpsFromFiles(filesToImportList);
 
-                            // recupero tutte le timbrature gps presenti nei file da importare
+                            // recupero tutte le timbrature gps presenti nei file da GetRegsGpsFromFilesimportare
                             List<string> regGpsToImport = BusinessService.GetRegsGpsFromFiles(filesToImportList);
 
                             // se ci sono delle timbrature da importare allora si procede all'importazione

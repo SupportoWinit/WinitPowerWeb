@@ -603,17 +603,20 @@ namespace PowerWeb
                     DateTime mesePrevUltimoGg = CommonService.GetLastMonthDay(currDate.AddMonths(-1));
 
                     DateTime meseCorrenteUltimoGg = CommonService.GetLastMonthDay(currDate);
+                    DateTime meseCorrenteUltimoGgpiu1 = meseCorrenteUltimoGg.AddDays(1);
                     DateTime meseCorrentePrimoGg = CommonService.GetFirstMonthDay(currDate);
                     DateTime yesterday = CommonService.Yestarday(currDate);
 
                     // calcolo in formato stringa delle date limite di mese corrente e mese precedente
                     var currMonthString = currDate.ToString("yyyy-MM-dd");
                     var prevMonthString = prevMonth.ToString("yyyy-MM-dd");
+                    var ultimoGiorno = meseCorrenteUltimoGgpiu1.ToString("yyyy-MM-dd");
                     var meseCorrenteUltimoGgString = meseCorrenteUltimoGg.ToString("yyyy-MM-dd");
                     var meseCorrentePrimoGgString = meseCorrentePrimoGg.ToString("yyyy-MM-dd");
                     var mesePrevUltimoGgString = mesePrevUltimoGg.ToString("yyyy-MM-dd");
                     var now = currDate.ToString("yyyy-MM-dd");
                     var ieri = yesterday.ToString("yyyy-MM-dd");
+                    var current = currDate.ToString("yy-MM-dd");
 
                     // calcolo del layout corrente
                     var currentGridLayout = currentLayout.Layout_DataGrid;
@@ -688,6 +691,10 @@ namespace PowerWeb
                         {
                             currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ieri);
                         }
+                        else if (nomeLayout.Contains("ATTUALE"))
+                        {
+                            currentGridLayout = currentGridLayout.Insert(dateIndex + 1, current);
+                        }
                         else
                         {
                             currentGridLayout = currentGridLayout.Insert(dateIndex + 1, prevMonthString);
@@ -726,7 +733,7 @@ namespace PowerWeb
 
                                 if (nomeLayout.Contains("CORRENTE"))
                                 {
-                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, meseCorrenteUltimoGgString); //prevMonthString);
+                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ultimoGiorno); //prevMonthString);
                                 }
                                 else if (nomeLayout.Contains("MESE PRECEDENTE") || nomeLayout.Contains("MESE-PRECEDENTE"))
                                 {

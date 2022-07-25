@@ -55,7 +55,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (Col col in collaboratori)
                 cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                     col,
-                                                    true,
+                                                    false,
                                                     false,
                                                     parameters.Cartellino_Visualizza_Ore,
                                                     parameters.Cartellino_Visualizza_Motivazioni,

@@ -325,7 +325,14 @@ namespace Business.Repository.Custom
 
             // le date di inizio e fine validità hanno senso solamente se si sta processando un piano per collaboratore
             Tuple<DateTime, DateTime> newValidDates = FilterPeriodWithColDispDates(startDate, endDate, dateStartCol, dateEndCol);
-            DateTime startValidDate = referenceEntity == ColEntityName ? newValidDates.Item1 : startDate;
+            DateTime startValidDate = new DateTime();
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+            {
+                startValidDate = startDate;
+            }
+            else {
+                startValidDate = referenceEntity == ColEntityName ? newValidDates.Item1 : startDate;
+            }
             DateTime endValidDate = referenceEntity == ColEntityName ? newValidDates.Item2 : endDate;
 
             #endregion

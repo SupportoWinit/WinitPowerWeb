@@ -30,7 +30,7 @@
       <modify  value="/api/ManagePowerWebCant" />
       <delete  value="/api/ManagePowerWebCant" />
     </OperationStrategy>
-    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="1">
       <create  value="/api/ManagePowerWebCol" />
       <modify  value="/api/ManagePowerWebCol" />
       <delete  value="/api/ManagePowerWebCol" />
@@ -41,22 +41,12 @@
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="iris" />
-      <pw value="irisbergamo5W!" />
-      <idTenant value="1455" />
+      <uid  value="boschrexroth" />
+      <pw value="Power2017W!" />
+      <idTenant value="1465" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
-    </OperationStrategy>
-  </ExternalImport>
-  
-  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
-    <HostConfig host="backend.winitsrl.eu" protocol="http" />
-    <ExtraInfos>
-      <IdCliente  value="47" />
-    </ExtraInfos>
-    <OperationStrategy >
-      <getTimbrature  value="/app/ws/Winit" />
     </OperationStrategy>
   </ExternalImport>
   

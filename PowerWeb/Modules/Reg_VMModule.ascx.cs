@@ -354,7 +354,7 @@ namespace PowerWeb.Modules
                             }
 
                             //viene creata una nuova nuova registrazione
-                            newRegV = initReg_V(regE, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, "");
+                            newRegV = initReg_V(0, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, "");
                         }
                     }
 
@@ -544,14 +544,18 @@ namespace PowerWeb.Modules
                 cant_Id = null;
 
             string sotto_cantiere = null;
+            bool exists_sottocantiere = false;
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubCant) == 1) {
+                exists_sottocantiere = EditRegVs.Single(regv => regv.RegE == regE).GetAttachedProperty("Sotto_Cantiere") != null;
 
-            bool exists_sottocantiere = EditRegVs.Single(regv => regv.RegE == regE).GetAttachedProperty("Sotto_Cantiere") != null;
 
-
-            if (exists_sottocantiere)
-            {
-                sotto_cantiere = EditRegVs.Single(regv => regv.RegE == regE).Sotto_Cantiere;
+                if (exists_sottocantiere)
+                {
+                    sotto_cantiere = EditRegVs.Single(regv => regv.RegE == regE).Sotto_Cantiere;
+                }
             }
+
+            
 
 
             Reg_V newRegV = RepoManager.Reg_VRepo.Init();

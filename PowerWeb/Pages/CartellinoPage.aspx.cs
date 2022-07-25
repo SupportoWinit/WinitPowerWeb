@@ -1913,7 +1913,7 @@ namespace PowerWeb.Pages
 
             foreach (Col col in collaboratori)
             {
-                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col,true)["justification"]);
+                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col,false)["justification"]);
             }
 
             var timesheetColReport = new XRColCartellino(cartellini, null, null, optionsObj);

@@ -2656,7 +2656,7 @@ namespace Business.Repository.Custom
             TripAssignmentTypeEnum paramTripAssignement = (TripAssignmentTypeEnum)RepoManager.ParamRepo.ParametersRow.Tipo_Assegnazione_KMMinuti; // means skip check
 
             //se la lista di viaggi è valorizzata e si ha la necessita di assegnare i KM e le ore al viaggio
-            if (tripList.Count > 0 && paramTripAssignement != TripAssignmentTypeEnum.None)
+            if ((tripList.Count > 0 && paramTripAssignement != TripAssignmentTypeEnum.None) || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
             //Caso di Viaggio da Intestare al Cantiere Viaggi di PARAM
             {
                 // inizializzazione della lista da utilizzare nell'eventuale cancellazione dei viaggi con calcolo gis
@@ -2676,7 +2676,7 @@ namespace Business.Repository.Custom
                     Tab_Dist distRow = null;
 
                     //Se in PARAM c'è il Tipo Assegnazione KM/Minuti = FIND (1) 
-                    if (paramTripAssignement == TripAssignmentTypeEnum.Find)
+                    if (paramTripAssignement == TripAssignmentTypeEnum.Find || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
 
                     //i Dati vengono cercati per Codice Cantiere 
                     //se non trovato per Codice Cantiere allora la ricerca viene effettuata anche per CAP)
@@ -2731,7 +2731,7 @@ namespace Business.Repository.Custom
                     }
 
                     //se nella scheda param ho Tipo_Assegnazione_KMMinuti=2
-                    if (paramTripAssignement == TripAssignmentTypeEnum.Calculate)
+                    if (paramTripAssignement == TripAssignmentTypeEnum.Calculate || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
                     {
                         //Viene controllato nella tab decod se è presente la gestione mediante GIS
                         var tdCant = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
@@ -2935,16 +2935,25 @@ namespace Business.Repository.Custom
                             // si calcola la durata dei viaggi utilizzando la tab distanze solamente se
                             // espresso dal livelli di personalizzazione
                             int customizationEnum = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalculateTripDataEnum);
-                            if (customizationEnum != (int)CalculateTripDataEnum.OnlyKm)
+                            if (customizationEnum != (int)CalculateTripDataEnum.OnlyKm || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
                             {
-                                if (trip.TripDuration.TotalMinutes > distRow.Minuti_Tab_Dist)
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
                                 {
-                                    trip.RegU.Registrazione_Data_Ora_Fig_Reg = trip.RegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(distRow.Minuti_Tab_Dist);
-                                    trip.RegU.Registrazione_Data_Ora_Fis_Reg = trip.RegE.Registrazione_Data_Ora_Fis_Reg.AddMinutes(distRow.Minuti_Tab_Dist);
+                                    trip.RegU.Registrazione_Data_Ora_Fig_Reg = lastRegV.Data_Ora_Fig_E;
 
-                                    trip.RegE.Note_Reg = "Durata viaggio presa da tabella distanze";
-
+                                    trip.RegE.Note_Reg = "Fatta con personalizzazione";
                                 }
+                                else {
+                                    if (trip.TripDuration.TotalMinutes > distRow.Minuti_Tab_Dist)
+                                    {
+                                        trip.RegU.Registrazione_Data_Ora_Fig_Reg = trip.RegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(distRow.Minuti_Tab_Dist);
+                                        trip.RegU.Registrazione_Data_Ora_Fis_Reg = trip.RegE.Registrazione_Data_Ora_Fis_Reg.AddMinutes(distRow.Minuti_Tab_Dist);
+
+                                        trip.RegE.Note_Reg = "Durata viaggio presa da tabella distanze";
+
+                                    }
+                                }
+                                
                             }
 
                             // si procede alla verifica e all'inserimento dei km solamente se

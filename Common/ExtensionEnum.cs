@@ -173,7 +173,12 @@ namespace Common
         AutoClosuresFirstLast,
         PausaPranzoIsWorkedHoursEnum,
         AutoClosures,
-        SubstractPausaPranzo
+        SubstractPausaPranzo,
+        SubCant,
+        NoNocturneStr,
+        BadTxt,
+        CoordinateZero,
+        ViewKilometers
     }
 
     public enum ClockAppsOperationEnum
