@@ -18,6 +18,16 @@ namespace Business.Synchronization.OperationStrategies.GeoBadge
             }).ToArray());
         }
 
+        public JArray ExecuteAddStrategy(IEnumerable<Cant> entities, IDictionary<string, string> connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JArray ExecuteDeleteStrategy(IEnumerable<Cant> entities, IDictionary<string, string> connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
         public JArray ExecuteDeletionStrategy(IEnumerable<Cant> entities)
         {
             return JArray.FromObject(entities.Select(cant => new
@@ -34,6 +44,11 @@ namespace Business.Synchronization.OperationStrategies.GeoBadge
             {
                 //IdTerminale = cant.IdTerminale 
             }).ToArray());
+        }
+
+        public JArray ExecuteModifyStrategy(IEnumerable<Cant> entities, IDictionary<string, string> connectionString)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,8 +7,14 @@ namespace Business.Synchronization
     {
         JArray ExecuteAddStrategy(IEnumerable<T> entities);
 
+        JArray ExecuteAddStrategy(IEnumerable<T> entities, IDictionary<string, string> connectionString);
+
         JArray ExecuteModifyStrategy(IEnumerable<T> entities);
 
+        JArray ExecuteModifyStrategy(IEnumerable<T> entities, IDictionary<string, string> connectionString);
+
         JArray ExecuteDeletionStrategy(IEnumerable<T> entities);
+
+        JArray ExecuteDeleteStrategy(IEnumerable<T> entities, IDictionary<string, string> connectionString);
     }
 }

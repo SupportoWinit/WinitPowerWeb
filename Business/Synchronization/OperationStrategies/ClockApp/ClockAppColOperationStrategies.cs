@@ -95,5 +95,24 @@ namespace Business.Synchronization.OperationStrategies.ClockApp
 
 
         }
+        public JArray ExecuteAddStrategy(IEnumerable<Cant> entities, IDictionary<string, string> connectionString)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public JArray ExecuteAddStrategy(IEnumerable<Col> entities, IDictionary<string, string> connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JArray ExecuteModifyStrategy(IEnumerable<Col> entities, IDictionary<string, string> connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public JArray ExecuteDeleteStrategy(IEnumerable<Col> entities, IDictionary<string, string> connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

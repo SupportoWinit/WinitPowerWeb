@@ -31,5 +31,24 @@ namespace Business.Synchronization.OperationStrategies.GeoBadge
                 //IdLavoratore = col.IdLavoratore,
             }).ToArray());
         }
+        public JArray ExecuteAddStrategy(IEnumerable<Cant> entities, IDictionary<string, string> connectionString)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public JArray ExecuteAddStrategy(IEnumerable<Col> entities, IDictionary<string, string> connectionString)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public JArray ExecuteModifyStrategy(IEnumerable<Col> entities, IDictionary<string, string> connectionString)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public JArray ExecuteDeleteStrategy(IEnumerable<Col> entities, IDictionary<string, string> connectionString)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

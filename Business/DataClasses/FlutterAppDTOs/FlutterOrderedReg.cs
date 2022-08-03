@@ -36,7 +36,10 @@ namespace Business.DataClasses.FlutterAppDTOs
         [JsonProperty("Squadra")]
         public string Squadra { get; set; }
 
-        public FlutterOrderedReg(string Fru,string Pru,DateTime data,string verso,string motivazione,double latitudine, double longitudine, string attivita,string squadra) {
+        [JsonProperty("Cantiere")]
+        public String Cantiere { get; set; }
+
+        public FlutterOrderedReg(string Fru,string Pru,DateTime data,string verso,string motivazione,double latitudine, double longitudine, string attivita,string squadra, string cantiere) {
             CodiceFru = Fru;
             CodicePru = Pru;
             Data = data;
@@ -46,6 +49,7 @@ namespace Business.DataClasses.FlutterAppDTOs
             Longitudine = longitudine;
             Attivita = attivita;
             Squadra = squadra;
+            Cantiere = cantiere;
         }
     }
 }

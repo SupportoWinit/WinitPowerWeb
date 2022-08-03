@@ -471,12 +471,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Synchronization\Implementations\FlutterAppManagerSynchronizer.cs" />
     <Compile Include="Synchronization\Implementations\ClockAppManagerSynchronizer.cs" />
     <Compile Include="Synchronization\Implementations\GeoBadgeSynchronizer.cs" />
     <Compile Include="Synchronization\Collectors\DbChangeTrackerCollector.cs" />
     <Compile Include="Synchronization\Interfaces\ICollector.cs" />
     <Compile Include="Synchronization\Interfaces\ISynchronizer.cs" />
     <Compile Include="Synchronization\Interfaces\IOperationStrategies.cs" />
+    <Compile Include="Synchronization\OperationStrategies\Flutter\FlutterCantOperationStrategies.cs" />
     <Compile Include="Synchronization\OperationStrategies\ClockApp\ClockAppCantOperationStrategies.cs" />
     <Compile Include="Synchronization\OperationStrategies\ClockApp\ClockAppColOperationStrategies.cs" />
     <Compile Include="Synchronization\OperationStrategies\GeoBadge\GeoBadgeCantStrategies.cs" />

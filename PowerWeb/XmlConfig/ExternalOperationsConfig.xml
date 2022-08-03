@@ -50,10 +50,10 @@
     </OperationStrategy>
   </ExternalImport>
   
-  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
+  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="0">
     <HostConfig host="backend.winitsrl.eu" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="47" />
+      <IdCliente  value="38" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

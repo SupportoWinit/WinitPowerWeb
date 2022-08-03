@@ -5180,7 +5180,7 @@ namespace Business.Repository.Custom
                         #region PARTIZIONAMENTO REGISTRAZIONI TOTALI
 
                         //Viene creato un HashSet direttamente dalla lista delle registrazioni da inserire (durante la creazione della nuova struttura vengono automaticamente eliminati i duplicati)
-                        toAddRegs = new HashSet<Reg>(newRegs.Where(reg => reg.Registrazione_Data_Ora_Orig_Reg >= limit.Key && reg.Registrazione_Data_Ora_Orig_Reg < limit.Value).ToList());
+                        toAddRegs = new HashSet<Reg>(newRegs.Where(reg => reg.Registrazione_Data_Ora_Fis_Reg >= limit.Key && reg.Registrazione_Data_Ora_Fis_Reg <= limit.Value).ToList());
 
                         #endregion
 

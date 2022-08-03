@@ -34,7 +34,7 @@ namespace Business.Synchronization.Collectors
 
             addedEntities = trackedEntities.Where(en => en.State == EntityState.Added).Select(en => en.Entity).ToList();
 
-            modifiedEntities = trackedEntities.Where(en => en.State == EntityState.Modified).Select(en => en.Entity).ToList();
+            modifiedEntities = trackedEntities.Where(en => en.State == EntityState.Unchanged).Select(en => en.Entity).ToList();
 
             deletedEntities = trackedEntities.Where(en => en.State == EntityState.Deleted).Select(en => en.Entity).ToList();
         }
