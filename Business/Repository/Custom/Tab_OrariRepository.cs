@@ -1079,12 +1079,30 @@ namespace Business.Repository.Custom
                         var plan = validTimeSheet.Select(timeSheet =>
                         {
                             if (pDate >= startValidDate && pDate <= endValidDate)
-                                if (timeSheet.Ora_E != null && timeSheet.Ora_U != null)
-                                    return new Tuple<int, TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(timeSheet.Cant_Id.Value ,timeSheet.Ora_E.Value,
+                                if (timeSheet.Ora_E != null && timeSheet.Ora_U != null) {
+                                    if (timeSheet.Cant_Id != null)
+                                    {
+                                        return new Tuple<int, TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(timeSheet.Cant_Id.Value, timeSheet.Ora_E.Value,
                                         timeSheet.Ora_U.Value, nocturnInitHour, nocturnEndHour);
-                                else
-                                    return new Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(timeSheet.Cant_Id.Value, defaultInitDay,
+                                    }
+                                    else
+                                    {
+                                        return new Tuple<int, TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(0, timeSheet.Ora_E.Value,
+                                        timeSheet.Ora_U.Value, nocturnInitHour, nocturnEndHour);
+                                    }
+                                }
+                                else {
+                                    if (timeSheet.Cant_Id != null)
+                                    {
+                                        return new Tuple<int, TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(timeSheet.Cant_Id.Value, defaultInitDay,
                                         defaultInitDay.Add(timeSheet.DisplayedDuration), nocturnInitHour, nocturnEndHour);
+                                    }
+                                    else {
+                                        return new Tuple<int, TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>(0, defaultInitDay,
+                                        defaultInitDay.Add(timeSheet.DisplayedDuration), nocturnInitHour, nocturnEndHour);
+                                    }
+                                }
+                                    
                             else // in caso non si sia nell'intervallo valido si ritorna il valore null
                                 return null;
                         }

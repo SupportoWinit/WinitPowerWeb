@@ -178,7 +178,8 @@ namespace Common
         NoNocturneStr,
         BadTxt,
         CoordinateZero,
-        ViewKilometers
+        ViewKilometers,
+        DoublePushPin
     }
 
     public enum ClockAppsOperationEnum

@@ -149,8 +149,6 @@ namespace Business.RegFileCreators
                         int cant = Int32.Parse(fluReg.CodicePru);
                         List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
                         string regRow = "";
-                        List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cant).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                        List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
                         if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
                         {
                             #region Reg con coordinate
@@ -186,7 +184,8 @@ namespace Business.RegFileCreators
                         else
                         {
                             #region Reg senza coordinate
-
+                            List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cant).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                            List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
                             regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
                                 fluReg.CodiceFru,
                                 matr.Last().Codice_Fru,

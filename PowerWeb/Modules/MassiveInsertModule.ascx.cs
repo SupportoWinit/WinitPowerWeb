@@ -522,7 +522,8 @@ namespace PowerWeb.Modules
                                             // allora per ogni orario viene generata una reg_v con i dati selezionati
                                             foreach (var detailCalendar in dayCalendar.Value)
                                             {
-                                                if ((RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && cantId == detailCalendar.Item1) || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) {
+                                                if ((RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && cantId == detailCalendar.Item1))
+                                                {
                                                     //var newRegV = RepoManager.Reg_VRepo.Init();
                                                     //newRegV.RegE = ++lastId;
                                                     //newRegV.Col_Id = colId;
@@ -576,7 +577,35 @@ namespace PowerWeb.Modules
 
                                                     regVsToAdd.Add(newRegV);
                                                 }
-                                                
+                                                else {
+                                                    var newRegV = RepoManager.Reg_VRepo.Init();
+                                                    newRegV.RegE = ++lastId;
+                                                    newRegV.Col_Id = colId;
+                                                    newRegV.Cant_Id = cantId;
+                                                    newRegV.Motivazione_Reg_Id = motId == 0 ? (int?)null : motId;
+                                                    newRegV.Data_Reg = dayCalendar.Key;
+                                                    
+                                                    var dataOraFisE = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
+                                                    var dataOraFisU = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
+                                                    
+                                                    // se è richiesto l'inserimento di una registrazione solo durata
+                                                    // allora inserisco i corrispettivi dati; altrimenti procedo con una registrazione standard entrata/uscita
+                                                    if (dataOraFisE.TimeOfDay == TimeSpan.Zero && dataOraFisU.TimeOfDay != TimeSpan.Zero)
+                                                    {
+                                                        newRegV.Durata_Fis_HH_C = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, dataOraFisU.TimeOfDay.Hours,
+                                                            dataOraFisU.TimeOfDay.Minutes, dataOraFisU.TimeOfDay.Seconds);
+                                                        newRegV.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                                                        newRegV.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
+                                                    }
+                                                    else
+                                                    {
+                                                        newRegV.Data_Ora_Fis_E = dataOraFisE;
+                                                        newRegV.Data_Ora_Fis_U = dataOraFisU;
+                                                    }
+                                                    
+                                                    regVsToAdd.Add(newRegV);
+                                                }
+
                                             }
                                         }
                                     }

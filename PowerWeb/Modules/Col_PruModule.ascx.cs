@@ -132,9 +132,13 @@ namespace PowerWeb.Modules
 
                         colList.AddRange(col);
                     }
-
-                    currDataSource = colList.AsQueryable();
-
+                    if (colList.Count == 0)
+                    {
+                        currDataSource = RepoManager.ColRepo.GetAll(true).AsQueryable();
+                    }
+                    else {
+                        currDataSource = colList.AsQueryable();
+                    }
                 }
                 else
                 {
