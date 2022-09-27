@@ -546,7 +546,7 @@
       Overtime = 1 visualizza gli straordinari-->
 
   <!--<********************************************************EXPORT CONFRONTE ORE STRAORDINARIE************************************************************-->
-  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="0"/>
+  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="1"/>
   <!-- ExportStr = 0 non visualizza gli straordinari
       ExportStr = 1 visualizza gli straordinari-->
   <!--<********************************************************IMPORTAZIONE TIMBRATURE NELLO STESSO MINUTO************************************************************-->
@@ -616,5 +616,10 @@
   <c ID="CustomizationEnum.DoublePushPin" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
   <!--  DounlePushPin=0 Indica di non calcolare i kilometri
         DounlePushPin=1 Indica di calcolare i kilometri-->
+
+  <!-- *******************************************************GESTIONE RITARDI USCITA *********************************************************-->
+  <c ID="CustomizationEnum.ExitDelay" Des="Indica se andare a calcolare il ritardo ancche sull'uscita" Value="1"/>
+  <!--  ExitDelay=0 Indica di non calcolare i ritardi
+        ExitDelay=1 Indica di calcolare i ritardi-->
   
 </Customizations>

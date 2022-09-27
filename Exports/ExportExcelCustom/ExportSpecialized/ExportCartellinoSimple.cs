@@ -261,7 +261,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                         timesheetList.AddRange(TimesheetModuleItem.GenerateCartellino(ExportPeriod, col, isByOtherEntity:false)["justification"]);
                     }
-
+                    
                 }
 
                 LaunchExport(timesheetList.AsQueryable());

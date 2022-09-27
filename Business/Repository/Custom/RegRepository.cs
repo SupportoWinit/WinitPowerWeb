@@ -510,8 +510,7 @@ namespace Business.Repository.Custom
                             }
 
                             CommitWork();
-
-
+                            //RepoManager.Reg_VRepo.InviaRitardi();
                         }
 
                         regVs = GetRegVsToPostProcess(regs);

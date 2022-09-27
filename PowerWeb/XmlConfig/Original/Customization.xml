@@ -612,4 +612,14 @@
   <!--  ViewKilometers=0 Indica di non calcolare i kilometri
         ViewKilometers=1 Indica di calcolare i kilometri-->
   
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.DoublePushPin" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
+  <!--  DounlePushPin=0 Indica di non calcolare i kilometri
+        DounlePushPin=1 Indica di calcolare i kilometri-->
+
+  <!-- *******************************************************GESTIONE RITARDI USCITA *********************************************************-->
+  <c ID="CustomizationEnum.ExitDelay" Des="Indica se andare a calcolare il ritardo ancche sull'uscita" Value="1"/>
+  <!--  ExitDelay=0 Indica di non calcolare i ritardi
+        ExitDelay=1 Indica di calcolare i ritardi-->
+  
 </Customizations>

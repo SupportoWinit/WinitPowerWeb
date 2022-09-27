@@ -56,8 +56,6 @@ namespace PowerWeb.Pages
 
                 dataSource = new DevExtremeLinqServerRepository<Col>(RepoManager.ColRepo);
 
-                
-
                 _exportContext = new ExportContext();
 
                 #region OPZIONI CARTELLINO
@@ -172,7 +170,7 @@ namespace PowerWeb.Pages
 
                 field = RepoManager.ResourcesRepo.GetResourcesDictionaryString("FLD_GRUPPO_TAB");
                 colonna = new JObject();
-                colonna.Add("dataField", "Raggruppamento1_Col");
+                colonna.Add("dataField", "Note_Col");
                 colonna.Add("caption", field);
                 colonna.Add("visible", true);
                 _colColumns.Add(colonna);

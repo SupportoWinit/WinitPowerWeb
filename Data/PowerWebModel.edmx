@@ -1518,8 +1518,8 @@
           <Property Name="DisAbilitazione_Versioni" Type="bit" Nullable="false" />
           <Property Name="Nome_Versioni" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Power.dbo.Cant_Fil_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errori trovati durante la generazione:
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Cant_Fil_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1528,8 +1528,8 @@ warning 6002: The table/view 'Power.dbo.Cant_Fil_V' does not have a primary key 
           <Property Name="Cant_Id" Type="int" Nullable="false" />
           <Property Name="Fil_Id" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Power.dbo.Cant_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errori trovati durante la generazione:
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Cant_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1673,8 +1673,8 @@ warning 6002: The table/view 'Power.dbo.Cant_V' does not have a primary key defi
           <Property Name="Abilitazione_Data_Inizio_Fru_Can" Type="date" Nullable="false" />
           <Property Name="N_Serie_Fru" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Power.dbo.Col_Resp_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errori trovati durante la generazione:
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Col_Resp_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1683,8 +1683,8 @@ warning 6002: The table/view 'Power.dbo.Col_Resp_V' does not have a primary key 
           <Property Name="Col_Id" Type="int" Nullable="false" />
           <Property Name="Resp_Id" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Power.dbo.Col_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errori trovati durante la generazione:
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Col_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1830,8 +1830,8 @@ warning 6002: The table/view 'Power.dbo.Col_V' does not have a primary key defin
           <Property Name="Raggruppamento2_Col" Type="nvarchar" MaxLength="50" />
           <Property Name="Residenza_Provincia_GEN_Col" Type="nvarchar" MaxLength="4" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errori trovati durante la generazione:
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Reg_V">
           <Key>
             <PropertyRef Name="RegE" />
@@ -1917,6 +1917,7 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
           <Property Name="Costo_Orario_Fis" Type="float" />
           <Property Name="Raggruppamento1_Can" Type="nvarchar" MaxLength="50" />
           <Property Name="Raggruppamento2_Can" Type="nvarchar" MaxLength="50" />
+          <Property Name="Note_Col" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK__Cant_Cent__Cant___2843D2B2">
           <End Role="Cant" Type="Self.Cant" Multiplicity="1" />
@@ -3152,7 +3153,8 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
     [Reg_V].[Costo_Orario_Fig] AS [Costo_Orario_Fig], 
     [Reg_V].[Costo_Orario_Fis] AS [Costo_Orario_Fis], 
     [Reg_V].[Raggruppamento1_Can] AS [Raggruppamento1_Can], 
-    [Reg_V].[Raggruppamento2_Can] AS [Raggruppamento2_Can]
+    [Reg_V].[Raggruppamento2_Can] AS [Raggruppamento2_Can], 
+    [Reg_V].[Note_Col] AS [Note_Col]
     FROM [dbo].[Reg_V] AS [Reg_V]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__Cant_Cent__Cant___2843D2B2" Association="Self.FK__Cant_Cent__Cant___2843D2B2">
@@ -6006,7 +6008,6 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
             <End Role="CentroDiCosto" EntitySet="CentroDiCosto" />
             <End Role="Cant_CentroDiCosto" EntitySet="Cant_CentroDiCosto" />
           </AssociationSet>
-          <EntitySet Name="Reg_V" EntityType="PowerWebModel.Reg_V" />
           <EntitySet Name="Cant" EntityType="PowerWebModel.Cant" />
           <AssociationSet Name="FK__Cant_Cent__Cant___2843D2B2" Association="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2">
             <End Role="Cant" EntitySet="Cant" />
@@ -6053,6 +6054,7 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
             <End Role="Cant" EntitySet="Cant" />
             <End Role="Param" EntitySet="Param" />
           </AssociationSet>
+          <EntitySet Name="Reg_V" EntityType="PowerWebModel.Reg_V" />
         </EntityContainer>
         <EntityType Name="CentroDiCosto">
           <Key>
@@ -6100,92 +6102,6 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Reg_V">
-          <Key>
-            <PropertyRef Name="RegE" />
-            <PropertyRef Name="Registrazione_Tipo_Desc" />
-            <PropertyRef Name="Data_Ora_Fis_E" />
-            <PropertyRef Name="Tipo_Modifica" />
-            <PropertyRef Name="IsNotToElaborate" />
-            <PropertyRef Name="Registrazione_Tipo_Reg" />
-            <PropertyRef Name="Registrazione_Stato_Reg" />
-            <PropertyRef Name="Registrazione_Bloccata" />
-            <PropertyRef Name="Ritardo_Mail_Sent" />
-          </Key>
-          <Property Name="RegE" Type="Int32" Nullable="false" />
-          <Property Name="RegU" Type="Int32" />
-          <Property Name="CentroDiCosto_Id" Type="Int32" />
-          <Property Name="Cant_Id" Type="Int32" />
-          <Property Name="Cant_Mnemonic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Cant_Desc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DisAbilitazione_Can" Type="Boolean" />
-          <Property Name="Col_Id" Type="Int32" />
-          <Property Name="Col_Mnemonic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Col_Desc" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
-          <Property Name="DisAbilitazione_Col" Type="Boolean" />
-          <Property Name="Pru_Id" Type="Int32" />
-          <Property Name="Codice_Pru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Fru_Id" Type="Int32" />
-          <Property Name="Codice_Fru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Motivazione_Reg_Id" Type="Int32" />
-          <Property Name="Motivazione_Reg_Cod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Registrazione_Tipo_Desc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Data_Ora_Fig_E" Type="DateTime" Precision="3" />
-          <Property Name="Data_Ora_Fig_U" Type="DateTime" Precision="3" />
-          <Property Name="Durata_Fig" Type="Int32" />
-          <Property Name="Data_Ora_Fis_E" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Data_Ora_Fis_U" Type="DateTime" Precision="3" />
-          <Property Name="Durata_Fis" Type="Int32" />
-          <Property Name="Data_Ora_Fig_ETime" Type="Time" Precision="7" />
-          <Property Name="Data_Ora_Fis_ETime" Type="Time" Precision="7" />
-          <Property Name="Data_Ora_Fig_UTime" Type="Time" Precision="7" />
-          <Property Name="Data_Ora_Fis_UTime" Type="Time" Precision="7" />
-          <Property Name="Data_Ora_Fig_EDate" Type="DateTime" Precision="0" />
-          <Property Name="Data_Reg" Type="DateTime" Precision="0" />
-          <Property Name="Durata_Fis_HH_S" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="Durata_Fig_HH_S" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="Tipo_Modifica" Type="Int32" Nullable="false" />
-          <Property Name="KM_Reg" Type="Decimal" Precision="6" Scale="2" />
-          <Property Name="Ore_Calc_Reg" Type="Time" Precision="0" />
-          <Property Name="Note_Reg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsNotToElaborate" Type="Boolean" Nullable="false" />
-          <Property Name="Registrazione_Tipo_Reg" Type="Int32" Nullable="false" />
-          <Property Name="Registrazione_Stato_Reg" Type="Int32" Nullable="false" />
-          <Property Name="RiferimentoRRN_Att" Type="Int32" />
-          <Property Name="Resp_Id" Type="Int32" />
-          <Property Name="Fil_Id" Type="Int32" />
-          <Property Name="Data_Reg_AAAA" Type="Int32" />
-          <Property Name="Data_Reg_AAAA_MM" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
-          <Property Name="Att_Id" Type="Int32" />
-          <Property Name="Registrazione_Bloccata" Type="Boolean" Nullable="false" />
-          <Property Name="EntrataEU" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="UscitaEU" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="Registrazione_Lat_Orig_E" Type="Double" />
-          <Property Name="Registrazione_Long_Orig_E" Type="Double" />
-          <Property Name="Registrazione_Lat_Orig_U" Type="Double" />
-          <Property Name="Registrazione_Long_Orig_U" Type="Double" />
-          <Property Name="Cli_Id" Type="Int32" />
-          <Property Name="Codice_Commessa_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Qualifica_Col" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Gestionale_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Att_Cli_Id" Type="Int32" />
-          <Property Name="Activity_Evaluation" Type="Int32" />
-          <Property Name="Delta_Fig_Fis" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
-          <Property Name="Stato_Attivita" Type="Int32" />
-          <Property Name="Tipo_Attivita" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sotto_Cantiere" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Turno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Codice_Cliente" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Cognome_Cli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Nome_Cli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Ritardo_Durata" Type="Int32" />
-          <Property Name="Ritardo_Mail_Sent" Type="Boolean" Nullable="false" />
-          <Property Name="N_Serie_Fru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Costo_Orario_Fig" Type="Double" />
-          <Property Name="Costo_Orario_Fis" Type="Double" />
-          <Property Name="Raggruppamento1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Raggruppamento2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Cant">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -6644,6 +6560,93 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Reg_V">
+          <Key>
+            <PropertyRef Name="RegE" />
+            <PropertyRef Name="Registrazione_Tipo_Desc" />
+            <PropertyRef Name="Data_Ora_Fis_E" />
+            <PropertyRef Name="Tipo_Modifica" />
+            <PropertyRef Name="IsNotToElaborate" />
+            <PropertyRef Name="Registrazione_Tipo_Reg" />
+            <PropertyRef Name="Registrazione_Stato_Reg" />
+            <PropertyRef Name="Registrazione_Bloccata" />
+            <PropertyRef Name="Ritardo_Mail_Sent" />
+          </Key>
+          <Property Name="RegE" Type="Int32" Nullable="false" />
+          <Property Name="RegU" Type="Int32" />
+          <Property Name="CentroDiCosto_Id" Type="Int32" />
+          <Property Name="Cant_Id" Type="Int32" />
+          <Property Name="Cant_Mnemonic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cant_Desc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DisAbilitazione_Can" Type="Boolean" />
+          <Property Name="Col_Id" Type="Int32" />
+          <Property Name="Col_Mnemonic" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Col_Desc" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="DisAbilitazione_Col" Type="Boolean" />
+          <Property Name="Pru_Id" Type="Int32" />
+          <Property Name="Codice_Pru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Fru_Id" Type="Int32" />
+          <Property Name="Codice_Fru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Motivazione_Reg_Id" Type="Int32" />
+          <Property Name="Motivazione_Reg_Cod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Registrazione_Tipo_Desc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Data_Ora_Fig_E" Type="DateTime" Precision="3" />
+          <Property Name="Data_Ora_Fig_U" Type="DateTime" Precision="3" />
+          <Property Name="Durata_Fig" Type="Int32" />
+          <Property Name="Data_Ora_Fis_E" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Data_Ora_Fis_U" Type="DateTime" Precision="3" />
+          <Property Name="Durata_Fis" Type="Int32" />
+          <Property Name="Data_Ora_Fig_ETime" Type="Time" Precision="7" />
+          <Property Name="Data_Ora_Fis_ETime" Type="Time" Precision="7" />
+          <Property Name="Data_Ora_Fig_UTime" Type="Time" Precision="7" />
+          <Property Name="Data_Ora_Fis_UTime" Type="Time" Precision="7" />
+          <Property Name="Data_Ora_Fig_EDate" Type="DateTime" Precision="0" />
+          <Property Name="Data_Reg" Type="DateTime" Precision="0" />
+          <Property Name="Durata_Fis_HH_S" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Durata_Fig_HH_S" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Modifica" Type="Int32" Nullable="false" />
+          <Property Name="KM_Reg" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Ore_Calc_Reg" Type="Time" Precision="0" />
+          <Property Name="Note_Reg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsNotToElaborate" Type="Boolean" Nullable="false" />
+          <Property Name="Registrazione_Tipo_Reg" Type="Int32" Nullable="false" />
+          <Property Name="Registrazione_Stato_Reg" Type="Int32" Nullable="false" />
+          <Property Name="RiferimentoRRN_Att" Type="Int32" />
+          <Property Name="Resp_Id" Type="Int32" />
+          <Property Name="Fil_Id" Type="Int32" />
+          <Property Name="Data_Reg_AAAA" Type="Int32" />
+          <Property Name="Data_Reg_AAAA_MM" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="Att_Id" Type="Int32" />
+          <Property Name="Registrazione_Bloccata" Type="Boolean" Nullable="false" />
+          <Property Name="EntrataEU" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="UscitaEU" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Registrazione_Lat_Orig_E" Type="Double" />
+          <Property Name="Registrazione_Long_Orig_E" Type="Double" />
+          <Property Name="Registrazione_Lat_Orig_U" Type="Double" />
+          <Property Name="Registrazione_Long_Orig_U" Type="Double" />
+          <Property Name="Cli_Id" Type="Int32" />
+          <Property Name="Codice_Commessa_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Qualifica_Col" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Gestionale_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Att_Cli_Id" Type="Int32" />
+          <Property Name="Activity_Evaluation" Type="Int32" />
+          <Property Name="Delta_Fig_Fis" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Stato_Attivita" Type="Int32" />
+          <Property Name="Tipo_Attivita" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sotto_Cantiere" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Turno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Codice_Cliente" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Cognome_Cli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Nome_Cli" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ritardo_Durata" Type="Int32" />
+          <Property Name="Ritardo_Mail_Sent" Type="Boolean" Nullable="false" />
+          <Property Name="N_Serie_Fru" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Costo_Orario_Fig" Type="Double" />
+          <Property Name="Costo_Orario_Fis" Type="Double" />
+          <Property Name="Raggruppamento1_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Raggruppamento2_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Note_Col" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8180,85 +8183,6 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Reg_V">
-            <EntityTypeMapping TypeName="PowerWebModel.Reg_V">
-              <MappingFragment StoreEntitySet="Reg_V">
-                <ScalarProperty Name="Raggruppamento2_Can" ColumnName="Raggruppamento2_Can" />
-                <ScalarProperty Name="Raggruppamento1_Can" ColumnName="Raggruppamento1_Can" />
-                <ScalarProperty Name="Costo_Orario_Fis" ColumnName="Costo_Orario_Fis" />
-                <ScalarProperty Name="Costo_Orario_Fig" ColumnName="Costo_Orario_Fig" />
-                <ScalarProperty Name="N_Serie_Fru" ColumnName="N_Serie_Fru" />
-                <ScalarProperty Name="Ritardo_Mail_Sent" ColumnName="Ritardo_Mail_Sent" />
-                <ScalarProperty Name="Ritardo_Durata" ColumnName="Ritardo_Durata" />
-                <ScalarProperty Name="Nome_Cli" ColumnName="Nome_Cli" />
-                <ScalarProperty Name="Cognome_Cli" ColumnName="Cognome_Cli" />
-                <ScalarProperty Name="Codice_Cliente" ColumnName="Codice_Cliente" />
-                <ScalarProperty Name="Turno" ColumnName="Turno" />
-                <ScalarProperty Name="Sotto_Cantiere" ColumnName="Sotto_Cantiere" />
-                <ScalarProperty Name="Tipo_Attivita" ColumnName="Tipo_Attivita" />
-                <ScalarProperty Name="Stato_Attivita" ColumnName="Stato_Attivita" />
-                <ScalarProperty Name="Delta_Fig_Fis" ColumnName="Delta_Fig_Fis" />
-                <ScalarProperty Name="Activity_Evaluation" ColumnName="Activity_Evaluation" />
-                <ScalarProperty Name="Att_Cli_Id" ColumnName="Att_Cli_Id" />
-                <ScalarProperty Name="Codice_Gestionale_Can" ColumnName="Codice_Gestionale_Can" />
-                <ScalarProperty Name="Qualifica_Col" ColumnName="Qualifica_Col" />
-                <ScalarProperty Name="Codice_Commessa_Can" ColumnName="Codice_Commessa_Can" />
-                <ScalarProperty Name="Cli_Id" ColumnName="Cli_Id" />
-                <ScalarProperty Name="Registrazione_Long_Orig_U" ColumnName="Registrazione_Long_Orig_U" />
-                <ScalarProperty Name="Registrazione_Lat_Orig_U" ColumnName="Registrazione_Lat_Orig_U" />
-                <ScalarProperty Name="Registrazione_Long_Orig_E" ColumnName="Registrazione_Long_Orig_E" />
-                <ScalarProperty Name="Registrazione_Lat_Orig_E" ColumnName="Registrazione_Lat_Orig_E" />
-                <ScalarProperty Name="UscitaEU" ColumnName="UscitaEU" />
-                <ScalarProperty Name="EntrataEU" ColumnName="EntrataEU" />
-                <ScalarProperty Name="Registrazione_Bloccata" ColumnName="Registrazione_Bloccata" />
-                <ScalarProperty Name="Att_Id" ColumnName="Att_Id" />
-                <ScalarProperty Name="Data_Reg_AAAA_MM" ColumnName="Data_Reg_AAAA_MM" />
-                <ScalarProperty Name="Data_Reg_AAAA" ColumnName="Data_Reg_AAAA" />
-                <ScalarProperty Name="Fil_Id" ColumnName="Fil_Id" />
-                <ScalarProperty Name="Resp_Id" ColumnName="Resp_Id" />
-                <ScalarProperty Name="RiferimentoRRN_Att" ColumnName="RiferimentoRRN_Att" />
-                <ScalarProperty Name="Registrazione_Stato_Reg" ColumnName="Registrazione_Stato_Reg" />
-                <ScalarProperty Name="Registrazione_Tipo_Reg" ColumnName="Registrazione_Tipo_Reg" />
-                <ScalarProperty Name="IsNotToElaborate" ColumnName="IsNotToElaborate" />
-                <ScalarProperty Name="Note_Reg" ColumnName="Note_Reg" />
-                <ScalarProperty Name="Ore_Calc_Reg" ColumnName="Ore_Calc_Reg" />
-                <ScalarProperty Name="KM_Reg" ColumnName="KM_Reg" />
-                <ScalarProperty Name="Tipo_Modifica" ColumnName="Tipo_Modifica" />
-                <ScalarProperty Name="Durata_Fig_HH_S" ColumnName="Durata_Fig_HH_S" />
-                <ScalarProperty Name="Durata_Fis_HH_S" ColumnName="Durata_Fis_HH_S" />
-                <ScalarProperty Name="Data_Reg" ColumnName="Data_Reg" />
-                <ScalarProperty Name="Data_Ora_Fig_EDate" ColumnName="Data_Ora_Fig_EDate" />
-                <ScalarProperty Name="Data_Ora_Fis_UTime" ColumnName="Data_Ora_Fis_UTime" />
-                <ScalarProperty Name="Data_Ora_Fig_UTime" ColumnName="Data_Ora_Fig_UTime" />
-                <ScalarProperty Name="Data_Ora_Fis_ETime" ColumnName="Data_Ora_Fis_ETime" />
-                <ScalarProperty Name="Data_Ora_Fig_ETime" ColumnName="Data_Ora_Fig_ETime" />
-                <ScalarProperty Name="Durata_Fis" ColumnName="Durata_Fis" />
-                <ScalarProperty Name="Data_Ora_Fis_U" ColumnName="Data_Ora_Fis_U" />
-                <ScalarProperty Name="Data_Ora_Fis_E" ColumnName="Data_Ora_Fis_E" />
-                <ScalarProperty Name="Durata_Fig" ColumnName="Durata_Fig" />
-                <ScalarProperty Name="Data_Ora_Fig_U" ColumnName="Data_Ora_Fig_U" />
-                <ScalarProperty Name="Data_Ora_Fig_E" ColumnName="Data_Ora_Fig_E" />
-                <ScalarProperty Name="Registrazione_Tipo_Desc" ColumnName="Registrazione_Tipo_Desc" />
-                <ScalarProperty Name="Motivazione_Reg_Cod" ColumnName="Motivazione_Reg_Cod" />
-                <ScalarProperty Name="Motivazione_Reg_Id" ColumnName="Motivazione_Reg_Id" />
-                <ScalarProperty Name="Codice_Fru" ColumnName="Codice_Fru" />
-                <ScalarProperty Name="Fru_Id" ColumnName="Fru_Id" />
-                <ScalarProperty Name="Codice_Pru" ColumnName="Codice_Pru" />
-                <ScalarProperty Name="Pru_Id" ColumnName="Pru_Id" />
-                <ScalarProperty Name="DisAbilitazione_Col" ColumnName="DisAbilitazione_Col" />
-                <ScalarProperty Name="Col_Desc" ColumnName="Col_Desc" />
-                <ScalarProperty Name="Col_Mnemonic" ColumnName="Col_Mnemonic" />
-                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
-                <ScalarProperty Name="DisAbilitazione_Can" ColumnName="DisAbilitazione_Can" />
-                <ScalarProperty Name="Cant_Desc" ColumnName="Cant_Desc" />
-                <ScalarProperty Name="Cant_Mnemonic" ColumnName="Cant_Mnemonic" />
-                <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
-                <ScalarProperty Name="CentroDiCosto_Id" ColumnName="CentroDiCosto_Id" />
-                <ScalarProperty Name="RegU" ColumnName="RegU" />
-                <ScalarProperty Name="RegE" ColumnName="RegE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Cant">
             <EntityTypeMapping TypeName="PowerWebModel.Cant">
               <MappingFragment StoreEntitySet="Cant">
@@ -8575,6 +8499,86 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Reg_V">
+            <EntityTypeMapping TypeName="PowerWebModel.Reg_V">
+              <MappingFragment StoreEntitySet="Reg_V">
+                <ScalarProperty Name="Note_Col" ColumnName="Note_Col" />
+                <ScalarProperty Name="Raggruppamento2_Can" ColumnName="Raggruppamento2_Can" />
+                <ScalarProperty Name="Raggruppamento1_Can" ColumnName="Raggruppamento1_Can" />
+                <ScalarProperty Name="Costo_Orario_Fis" ColumnName="Costo_Orario_Fis" />
+                <ScalarProperty Name="Costo_Orario_Fig" ColumnName="Costo_Orario_Fig" />
+                <ScalarProperty Name="N_Serie_Fru" ColumnName="N_Serie_Fru" />
+                <ScalarProperty Name="Ritardo_Mail_Sent" ColumnName="Ritardo_Mail_Sent" />
+                <ScalarProperty Name="Ritardo_Durata" ColumnName="Ritardo_Durata" />
+                <ScalarProperty Name="Nome_Cli" ColumnName="Nome_Cli" />
+                <ScalarProperty Name="Cognome_Cli" ColumnName="Cognome_Cli" />
+                <ScalarProperty Name="Codice_Cliente" ColumnName="Codice_Cliente" />
+                <ScalarProperty Name="Turno" ColumnName="Turno" />
+                <ScalarProperty Name="Sotto_Cantiere" ColumnName="Sotto_Cantiere" />
+                <ScalarProperty Name="Tipo_Attivita" ColumnName="Tipo_Attivita" />
+                <ScalarProperty Name="Stato_Attivita" ColumnName="Stato_Attivita" />
+                <ScalarProperty Name="Delta_Fig_Fis" ColumnName="Delta_Fig_Fis" />
+                <ScalarProperty Name="Activity_Evaluation" ColumnName="Activity_Evaluation" />
+                <ScalarProperty Name="Att_Cli_Id" ColumnName="Att_Cli_Id" />
+                <ScalarProperty Name="Codice_Gestionale_Can" ColumnName="Codice_Gestionale_Can" />
+                <ScalarProperty Name="Qualifica_Col" ColumnName="Qualifica_Col" />
+                <ScalarProperty Name="Codice_Commessa_Can" ColumnName="Codice_Commessa_Can" />
+                <ScalarProperty Name="Cli_Id" ColumnName="Cli_Id" />
+                <ScalarProperty Name="Registrazione_Long_Orig_U" ColumnName="Registrazione_Long_Orig_U" />
+                <ScalarProperty Name="Registrazione_Lat_Orig_U" ColumnName="Registrazione_Lat_Orig_U" />
+                <ScalarProperty Name="Registrazione_Long_Orig_E" ColumnName="Registrazione_Long_Orig_E" />
+                <ScalarProperty Name="Registrazione_Lat_Orig_E" ColumnName="Registrazione_Lat_Orig_E" />
+                <ScalarProperty Name="UscitaEU" ColumnName="UscitaEU" />
+                <ScalarProperty Name="EntrataEU" ColumnName="EntrataEU" />
+                <ScalarProperty Name="Registrazione_Bloccata" ColumnName="Registrazione_Bloccata" />
+                <ScalarProperty Name="Att_Id" ColumnName="Att_Id" />
+                <ScalarProperty Name="Data_Reg_AAAA_MM" ColumnName="Data_Reg_AAAA_MM" />
+                <ScalarProperty Name="Data_Reg_AAAA" ColumnName="Data_Reg_AAAA" />
+                <ScalarProperty Name="Fil_Id" ColumnName="Fil_Id" />
+                <ScalarProperty Name="Resp_Id" ColumnName="Resp_Id" />
+                <ScalarProperty Name="RiferimentoRRN_Att" ColumnName="RiferimentoRRN_Att" />
+                <ScalarProperty Name="Registrazione_Stato_Reg" ColumnName="Registrazione_Stato_Reg" />
+                <ScalarProperty Name="Registrazione_Tipo_Reg" ColumnName="Registrazione_Tipo_Reg" />
+                <ScalarProperty Name="IsNotToElaborate" ColumnName="IsNotToElaborate" />
+                <ScalarProperty Name="Note_Reg" ColumnName="Note_Reg" />
+                <ScalarProperty Name="Ore_Calc_Reg" ColumnName="Ore_Calc_Reg" />
+                <ScalarProperty Name="KM_Reg" ColumnName="KM_Reg" />
+                <ScalarProperty Name="Tipo_Modifica" ColumnName="Tipo_Modifica" />
+                <ScalarProperty Name="Durata_Fig_HH_S" ColumnName="Durata_Fig_HH_S" />
+                <ScalarProperty Name="Durata_Fis_HH_S" ColumnName="Durata_Fis_HH_S" />
+                <ScalarProperty Name="Data_Reg" ColumnName="Data_Reg" />
+                <ScalarProperty Name="Data_Ora_Fig_EDate" ColumnName="Data_Ora_Fig_EDate" />
+                <ScalarProperty Name="Data_Ora_Fis_UTime" ColumnName="Data_Ora_Fis_UTime" />
+                <ScalarProperty Name="Data_Ora_Fig_UTime" ColumnName="Data_Ora_Fig_UTime" />
+                <ScalarProperty Name="Data_Ora_Fis_ETime" ColumnName="Data_Ora_Fis_ETime" />
+                <ScalarProperty Name="Data_Ora_Fig_ETime" ColumnName="Data_Ora_Fig_ETime" />
+                <ScalarProperty Name="Durata_Fis" ColumnName="Durata_Fis" />
+                <ScalarProperty Name="Data_Ora_Fis_U" ColumnName="Data_Ora_Fis_U" />
+                <ScalarProperty Name="Data_Ora_Fis_E" ColumnName="Data_Ora_Fis_E" />
+                <ScalarProperty Name="Durata_Fig" ColumnName="Durata_Fig" />
+                <ScalarProperty Name="Data_Ora_Fig_U" ColumnName="Data_Ora_Fig_U" />
+                <ScalarProperty Name="Data_Ora_Fig_E" ColumnName="Data_Ora_Fig_E" />
+                <ScalarProperty Name="Registrazione_Tipo_Desc" ColumnName="Registrazione_Tipo_Desc" />
+                <ScalarProperty Name="Motivazione_Reg_Cod" ColumnName="Motivazione_Reg_Cod" />
+                <ScalarProperty Name="Motivazione_Reg_Id" ColumnName="Motivazione_Reg_Id" />
+                <ScalarProperty Name="Codice_Fru" ColumnName="Codice_Fru" />
+                <ScalarProperty Name="Fru_Id" ColumnName="Fru_Id" />
+                <ScalarProperty Name="Codice_Pru" ColumnName="Codice_Pru" />
+                <ScalarProperty Name="Pru_Id" ColumnName="Pru_Id" />
+                <ScalarProperty Name="DisAbilitazione_Col" ColumnName="DisAbilitazione_Col" />
+                <ScalarProperty Name="Col_Desc" ColumnName="Col_Desc" />
+                <ScalarProperty Name="Col_Mnemonic" ColumnName="Col_Mnemonic" />
+                <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />
+                <ScalarProperty Name="DisAbilitazione_Can" ColumnName="DisAbilitazione_Can" />
+                <ScalarProperty Name="Cant_Desc" ColumnName="Cant_Desc" />
+                <ScalarProperty Name="Cant_Mnemonic" ColumnName="Cant_Mnemonic" />
+                <ScalarProperty Name="Cant_Id" ColumnName="Cant_Id" />
+                <ScalarProperty Name="CentroDiCosto_Id" ColumnName="CentroDiCosto_Id" />
+                <ScalarProperty Name="RegU" ColumnName="RegU" />
+                <ScalarProperty Name="RegE" ColumnName="RegE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -8589,7 +8593,7 @@ warning 6002: The table/view 'Power.dbo.Reg_V' does not have a primary key defin
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />

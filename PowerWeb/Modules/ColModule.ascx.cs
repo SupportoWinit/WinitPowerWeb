@@ -1,4 +1,5 @@
-﻿using Business;
+﻿using BingMapsRESTToolkit;
+using Business;
 using Business.ExportExcelEngine;
 using Business.Repository;
 using Common;
@@ -484,7 +485,7 @@ namespace PowerWeb.Modules
             var currentId = Convert.ToInt32(e.Keys[gvCol.KeyFieldName]);
             Col currentCol = RepoManager.ColRepo.Single(u => u.Col_Id == currentId);
             Col oldCol = RepoManager.ColRepo.DbSet.AsNoTracking().FirstOrDefault(u => u.Col_Id == currentId);
-
+            
             if (RepoManager.ParamRepo.ParametersRow.File_Col_Var)
             //Se in Tab PARAM è stato attivato il Flag di Gestione della Scrittura dei Record Variati in COL_VAR
             {
@@ -513,6 +514,12 @@ namespace PowerWeb.Modules
                 {
                     RepoManager.ColRepo.AddPendingElabForActivity(currentCol);
                 }
+            }
+            Location geocode = BusinessService.GetGeocode(currentCol.GeocodeAddress);
+            if (geocode != null)
+            {
+                currentCol.LatitudineGps_Col = geocode.Point.Coordinates[0];
+                currentCol.LongitudineGps_Col = geocode.Point.Coordinates[1];
             }
             RepoManager.ColRepo.SaveChanges();
             e.Cancel = true;

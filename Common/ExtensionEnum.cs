@@ -179,7 +179,8 @@ namespace Common
         BadTxt,
         CoordinateZero,
         ViewKilometers,
-        DoublePushPin
+        DoublePushPin,
+        ExitDelay
     }
 
     public enum ClockAppsOperationEnum

@@ -810,6 +810,48 @@ namespace Business.Repository.Custom
         /// <param name="entityId">L'indentificativo univoco dell'entità di cui effettuare la ricerca.</param>
         /// <param name="referenceEntity">Il tipo di entità di riferimento per l'orario.</param>
         /// <returns>Un'elenco contente l'id dell'altra entità di riferimento (0 in caso di orario generico), l'ora di inzio e ora di fine previsto.</returns>
+        public List<Tuple<int, TimeSpan, TimeSpan>> GetDayPlanDetailCant(DateTime dateToSearch, int entityId, int cantId, string referenceEntity = "Col")
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var dayDetail = new List<Tuple<int, TimeSpan, TimeSpan>>();
+
+            // recupero dell'id della tab orari tipo a partire dall'id collaboratore/cantiere passato come parametro passato come parametro
+            int tabOrariTipoId = 0;
+            tabOrariTipoId = GetTabOrariTipoIdFromEntity(entityId, referenceEntity);
+
+            // si procede solamente se l'orario è stato correttamente trovato
+            if (tabOrariTipoId != 0)
+            {
+                // calcolo dell'elenenco degli orari validi per data ed entità e ciclo si ognuno di essi
+                foreach (Tab_Orari validTimeSheet in GetDatePlanDetailCant(dateToSearch, tabOrariTipoId, entityId,cantId, referenceEntity))
+                {
+                    // se l'orario ha valorizzato entrata e uscita allora si aggiunge il dato di dettaglio alla lista di ritorno
+                    if (validTimeSheet.Ora_E != null && validTimeSheet.Ora_U != null)
+                    {
+                        // calcolo dell'id dell'altra entità da processare
+                        int otherEntityId = 0;
+                        if (referenceEntity == ColEntityName)
+                            otherEntityId = validTimeSheet.Cant_Id ?? 0;
+                        else
+                            otherEntityId = validTimeSheet.Col_Id ?? 0;
+
+                        dayDetail.Add(new Tuple<int, TimeSpan, TimeSpan>(otherEntityId, validTimeSheet.Ora_E.Value, validTimeSheet.Ora_U.Value));
+                    }
+                }
+            }
+
+            // ritorno del valore calcolato dal metodo
+            return dayDetail;
+        }
+
+        /// <summary>
+        /// Recupera il piano di dettaglio per il giorno e l'entità indicata.
+        /// Questo metodo non prende in considerazione gli orari di sola durata.
+        /// </summary>
+        /// <param name="dateToSearch">La data di cui ricercare il piano di dettaglio.</param>
+        /// <param name="entityId">L'indentificativo univoco dell'entità di cui effettuare la ricerca.</param>
+        /// <param name="referenceEntity">Il tipo di entità di riferimento per l'orario.</param>
+        /// <returns>Un'elenco contente l'id dell'altra entità di riferimento (0 in caso di orario generico), l'ora di inzio e ora di fine previsto.</returns>
         public List<Tuple<int, TimeSpan, TimeSpan>> GetDayPlanDetail(DateTime dateToSearch, int entityId, string referenceEntity = "Col")
         {
             // inizializzazione del valore di ritorno del metodo
@@ -1159,6 +1201,60 @@ namespace Business.Repository.Custom
 
             // ritorno del valore del metodo
             return tabOrariId;
+        }
+
+        /// <summary>
+        /// A partire dalla data passata come parametro e dall'id del tipo orario passato come parametro,
+        /// si occupa di ricercare e restituire gli orari validi per tali dati; in caso di non presenza di dati
+        /// o di problemi nella lettura viene restituita una lista vuota; in caso di <see cref="tabOrariTipoId"/> vuoto (valore 0)
+        /// allora viene ritornato l'orario definito come standard
+        /// </summary>
+        /// <param name="dateToSearch">La data di cui recuperare gli orari.</param>
+        /// <param name="tabOrariTipoId">Il tipo orario da cui recuperare gli orari.</param>
+        /// <param name="colId">L'id del collaboratore per cui ricercare il pano di dettaglio (utilizzato in caso di orario di default)</param>
+        /// <param name="entityType">Il tipo di entità (collaboratore/cantiere) a cui fa riferimento il dato</param>
+        /// <returns>La lista degli orari validi per lo specifico tipico e data; in caso di non presenza di dati
+        /// o di problemi nella lettura viene restituita una lista vuota.</returns>
+        private IEnumerable<Tab_Orari> GetDatePlanDetailCant(DateTime dateToSearch, int tabOrariTipoId, int colId, int cantId, string entityType = "Col")
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnTimesheet = new List<Tab_Orari>();
+
+            // se sono presenti degli orari per l'id passato come parametro validi per la data passata come parametro (si recupera sempre l'ultima versione valida)
+            var validTimesheet = tabOrariTipoId != 0
+                ? Find(tor => tor.Tab_Orari_Tipo_Id == tabOrariTipoId && dateToSearch >= tor.Data_Inizio && tor.Cant_Id == cantId).ToList()
+                : GetStandardTimeTable(dateToSearch, colId);
+
+            if (validTimesheet.Any())
+            {
+                var lastTimesheetDate = validTimesheet.Max(tor => tor.Data_Inizio);
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
+                {
+                    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
+                }
+                // per ognuno degli orari recuperati viene verificato se si tratta di un orario valido per la data
+                // (cioè se rispetta giorno/ripetizione, non si tratta di un giorno festivo (solo per i collaboratori) e sia flaggato il giorno corretto); se si tratta di un orario
+                // valido allora lo si aggiunge all'elenco
+                validTimesheet.ForEach(ts =>
+                {
+                    if (IsToApplyTimesheet(ts, dateToSearch) && (!RepoManager.Tab_FestiviRepo.DbSet.Any(hol => hol.Giorno_Tab_Festivi == dateToSearch.Date) || entityType == CantEntityName))
+                    {
+                        bool toAddTimeSheet = (dateToSearch.DayOfWeek == DayOfWeek.Monday && ts.G1) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Tuesday && ts.G2) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Wednesday && ts.G3) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Thursday && ts.G4) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Friday && ts.G5) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Saturday && ts.G6) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Sunday && ts.G7);
+
+                        if (toAddTimeSheet)
+                            returnTimesheet.Add(ts);
+                    }
+                });
+            }
+
+            // ritorno del valore calcolato nel metodo
+            return returnTimesheet;
         }
 
         /// <summary>

@@ -36,6 +36,16 @@ namespace Business.Repository.Custom
         /// <param name="entityId">L'indentificativo univoco dell'entità di cui effettuare la ricerca.</param>
         /// <param name="referenceEntity">Il tipo di entità di riferimento per l'orario.</param>
         /// <returns>Un'elenco contente l'id dell'altra entità di riferimento (0 in caso di orario generico), l'ora di inzio e ora di fine previsto.</returns>
+        List<Tuple<int, TimeSpan, TimeSpan>> GetDayPlanDetailCant(DateTime dateToSearch, int entityId,int cantId, string referenceEntity = "Col");
+
+        /// <summary>
+        /// Recupera il piano di dettaglio per il giorno e l'entità indicata.
+        /// Questo metodo non prende in considerazione gli orari di sola durata.
+        /// </summary>
+        /// <param name="dateToSearch">La data di cui ricercare il piano di dettaglio.</param>
+        /// <param name="entityId">L'indentificativo univoco dell'entità di cui effettuare la ricerca.</param>
+        /// <param name="referenceEntity">Il tipo di entità di riferimento per l'orario.</param>
+        /// <returns>Un'elenco contente l'id dell'altra entità di riferimento (0 in caso di orario generico), l'ora di inzio e ora di fine previsto.</returns>
         List<Tuple<int, TimeSpan, TimeSpan>> GetDayPlanDetail(DateTime dateToSearch, int entityId, string referenceEntity = "Col");
 
         /// <summary>

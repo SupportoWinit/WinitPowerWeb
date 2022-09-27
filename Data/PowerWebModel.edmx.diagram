@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ef980e669bea473caa5f409a021e0774" Name="Diagram1" ZoomLevel="82">
+      <Diagram DiagramId="ef980e669bea473caa5f409a021e0774" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="PowerWebModel.Aut_Str" Width="1.5" PointX="3" PointY="62.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_Note" Width="1.5" PointX="19.5" PointY="60.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_Var" Width="1.5" PointX="11.25" PointY="7.875" IsExpanded="true" />
@@ -119,7 +119,6 @@
         <AssociationConnector Association="PowerWebModel.FK__Reg__CentroDiCos__2937F6EB" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_CentroDiCosto" Width="1.5" PointX="14.25" PointY="26.25" />
         <AssociationConnector Association="PowerWebModel.FK__Cant_Cent__Centr__274FAE79" />
-        <EntityTypeShape EntityType="PowerWebModel.Reg_V" Width="1.5" PointX="16.375" PointY="0.75" />
         <EntityTypeShape EntityType="PowerWebModel.Cant" Width="1.5" PointX="17" PointY="22.375" />
         <AssociationConnector Association="PowerWebModel.FK__Cant_Cent__Cant___2843D2B2" />
         <AssociationConnector Association="PowerWebModel.FK_Cant_Cli" />
@@ -133,6 +132,7 @@
         <AssociationConnector Association="PowerWebModel.FK_Reg_Cant" />
         <EntityTypeShape EntityType="PowerWebModel.Param" Width="1.5" PointX="19.25" PointY="20.375" />
         <AssociationConnector Association="PowerWebModel.FK_Param_Cant" />
+        <EntityTypeShape EntityType="PowerWebModel.Reg_V" Width="1.5" PointX="16.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

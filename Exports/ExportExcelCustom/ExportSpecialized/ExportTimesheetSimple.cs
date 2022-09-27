@@ -56,7 +56,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                     col,
                                                     false,
-                                                    false,
+                                                    true,
                                                     parameters.Cartellino_Visualizza_Ore,
                                                     parameters.Cartellino_Visualizza_Motivazioni,
                                                     parameters.Cartellino_Visualizza_Viaggi,
@@ -68,7 +68,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     parameters.Cartellino_Visualizza_Piano));
 
 
-            cartellini = cartellini.OrderBy(c => c.Key.CognomeNome_Col).ToDictionary(c => c.Key, d => d.Value);
+            cartellini = cartellini.OrderBy(c => c.Key.Codice_Collaboratore).ToDictionary(c => c.Key, d => d.Value);
 
             // per prima cosa si procede all'apertura del modello
             ExcelWorkbookGenerateNew();

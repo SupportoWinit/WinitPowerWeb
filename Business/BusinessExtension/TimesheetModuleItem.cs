@@ -4826,7 +4826,7 @@ namespace Business.BusinessExtension
             cartelliniList.Add(tsFestDiu);
             cartelliniList.Add(tsStrFest);
             cartelliniList.Add(tsOrdNotFest);
-            cartelliniList.Add(tsStrNotFest);
+            //cartelliniList.Add(tsStrNotFest);
 
             //Assegna a tutti i cartellini le impostazioni di base
             foreach (var cartellino in cartelliniList)
