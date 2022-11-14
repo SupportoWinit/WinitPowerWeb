@@ -60,15 +60,6 @@ namespace PowerWeb
         protected global::DevExpress.Web.ASPxEditors.ASPxButton btnSaveLayout;
 
         /// <summary>
-        /// Controllo btnDeleteLayout.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxEditors.ASPxButton btnDeleteLayout;
-
-        /// <summary>
         /// Controllo btnPopulateGrid.
         /// </summary>
         /// <remarks>

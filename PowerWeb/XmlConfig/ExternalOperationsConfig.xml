@@ -37,10 +37,10 @@
     </OperationStrategy>
   </Synch>
   
-  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="1" >
+  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="0" >
     <HostConfig host="backend.winitsrl.eu" port="81" protocol="http"/>
     <ExtraInfos>
-      <IdCliente  value="43" />
+      <IdCliente  value="47" />
     </ExtraInfos>
     <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.Flutter.FlutterCantOperationStrategies,Business" enabled="1">
       <create  value="/app/ws/insertCantieri" />
@@ -67,10 +67,10 @@
     </OperationStrategy>
   </ExternalImport>
   
-  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="0">
+  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
     <HostConfig host="backend.winitsrl.eu" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="29" />
+      <IdCliente  value="16" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

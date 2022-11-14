@@ -9,11 +9,15 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI;
+using System.Windows.Forms;
+using BingMapsRESTToolkit;
 using Business;
 using Business.BusinessExtension;
 using Business.Repository;
 using Business.Repository.Custom;
 using Common;
+using DevExpress.XtraSpreadsheet.Layout;
 using Domain;
 using OfficeOpenXml.Style;
 
@@ -284,8 +288,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             // calcolo per il mese in elaborazione il timesheet dell'entità da processare
                             List<TimesheetModuleItem> entityMonthTimesheets = GetEntityMonthTimesheet(groupedRegV.Key);
 
+                            Col collaboratore = RepoManager.ColRepo.GetAll().Where(c=>c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First();
+
                             // calcolo del nome del foglio di lavoro da utilizzare
-                            string currentWorksheetName = GetWorksheetName(groupedRegV.Value.First()).Trim();
+                            string currentWorksheetName = collaboratore.CognomeNome_Col;
 
                             // si recupera la descrizione dell'entità che si sta processando
                             string entityDescription = GetEntityDescription(groupedRegV.Value.First());
@@ -308,7 +314,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             if (ModelFirstEntity == ExcelModelSelectionTypeEnum.Cant)
                                 oreAggiuntive = RepoManager.Tab_OrariRepo.GetMonthlyPlanDuration(firstMonthDate, groupedRegV.Key, "Can");
-                            
+
 
                             foreach (DateTime monthDay in CommonService.EachDay(firstMonthDate, lastMonthDate))
                             {
@@ -374,6 +380,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     // una volta salvato l'oggetto excel viene cancellato dalla memoria
                     ExcelWorkbookDispose();
                 }
+            }
+            else {
+                MessageBox.Show("Nessuna timbratura presente");
             }
         }
 
@@ -1546,7 +1555,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
                         {
                             TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalEffectiveDuration));
-                            var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                            var durataCentTime = CommonService.GetDoubleFromTimeSpan(time, true);
                             CellInsertValue(worksheetName, executionDurationColumn.Value, totalRowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
                         }
                         else
@@ -1568,7 +1577,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
                         {
                             TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalPrevisionalDuration));
-                            var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                            var durataCentTime = CommonService.GetDoubleFromTimeSpan(time, true);
                             CellInsertValue(worksheetName, previsionalDurationColumn.Value, totalRowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
                         }
                         else
@@ -1618,7 +1627,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
                         {
                             TimeSpan time = CommonService.GetTimeSpanFromMinutes(Math.Abs(entityTotalConfrontationDuration));
-                            var durataCentTime = CommonService.GetDoubleFromTimeSpan((TimeSpan)time, true);
+                            var durataCentTime = CommonService.GetDoubleFromTimeSpan(time, true);
                             CellInsertValue(worksheetName, confrontationDurationColumn.Value, totalRowIndex, durataCentTime, ExcelInsertTypeEnum.Content);
                         }
                         else

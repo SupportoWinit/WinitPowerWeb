@@ -295,6 +295,7 @@ namespace Business.Repository.Custom
         public List<KeyValuePair<string, string>> Elaborate(ICollection<Reg> regs, DateTime fromDate, DateTime toDate, Boolean isToSaveChanges = true,
             Boolean isToAssociatePruFru = false, int? elaborateUserId = null, DateTime? elaborateDateTime = null, ApplicationMessageEnum? application = null)
         {
+           // RepoManager.Reg_VRepo.delete10mins();
             _log.Info(String.Format("Inizio elaborazione di {0} regs", regs.Count));
 
             // inizializzazione dei dati utilizzati per la scrittura nella tabella messaggi e recupero dell'applicazione attuale (da utilizzare in fase di scrittura tab messaggi)
@@ -5029,6 +5030,7 @@ namespace Business.Repository.Custom
         public List<KeyValuePair<string, string>> Import(string[] regsNoGpsToImport, string[] regsGpsToImport)
         {
             _log.Info("INIZIO FASE DI IMPORT.\n");
+            //RepoManager.Reg_VRepo.InviaRitardi();
 
             List<KeyValuePair<String, String>> errors = null;
 
@@ -6229,6 +6231,9 @@ namespace Business.Repository.Custom
                                                 if (!RepoManager.PruRepo.DbSet.Any(pru => pru.Codice_Pru == pruCode))
                                                     pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
                                                 break;
+                                            case GpsAssTagTypeEnum.Cant:
+                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                                break;
                                             default:
                                                 pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
                                                 break;
@@ -6332,39 +6337,41 @@ namespace Business.Repository.Custom
 
                                             else
                                             {
-                                                // calcolo del cantiere gps:
-                                                // - il valore del id cantiere sarà -1 se la latitudine e la longitudine da importare hanno valore 0 e non c'è un cantiere 'pozzo' (inserimento con cantiere vuoto)
-                                                // - il valore del id cantiere sarà 0 in caso bing non riesca a calcolare le coordinate
-                                                // - il valore del id cantiere sarà il valore del cantiere (nuovo o già presente) in caso di calcolo corretto da bing
-                                                int cantId = -1;
-                                                if (latitudeToSearch != 0 && longitudeToSearch != 0)
-                                                {
-                                                    cantId = GetGpsCantId(latitudeToSearch, longitudeToSearch);
-                                                }
+                                                    // calcolo del cantiere gps:
+                                                    // - il valore del id cantiere sarà -1 se la latitudine e la longitudine da importare hanno valore 0 e non c'è un cantiere 'pozzo' (inserimento con cantiere vuoto)
+                                                    // - il valore del id cantiere sarà 0 in caso bing non riesca a calcolare le coordinate
+                                                    // - il valore del id cantiere sarà il valore del cantiere (nuovo o già presente) in caso di calcolo corretto da bing
+                                                    int cantId = -1;
+                                                    if (latitudeToSearch != 0 && longitudeToSearch != 0)
+                                                    {
+                                                        cantId = GetGpsCantId(latitudeToSearch, longitudeToSearch);
+                                                    }
 
-                                                //Se le coordinate della regstrazione non sono valide (=0), assegna alla registrazione il cantiere pozzo, se valorizzato
-                                                else if (RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.HasValue && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 0)
-                                                {
-                                                    cantId = RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.Value;
-                                                }
-                                                else if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 1 && (latitudeToSearch == 0 && longitudeToSearch == 0))
-                                                {
-                                                    newReg = LastCant(currentPru.Pru_Id, gpsRegGroup.First().RegistrationDateTime, regsToAdd,newReg);
-                                                    cantId = newReg.Cant_Id.Value;
-                                                }
+                                                    //Se le coordinate della regstrazione non sono valide (=0), assegna alla registrazione il cantiere pozzo, se valorizzato
+                                                    else if (RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.HasValue && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 0)
+                                                    {
+                                                        cantId = RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.Value;
+                                                    }
+                                                    else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 1 && (latitudeToSearch == 0 && longitudeToSearch == 0))
+                                                    {
+                                                        newReg = LastCant(currentPru.Pru_Id, gpsRegGroup.First().RegistrationDateTime, regsToAdd, newReg);
+                                                        cantId = newReg.Cant_Id.Value;
+                                                    }
 
-                                                // si imposta il cantiere gps solamente se è stato correttamente trovato;
-                                                // in caso contrario si procede a segnalare il gruppo come errore
-                                                if (cantId != 0)
-                                                {
-                                                    newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
+                                                    // si imposta il cantiere gps solamente se è stato correttamente trovato;
+                                                    // in caso contrario si procede a segnalare il gruppo come errore
+                                                    if (cantId != 0)
+                                                    {
+                                                        newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
 
-                                                    // aggiunta della registrazione all'elenco
-                                                    regsToAdd.Add(newReg);
-                                                }
-                                                else
-                                                    gpsRegGroup.ForEach(preReg =>
-                                                        processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
+                                                        // aggiunta della registrazione all'elenco
+                                                        regsToAdd.Add(newReg);
+                                                    }
+                                                    else
+                                                        gpsRegGroup.ForEach(preReg =>
+                                                            processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
+
+                                                
                                             }
                                         }
                                         //Se la timbratura non è nel raggio di lavoro, non la importo
@@ -6401,6 +6408,8 @@ namespace Business.Repository.Custom
                     {
                     }
                 }
+                //nel caso in cui il counter sia ad 1 significa che il dispositivo non ha trasmesso le coordinate
+                //in quel caso assegno delle coordinate a zero ed in seguito nel caso sia abilitato cerco l'ultimo cantiere
                 if (counterTag == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.BadTxt) == 1) {
                    #region Preparazione ed aggiunta della reg costruita sul gruppo
 

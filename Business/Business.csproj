@@ -182,6 +182,7 @@
     <Compile Include="BusinessServices\RegWriterService\Service\RegWriterService.cs" />
     <Compile Include="BusinessServices\UserService\IUserService.cs" />
     <Compile Include="BusinessServices\UserService\Service\UserService.cs" />
+    <Compile Include="DataClasses\FlutterAppDTOs\CountReg.cs" />
     <Compile Include="DataClasses\FlutterAppDTOs\FlutterOrderedReg.cs" />
     <Compile Include="DataClasses\FlutterAppDTOs\FlutterAppReg.cs" />
     <Compile Include="DataClasses\GeoBadgeDTOs\GeoBadgeReg.cs" />

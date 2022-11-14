@@ -77,7 +77,7 @@
         infoboxLayer.push(pinInfobox);
 
         var showedPinsLoc = [];
-
+        var iniziale;
         //Crea e mette su mappa i pushpin, saltando il primo (altrimenti finirebbe 'sotto' a tutti gli altri) 
         for (var i = 1; i < coordinatesToShow.length; i++) {
             //Recupera e imposta le coordinate
@@ -89,10 +89,15 @@
             //Di default, imposta il pushpin arancione
             var pushpinIcon = '/images/orange_pushpin.png';
             // Se è l'ultima timbratura di giornata, imposta il pushpin rosso
-            if (i == coordinatesToShow.length - 1) {
+            if (coordinatesToShow[i].Color == 2 && i == coordinatesToShow.length - 1) {
                 pushpinIcon = '/images/red_pushpin.png';
             }
-
+            if (coordinatesToShow[i].Color == 1) {
+                pushpinIcon = '/images/red_pushpin.png';
+            }
+            if (coordinatesToShow[i].Color == 0) {
+                pushpinIcon = '/images/green_pushpin.png';
+            }
             //Imposta tutte le opzioni e informazioni del pushpin e lo aggiunge alla mappa
             var pushpinOptions = { draggable: false, icon: pushpinIcon, text: coordinatesToShow[i].PushpinLabel };
             var pushpin = new Microsoft.Maps.Pushpin(currentPushpinLoc, pushpinOptions);
@@ -100,6 +105,9 @@
             pushpin.Description = coordinatesToShow[i].InfoboxDescription;
             bingMap.entities.push(pushpin);
             Microsoft.Maps.Events.addHandler(pushpin, 'click', displayInfobox);
+            if (i == coordinatesToShow.length - 1) {
+                iniziale = coordinatesToShow[0].Color;
+            }
         }
 
         //Si inserisce in mappa anche la prima registrazione
@@ -109,6 +117,9 @@
         showedPinsLoc.push(currentPushpinLoc);
         //Si imposta il pushpin verde
         var pushpinIcon = '/images/green_pushpin.png';
+        if (iniziale == 1) {
+            pushpinIcon = '/images/red_pushpin.png';
+        }
         //Imposta tutte le opzioni e informazioni del pushpin e lo aggiunge alla mappa
         var pushpinOptions = { draggable: false, icon: pushpinIcon, text: coordinatesToShow[0].PushpinLabel };
         var pushpin = new Microsoft.Maps.Pushpin(currentPushpinLoc, pushpinOptions);

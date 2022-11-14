@@ -1,17 +1,19 @@
 ﻿//------------------------------------------------------------------------------
 // <generato automaticamente>
-//     Codice generato da uno strumento.
+//     Questo codice è stato generato da uno strumento.
 //
 //     Le modifiche a questo file possono causare un comportamento non corretto e verranno perse se
 //     il codice viene rigenerato. 
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace PowerWeb.Modules {
-    
-    
-    public partial class TrackingModule {
-        
+namespace PowerWeb.Modules
+{
+
+
+    public partial class TrackingModule
+    {
+
         /// <summary>
         /// Controllo btnApply_click.
         /// </summary>
@@ -20,7 +22,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback btnApply_click;
-        
+
         /// <summary>
         /// Controllo lblCol.
         /// </summary>
@@ -29,7 +31,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblCol;
-        
+
         /// <summary>
         /// Controllo cmbCol.
         /// </summary>
@@ -38,7 +40,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxComboBox cmbCol;
-        
+
         /// <summary>
         /// Controllo SearchDateLabel.
         /// </summary>
@@ -47,7 +49,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel SearchDateLabel;
-        
+
         /// <summary>
         /// Controllo SearchDate.
         /// </summary>
@@ -56,7 +58,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit SearchDate;
-        
+
         /// <summary>
         /// Controllo btnApply.
         /// </summary>

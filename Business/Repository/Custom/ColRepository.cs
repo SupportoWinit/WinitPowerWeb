@@ -1194,6 +1194,7 @@ namespace Business.Repository.Custom
                             Resp oRecord = RepoManager.RespRepo.SingleOrDefault(x => x.Codice_Resp == oRow.Codice_Resp_Col);
                             if (oRecord != null)
                                 oNewRecord.Resp_Id = oRecord.Resp_Id;
+                             
                         }
                         if (!oRow.IsCodice_Cantiere_ColNull())
                         {
@@ -1409,7 +1410,7 @@ namespace Business.Repository.Custom
                 if ((PowerWebContext.Current.DomainFilter & DomainFilterEnum.Resp) == DomainFilterEnum.Resp && PowerWebContext.Current.Resps != null && PowerWebContext.Current.User.Liv_Utente < 10)
                 {
                     var allRespIds = PowerWebContext.Current.Resps.Select(resp => resp.Resp_Id).ToList();
-                    return col => /*col.Resp_Id == null ||*/ allRespIds.Contains(col.Resp_Id.Value);
+                    return col => allRespIds.Contains( col.Resp_Id.Value);
                 }
                 else return base.Filter;
             }
@@ -1666,7 +1667,7 @@ namespace Business.Repository.Custom
                                 //Eventuale associazione
                                 if ((badge != "" && badge.Length == 5) || (badge != "" && badge.Length == 10))
                                 {
-
+                                    badge = AggiungiZeriASinistra(badge,10);
                                     Pru currPru = RepoManager.PruRepo.SingleOrDefault(pru => pru.Codice_Pru == badge);
 
                                     // Se la Pru non esiste già, viene creata
@@ -1748,7 +1749,16 @@ namespace Business.Repository.Custom
             return savedEntities;
         }
 
-        
+        public static string AggiungiZeriASinistra(string sStringa, int iLunghezzaStringa)
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return CompletaASinistra(sStringa, iLunghezzaStringa, '0');
+        }
+        static public string CompletaASinistra(string sStringa, int iLunghezzaStringa, char completatore = ' ')
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return sStringa.PadLeft(iLunghezzaStringa, completatore);
+        }
 
         public override void BulkSaveChanges(Action<BulkOperation> action)
         {

@@ -3961,7 +3961,7 @@ namespace Business.BusinessExtension
         /// <param name="requestedForWeeklyTotals">Indica che il piano è richiesto per un calcolo che prevede i totali settimanali.</param>
         /// <returns>L'oggetto timesheet rapporesentante i parametri passati al metodo.</returns>
         private static TimesheetModuleItem GenerateNewTotalTimesheet(int colId, bool isDecimalHours, List<TimesheetModuleItem> timesheetsToTotalize, string timesheetJustification, DateTime firstMonthDate,
-            DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals, bool usaFisiche = false)
+            DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals, bool usaFisiche = true)
         {
             // inizializzazione del valore di ritorno del metodo
             var newTimesheet = new TimesheetModuleItem(isDecimalHours);
@@ -4624,7 +4624,7 @@ namespace Business.BusinessExtension
         }
 
         /// <summary>
-        /// Genera i cartellini categorizzati per diurne/notturne, ordinarie/straordinarie e festive.
+        /// Genera i cartellini categorizzati per diurne/notturne, ordinarie/straordinarie e festive senza inserire le ore negli strardinari.
         /// </summary>
         /// <param name="colId">L'id del collaboratore per cui è generato il nuovo timesheet</param>
         /// <param name="isDecimalHours">Indica se impostare la visualizzazione del timesheet in decimali o sessantesimi.</param>
@@ -5763,7 +5763,7 @@ namespace Business.BusinessExtension
 
 
                 #region CARTELLINI DA ELABORARE
-
+                //se la personalizzazione di pulitait è attiva vado a calcolare gli straordinari in base ai vari cantieri
                 if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && colPlan.CantDesc != null) {
                     List<int> cantList = null;
                     var returnList = new List<TimesheetModuleItem>();
@@ -5787,6 +5787,7 @@ namespace Business.BusinessExtension
                         // calcolo l'id cantiere facendo si di convertire in 0 i valori null
                         var currentCantId = listCantId ?? 0;
                         bool error = false;
+                        //controllo se il cantiere ha un orario assegnato, in caso non lo abbia vado ad identificare tutte le ore fatte nel cantiere come straordinarie
                         try {
                             var temp = planMinutes.First(m => m.Key == currentCantId);
                         }

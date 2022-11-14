@@ -564,11 +564,7 @@
                         <Image Url="~/Icons/Save/Save.png">
                         </Image>
                     </dx:ASPxButton>
-                    <dx:ASPxButton UseSubmitBehavior="false" ID="btnDeleteLayout" ClientInstanceName="btnDeleteLayout" runat="server" CssClass="layoutSelector" AutoPostBack="false" OnCustomJSProperties="btnDeleteLayout_OnCustomJSProperties">
-                        <ClientSideEvents Click="function(s, e) {DisplayJConfirm('Power', btnDeleteLayout.cpMessage, function (r) { if(r){cpLayout.PerformCallback('delete'); }});}" />
-                        <Image Url="~/Icons/Delete/Delete.png">
-                        </Image>
-                    </dx:ASPxButton>
+                    
                     <dx:ASPxButton UseSubmitBehavior="false" ClientInstanceName="btnPopulateGrid" ID="btnPopulateGrid" runat="server" CssClass="layoutSelector" AutoPostBack="false">
                         <ClientSideEvents Click="function(s, e) {cpLayout.PerformCallback('populate'); datasourcePopulated = !datasourcePopulated;}" />
                     </dx:ASPxButton>

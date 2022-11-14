@@ -83,6 +83,14 @@ namespace Business.BusinessExtension
         /// </value>
         public string PushpinLabel { get; set; }
 
+        /// <summary>
+        /// Recupera o imposta il colore da assegnare il pushPin
+        /// </summary>
+        /// <value>
+        /// Per pulitait, se non zero va ad assegnare il colore in base alla posizione
+        /// </value>
+        public int Color { get; set; }
+
         #endregion
     }
 }

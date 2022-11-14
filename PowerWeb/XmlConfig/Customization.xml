@@ -9,6 +9,8 @@
             <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
   <!-- *******************************************************************************************************************************************-->
   <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
+  <!-- *******************************************************************************************************************************************-->
+  <c Value="1" Des="Mostra solo collaboratori abilitati" ID="CustomizationEnum.AvoidDisabledCartellinoCols"/>
   <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
   <c ID="CustomizationEnum.DefaultGroupViewInCantPage" Des="Raggruppamento iniziale pagina cantiere resu vista default(no raggruppamenti)" Value="0" />
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
@@ -358,7 +360,7 @@
 		ExcludeAwayHoursInExport=1 Esclude le ore TRA dall'export-->
 
   <!-- *******************************************ORE TRASFERTA NOT IN EXP ORE/BUDGET CANT'*********************************************************-->
-  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="1" />
+  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="0" />
   <!--ScSExportBudget=0 disattiva l'export
 		ScSExportBudget=1 attiva l'export-->
 
@@ -608,7 +610,7 @@
         CoordinateZero=1 Indica di assegnare il cantiere-->
 
   <!-- ********************************************************MOSTRA I KILOMETRI NEI VIAGGI PER RIEMPIMENTO*********************************************************-->
-  <c ID="CustomizationEnum.ViewKilometers" Des="Indica se calcolare e mostrare i kilometri nei viaggi per riempimento" Value="0"/>
+  <c ID="CustomizationEnum.ViewKilometers" Des="Indica se calcolare e mostrare i kilometri nei viaggi per riempimento" Value="1"/>
   <!--  ViewKilometers=0 Indica di non calcolare i kilometri
         ViewKilometers=1 Indica di calcolare i kilometri-->
   
@@ -618,8 +620,13 @@
         DounlePushPin=1 Indica di calcolare i kilometri-->
 
   <!-- *******************************************************GESTIONE RITARDI USCITA *********************************************************-->
-  <c ID="CustomizationEnum.ExitDelay" Des="Indica se andare a calcolare il ritardo ancche sull'uscita" Value="1"/>
+  <c ID="CustomizationEnum.ExitDelay" Des="Indica se andare a calcolare il ritardo anche sull'uscita" Value="1"/>
   <!--  ExitDelay=0 Indica di non calcolare i ritardi
         ExitDelay=1 Indica di calcolare i ritardi-->
+  
+  <!-- *******************************************************APPLICAZIONE LIMITE ENTRATA POST ENTRATA *********************************************************-->
+  <c ID="CustomizationEnum.DelayAfter" Des="Indica se applicare il limite d'entrata per arrotondare sia se inferiore che superiore" Value="1"/>
+  <!--  DelayAfter=0 Indica di non arrotondare
+        DelayAfter=1 Indica di arrotondare-->
   
 </Customizations>

@@ -760,7 +760,7 @@ namespace PowerWeb.Modules
             {
                 return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg.HasValue && regv.Data_Reg.Value.Month == selectedPeriodDate.Month &&
                 regv.Data_Reg.Value.Year == selectedPeriodDate.Year && regv.Col_Id.HasValue && regv.Cant_Id.HasValue &&
-                (allCols || SelectedColsId.Contains(regv.Col_Id.Value)) &&
+                (/*allCols ||*/ SelectedColsId.Contains(regv.Col_Id.Value)) &&
                 (allCants || SelectedCantsId.Contains(regv.Cant_Id.Value))); //&&
                                                                              //(allClis || SelectedClisId.Contains(regv.Cli_Id.Value))); ;
             }
@@ -1288,7 +1288,7 @@ namespace PowerWeb.Modules
         protected void BtnLaunchExport_OnClick(object sender, EventArgs e)
         {
             string path = "";
-
+            
             // carica il record della tabella Tab_Excel_Model relativo al tipo di export selezionato
             Tab_Excel_Model excelModel = GetTabExcelModel(Convert.ToInt32(cmbTipoExport.Value));
 
@@ -1305,7 +1305,7 @@ namespace PowerWeb.Modules
             //    int x = regVsToProcess.Count();
             //}
             //catch (Exception z) { }
-            //Commentata in data 09/06 perchè andava a generare un eccezione nel caso in cui l'export sia di tipo solo selezione
+            //Commentata in data 09/06/2022 perchè andava a generare un eccezione nel caso in cui l'export sia di tipo solo selezione
             
 
             // calcolo del nome dell'export specializzato (Tab_Excel_Model.Nome_Specializzato) e del nome file modello (Tab_Excel_Model.ModelFilePath)

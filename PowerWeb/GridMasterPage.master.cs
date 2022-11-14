@@ -66,7 +66,7 @@ namespace PowerWeb
         public void HideAllMasterPageFeatures()
         {
             cmbLayout.Visible = false;
-            btnDeleteLayout.Visible = false;
+            //btnDeleteLayout.Visible = false;
             btnSaveLayout.Visible = false;
             btnSavePrintLayout.Visible = false;
             btnShowMap.Visible = false;
@@ -1003,13 +1003,13 @@ namespace PowerWeb
             {
                 //Inizializza TUTTE le ToolTip COMUNI a TUTTE le PAGES
                 btnSaveLayout.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_SALVA_LAYOUT_GRID);
-                btnDeleteLayout.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_CANCELLA_LAYOUT_GRID);
+               // btnDeleteLayout.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_CANCELLA_LAYOUT_GRID);
                 btnHelp.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_HELP);
                 btnCustomizeColumns.ToolTip = BusinessService.GetLocalizedString(PowerWebResources.CTRL_PERSONALIZZA_COLONNE_GRID);
 
                 if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.OnlyUserDefinedViews, PowerWebContext.Current.User.Codice_Utente))
                 {
-                    btnDeleteLayout.Visible = btnSaveLayout.Visible = false;
+                    /*btnDeleteLayout.Visible = */btnSaveLayout.Visible = false;
                 }
 
                 if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.DisableColumnChooser, PowerWebContext.Current.User.Codice_Utente))

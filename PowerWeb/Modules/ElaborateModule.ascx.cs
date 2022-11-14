@@ -1,5 +1,6 @@
 ﻿using Business;
 using Business.ExternalImport;
+using Business.HttpHub.HttpHubs;
 using Business.Repository;
 using Common;
 using DevExpress.Web.ASPxCallback;
@@ -7,6 +8,7 @@ using DevExpress.Web.ASPxClasses;
 using DevExpress.Web.ASPxUploadControl;
 using Domain;
 using log4net;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -42,6 +44,29 @@ namespace PowerWeb.Modules
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Controlla se ci sono timbrature di IOS
+        /// </summary>
+        protected Business.DataClasses.FlutterAppDTOs.CountReg getTimbratureFlutter()
+        {
+            string connection = "/app/ws/Synched";
+            Business.HttpHub.FlutterAppHttpModule bridge = new FlutterAppHub();
+            bridge.Host = "backend.winitsrl.eu";
+            int index = RepoManager.ParamRepo.ParametersRow.Indice_Timbrature_FlutterApp;
+            IEnumerable<Business.DataClasses.FlutterAppDTOs.CountReg> count = bridge.Get<List<Business.DataClasses.FlutterAppDTOs.CountReg>>(CreateStandardPayload(index),connection);
+            return count.First();
+        }
+
+        private JObject CreateStandardPayload(int index)
+        {
+            JObject request = JObject.FromObject(new
+            {
+                IdCliente = index
+            });
+
+            return request;
         }
 
         /// <summary>
@@ -114,6 +139,7 @@ namespace PowerWeb.Modules
                 }
                 else if (!chiamateActive)
                 {
+                    boxChiamate.Visible = false;
                     boxChiamate.Visible = false;
                 }
             }
@@ -634,6 +660,8 @@ namespace PowerWeb.Modules
         private void CalcolaMessaggiFormRegServer()
         // Calcola gli elementi visuali dei messaggi e dei pulsanti riguardanti le reg da importare
         {
+            Business.DataClasses.FlutterAppDTOs.CountReg msg;
+            msg = getTimbratureFlutter();
             // impostazione della label che indica la presenza su server di file reg da importare
             LblSeverFileNameToImport.Text = "NON sono presenti dei file su server da importare";
 
@@ -643,11 +671,11 @@ namespace PowerWeb.Modules
             }
 
             else if (HasSuspended)
-            {
+            { 
                 LblSeverFileNameToImport.Text = "Sono presenti delle registrazioni sospese";
             }
 
-            else if (HasFilesToImport)
+            else if (HasFilesToImport || msg.NumeroReg != "0")
             {
                 LblSeverFileNameToImport.Text = "Sono presenti dei file da importare";
             }

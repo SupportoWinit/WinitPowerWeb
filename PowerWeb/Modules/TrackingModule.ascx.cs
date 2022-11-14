@@ -169,12 +169,28 @@ namespace PowerWeb.Modules
                 foreach (var regv in regvsToShow)
                 {
                     var sCoord = new GeoCoordinate(regv.Registrazione_Lat_Orig_E.Value, regv.Registrazione_Long_Orig_E.Value);
-                    var eCoord = new GeoCoordinate(regv.Registrazione_Long_Orig_U.Value, regv.Registrazione_Long_Orig_U.Value);
-
-                    double distance = sCoord.GetDistanceTo(eCoord);
+                    double distanceE = 0;
+                    double distanceU = 0;
+                    //nel caso in cui la regV abbia sia un entrata che un uscita vado a prelevarla nel caso mi serva
+                    
+                    GeoCoordinate canCoord = null;
                     double raggio = RepoManager.ParamRepo.ParametersRow.RaggioGpsDefault.Value;
                     List<Cant> cant = RepoManager.CantRepo.GetAllQueryable(c=> c.Cant_Id == regv.Cant_Id).ToList();
-                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DoublePushPin) == 1 && (distance > cant.First().RaggioGps_Can || distance > raggio)) {
+                    if (cant.Count > 0) {
+                        canCoord = new GeoCoordinate(cant.First().LatitudineGps_Can, cant.First().LongitudineGps_Can);
+                        if (cant.First().RaggioGps_Can.HasValue) {
+                            raggio = cant.First().RaggioGps_Can.Value;
+                        }
+                    }
+                    distanceE = sCoord.GetDistanceTo(canCoord);
+                    if (regv.Registrazione_Long_Orig_U.HasValue)
+                    {
+                        var eCoord = new GeoCoordinate(regv.Registrazione_Lat_Orig_U.Value, regv.Registrazione_Long_Orig_U.Value);
+
+                        distanceU = eCoord.GetDistanceTo(canCoord);
+                    }
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DoublePushPin) == 1)//distance > raggio)
+                    {
                         //Se si desidera visualizzare solo la prima e l'ultima registrazione consecutiva all'interno dello stesso cantiere, esclude quelle 'centrali'
                         if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.FirstLast)
                         {
@@ -184,15 +200,59 @@ namespace PowerWeb.Modules
                             //Visualizza in mappa le registrazioni da non escludere (quando c'è un gruppo di registrazioni nello stesso cantiere, mantiene solo la prima e l'ultima)
                             if (prevRegv == default(Reg_V) || nextRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id || nextRegv.Cant_Id != regv.Cant_Id)
                             {
-                                // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
-                                coordinates.Add(new CoordinatesData
+                                if (distanceE > raggio)
                                 {
-                                    CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
-                                    CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
-                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
-                                    InfoboxDescription = getInfoboxDescription(regv),
-                                    PushpinLabel = prog.ToString()
-                                });
+                                    // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
+                                    coordinates.Add(new CoordinatesData
+                                    {
+                                        CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                        CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                        InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                        InfoboxDescription = getInfoboxDescriptionFlag(regv, "E"),
+                                        PushpinLabel = prog.ToString(),
+                                        Color = 1
+                                    });
+                                    prog++;
+                                }
+                                else {
+                                    // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
+                                    coordinates.Add(new CoordinatesData
+                                    {
+                                        CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                        CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                        InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                        InfoboxDescription = getInfoboxDescriptionFlag(regv, "E"),
+                                        PushpinLabel = prog.ToString(),
+                                        Color = 0
+                                    });
+                                    prog++;
+                                }
+
+                                if (distanceU > raggio)
+                                {
+                                    coordinates.Add(new CoordinatesData
+                                    {
+                                        CurrentLatitude = regv.Registrazione_Lat_Orig_U.HasValue ? regv.Registrazione_Lat_Orig_U.Value : 0d,
+                                        CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
+                                        InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                        InfoboxDescription = getInfoboxDescriptionFlag(regv, "U"),
+                                        PushpinLabel = prog.ToString(),
+                                        Color = 1
+                                    });
+                                    prog++;
+                                }
+                                else {
+                                    coordinates.Add(new CoordinatesData
+                                    {
+                                        CurrentLatitude = regv.Registrazione_Lat_Orig_U.HasValue ? regv.Registrazione_Lat_Orig_U.Value : 0d,
+                                        CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
+                                        InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                        InfoboxDescription = getInfoboxDescriptionFlag(regv, "U"),
+                                        PushpinLabel = prog.ToString(),
+                                        Color = 0
+                                    });
+                                    prog++;
+                                }
                                 //Aumenta il progressivo delle registrazioni visualizzate in mappa
                                 prevRegv = regv;
                             }
@@ -203,16 +263,60 @@ namespace PowerWeb.Modules
                         //Se si desidera visualizzare tutte le registrazioni consecutive nello stesso cantiere, le aggiunge tutte
                         else if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.ShowAll)
                         {
-                            // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
-                            coordinates.Add(new CoordinatesData
+                            if (distanceE > raggio)
                             {
-                                CurrentLatitude = regv.Registrazione_Lat_Orig_U.HasValue ? regv.Registrazione_Lat_Orig_U.Value : 0d,
-                                CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
-                                InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
-                                InfoboxDescription = getInfoboxDescription(regv),
-                                PushpinLabel = prog.ToString()
-                            });
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                    InfoboxDescription = getInfoboxDescriptionFlag(regv, "E"),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 1
+                                });
+                                prog++;
+                            }
+                            else
+                            {
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                    InfoboxDescription = getInfoboxDescriptionFlag(regv, "E"),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 0
+                                });
+                                prog++;
+                            }
 
+                            if (distanceU > raggio)
+                            {
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_U.HasValue ? regv.Registrazione_Lat_Orig_U.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                    InfoboxDescription = getInfoboxDescriptionFlag(regv, "U"),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 1
+                                });
+                                prog++;
+                            }
+                            else {
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_U.HasValue ? regv.Registrazione_Lat_Orig_U.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                    InfoboxDescription = getInfoboxDescriptionFlag(regv, "U"),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 0
+                                });
+                                prog++;
+                            }
+                            prevRegv = regv;
+                            index++;
                         }
 
                         //Se si desidera visualizzare un pushpin riportante nella label il range (primo e ultimo indice)
@@ -230,9 +334,11 @@ namespace PowerWeb.Modules
                                     CurrentLatitude = regv.Registrazione_Lat_Orig_U.HasValue ? regv.Registrazione_Lat_Orig_U.Value : 0d,
                                     CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
                                     InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
-                                    InfoboxDescription = getInfoboxDescription(regv),
-                                    PushpinLabel = prog.ToString()
+                                    InfoboxDescription = getInfoboxDescriptionFlag(regv, "E"),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 1
                                 });
+                                prog++;
                             }
 
                             //Se sono la prima, mi segno il suo indice
@@ -251,21 +357,48 @@ namespace PowerWeb.Modules
                                     CurrentLongitude = regv.Registrazione_Long_Orig_U.HasValue ? regv.Registrazione_Long_Orig_U.Value : 0d,
                                     InfoboxTitle = getInfoboxTitle(regv, initialIndex.ToString() + " - " + prog.ToString()),
                                     InfoboxDescription = getRangeInfoboxDescription(initialRegv, regv),
-                                    PushpinLabel = initialIndex.ToString() + " - " + prog.ToString()
+                                    PushpinLabel = initialIndex.ToString() + " - " + prog.ToString(),
+                                    Color = 1
                                 });
+                                prog++;
                             }
 
                             prevRegv = regv;
+                            index++;
                         }
+                        
+                        
                     }
-                    //Se si desidera visualizzare solo la prima e l'ultima registrazione consecutiva all'interno dello stesso cantiere, esclude quelle 'centrali'
-                    if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.FirstLast)
-                    {
-                        // Estrae la prossima registrazione (default se la corrente è l'ultima della lista)
-                        nextRegv = index == regvsToShow.Count - 1 ? default(Reg_V) : regvsToShow[index + 1];
+                    else {
+                        //Se si desidera visualizzare solo la prima e l'ultima registrazione consecutiva all'interno dello stesso cantiere, esclude quelle 'centrali'
+                        if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.FirstLast)
+                        {
+                            // Estrae la prossima registrazione (default se la corrente è l'ultima della lista)
+                            nextRegv = index == regvsToShow.Count - 1 ? default(Reg_V) : regvsToShow[index + 1];
 
-                        //Visualizza in mappa le registrazioni da non escludere (quando c'è un gruppo di registrazioni nello stesso cantiere, mantiene solo la prima e l'ultima)
-                        if (prevRegv == default(Reg_V) || nextRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id || nextRegv.Cant_Id != regv.Cant_Id)
+                            //Visualizza in mappa le registrazioni da non escludere (quando c'è un gruppo di registrazioni nello stesso cantiere, mantiene solo la prima e l'ultima)
+                            if (prevRegv == default(Reg_V) || nextRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id || nextRegv.Cant_Id != regv.Cant_Id)
+                            {
+                                // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                    InfoboxDescription = getInfoboxDescription(regv),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 2
+                                });
+                                //Aumenta il progressivo delle registrazioni visualizzate in mappa
+                                prog++;
+                                prevRegv = regv;
+                            }
+                            //In ogni caso, progredisce con l'indice e aggiorna le variabili
+                            index++;
+                        }
+
+                        //Se si desidera visualizzare tutte le registrazioni consecutive nello stesso cantiere, le aggiunge tutte
+                        else if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.ShowAll)
                         {
                             // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
                             coordinates.Add(new CoordinatesData
@@ -274,74 +407,59 @@ namespace PowerWeb.Modules
                                 CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
                                 InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
                                 InfoboxDescription = getInfoboxDescription(regv),
-                                PushpinLabel = prog.ToString()
+                                PushpinLabel = prog.ToString(),
+                                Color = 2
                             });
-                            //Aumenta il progressivo delle registrazioni visualizzate in mappa
+
                             prog++;
+                        }
+
+                        //Se si desidera visualizzare un pushpin riportante nella label il range (primo e ultimo indice)
+                        else if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.ShowRange)
+                        {
+
+                            // Estrae la prossima registrazione (default se la corrente è l'ultima della lista)
+                            nextRegv = index == regvsToShow.Count - 1 ? default(Reg_V) : regvsToShow[index + 1];
+
+                            // Se sono la prima e ultima registrazione su quel cantiere, la aggiungo riportando il l'indice nella label
+                            if ((prevRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id) && (nextRegv == default(Reg_V) || nextRegv.Cant_Id != regv.Cant_Id))
+                            {
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
+                                    InfoboxDescription = getInfoboxDescription(regv),
+                                    PushpinLabel = prog.ToString(),
+                                    Color = 2
+                                });
+                            }
+
+                            //Se sono la prima, mi segno il suo indice
+                            else if (prevRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id)
+                            {
+                                initialIndex = prog;
+                                initialRegv = regv;
+                            }
+
+                            //Se sono l'ultima, aggiungo il puspin con la lable del range
+                            else if (nextRegv == default(Reg_V) || nextRegv.Cant_Id != regv.Cant_Id)
+                            {
+                                coordinates.Add(new CoordinatesData
+                                {
+                                    CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
+                                    CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
+                                    InfoboxTitle = getInfoboxTitle(regv, initialIndex.ToString() + " - " + prog.ToString()),
+                                    InfoboxDescription = getRangeInfoboxDescription(initialRegv, regv),
+                                    PushpinLabel = initialIndex.ToString() + " - " + prog.ToString(),
+                                    Color = 2
+                                });
+                            }
+
                             prevRegv = regv;
-                        }
-                        //In ogni caso, progredisce con l'indice e aggiorna le variabili
-                        index++;
-                    }
-
-                    //Se si desidera visualizzare tutte le registrazioni consecutive nello stesso cantiere, le aggiunge tutte
-                    else if (consecutiveRegsInSameCantCustomization == (int)TrackingConsecutiveRegsInSameCant.ShowAll)
-                    {
-                        // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
-                        coordinates.Add(new CoordinatesData
-                        {
-                            CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
-                            CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
-                            InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
-                            InfoboxDescription = getInfoboxDescription(regv),
-                            PushpinLabel = prog.ToString()
-                        });
-
-                        prog++;
-                    }
-
-                    //Se si desidera visualizzare un pushpin riportante nella label il range (primo e ultimo indice)
-                    else if (consecutiveRegsInSameCantCustomization == (int) TrackingConsecutiveRegsInSameCant.ShowRange)
-                    {
-
-                        // Estrae la prossima registrazione (default se la corrente è l'ultima della lista)
-                        nextRegv = index == regvsToShow.Count - 1 ? default(Reg_V) : regvsToShow[index + 1];
-
-                        // Se sono la prima e ultima registrazione su quel cantiere, la aggiungo riportando il l'indice nella label
-                        if ((prevRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id) && (nextRegv == default(Reg_V) || nextRegv.Cant_Id != regv.Cant_Id))
-                        {
-                            coordinates.Add(new CoordinatesData
-                            {
-                                CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
-                                CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
-                                InfoboxTitle = getInfoboxTitle(regv, prog.ToString()),
-                                InfoboxDescription = getInfoboxDescription(regv),
-                                PushpinLabel = prog.ToString()
-                            });
+                            prog++;
                         }
 
-                        //Se sono la prima, mi segno il suo indice
-                        else if (prevRegv == default(Reg_V) || prevRegv.Cant_Id != regv.Cant_Id)
-                        {
-                            initialIndex = prog;
-                            initialRegv = regv;
-                        }
-
-                        //Se sono l'ultima, aggiungo il puspin con la lable del range
-                        else if (nextRegv == default(Reg_V) || nextRegv.Cant_Id != regv.Cant_Id)
-                        {
-                            coordinates.Add(new CoordinatesData
-                            {
-                                CurrentLatitude = regv.Registrazione_Lat_Orig_E.HasValue ? regv.Registrazione_Lat_Orig_E.Value : 0d,
-                                CurrentLongitude = regv.Registrazione_Long_Orig_E.HasValue ? regv.Registrazione_Long_Orig_E.Value : 0d,
-                                InfoboxTitle = getInfoboxTitle(regv, initialIndex.ToString() + " - " + prog.ToString()),
-                                InfoboxDescription = getRangeInfoboxDescription(initialRegv, regv),
-                                PushpinLabel = initialIndex.ToString() + " - " + prog.ToString()
-                            });
-                        }
-                        
-                        prevRegv = regv;
-                        prog++;
                     }
                 }
                 
@@ -397,6 +515,49 @@ namespace PowerWeb.Modules
         }
 
         /// <summary>
+        /// Prepara e ritorna il testo per l'infobox del pushpin relativo alla regv data in pasto.
+        /// </summary>
+        /// <param name="regv">La regv da cui estrarre le informazioni ritornate dal metodo.</param>
+        /// <returns>La stringa da visualizzare nel titolo dell'infobox.</returns>
+        private string getInfoboxDescriptionFlag(Reg_V regv,string flag)
+        {
+            // di default il metodo ritorna stringa vuota
+            string infoboxDescription = String.Empty;
+            // si procede solamente se la regv passata come parametro risulta valorizzata
+            if (regv != default(Reg_V))
+            {
+                //Estrae il cantiere associato alla reg
+                Cant cant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == regv.Cant_Id);
+                //Di default imposta le coordinate della registrazione nella descrizione del cantiere
+                String cantDesc = String.Format("{0}; {1}", regv.Registrazione_Lat_Orig_E.ToString(), regv.Registrazione_Long_Orig_E.ToString());
+                //Se il cantiere esiste, usa la sua descrizione
+                if (cant != default(Cant))
+                {
+                    cantDesc = cant.Descrizione_Can;
+                }
+                //Compone la descrizione dell'infobox
+                if (regv.Data_Ora_Fig_UTime != null)
+                {
+                    if (flag == "E")
+                    {
+                        infoboxDescription = String.Format("<span>{0} <br><br> Entrata {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_ETime.Value.ToString(), cantDesc);
+                    }
+                    else {
+                        infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);
+                    }
+                    
+                }
+                else
+                {
+                    infoboxDescription = String.Format("<span>{0} {1}<br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_ETime.Value.ToString(), cantDesc);
+                }
+            }
+
+            // ritorno del valore calcolato dal metodo
+            return infoboxDescription;
+        }
+
+        /// <summary>
         /// Prepara e ritorna il testo per l'infobox del pushpin rappresentante un range di timbrature
         /// </summary>
         /// <param name="regv">La regv da cui estrarre le informazioni ritornate dal metodo.</param>
@@ -440,7 +601,7 @@ namespace PowerWeb.Modules
             // si procede solamente se la regv passata come parametro risulta valorizzata
             if (regv != default(Reg_V))
             { 
-                infoboxDescription = String.Format("{0}<br>{1}<br>{2}{3}", regv.Col_Desc, regv.Data_Reg.Value.ToLongDateString(), nTimb, prog);
+                infoboxDescription = String.Format("{0} {1} {2} {3}", regv.Col_Desc, regv.Data_Reg.Value.ToLongDateString(), nTimb, prog);
             }
             // ritorno del valore calcolato dal metodo
             return infoboxDescription;

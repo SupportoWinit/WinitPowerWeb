@@ -64,5 +64,8 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("Cantiere")]
         public string Cantiere { get; set; }
+
+        [JsonProperty("NfcGps")]
+        public string NfcGps { get; set; }
     }
 }

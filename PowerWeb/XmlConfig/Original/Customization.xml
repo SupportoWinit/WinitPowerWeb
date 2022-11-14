@@ -9,6 +9,8 @@
             <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
   <!-- *******************************************************************************************************************************************-->
   <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
+  <!-- *******************************************************************************************************************************************-->
+  <c Value="1" Des="Mostra solo collaboratori abilitati" ID="CustomizationEnum.AvoidDisabledCartellinoCols"/>
   <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
   <c ID="CustomizationEnum.DefaultGroupViewInCantPage" Des="Raggruppamento iniziale pagina cantiere resu vista default(no raggruppamenti)" Value="0" />
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->

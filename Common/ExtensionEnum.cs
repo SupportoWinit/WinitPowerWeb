@@ -180,7 +180,8 @@ namespace Common
         CoordinateZero,
         ViewKilometers,
         DoublePushPin,
-        ExitDelay
+        ExitDelay,
+        DelayAfter
     }
 
     public enum ClockAppsOperationEnum

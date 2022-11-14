@@ -33,6 +33,8 @@ namespace Business.Repository.Custom
         /// <exception cref="System.ArgumentException">To date must be major than from date</exception>
         void SetMonthMinutesAmmount(Col col, DateTime from, DateTime to);
 
+        void delete10mins();
+
         List<Reg_V> GetTimesheet(Col col, List<Cant> cants, DateTime from, DateTime to, out bool isFromFreeTimesheet, out int freeTimeSheetId);
 
         List<Reg_V> Add2Minutes(List<Reg_V> regvlist);

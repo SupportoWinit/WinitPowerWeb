@@ -25,7 +25,9 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
         #region STRING FORMATS
 
         private static readonly string NFC_QRCODE_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}";
+        private static readonly string NFC_GPS_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}";
         private static readonly string GPS_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}{0}";
+        private static readonly string GPSNFC_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}";
         private static readonly string EXTRA_INFO_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}{11}{0}";
         private static readonly string FIRST_INFO_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}";
 
@@ -76,6 +78,53 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
             
             return new List<string>() { latitudeLine, longitudeLine };
         }
+        internal static IEnumerable<string> CreateGpsNLines(string deviceCode, double latitude, double longitude, DateTime regDateTime)
+        {
+            string direzioneCardinaleLatitudine = "N";
+            string direzioneCardinaleLongitudine = "E";
+            string longitudeLine = "";
+            string latitudeLine = "";
+
+            if (latitude < 0)
+                direzioneCardinaleLatitudine = "S";
+
+            if (longitude < 0)
+                direzioneCardinaleLongitudine = "O";
+
+            if (latitude != 0 && longitude != 0)
+            {
+                latitudeLine = string.Format(GPSNFC_STRING_FORMAT
+                    , SEPARATOR
+                    , deviceCode
+                    , CommonService.AggiungiZeriASinistra(latitude.ToString("00.0000000").Remove(2, 1), 10)
+                    , regDateTime.Year
+                    , regDateTime.Month.ToString("00")
+                    , regDateTime.Day.ToString("00")
+                    , regDateTime.Hour.ToString("00")
+                    , regDateTime.Minute.ToString("00")
+                    , TAG_REFERENCE //se è solo GPS, non è tagReferenced, altrimenti sì
+                    , MARKER_LATITUDINE
+                    , direzioneCardinaleLatitudine
+                    );
+
+                longitudeLine = string.Format(GPSNFC_STRING_FORMAT
+                    , SEPARATOR
+                    , deviceCode
+                    , CommonService.AggiungiZeriASinistra(longitude.ToString("00.0000000").Remove(2, 1), 10)
+                    , regDateTime.Year
+                    , regDateTime.Month.ToString("00")
+                    , regDateTime.Day.ToString("00")
+                    , regDateTime.Hour.ToString("00")
+                    , regDateTime.Minute.ToString("00")
+                    , TAG_REFERENCE //se è solo GPS, non è tagReferenced, altrimenti sì
+                    , MARKER_LONGITUDINE
+                    , direzioneCardinaleLongitudine
+                    );
+            }
+
+            return new List<string>() { latitudeLine, longitudeLine };
+        }
+
 
         internal static IEnumerable<string> CreateActivityLines(string deviceCode, string badgeCode, DateTime regDateTime, string activityTypeCode)
         {
@@ -193,6 +242,25 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
                 , regDateTime.Hour
                 , regDateTime.Minute
                 , TAG_REFERENCE
+                );
+
+
+            return new List<string>() { line };
+        }
+
+        internal static IEnumerable<string> CreateNfcGLines(string deviceCode, string badgeCode, DateTime regDateTime)
+        {
+            string line = string.Format(NFC_GPS_STRING_FORMAT
+                , SEPARATOR
+                , deviceCode
+                , CommonService.AggiungiZeriASinistra(badgeCode, 10)
+                , regDateTime.Year
+                , regDateTime.Month
+                , regDateTime.Day
+                , regDateTime.Hour
+                , regDateTime.Minute
+                , TAG_REFERENCE,
+                ""
                 );
 
 

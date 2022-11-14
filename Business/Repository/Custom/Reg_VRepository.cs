@@ -287,6 +287,16 @@ namespace Business.Repository.Custom
                                                                         entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
                                                                         entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
                                                                         0);
+
+                                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1) {
+                                                                    if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(delayMorningTollerance)))
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                            entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                            entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                            0);
+                                                                }
                                                             }
                                                             else if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
                                                             {
@@ -689,7 +699,7 @@ namespace Business.Repository.Custom
                                 bool isfirstAfternoonReg = true,
                                      isFirstMorningReg = true;
                                 var regsByDate = colGroup.GroupBy(r => r.Data_Ora_Fig_EDate);
-
+                                //Personalizzazione per gestire i ritardi anche sull'uscita (Pulitait)
                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExitDelay) == 1)
                                 {
                                     foreach (var dateGroup in regsByDate)
@@ -703,16 +713,15 @@ namespace Business.Repository.Custom
 
                                         foreach (Reg_V currentRegV in delayRegVs)
                                         {
+                                            //Se è presente la registrazione d'uscita vado a prelevarla, il controllo è presente per evitare eccezioni
                                             Reg currentRegE = regsDic[currentRegV.RegE];
                                             Reg currentRegU = null;
                                             if (currentRegV.RegU.HasValue) {
                                                 currentRegU = regsDic[currentRegV.RegU.Value];
                                             }
 
-                                            
                                             Cant currentCant = RepoManager.CantRepo.Single(c => c.Cant_Id == currentRegE.Cant_Id);
-
-                                            // calcolo dei dati di limite d'entrata riguardo la registrazione che si sta processando
+                                            // calcolo dei dati di limite d'entrata per il cantiere sul quale si ha timbrato, metodo su misura per pulitait visto i loro orari particolari
                                             entryLimitConfig = GetEntryLimitConifgMoreCant(currentCant, currentCol, currentRegE.Registrazione_Data_Ora_Fis_Reg.Date, midDay);
 
                                             // se ci sono dei limiti d'entrata configurati ed esiste una registrazione d'entrata
@@ -725,7 +734,7 @@ namespace Business.Repository.Custom
                                                     afternoonDelayExitLimit;
                                                 int delayDuration = 0;
 
-                                                //recupera i limiti d'entrata dai parametri...
+                                                //recupera i limiti d'entrata e d'uscita dai parametri...
                                                 if (entryLimitConfig[EntryLimitTypeEnum.MorningDealyLimitList].EntryLimitTimeList == null && entryLimitConfig[EntryLimitTypeEnum.AfternoonDealyLimitList].EntryLimitTimeList == null && entryLimitConfig[EntryLimitTypeEnum.MorningDealyLimitListExit].ExitLimitTimeList == null && entryLimitConfig[EntryLimitTypeEnum.Morning].ExitLimitTime == null)
                                                 {
                                                     morningDelayLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].IsConfigured ? entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime : null;
@@ -752,8 +761,8 @@ namespace Business.Repository.Custom
                                                 //    afternoonDelayLimit = null;
                                                 //}
 
-                                                //Se è la prima registrazione della mattina, ne calcola il ritardo
-                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < midDay && morningDelayLimit != null /*&& isFirstMorningReg*/)
+                                                //A differenza dei ritardi normali non lo calcolo solo sulla prima registrazione ma su tutte
+                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < midDay && morningDelayLimit != null)
                                                 {
                                                     isFirstMorningReg = false;
 
@@ -765,8 +774,8 @@ namespace Business.Repository.Custom
                                                     }
                                                 }
 
-                                                //Se è la prima registrazione del pomeriggio, ne calcola il ritardo
-                                                else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= midDay && afternoonDelayLimit != null /*&& isfirstAfternoonReg*/)
+                                                //Stessa cosa vale per il pomeriggio
+                                                else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= midDay && afternoonDelayLimit != null)
                                                 {
                                                     isfirstAfternoonReg = false;
 
@@ -779,8 +788,7 @@ namespace Business.Repository.Custom
                                                 }
 
                                                 if (currentRegU != null) {
-                                                    //Se è la prima registrazione della mattina, ne calcola il ritardo
-                                                    if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < midDay && morningDelayLimit != null /*&& isFirstMorningReg*/)
+                                                    if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < midDay && morningDelayLimit != null)
                                                     {
                                                         isFirstMorningReg = false;
 
@@ -792,8 +800,7 @@ namespace Business.Repository.Custom
                                                         }
                                                     }
 
-                                                    //Se è la prima registrazione del pomeriggio, ne calcola il ritardo
-                                                    else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= midDay && afternoonDelayLimit != null /*&& isfirstAfternoonReg*/)
+                                                    else if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay >= midDay && afternoonDelayLimit != null)
                                                     {
                                                         isfirstAfternoonReg = false;
 
@@ -885,25 +892,30 @@ namespace Business.Repository.Custom
                                                         delayDuration = Convert.ToInt32(Math.Floor(currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay.TotalMinutes - afternoonDelayLimit.Value.TotalMinutes));
                                                     }
                                                 }
-
                                                 currentRegE.Ritardo_Durata = delayDuration;
                                             }
                                         }
                                     }
                                 }
-
-                               
                             }
-                            
-
                             #endregion
-
                         }
                     }
                 }
                 RepoManager.RegRepo.Context.BulkUpdate(regs);
             }
             return errors;
+        }
+
+        public void delete10mins() {
+            var regsDic = new Dictionary<int, Reg>();
+            IEnumerable<Reg_V> toDelete = RepoManager.Reg_VRepo.GetAll().Where(regv => regv.Durata_Fig < 10 || regv.Durata_Fis < 10);
+            foreach (var regv in toDelete) {
+                Reg currentRegE = regsDic[regv.RegE];
+                RepoManager.RegRepo.Delete(currentRegE, true);
+                Reg currentRegU = regsDic[regv.RegU.Value];
+                RepoManager.RegRepo.Delete(currentRegU, true);
+            }
         }
 
         public static bool IsBetween(DateTime item, DateTime start, DateTime end)
@@ -3255,8 +3267,6 @@ namespace Business.Repository.Custom
                             {
                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
                                 {
-                                    //trip.RegU.Registrazione_Data_Ora_Fig_Reg = lastRegV.Data_Ora_Fig_E;
-
                                     trip.RegE.Note_Reg = "Fatta con personalizzazione";
                                 }
                                 else {
@@ -5011,30 +5021,81 @@ namespace Business.Repository.Custom
                     cant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == cantDelays.Key);
                     if (cant != default(Cant))
                     {
-                        mailBody += "<p><u>Luogo</u>: " + cant.Descrizione_Can.ToUpper() + "</p>";
+                        mailBody += "<p><u>Cantiere</u>: " + cant.Descrizione_Can.ToUpper() + "</p>";
                         //Raggruppa le registrazioni per collaboratore
                         var delayByCantByCol = cantDelays.GroupBy(regv => regv.Col_Id);
 
                         foreach (var colDelays in delayByCantByCol)
                         {
                             col = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == colDelays.Key);
+                            //var orario = RepoManager.Tab_OrariRepo.SingleOrDefault(o => o.Tab_Orari_Tipo_Id == col.Tab_Orari_Tipo_Id && o.Cant_Id == cant.Cant_Id);
 
                             if (col != default(Col))
                             {
                                 //Per ogni collaboratore scrive i ritardi
                                 mailBody += "<div style='margin: 0 0 10px 20px;'>";
-                                mailBody += "<p style='margin: 0 20px;font-weight: bold;'>" + col.Cognome_Col.ToUpper() + " " + col.Nome_Col + "</p>";
+                                mailBody += "<p><u>Collaboratore</u>: " + col.Cognome_Col.ToUpper() + " " + col.Nome_Col + "</p>";
                                 var orderedColDelays = colDelays.OrderBy(regv => regv.Data_Ora_Fig_E);
 
                                 foreach (Reg_V ritardo in orderedColDelays)
                                 {
                                     durata_ritardo_minuti = ritardo.Ritardo_Durata.Value % 60;
                                     durata_ritardo_ore = ritardo.Ritardo_Durata.Value / 60;
-                                    mailBody += "<table style='margin: 0 20px;'>";
-                                    mailBody += "<tr><td>Ora Entrata:</td><td style='padding-left: 15px'>" + ritardo.Data_Ora_Fig_ETime.Value.Hours.ToString("00") + ":" + ritardo.Data_Ora_Fig_ETime.Value.Minutes.ToString("00") + "</td></tr>";
-
-                                    mailBody += "<tr><td>Ritardo:</td><td style='padding-left: 15px'>" + durata_ritardo_ore.ToString("00") + ":" + durata_ritardo_minuti.ToString("00") + "</td></tr>";
-                                    mailBody += "</table>";
+                                    //if (orario != default(Tab_Orari))
+                                    //{
+                                    //    String entrata = "";
+                                    //    switch (today.DayOfWeek.ToString()) {
+                                    //        case "Monday":
+                                    //            if (orario.G1 != false) {
+                                    //                entrata = orario.G1.ToString();
+                                    //            }
+                                    //            break;
+                                    //        case "Tuesday":
+                                    //            if (orario.G2 != false) {
+                                    //                entrata = orario.G2.ToString();
+                                    //            }
+                                    //            break;
+                                    //        case "Wednesday":
+                                    //            if (orario.G3 != false) {
+                                    //                entrata = orario.G3.ToString();
+                                    //            }
+                                    //            break;
+                                    //        case "Thursday":
+                                    //            if (orario.G4 != false) {
+                                    //                entrata = orario.G4.ToString();
+                                    //            }
+                                    //            break;
+                                    //        case "Friday":
+                                    //            if (orario.G5 != false) {
+                                    //                entrata = orario.G5.ToString();
+                                    //            }
+                                    //            break;
+                                    //        case "Saturday":
+                                    //            if (orario.G6 != false) {
+                                    //                entrata = orario.G6.ToString();
+                                    //            }
+                                    //            break;
+                                    //        case "Sunday":
+                                    //            if (orario.G7 != false) {
+                                    //                entrata = orario.G7.ToString();
+                                    //            }
+                                    //            break;
+                                    //    }
+                                    //    if (entrata == "")
+                                    //    {
+                                    //        mailBody += "<table style='margin: 0 20px;'>";
+                                    //        mailBody += "<tr><td>Ora Entrata:</td><td style='padding-left: 15px'>" + ritardo.Data_Ora_Fis_ETime.Value.Hours.ToString("00") + ":" + ritardo.Data_Ora_Fis_ETime.Value.Minutes.ToString("00") + ",Non era previsto il collaboratore nel cantere </td></tr>";
+                                    //    }
+                                    //    else {
+                                    //        mailBody += "<table style='margin: 0 20px;'>";
+                                    //        mailBody += "<tr><td>Ora Entrata:</td><td style='padding-left: 15px'>" + ritardo.Data_Ora_Fis_ETime.Value.Hours.ToString("00") + ":" + ritardo.Data_Ora_Fis_ETime.Value.Minutes.ToString("00") + ", Ora Prevista:</td><td style='padding-left: 15px'>" + orario.Ora_E.ToString() + "</td></tr>";
+                                    //    }        
+                                    //}
+                                    //else {
+                                    //    mailBody += "<table style='margin: 0 20px;'>";
+                                    //    mailBody += "<tr><td>Ora Entrata:</td><td style='padding-left: 15px'>" + ritardo.Data_Ora_Fig_ETime.Value.Hours.ToString("00") + ":" + ritardo.Data_Ora_Fig_ETime.Value.Minutes.ToString("00") + "</td></tr>";
+                                    //}
+                                    mailBody += "<p style='margin: 0 20px;font-weight: bold;'>Ritardo: " + durata_ritardo_ore.ToString("00") + ":" + durata_ritardo_minuti.ToString("00") + "</p>";
                                 }
 
                                 mailBody += "</div>";
@@ -5439,6 +5500,7 @@ namespace Business.Repository.Custom
                                     //ordinamento delle registrazioni sulla base dell'ora di uscita in modo da ottnere la registrazione più recente nel tempo come ultima
                                     var regRoworderedByData = regRowToProcessbyCol.OrderBy(row => row.EndHour).ToList();
 
+                                    int output = regRoworderedByData.Last().EndHour;
                                     // compilazione dei dati di riga
                                     newFillRegRow.ColId = Convert.ToInt32(regvsByDateAndCol.FirstOrDefault().Col_Id);
                                     newFillRegRow.ColMnemonic = regvsByDateAndCol.Key;

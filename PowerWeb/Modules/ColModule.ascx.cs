@@ -377,7 +377,7 @@ namespace PowerWeb.Modules
 
                     foreach (var item in userRespIds)
                     {
-                        var col = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Resp_Id == item.Resp_Id);
+                        var col = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Resp_Id == item.Resp_Id || c.Resp_Id == null);
 
                         colList.AddRange(col);
                     }

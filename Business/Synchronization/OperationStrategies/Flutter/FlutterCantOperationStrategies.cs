@@ -33,6 +33,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
             {
                 JObject entity = new JObject();
                 entity.Add("idCliente", IdCliente);
+                entity.Add("codice", cant.Codice_Cantiere);
                 entity.Add("descrizione", cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 toShipEntities.Add(entity);
@@ -61,6 +62,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
             {
                 JObject entity = new JObject();
                 entity.Add("idCliente", IdCliente);
+                entity.Add("codice", cant.Codice_Cantiere);
                 entity.Add("descrizione", cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 toShipEntities.Add(entity);
@@ -87,6 +89,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
             {
                 JObject entity = new JObject();
                 entity.Add("idCliente", IdCliente);
+                entity.Add("codice", cant.Codice_Cantiere);
                 entity.Add("descrizione", cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 toShipEntities.Add(entity);
