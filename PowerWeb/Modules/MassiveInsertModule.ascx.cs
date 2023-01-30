@@ -587,7 +587,7 @@ namespace PowerWeb.Modules
                                                     newRegV.Data_Reg = dayCalendar.Key;
                                                     
                                                     var dataOraFisE = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
-                                                    var dataOraFisU = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item2.Hours, detailCalendar.Item2.Minutes, 0);
+                                                    var dataOraFisU = new DateTime(dayCalendar.Key.Year, dayCalendar.Key.Month, dayCalendar.Key.Day, detailCalendar.Item3.Hours, detailCalendar.Item3.Minutes, 0);
                                                     
                                                     // se è richiesto l'inserimento di una registrazione solo durata
                                                     // allora inserisco i corrispettivi dati; altrimenti procedo con una registrazione standard entrata/uscita

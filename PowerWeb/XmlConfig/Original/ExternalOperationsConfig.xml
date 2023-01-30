@@ -22,30 +22,13 @@
   </Synch>
 
   <Synch company="ClockAppManager" class="Business.Synchronization.Implementations.ClockAppManagerSynchronizer`1,Business" enabled="0" >
-    <HostConfig host="localhost" port="55513" protocol="http"/>
+    <HostConfig host="localhost" port="52947" protocol="http"/>
     <ExtraInfos>
     </ExtraInfos>
-    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppCantOperationStrategies,Business" enabled="1">
+    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppCantOperationStrategies,Business" enabled="0">
       <create  value="/api/ManagePowerWebCant" />
       <modify  value="/api/ManagePowerWebCant" />
       <delete  value="/api/ManagePowerWebCant" />
-    </OperationStrategy>
-    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
-      <create  value="/api/ManagePowerWebCol" />
-      <modify  value="/api/ManagePowerWebCol" />
-      <delete  value="/api/ManagePowerWebCol" />
-    </OperationStrategy>
-  </Synch>
-  
-  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="0" >
-    <HostConfig host="backend.winitsrl.eu" port="81" protocol="http"/>
-    <ExtraInfos>
-      <IdCliente  value="47" />
-    </ExtraInfos>
-    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.Flutter.FlutterCantOperationStrategies,Business" enabled="1">
-      <create  value="/app/ws/insertCantieri" />
-      <modify  value="/app/ws/updateCantieri" />
-      <delete  value="/app/ws/deleteCantieri" />
     </OperationStrategy>
     <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
       <create  value="/api/ManagePowerWebCol" />
@@ -58,9 +41,9 @@
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="iris" />
-      <pw value="irisbergamo5W!" />
-      <idTenant value="1455" />
+      <uid  value="DolomitiServizi" />
+      <pw value="Dolomiti2021!" />
+      <idTenant value="1902" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
@@ -70,7 +53,7 @@
   <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
     <HostConfig host="backend.winitsrl.eu" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="16" />
+      <IdCliente  value="47" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

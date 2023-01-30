@@ -9,7 +9,7 @@ namespace Business.DataClasses.FlutterAppDTOs
 {
     class FlutterOrderedReg
     {
-        [JsonProperty("Fru ")]
+        [JsonProperty("Fru")]
         public string CodiceFru { get; set; }
 
         [JsonProperty("Pru")]
@@ -52,16 +52,16 @@ namespace Business.DataClasses.FlutterAppDTOs
             CodiceFru = Fru;
             CodicePru = Pru;
             Data = data;
-            Verso = verso;
-            Motivazione = motivazione;
-            Latitudine = latitudine;
-            Longitudine = longitudine;
-            Attivita = attivita;
-            Squadra = squadra;
-            Cantiere = cantiere;
-            NfcGps = nfcGps;
+            Verso = verso != null ? verso : "";
+            Motivazione = motivazione != null ? motivazione : ""; 
+            Latitudine = latitudine != 0 ? latitudine : 0;
+            Longitudine = longitudine != 0 ? longitudine : 0;
+            Attivita = attivita != null ? attivita : "";
+            Squadra = squadra != null ? squadra : "";
+            Cantiere = cantiere != null ? cantiere : "";
+            NfcGps = nfcGps != null? nfcGps : "";
             Dataord = dataord;
-            Tecnologia = tecnologia;
+            Tecnologia = tecnologia != null ? tecnologia : "";
         }
     }
 }

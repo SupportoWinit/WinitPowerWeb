@@ -5706,10 +5706,16 @@ namespace Business.BusinessExtension
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
-            } else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1) {
+            }
+            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
+            {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi" || c.Justification == "PAU").ToList();
+            }
+            else if(customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
                 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {

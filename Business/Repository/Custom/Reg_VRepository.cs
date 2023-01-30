@@ -3139,16 +3139,28 @@ namespace Business.Repository.Custom
 
                                             if (tabDecod != null)
                                             {
-
-                                                distRow = new Tab_Dist()
+                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DurationTrip) == 1)
                                                 {
-                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                    KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                                    Minuti_Tab_Dist = (int)routeResult.TravelDuration / 60,
-                                                };
-
+                                                    int minuti = (int)routeResult.TravelDistance;
+                                                    distRow = new Tab_Dist()
+                                                    {
+                                                        Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                        Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                        Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                        KM_Tab_Dist = (decimal)routeResult.TravelDistance,
+                                                        Minuti_Tab_Dist = minuti,
+                                                    };
+                                                }
+                                                else {
+                                                    distRow = new Tab_Dist()
+                                                    {
+                                                        Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                        Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                        Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                        KM_Tab_Dist = (decimal)routeResult.TravelDistance,
+                                                        Minuti_Tab_Dist = (int)routeResult.TravelDuration / 60,
+                                                    };
+                                                }
                                                 var errorTab_DistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
                                                 if (!errorTab_DistRepo.Any())
                                                 {

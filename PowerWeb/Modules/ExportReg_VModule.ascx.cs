@@ -1378,11 +1378,20 @@ namespace PowerWeb.Modules
 
                     // lancio l'export (produzione del file excel con i dati calcolati
                     if (!excelModel.Utilizza_Solo_Selezione)
-                        exportToProcess.LaunchExport(regVsToProcess);
+                    {
+                        try
+                        {
+                            exportToProcess.LaunchExport(regVsToProcess);
+                        }
+                        catch (Exception) { }
+
+                    }
                     else
                         exportToProcess.LaunchExport(SelectedColsId, SelectedCantsId, SelectedClisId);
                 }
             }
+            //Comando per ricaricare la pagina nel caso non sia stato importato nessun dato
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
         }
 
         #endregion

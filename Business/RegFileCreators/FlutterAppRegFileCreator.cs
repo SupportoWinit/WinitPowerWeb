@@ -10,6 +10,7 @@ using System.Web;
 using Business.BusinessServices.RegTranslatorService.Helpers;
 using Business.Repository;
 using Domain;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 
 namespace Business.RegFileCreators
 {
@@ -47,13 +48,21 @@ namespace Business.RegFileCreators
 
             var regsToWrite = new List<string>();
             List<FlutterOrderedReg> regsToOrder = new List<FlutterOrderedReg>();
-
+            int gpsnfc = 0;
             foreach (var regs in unEncodedRegs)
             {
-                FlutterOrderedReg var = new FlutterOrderedReg(regs.CodiceFru,regs.Value.First().CodicePru,regs.Value.First().Registrazione_Data_Ora_Orig,regs.Value.First().verso,regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine,regs.Value.First().Attivita,regs.Value.First().Squadra,regs.Value.First().Cantiere,regs.Value.First().NfcGps, regs.CreateDateTime,regs.hotspotTipo);
+                FlutterOrderedReg var = null;
+                if (regs.Value.First().CodicePru != "")
+                {
+                    var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                }
+                else {
+                    var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                }
+                
                 regsToOrder.Add(var);
             }
-            regsToOrder = regsToOrder.OrderBy(reg => reg.Dataord).ThenBy(reg => reg.CodicePru).ToList();
+            regsToOrder = regsToOrder.OrderBy(reg => reg.Dataord).ToList();
             String codGpsNfc = "";
             foreach (var fluReg in regsToOrder)
             {
@@ -66,18 +75,206 @@ namespace Business.RegFileCreators
                     fluReg.Squadra = fluReg.Squadra.Replace("]", string.Empty);
                     fluReg.Squadra = fluReg.Squadra.Trim();
                     String[] cols = fluReg.Squadra.Split(separator);
+                    List<string> lastReg = new List<string>();
+                    if (fluReg.Cantiere != null && fluReg.Cantiere != "")
+                    {
+                        if (fluReg.Cantiere.Length == 10)
+                        {
+                            lastReg = Translate(fluReg.CodiceFru, fluReg.Cantiere, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                        }
+                        else
+                        {
+                            if (fluReg.Cantiere != "Non selezionato") 
+                            {
+                                if (fluReg.CodicePru != "")
+                                {
+                                    int cant = Int32.Parse(fluReg.CodicePru);
+                                    List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
+                                    if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
+                                    {
+                                        #region Reg con coordinate
+                                        lastReg = Translate(fluReg.CodiceFru, "", fluReg.Data, "", fluReg.Motivazione, cantiere.First().LatitudineGps_Can, cantiere.First().LongitudineGps_Can);
+                                        #endregion
+                                    }
+                                    else
+                                    {
+                                        #region Reg senza coordinate
+                                        //vado a prelevare l a matricola associata e la inserisco nel txt
+                                        List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cant).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                        List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
+                                        lastReg = Translate(fluReg.CodiceFru, matr.Last().Codice_Fru, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                                        #endregion
+                                    }
+                                }
+                                else {
+                                    //int cant = Int32.Parse(fluReg.CodicePru);
+                                    List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Descrizione_Can.Equals(fluReg.Cantiere)).ToList();
+                                    if (cantiere.Count > 0)
+                                    {
+                                        int i;
+                                        if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
+                                        {
+                                            #region Reg con coordinate
+                                            lastReg = Translate(fluReg.CodiceFru, "", fluReg.Data, "", fluReg.Motivazione, cantiere.First().LatitudineGps_Can, cantiere.First().LongitudineGps_Can);
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            #region Reg senza coordinate
+                                            //vado a prelevare l a matricola associata e la inserisco nel txt
+                                            List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cantiere.First().Cant_Id).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                            List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
+                                            lastReg = Translate(fluReg.CodiceFru, matr.Last().Codice_Fru, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                                            #endregion
+                                        }
+                                    }
+
+                                }
+                            }                            
+                        }
+                    }
+                    else
+                    {
+                        lastReg = Translate(fluReg.CodiceFru, fluReg.CodicePru, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                    }
+                    regsToWrite.AddRange(lastReg);
                     //tutte le operazioni precedenti sono per estrarre solo le matricole dei collaboratori
                     foreach (var badgeCode in cols)
                     {
                         string code = badgeCode.Trim();
                         fluReg.CodiceFru = code;
+                        List<string> currentMemberLines = new List<string>();
+                        if (fluReg.Cantiere != null && fluReg.Cantiere != "") {
+                            if (fluReg.Cantiere.Length == 10) {
+                                currentMemberLines = Translate(fluReg.CodiceFru, fluReg.Cantiere, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                            } else {
+                                if (fluReg.Cantiere != "Non selezionato") 
+                                {
+                                    if (fluReg.CodicePru != "")
+                                    {
+                                        int cant = Int32.Parse(fluReg.CodicePru);
+                                        List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
+                                        string regRow = "";
+                                        if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
+                                        {
+                                            #region Reg con coordinate
+
+                                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                                fluReg.CodiceFru,
+                                                AggiungiZeriASinistra(cantiere.First().LatitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                                fluReg.Data.Year,
+                                                fluReg.Data.Month.ToString("00"),
+                                                fluReg.Data.Day.ToString("00"),
+                                                fluReg.Data.Hour.ToString("00"),
+                                                fluReg.Data.Minute.ToString("00"),
+                                                NO_TAG_REFERENCE,
+                                                MARKER_LATITUDINE,
+                                                "N"
+                                            );
+                                            regsToWrite.Add(regRow);
+                                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                                fluReg.CodiceFru,
+                                                AggiungiZeriASinistra(cantiere.First().LongitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                                fluReg.Data.Year,
+                                                fluReg.Data.Month.ToString("00"),
+                                                fluReg.Data.Day.ToString("00"),
+                                                fluReg.Data.Hour.ToString("00"),
+                                                fluReg.Data.Minute.ToString("00"),
+                                                NO_TAG_REFERENCE,
+                                                MARKER_LONGITUDINE,
+                                                "E"
+                                            );
+                                            regsToWrite.Add(regRow);
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            #region Reg senza coordinate
+                                            //vado a prelevare l a matricola associata e la inserisco nel txt
+                                            List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cant).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                            List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
+                                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
+                                                fluReg.CodiceFru,
+                                                matr.Last().Codice_Fru,
+                                                fluReg.Data.Year,
+                                                fluReg.Data.Month.ToString("00"),
+                                                fluReg.Data.Day.ToString("00"),
+                                                fluReg.Data.Hour.ToString("00"),
+                                                fluReg.Data.Minute.ToString("00"),
+                                                fluReg.Verso
+                                            );
+                                            #endregion
+                                        }
+                                    }
+                                    else {
+                                        List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Descrizione_Can == fluReg.Cantiere).ToList();
+                                        string regRow = "";
+                                        if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
+                                        {
+                                            #region Reg con coordinate
+
+                                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                                fluReg.CodiceFru,
+                                                AggiungiZeriASinistra(cantiere.First().LatitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                                fluReg.Data.Year,
+                                                fluReg.Data.Month.ToString("00"),
+                                                fluReg.Data.Day.ToString("00"),
+                                                fluReg.Data.Hour.ToString("00"),
+                                                fluReg.Data.Minute.ToString("00"),
+                                                NO_TAG_REFERENCE,
+                                                MARKER_LATITUDINE,
+                                                "N"
+                                            );
+                                            regsToWrite.Add(regRow);
+                                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                                fluReg.CodiceFru,
+                                                AggiungiZeriASinistra(cantiere.First().LongitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                                fluReg.Data.Year,
+                                                fluReg.Data.Month.ToString("00"),
+                                                fluReg.Data.Day.ToString("00"),
+                                                fluReg.Data.Hour.ToString("00"),
+                                                fluReg.Data.Minute.ToString("00"),
+                                                NO_TAG_REFERENCE,
+                                                MARKER_LONGITUDINE,
+                                                "E"
+                                            );
+                                            regsToWrite.Add(regRow);
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            #region Reg senza coordinate
+                                            //vado a prelevare l a matricola associata e la inserisco nel txt
+                                            List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Descrizione_Can == fluReg.Cantiere).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                            List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
+                                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
+                                                fluReg.CodiceFru,
+                                                matr.Last().Codice_Fru,
+                                                fluReg.Data.Year,
+                                                fluReg.Data.Month.ToString("00"),
+                                                fluReg.Data.Day.ToString("00"),
+                                                fluReg.Data.Hour.ToString("00"),
+                                                fluReg.Data.Minute.ToString("00"),
+                                                fluReg.Verso
+                                            );
+                                            #endregion
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            
+                        }
+                        else {
+                            currentMemberLines = Translate(fluReg.CodiceFru, fluReg.CodicePru, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                        }
                         //pulisco la stringa e in seguito ciclo per ogni matricola così da fare una timbratura per collaboratore
-                        List<string> currentMemberLines = Translate(fluReg.CodiceFru, fluReg.CodicePru, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
+                        
                         regsToWrite.AddRange(currentMemberLines);
                     }
                     #endregion
                 }
-                else if (fluReg.NfcGps != null && fluReg.NfcGps == "1")
+                else if ((fluReg.NfcGps != null && fluReg.NfcGps == "1") || gpsnfc == 1)
                 {
                     #region Creazione txt con registrazione NFC+GPS
                     //eseguo il txt con i criteri necessari per identificare la timbratura come NFC+GPS
@@ -147,6 +344,13 @@ namespace Business.RegFileCreators
                     if (pruCodeAtivity != null)
                     {
                         regsToWrite.AddRange(pruCodeAtivity);
+                    }
+                    if (gpsnfc == 0)
+                    {
+                        gpsnfc = 1;
+                    }
+                    else {
+                        gpsnfc = 0;
                     }
                     #endregion
                 }
@@ -226,76 +430,136 @@ namespace Business.RegFileCreators
                     }
                     else
                     {
-                        //nel caso sia arrivato l'id del cantiere vado a ricercare la matricola associata al cantiere con l'id che ci è arrivato
-                        int cant = Int32.Parse(fluReg.CodicePru);
-                        List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
-                        string regRow = "";
-                        if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
-                        {
-                            #region Reg con coordinate
+                        if (fluReg.Cantiere != "Non selezionato") {
+                            //nel caso sia arrivato l'id del cantiere vado a ricercare la matricola associata al cantiere con l'id che ci è arrivato
+                            string regRow = "";
+                            if (fluReg.CodicePru != "")
+                            {
+                                int cant = Int32.Parse(fluReg.CodicePru);
+                                List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
 
-                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
-                                fluReg.CodiceFru,
-                                AggiungiZeriASinistra(cantiere.First().LatitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
-                                fluReg.Data.Year,
-                                fluReg.Data.Month.ToString("00"),
-                                fluReg.Data.Day.ToString("00"),
-                                fluReg.Data.Hour.ToString("00"),
-                                fluReg.Data.Minute.ToString("00"),
-                                NO_TAG_REFERENCE,
-                                MARKER_LATITUDINE,
-                                "N"
-                            );
+                                if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
+                                {
+                                    #region Reg con coordinate
+
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                        fluReg.CodiceFru,
+                                        AggiungiZeriASinistra(cantiere.First().LatitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        NO_TAG_REFERENCE,
+                                        MARKER_LATITUDINE,
+                                        "N"
+                                    );
+                                    regsToWrite.Add(regRow);
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                        fluReg.CodiceFru,
+                                        AggiungiZeriASinistra(cantiere.First().LongitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        NO_TAG_REFERENCE,
+                                        MARKER_LONGITUDINE,
+                                        "E"
+                                    );
+
+                                    #endregion
+                                }
+                                else
+                                {
+                                    #region Reg senza coordinate
+                                    //vado a prelevare l a matricola associata e la inserisco nel txt
+                                    List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cant).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                    List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
+                                        fluReg.CodiceFru,
+                                        matr.Last().Codice_Fru,
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Verso
+                                    );
+                                    #endregion
+                                }
+                            }
+                            else {
+                                List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Descrizione_Can == fluReg.Cantiere).ToList();
+                                if (cantiere.Count > 0) {
+                                    if (cantiere.First().LatitudineGps_Can != 0 && cantiere.First().LatitudineGps_Can != 0)
+                                    {
+                                        #region Reg con coordinate
+
+                                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                            fluReg.CodiceFru,
+                                            AggiungiZeriASinistra(cantiere.First().LatitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                            fluReg.Data.Year,
+                                            fluReg.Data.Month.ToString("00"),
+                                            fluReg.Data.Day.ToString("00"),
+                                            fluReg.Data.Hour.ToString("00"),
+                                            fluReg.Data.Minute.ToString("00"),
+                                            NO_TAG_REFERENCE,
+                                            MARKER_LATITUDINE,
+                                            "N"
+                                        );
+                                        regsToWrite.Add(regRow);
+                                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                            fluReg.CodiceFru,
+                                            AggiungiZeriASinistra(cantiere.First().LongitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
+                                            fluReg.Data.Year,
+                                            fluReg.Data.Month.ToString("00"),
+                                            fluReg.Data.Day.ToString("00"),
+                                            fluReg.Data.Hour.ToString("00"),
+                                            fluReg.Data.Minute.ToString("00"),
+                                            NO_TAG_REFERENCE,
+                                            MARKER_LONGITUDINE,
+                                            "E"
+                                        );
+
+                                        #endregion
+                                    }
+                                    else
+                                    {
+                                        #region Reg senza coordinate
+                                        //vado a prelevare l a matricola associata e la inserisco nel txt
+                                        List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cantiere.First().Cant_Id).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                        List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
+                                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
+                                            fluReg.CodiceFru,
+                                            matr.Last().Codice_Fru,
+                                            fluReg.Data.Year,
+                                            fluReg.Data.Month.ToString("00"),
+                                            fluReg.Data.Day.ToString("00"),
+                                            fluReg.Data.Hour.ToString("00"),
+                                            fluReg.Data.Minute.ToString("00"),
+                                            fluReg.Verso
+                                        );
+                                        #endregion
+                                    }
+                                }
+                            }
                             regsToWrite.Add(regRow);
-                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
-                                fluReg.CodiceFru,
-                                AggiungiZeriASinistra(cantiere.First().LongitudineGps_Can.ToString("00.0000000").Remove(2, 1), 10),
-                                fluReg.Data.Year,
-                                fluReg.Data.Month.ToString("00"),
-                                fluReg.Data.Day.ToString("00"),
-                                fluReg.Data.Hour.ToString("00"),
-                                fluReg.Data.Minute.ToString("00"),
-                                NO_TAG_REFERENCE,
-                                MARKER_LONGITUDINE,
-                                "E"
-                            );
-
-                            #endregion
-                        }
-                        else
-                        {
-                            #region Reg senza coordinate
-                            //vado a prelevare l a matricola associata e la inserisco nel txt
-                            List<Fru_Cant> fru = RepoManager.Fru_CantRepo.GetAll().Where(can => can.Cant_Id == cant).OrderBy(can => can.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                            List<Fru> matr = RepoManager.FruRepo.GetAll().Where(can => can.Fru_Id == fru.First().Fru_Id).ToList();
-                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
-                                fluReg.CodiceFru,
-                                matr.Last().Codice_Fru,
-                                fluReg.Data.Year,
-                                fluReg.Data.Month.ToString("00"),
-                                fluReg.Data.Day.ToString("00"),
-                                fluReg.Data.Hour.ToString("00"),
-                                fluReg.Data.Minute.ToString("00"),
-                                fluReg.Verso
-                            );
-                            #endregion
-                        }
-
-                        regsToWrite.Add(regRow);
-                        var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
-                        if (firstLine != "")
-                        {
-                            regsToWrite.Add(firstLine);
-                        }
-                        var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
-                        if (activityLine != "")
-                        {
-                            regsToWrite.Add(activityLine);
-                        }
-                        var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, fluReg.Attivita, fluReg.Data, fluReg.CodiceFru);
-                        if (pruCodeAtivity != null)
-                        {
-                            regsToWrite.AddRange(pruCodeAtivity);
+                            var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
+                            if (firstLine != "")
+                            {
+                                regsToWrite.Add(firstLine);
+                            }
+                            var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
+                            if (activityLine != "")
+                            {
+                                regsToWrite.Add(activityLine);
+                            }
+                            var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, fluReg.Attivita, fluReg.Data, fluReg.CodiceFru);
+                            if (pruCodeAtivity != null)
+                            {
+                                regsToWrite.AddRange(pruCodeAtivity);
+                            }
                         }
                     }
                     #endregion
@@ -428,7 +692,7 @@ namespace Business.RegFileCreators
             {
                 #region Reg senza coordinate
 
-                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};",
                     codiceFru,
                     codicePru,
                     Data.Year,
@@ -436,7 +700,7 @@ namespace Business.RegFileCreators
                     Data.Day.ToString("00"),
                     Data.Hour.ToString("00"),
                     Data.Minute.ToString("00"),
-                    Verso
+                    " "
                 );
                 translated.Add(regRow);
                 #endregion

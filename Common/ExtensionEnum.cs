@@ -181,7 +181,8 @@ namespace Common
         ViewKilometers,
         DoublePushPin,
         ExitDelay,
-        DelayAfter
+        DelayAfter,
+        DurationTrip
     }
 
     public enum ClockAppsOperationEnum

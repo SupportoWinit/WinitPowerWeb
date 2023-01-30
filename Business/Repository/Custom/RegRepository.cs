@@ -1610,9 +1610,9 @@ namespace Business.Repository.Custom
 
                 // sono lette tutte le matricole portatili e fisse non disabilitate con data di associazione inferiore o uguale alla data massima da processare;
                 // le anagrafiche così recuperate sono ordinate in senso discendente per data abilitazione, di modo da avere le più recenti in cima alla lista
-                var pruCols = RepoManager.Pru_ColRepo.Find(pruCol => pruCol.Abilitazione_Data_Inizio_Pru_Col <= regMaxDate && !pruCol.DisAbilitazione_Pru_Col, true)
+                var pruCols = RepoManager.Pru_ColRepo.Find(pruCol => !pruCol.DisAbilitazione_Pru_Col, true)
                     .OrderByDescending(pru => pru.Abilitazione_Data_Inizio_Pru_Col).ToList();
-                var fruCants = RepoManager.Fru_CantRepo.Find(fruCant => fruCant.Abilitazione_Data_Inizio_Fru_Can <= regMaxDate && !fruCant.DisAbilitazione_Fru_Can, true)
+                var fruCants = RepoManager.Fru_CantRepo.Find(fruCant => !fruCant.DisAbilitazione_Fru_Can, true)
                     .OrderByDescending(fru => fru.Abilitazione_Data_Inizio_Fru_Can).ToList();
 
                 // con i dati delle anagrafiche sono costruiti dei dizionari che come chiave hanno l'id dell'anagrafca e come valore l'elenco delle associazioni
@@ -1966,7 +1966,7 @@ namespace Business.Repository.Custom
                     // referenziale
                     IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
                     var regsToUpdate = new List<Reg>();
-                    regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.Reg_Id == reg.RiferimentoRRN_Att)));
+                    regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.RiferimentoRRN_Reg == reg.Reg_Id || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
                     regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
                     Context.BulkUpdate(regsToUpdate);
 

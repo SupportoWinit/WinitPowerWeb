@@ -47,6 +47,7 @@ namespace Business.ExternalImport.Implementations
 
             registrazioni = bridge.Get<List<FlutterAppReg>>(CreateStandardPayload(index), apiPaths["getTimbrature"]);
 
+            
             if (registrazioni != null && registrazioni.Any())
             {
                 BusinessService.BackUpJsonObject(registrazioni, Common.Properties.Settings.Default.Files_Input_JSON_Backup_Path);

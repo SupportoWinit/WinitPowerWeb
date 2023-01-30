@@ -215,8 +215,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     var timeDuration = TimeSpan.FromHours(baseDuration);
-
-                    string valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    string valueToPrint = "";
+                    if (baseDuration < 0 && baseDuration > -1)
+                    {
+                        valueToPrint = "-"+FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    }
+                    else {
+                        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    }
 
                     RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);

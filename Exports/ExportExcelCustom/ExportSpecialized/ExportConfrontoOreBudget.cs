@@ -381,9 +381,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     ExcelWorkbookDispose();
                 }
             }
-            else {
-                MessageBox.Show("Nessuna timbratura presente");
-            }
+            //else {
+            //    MessageBox.Show("Nessuna timbratura presente");
+            //}
         }
 
         /// <summary>

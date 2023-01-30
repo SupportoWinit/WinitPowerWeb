@@ -9,8 +9,6 @@
             <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
   <!-- *******************************************************************************************************************************************-->
   <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
-  <!-- *******************************************************************************************************************************************-->
-  <c Value="1" Des="Mostra solo collaboratori abilitati" ID="CustomizationEnum.AvoidDisabledCartellinoCols"/>
   <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
   <c ID="CustomizationEnum.DefaultGroupViewInCantPage" Des="Raggruppamento iniziale pagina cantiere resu vista default(no raggruppamenti)" Value="0" />
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
@@ -307,9 +305,7 @@
 		ShowSecondsInHoursErrModuleEnum=1 Utilizzato per indicare la possibilità modifica dei secondi sulla gestione delle timbrature multiple ed errate -->
 
   <!-- *******************************************ELABORAZIONE CUSTOM*********************************************************-->
-  <c ID="CustomizationEnum.CustomElaborateRegs" Des="Indica se è attiva ed il tipo di una eventuale elaborazione custom delle timbrature (affiancata allo standard)" Value="0" >
-    <param Name="TmpCoupleCode" Value="ActivityAutoClosure"/>
-  </c>
+  <c ID="CustomizationEnum.CustomElaborateRegs" Des="Indica se è attiva ed il tipo di una eventuale elaborazione custom delle timbrature (affiancata allo standard)" Value="0" />
   <!--CustomElaborateRegs=0 Elaborazione standard (nessuna eleborazione custom eseguita)
 		CustomElaborateRegs=1 Elaborazione per il cliente Dugoni (abbinamento automatico timbrature per cantieri I/F e Linea)
 		CustomElaborateRegs=2 Elaborazione per le app he prevedono attività-->
@@ -320,17 +316,12 @@
 		CustomExportsBackgroundColorEnum=1 Non Visualizza i colori previsti dal codice nel export custom -->
 
   <!-- *******************************************MOTIVAZIONI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="0" />
+  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="1" />
   <!--JustificationHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore con motivazione all'interno delle ore lavorate
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
 
-  <!-- *******************************************PAUSA PRANZO COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno la pausa pranzo come se fosse ore lavorate" Value="0" />
-  <!--PausaPranzoIsWorkedHoursEnum=0 Non saranno utilizzate le ore con pausa pranzo all'interno delle ore lavorate
-		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore con pausa pranzo all'interno delle ore lavorate -->
-
   <!-- *******************************************VIAGGI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
+  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="0" />
   <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
 		TripHourIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
 
@@ -425,7 +416,7 @@
         PauseDeductionOnlyFascia5=1 Indica che la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5-->
 
   <!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE SU CANT SEDE*********************************************************-->
-  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="0" />
+  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="1" />
   <!--  AutoClosuresEnum=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
@@ -548,7 +539,7 @@
       Overtime = 1 visualizza gli straordinari-->
 
   <!--<********************************************************EXPORT CONFRONTE ORE STRAORDINARIE************************************************************-->
-  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="1"/>
+  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="0"/>
   <!-- ExportStr = 0 non visualizza gli straordinari
       ExportStr = 1 visualizza gli straordinari-->
   <!--<********************************************************IMPORTAZIONE TIMBRATURE NELLO STESSO MINUTO************************************************************-->
@@ -561,67 +552,26 @@
   <c ID="CustomizationEnum.AutoClosuresFirstLast" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
   <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-
-  <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
+   <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
   <c ID="CustomizationEnum.AutoClosures" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0">
-    <param Name="minuti" Value ="2"/>
+      <param Name="minuti" Value ="2"/>
   </c>
   <!--  AutoClosures=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosures=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
   <c ID="CustomizationEnum.DisableExcelExport" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  DisableExcelExport=0 Indica di non chiudere le timbrature in modo automatico
-        DisableExcelExport=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
+        AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
   <c ID="CustomizationEnum.TimesheetMultiPagedExport" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  TimesheetMultiPagedExport=0 Indica di non chiudere le timbrature in modo automatico
-        TimesheetMultiPagedExport=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
+        AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
-  <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
-  <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
-  <!--  OrderElaborateRegByCant=0 Indica di non chiudere le timbrature in modo automatico
-        OrderElaborateRegByCant=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!-- *******************************************************CALCOLO DURATA VIAGGIO 1KM = 1 MIN *********************************************************-->
+  <c ID="CustomizationEnum.DurationTrip" Des="Indica se calcolare la durata dei viaggi con la formula 1 km = 1 minuto" Value="1"/>
+  <!--  DurationTrip=0 Indica di calcolarli normalmente
+        DurationTrip=1 Indica di applicare la formula-->
 
-  <!-- ********************************************************SOTTRARRE PAUSA PRANZO ALLE ORE LAVORATE*********************************************************-->
-  <c ID="CustomizationEnum.SubstractPausaPranzo" Des="Indica se sottrarre la pausa pranzo alle ore lavorate" Value="0"/>
-  <!--  SubstractPausaPranzo=0 Indica di non sottrarre le ore
-        SubstractPausaPranzo=1 Indica di sottrarre le ore-->
-
-  <!-- ********************************************************UTILIZZO DEI SOTTOCANTIERI*********************************************************-->
-  <c ID="CustomizationEnum.SubCant" Des="Indica se nell'ambiente è previsto l'utilizzo dei sottocantieri" Value="0"/>
-  <!--  SubCant=0 Indica di non contare i sottocantieri
-        SubCant=1 Indica di contare i sottocantieri-->
-
-  <!-- ********************************************************ORE NOTTURNE SOLO ORDINARIE*********************************************************-->
-  <c ID="CustomizationEnum.NoNocturneStr" Des="Indica se andare a inserire le ore notturne come straordinarie" Value="0"/>
-  <!--  NoNocturneStr=0 Indica che le ore notturne possono essere straordinarie
-        NoNocturneStr=1 Indica che tutte le ore notturne anche se oltre il piano orario saranno ordinarie-->
-
-  <!-- ********************************************************INDICA COME TRATTARE I TXT SENZA LE COORDINATE DEI DISPOSITIVI*********************************************************-->
-  <c ID="CustomizationEnum.BadTxt" Des="Indica come trattare le timbrature senza coordinate dei dispositivi" Value="0"/>
-  <!--  BadTxt=0 Indica di non correggere i txt errati
-        BadTxt=1 Indica di andare ad assegnare dell coordinate a zero ai txt-->
-
-  <!-- ********************************************************ASSEGNARE CANTIERE ULTIMA TIMBRATURA SE COORDINATE A ZERO*********************************************************-->
-  <c ID="CustomizationEnum.CoordinateZero" Des="Indica se assegnare il cantiere dell'ultima timbratura in caso di coordinate zero" Value="0"/>
-  <!--  CoordinateZero=0 Indica di non assegnare il cantiere
-        CoordinateZero=1 Indica di assegnare il cantiere-->
-
-  <!-- ********************************************************MOSTRA I KILOMETRI NEI VIAGGI PER RIEMPIMENTO*********************************************************-->
-  <c ID="CustomizationEnum.ViewKilometers" Des="Indica se calcolare e mostrare i kilometri nei viaggi per riempimento" Value="0"/>
-  <!--  ViewKilometers=0 Indica di non calcolare i kilometri
-        ViewKilometers=1 Indica di calcolare i kilometri-->
-  
-  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
-  <c ID="CustomizationEnum.DoublePushPin" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
-  <!--  DounlePushPin=0 Indica di non calcolare i kilometri
-        DounlePushPin=1 Indica di calcolare i kilometri-->
-
-  <!-- *******************************************************GESTIONE RITARDI USCITA *********************************************************-->
-  <c ID="CustomizationEnum.ExitDelay" Des="Indica se andare a calcolare il ritardo ancche sull'uscita" Value="1"/>
-  <!--  ExitDelay=0 Indica di non calcolare i ritardi
-        ExitDelay=1 Indica di calcolare i ritardi-->
-  
 </Customizations>

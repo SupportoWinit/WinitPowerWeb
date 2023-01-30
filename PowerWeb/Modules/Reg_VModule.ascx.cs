@@ -1042,6 +1042,7 @@ namespace PowerWeb.Modules
                 }
                 
             }
+            Page.Response.Redirect(Page.Request.Url.ToString(), true);
         }
 
         #endregion

@@ -1752,7 +1752,7 @@ namespace Business.Repository.Custom
         public static string AggiungiZeriASinistra(string sStringa, int iLunghezzaStringa)
         {
             if (string.IsNullOrEmpty(sStringa)) return null;
-            return CompletaASinistra(sStringa, iLunghezzaStringa, '0');
+            return CompletaASinistra(sStringa, iLunghezzaStringa, ' ');
         }
         static public string CompletaASinistra(string sStringa, int iLunghezzaStringa, char completatore = ' ')
         {
