@@ -760,7 +760,7 @@ namespace PowerWeb.Modules
             {
                 return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg.HasValue && regv.Data_Reg.Value.Month == selectedPeriodDate.Month &&
                 regv.Data_Reg.Value.Year == selectedPeriodDate.Year && regv.Col_Id.HasValue && regv.Cant_Id.HasValue &&
-                (/*allCols ||*/ SelectedColsId.Contains(regv.Col_Id.Value)) &&
+                (allCols || SelectedColsId.Contains(regv.Col_Id.Value)) &&
                 (allCants || SelectedCantsId.Contains(regv.Cant_Id.Value))); //&&
                                                                              //(allClis || SelectedClisId.Contains(regv.Cli_Id.Value))); ;
             }

@@ -365,6 +365,12 @@ namespace Common
             return sStringa.PadLeft(iLunghezzaStringa, completatore);
         }
 
+        static public string CompletaADestra(string sStringa, int iLunghezzaStringa, char completatore = ' ')
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return sStringa.PadRight(iLunghezzaStringa, completatore);
+        }
+
         /// <summary>
         /// Effettua il replate delle stringhe indicate solo per nella prima occorrenza.
         /// </summary>
@@ -392,6 +398,23 @@ namespace Common
         {
             if (string.IsNullOrEmpty(sStringa)) return null;
             return CompletaASinistra(sStringa, iLunghezzaStringa, '0');
+        }
+        public static string AggiungiZeriADestra(string sStringa, int iLunghezzaStringa)
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return CompletaADestra(sStringa, iLunghezzaStringa, '0');
+        }
+
+        public static string AggiungiSpaziiADestra(string sStringa, int iLunghezzaStringa)
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return CompletaADestra(sStringa, iLunghezzaStringa, ' ');
+        }
+
+        public static string AggiungiSpaziASinistra(string sStringa, int iLunghezzaStringa)
+        {
+            if (string.IsNullOrEmpty(sStringa)) return null;
+            return CompletaASinistra(sStringa, iLunghezzaStringa);
         }
 
         /// <summary>

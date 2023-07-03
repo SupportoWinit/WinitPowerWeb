@@ -513,8 +513,12 @@
                 <MaskSettings Mask="00:00" IncludeLiterals="None" />
             </PropertiesTextEdit>
         </dx:GridViewDataTextColumn>
-         <dx:GridViewDataSpinEditColumn FieldName="Tolleranza_Limite_Entrata" Visible="False">
-        </dx:GridViewDataSpinEditColumn>
+         <dx:GridViewDataTextColumn FieldName="Tolleranza_Limite_Entrata" Visible="False">
+             <PropertiesTextEdit>
+                <ClientSideEvents Validation="OnGridTimeSpanValidation"></ClientSideEvents>
+                <MaskSettings Mask="00:00" IncludeLiterals="None" />
+            </PropertiesTextEdit>
+        </dx:GridViewDataTextColumn>
          <dx:GridViewDataComboBoxColumn FieldName="Utilizzo_Limite_Uscita" Visible="False">
         </dx:GridViewDataComboBoxColumn>
         <dx:GridViewDataCheckColumn FieldName="Abilita_Sincronizzazione_Entità" Visible="False">

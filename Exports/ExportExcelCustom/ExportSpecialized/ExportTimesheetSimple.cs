@@ -56,14 +56,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                     col,
                                                     false,
+                                                    false,
                                                     true,
                                                     parameters.Cartellino_Visualizza_Ore,
                                                     parameters.Cartellino_Visualizza_Motivazioni,
                                                     parameters.Cartellino_Visualizza_Viaggi,
                                                     parameters.Cartellino_Visualizza_Delta,
-                                                    parameters.Cartellino_Usa_Cartellino_Modificabile,
+                                                    true,
                                                     parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                    Convert.ToBoolean(parameters.Cartellino_Visualizza_Totali_Settimanali),
                                                     false,
                                                     parameters.Cartellino_Visualizza_Piano));
 

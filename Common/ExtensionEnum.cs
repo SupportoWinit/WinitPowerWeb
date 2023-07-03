@@ -182,7 +182,8 @@ namespace Common
         DoublePushPin,
         ExitDelay,
         DelayAfter,
-        DurationTrip
+        DurationTrip,
+        NotCalcolatePausaTrip
     }
 
     public enum ClockAppsOperationEnum

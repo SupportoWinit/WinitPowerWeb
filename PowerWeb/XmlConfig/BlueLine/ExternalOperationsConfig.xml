@@ -21,7 +21,7 @@
     </OperationStrategy>
   </Synch>
 
-  <Synch company="ClockAppManager" class="Business.Synchronization.Implementations.ClockAppManagerSynchronizer`1,Business" enabled="0" >
+  <Synch company="ClockAppManager" class="Business.Synchronization.Implementations.ClockAppManagerSynchronizer`1,Business" enabled="1" >
     <HostConfig host="localhost" port="52947" protocol="http"/>
     <ExtraInfos>
     </ExtraInfos>
@@ -30,7 +30,7 @@
       <modify  value="/api/ManagePowerWebCant" />
       <delete  value="/api/ManagePowerWebCant" />
     </OperationStrategy>
-    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="1">
       <create  value="/api/ManagePowerWebCol" />
       <modify  value="/api/ManagePowerWebCol" />
       <delete  value="/api/ManagePowerWebCol" />
@@ -38,25 +38,15 @@
   </Synch>
 
 
-  <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
+ <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="1">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="DolomitiServizi" />
-      <pw value="Dolomiti2021!" />
-      <idTenant value="1902" />
+      <uid  value="Ambienta" />
+      <pw value="Ambienta2017W!" />
+      <idTenant value="1742" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
-    </OperationStrategy>
-  </ExternalImport>
-  
-  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
-    <HostConfig host="backend.winitsrl.eu" protocol="http" />
-    <ExtraInfos>
-      <IdCliente  value="16" />
-    </ExtraInfos>
-    <OperationStrategy >
-      <getTimbrature  value="/app/ws/Winit" />
     </OperationStrategy>
   </ExternalImport>
   

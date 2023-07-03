@@ -483,7 +483,7 @@ namespace PowerWeb.Modules
                             RepoManager.RegRepo.DeleteFromQuery(reg => reg.Registrazione_Data_Ora_Fis_Reg >= from &&
                                         reg.Registrazione_Data_Ora_Fis_Reg <= to &&
                                         reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip &&
-                                       reg.Col_Id == col.Col_Id);
+                                        reg.Col_Id == col.Col_Id);
                         }
 
 

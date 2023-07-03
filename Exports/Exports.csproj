@@ -76,6 +76,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -93,6 +98,7 @@
     <Compile Include="ExportContext.cs" />
     <Compile Include="ExportExcelCustom\ExcelToolbox.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAec.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCantieri.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\Export06.cs" />
@@ -100,6 +106,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAlitalia.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreBudget.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP_1003.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportGoldberg.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportImporti.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportHoursReport.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportMovitrento.cs" />
@@ -130,6 +137,7 @@
     <Compile Include="ExportExcelSpecialized\TimeSheetCol\ExportExcelSpecializedTimeSheetColFormatter.cs">
       <DependentUpon>ExportExcelSpecializedTimeSheetCol.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExportTxtCustom\ExportBlueLine.cs" />
     <Compile Include="ExportTxtCustom\ExportPagheLombarda.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2Annuale.cs" />

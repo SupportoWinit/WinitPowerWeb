@@ -36,6 +36,23 @@
       <delete  value="/api/ManagePowerWebCol" />
     </OperationStrategy>
   </Synch>
+  
+   <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="0" >
+    <HostConfig host="backend.winitsrl.eu" port="81" protocol="http"/>
+    <ExtraInfos>
+      <IdCliente  value="47" />
+    </ExtraInfos>
+    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.Flutter.FlutterCantOperationStrategies,Business" enabled="1">
+      <create  value="/app/ws/insertCantieri" />
+      <modify  value="/app/ws/updateCantieri" />
+      <delete  value="/app/ws/deleteCantieri" />
+    </OperationStrategy>
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
+      <create  value="/api/ManagePowerWebCol" />
+      <modify  value="/api/ManagePowerWebCol" />
+      <delete  value="/api/ManagePowerWebCol" />
+    </OperationStrategy>
+  </Synch>
 
 
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">

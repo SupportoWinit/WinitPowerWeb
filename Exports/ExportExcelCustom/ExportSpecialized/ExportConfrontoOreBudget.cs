@@ -288,7 +288,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             // calcolo per il mese in elaborazione il timesheet dell'entità da processare
                             List<TimesheetModuleItem> entityMonthTimesheets = GetEntityMonthTimesheet(groupedRegV.Key);
 
-                            Col collaboratore = RepoManager.ColRepo.GetAll().Where(c=>c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First();
+                            Col collaboratore = null;
+                            if (ModelFirstEntity == ExcelModelSelectionTypeEnum.Cant) 
+                            {
+                                collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == groupedRegV.Value.First().Col_Id.Value).First();
+                            } else 
+                            {
+                                collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First(); 
+                            }
 
                             // calcolo del nome del foglio di lavoro da utilizzare
                             string currentWorksheetName = collaboratore.CognomeNome_Col;
@@ -1640,7 +1647,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         // Formatta la cella a seconda del valore del totale
                         if (entityTotalConfrontationDuration < 0)
                         {
-                            CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, totalRowIndex, NegativeTimeFormat);
+                            //CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, totalRowIndex, NegativeTimeFormat);
                             RangeSetFontColor(worksheetName, confrontationDurationColumn.Value, totalRowIndex, confrontationDurationColumn.Value, totalRowIndex, _anomalyDeltaColor);
                         }
                         else
@@ -1916,7 +1923,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         // Formatta la cella a seconda del valore del totale
                         if (entityTotalConfrontationDuration < 0)
                         {
-                            CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, totalRowIndex, NegativeTimeFormat);
+                            //CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, totalRowIndex, NegativeTimeFormat);
                             RangeSetFontColor(worksheetName, confrontationDurationColumn.Value, totalRowIndex, confrontationDurationColumn.Value, totalRowIndex, _anomalyDeltaColor);
                         }
                         else

@@ -9,6 +9,7 @@ using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
 using Domain;
 using Domain.Extensions;
+using Exports.ExportExcelCustom.ExportSpecialized;
 using Exports.ExportExcelGeneric;
 using Exports.ExportExcelSpecialized;
 using Exports.ExportTxtCustom;
@@ -17,6 +18,7 @@ using Reports;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -832,7 +834,7 @@ namespace PowerWeb.Modules
                             Ritardo_Mail_Sent = r.Ritardo_Mail_Sent,
                             N_Serie_Fru = r.N_Serie_Fru,
                             Costo_Orario_Fig = r.Costo_Orario_Fig,
-                            Costo_Orario_Fis = r.Costo_Orario_Fis                            
+                            Costo_Orario_Fis = r.Costo_Orario_Fis,
                         });
 
                         e.QueryableSource = newQueryable.AsQueryable();
@@ -1698,7 +1700,7 @@ namespace PowerWeb.Modules
 
                             newRegU.DisAbilitazione_Reg = false;
                             newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                            newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                            newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fig_Reg;
 
                             newRegU.Flag_EU_Reg = regv.UscitaEU;
 
@@ -1794,6 +1796,7 @@ namespace PowerWeb.Modules
                             newRegE.Fru_Id = regv.Fru_Id;
                             newRegE.Pru_Id = regv.Pru_Id;
                             newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
+                            newRegE.Registrazione_Tipo_Reg = oldRegE.Registrazione_Tipo_Reg;
 
                             // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
                             RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
@@ -1869,7 +1872,7 @@ namespace PowerWeb.Modules
                                     else
                                     {
                                         if (oldRegU != null)
-                                            regUDate = oldRegU.Registrazione_Data_Ora_Fis_Reg.Date;
+                                            regUDate = regv.Data_Ora_Fis_U.Value.Date;
 
                                     }
 
@@ -1883,6 +1886,7 @@ namespace PowerWeb.Modules
                                 newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
 
                                 newRegU.Flag_EU_Reg = regv.UscitaEU;
+                                //newRegU.RiferimentoRRN_Reg = newRegE.Reg_Id;
 
                                 newRegU.Activity_Evaluation = regv.Activity_Evaluation;
 
@@ -1890,7 +1894,7 @@ namespace PowerWeb.Modules
                                 {
                                     newRegU.Fru_Id = oldRegU.Fru_Id;
                                     newRegU.Pru_Id = oldRegU.Pru_Id;
-                                    newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
+                                    //newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
 
                                     newRegU.Tipo_Attivita = oldRegU.Tipo_Attivita;
                                     newRegU.Turno = oldRegU.Turno;
@@ -2502,7 +2506,6 @@ namespace PowerWeb.Modules
                     BusinessService.IsToCloseLoadingPanel[PowerWebContext.Current.User] = true;
                     export.ExportToResponse();
                 }
-
                 if (currentType == typeof(ExportExcelSpecializedExtendedReg_V))
                 {
                     var currentSpecialized = (IExportExcelSpecialized<Reg_V>)Activator.CreateInstance(currentType);

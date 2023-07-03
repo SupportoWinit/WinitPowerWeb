@@ -64,13 +64,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     col,
                                                     true,
                                                     true,
+                                                    true,
                                                     parameters.Cartellino_Visualizza_Ore,
                                                     parameters.Cartellino_Visualizza_Motivazioni,
                                                     parameters.Cartellino_Visualizza_Viaggi,
                                                     parameters.Cartellino_Visualizza_Delta,
-                                                     calculateOrdStrTimesheet: true,
                                                     parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                    Convert.ToBoolean(parameters.Cartellino_Visualizza_Totali_Settimanali),
                                                     false,
                                                     parameters.Cartellino_Visualizza_Piano));
                 }
@@ -158,7 +157,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     WriteTimesheetColHeader();
 
-                    WriteColTimesheetOrd(col.Value);
+                    WriteColTimesheetOrd(col.Value,col.Key);
 
                     rowIndex = 3;
 
@@ -256,7 +255,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             rowIndex++;
         }
 
-        private void WriteColTimesheetOrd(Dictionary<string, List<TimesheetModuleItem>> cartellini)
+        private void WriteColTimesheetOrd(Dictionary<string, List<TimesheetModuleItem>> cartellini, Col col)
         {
             bool negative = false;
             int totale = 0;
@@ -372,7 +371,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     try {
                         if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration > 0)
                         {
-                            RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
+                            int timb = RepoManager.RegRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Registrazione_Data_Ora_Fig_Reg.Value.Day == day.Day && r.Registrazione_Data_Ora_Fig_Reg.Value.Month == day.Month && r.Registrazione_Data_Ora_Fig_Reg.Value.Year == day.Year).Count();
+                            if (timb > 0)
+                            {
+                                RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.LightBlue);
+                            }
+                            else {
+                                RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
+                            }
                         }
                     }
                      catch(Exception e) { }   
@@ -402,7 +408,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration > 0)
                             {
-                                RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
+                                int timb = RepoManager.RegRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Registrazione_Data_Ora_Fig_Reg.Value.Day == day.Day && r.Registrazione_Data_Ora_Fig_Reg.Value.Month == day.Month && r.Registrazione_Data_Ora_Fig_Reg.Value.Year == day.Year).Count();
+                                if (timb > 0)
+                                {
+                                    RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.LightBlue);
+                                }
+                                else
+                                {
+                                    RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
+                                }
                             }
                             else if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration == 0)
                             {

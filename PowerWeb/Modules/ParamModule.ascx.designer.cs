@@ -1,17 +1,19 @@
 ﻿//------------------------------------------------------------------------------
 // <generato automaticamente>
-//     Codice generato da uno strumento.
+//     Questo codice è stato generato da uno strumento.
 //
 //     Le modifiche a questo file possono causare un comportamento non corretto e verranno perse se
 //     il codice viene rigenerato. 
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace PowerWeb.Modules {
-    
-    
-    public partial class ParamModule {
-        
+namespace PowerWeb.Modules
+{
+
+
+    public partial class ParamModule
+    {
+
         /// <summary>
         /// Controllo gvParam.
         /// </summary>
@@ -20,7 +22,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.ASPxGridView gvParam;
-        
+
         /// <summary>
         /// Controllo view.
         /// </summary>
@@ -29,7 +31,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.GridViewCommandColumnCustomButton view;
-        
+
         /// <summary>
         /// Controllo flChangeBreakRegDate.
         /// </summary>
@@ -38,7 +40,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxFormLayout.ASPxFormLayout flChangeBreakRegDate;
-        
+
         /// <summary>
         /// Controllo lblOldBreakRegDate.
         /// </summary>
@@ -47,7 +49,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblOldBreakRegDate;
-        
+
         /// <summary>
         /// Controllo deOldBreakRegDate.
         /// </summary>
@@ -56,7 +58,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit deOldBreakRegDate;
-        
+
         /// <summary>
         /// Controllo lblNewBreakRegDate.
         /// </summary>
@@ -65,7 +67,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblNewBreakRegDate;
-        
+
         /// <summary>
         /// Controllo deNewBreakRegDate.
         /// </summary>
@@ -74,7 +76,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit deNewBreakRegDate;
-        
+
         /// <summary>
         /// Controllo btnConfirmBreakRegDate.
         /// </summary>
@@ -83,7 +85,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton btnConfirmBreakRegDate;
-        
+
         /// <summary>
         /// Controllo BreakRegDateProgressBar.
         /// </summary>
@@ -92,7 +94,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxProgressBar BreakRegDateProgressBar;
-        
+
         /// <summary>
         /// Controllo BreakRegDateProgressLabel.
         /// </summary>
@@ -101,7 +103,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel BreakRegDateProgressLabel;
-        
+
         /// <summary>
         /// Controllo flChangeStoreDate.
         /// </summary>
@@ -110,7 +112,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxFormLayout.ASPxFormLayout flChangeStoreDate;
-        
+
         /// <summary>
         /// Controllo lblOldStoredRegDate.
         /// </summary>
@@ -119,7 +121,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblOldStoredRegDate;
-        
+
         /// <summary>
         /// Controllo deOldStoredRegDate.
         /// </summary>
@@ -128,7 +130,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit deOldStoredRegDate;
-        
+
         /// <summary>
         /// Controllo lblNewStoredRegDate.
         /// </summary>
@@ -137,7 +139,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblNewStoredRegDate;
-        
+
         /// <summary>
         /// Controllo deNewStoredRegDate.
         /// </summary>
@@ -146,7 +148,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit deNewStoredRegDate;
-        
+
         /// <summary>
         /// Controllo btnConfirmStoredRegDate.
         /// </summary>
@@ -155,7 +157,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton btnConfirmStoredRegDate;
-        
+
         /// <summary>
         /// Controllo StoredRegDateProgressBar.
         /// </summary>
@@ -164,7 +166,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxProgressBar StoredRegDateProgressBar;
-        
+
         /// <summary>
         /// Controllo StoredRegDateProgressLabel.
         /// </summary>
@@ -173,7 +175,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel StoredRegDateProgressLabel;
-        
+
         /// <summary>
         /// Controllo cConfirmBreakRegDate.
         /// </summary>
@@ -182,7 +184,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cConfirmBreakRegDate;
-        
+
         /// <summary>
         /// Controllo cElChangeBreakRegDate.
         /// </summary>
@@ -191,7 +193,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cElChangeBreakRegDate;
-        
+
         /// <summary>
         /// Controllo cElChangeBreakRegDatePing.
         /// </summary>
@@ -200,7 +202,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cElChangeBreakRegDatePing;
-        
+
         /// <summary>
         /// Controllo tElChangeBreakRegDatePing.
         /// </summary>
@@ -209,7 +211,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxTimer.ASPxTimer tElChangeBreakRegDatePing;
-        
+
         /// <summary>
         /// Controllo cConfirmStoredRegDate.
         /// </summary>
@@ -218,7 +220,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cConfirmStoredRegDate;
-        
+
         /// <summary>
         /// Controllo cElChangeStoredRegDate.
         /// </summary>
@@ -227,7 +229,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cElChangeStoredRegDate;
-        
+
         /// <summary>
         /// Controllo cElChangeStoredRegDatePing.
         /// </summary>
@@ -236,7 +238,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cElChangeStoredRegDatePing;
-        
+
         /// <summary>
         /// Controllo tElChangeStoredRegDatePing.
         /// </summary>

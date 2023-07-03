@@ -887,7 +887,6 @@
           <Property Name="Cant_Id" Type="int" />
           <Property Name="Cantiere_Timbrature_GPS_Non_Valide" Type="int" />
           <Property Name="Cartellino_Divisione_Piano_Notturno_Diurno" Type="bit" Nullable="false" />
-          <Property Name="Cartellino_Visualizza_Arrotondamenti" Type="bit" Nullable="false" />
           <Property Name="Cartellino_Visualizza_Piano" Type="bit" Nullable="false" />
           <Property Name="Cartellino_Visualizza_Ore" Type="bit" Nullable="false" />
           <Property Name="Cartellino_Visualizza_Motivazioni" Type="bit" Nullable="false" />
@@ -1013,8 +1012,9 @@
           <Property Name="Abilita_Sincronizzazione_Entità" Type="bit" Nullable="false" />
           <Property Name="Abilita_Import_Esterno" Type="bit" Nullable="false" />
           <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="smallint" />
-          <Property Name="Tolleranza_Limite_Entrata" Type="int" />
+          <Property Name="Cartellino_Visualizza_Arrotondamenti" Type="bit" Nullable="false" />
           <Property Name="Indice_Timbrature_FlutterApp" Type="int" Nullable="false" />
+          <Property Name="Tolleranza_Limite_Entrata" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="PendingElab">
           <Key>
@@ -1386,9 +1386,9 @@
           <Property Name="Nome_DataGrid" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Nome_Report" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Nome_Risorsa" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Nome_Specializzato" Type="nvarchar(max)" />
           <Property Name="Tab_String" Type="nvarchar(max)" />
           <Property Name="Utenti_Id" Type="int" />
+          <Property Name="Nome_Specializzato" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Tab_Report_Group">
           <Key>
@@ -1519,7 +1519,7 @@
           <Property Name="Nome_Versioni" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Cant_Fil_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1529,7 +1529,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Fil_Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Cant_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1674,7 +1674,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="N_Serie_Fru" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Col_Resp_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1684,7 +1684,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Resp_Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Col_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1831,7 +1831,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Residenza_Provincia_GEN_Col" Type="nvarchar" MaxLength="4" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerAlaCarni.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Reg_V">
           <Key>
             <PropertyRef Name="RegE" />
@@ -1918,8 +1918,9 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Raggruppamento1_Can" Type="nvarchar" MaxLength="50" />
           <Property Name="Raggruppamento2_Can" Type="nvarchar" MaxLength="50" />
           <Property Name="Note_Col" Type="nvarchar(max)" />
+          <Property Name="Note_Pru" Type="nvarchar(max)" />
         </EntityType>
-        <Association Name="FK__Cant_Cent__Cant___2843D2B2">
+        <Association Name="FK__Cant_Cent__Cant___15660868">
           <End Role="Cant" Type="Self.Cant" Multiplicity="1" />
           <End Role="Cant_CentroDiCosto" Type="Self.Cant_CentroDiCosto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1931,7 +1932,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cant_Cent__Centr__274FAE79">
+        <Association Name="FK__Cant_Cent__Centr__1471E42F">
           <End Role="CentroDiCosto" Type="Self.CentroDiCosto" Multiplicity="1" />
           <End Role="Cant_CentroDiCosto" Type="Self.Cant_CentroDiCosto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1943,7 +1944,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Reg__CentroDiCos__2937F6EB">
+        <Association Name="FK__Reg__CentroDiCos__137DBFF6">
           <End Role="CentroDiCosto" Type="Self.CentroDiCosto" Multiplicity="0..1" />
           <End Role="Reg" Type="Self.Reg" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2300,18 +2301,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
             </Principal>
             <Dependent Role="MetaFieldDescriptor">
               <PropertyRef Name="MetaDescriptorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Param_Cant">
-          <End Role="Cant" Type="Self.Cant" Multiplicity="0..1" />
-          <End Role="Param" Type="Self.Param" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cant">
-              <PropertyRef Name="Cant_Id" />
-            </Principal>
-            <Dependent Role="Param">
-              <PropertyRef Name="Cant_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3154,18 +3143,19 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
     [Reg_V].[Costo_Orario_Fis] AS [Costo_Orario_Fis], 
     [Reg_V].[Raggruppamento1_Can] AS [Raggruppamento1_Can], 
     [Reg_V].[Raggruppamento2_Can] AS [Raggruppamento2_Can], 
-    [Reg_V].[Note_Col] AS [Note_Col]
+    [Reg_V].[Note_Col] AS [Note_Col], 
+    [Reg_V].[Note_Pru] AS [Note_Pru]
     FROM [dbo].[Reg_V] AS [Reg_V]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK__Cant_Cent__Cant___2843D2B2" Association="Self.FK__Cant_Cent__Cant___2843D2B2">
+          <AssociationSet Name="FK__Cant_Cent__Cant___15660868" Association="Self.FK__Cant_Cent__Cant___15660868">
             <End Role="Cant" EntitySet="Cant" />
             <End Role="Cant_CentroDiCosto" EntitySet="Cant_CentroDiCosto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cant_Cent__Centr__274FAE79" Association="Self.FK__Cant_Cent__Centr__274FAE79">
+          <AssociationSet Name="FK__Cant_Cent__Centr__1471E42F" Association="Self.FK__Cant_Cent__Centr__1471E42F">
             <End Role="CentroDiCosto" EntitySet="CentroDiCosto" />
             <End Role="Cant_CentroDiCosto" EntitySet="Cant_CentroDiCosto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Reg__CentroDiCos__2937F6EB" Association="Self.FK__Reg__CentroDiCos__2937F6EB">
+          <AssociationSet Name="FK__Reg__CentroDiCos__137DBFF6" Association="Self.FK__Reg__CentroDiCos__137DBFF6">
             <End Role="CentroDiCosto" EntitySet="CentroDiCosto" />
             <End Role="Reg" EntitySet="Reg" />
           </AssociationSet>
@@ -3284,10 +3274,6 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <AssociationSet Name="FK_MetaFieldDescriptor_MetaDescriptor" Association="Self.FK_MetaFieldDescriptor_MetaDescriptor">
             <End Role="MetaDescriptor" EntitySet="MetaDescriptor" />
             <End Role="MetaFieldDescriptor" EntitySet="MetaFieldDescriptor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Param_Cant" Association="Self.FK_Param_Cant">
-            <End Role="Cant" EntitySet="Cant" />
-            <End Role="Param" EntitySet="Param" />
           </AssociationSet>
           <AssociationSet Name="FK_PendingElab_Fru" Association="Self.FK_PendingElab_Fru">
             <End Role="Fru" EntitySet="Fru" />
@@ -6544,9 +6530,9 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Abilita_Sincronizzazione_Entità" Type="Boolean" Nullable="false" />
           <Property Name="Abilita_Import_Esterno" Type="Boolean" Nullable="false" />
           <Property Name="Soglia_Minima_Arrotondamento_Durata" Type="Int16" />
-          <Property Name="Tolleranza_Limite_Entrata" Type="Int32" />
           <Property Name="Indice_Timbrature_FlutterApp" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Cant" Relationship="PowerWebModel.FK_Param_Cant" FromRole="Param" ToRole="Cant" />
+          <Property Name="Tolleranza_Limite_Entrata" Type="Time" Precision="7" />
         </EntityType>
         <Association Name="FK_Param_Cant">
           <End Type="PowerWebModel.Cant" Role="Cant" Multiplicity="0..1" />
@@ -8344,8 +8330,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Param">
             <EntityTypeMapping TypeName="PowerWebModel.Param">
               <MappingFragment StoreEntitySet="Param">
-                <ScalarProperty Name="Indice_Timbrature_FlutterApp" ColumnName="Indice_Timbrature_FlutterApp" />
                 <ScalarProperty Name="Tolleranza_Limite_Entrata" ColumnName="Tolleranza_Limite_Entrata" />
+                <ScalarProperty Name="Indice_Timbrature_FlutterApp" ColumnName="Indice_Timbrature_FlutterApp" />
                 <ScalarProperty Name="Soglia_Minima_Arrotondamento_Durata" ColumnName="Soglia_Minima_Arrotondamento_Durata" />
                 <ScalarProperty Name="Abilita_Import_Esterno" ColumnName="Abilita_Import_Esterno" />
                 <ScalarProperty Name="Abilita_Sincronizzazione_Entità" ColumnName="Abilita_Sincronizzazione_Entità" />

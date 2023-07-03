@@ -881,6 +881,11 @@ namespace PowerWeb.Modules
                                     reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip &&
                                    reg.Col_Id == colId);
 
+                       //RepoManager.RegRepo.DeleteFromQuery(reg => reg.Registrazione_Data_Ora_Fis_Reg >= from &&
+                       //            reg.Registrazione_Data_Ora_Fis_Reg <= to &&
+                       //            reg.Custom_Data_Reg == "ActivityAutoClosure" &&
+                       //           reg.Col_Id == colId);
+                       //
                     }
 
                     String message = BusinessService.GetLocalizedString(PowerWebResources.STR_ELABORAZIONE_TERMINATA);

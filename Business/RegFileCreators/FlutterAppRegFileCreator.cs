@@ -64,6 +64,7 @@ namespace Business.RegFileCreators
             }
             regsToOrder = regsToOrder.OrderBy(reg => reg.Dataord).ToList();
             String codGpsNfc = "";
+            FlutterOrderedReg temp = regsToOrder.First();
             foreach (var fluReg in regsToOrder)
             {
                 if (fluReg.Squadra != null && fluReg.Squadra != "")
@@ -86,7 +87,7 @@ namespace Business.RegFileCreators
                         {
                             if (fluReg.Cantiere != "Non selezionato") 
                             {
-                                if (fluReg.CodicePru != "")
+                                if (fluReg.CodicePru != "" && fluReg.CodicePru != "Non selezionato")
                                 {
                                     int cant = Int32.Parse(fluReg.CodicePru);
                                     List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
@@ -150,7 +151,7 @@ namespace Business.RegFileCreators
                             } else {
                                 if (fluReg.Cantiere != "Non selezionato") 
                                 {
-                                    if (fluReg.CodicePru != "")
+                                    if (fluReg.CodicePru != "" && fluReg.CodicePru != "Non selezionato")
                                     {
                                         int cant = Int32.Parse(fluReg.CodicePru);
                                         List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(can => can.Cant_Id == cant).ToList();
@@ -311,7 +312,7 @@ namespace Business.RegFileCreators
 
                         #endregion
                     }
-                    else
+                    else if (fluReg.CodicePru != "")
                     {
                         #region Reg senza coordinate
 
@@ -398,7 +399,7 @@ namespace Business.RegFileCreators
                         {
                             #region Reg senza coordinate
 
-                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
+                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                                 fluReg.CodiceFru,
                                 fluReg.Cantiere,
                                 fluReg.Data.Year,
@@ -406,7 +407,8 @@ namespace Business.RegFileCreators
                                 fluReg.Data.Day.ToString("00"),
                                 fluReg.Data.Hour.ToString("00"),
                                 fluReg.Data.Minute.ToString("00"),
-                                fluReg.Verso
+                                fluReg.Verso,
+                                fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                             );
                             #endregion
                         }
@@ -569,7 +571,11 @@ namespace Business.RegFileCreators
                     #region Creazione txt normale
                     //vado a creare il txt per una semplice registrazione GPS,NFC o QrCode
                     string regRow = "";
-                    if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                    if (fluReg.Motivazione == "Pausa" && fluReg.Verso == "E" && (temp.Latitudine != 0 && temp.Longitudine != 0 && !string.IsNullOrEmpty(temp.Latitudine.ToString())))
+                    {
+                        fluReg.Data = fluReg.Data.Add(new TimeSpan(0, -1, 0));
+                    }
+                    if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0 && !string.IsNullOrEmpty(fluReg.Latitudine.ToString()))
                     {
                         #region Reg con coordinate
 
@@ -601,11 +607,11 @@ namespace Business.RegFileCreators
 
                         #endregion
                     }
-                    else
+                    else if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
                     {
                         #region Reg senza coordinate
 
-                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7}",
+                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                             fluReg.CodiceFru,
                             fluReg.CodicePru,
                             fluReg.Data.Year,
@@ -613,9 +619,22 @@ namespace Business.RegFileCreators
                             fluReg.Data.Day.ToString("00"),
                             fluReg.Data.Hour.ToString("00"),
                             fluReg.Data.Minute.ToString("00"),
-                            fluReg.Verso
+                            fluReg.Verso,
+                            fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                         );
                         #endregion
+                    } else if (string.IsNullOrEmpty(fluReg.CodicePru) && fluReg.Latitudine == 0 && fluReg.Longitudine == 0) {
+                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                            fluReg.CodiceFru,
+                            "WINIT00001",
+                            fluReg.Data.Year,
+                            fluReg.Data.Month.ToString("00"),
+                            fluReg.Data.Day.ToString("00"),
+                            fluReg.Data.Hour.ToString("00"),
+                            fluReg.Data.Minute.ToString("00"),
+                            fluReg.Verso,
+                            fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                        );
                     }
 
                     regsToWrite.Add(regRow);
@@ -636,7 +655,11 @@ namespace Business.RegFileCreators
                     }
                     #endregion
                 }
-
+                if (fluReg.Motivazione != "Pausa")
+                {
+                    temp = fluReg;
+                }
+                
             }
 
             File.WriteAllLines(fileNamePatter, regsToWrite.ToArray());
@@ -692,7 +715,7 @@ namespace Business.RegFileCreators
             {
                 #region Reg senza coordinate
 
-                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};",
+                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                     codiceFru,
                     codicePru,
                     Data.Year,
@@ -700,7 +723,8 @@ namespace Business.RegFileCreators
                     Data.Day.ToString("00"),
                     Data.Hour.ToString("00"),
                     Data.Minute.ToString("00"),
-                    " "
+                    " ",
+                    Motivazione != "" ? "[Motivazione]=" + Motivazione : null
                 );
                 translated.Add(regRow);
                 #endregion

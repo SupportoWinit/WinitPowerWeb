@@ -58,7 +58,7 @@ namespace Exports.ExportExcelSpecialized
             firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "D", CommonService.GetPropertyName(() => stubRegV.Cant_Desc)));
             firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "E", CommonService.GetPropertyName(() => stubRegV.Data_Reg)));
             firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "F", CommonService.GetPropertyName(() => stubRegV.Data_Ora_Fis_E)));
-            firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "G", CommonService.GetPropertyName(() => stubRegV.Data_Ora_Fis_U)));
+            firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "G", CommonService.GetPropertyName(() => stubRegV.Data_Ora_Fig_E)));
             firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "I", CommonService.GetPropertyName(() => stubRegV.Data_Ora_Fig_E)));
             firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "J", CommonService.GetPropertyName(() => stubRegV.Data_Ora_Fig_U)));
             firstLevelTemplate.Mappings.Add(new ExportExcelTreeNodeMapping(ExportExcelReferenceEnum.Column, "L", CommonService.GetPropertyName(() => stubRegV.Motivazione_Reg_Cod)));

@@ -50,10 +50,10 @@ namespace Business.DataClasses.FlutterAppDTOs
         [JsonProperty("motivazione")]
         public string motivazione { get; set; }
 
-        [JsonProperty("Latitudine")]
+        [JsonProperty("Latitudine", NullValueHandling = NullValueHandling.Ignore)]
         public double Latitudine { get; set; }
 
-        [JsonProperty("Longitudine")]
+        [JsonProperty("Longitudine", NullValueHandling = NullValueHandling.Ignore)]
         public double Longitudine { get; set; }
 
         [JsonProperty("Attivita")]

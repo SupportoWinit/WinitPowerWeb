@@ -297,7 +297,7 @@
 		CustomExportsBackgroundColorEnum=1 Non Visualizza i colori previsti dal codice nel export custom -->
   
 	<!-- *******************************************MOTIVAZIONI COME ONL*********************************************************-->		
-	<c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="1" />
+	<c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="0" />
 	<!--JustificationHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore con motivazione all'interno delle ore lavorate
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
   
@@ -505,5 +505,10 @@
   </c>
   <!-- ImportSame = 0 non visualizza gli straordinari
       ImportSame = 1 visualizza gli straordinari-->
+	  
+  <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
+  <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
+  <!--  OrderElaborateRegByCant=0 Indica di non chiudere le timbrature in modo automatico
+        OrderElaborateRegByCant=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
   
 </Customizations>

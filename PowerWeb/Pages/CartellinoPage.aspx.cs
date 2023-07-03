@@ -247,8 +247,13 @@ namespace PowerWeb.Pages
                     lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
                     if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
                     {
-                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col,isByOtherEntity:optionsObj.devideByOtherEntity,
-                                                                                                                               isDecimalHours: false, showPiano: optionsObj.showPiano , calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni);
+                        bool weekly = true;
+                        if (parameters.Cartellino_Visualizza_Totali_Settimanali == 0)
+                        {
+                            weekly = false;
+                        }
+                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, isByOtherEntity: optionsObj.devideByOtherEntity,
+                                                                                                                               isDecimalHours: false, showPiano: optionsObj.showPiano, calculateDelta: optionsObj.showDelta, calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni, showWeeklyTotal: weekly);
 
                         JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
 
@@ -508,6 +513,8 @@ namespace PowerWeb.Pages
 
                 int weekendNumber = 1;
 
+                TimeSpan total = new TimeSpan();
+
                 foreach (var day in cartRow.DaysHours)
                 {
                     JObject dayVal = new JObject();
@@ -527,6 +534,16 @@ namespace PowerWeb.Pages
                     if (TimeSpan.FromMinutes(day.Value.Item1) != TimeSpan.Zero)
                         duration = (day.Value.Item1 < 0 ? "-" : "") + TimeSpan.FromMinutes(day.Value.Item1).ToString("hh\\:mm");
 
+                    if (dataField.DayOfWeek == DayOfWeek.Monday)
+                    {
+                        total = new TimeSpan();
+                        total = total.Add(TimeSpan.FromMinutes(day.Value.Item1));
+                    }
+                    else
+                    {
+                        total = total.Add(TimeSpan.FromMinutes(day.Value.Item1));
+                    }
+
                     row.Add(dataField.ToShortDateString(), duration);
 
                     if (dataField.DayOfWeek == DayOfWeek.Sunday && options.showWeeklyTotals) //Aggiunge il weekend
@@ -535,12 +552,19 @@ namespace PowerWeb.Pages
 
                         var totalString = rowObject[$"TotalWeek{weekendNumber}"].ToString();
 
-                        string durationWeek = "-";
+                        string durationWeek = "";
 
                         var durationTime = TimeSpan.FromHours(double.Parse(totalString));
 
+                        string minutes = total.Minutes.ToString("00");
+                        if (total.Minutes < 0) {
+                            minutes = minutes.Remove(0,1);
+                        }
+
+                        string duration1 = "" + Math.Floor(total.TotalHours).ToString("00") + ":" + total.Minutes.ToString("00");
+
                         if (durationTime != TimeSpan.Zero)
-                            durationWeek = $"{(durationTime < TimeSpan.Zero ? "-" : "")}{Math.Floor(durationTime.TotalHours).ToString("00")}:{durationTime.Minutes.ToString("00")}";
+                            durationWeek = $"{(durationTime < TimeSpan.Zero ? "" : "")}" + duration1;
 
 
 
@@ -1911,7 +1935,7 @@ namespace PowerWeb.Pages
 
             foreach (Col col in collaboratori)
             {
-                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col,false)["justification"]);
+                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col, false, false,true)["justification"]);
             }
 
             var timesheetColReport = new XRColCartellino(cartellini, null, null, optionsObj);

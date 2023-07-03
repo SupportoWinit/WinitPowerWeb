@@ -8,7 +8,7 @@
       = 0 Personalizzazione NON attivata
             <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
   <!-- *******************************************************************************************************************************************-->
-  <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
+  <c Value="0" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
   <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
   <c ID="CustomizationEnum.DefaultGroupViewInCantPage" Des="Raggruppamento iniziale pagina cantiere resu vista default(no raggruppamenti)" Value="0" />
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
@@ -416,7 +416,7 @@
         PauseDeductionOnlyFascia5=1 Indica che la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5-->
 
   <!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE SU CANT SEDE*********************************************************-->
-  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="0" />
+  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="1" />
   <!--  AutoClosuresEnum=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
@@ -573,5 +573,20 @@
   <c ID="CustomizationEnum.DurationTrip" Des="Indica se calcolare la durata dei viaggi con la formula 1 km = 1 minuto" Value="1"/>
   <!--  DurationTrip=0 Indica di calcolarli normalmente
         DurationTrip=1 Indica di applicare la formula-->
+		
+  <!-- *******************************************************CONTARE PAUSA PRANZO NEL CALCOLO DEL TOTALE *********************************************************-->
+  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se calcolare la durata dei viaggi con la formula 1 km = 1 minuto" Value="0"/>
+  <!--  PausaPranzoIsWorkedHoursEnum=0 Indica di calcolarli normalmente
+        PausaPranzoIsWorkedHoursEnum=1 Indica di applicare la formula-->
+		
+		    <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
+  <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
+  <!--  OrderElaborateRegByCant=0 Indica di non chiudere le timbrature in modo automatico
+        OrderElaborateRegByCant=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+		
+		  <!-- ********************************************************NON CALCOLARE VIAGGIO PAUSA PRANZO*********************************************************-->
+  <c ID="CustomizationEnum.NotCalcolatePausaTrip" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
+  <!--  NotCalcolatePausaTrip=0 Indica di non chiudere le timbrature in modo automatico
+        NotCalcolatePausaTrip=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
 </Customizations>

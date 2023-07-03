@@ -368,7 +368,7 @@ namespace Business.Repository.Custom
 
                 _log.Info("Inserimento delle chiusure automatiche a chiusura causali");
 
-                ManageActivitiesAutoClosures(ref regs,currentApplication,fromDate,toDate);
+                ManageActivitiesAutoClosures(ref regs, currentApplication, fromDate, toDate);
 
                 #endregion
 
@@ -395,6 +395,8 @@ namespace Business.Repository.Custom
                 _log.Info("Accoppiamento registrazioni terminato.");
 
                 #endregion
+
+               
 
                 #region 9. Salvataggio dei dati modificati a database e cancellazione viaggi
 
@@ -502,7 +504,7 @@ namespace Business.Repository.Custom
                                 RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita = 0;
                                 RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio = TimeSpan.MinValue;
                                 RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti = 0;
-                                RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = 0;
+                                RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = TimeSpan.MinValue;
                                 _log.Info(String.Format("Tolgo gli arrotondamenti a {0} regV", regVs.Count()));
                                 errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
                                     , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication));
@@ -801,7 +803,7 @@ namespace Business.Repository.Custom
             #region Cancellazione dei viaggi
 
             // sono cancellati i viaggi solamente se il flag di generazione automaticae ed il modulo dei viaggi sono attivi
-            if (RepoManager.ParamRepo.ParametersRow.Flag_Calcolo_Viaggi && RepoManager.ParamRepo.ParametersRow.Abilita_Viaggi)
+            if (/*RepoManager.ParamRepo.ParametersRow.Flag_Calcolo_Viaggi &&*/ RepoManager.ParamRepo.ParametersRow.Abilita_Viaggi)
             {
                 // se ci sono dei viaggi da cancellare, procedo alla loro eliminazione
                 IEnumerable<Reg> tripsToDelete = regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip).ToList();
@@ -889,7 +891,8 @@ namespace Business.Repository.Custom
 
                 // si ordinano le registrazioni del gruppo per motivazione e data/ora
                 // di modo da abbinare le timbrature coerentemente con la motivazione inserita
-                List<Reg> orderedColRegs = colGroup.OrderBy(reg => reg.Motivazione_Reg_Id).ThenBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+                //List<Reg> orderedColRegs = colGroup.OrderBy(reg => reg.Motivazione_Reg_Id).ThenBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+                List<Reg> orderedColRegs = colGroup.OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.OrderElaborateRegByCant) == 1)
                 {
                     orderedColRegs = orderedColRegs.OrderBy(reg => reg.Cant_Id).ToList();
@@ -2385,6 +2388,8 @@ namespace Business.Repository.Custom
                                                     CommonService.DuplicateEntity(currentReg, newReg);
                                                     newReg.RiferimentoRRN_Reg = null;
                                                     newReg.Reg_Id = 0;
+                                                    newReg.Pru_Id = currentReg.Pru_Id;
+                                                    newReg.Fru_Id = currentReg.Fru_Id;
                                                     newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
                                                         currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
                                                     newReg.Data_Registrazione_Reg = DateTime.Now;
@@ -3316,17 +3321,16 @@ namespace Business.Repository.Custom
         private HashSet<Reg> AdjustFisRegByCol(IEnumerable<Reg> regsToProcess)
         //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
         {
-
-
-
-            var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();
+            //regsToProcess = regsToProcess.OrderBy(r => r.Motivazione_Reg_Id).ToList();
+            regsToProcess = regsToProcess.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();// ThenBy(r => r.Motivazione_Reg_Id).ToList();
+            var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();
             regsByDate.ForEach(byDateList =>
             {
                 // se sono presenti delle reg da shiftare
                 if (byDateList.Count() > 1)
                 {
                     // per ogi reg da shiftare viene aggiunto un secondo
-                    int secondsToAdd = 0;
+                    int secondsToAdd = 1;
                     byDateList.ForEach(regToShift => regToShift.Registrazione_Data_Ora_Fis_Reg = regToShift.Registrazione_Data_Ora_Fis_Reg.AddSeconds(secondsToAdd++));
                 }
             });
@@ -5676,19 +5680,38 @@ namespace Business.Repository.Custom
                         }
                         else
                         {
-                            regsToAdd.Add(new Reg
+                            if (currentPreReg.RegistrationDirection == "U")
                             {
-                                Fru_Id = regFru.Fru_Id,
-                                Pru_Id = regPru.Pru_Id,
-                                Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
-                                Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
-                                Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
-                                Data_Registrazione_Reg = DateTime.UtcNow,
-                                DataOraUltimaModifica_Reg = DateTime.UtcNow,
-                                Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                                Registrazione_Badge_Originale = currentPreReg.BadgeCode,
-                                Motivazione_Reg_Id = motivation.Tab_Decod_Id
-                            });
+                                regsToAdd.Add(new Reg
+                                {
+                                    Fru_Id = regFru.Fru_Id,
+                                    Pru_Id = regPru.Pru_Id,
+                                    Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(-1),
+                                    Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
+                                    Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
+                                    Data_Registrazione_Reg = DateTime.UtcNow,
+                                    DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                    Flag_EU_Reg = currentPreReg.RegistrationDirection,
+                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                                    Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                });
+                            }
+                            else {
+                                regsToAdd.Add(new Reg
+                                {
+                                    Fru_Id = regFru.Fru_Id,
+                                    Pru_Id = regPru.Pru_Id,
+                                    Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(1),
+                                    Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
+                                    Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
+                                    Data_Registrazione_Reg = DateTime.UtcNow,
+                                    DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                    Flag_EU_Reg = currentPreReg.RegistrationDirection,
+                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                                    Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                });
+                            }
+                            
                         }
 
 
