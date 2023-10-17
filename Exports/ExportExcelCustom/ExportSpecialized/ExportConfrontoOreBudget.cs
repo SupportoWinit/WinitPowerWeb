@@ -289,16 +289,23 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             List<TimesheetModuleItem> entityMonthTimesheets = GetEntityMonthTimesheet(groupedRegV.Key);
 
                             Col collaboratore = null;
-                            if (ModelFirstEntity == ExcelModelSelectionTypeEnum.Cant) 
-                            {
-                                collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == groupedRegV.Value.First().Col_Id.Value).First();
-                            } else 
-                            {
-                                collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First(); 
-                            }
+                            Cant cantiere = null;
 
                             // calcolo del nome del foglio di lavoro da utilizzare
-                            string currentWorksheetName = collaboratore.CognomeNome_Col;
+                            string currentWorksheetName = "";
+                            if (ModelFirstEntity == ExcelModelSelectionTypeEnum.Cant)
+                            {
+                                collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == groupedRegV.Value.First().Col_Id.Value).First();
+                                cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == groupedRegV.Value.First().Cant_Id.Value).First();
+                                currentWorksheetName = cantiere.Descrizione_Can;
+                            }
+                            else
+                            {
+                                collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First();
+                                cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Codice_Cantiere == GetWorksheetName(groupedRegV.Value.First())).First();
+                                currentWorksheetName = collaboratore.CognomeNome_Col; ;
+                            }
+                            
 
                             // si recupera la descrizione dell'entità che si sta processando
                             string entityDescription = GetEntityDescription(groupedRegV.Value.First());

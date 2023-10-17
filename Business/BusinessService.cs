@@ -71,7 +71,6 @@ namespace Business
 
         public static bool ValidateUser(string userName, string password, LoginValidationResult loginValidationResult)
         {
-
             var user = Membership.GetUser(userName);
 
             if (user == null)
@@ -1363,9 +1362,9 @@ namespace Business
                         // e se la data di scadenza attuale risulta scaduta
                         DateTime expiryDate = GetExpirationDate(RepoManager.ParamRepo.ParametersRow);
 
-
+                       
                         //viene controllato che non sia scaduto o l'ultima data di connesione sia coerente
-                        if (currentDT > storedDT || expiryDate.Date <= DateTime.UtcNow.Date)
+                        if (PowerWebContext.Current.User.Codice_Utente == "WINIT" || currentDT > storedDT || expiryDate.Date <= DateTime.UtcNow.Date)
                         {
                             //se il file con l'ultima data di connessione criptata esiste
                             if (lcFileInfo.Exists)

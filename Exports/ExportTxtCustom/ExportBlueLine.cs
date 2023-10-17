@@ -121,7 +121,7 @@ namespace Exports.ExportTxtCustom
                                    _anno,                   //0
                                    _mese,                   //1
                                    codiceAzienda,           //2
-                                   codice        //3
+                                   codice                   //3
                                    );
 
                 #region Recupero orario
@@ -162,33 +162,6 @@ namespace Exports.ExportTxtCustom
                         ILookup<DateTime?, Reg_V> element = RepoManager.Reg_VRepo.DbSet.AsNoTracking().Where(r => r.Col_Id == col.Col_Id && r.Cant_Id != null && r.Data_Reg_AAAA_MM == formattedDate && (r.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual) && r.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && r.Data_Ora_Fig_E.Value.Year == ExportDate.Year && r.Data_Ora_Fig_E.Value.Month == ExportDate.Month && r.Data_Ora_Fig_E.Value.Day == k).OrderBy(c => c.Data_Reg).ToLookup(c => c.Data_Reg);
                         foreach (IGrouping<DateTime?, Reg_V> day in element)
                         {
-                            //if (giorno + 1 < day.Key.Value.Day)
-                            //{
-                            //    int diff = (day.Key.Value.Day - giorno) - 1;
-                            //    for (int j = 0; j < diff; j++)
-                            //    {
-                            //        if (festivita)
-                            //        {
-                            //            giornata += (string.Format("{0}",
-                            //                        _filler46    //0
-                            //                        ));
-                            //            festivita = false;
-                            //        }
-                            //        else if (pre)
-                            //        {
-                            //            giornata += (string.Format("{0}",
-                            //                        _filler46    //0
-                            //                        ));
-                            //            pre = false;
-                            //        }
-                            //        else
-                            //        {
-                            //            giornata += (string.Format("{0}",
-                            //                        _fillergiorno    //0
-                            //                        ));
-                            //        }
-                            //    }
-                            //}
                             List<Tab_Festivi> festa2 = RepoManager.Tab_FestiviRepo.GetAllQueryable(f => f.Giorno_Tab_Festivi.Day == k && f.Giorno_Tab_Festivi.Month == ExportDate.Month && f.Giorno_Tab_Festivi.Year == ExportDate.Year).ToList();
                             if (festa2.Count() > 0)
                             {
@@ -212,6 +185,8 @@ namespace Exports.ExportTxtCustom
                             ILookup<string, Reg_V> regsByCant = day.OrderBy(c => c.Cant_Id).ThenBy(c => c.Motivazione_Reg_Cod).ToLookup(c => c.Motivazione_Reg_Cod);
 
                             IDictionary<string, int> daysDictionary = new Dictionary<string, int>();
+
+                            IDictionary<string, int> regsDictionary = new Dictionary<string, int>();
 
                             foreach (var cantRegs in regsByCant)
                             {
@@ -296,158 +271,47 @@ namespace Exports.ExportTxtCustom
                                             daysDictionary[rec.Key] += rec.Value;
                                         }
                                     }
-                                 // int m = 0;
-                                 // maxDurationFromPlan = colPlan.GetDayMinutes(day.Key.Value.Day);
-                                 // DateTime oggi = new DateTime(ExportDate.Year, ExportDate.Month, k);
-                                 // foreach (var motKey in daysDictionary.ToList())
-                                 // {
-                                 //     if (motKey.Key == "ORD")
-                                 //     {
-                                 //         if (motKey.Value > 0)
-                                 //         {
-                                 //             double ore = motKey.Value / 60;
-                                 //             double minuti = motKey.Value % 60;
-                                 //             int minut = Convert.ToInt32(Math.Round(Convert.ToDouble(minuti) * 100 / 60, 0));
-                                 //             double piano = maxDurationFromPlan / 60;
-                                 //             string prova = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
-                                 //             string min = CommonService.AggiungiZeriASinistra(minut.ToString(), 2);
-                                 //             if (ore < 10 && piano > 10)
-                                 //             {
-                                 //                 string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2);
-                                 //                 giornata += (string.Format("{0}{1}{2}",
-                                 //                 CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(maxDurationFromPlan / 30.0) * 30).ToString(), 2),     //0
-                                 //                 oreLav, //1
-                                 //                 min     //2
-                                 //                 ));
-                                 //             }
-                                 //             else if (ore > 10 && piano < 10)
-                                 //             {
-                                 //                 if (piano == 0)
-                                 //                 {
-                                 //                     string orePiano = "0000";
-                                 //                     giornata += (string.Format("{0}{1}{2}",
-                                 //                     orePiano,     //0
-                                 //                     ((motKey.Value / 30.0) * 30).ToString(),   //1
-                                 //                     min             //2
-                                 //                     ));
-                                 //                 }
-                                 //                 else
-                                 //                 {
-                                 //                     string orePiano = CommonService.AggiungiZeriASinistra(piano.ToString(), 2);
-                                 //                     orePiano = CommonService.AggiungiZeriADestra(orePiano, 4);
-                                 //                     giornata += (string.Format("{0}{1}{2}",
-                                 //                     orePiano,     //0
-                                 //                     ((motKey.Value / 30.0) * 30).ToString(),   //1
-                                 //                     min             //2
-                                 //                     ));
-                                 //                 }
-                                 //             }
-                                 //             else
-                                 //             {
-                                 //                 string orePiano = CommonService.AggiungiZeriASinistra(piano.ToString(), 2);
-                                 //                 orePiano = CommonService.AggiungiZeriADestra(orePiano, 4);
-                                 //                 string oreLav = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
-                                 //                 giornata += (string.Format("{0}{1}{2}",
-                                 //                 orePiano,     //0
-                                 //                 oreLav,     //1
-                                 //                 min         //2
-                                 //                 ));
-                                 //
-                                 //             }
-                                 //         } else if (motKey.Value == 0 && (maxDurationFromPlan / 60) == 0 && (pre || oggi.DayOfWeek == DayOfWeek.Saturday)) {
-                                 //             giornata += "========";
-                                 //         }
-                                 //         else if (motKey.Value == 0 && (maxDurationFromPlan / 60) == 0)
-                                 //         {
-                                 //             giornata += "00000000";
-                                 //         }
-                                 //         else
-                                 //         {
-                                 //             giornata += (string.Format("{0}{1}",
-                                 //                    _filler7,     //0
-                                 //                    _filler7      //1
-                                 //                    ));
-                                 //         }
-                                 //         m++;
-                                 //     }
-                                 //     else if (motKey.Key == "STR")
-                                 //     {
-                                 //         double ore = motKey.Value / 60;
-                                 //         double minuti = motKey.Value % 60;
-                                 //         int minut = Convert.ToInt32(Math.Round(Convert.ToDouble(minuti) * 100 / 60, 0));
-                                 //         string min = CommonService.AggiungiZeriASinistra(minut.ToString(), 2);
-                                 //         if (ore > 0)
-                                 //         {
-                                 //             if (ore < 10)
-                                 //             {
-                                 //                 string oreLav = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
-                                 //                 giornata += (string.Format("{0}{1}",
-                                 //                 CommonService.AggiungiZeriADestra(oreLav, 2),     //0
-                                 //                 min
-                                 //                 ));
-                                 //             }
-                                 //             else if (ore > 10)
-                                 //             {
-                                 //                 giornata += (string.Format("{0}{1}",
-                                 //                 CommonService.AggiungiZeriADestra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2),     //1
-                                 //                 min
-                                 //                 ));
-                                 //             }
-                                 //         }
-                                 //         else
-                                 //         {
-                                 //             giornata += (string.Format("{0}",
-                                 //                             _filler7     //0
-                                 //                             ));
-                                 //         }
-                                 //         m++;
-                                 //     }
-                                 //     else
-                                 //     {
-                                 //         string motivazione = motKey.Key;
-                                 //         int riempimento = 4 - motivazione.Length;
-                                 //         if (motivazione.Length < 4)
-                                 //         {
-                                 //             motivazione = CommonService.AggiungiSpaziiADestra(motivazione, 4);
-                                 //         }
-                                 //         if (m == 2)
-                                 //         {
-                                 //             string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2);
-                                 //             giornata += (string.Format("{0}{1}",
-                                 //                 motKey.Key,
-                                 //             CommonService.AggiungiZeriADestra(oreLav, 4)     //0
-                                 //             ));
-                                 //         }
-                                 //         else if (m == 1)
-                                 //         {
-                                 //             motivazione = CommonService.AggiungiSpaziASinistra(motivazione, 10 + riempimento);
-                                 //             string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 4);
-                                 //             giornata += (string.Format("{0}{1}",
-                                 //                 motivazione,
-                                 //             CommonService.AggiungiZeriADestra(oreLav, 3)     //0
-                                 //             ));
-                                 //         }
-                                 //         else
-                                 //         {
-                                 //             motivazione = CommonService.AggiungiSpaziASinistra(motivazione, 14 + riempimento);
-                                 //             string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 4);
-                                 //             oreLav = CommonService.AggiungiZeriADestra(oreLav, 3);
-                                 //             giornata += (string.Format("{0}{1}",
-                                 //                 motivazione,
-                                 //                 oreLav    //0
-                                 //             ));
-                                 //         }
-                                 //     }
-                                 // }
-                                    
+
+                                    foreach (var rec in cantDictionary)
+                                    {
+
+                                        if (!daysDictionary.ContainsKey(rec.Key))
+                                            daysDictionary[rec.Key] = 0;
+                                        regsDictionary["A"] = 0;
+                                        regsDictionary["B"] = 0;
+
+                                        if (rec.Key == "ORD") //Trattamento ore ordinarie
+                                        {
+                                            int nonStr = (rec.Value > maxDurationFromPlan) ? maxDurationFromPlan : rec.Value;
+                                            regsDictionary["A"] += nonStr;
+
+                                            if (maxDurationFromPlan == 0)
+                                            {
+                                                regsDictionary["B"] = 0;
+                                                regsDictionary["B"] = rec.Value;
+                                            }
+                                            else
+                                            {
+                                                regsDictionary["B"] = 0;
+                                                regsDictionary["B"] += (rec.Value % daysDictionary["ORD"]);
+                                            }
+
+
+                                        }
+                                        else //Altre motivazioni
+                                        {
+                                            regsDictionary[rec.Key] = 0;
+                                            regsDictionary[rec.Key] += rec.Value;
+                                        }
+                                    }
                                 }
                             }
                             int m = 0;
                             maxDurationFromPlan = colPlan.GetDayMinutes(day.Key.Value.Day);
                             DateTime oggi = new DateTime(ExportDate.Year, ExportDate.Month, k);
-                            foreach (var motKey in daysDictionary.OrderBy(d => d.Key).ToList())
+                            foreach (var motKey in regsDictionary.OrderBy(d => d.Key).ToList())
                             {
-                                if (motKey.Key == "ORD")
+                                if (motKey.Key == "A")
                                 {
                                     if (motKey.Value > 0)
                                     {
@@ -462,8 +326,8 @@ namespace Exports.ExportTxtCustom
                                             string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2);
                                             giornata += (string.Format("{0}{1}{2}",
                                             CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(maxDurationFromPlan / 30.0) * 30).ToString(), 2),     //0
-                                            oreLav, //1
-                                            min     //2
+                                            oreLav,                                                                                                          //1
+                                            min                                                                                                              //2
                                             ));
                                         }
                                         else if (ore > 10 && piano < 10)
@@ -472,9 +336,9 @@ namespace Exports.ExportTxtCustom
                                             {
                                                 string orePiano = "0000";
                                                 giornata += (string.Format("{0}{1}{2}",
-                                                orePiano,     //0
+                                                orePiano,                                  //0
                                                 ((motKey.Value / 30.0) * 30).ToString(),   //1
-                                                min             //2
+                                                min                                        //2
                                                 ));
                                             }
                                             else
@@ -482,9 +346,9 @@ namespace Exports.ExportTxtCustom
                                                 string orePiano = CommonService.AggiungiZeriASinistra(piano.ToString(), 2);
                                                 orePiano = CommonService.AggiungiZeriADestra(orePiano, 4);
                                                 giornata += (string.Format("{0}{1}{2}",
-                                                orePiano,     //0
+                                                orePiano,                                  //0
                                                 ((motKey.Value / 30.0) * 30).ToString(),   //1
-                                                min             //2
+                                                min                                        //2
                                                 ));
                                             }
                                         }
@@ -495,8 +359,8 @@ namespace Exports.ExportTxtCustom
                                             string oreLav = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
                                             giornata += (string.Format("{0}{1}{2}",
                                             orePiano,     //0
-                                            oreLav,     //1
-                                            min         //2
+                                            oreLav,       //1
+                                            min           //2
                                             ));
 
                                         }
@@ -518,7 +382,7 @@ namespace Exports.ExportTxtCustom
                                     }
                                     m++;
                                 }
-                                else if (motKey.Key == "STR")
+                                else if (motKey.Key == "B")
                                 {
                                     double ore = motKey.Value / 60;
                                     double minuti = motKey.Value % 60;
@@ -531,14 +395,14 @@ namespace Exports.ExportTxtCustom
                                             string oreLav = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
                                             giornata += (string.Format("{0}{1}",
                                             CommonService.AggiungiZeriADestra(oreLav, 2),     //0
-                                            min
+                                            min                                               //1
                                             ));
                                         }
                                         else if (ore > 10)
                                         {
                                             giornata += (string.Format("{0}{1}",
-                                            CommonService.AggiungiZeriADestra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2),     //1
-                                            min
+                                            CommonService.AggiungiZeriADestra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2),     //0
+                                            min                                                                                                     //1
                                             ));
                                         }
                                     }
@@ -560,29 +424,29 @@ namespace Exports.ExportTxtCustom
                                     }
                                     if (m == 2)
                                     {
-                                        string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2);
+                                        string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 4);
                                         giornata += (string.Format("{0}{1}",
-                                            motKey.Key,
-                                        CommonService.AggiungiZeriADestra(oreLav, 4)     //0
+                                            motKey.Key,                                  //0
+                                        CommonService.AggiungiZeriADestra(oreLav, 3)     //1
                                         ));
                                     }
                                     else if (m == 1)
                                     {
                                         motivazione = CommonService.AggiungiSpaziASinistra(motivazione, 10 + riempimento);
-                                        string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 4);
+                                        string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2);
                                         giornata += (string.Format("{0}{1}",
-                                            motivazione,
-                                        CommonService.AggiungiZeriADestra(oreLav, 3)     //0
+                                            motivazione,                                 //0
+                                        CommonService.AggiungiZeriADestra(oreLav, 2)     //1
                                         ));
                                     }
                                     else
                                     {
                                         motivazione = CommonService.AggiungiSpaziASinistra(motivazione, 14 + riempimento);
-                                        string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 4);
-                                        oreLav = CommonService.AggiungiZeriADestra(oreLav, 3);
+                                        string oreLav = CommonService.AggiungiZeriASinistra(ToCent((int)Math.Round(motKey.Value / 30.0) * 30).ToString(), 2);
+                                        oreLav = CommonService.AggiungiZeriADestra(oreLav, 2);
                                         giornata += (string.Format("{0}{1}",
-                                            motivazione,
-                                            oreLav    //0
+                                            motivazione,    //0
+                                            oreLav          //1
                                         ));
                                     }
                                 }
@@ -624,9 +488,9 @@ namespace Exports.ExportTxtCustom
                                 if (maxDurationFromPlan > 0)
                                 {
                                     giornata += (string.Format("{0}{1}{2}",
-                                                    orePiano,
-                                                    "0000",//0
-                                                    _filler46
+                                                    orePiano,   //0
+                                                    "0000",     //1
+                                                    _filler46   //2
                                                     ));
                                 }
                                 else

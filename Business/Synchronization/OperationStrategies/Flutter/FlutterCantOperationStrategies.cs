@@ -36,6 +36,8 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 entity.Add("codice", cant.Codice_Cantiere);
                 entity.Add("descrizione", cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
+                entity.Add("Latitudine", cant.LatitudineGps_Can);
+                entity.Add("Longitudine", cant.LongitudineGps_Can);
                 toShipEntities.Add(entity);
             }
 
@@ -65,6 +67,8 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 entity.Add("codice", cant.Codice_Cantiere);
                 entity.Add("descrizione", cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
+                entity.Add("Latitudine", cant.LatitudineGps_Can);
+                entity.Add("Longitudine", cant.LongitudineGps_Can);
                 toShipEntities.Add(entity);
             }
 
@@ -92,6 +96,8 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 entity.Add("codice", cant.Codice_Cantiere);
                 entity.Add("descrizione", cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
+                entity.Add("Latitudine", cant.LatitudineGps_Can);
+                entity.Add("Longitudine", cant.LongitudineGps_Can);
                 toShipEntities.Add(entity);
             }
 

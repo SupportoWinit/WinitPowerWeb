@@ -99,6 +99,7 @@
     <Compile Include="ExportExcelCustom\ExcelToolbox.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAec.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCantieri.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinariTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\Export06.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportSSSFiduciario.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportSSSConInt.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetItieffe.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimple.cs" />
     <Compile Include="ExportExcelCustom\IExportExcelCustom.cs" />
     <Compile Include="ExportExcelGeneric\ExportExcelGenericCant.cs" />

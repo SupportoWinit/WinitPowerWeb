@@ -163,16 +163,17 @@ namespace PowerWeb.Pages
                 colonna.Add("dataField", "DisAbilitazione_Col");
                 colonna.Add("caption", field);
                 colonna.Add("visible", true);
-                colonna.Add("allowHeaderFiltering", false);
+                colonna.Add("allowHeaderFiltering", true);
                 colonna.Add("falseText", "No");
                 colonna.Add("trueText", "Sì");
                 _colColumns.Add(colonna);
 
                 field = RepoManager.ResourcesRepo.GetResourcesDictionaryString("FLD_GRUPPO_TAB");
                 colonna = new JObject();
-                colonna.Add("dataField", "Note_Col");
+                colonna.Add("dataField", "Resp_Id");
                 colonna.Add("caption", field);
                 colonna.Add("visible", true);
+
                 _colColumns.Add(colonna);
 
                 field = "Ultimo Elaborato";
@@ -2009,10 +2010,21 @@ namespace PowerWeb.Pages
         /// <returns></returns>
         [WebMethod]
         public static string dxDataGridGetColls(dynamic loadOptions)
-        {
+        {     
             JObject response = new JObject();
 
             JObject gridOptions = JObject.FromObject(loadOptions);
+
+            JObject obj = new JObject
+            {
+                { "filter", "'Disabilitazione_Col' '=' false"}
+            };
+
+            object[] array = new object[3];
+            array[0] = "Disabilitazione_Col";
+            array[1] = "=";
+            array[2] = false;
+            //loadOptions.Add("filter",obj);
 
             if (gridOptions.Count == 1) //E' stato selezionato il checkBox "select all"
             {
@@ -2025,7 +2037,7 @@ namespace PowerWeb.Pages
                 int skip = gridOptions["skip"] != null ? (int)gridOptions["skip"] : -1;
                 int take = gridOptions["take"] != null ? (int)gridOptions["take"] : -1;
 
-                JArray whereArray = Normalize(gridOptions, "filter");
+                JArray whereArray = Normalize(obj, "filter");
                 JArray orderByArray = Normalize(gridOptions, "sort");
                 JArray selectArray = Normalize(gridOptions, "select");
 

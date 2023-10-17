@@ -5485,7 +5485,7 @@ namespace Business.BusinessExtension
                 }
             }
             #endregion
-            
+
             #region TEMPO CORRETTO
             TimesheetModuleItem colRigth = null;
             if (calculateWorkedHours && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1)
@@ -5712,14 +5712,18 @@ namespace Business.BusinessExtension
             }
             else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
             {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi" || c.Justification == "PAU").ToList();
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
             }
             else if(customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
                 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa Pranzo").ToList();
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0) {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
             }
 
 
@@ -5762,6 +5766,7 @@ namespace Business.BusinessExtension
 
 
             List<TimesheetModuleItem> straordinariCartellini = new List<TimesheetModuleItem>();
+            List<TimesheetModuleItem> listaOrari = new List<TimesheetModuleItem>();
 
             #region CARTELLINI PER ORDINARIE/STRAORDINARIE
             if (calculateOrdStrTimesheet)
@@ -5807,7 +5812,8 @@ namespace Business.BusinessExtension
                             //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.C ant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                             returnList.Add(GenerateNewEditableTimesheetExportStr(col.Col_Id, currentCantId, isDecimalHours, minDate, maxDate, Total));
                         }
-                        else {
+                        else 
+                        {
                             TimesheetModuleItem Plans = GenerateNewPlanTimesheet(isDecimalHours, planMinutes.First(m => m.Key == currentCantId).Value, isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, planMinutes.First(m => m.Key == currentCantId).Key);
                             TimesheetModuleItem Totals = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
                             // aggiungo il timesheet specifico del cantiere alla list di ritorno
@@ -5843,7 +5849,7 @@ namespace Business.BusinessExtension
 
             #region CARTELLINO PER EXPORT DIVISO PER CANTIERE E PER GIORNO
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && colPlan.CantDesc != null)
-                {
+                {                       
                     List<TimesheetModuleItem> deltaCartellini = new List<TimesheetModuleItem>();
                     deltaCartellini.AddRange(GenerateDeltaRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes, colRigth, freeTimesheetId, isFromFreeTimesheet, cartelliniToTotalize));
                     cartellini.Add("delta", deltaCartellini);
@@ -5874,7 +5880,13 @@ namespace Business.BusinessExtension
                     List<TimesheetModuleItem> StrCartellini = new List<TimesheetModuleItem>();
                     StrCartellini.Add(colTotalStr);
                     cartellini.Add("Totstraordinari", StrCartellini);
-                }
+
+                    TimesheetModuleItem colTotalDelta = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, deltaCartellini, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+
+                    List<TimesheetModuleItem> DeltaCartellini = new List<TimesheetModuleItem>();
+                    DeltaCartellini.Add(colTotalDelta);
+                    cartellini.Add("TotDelta", DeltaCartellini);
+            }
             #endregion
 
 

@@ -183,7 +183,9 @@ namespace Common
         ExitDelay,
         DelayAfter,
         DurationTrip,
-        NotCalcolatePausaTrip
+        NotCalcolatePausaTrip,
+        CloseDifferentCant,
+        ReperibilitaTotale
     }
 
     public enum ClockAppsOperationEnum

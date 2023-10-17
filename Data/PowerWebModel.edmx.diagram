@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ef980e669bea473caa5f409a021e0774" Name="Diagram1" ZoomLevel="67">
+      <Diagram DiagramId="ef980e669bea473caa5f409a021e0774" Name="Diagram1" ZoomLevel="66">
         <EntityTypeShape EntityType="PowerWebModel.Aut_Str" Width="1.5" PointX="3" PointY="62.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_Note" Width="1.5" PointX="19.5" PointY="60.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerWebModel.Cant_Var" Width="1.5" PointX="11.25" PointY="7.875" IsExpanded="true" />

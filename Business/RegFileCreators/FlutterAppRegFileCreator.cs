@@ -62,9 +62,10 @@ namespace Business.RegFileCreators
                 
                 regsToOrder.Add(var);
             }
-            regsToOrder = regsToOrder.OrderBy(reg => reg.Dataord).ToList();
+            regsToOrder = regsToOrder.OrderBy(reg => reg.CodiceFru).ThenBy(reg => reg.Dataord).ToList();
             String codGpsNfc = "";
             FlutterOrderedReg temp = regsToOrder.First();
+            FlutterOrderedReg last = regsToOrder.First();
             foreach (var fluReg in regsToOrder)
             {
                 if (fluReg.Squadra != null && fluReg.Squadra != "")
@@ -571,6 +572,36 @@ namespace Business.RegFileCreators
                     #region Creazione txt normale
                     //vado a creare il txt per una semplice registrazione GPS,NFC o QrCode
                     string regRow = "";
+                    if ((string.IsNullOrEmpty(last.CodicePru) && last.Latitudine == 0 && last.Longitudine == 0) && (fluReg.Motivazione == "Pausa" && fluReg.Verso == "U"))
+                    {
+                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                                last.CodiceFru,
+                                "PAUSA00001",
+                                last.Data.Year,
+                                last.Data.Month.ToString("00"),
+                                last.Data.Day.ToString("00"),
+                                last.Data.Hour.ToString("00"),
+                                last.Data.Minute.ToString("00"),
+                                "E",
+                                "[Motivazione]=Pausa"
+                            );
+                        regsToWrite.Add(regRow);
+                        var firstLine1 = FlutterAppStringFormatter.CreateFirstActivityLines(last.CodiceFru, "", last.Data, last.Attivita);
+                        if (firstLine1 != "")
+                        {
+                            regsToWrite.Add(firstLine1);
+                        }
+                        var activityLine1 = FlutterAppStringFormatter.CreateActivityLines(last.CodiceFru, "", last.Data, last.Attivita);
+                        if (activityLine1 != "")
+                        {
+                            regsToWrite.Add(activityLine1);
+                        }
+                        var pruCodeAtivity1 = FlutterAppStringFormatter.CreatePruCodeActivityLines(last.CodiceFru, last.Attivita, last.Data, last.CodiceFru);
+                        if (pruCodeAtivity1 != null)
+                        {
+                            regsToWrite.AddRange(pruCodeAtivity1);
+                        }
+                    }
                     if (fluReg.Motivazione == "Pausa" && fluReg.Verso == "E" && (temp.Latitudine != 0 && temp.Longitudine != 0 && !string.IsNullOrEmpty(temp.Latitudine.ToString())))
                     {
                         fluReg.Data = fluReg.Data.Add(new TimeSpan(0, -1, 0));
@@ -623,7 +654,9 @@ namespace Business.RegFileCreators
                             fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                         );
                         #endregion
-                    } else if (string.IsNullOrEmpty(fluReg.CodicePru) && fluReg.Latitudine == 0 && fluReg.Longitudine == 0) {
+                    }
+                    else if (string.IsNullOrEmpty(fluReg.CodicePru) && fluReg.Latitudine == 0 && fluReg.Longitudine == 0)
+                    {
                         regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                             fluReg.CodiceFru,
                             "WINIT00001",
@@ -636,7 +669,6 @@ namespace Business.RegFileCreators
                             fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                         );
                     }
-
                     regsToWrite.Add(regRow);
                     var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
                     if (firstLine != "")
@@ -655,6 +687,7 @@ namespace Business.RegFileCreators
                     }
                     #endregion
                 }
+                last = fluReg;
                 if (fluReg.Motivazione != "Pausa")
                 {
                     temp = fluReg;

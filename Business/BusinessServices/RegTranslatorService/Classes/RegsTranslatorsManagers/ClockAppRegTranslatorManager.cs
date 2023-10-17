@@ -63,6 +63,8 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslators
                     lines.AddRange(regLines);
                 }
             }
+            //string blankLine = "";
+            //lines.Add(blankLine);
             return lines;
         }
 

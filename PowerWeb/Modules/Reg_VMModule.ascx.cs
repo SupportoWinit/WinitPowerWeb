@@ -622,6 +622,9 @@ namespace PowerWeb.Modules
                 newRegV.Motivazione_Reg_Id = mot_Id;
 
             newRegV.IsUTimeSameDayE = isUTimeSameDayE;
+            newRegV.Pru_Id = oldRegV.Pru_Id;
+            newRegV.Fru_Id = oldRegV.Fru_Id;
+            newRegV.Qualifica_Col = oldRegV.Qualifica_Col;
 
             newRegV.Registrazione_Bloccata = blockedReg;
 
@@ -1861,7 +1864,7 @@ namespace PowerWeb.Modules
                                     {
                                         //se la data dell'uscita è minore di quella dell'entrata (es U=05:00 E=22:00)
                                         if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
-                                            regv.Data_Ora_Fis_U.Value.TimeOfDay > regUDate.TimeOfDay)
+                                            regv.Data_Ora_Fis_U.Value.Date > regUDate.Date)
 
                                             // viene aggiunto un giorno alla registrazione dell'uscita solamente se non si è all'interno dello stesso giorno
                                             if (!regv.IsUTimeSameDayE)

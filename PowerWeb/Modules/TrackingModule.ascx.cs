@@ -14,6 +14,7 @@ using DevExpress.Web.ASPxGridView;
 using Reports;
 using Common;
 using System.Device.Location;
+using Business.Repository.Custom;
 
 //TODO: attenzione! Questo modulo non filtra come dovrebbe per responsabile; da aggiungere eventuale filtro per responsabile
 namespace PowerWeb.Modules
@@ -129,6 +130,7 @@ namespace PowerWeb.Modules
 
                 List<CoordinatesData> coordinates = new List<CoordinatesData>();
                 //Recupera le regv  con coordinate valide ORDINATE PER ORA effettuate dal collaboratore specificato nella data specificata
+                List<Reg_V> prova = RepoManager.Reg_VRepo.GetAll().ToList();
                 List<Reg_V> regvsToShow = RepoManager.Reg_VRepo.Find(regv => regv.Col_Id == selectedColId && regv.Data_Reg == selectedDate /*&& regv.Registrazione_Lat_Orig_E.HasValue && regv.Registrazione_Lat_Orig_E.Value != 0d && regv.Registrazione_Long_Orig_E.HasValue && regv.Registrazione_Long_Orig_E.Value != 0d*/).OrderBy(regv => regv.Data_Ora_FigFis_E).ToList();
 
                 regvsToShow.ForEach(reg => {
@@ -543,9 +545,44 @@ namespace PowerWeb.Modules
                         infoboxDescription = String.Format("<span>{0} <br><br> Entrata {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_ETime.Value.ToString(), cantDesc);
                     }
                     else {
-                        infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);
-                    }
-                    
+                        var parametri = RepoManager.ParamRepo.GetAll();
+                        List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == regv.Cant_Id).ToList();
+                        //Crea il range di coordinate del raggio di lavoro
+                        var range = new GpsRange(cantiere.First().LatitudineGps_Can, cantiere.First().LongitudineGps_Can, Convert.ToInt32(parametri.First().RaggioGpsDefault));
+                        if (!range.IsPointInRange(regv.Registrazione_Lat_Orig_U.Value, regv.Registrazione_Long_Orig_U.Value))
+                        {
+                            // inizializzazione dell'id del cantiere (default non trovato)
+                            int closestCantId = 0;
+
+                            // recupero di tutti i cantieri nel cui range cade il punto passato come parametro
+                            IEnumerable<Cant> rangeCants = GetAllGpsCantsForPoint(regv.Registrazione_Lat_Orig_U.Value, regv.Registrazione_Long_Orig_U.Value).ToList();
+
+                            // se sono stati trovati dei cantieri in range allora si recupera quello più vicino
+                            if (rangeCants.Any())
+                            {
+                                var noGPSCants = rangeCants.Where(nomeGps => !nomeGps.Codice_Cantiere.StartsWith("GPS")).ToList();
+                                if (noGPSCants.Any())
+                                {
+                                    closestCantId = noGPSCants.OrderBy(cants => GetDeviationIndex(regv.Registrazione_Lat_Orig_U.Value, regv.Registrazione_Long_Orig_U.Value, cants.LatitudineGps_Can, cants.LongitudineGps_Can)).First().Cant_Id;
+                                }
+                                else
+                                {
+                                    var GPSCants = rangeCants.Where(nomeGps => nomeGps.Codice_Cantiere.StartsWith("GPS")).ToList();
+                                    if (GPSCants.Any())
+                                    {
+                                        closestCantId = GPSCants.OrderBy(cants => GetDeviationIndex(regv.Registrazione_Lat_Orig_U.Value, regv.Registrazione_Long_Orig_U.Value, cants.LatitudineGps_Can, cants.LongitudineGps_Can)).First().Cant_Id;
+                                    }
+
+                                }
+                            }
+                            List<Cant> temp = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == closestCantId).ToList();
+                            cantDesc = temp.First().Descrizione_Can;
+                            infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);
+                        }
+                        else {
+                            infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);
+                        }
+                    }   
                 }
                 else
                 {
@@ -555,6 +592,76 @@ namespace PowerWeb.Modules
 
             // ritorno del valore calcolato dal metodo
             return infoboxDescription;
+        }
+
+        /// <summary>
+        /// Recupera l'indice di deviazione (scarto quadratico medio) tra le coordinate centrali e periferiche specificate.
+        /// </summary>
+        /// <param name="centerLatitude">La latitudine centrale da cui calcolare l'indice di deviazione.</param>
+        /// <param name="centerLongitude">La longitudine centrale su cui calcolare l'indice di deviazione.</param>
+        /// <param name="peripheralLatitude">La latitudine periferica su cui calcolare l'indice di deviazione.</param>
+        /// <param name="peripheralLongitude">La longitudine periferica su cui calcolare l'indice di deviazione.</param>
+        /// <returns>L'indice di deviazione (scarto quadratico medio) tra le coordinate centrali e periferiche specificate.</returns>
+        public static double GetDeviationIndex(double centerLatitude, double centerLongitude, double peripheralLatitude, double peripheralLongitude)
+        {
+            // calcolo del delta della latitudine
+            double latitudeDelta = Math.Abs(Math.Abs(centerLatitude) - Math.Abs(peripheralLatitude));
+
+            // calcolo del delta della longitudine
+            double longitudeDelta = Math.Abs(Math.Abs(centerLongitude) - Math.Abs(peripheralLongitude));
+
+            // lo scarto è la radice quadrata della somma dei quadrati dei delta
+            return Math.Sqrt(Math.Pow(latitudeDelta, 2) + Math.Pow(longitudeDelta, 2));
+
+        }
+
+        /// <summary>
+        /// Recupera e restituisce tutti i cantieri non disabilitati con coordinate GPS nel cui raggio cade il punto specifico.
+        /// </summary>
+        /// <param name="pointLatitude">La latitudine del punto da ricercare.</param>
+        /// <param name="pointLongitude">La longitudine del punto da ricercare.</param>
+        /// <returns>L'elenco dei cantiere non disabilitati con coordinate GPS nel cui raggio cade il punto specifico.</returns>
+        public static IEnumerable<Cant> GetAllGpsCantsForPoint(double pointLatitude, double pointLongitude)
+        {
+            // TODO: migliorare controllo double a 0
+            // inizializzazione dell'elenco dei cantieri ritorno del metodo
+            IEnumerable<Cant> rangeCants = Enumerable.Empty<Cant>();
+
+            // calcolo del raggio gps di default (parametri)
+            double defaultGpsRange = RepoManager.ParamRepo.ParametersRow.RaggioGpsDefault ?? 0;
+
+            // recupero tutti i cantieri non disabilitati con coordinate GPS
+            // TODO: migliorare verifica dello 0
+            IEnumerable<Cant> currentGpsCants = RepoManager.CantRepo.Find(cant => cant.LatitudineGps_Can != 0d && cant.LongitudineGps_Can != 0d && !cant.DisAbilitazione_Can);
+
+            // se sono stati trovati dei cantieri processabili
+            if (currentGpsCants.Any())
+            {
+                // dai cantieri così recuperati estraggo tutti quelli nel cui raggio cade il punto specificato
+                rangeCants = currentGpsCants.Where(cant =>
+                {
+                    bool isCantInRange = false;
+
+                    // calcolo del raggio gps del cantiere
+                    double cantGpsRange = cant.RaggioGps_Can ?? 0d;
+
+                    // calcolo del raggio gps corrente
+                    double currentGpsRange = cantGpsRange != 0d ? cantGpsRange : defaultGpsRange;
+
+                    // si procede a verificare il dato solamente se è espresso di default o sul cantiere il raggio gps
+                    if (currentGpsRange != 0d)
+                    {
+                        // generazione del range Gps
+                        var currentRange = new GpsRange(cant.LatitudineGps_Can, cant.LongitudineGps_Can, Convert.ToInt32(currentGpsRange));
+                        isCantInRange = currentRange.IsPointInRange(pointLatitude, pointLongitude);
+                    }
+
+                    return isCantInRange;
+
+                });
+            }
+            // ritorno del valore calcolato dal metodo
+            return rangeCants;
         }
 
         /// <summary>

@@ -14,12 +14,12 @@
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
   <!-- ********************************************************CASP******************************************************************************-->
   <c ID="CustomizationEnum.Casp" Des="Gestione arrotondamenti custom per il cliente CASP" Value="0" >
-    <param Name="elaborateSummerStartDate" Value="01/07/2020" />
-    <param Name="elaborateWinterStartDate" Value="01/10/2020" />
+    <param Name="elaborateSummerStartDate" Value="05/06/2023" />
+    <param Name="elaborateWinterStartDate" Value="01/10/2023" />
     <param Name="summerWeekMaxSchedule" Value="17:55:0" />
     <param Name="summerWeekMinSchedule" Value="17:00:0" />
-    <param Name="summerSaturdayMaxSchedule" Value="16:00:0" />
-    <param Name="summerSaturdayMinSchedule" Value="16:55:0" />
+    <param Name="summerSaturdayMaxSchedule" Value="16:55:0" />
+    <param Name="summerSaturdayMinSchedule" Value="16:00:0" />
     <param Name="winterWeekMaxSchedule" Value="17:25:0" />
     <param Name="winterWeekMinSchedule" Value="16:30:0" />
     <param Name="winterSaturdayMaxSchedule" Value="16:25:0" />
@@ -229,7 +229,7 @@
   TimesheetExportZeroValueFormatEnum=1 Indica di visualizzare gli zeri come valori nulli  -->
 
   <!-- ********************************************************GENERAZIONE VIAGGI STESSO COMUNE SOTTO-KILOMETRAGGIO*********************************************************-->
-  <c ID="CustomizationEnum.NoCreateTripOnSameMunicipalityUnderKmEnum" Des="Indica se attivare il controllo di non creazione viaggio nello stesso comune sotto un certo kilometraggio" Value="0">
+  <c ID="CustomizationEnum.NoCreateTripOnSameMunicipalityUnderKmEnum" Des="Indica se attivare il controllo di non creazione viaggio nello stesso comune sotto un certo kilometraggio" Value="1">
     <param Name="KmThreshold" Value="10" />
   </c>
   <!-- NoCreateTripOnSameMunicipalityUnderKmEnum=0 Indica di generare il viaggio senza effettuare alcun controllo su stesso comune e kilometraggio
@@ -321,12 +321,12 @@
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
 
   <!-- *******************************************VIAGGI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
+  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="0" />
   <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
 		TripHourIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
 		
-  <!-- *******************************************OAUSA COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
+  <!-- *******************************************PAUSA COME ONL*********************************************************-->
+  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="0" />
   <!--PausaPranzoIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
 		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
 
@@ -421,10 +421,14 @@
         PauseDeductionOnlyFascia5=1 Indica che la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5-->
 
   <!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE SU CANT SEDE*********************************************************-->
-  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="0" />
+  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="1" />
   <!--  AutoClosuresEnum=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-
+  
+  <!-- ********************************************************NON CALCOLARE VIAGGIO PAUSA PRANZO*********************************************************-->
+  <c ID="CustomizationEnum.NotCalcolatePausaTrip" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
+  <!--  NotCalcolatePausaTrip=0 Indica di calcolare i viaggi sulla pausa pranzo
+        NotCalcolatePausaTrip=1 Indica di non calcolare i viaggi sulla pausa pranzo-->
 
   <!-- ********************************************************PERMETTERE VIAGGI DI DURATA ZERO*********************************************************-->
   <c ID="CustomizationEnum.AllowZeroDurationRegs" Des="Indica se consentire registrazioni di durata zero" Value="0" />
@@ -544,7 +548,7 @@
       Overtime = 1 visualizza gli straordinari-->
 
   <!--<********************************************************EXPORT CONFRONTE ORE STRAORDINARIE************************************************************-->
-  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="0"/>
+  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="1"/>
   <!-- ExportStr = 0 non visualizza gli straordinari
       ExportStr = 1 visualizza gli straordinari-->
   <!--<********************************************************IMPORTAZIONE TIMBRATURE NELLO STESSO MINUTO************************************************************-->
@@ -579,6 +583,19 @@
   <!--  NoNocturneStr=0 Indica di non chiudere le timbrature in modo automatico
         NoNocturneStr=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
+  <!-- ********************************************************CHIUSURA TIMBRATURA ANCHE SE CANTIERE DIFFERENTE*********************************************************-->
+  <c ID="CustomizationEnum.CloseDifferentCant" Des="Indica se chiudere le timbrature anche su cantieri diversi" Value="1"/>
+  <!--  CloseDifferentCant=0 Indica di chiudere le timbrature in maniera standard
+        CloseDifferentCant=1 Indica di chiudere le timbrature anche se su cantieri diversi-->
 
+  <!-- ********************************************************MOSTRA PUSHPIN ENTRATA E USCITA NEL TRACKING*********************************************************-->
+  <c ID="CustomizationEnum.DoublePushPin" Des="Indica se visualizzare sia il pushpin di entrata e di uscita nel tracking" Value="1"/>
+  <!--  DoublePushPin=0 Indica di non mostrare due pushpin
+        DoublePushPin=1 Indica di mostrare due pushpin-->
+
+  <!-- ********************************************************SOMMARE LA REPERIBILITA NEL TOTALE*********************************************************-->
+  <c ID="CustomizationEnum.ReperibilitaTotale" Des="Indica se considerare la reperibilità nel calcolo del totale" Value="0"/>
+  <!--  ReperibilitaTotale=0 Indica di non contare la reperibilità
+        ReperibilitaTotale=1 Indica di contare la reperibilità -->
 
 </Customizations>

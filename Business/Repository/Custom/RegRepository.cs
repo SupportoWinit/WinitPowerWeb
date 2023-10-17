@@ -396,8 +396,6 @@ namespace Business.Repository.Custom
 
                 #endregion
 
-               
-
                 #region 9. Salvataggio dei dati modificati a database e cancellazione viaggi
 
                 // si gestiscono eventuali errori di scrittura
@@ -490,7 +488,7 @@ namespace Business.Repository.Custom
                             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
 
                             // se sono impostati gli arrotondamenti per inizio-fine
-                            if (roundingParamEnum == RoundingMethodEnum.StartEnd)
+                            if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
                             {
                                 // applicazione degli arrotondamenti per inizio-fine
                                 _log.Info(String.Format("Inizio arrotondamento di {0} regV", regVs.Count()));
@@ -640,6 +638,8 @@ namespace Business.Repository.Custom
                             }
                         }
                         #endregion
+
+
                     }
                     catch (Exception ex)
                     {
@@ -1307,74 +1307,146 @@ namespace Business.Repository.Custom
                                         // - se l'ultima registrazione risulta essere una potenziale entrata (senza direzione o con direzione E) allora la si tratta come tale
                                         // - altrimenti si riparte scartando l'intero tenativo di abbinamento
 
-                                        //viene controllato se la registrazione che si sta processando è nel giorno successivo all'ultima reg processata e l'ultima reg processata sia diversa da un'uscita
-                                        if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1))
-                                            && currentReg.Cant_Id == lastOpen.Cant_Id)
+                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CloseDifferentCant) == 0)
                                         {
-
-                                            //Viene per prima cosa controlalta che la registrazione di uscita sia nell'intervallo che scatta dall'entrata fino alla durata massima del notturno
-                                            //se così non è si passa alla registrazione successiva
-
-                                            DateTime nocturnBoundMax = new DateTime();
-
-                                            //viene sommata all'ultima registrazione la durata massima del notturno per verificare che la registrazione successiva ricada nel range
-                                            nocturnBoundMax = lastOpen.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
-
-                                            // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
-                                            if (currentReg.Registrazione_Data_Ora_Fis_Reg <= nocturnBoundMax)
+                                            //viene controllato se la registrazione che si sta processando è nel giorno successivo all'ultima reg processata e l'ultima reg processata sia diversa da un'uscita
+                                            if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1))
+                                                && currentReg.Cant_Id == lastOpen.Cant_Id)
                                             {
-                                                // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                {
-                                                    // tentativo di abbinamento delle registrazioni
-                                                    processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
 
-                                                    // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                    lastOpen = null;
+                                                //Viene per prima cosa controlalta che la registrazione di uscita sia nell'intervallo che scatta dall'entrata fino alla durata massima del notturno
+                                                //se così non è si passa alla registrazione successiva
+
+                                                DateTime nocturnBoundMax = new DateTime();
+
+                                                //viene sommata all'ultima registrazione la durata massima del notturno per verificare che la registrazione successiva ricada nel range
+                                                nocturnBoundMax = lastOpen.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
+
+                                                // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
+                                                if (currentReg.Registrazione_Data_Ora_Fis_Reg <= nocturnBoundMax)
+                                                {
+                                                    // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                    if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                    {
+                                                        // tentativo di abbinamento delle registrazioni
+                                                        processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                        // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                        lastOpen = null;
+                                                    }
+                                                    else
+                                                        // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
                                                 }
+                                                //se le registrazione cadono furoi dalla durata massima del nottunro non vengono abbinate
                                                 else
-                                                    // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                {
                                                     lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                }
                                             }
-                                            //se le registrazione cadono furoi dalla durata massima del nottunro non vengono abbinate
+
+                                            //se le registrazioni contigue non apparetnego a giorni diversi  ma apprtengono allo stesso giorno
                                             else
                                             {
-                                                lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                // le registrazioni in porcesso risultano abbinabili solamente se:
+                                                // - le due registrazioni sono nella stessa data
+                                                // - le due registrazioni hanno lo stesso cantiere
+                                                // - la registrazione di uscita è marcata come uscita o senza direzione
+                                                if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date && currentReg.Cant_Id == lastOpen.Cant_Id &&
+                                                (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                                {
+                                                    // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                    if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                    {
+                                                        // tentativo di abbinamento delle registrazioni
+                                                        processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                        // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
+                                                        lastOpen = null;
+                                                    }
+                                                    else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
+                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                }
+                                                else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
+                                                {
+                                                    // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
+                                                    // e la registrzione corrente è marcata con direzione entrata o senza direzione
+                                                    // allora si procede a impostare la registrazione corrente come nuova entrata
+                                                    lastOpen = currentReg;
+                                                }
+                                                else // altrimenti si riparte con una nuova coppia di entrata e uscita
+                                                    lastOpen = null;
+
                                             }
                                         }
-
-                                        //se le registrazioni contigue non apparetnego a giorni diversi  ma apprtengono allo stesso giorno
-                                        else
-                                        {
-                                            // le registrazioni in porcesso risultano abbinabili solamente se:
-                                            // - le due registrazioni sono nella stessa data
-                                            // - le due registrazioni hanno lo stesso cantiere
-                                            // - la registrazione di uscita è marcata come uscita o senza direzione
-                                            if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date && currentReg.Cant_Id == lastOpen.Cant_Id &&
-                                            (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                        else {
+                                            //viene controllato se la registrazione che si sta processando è nel giorno successivo all'ultima reg processata e l'ultima reg processata sia diversa da un'uscita
+                                            if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1)))
                                             {
-                                                // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                //Viene per prima cosa controlalta che la registrazione di uscita sia nell'intervallo che scatta dall'entrata fino alla durata massima del notturno
+                                                //se così non è si passa alla registrazione successiva
+
+                                                DateTime nocturnBoundMax = new DateTime();
+
+                                                //viene sommata all'ultima registrazione la durata massima del notturno per verificare che la registrazione successiva ricada nel range
+                                                nocturnBoundMax = lastOpen.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
+
+                                                // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
+                                                if (currentReg.Registrazione_Data_Ora_Fis_Reg <= nocturnBoundMax)
                                                 {
-                                                    // tentativo di abbinamento delle registrazioni
-                                                    processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+                                                    // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                    if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                    {
+                                                        // tentativo di abbinamento delle registrazioni
+                                                        processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
 
-                                                    // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
-                                                    lastOpen = null;
+                                                        // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                        lastOpen = null;
+                                                    }
+                                                    else
+                                                        // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
                                                 }
-                                                else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
+                                                //se le registrazione cadono furoi dalla durata massima del nottunro non vengono abbinate
+                                                else
+                                                {
                                                     lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                }
                                             }
-                                            else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
-                                            {
-                                                // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
-                                                // e la registrzione corrente è marcata con direzione entrata o senza direzione
-                                                // allora si procede a impostare la registrazione corrente come nuova entrata
-                                                lastOpen = currentReg;
-                                            }
-                                            else // altrimenti si riparte con una nuova coppia di entrata e uscita
-                                                lastOpen = null;
 
+                                            //se le registrazioni contigue non apparetnego a giorni diversi  ma apprtengono allo stesso giorno
+                                            else
+                                            {
+                                                // le registrazioni in porcesso risultano abbinabili solamente se:
+                                                // - le due registrazioni sono nella stessa data
+                                                // - le due registrazioni hanno lo stesso cantiere
+                                                // - la registrazione di uscita è marcata come uscita o senza direzione
+                                                if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date &&
+                                                (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                                {
+                                                    // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                    if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                    {
+                                                        // tentativo di abbinamento delle registrazioni
+                                                        processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                        // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
+                                                        lastOpen = null;
+                                                    }
+                                                    else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
+                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                }
+                                                else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
+                                                {
+                                                    // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
+                                                    // e la registrzione corrente è marcata con direzione entrata o senza direzione
+                                                    // allora si procede a impostare la registrazione corrente come nuova entrata
+                                                    lastOpen = currentReg;
+                                                }
+                                                else // altrimenti si riparte con una nuova coppia di entrata e uscita
+                                                    lastOpen = null;
+
+                                            }
                                         }
                                     }
 
@@ -1386,34 +1458,70 @@ namespace Business.Repository.Custom
 
                                     #region Abbinamento delle registrazioni in caso di notturno disabilitato
 
-                                    // le registrazioni in porcesso risultano abbinabili solamente se:
-                                    // - le due registrazioni sono nella stessa data
-                                    // - le due registrazioni hanno lo stesso cantiere
-                                    // - la registrazione di uscita è marcata come uscita o senza direzione
-                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date && currentReg.Cant_Id == lastOpen.Cant_Id &&
-                                            (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                    //se la personalizzazione per abbinare le registrazioni anche se non sono sullo stesso cantiere non è attiva procedo con un associazione standard
+                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CloseDifferentCant) == 0)
                                     {
-                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                        // le registrazioni in processo risultano abbinabili solamente se:
+                                        // - le due registrazioni sono nella stessa data
+                                        // - le due registrazioni hanno lo stesso cantiere
+                                        // - la registrazione di uscita è marcata come uscita o senza direzione
+                                        if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date && currentReg.Cant_Id == lastOpen.Cant_Id &&
+                                                (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
                                         {
-                                            // tentativo di abbinamento delle registrazioni
-                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+                                            // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                            if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                            {
+                                                // tentativo di abbinamento delle registrazioni
+                                                processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
 
-                                            // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
-                                            lastOpen = null;
+                                                // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
+                                                lastOpen = null;
+                                            }
+                                            else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
+                                                lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
                                         }
-                                        else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
-                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                        else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
+                                        {
+                                            // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
+                                            // e la registrzione corrente è marcata con direzione entrata o senza direzione
+                                            // allora si procede a impostare la registrazione corrente come nuova entrata
+                                            lastOpen = currentReg;
+                                        }
+                                        else // altrimenti si riparte con una nuova coppia di entrata e uscita
+                                            lastOpen = null;
                                     }
-                                    else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
-                                    {
-                                        // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
-                                        // e la registrzione corrente è marcata con direzione entrata o senza direzione
-                                        // allora si procede a impostare la registrazione corrente come nuova entrata
-                                        lastOpen = currentReg;
-                                    }
-                                    else // altrimenti si riparte con una nuova coppia di entrata e uscita
-                                        lastOpen = null;
+                                    //se la personalizzazione è attiva rimuovo il controllo sullo stesso cantiere per associare le timbrature
+                                    else {
+                                        // le registrazioni in processo risultano abbinabili solamente se:
+                                        // - le due registrazioni sono nella stessa data
+                                        // - le due registrazioni hanno lo stesso cantiere
+                                        // - la registrazione di uscita è marcata come uscita o senza direzione
+                                        if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date && 
+                                                (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                        {
+                                            // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                            if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                            {
+                                                // tentativo di abbinamento delle registrazioni
+                                                processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
+                                                lastOpen = null;
+                                            }
+                                            else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
+                                                lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                        }
+                                        else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
+                                        {
+                                            // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
+                                            // e la registrzione corrente è marcata con direzione entrata o senza direzione
+                                            // allora si procede a impostare la registrazione corrente come nuova entrata
+                                            lastOpen = currentReg;
+                                        }
+                                        else // altrimenti si riparte con una nuova coppia di entrata e uscita
+                                            lastOpen = null;
+                                    }                                    
+                                    
 
                                     #endregion
                                 }
@@ -1643,6 +1751,7 @@ namespace Business.Repository.Custom
                     // se la registrazione da processare ha collegata un'unità portatile
                     if (reg.Pru_Id != null)
                     {
+
                         #region Associazione del collaboratore
 
                         // in ogni caso si reinizializza sulla registrazione il collaboratore
@@ -1703,6 +1812,21 @@ namespace Business.Repository.Custom
                             errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
                         }
 
+                        #endregion
+
+                    }
+
+                    //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
+                    if (reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null)
+                    {
+
+                        #region Associazione del cantiere
+                        int cantId = 0;
+                        cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
+                        //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
+                        if (cantId != 0 && cantId != reg.Cant_Id.Value) {
+                            reg.Cant_Id = cantId;
+                        }
                         #endregion
 
                     }
@@ -2323,147 +2447,161 @@ namespace Business.Repository.Custom
                 //le registrazioni vengono regruppate per collaboratore
                 foreach (var regByCol in regsToClose.GroupBy(reg => reg.Col_Id))
                 {
-                    var a = regByCol.Key;
-                    //le registrazioni raggruppate per collaboratore vengono ragruppate per data
-                    foreach (var regByColDate in regByCol.GroupBy(reg => reg.Registrazione_Data_Ora_Fis_Reg.Date))
-                    {
-                        //indice delle registrazioni allinterno della lista
-                        int index = 0;
+                    if (regByCol.Key != null) {
+                        var a = regByCol.Key.Value;
 
-                        //variabile booleana che indica se chiudere oppure no la timbratura
-                        bool doNotClose = false;
+                        List<Col> collaboratori = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Col_Id == a).ToList();
 
-                        //viene presa la singola registrazione del giorno per il collaboratore specifico
-                        foreach (var reg in regByColDate)
+                        int day = a;
+
+                        Col collaboratore = collaboratori.First();
+
+                        if (collaboratore.Raggruppamento1_Col != null)
                         {
-
-                            // caricamento della registrazione successiva a quella proveniente da timbratura
-                            int currentRegPosition = index;
-
-                            //viene estratta la registrazione corrente
-                            Reg currentReg = reg;
-
-                            // caricamento della registrazione successiva a quella proveniente da timbratura
-                            int nextRegPosition = currentRegPosition + 1;
-
-                            //se l'indice della registrazione seguente va oltre il numero totale di registrazioni allora restituisco una registrazione di default
-                            //altrimenti restiruisco la registrazione corrispondente all'indice
-                            Reg nextReg = nextRegPosition >= regByColDate.Count() ? default(Reg) : regByColDate.ElementAt(nextRegPosition);
-
-                            //viene incrementato l'indice delle registrazioni all'interno della lista
-                            index++;
-
-                            //viene controllato se la registrazione corrente è valida altrimenti non faccio nulla
-                            if (currentReg != default(Reg))
+                            if (collaboratore.Raggruppamento1_Col.Equals("1"))
                             {
-                                //viene controllato se la registrazione successiva è valida 
-                                if (nextReg != default(Reg))
+                                //le registrazioni raggruppate per collaboratore vengono ragruppate per data
+                                foreach (var regByColDate in regByCol.GroupBy(reg => reg.Registrazione_Data_Ora_Fis_Reg.Date))
                                 {
-                                    // recupero dell'id del cantiere della registrazione precedente e successiva alla causale in processo
-                                    int nextRegCantId = nextReg.Cant_Id ?? 0;
-                                    int currentRegCantId = currentReg.Cant_Id ?? 0;
+                                    //indice delle registrazioni allinterno della lista
+                                    int index = 0;
 
-                                    // recupero dei cantieri della registrazione precedente e successiva alla causale in processo
-                                    Cant nextRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == nextRegCantId);
+                                    //variabile booleana che indica se chiudere oppure no la timbratura
+                                    bool doNotClose = false;
 
-                                    Cant currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentRegCantId);
-
-                                    //se il cantiere attuale è una sede e il successivo no viene effettuata una chiususra
-                                    if ((nextRegCant != default(Cant) && currentRegCant != default(Cant)))
+                                    //viene presa la singola registrazione del giorno per il collaboratore specifico
+                                    foreach (var reg in regByColDate)
                                     {
-                                        //se la registrazione corrente è una sede
-                                        if (currentRegCant.Tipo_Cantiere_Can == "SEDE")
+
+                                        // caricamento della registrazione successiva a quella proveniente da timbratura
+                                        int currentRegPosition = index;
+
+                                        //viene estratta la registrazione corrente
+                                        Reg currentReg = reg;
+
+                                        // caricamento della registrazione successiva a quella proveniente da timbratura
+                                        int nextRegPosition = currentRegPosition + 1;
+
+                                        //se l'indice della registrazione seguente va oltre il numero totale di registrazioni allora restituisco una registrazione di default
+                                        //altrimenti restiruisco la registrazione corrispondente all'indice
+                                        Reg nextReg = nextRegPosition >= regByColDate.Count() ? default(Reg) : regByColDate.ElementAt(nextRegPosition);
+
+                                        //viene incrementato l'indice delle registrazioni all'interno della lista
+                                        index++;
+
+                                        //viene controllato se la registrazione corrente è valida altrimenti non faccio nulla
+                                        if (currentReg != default(Reg))
                                         {
-                                            //se il cantiere successivo NON è una sede
-                                            if (nextRegCant.Tipo_Cantiere_Can != "SEDE")
+                                            //viene controllato se la registrazione successiva è valida 
+                                            if (nextReg != default(Reg))
                                             {
-                                                //se è richiesta la chiusura
-                                                if (!doNotClose)
+                                                // recupero dell'id del cantiere della registrazione precedente e successiva alla causale in processo
+                                                int nextRegCantId = nextReg.Cant_Id ?? 0;
+                                                int currentRegCantId = currentReg.Cant_Id ?? 0;
+
+                                                // recupero dei cantieri della registrazione precedente e successiva alla causale in processo
+                                                Cant nextRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == nextRegCantId);
+
+                                                Cant currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentRegCantId);
+
+                                                //se il cantiere attuale è una sede e il successivo no viene effettuata una chiususra
+                                                if ((nextRegCant != default(Cant) && currentRegCant != default(Cant)))
                                                 {
+                                                    //se la registrazione corrente è una sede
+                                                    if (currentRegCant.Tipo_Cantiere_Can == "SEDE")
+                                                    {
+                                                        //se il cantiere successivo NON è una sede
+                                                        if (nextRegCant.Tipo_Cantiere_Can != "SEDE")
+                                                        {
+                                                            //se è richiesta la chiusura
+                                                            if (!doNotClose)
+                                                            {
 
-                                                    // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
-                                                    Reg newReg = Init();
+                                                                // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
+                                                                Reg newReg = Init();
 
-                                                    //duplicazione delle reg passate come parametro
-                                                    CommonService.DuplicateEntity(currentReg, newReg);
-                                                    newReg.RiferimentoRRN_Reg = null;
-                                                    newReg.Reg_Id = 0;
-                                                    newReg.Pru_Id = currentReg.Pru_Id;
-                                                    newReg.Fru_Id = currentReg.Fru_Id;
-                                                    newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
-                                                        currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
-                                                    newReg.Data_Registrazione_Reg = DateTime.Now;
-                                                    newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
-                                                    newReg.Custom_Data_Reg = tmpCoupleCode;
-                                                    newReg.Flag_EU_Reg = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? "U" : null;
-                                                    newReg.Cant = currentReg.Cant;
+                                                                //duplicazione delle reg passate come parametro
+                                                                CommonService.DuplicateEntity(currentReg, newReg);
+                                                                newReg.RiferimentoRRN_Reg = null;
+                                                                newReg.Col = currentReg.Col;
+                                                                newReg.Reg_Id = 0;
+                                                                newReg.Pru_Id = currentReg.Pru_Id;
+                                                                newReg.Fru_Id = currentReg.Fru_Id;
+                                                                newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
+                                                                    currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
+                                                                newReg.Data_Registrazione_Reg = DateTime.Now;
+                                                                newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
+                                                                newReg.Custom_Data_Reg = tmpCoupleCode;
+                                                                newReg.Flag_EU_Reg = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? "U" : null;
+                                                                newReg.Cant = currentReg.Cant;
 
-                                                    // aggiunta della registrazione generata all'elenco
-                                                    closures.Add(newReg);
+                                                                // aggiunta della registrazione generata all'elenco
+                                                                closures.Add(newReg);
 
-                                                }
+                                                            }
 
-                                                else
-                                                {
-                                                    doNotClose = false;
+                                                            else
+                                                            {
+                                                                doNotClose = false;
+                                                            }
+                                                        }
+                                                        //se il cantiere successivo è sede e anche quello corrente è sede allora non è necessaria fare la chiusura
+                                                        else
+                                                        {
+                                                            doNotClose = !doNotClose;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        doNotClose = false;
+                                                    }
                                                 }
                                             }
-                                            //se il cantiere successivo è sede e anche quello corrente è sede allora non è necessaria fare la chiusura
+
                                             else
                                             {
-                                                doNotClose = !doNotClose;
+
+                                                // recupero dell'id del cantiere della registrazione successiva alla timbrature processata
+                                                int currentCantId = currentReg.Cant_Id ?? 0;
+
+                                                //viene recuperato il cantiere corrispondente all'unica registrazione presente
+                                                Cant currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentCantId);
+
+                                                // si procede alla generazione della chiusura solamente se i cantieri della registrazione attuale è una sede e la successiva no
+                                                if (currentRegCant != default(Cant))
+                                                {
+
+                                                    //se si tratta di un cantiere tipo sede
+                                                    if (currentRegCant.Tipo_Cantiere_Can == "SEDE" && !doNotClose)
+                                                    {
+
+                                                        // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
+                                                        Reg newReg = Init();
+                                                        //duplicazione delle reg passate come parametro
+                                                        CommonService.DuplicateEntity(currentReg, newReg);
+                                                        newReg.Reg_Id = 0;
+                                                        //data ore uguali alla reg precedente +59 secondi
+                                                        newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
+                                                            currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
+                                                        newReg.Data_Registrazione_Reg = DateTime.Now;
+                                                        newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
+                                                        newReg.Custom_Data_Reg = tmpCoupleCode;
+                                                        newReg.Flag_EU_Reg = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? "U" : null;
+
+                                                        // aggiunta della registrazione generata all'elenco
+                                                        closures.Add(newReg);
+
+                                                    }
+
+                                                }
                                             }
-                                        }
-                                        else
-                                        {
-                                            doNotClose = false;
-                                        }
-                                    }
-                                }
-
-                                else
-                                {
-
-                                    // recupero dell'id del cantiere della registrazione successiva alla timbrature processata
-                                    int currentCantId = currentReg.Cant_Id ?? 0;
-
-                                    //viene recuperato il cantiere corrispondente all'unica registrazione presente
-                                    Cant currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentCantId);
-
-                                    // si procede alla generazione della chiusura solamente se i cantieri della registrazione attuale è una sede e la successiva no
-                                    if (currentRegCant != default(Cant))
-                                    {
-
-                                        //se si tratta di un cantiere tipo sede
-                                        if (currentRegCant.Tipo_Cantiere_Can == "SEDE" && !doNotClose)
-                                        {
-
-                                            // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
-                                            Reg newReg = Init();
-                                            //duplicazione delle reg passate come parametro
-                                            CommonService.DuplicateEntity(currentReg, newReg);
-                                            newReg.Reg_Id = 0;
-                                            //data ore uguali alla reg precedente +59 secondi
-                                            newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
-                                                currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
-                                            newReg.Data_Registrazione_Reg = DateTime.Now;
-                                            newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
-                                            newReg.Custom_Data_Reg = tmpCoupleCode;
-                                            newReg.Flag_EU_Reg = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? "U" : null;
-
-                                            // aggiunta della registrazione generata all'elenco
-                                            closures.Add(newReg);
-
                                         }
 
                                     }
                                 }
                             }
-
                         }
-
                     }
-
                 }
                 if (closures.Count != 0)
                 {
@@ -2531,7 +2669,6 @@ namespace Business.Repository.Custom
                                 {
                                     //indice delle registrazioni allinterno della lista
                                     int index = 0;
-
 
                                     //variabile booleana che indica se chiudere oppure no la timbratura
                                     bool doNotClose = false;
