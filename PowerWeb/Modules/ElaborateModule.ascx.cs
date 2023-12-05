@@ -53,7 +53,7 @@ namespace PowerWeb.Modules
         {
             string connection = "/app/ws/Synched";
             Business.HttpHub.FlutterAppHttpModule bridge = new FlutterAppHub();
-            bridge.Host = "backend.winitsrl.eu";
+            bridge.Host = "mobile.clockapp.it";
             int index = RepoManager.ParamRepo.ParametersRow.Indice_Timbrature_FlutterApp;
             IEnumerable<Business.DataClasses.FlutterAppDTOs.CountReg> count = bridge.Get<List<Business.DataClasses.FlutterAppDTOs.CountReg>>(CreateStandardPayload(index),connection);
             return count.First();
@@ -771,7 +771,8 @@ namespace PowerWeb.Modules
                         switch ((RegExportToXmlEnum)customizationVersion)
                         {
                             case RegExportToXmlEnum.Perfetto:
-                                outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToPerfetto(regVsToProcess, outputPath);
+                                //outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToPerfetto(regVsToProcess, outputPath); 
+                                outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToScs(regVsToProcess, outputPath);
                                 break;
                         }
 

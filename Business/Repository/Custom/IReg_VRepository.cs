@@ -13,6 +13,7 @@ namespace Business.Repository.Custom
     public interface IReg_VRepository : IRepository<Reg_V>
     {
         List<KeyValuePair<String, String>> Rounding(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application);
+        List<KeyValuePair<String, String>> CheckDeelay(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application);
 
         List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs);
 
@@ -72,6 +73,14 @@ namespace Business.Repository.Custom
         /// <param name="filesOutputFolder">La cartella in cui salvare i dati preparati nell'export xml</param>
         /// <returns>Ritorna il percorso del file da ritornare al browser con i dati esportati</returns>
         string PrepareXmlExportToPerfetto(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder);
+
+        /// <summary>
+        /// Effettua l'esportazione xml delle registrazioni passate come parametro verso Pefetto, restituendo per il download un file zip con i dati generati.
+        /// </summary>
+        /// <param name="regVsToProcess">Le Reg_V da processare nell'esportazione Xml.</param>
+        /// <param name="filesOutputFolder">La cartella in cui salvare i dati preparati nell'export xml</param>
+        /// <returns>Ritorna il percorso del file da ritornare al browser con i dati esportati</returns>
+        string PrepareXmlExportToScs(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder);
 
         /// <summary>
         /// Determina se il viaggio passato come parametro è fatto all'interno della stesso comune

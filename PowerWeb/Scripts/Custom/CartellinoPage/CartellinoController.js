@@ -45,7 +45,7 @@ il customStore (Devextreme) di cui potete trovare tutte le info e le API sul sit
 cartellino.controller("cartellinoController", function ($scope) {
 
 
-    console.log(getDisabledColsCustomization());
+    //console.log(getDisabledColsCustomization());
 
     //#region STORES SELECTBOXES
 
@@ -1029,8 +1029,8 @@ cartellino.controller("cartellinoController", function ($scope) {
             resetOperationText: 'Resetta',
             showAllText: "(Mostra tutti)",
         },
-        filterSyncEnabled:true,
-        filterValue: (getDisabledColsCustomization()) ? ["DisAbilitazione_Col", "=", false] : null,
+        filterSyncEnabled: true,
+        filterValue: (getRespId() > 0) ? [["DisAbilitazione_Col", "=", getDisabledColsCustomization()], ["and"], ["Codice_Collaboratore", "contains", getRespId()]] : [["DisAbilitazione_Col", "=", getDisabledColsCustomization()]],
         headerFilter: {
             visible: true,
             allowSearch: true,

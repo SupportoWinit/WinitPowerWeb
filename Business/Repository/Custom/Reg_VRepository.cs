@@ -1,9 +1,12 @@
 ﻿using BingMapsRESTToolkit;
 using Business.BusinessExtension;
 using Business.XmlExportsData.Perfetto;
+using Business.XmlExportsData.Scs;
 using Common;
 using Data;
+using DevExpress.Data.Linq;
 using DevExpress.XtraPrinting.Native;
+using DevExpress.XtraPrinting.XamlExport;
 using Domain;
 using log4net;
 using System;
@@ -57,6 +60,140 @@ namespace Business.Repository.Custom
         private DateTime? _elaborateDateTime;
 
         #endregion
+
+        /// <summary>
+        /// Evidenzia le timbrature effettuate oltre l'orario stabilito.
+        /// </summary>
+        /// <param name="regVs">L'elenco delle reg_v da controllare.</param>
+        /// <param name="regs">L'elenco delle registrazioni su cui eventualmente modificare il colore.</param>
+        /// <param name="cants">L'elenco dei cantieri collegati alle registrazioni specificate per il controllo.</param>
+        /// <param name="cols">L'elenco dei collaboratori collegati alle registrazioni specifciate per il controllo.</param>
+        /// <param name="elaborateUserId">L'identificativo dell'utente di lancio dell'operazione (utilizzato per la scrittura della tabella messaggi).</param>
+        /// <param name="elaborateDateTime">La data e ora dell'operazione (utilizzata per la scrittura della tabella messaggi).</param>
+        /// <param name="application">L'applicazione di lancio dell'operazione (utilizzata per la scrittura della tabella messaggi).</param>
+        /// <returns>L'elenco degli errori eventualmente riscontrato durante le operazioni di controllo.</returns>
+        public List<KeyValuePair<string, string>> CheckDeelay(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application)
+        {
+            var regsDic = new Dictionary<int, Reg>();
+
+            foreach (Reg reg in regs)
+            {
+                regsDic.Add(reg.Reg_Id, reg);
+            }
+
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+
+            if (regVs.Count() > 0)
+            {
+                var groupByColRegs = regVs.GroupBy(reg => reg.Col_Id);
+
+                //Recupero i Parametri di Arrotondamento Generali da Scheda parametri
+                RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
+                int paramThresholdStart = RepoManager.ParamRepo.ParametersRow.Default_Soglia_Arrot_I.HasValue ? RepoManager.ParamRepo.ParametersRow.Default_Soglia_Arrot_I.Value : -1;
+                int paramThresholdEnd = RepoManager.ParamRepo.ParametersRow.Default_Soglia_Arrot_F.HasValue ? RepoManager.ParamRepo.ParametersRow.Default_Soglia_Arrot_F.Value : -1;
+                int paramTinutesStart = RepoManager.ParamRepo.ParametersRow.Default_Minuti_Arrot_I.HasValue ? RepoManager.ParamRepo.ParametersRow.Default_Minuti_Arrot_I.Value : -1;
+                int paramTinutesEnd = RepoManager.ParamRepo.ParametersRow.Default_Minuti_Arrot_F.HasValue ? RepoManager.ParamRepo.ParametersRow.Default_Minuti_Arrot_F.Value : -1;
+                int utilizzoLimiteEntrata = RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Entrata;
+                int utilizzoLimiteUscita = RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita;
+                int delayTollerance;
+                TimeSpan delayMorningTollerance;
+                TimeSpan delayAfternoonTollerance;
+
+                // calcolo del mezzogiorno (utilizzato per la divisione mattutina e pomeridiana del limite d'entrata)
+                TimeSpan midDay = RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio ?? new TimeSpan(12, 0, 0);
+                TimeSpan midNight = new TimeSpan(0, 0, 0);
+
+                foreach (var colGroup in groupByColRegs)
+                {
+
+                    int colGroupId = colGroup.Key.HasValue ? colGroup.Key.Value : -1;
+
+                    if (colGroupId != -1)
+                    {
+                        Col currentCol = cols.SingleOrDefault(col => col.Col_Id == colGroupId);
+
+                        if (currentCol.Limite_Entrata_Inizio_Pomeriggio_Col.HasValue)
+                            midDay = currentCol.Limite_Entrata_Inizio_Pomeriggio_Col.Value;
+
+                        //Recupera la tolleranza del ritardo dal COL o dai PARAM, altrimenti la setta a 0
+                        delayTollerance = currentCol.Ritardo_Tolleranza_Minuti_Col ?? (RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti ?? 0);
+
+                        //Recupera la tolleranza limite d'entrata dai PARAM, altrimenti la setta a 0
+                        delayMorningTollerance = RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata ?? new TimeSpan(0, 0, 0);
+                        delayAfternoonTollerance = RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata_Pomeriggio ?? new TimeSpan(0, 0, 0);
+
+                        if (currentCol != null)
+                        {
+                            var groupByCantRegs = colGroup.GroupBy(reg => reg.Cant_Id);
+
+                            foreach (var cantGroup in groupByCantRegs)
+                            {
+                                int cantGroupId = cantGroup.Key.HasValue ? cantGroup.Key.Value : -1;
+
+                                if (cantGroupId != -1)
+                                {
+                                    Cant currentCant = cants.SingleOrDefault(cant => cant.Cant_Id == cantGroupId);
+
+                                    if (currentCant != null)
+                                    {
+                                        TimeSpan minEntryHour = currentCant.Limite_Entrata_Mattina_Cant.HasValue ? currentCant.Limite_Entrata_Mattina_Cant.Value : TimeSpan.Zero;
+
+                                        List<Reg_V> currentRegVs = cantGroup.OrderBy(regV => regV.Data_Ora_Fis_E).ToList();
+
+                                        foreach (Reg_V currentRegV in currentRegVs)
+                                        {
+                                            Reg currentRegE = regsDic[currentRegV.RegE];
+
+                                            Dictionary<EntryLimitTypeEnum, EntryLimitData> entryLimitConfig = GetEntryLimitConifg(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay);
+
+                                            if (currentCant.Limite_Entrata_Mattina_Cant != null || currentCant.Limite_Entrata_Pomeriggio_Cant != null)
+                                            {
+                                                if (currentCant.Limite_Entrata_Mattina_Cant != null) {
+                                                    TimeSpan limite = currentCant.Limite_Entrata_Mattina_Cant.Value;
+                                                    if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < new TimeSpan(12, 0, 0))
+                                                    {
+                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > limite)
+                                                        {
+                                                            TimeSpan temp = currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay.Subtract(limite);
+                                                            currentRegE.Ritardo_Durata = (int)temp.TotalMinutes;
+                                                        }
+                                                        else
+                                                        {
+                                                            currentRegE.Ritardo_Durata = 0;
+                                                        }
+                                                    }
+                                                }
+                                                if (currentCant.Limite_Entrata_Pomeriggio_Cant != null) {
+                                                    TimeSpan limite = currentCant.Limite_Entrata_Pomeriggio_Cant.Value;
+                                                    if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > new TimeSpan(12, 0, 0))
+                                                    {
+                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > limite)
+                                                        {
+                                                            TimeSpan temp = currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay.Subtract(limite);
+                                                            currentRegE.Ritardo_Durata = (int)temp.TotalMinutes;
+                                                        }
+                                                        else
+                                                        {
+                                                            currentRegE.Ritardo_Durata = 0;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else {
+                                                currentRegE.Ritardo_Durata = 0;
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                RepoManager.RegRepo.Context.BulkUpdate(regs);
+            }
+            return errors;
+        }
 
         #region Arrotondamenti e Controllo Sovrapposizioni
 
@@ -5669,7 +5806,7 @@ namespace Business.Repository.Custom
                                 string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
 
                                 // viene generato un master per ogni data all'interno della stessa commessa
-                                var master = new XmlMaster();
+                                var master = new Business.XmlExportsData.Perfetto.XmlMaster();
                                 master.Fields.WorkingReportDate = currentRegVDate;
                                 master.Fields.Job = regvRowsByCant.Key ?? "0";
 
@@ -5682,7 +5819,7 @@ namespace Business.Repository.Custom
                                     foreach (var regv in regvRowsByDateAndCol.OrderBy(regv => Convert.ToInt32(regv.Type)))
                                     {
                                         // inizializzazione della riga rapportino
-                                        XmlRow newRow = new XmlRow();
+                                        Business.XmlExportsData.Perfetto.XmlRow newRow = new Business.XmlExportsData.Perfetto.XmlRow();
 
                                         // compilazione dei dati di riga
                                         newRow.number = rowsNumber;
@@ -5771,10 +5908,341 @@ namespace Business.Repository.Custom
                         }
 
                         // generazione dell'oggetto envelope da scrivere
-                        Envelope envelope = PrepareXmlEnvelopeToPerfetto(reportsFileName);
+                        Business.XmlExportsData.Perfetto.Envelope envelope = PrepareXmlEnvelopeToPerfetto(reportsFileName);
 
                         // se è stato correttamente creato un envelope
-                        if (envelope != default(Envelope))
+                        if (envelope != default(Business.XmlExportsData.Perfetto.Envelope))
+                        {
+                            using (var envelopeWriter = new StreamWriter(Path.Combine(folderpath, XmlToPerfettoConstants.EnvelopeFileName)))
+                            using (var writer = new PerfettoWriter(envelopeWriter))
+                            {
+                                try
+                                {
+                                    writer.Formatting = Formatting.Indented;
+
+                                    // Serialize the object, and close the TextWriter
+                                    var serializer = new XmlSerializer(typeof(Business.XmlExportsData.Perfetto.Envelope));
+                                    serializer.Serialize(writer, envelope);
+                                    writer.Close();
+                                    envelopeWriter.Close();
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                finally
+                                {
+                                    envelopeWriter.Close();
+                                    envelopeWriter.Dispose();
+                                    writer.Close();
+                                }
+                            }
+                        }
+
+                        // compressione dei due files generati per il ritorno del dato
+                        try
+                        {
+                            returnFileName = Path.Combine(folderpath, String.Format("{0}{1}", Path.GetFileNameWithoutExtension(envelope.ExportID), XmlToPerfettoConstants.ReturnZipExtension));
+                            var zipContent = new List<string>() { Path.Combine(folderpath, XmlToPerfettoConstants.EnvelopeFileName) };
+                            zipContent.AddRange(reportsFileName);
+                            CommonService.ZipFilesList(zipContent, returnFileName);
+                        }
+                        catch (Exception)
+                        {
+                            returnFileName = String.Empty;
+                        }
+
+                        // sono salvate per la prossima esecuzione l'elenco dei collaboratori/date elaborate
+                        SaveProcessedDateAndCols(regVsNotYetProcessed, exportedDatesAndColIds.ToList(), filesOutputFolder);
+                    }
+                }
+            }
+
+            return returnFileName;
+        }
+
+        /// <summary>
+        /// Effettua l'esportazione xml delle registrazioni passate come parametro verso Pefetto, restituendo per il download un file zip con i dati generati.
+        /// </summary>
+        /// <param name="regVsToProcess">Le Reg_V da processare nell'esportazione Xml.</param>
+        /// <param name="filesOutputFolder">La cartella in cui salvare i dati preparati nell'export xml</param>
+        /// <returns>
+        /// Ritorna il percorso del file da ritornare al browser con i dati esportati
+        /// </returns>
+        public string PrepareXmlExportToScs(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder)
+        {
+            #region Utilities
+
+            HashSet<DateTime> festività = new HashSet<DateTime>(RepoManager.Tab_FestiviRepo.DbSet.Select(f => f.Giorno_Tab_Festivi).ToList());
+
+            #endregion
+
+            string returnFileName = String.Empty;
+
+            //controllo di avere delle reg da inserire nell'Xml
+            if (regVsToProcess.Any())
+            {
+
+                // inizializzazione di quanto già esportato in precedenza
+                IEnumerable<ExportedData> exportedDatesAndColIds = ReadProcessedDatesAndCols(filesOutputFolder);
+
+                string folderpath = Path.Combine(filesOutputFolder, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"));
+
+                // inizializzazione della lista di rapportini (files xml) generati
+                var reportsFileName = new List<string>();
+
+                // ciclo di elaborazione delle reg_v per codice cantiere
+                // [si ciclano solamente le registrazioni, se presenti, dei collaboratori data non precedentemente processati]
+                var regVsNotYetProcessed = regVsToProcess.AsEnumerable().Where(regv => !exportedDatesAndColIds.Any(exp => exp.DataReg == regv.Data_Reg && exp.ColId == regv.Col_Id)).ToList();
+
+                if (regVsNotYetProcessed.Any())
+                {
+                    var regRowToProcess = new List<RegvRow>();
+
+                    // per prima cosa si processano tutte le registrazioni per collaboratore data e si genera una lista 
+                    // di oggetti che contengono i dati di registrazione che contemplano i dati di timing del giorno
+                    foreach (var regVsByDate in regVsNotYetProcessed.GroupBy(regv => regv.Data_Reg).ToList()) // per ogni data
+                    {
+                        foreach (var regvsByDateAndCol in regVsByDate.GroupBy(regv => regv.Col_Mnemonic).ToList()) // per ogni collaboratore
+                        {
+                            // inizializzazione dei totali di ore ordinarie e straordinarie
+                            int totalWorkingHours = 0;
+                            int totalOvertimeHours = 0;
+
+                            // inizializzo la variabile che indica se processare ancora i viaggi trasformati in ore lavorate per sottokilometraggio
+                            // (se si sta processando un sabato o una domenica allora non si utilizzano i viaggi sotto i 10 Km)
+                            bool noMoreUnderKmTrips = regVsByDate.Key.Value.DayOfWeek == DayOfWeek.Sunday || regVsByDate.Key.Value.DayOfWeek == DayOfWeek.Saturday;
+
+                            // inizializzazione della lista delle registrazioni di giornata da processare verso perfetto
+                            var dayRegRowToProcess = new List<RegvRow>();
+
+                            // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo e per ora fisica)
+                            var regvsByDateAndColOrdered = regvsByDateAndCol.OrderBy(regv => regv.Registrazione_Tipo_Reg).ThenBy(regv => regv.Data_Ora_Fis_E).ToList();
+                            foreach (Reg_V regv in regvsByDateAndColOrdered)
+                            {
+                                // inizializzazione della variabile che indica l'intenzione di processare la registrazione (di default la si processa)
+                                bool isToProcess = true;
+
+                                // se è stata indicata l'intenzione di processare il record
+                                if (isToProcess)
+                                {
+                                    // inizializzazione della nuova registrazione poi da esportare
+                                    var newRegRow = default(RegvRow);
+
+                                    // si procede all'elaborazione delle sole reg_v abbinate, cioè che hanno un'uscita, hanno un data registrazione e una durata
+                                    int endHour = regv.Data_Ora_Fis_U != null ? Convert.ToInt32((new TimeSpan(regv.Data_Ora_Fis_U.Value.Hour, regv.Data_Ora_Fis_U.Value.Minute, 0)).TotalMinutes) * 60 : 0;
+                                    if (endHour != 0 && regv.Data_Reg != null && regv.Durata_Fis != 0)
+                                    {
+                                        // calcolo del tipo di registrazione che si sta processando (può cambiare in base ai parametri delle personalizzazioni)
+                                        RegTypeEnum currentRegType = RegTypeEnum.None;
+                                        bool wasTrip = false;
+                                        // generazione di una nuova riga per il rapportino
+                                        newRegRow = new RegvRow();
+
+                                        // compilazione dei dati di riga
+                                        newRegRow.ColId = Convert.ToInt32(regv.Col_Id);
+                                        newRegRow.ColMnemonic = regv.Col_Mnemonic;
+                                        newRegRow.CantId = Convert.ToInt32(regv.Cant_Id);
+                                        newRegRow.CantMnemonic = regv.Cant_Mnemonic;
+                                        newRegRow.DataReg = Convert.ToDateTime(regv.Data_Reg);
+                                        var noteCode = String.Format("{0}#{1}#{2}", regv.Col_Mnemonic, regv.Cant_Id, regv.Data_Reg.Value.ToString("yy-MM-dd"));
+                                        newRegRow.Note = String.Format("Inserimento automatico {0}", noteCode);
+                                        newRegRow.StartHour = Convert.ToInt32((new TimeSpan(regv.Data_Ora_Fis_E.Hour, regv.Data_Ora_Fis_E.Minute, 0)).TotalMinutes) * 60;
+                                        newRegRow.EndHour = endHour;
+                                        newRegRow.DurataOre = regv.Durata_Fig.Value/60;
+                                        newRegRow.DurataMinuti = regv.Durata_Fig.Value % 60;
+                                        newRegRow.Type = currentRegType;
+                                        newRegRow.IsTripUnderKm = wasTrip;
+
+                                        // inizializazione dei campi delle ore nella riga
+                                        newRegRow.OrdinaryHours = 0;
+                                        newRegRow.OvertimeHours = 0;
+                                        newRegRow.TravelHours = 0;
+
+                                        // calcolo durata in secondi della registrazione
+                                        int regvDuration = newRegRow.EndHour - newRegRow.StartHour;
+
+                                        // calcolo i totali parziali per la gestione della riga
+                                        totalWorkingHours += currentRegType == RegTypeEnum.None ? regvDuration : 0;
+
+                                        // se si sta elaborando un sabato, si tratta sempre di straordinari
+                                        if (regv.Data_Reg.Value.DayOfWeek == DayOfWeek.Sunday || regv.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday)
+                                        {
+                                            newRegRow.OvertimeHours += regvDuration;
+                                        }
+
+                                        else
+                                        {
+                                            if (currentRegType == RegTypeEnum.None && String.IsNullOrEmpty(regv.Motivazione_Reg_Cod)) // se la registrazione è un'ora normale (cioè non un viaggio senza motivazione)
+                                            {
+                                                // se la durata totale del giorno è maggiore del numero di ore ordinarie configurate
+                                                if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
+                                                {
+                                                    // in caso non si stia processando un viaggio sotto kilometrato allora si tolgono gli elementi
+                                                    // viaggio già creati fino a esaurimento o rientro in ordinario
+                                                    if (dayRegRowToProcess.Any(regRow => regRow.IsTripUnderKm))
+                                                    {
+                                                        // inizializzazione della lista di elementi da rimuovere dalla lista
+                                                        var regvRowsToRemove = new List<RegvRow>();
+
+                                                        // ciclo di elaborazione dei viaggi sotto kilometraggio già inseriti
+                                                        foreach (RegvRow regvRow in dayRegRowToProcess.Where(regRow => regRow.IsTripUnderKm).OrderByDescending(regRow => regRow.StartHour).ToList())
+                                                        {
+                                                            // procedo a elaborare solamente se non sono già a posto con le ore
+                                                            if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
+                                                            {
+                                                                // tolgo le ore della registrrazione corrente e la marco da cancellare
+                                                                totalWorkingHours -= regvRow.OrdinaryHours + regvRow.OvertimeHours;
+                                                                totalOvertimeHours -= regvRow.OvertimeHours;
+                                                                regvRowsToRemove.Add(regvRow);
+                                                            }
+                                                            else // se invece sono a posto smetto di ciclare, ho tolto il necessario
+                                                                break;
+                                                        }
+
+                                                        // al termine dell'elaborazione, se ci sono da eliminare delle righe con le ore provenienti da viaggi sotto kilometrati
+                                                        // lo effettuo
+                                                        if (regvRowsToRemove.Any())
+                                                            regvRowsToRemove.ForEach(regvRow => dayRegRowToProcess.Remove(regvRow));
+                                                    }
+
+                                                    // si procede alla gestione degli straordinari solamente se ce ne sono ancora
+                                                    if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
+                                                    {
+                                                        // il totale delle ore straordinarie per la regv che si sta processando è dato dal toltale
+                                                        // delle ore del coll/giorno meno le ore straordinarie già assegnate meno le ore previste in giornata
+                                                        newRegRow.OvertimeHours = totalWorkingHours - totalOvertimeHours - XmlToPerfettoConstants.OrdinaryHours;
+                                                        totalOvertimeHours += newRegRow.OvertimeHours;
+
+                                                        // le ore ordinarie in questo caso sono il restante degli straordinari
+                                                        newRegRow.OrdinaryHours = regvDuration - newRegRow.OvertimeHours;
+                                                    }
+                                                    else // nel caso invece si sia rientrati nell'alveo della normalità si registrano le ore ordinarie
+                                                        newRegRow.OrdinaryHours = regvDuration;
+                                                    
+
+
+                                                }
+                                                else // nel caso invece non si sia superato il numero di ore ordinarrie configurate (in questo caso sono tutte ore ordinarie)
+                                                    newRegRow.OrdinaryHours = regvDuration;
+                                            }
+                                            else if (currentRegType == RegTypeEnum.None & !String.IsNullOrEmpty(regv.Motivazione_Reg_Cod)) // se la registrazione è un'ora normale con motivazione
+                                            {
+                                                // in base al tipo di registrazione si impostano ferie/permessi o malattie/infortuni
+                                                switch (regv.Motivazione_Reg_Cod)
+                                                {
+                                                    case "FP":
+                                                        newRegRow.VacationHours = regvDuration;
+                                                        break;
+                                                    case "M":
+                                                        newRegRow.SickHours = regvDuration;
+                                                        break;
+                                                    case "IC":
+                                                        newRegRow.InjuryHours = regvDuration;
+                                                        break;
+                                                }
+                                            }
+
+                                        }
+
+                                        // aggiunta della riga all'elenco (se non marcata per la non creazione)
+                                        if (newRegRow != null)
+                                            dayRegRowToProcess.Add(newRegRow);
+                                    }
+                                }
+                            }
+
+                            // aggiunta dell'elenco cacolato nel giorno/collaboratore all'elenco generale
+                            regRowToProcess.AddRange(dayRegRowToProcess);
+                        }
+                    }
+
+                    if (regRowToProcess.Any())
+                    {
+
+                        int cantNumber = 0;
+                        var totalCant = regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.CantMnemonic).Count();
+                        foreach (var regvRowsByCant in regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.ColMnemonic).ToList())
+                        {
+                            cantNumber++;
+                            // per ogni cantiere viene generato un rapportino, e quindi si genera e salvata un file per ogni cantiere
+
+                            // creo il documento
+                            var document = new XmlExportsData.Scs.Fornitura();
+
+                            // viene generato un master per ogni data all'interno della stessa commessa
+                            var master = new Business.XmlExportsData.Scs.XmlMaster();
+
+                            // ciclo di elaborazione delle timbrature per cantiere anche per collaboratore/giorno,
+                            // questo per calcolare correttamente i dati di totale
+                            foreach (var regvRowsByDate in regvRowsByCant.GroupBy(regv => regv.DataReg))
+                            {
+                                // calcolo della data attualmente in processo (formato stringa)
+                                string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
+
+                                // inizializzazione del numero di righe in processo
+                                int rowsNumber = 0;
+
+                                foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
+                                {
+                                    // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
+                                    foreach (var regv in regvRowsByDateAndCol.OrderBy(regv => Convert.ToInt32(regv.Type)))
+                                    {
+                                        // inizializzazione della riga rapportino
+                                        Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+
+                                        // compilazione dei dati di riga
+                                        //newRow.number = rowsNumber;
+                                        newRow.CodGiustificativoUfficiale = regv.ColMnemonic;
+                                        newRow.Data = regv.DataReg.ToString();
+                                        newRow.NumOre = regv.DurataOre;
+                                        newRow.NumMinuti = regv.DurataMinuti;
+                                        newRow.NumMinutiInCentesimi = (regv.DurataMinuti*100)/60;
+                                        newRow.GiornoDiRiposo = "N";
+                                        newRow.GiornoChiusuraStraordinari = "N";
+
+                                        // aggiunta della riga alla testata
+                                        document.Dipendente.CodAziendaUfficiale = "Prova";
+                                        document.Dipendente.CodDipendenteUfficiale = "Prova";
+                                        document.Dipendente.Movimenti.Add(newRow);
+
+                                        // incremento del numero di linee
+                                        rowsNumber++;
+                                    }
+                                }
+
+
+
+                            }
+
+                            // calcolo il nome del file preparato per Perfetto
+                            string currentFileName = String.Format("{0}{1}", cantNumber.ToString("0000"), XmlToPerfettoConstants.ReturnXmlExtension);
+
+                            // serializzazione e salvataggio del rapportino generato
+                            var xsn = new XmlSerializerNamespaces();
+                            xsn.Add("", "");
+                            var serializer = new XmlSerializer(typeof(XmlExportsData.Scs.Fornitura));
+                            if (!Directory.Exists(folderpath))
+                                Directory.CreateDirectory(folderpath);
+
+                            using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
+                            using (var writer = new ScsWriter(textWriter))
+                            {
+                                writer.Formatting = Formatting.Indented;
+                                
+                                serializer.Serialize(writer, document, xsn);
+                                writer.Close();
+                                textWriter.Close();
+                            }
+
+                            reportsFileName.Add(Path.Combine(folderpath, currentFileName));
+                        }
+
+                        // generazione dell'oggetto envelope da scrivere
+                        Business.XmlExportsData.Scs.Envelope envelope = PrepareXmlEnvelopeToScs(reportsFileName);
+
+                        // se è stato correttamente creato un envelope
+                        if (envelope != default(Business.XmlExportsData.Scs.Envelope))
                         {
                             using (var envelopeWriter = new StreamWriter(Path.Combine(folderpath, XmlToPerfettoConstants.EnvelopeFileName)))
                             using (var writer = new PerfettoWriter(envelopeWriter))
@@ -5936,10 +6404,10 @@ namespace Business.Repository.Custom
         /// <returns>
         /// L'envelope generato pronto per la scrittura su file
         /// </returns>
-        public Envelope PrepareXmlEnvelopeToPerfetto(IList<string> files)
+        public Business.XmlExportsData.Perfetto.Envelope PrepareXmlEnvelopeToPerfetto(IList<string> files)
         {
             // inizializzazione del valore di ritorno del metodo
-            var envelope = new Envelope();
+            var envelope = new Business.XmlExportsData.Perfetto.Envelope();
 
 
             string user = "sa";
@@ -5961,7 +6429,7 @@ namespace Business.Repository.Custom
             {
                 if (File.Exists(file))
                 {
-                    var newFile = new XmlFileTag();
+                    var newFile = new Business.XmlExportsData.Perfetto.XmlFileTag();
                     newFile.type = "Root";
                     newFile.dataurl = Path.GetFileName(file);
                     newFile.envelopeclass = "Rapportini";
@@ -5977,6 +6445,51 @@ namespace Business.Repository.Custom
 
             XmlSerializerNamespaces xsn = new XmlSerializerNamespaces();
             xsn.Add("", "http://www.microarea.it/XTech/1.0.0/XMLSchema");
+
+            return envelope;
+        }
+
+        /// <summary>
+        /// Prepara il file xml envelope per perfetto a partire dal file passasto come parametro.
+        /// </summary>
+        /// <param name="file">L'elenco di files a cui affiancare l'envelope.</param>
+        /// <returns>
+        /// L'envelope generato pronto per la scrittura su file
+        /// </returns>
+        public Business.XmlExportsData.Scs.Envelope PrepareXmlEnvelopeToScs(IList<string> files)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var envelope = new Business.XmlExportsData.Scs.Envelope();
+
+
+            string user = "sa";
+            int documentnumber = XmlToPerfettoConstants.Documentnumber;
+
+            //data ora attuale della creazione del file Xml
+            string currentRegVDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+
+            //creazione dei campi dell'envelope
+            envelope.ExportID = String.Format("{0}-{1}", user, currentRegVDate);
+            foreach (string file in files)
+            {
+                if (File.Exists(file))
+                {
+                    var newFile = new Business.XmlExportsData.Scs.XmlFileTag();
+                    newFile.type = "Root";
+                    newFile.dataurl = Path.GetFileName(file);
+                    newFile.envelopeclass = "Rapportini";
+                    newFile.documentname = "Rapportino di lavoro per Commessa";
+                    newFile.documentnumber = documentnumber.ToString();
+                    //documentnumber++;
+
+                    envelope.Contents.File.Add(newFile);
+
+                }
+            }
+
+
+            //XmlSerializerNamespaces xsn = new XmlSerializerNamespaces();
+            //xsn.Add("", "http://www.microarea.it/XTech/1.0.0/XMLSchema");
 
             return envelope;
         }

@@ -269,7 +269,7 @@ namespace PowerWeb.Modules
         /// <summary>
         /// Generazione della griglia di modifica veloce
         /// </summary>
-        /// <param name="checkChanged">se è richiesto il controllo dei cambiamenti delle reg</c> [check changed].</param>
+        /// <param name="checkChanged">se è richiesto il controllo dei cambiamenti delle reg</c> [check ch anged].</param>
         private void generateEditedRegVs(bool checkChanged = true)
         {
             //se vi sono reg 

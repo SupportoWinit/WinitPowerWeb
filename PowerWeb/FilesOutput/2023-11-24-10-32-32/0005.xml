@@ -1,0 +1,2081 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document documentname="DINRapportiniBase">
+  <DocumentInfo>
+    <Namespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</Namespace>
+    <Profile>RapportiniSogedi</Profile>
+    <Title>Rapportino di lavoro per Commessa</Title>
+    <Description>
+    </Description>
+    <Creation>
+      <Domain>DEFAULT_DOMAIN</Domain>
+      <Site>DEFAULT_SITE</Site>
+      <User>marco.verri</User>
+      <DateTime>2023-11-24T10:32:34</DateTime>
+    </Creation>
+    <NextFile>0006</NextFile>
+  </DocumentInfo>
+  <Documents>
+    <Masters namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa" table="IM_WorkingReports" instances="1">
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-02</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14100</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-02</Note>
+                <StartHour>29040</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14700</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-02</Note>
+                <StartHour>46500</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-02</Note>
+                <StartHour>28200</StartHour>
+                <EndHour>29040</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-02</Note>
+                <StartHour>61200</StartHour>
+                <EndHour>62040</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14100</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-02</Note>
+                <StartHour>29040</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14700</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-02</Note>
+                <StartHour>46500</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-02</Note>
+                <StartHour>28200</StartHour>
+                <EndHour>29040</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-02</Note>
+                <StartHour>61200</StartHour>
+                <EndHour>62040</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-03</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>15000</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-03</Note>
+                <StartHour>28380</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>13800</OrdinaryHours>
+                <OvertimeHours>1080</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-03</Note>
+                <StartHour>46380</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-03</Note>
+                <StartHour>27540</StartHour>
+                <EndHour>28380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-03</Note>
+                <StartHour>61260</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>15000</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-03</Note>
+                <StartHour>28380</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>13800</OrdinaryHours>
+                <OvertimeHours>1080</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-03</Note>
+                <StartHour>46380</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-03</Note>
+                <StartHour>27540</StartHour>
+                <EndHour>28380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-03</Note>
+                <StartHour>61260</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-06</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="10" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-06</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>3600</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-06</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>50400</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>10800</OrdinaryHours>
+                <OvertimeHours>180</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-06</Note>
+                <StartHour>50400</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-06</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-06</Note>
+                <StartHour>61380</StartHour>
+                <EndHour>62220</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-06</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>3600</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-06</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>50400</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>10800</OrdinaryHours>
+                <OvertimeHours>180</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-06</Note>
+                <StartHour>50400</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="8">
+              <Fields>
+                <Line>9</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-06</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="9">
+              <Fields>
+                <Line>10</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-06</Note>
+                <StartHour>61380</StartHour>
+                <EndHour>62220</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-07</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>5700</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-07</Note>
+                <StartHour>37380</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14820</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-07</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>61620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>600</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-07</Note>
+                <StartHour>36600</StartHour>
+                <EndHour>37200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-07</Note>
+                <StartHour>61620</StartHour>
+                <EndHour>62460</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>5700</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-07</Note>
+                <StartHour>37380</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14820</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-07</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>61620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>600</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-07</Note>
+                <StartHour>36600</StartHour>
+                <EndHour>37200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-07</Note>
+                <StartHour>61620</StartHour>
+                <EndHour>62460</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-08</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-08</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>43680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-08</Note>
+                <StartHour>46740</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-08</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-08</Note>
+                <StartHour>61440</StartHour>
+                <EndHour>62280</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-08</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>43680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-08</Note>
+                <StartHour>46740</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-08</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-08</Note>
+                <StartHour>61440</StartHour>
+                <EndHour>62280</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-09</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-09</Note>
+                <StartHour>28980</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-09</Note>
+                <StartHour>46860</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-09</Note>
+                <StartHour>28140</StartHour>
+                <EndHour>28980</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-09</Note>
+                <StartHour>61260</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-09</Note>
+                <StartHour>28980</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-09</Note>
+                <StartHour>46920</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-09</Note>
+                <StartHour>28140</StartHour>
+                <EndHour>28980</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-09</Note>
+                <StartHour>61320</StartHour>
+                <EndHour>62160</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-10</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14340</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-10</Note>
+                <StartHour>29340</StartHour>
+                <EndHour>43680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14460</OrdinaryHours>
+                <OvertimeHours>480</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-10</Note>
+                <StartHour>46740</StartHour>
+                <EndHour>61680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-10</Note>
+                <StartHour>28500</StartHour>
+                <EndHour>29340</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-10</Note>
+                <StartHour>61680</StartHour>
+                <EndHour>62520</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14340</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-10</Note>
+                <StartHour>29280</StartHour>
+                <EndHour>43620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14460</OrdinaryHours>
+                <OvertimeHours>540</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-10</Note>
+                <StartHour>46740</StartHour>
+                <EndHour>61740</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-10</Note>
+                <StartHour>28440</StartHour>
+                <EndHour>29280</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-10</Note>
+                <StartHour>61740</StartHour>
+                <EndHour>62580</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-13</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14640</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-13</Note>
+                <StartHour>28680</StartHour>
+                <EndHour>43320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-13</Note>
+                <StartHour>27840</StartHour>
+                <EndHour>28680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14640</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-13</Note>
+                <StartHour>28680</StartHour>
+                <EndHour>43320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-13</Note>
+                <StartHour>27840</StartHour>
+                <EndHour>28680</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-14</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="10" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>7200</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-14</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>36000</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>7380</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-14</Note>
+                <StartHour>36000</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14220</OrdinaryHours>
+                <OvertimeHours>840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-14</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-14</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-14</Note>
+                <StartHour>61380</StartHour>
+                <EndHour>62220</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>7200</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-14</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>36000</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>7320</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-14</Note>
+                <StartHour>36000</StartHour>
+                <EndHour>43320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14280</OrdinaryHours>
+                <OvertimeHours>780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-14</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="8">
+              <Fields>
+                <Line>9</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-14</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="9">
+              <Fields>
+                <Line>10</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-14</Note>
+                <StartHour>61380</StartHour>
+                <EndHour>62220</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-16</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14760</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-16</Note>
+                <StartHour>28920</StartHour>
+                <EndHour>43680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14040</OrdinaryHours>
+                <OvertimeHours>120</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-16</Note>
+                <StartHour>47100</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-16</Note>
+                <StartHour>28080</StartHour>
+                <EndHour>28920</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-16</Note>
+                <StartHour>61260</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14760</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-16</Note>
+                <StartHour>28920</StartHour>
+                <EndHour>43680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>14040</OrdinaryHours>
+                <OvertimeHours>120</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-16</Note>
+                <StartHour>47100</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-16</Note>
+                <StartHour>28080</StartHour>
+                <EndHour>28920</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>CARMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico CARMAR#88166#23-11-16</Note>
+                <StartHour>61260</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-17</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>15120</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-17</Note>
+                <StartHour>28440</StartHour>
+                <EndHour>43560</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>13680</OrdinaryHours>
+                <OvertimeHours>840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-17</Note>
+                <StartHour>46680</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-17</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>28440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-17</Note>
+                <StartHour>61200</StartHour>
+                <EndHour>62040</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-20</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14520</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-20</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>43320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14280</OrdinaryHours>
+                <OvertimeHours>660</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-20</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-20</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-20</Note>
+                <StartHour>61260</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-21</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14760</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-21</Note>
+                <StartHour>28620</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14040</OrdinaryHours>
+                <OvertimeHours>540</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-21</Note>
+                <StartHour>46560</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-21</Note>
+                <StartHour>27780</StartHour>
+                <EndHour>28620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-21</Note>
+                <StartHour>61140</StartHour>
+                <EndHour>61980</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-22</WorkingReportDate>
+          <Job>23/00029</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14520</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-22</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>43320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>14280</OrdinaryHours>
+                <OvertimeHours>480</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-22</Note>
+                <StartHour>46440</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-22</Note>
+                <StartHour>27960</StartHour>
+                <EndHour>28800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FOGMAR</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>840</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00029</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FOGMAR#88166#23-11-22</Note>
+                <StartHour>61200</StartHour>
+                <EndHour>62040</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+    </Masters>
+  </Documents>
+</Document>

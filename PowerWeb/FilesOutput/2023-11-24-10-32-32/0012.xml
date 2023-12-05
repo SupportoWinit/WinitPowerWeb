@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document documentname="DINRapportiniBase">
+  <DocumentInfo>
+    <Namespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</Namespace>
+    <Profile>RapportiniSogedi</Profile>
+    <Title>Rapportino di lavoro per Commessa</Title>
+    <Description>
+    </Description>
+    <Creation>
+      <Domain>DEFAULT_DOMAIN</Domain>
+      <Site>DEFAULT_SITE</Site>
+      <User>marco.verri</User>
+      <DateTime>2023-11-24T10:32:34</DateTime>
+    </Creation>
+    <NextFile>0013</NextFile>
+  </DocumentInfo>
+  <Documents>
+    <Masters namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa" table="IM_WorkingReports" instances="1">
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-08</WorkingReportDate>
+          <Job>14/00184</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14580</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-08</Note>
+                <StartHour>28560</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14220</OrdinaryHours>
+                <OvertimeHours>1980</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-08</Note>
+                <StartHour>45120</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14520</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-08</Note>
+                <StartHour>28620</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14280</OrdinaryHours>
+                <OvertimeHours>1860</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-08</Note>
+                <StartHour>45180</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-09</WorkingReportDate>
+          <Job>14/00184</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14700</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-09</Note>
+                <StartHour>28440</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14700</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-09</Note>
+                <StartHour>28440</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-11</WorkingReportDate>
+          <Job>14/00184</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>12600</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-11</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-11</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>41400</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>3600</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-11</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-11</Note>
+                <StartHour>41400</StartHour>
+                <EndHour>45000</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>DERBES</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>12600</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-11</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico DERBES#41785#23-11-11</Note>
+                <StartHour>28800</StartHour>
+                <EndHour>41400</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>DERBES</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>3600</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-11</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico DERBES#41785#23-11-11</Note>
+                <StartHour>41400</StartHour>
+                <EndHour>45000</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-14</WorkingReportDate>
+          <Job>14/00184</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14640</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-14</Note>
+                <StartHour>28560</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14160</OrdinaryHours>
+                <OvertimeHours>3780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-14</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14640</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-14</Note>
+                <StartHour>28560</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14160</OrdinaryHours>
+                <OvertimeHours>3780</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-14</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-15</WorkingReportDate>
+          <Job>14/00184</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14520</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-15</Note>
+                <StartHour>28680</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14280</OrdinaryHours>
+                <OvertimeHours>3720</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-15</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14520</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-15</Note>
+                <StartHour>28680</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14280</OrdinaryHours>
+                <OvertimeHours>3720</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-15</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-21</WorkingReportDate>
+          <Job>14/00184</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-21</Note>
+                <StartHour>28320</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>4020</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#41785#23-11-21</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-21</Note>
+                <StartHour>28320</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>4020</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>14/00184</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#41785#23-11-21</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+    </Masters>
+  </Documents>
+</Document>

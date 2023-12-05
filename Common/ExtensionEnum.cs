@@ -185,7 +185,8 @@ namespace Common
         DurationTrip,
         NotCalcolatePausaTrip,
         CloseDifferentCant,
-        ReperibilitaTotale
+        ReperibilitaTotale,
+        NotificaRitardo
     }
 
     public enum ClockAppsOperationEnum
@@ -1077,7 +1078,8 @@ namespace Common
         E_Mod_U_Man = 5,
         Entry_Manual = 6,
         E_Man_U_Mod = 7,
-        Manual = 8
+        Manual = 8,
+        Deelay = 9
 
     }
 

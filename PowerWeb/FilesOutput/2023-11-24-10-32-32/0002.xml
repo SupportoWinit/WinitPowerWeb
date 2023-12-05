@@ -1,0 +1,1331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document documentname="DINRapportiniBase">
+  <DocumentInfo>
+    <Namespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</Namespace>
+    <Profile>RapportiniSogedi</Profile>
+    <Title>Rapportino di lavoro per Commessa</Title>
+    <Description>
+    </Description>
+    <Creation>
+      <Domain>DEFAULT_DOMAIN</Domain>
+      <Site>DEFAULT_SITE</Site>
+      <User>marco.verri</User>
+      <DateTime>2023-11-24T10:32:34</DateTime>
+    </Creation>
+    <NextFile>0003</NextFile>
+  </DocumentInfo>
+  <Documents>
+    <Masters namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa" table="IM_WorkingReports" instances="1">
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-02</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16860</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-02</Note>
+                <StartHour>26520</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>11940</OrdinaryHours>
+                <OvertimeHours>4500</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-02</Note>
+                <StartHour>45480</StartHour>
+                <EndHour>61920</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16860</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-02</Note>
+                <StartHour>26520</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>11940</OrdinaryHours>
+                <OvertimeHours>4500</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-02</Note>
+                <StartHour>45480</StartHour>
+                <EndHour>61920</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-03</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16560</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-03</Note>
+                <StartHour>26640</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12240</OrdinaryHours>
+                <OvertimeHours>3840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-03</Note>
+                <StartHour>45420</StartHour>
+                <EndHour>61500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16560</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-03</Note>
+                <StartHour>26640</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12240</OrdinaryHours>
+                <OvertimeHours>3840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-03</Note>
+                <StartHour>45420</StartHour>
+                <EndHour>61500</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-06</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16560</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-06</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12240</OrdinaryHours>
+                <OvertimeHours>3900</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-06</Note>
+                <StartHour>45300</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16560</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-06</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12240</OrdinaryHours>
+                <OvertimeHours>3900</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-06</Note>
+                <StartHour>45300</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-07</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16680</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-07</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12120</OrdinaryHours>
+                <OvertimeHours>4440</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-07</Note>
+                <StartHour>45240</StartHour>
+                <EndHour>61800</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16680</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-07</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12120</OrdinaryHours>
+                <OvertimeHours>4440</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-07</Note>
+                <StartHour>45240</StartHour>
+                <EndHour>61800</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-08</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16740</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-08</Note>
+                <StartHour>26400</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12060</OrdinaryHours>
+                <OvertimeHours>4380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-08</Note>
+                <StartHour>44880</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16740</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-08</Note>
+                <StartHour>26400</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12060</OrdinaryHours>
+                <OvertimeHours>4440</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-08</Note>
+                <StartHour>44880</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-09</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>17040</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-09</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>11760</OrdinaryHours>
+                <OvertimeHours>4320</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-09</Note>
+                <StartHour>45180</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>17040</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-09</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>11760</OrdinaryHours>
+                <OvertimeHours>4320</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-09</Note>
+                <StartHour>45180</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-10</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16500</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-10</Note>
+                <StartHour>26640</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12300</OrdinaryHours>
+                <OvertimeHours>4680</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-10</Note>
+                <StartHour>45180</StartHour>
+                <EndHour>62160</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16500</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-10</Note>
+                <StartHour>26640</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12300</OrdinaryHours>
+                <OvertimeHours>4620</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-10</Note>
+                <StartHour>45180</StartHour>
+                <EndHour>62100</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-13</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16560</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-13</Note>
+                <StartHour>26820</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12240</OrdinaryHours>
+                <OvertimeHours>3240</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-13</Note>
+                <StartHour>46020</StartHour>
+                <EndHour>61500</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-14</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16740</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-14</Note>
+                <StartHour>26280</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12060</OrdinaryHours>
+                <OvertimeHours>4500</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-14</Note>
+                <StartHour>44640</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16680</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-14</Note>
+                <StartHour>26280</StartHour>
+                <EndHour>42960</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12120</OrdinaryHours>
+                <OvertimeHours>4380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-14</Note>
+                <StartHour>44700</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-16</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16500</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-16</Note>
+                <StartHour>26520</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12300</OrdinaryHours>
+                <OvertimeHours>4140</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-16</Note>
+                <StartHour>44820</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16560</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-16</Note>
+                <StartHour>26520</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12240</OrdinaryHours>
+                <OvertimeHours>4200</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-16</Note>
+                <StartHour>44820</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-17</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16500</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-17</Note>
+                <StartHour>26760</StartHour>
+                <EndHour>43260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12300</OrdinaryHours>
+                <OvertimeHours>3840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-17</Note>
+                <StartHour>44940</StartHour>
+                <EndHour>61080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16500</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-17</Note>
+                <StartHour>26760</StartHour>
+                <EndHour>43260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12300</OrdinaryHours>
+                <OvertimeHours>3840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-17</Note>
+                <StartHour>44940</StartHour>
+                <EndHour>61080</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-20</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16680</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-20</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12120</OrdinaryHours>
+                <OvertimeHours>4140</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-20</Note>
+                <StartHour>44940</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16680</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-20</Note>
+                <StartHour>26460</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12120</OrdinaryHours>
+                <OvertimeHours>4140</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-20</Note>
+                <StartHour>44940</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-21</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16380</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-21</Note>
+                <StartHour>26640</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12420</OrdinaryHours>
+                <OvertimeHours>4080</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-21</Note>
+                <StartHour>44640</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16380</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-21</Note>
+                <StartHour>26640</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12420</OrdinaryHours>
+                <OvertimeHours>4080</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-21</Note>
+                <StartHour>44640</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-22</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16800</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-22</Note>
+                <StartHour>26100</StartHour>
+                <EndHour>42900</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12000</OrdinaryHours>
+                <OvertimeHours>4620</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-22</Note>
+                <StartHour>44820</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16800</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-22</Note>
+                <StartHour>26100</StartHour>
+                <EndHour>42900</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12000</OrdinaryHours>
+                <OvertimeHours>4680</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-22</Note>
+                <StartHour>44760</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-23</WorkingReportDate>
+          <Job>23/00058</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16800</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-23</Note>
+                <StartHour>26220</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12000</OrdinaryHours>
+                <OvertimeHours>4680</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#82164#23-11-23</Note>
+                <StartHour>44640</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>16800</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-23</Note>
+                <StartHour>26220</StartHour>
+                <EndHour>43020</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>MASMAR</Employee>
+                <OrdinaryHours>12000</OrdinaryHours>
+                <OvertimeHours>4680</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00058</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico MASMAR#82164#23-11-23</Note>
+                <StartHour>44640</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+    </Masters>
+  </Documents>
+</Document>

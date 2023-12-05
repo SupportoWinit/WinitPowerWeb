@@ -58,13 +58,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     false,
                                                     false,
                                                     true,
+                                                    true,
                                                     parameters.Cartellino_Visualizza_Ore,
                                                     parameters.Cartellino_Visualizza_Motivazioni,
                                                     parameters.Cartellino_Visualizza_Viaggi,
                                                     parameters.Cartellino_Visualizza_Delta,
-                                                    true,
                                                     parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                    false,
+                                                    true,
                                                     parameters.Cartellino_Visualizza_Piano));
 
 

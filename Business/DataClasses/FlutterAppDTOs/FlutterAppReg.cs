@@ -11,8 +11,11 @@ namespace Business.DataClasses.FlutterAppDTOs
     {
         public int Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonProperty("matricola")]
         public string CodiceFru { get; set; }
+
+        [JsonProperty("name")]
+        public string Nome { get; set; }
 
         [JsonProperty("tecnologia")]
         public string tecnologia { get; set; }

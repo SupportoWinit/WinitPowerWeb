@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document documentname="DINRapportiniBase">
+  <DocumentInfo>
+    <Namespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</Namespace>
+    <Profile>RapportiniSogedi</Profile>
+    <Title>Rapportino di lavoro per Commessa</Title>
+    <Description>
+    </Description>
+    <Creation>
+      <Domain>DEFAULT_DOMAIN</Domain>
+      <Site>DEFAULT_SITE</Site>
+      <User>marco.verri</User>
+      <DateTime>2023-11-24T10:32:34</DateTime>
+    </Creation>
+    <NextFile>0016</NextFile>
+  </DocumentInfo>
+  <Documents>
+    <Masters namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa" table="IM_WorkingReports" instances="1">
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-22</WorkingReportDate>
+          <Job>23/00101</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90167#23-11-22</Note>
+                <StartHour>28320</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>2040</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90167#23-11-22</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>59160</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1980</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90167#23-11-22</Note>
+                <StartHour>26340</StartHour>
+                <EndHour>28320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1980</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90167#23-11-22</Note>
+                <StartHour>59160</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#90167#23-11-22</Note>
+                <StartHour>28320</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>2040</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#90167#23-11-22</Note>
+                <StartHour>43200</StartHour>
+                <EndHour>59160</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1980</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#90167#23-11-22</Note>
+                <StartHour>26340</StartHour>
+                <EndHour>28320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>VASION</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>1980</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00101</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico VASION#90167#23-11-22</Note>
+                <StartHour>59160</StartHour>
+                <EndHour>61140</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+    </Masters>
+  </Documents>
+</Document>

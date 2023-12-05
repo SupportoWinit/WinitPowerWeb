@@ -1,0 +1,1651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Document documentname="DINRapportiniBase">
+  <DocumentInfo>
+    <Namespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</Namespace>
+    <Profile>RapportiniSogedi</Profile>
+    <Title>Rapportino di lavoro per Commessa</Title>
+    <Description>
+    </Description>
+    <Creation>
+      <Domain>DEFAULT_DOMAIN</Domain>
+      <Site>DEFAULT_SITE</Site>
+      <User>marco.verri</User>
+      <DateTime>2023-11-24T10:32:34</DateTime>
+    </Creation>
+    <NextFile>0005</NextFile>
+  </DocumentInfo>
+  <Documents>
+    <Masters namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa" table="IM_WorkingReports" instances="1">
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-02</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>15300</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-02</Note>
+                <StartHour>27780</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>13500</OrdinaryHours>
+                <OvertimeHours>1380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-02</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>15300</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-02</Note>
+                <StartHour>27780</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>13500</OrdinaryHours>
+                <OvertimeHours>1380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-02</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>15300</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90170#23-11-02</Note>
+                <StartHour>27780</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>13500</OrdinaryHours>
+                <OvertimeHours>1380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90170#23-11-02</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15300</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-02</Note>
+                <StartHour>27780</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13500</OrdinaryHours>
+                <OvertimeHours>1380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-02</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-02</Note>
+                <StartHour>46320</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-03</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>15540</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-03</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>13260</OrdinaryHours>
+                <OvertimeHours>1920</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-03</Note>
+                <StartHour>46260</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>15540</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-03</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>13260</OrdinaryHours>
+                <OvertimeHours>1980</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-03</Note>
+                <StartHour>46260</StartHour>
+                <EndHour>61500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>15540</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90170#23-11-03</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>13260</OrdinaryHours>
+                <OvertimeHours>1920</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90170#23-11-03</Note>
+                <StartHour>46260</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15540</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-03</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13260</OrdinaryHours>
+                <OvertimeHours>1980</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-03</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-03</Note>
+                <StartHour>46260</StartHour>
+                <EndHour>61500</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-06</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>15540</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-06</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>13260</OrdinaryHours>
+                <OvertimeHours>1860</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-06</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>15540</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90170#23-11-06</Note>
+                <StartHour>27600</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>SONSTE</Employee>
+                <OrdinaryHours>13260</OrdinaryHours>
+                <OvertimeHours>1860</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico SONSTE#90170#23-11-06</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15420</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-06</Note>
+                <StartHour>27720</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13380</OrdinaryHours>
+                <OvertimeHours>1740</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-06</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>15600</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-06</Note>
+                <StartHour>27540</StartHour>
+                <EndHour>43140</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>13200</OrdinaryHours>
+                <OvertimeHours>1920</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-06</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-06</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-04</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="3" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>NERMAS</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>16020</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-04</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico NERMAS#90170#23-11-04</Note>
+                <StartHour>27360</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>16080</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-04</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-04</Note>
+                <StartHour>27360</StartHour>
+                <EndHour>43440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>DERBES</Employee>
+                <OrdinaryHours>0</OrdinaryHours>
+                <OvertimeHours>16080</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-04</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico DERBES#90170#23-11-04</Note>
+                <StartHour>27360</StartHour>
+                <EndHour>43440</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-07</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="8" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>15360</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-07</Note>
+                <StartHour>27840</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>GRODEN</Employee>
+                <OrdinaryHours>13440</OrdinaryHours>
+                <OvertimeHours>1620</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico GRODEN#90170#23-11-07</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>15360</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-07</Note>
+                <StartHour>27840</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>13440</OrdinaryHours>
+                <OvertimeHours>1620</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-07</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="4">
+              <Fields>
+                <Line>5</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15420</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-07</Note>
+                <StartHour>27780</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="5">
+              <Fields>
+                <Line>6</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13380</OrdinaryHours>
+                <OvertimeHours>1680</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-07</Note>
+                <StartHour>46140</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="6">
+              <Fields>
+                <Line>7</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>11820</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-07</Note>
+                <StartHour>31380</StartHour>
+                <EndHour>43200</EndHour>
+              </Fields>
+            </Row>
+            <Row number="7">
+              <Fields>
+                <Line>8</Line>
+                <Employee>BAIMAS</Employee>
+                <OrdinaryHours>14400</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-07</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BAIMAS#90170#23-11-07</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>61200</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-08</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15180</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-08</Note>
+                <StartHour>28080</StartHour>
+                <EndHour>43260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13620</OrdinaryHours>
+                <OvertimeHours>1380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-08</Note>
+                <StartHour>46380</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>15240</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-08</Note>
+                <StartHour>28080</StartHour>
+                <EndHour>43320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>13560</OrdinaryHours>
+                <OvertimeHours>1380</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-08</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-08</Note>
+                <StartHour>46440</StartHour>
+                <EndHour>61380</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-09</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>17580</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-09</Note>
+                <StartHour>25980</StartHour>
+                <EndHour>43560</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>11220</OrdinaryHours>
+                <OvertimeHours>3720</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-09</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-09</Note>
+                <StartHour>46860</StartHour>
+                <EndHour>61800</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-10</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>15180</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-10</Note>
+                <StartHour>28500</StartHour>
+                <EndHour>43680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>10080</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-10</Note>
+                <StartHour>46680</StartHour>
+                <EndHour>56760</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15120</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-10</Note>
+                <StartHour>28500</StartHour>
+                <EndHour>43620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13680</OrdinaryHours>
+                <OvertimeHours>3840</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-10</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-10</Note>
+                <StartHour>46680</StartHour>
+                <EndHour>64200</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-13</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>16200</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#90170#23-11-13</Note>
+                <StartHour>27420</StartHour>
+                <EndHour>43620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>12600</OrdinaryHours>
+                <OvertimeHours>1920</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#90170#23-11-13</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>16200</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-13</Note>
+                <StartHour>27360</StartHour>
+                <EndHour>43560</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>12600</OrdinaryHours>
+                <OvertimeHours>1920</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-13</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-13</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-14</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>18120</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-14</Note>
+                <StartHour>25380</StartHour>
+                <EndHour>43500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>10680</OrdinaryHours>
+                <OvertimeHours>4320</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-14</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-14</Note>
+                <StartHour>46680</StartHour>
+                <EndHour>61680</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-15</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>14640</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#90170#23-11-15</Note>
+                <StartHour>28620</StartHour>
+                <EndHour>43260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>BATCHR</Employee>
+                <OrdinaryHours>14160</OrdinaryHours>
+                <OvertimeHours>720</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico BATCHR#90170#23-11-15</Note>
+                <StartHour>46380</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>16920</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-15</Note>
+                <StartHour>26340</StartHour>
+                <EndHour>43260</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>11880</OrdinaryHours>
+                <OvertimeHours>3000</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-15</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-15</Note>
+                <StartHour>46380</StartHour>
+                <EndHour>61260</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-16</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>14880</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-16</Note>
+                <StartHour>28500</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13920</OrdinaryHours>
+                <OvertimeHours>1620</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-16</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-16</Note>
+                <StartHour>46380</StartHour>
+                <EndHour>61920</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-17</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>17340</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-17</Note>
+                <StartHour>25740</StartHour>
+                <EndHour>43080</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>11460</OrdinaryHours>
+                <OvertimeHours>2640</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-17</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-17</Note>
+                <StartHour>46860</StartHour>
+                <EndHour>60960</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-20</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="2" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>17940</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-20</Note>
+                <StartHour>25440</StartHour>
+                <EndHour>43380</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>10860</OrdinaryHours>
+                <OvertimeHours>3660</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-20</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-20</Note>
+                <StartHour>46800</StartHour>
+                <EndHour>61320</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-21</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15240</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-21</Note>
+                <StartHour>28260</StartHour>
+                <EndHour>43500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13560</OrdinaryHours>
+                <OvertimeHours>1320</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-21</Note>
+                <StartHour>46560</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>15240</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-21</Note>
+                <StartHour>28260</StartHour>
+                <EndHour>43500</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>13560</OrdinaryHours>
+                <OvertimeHours>1320</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-21</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-21</Note>
+                <StartHour>46560</StartHour>
+                <EndHour>61440</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-22</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>16080</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-22</Note>
+                <StartHour>27360</StartHour>
+                <EndHour>43440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>12720</OrdinaryHours>
+                <OvertimeHours>2640</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-22</Note>
+                <StartHour>46260</StartHour>
+                <EndHour>61620</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>16020</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-22</Note>
+                <StartHour>27420</StartHour>
+                <EndHour>43440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>12780</OrdinaryHours>
+                <OvertimeHours>2580</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-22</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-22</Note>
+                <StartHour>46260</StartHour>
+                <EndHour>61620</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+      <Master>
+        <Fields>
+          <WorkingReportDate>2023-11-23</WorkingReportDate>
+          <Job>23/00134</Job>
+        </Fields>
+        <Slaves>
+          <SlaveBuff rowsnumber="4" namespace="Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe" table="IM_WorkingReportsDetails">
+            <Row number="0">
+              <Fields>
+                <Line>1</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>15720</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-23</Note>
+                <StartHour>27720</StartHour>
+                <EndHour>43440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="1">
+              <Fields>
+                <Line>2</Line>
+                <Employee>OZORES</Employee>
+                <OrdinaryHours>13080</OrdinaryHours>
+                <OvertimeHours>2160</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico OZORES#90170#23-11-23</Note>
+                <StartHour>46440</StartHour>
+                <EndHour>61680</EndHour>
+              </Fields>
+            </Row>
+            <Row number="2">
+              <Fields>
+                <Line>3</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>15720</OrdinaryHours>
+                <OvertimeHours>0</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-23</Note>
+                <StartHour>27720</StartHour>
+                <EndHour>43440</EndHour>
+              </Fields>
+            </Row>
+            <Row number="3">
+              <Fields>
+                <Line>4</Line>
+                <Employee>FATDAV</Employee>
+                <OrdinaryHours>13080</OrdinaryHours>
+                <OvertimeHours>2160</OvertimeHours>
+                <TravelHours>0</TravelHours>
+                <VacationLeaveHours>0</VacationLeaveHours>
+                <SickLeaveHours>0</SickLeaveHours>
+                <Job>23/00134</Job>
+                <WorkingReportDate>2023-11-23</WorkingReportDate>
+                <CustomHours1>0</CustomHours1>
+                <CustomHours2>0</CustomHours2>
+                <CustomHours3>0</CustomHours3>
+                <CustomHours4>0</CustomHours4>
+                <Note>Inserimento automatico FATDAV#90170#23-11-23</Note>
+                <StartHour>46440</StartHour>
+                <EndHour>61680</EndHour>
+              </Fields>
+            </Row>
+          </SlaveBuff>
+        </Slaves>
+      </Master>
+    </Masters>
+  </Documents>
+</Document>

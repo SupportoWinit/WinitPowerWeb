@@ -30,7 +30,7 @@ namespace Business.HttpHub
                 var uriBuilder = new UriBuilder();
                 uriBuilder.Host = Host;
                 uriBuilder.Path = path;
-                uriBuilder.Port = 81;
+                uriBuilder.Port = 80;
                 uriBuilder.Scheme = Protocol ?? "http";
 
                 uriBuilder.Query = GetQueryString(request);

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Fornitura>
+  <Dipendente>
+    <Movimenti>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>02/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>41</NumMinuti>
+        <NumMinutiInCentesimi>68</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>02/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>34</NumMinuti>
+        <NumMinutiInCentesimi>56</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>03/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>36</NumMinuti>
+        <NumMinutiInCentesimi>60</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>03/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>28</NumMinuti>
+        <NumMinutiInCentesimi>46</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>06/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>36</NumMinuti>
+        <NumMinutiInCentesimi>60</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>06/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>29</NumMinuti>
+        <NumMinutiInCentesimi>48</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>07/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>38</NumMinuti>
+        <NumMinutiInCentesimi>63</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>07/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>36</NumMinuti>
+        <NumMinutiInCentesimi>60</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>08/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>39</NumMinuti>
+        <NumMinutiInCentesimi>65</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>08/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>34</NumMinuti>
+        <NumMinutiInCentesimi>56</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>09/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>44</NumMinuti>
+        <NumMinutiInCentesimi>73</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>09/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>28</NumMinuti>
+        <NumMinutiInCentesimi>46</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>10/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>35</NumMinuti>
+        <NumMinutiInCentesimi>58</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>10/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>42</NumMinuti>
+        <NumMinutiInCentesimi>70</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>13/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>30</NumMinuti>
+        <NumMinutiInCentesimi>50</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>13/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>2</NumMinuti>
+        <NumMinutiInCentesimi>3</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>14/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>39</NumMinuti>
+        <NumMinutiInCentesimi>65</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>14/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>36</NumMinuti>
+        <NumMinutiInCentesimi>60</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>15/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>4</NumMinuti>
+        <NumMinutiInCentesimi>6</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>15/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>8</NumMinuti>
+        <NumMinutiInCentesimi>13</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>16/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>35</NumMinuti>
+        <NumMinutiInCentesimi>58</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>16/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>34</NumMinuti>
+        <NumMinutiInCentesimi>56</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>17/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>35</NumMinuti>
+        <NumMinutiInCentesimi>58</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>17/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>29</NumMinuti>
+        <NumMinutiInCentesimi>48</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>20/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>38</NumMinuti>
+        <NumMinutiInCentesimi>63</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>20/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>31</NumMinuti>
+        <NumMinutiInCentesimi>51</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>21/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>33</NumMinuti>
+        <NumMinutiInCentesimi>55</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>21/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>35</NumMinuti>
+        <NumMinutiInCentesimi>58</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>22/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>40</NumMinuti>
+        <NumMinutiInCentesimi>66</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>22/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>37</NumMinuti>
+        <NumMinutiInCentesimi>61</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>23/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>40</NumMinuti>
+        <NumMinutiInCentesimi>66</NumMinutiInCentesimi>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>BATCHR</CodGiustificativoUfficiale>
+        <Data>23/11/2023 00:00:00</Data>
+        <NumOre>4</NumOre>
+        <NumMinuti>38</NumMinuti>
+        <NumMinutiInCentesimi>63</NumMinutiInCentesimi>
+      </Movimento>
+    </Movimenti>
+  </Dipendente>
+</Fornitura>

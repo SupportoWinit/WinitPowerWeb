@@ -151,6 +151,10 @@ namespace Business.XmlExportsData.Perfetto
         /// </value>
         public bool IsTripUnderKm { get; set; }
 
+        public int DurataOre { get; set; }
+
+        public int DurataMinuti { get; set; }
+
         #endregion
 
     }

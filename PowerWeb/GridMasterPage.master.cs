@@ -519,14 +519,21 @@ namespace PowerWeb
 
             List<Tab_DataGrid> listLayout = null;
 
-            if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.OnlyUserDefinedViews, PowerWebContext.Current.User.Codice_Utente))
+            if (PowerWebContext.Current.User.Codice_Utente != "WINIT")
             {
-                listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID && (tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id)).OrderBy(tgd => tgd.Nome_Layout).ToList();
+                if (RepoManager.ParamRepo.IsCurrentUserCustomizationEnabled(CustomizationEnum.OnlyUserDefinedViews, PowerWebContext.Current.User.Codice_Utente))
+                {
+                    listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID && (tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id)).OrderBy(tgd => tgd.Nome_Layout).ToList();
+                }
+                else
+                {
+                    listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID && (tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id || tdg.Utenti_Id == null)).OrderBy(tgd => tgd.Nome_Layout).ToList();
+                }
             }
-            else
-            {
-                listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID && (tdg.Utenti_Id == PowerWebContext.Current.User.Utenti_Id || tdg.Utenti_Id == null)).OrderBy(tgd => tgd.Nome_Layout).ToList();
+            else {
+                listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID).OrderBy(tgd => tgd.Nome_Layout).ToList();
             }
+            
 
 
             Tab_DataGrid currentLayout = null;

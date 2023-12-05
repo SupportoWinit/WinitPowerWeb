@@ -37,6 +37,7 @@ namespace PowerWeb.Pages
         public static JArray _exports = null;
         public static JArray _colColumns = null;
         public static bool _disabledColsCustomization = false;
+        public static int _RespId = 0;
 
         public static List<Tab_Excel_Model> _pageExcelModels;
 
@@ -52,6 +53,21 @@ namespace PowerWeb.Pages
         {
             if (!Page.IsCallback && !Page.IsPostBack)
             {
+                int id = PowerWebContext.Current.User.Utenti_Id;
+
+                var utenti = RepoManager.Utenti_RespRepo.GetAll();
+
+                utenti = utenti.Where(u=> u.Utenti_Id == id);
+
+                if (utenti.Count() > 0)
+                {
+                    Utenti_Resp user = utenti.First(u =>u.Utenti_Id == id);
+                    _RespId = user.Resp_Id;
+                }
+                else {
+                    _RespId = 0;
+                }
+
                 var parameters = RepoManager.ParamRepo.First(true);
 
                 dataSource = new DevExtremeLinqServerRepository<Col>(RepoManager.ColRepo);
@@ -173,7 +189,6 @@ namespace PowerWeb.Pages
                 colonna.Add("dataField", "Resp_Id");
                 colonna.Add("caption", field);
                 colonna.Add("visible", true);
-
                 _colColumns.Add(colonna);
 
                 field = "Ultimo Elaborato";
@@ -2012,19 +2027,8 @@ namespace PowerWeb.Pages
         public static string dxDataGridGetColls(dynamic loadOptions)
         {     
             JObject response = new JObject();
-
+     
             JObject gridOptions = JObject.FromObject(loadOptions);
-
-            JObject obj = new JObject
-            {
-                { "filter", "'Disabilitazione_Col' '=' false"}
-            };
-
-            object[] array = new object[3];
-            array[0] = "Disabilitazione_Col";
-            array[1] = "=";
-            array[2] = false;
-            //loadOptions.Add("filter",obj);
 
             if (gridOptions.Count == 1) //E' stato selezionato il checkBox "select all"
             {
@@ -2037,7 +2041,7 @@ namespace PowerWeb.Pages
                 int skip = gridOptions["skip"] != null ? (int)gridOptions["skip"] : -1;
                 int take = gridOptions["take"] != null ? (int)gridOptions["take"] : -1;
 
-                JArray whereArray = Normalize(obj, "filter");
+                JArray whereArray = Normalize(gridOptions, "filter");
                 JArray orderByArray = Normalize(gridOptions, "sort");
                 JArray selectArray = Normalize(gridOptions, "select");
 

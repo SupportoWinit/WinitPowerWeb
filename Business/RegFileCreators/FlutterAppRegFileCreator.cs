@@ -609,8 +609,36 @@ namespace Business.RegFileCreators
                     if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0 && !string.IsNullOrEmpty(fluReg.Latitudine.ToString()))
                     {
                         #region Reg con coordinate
-
-                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                        if (fluReg.Latitudine < 0 && fluReg.Longitudine < 0)
+                        {
+                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                            fluReg.CodiceFru,
+                            AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(3, 1), 10),
+                            fluReg.Data.Year,
+                            fluReg.Data.Month.ToString("00"),
+                            fluReg.Data.Day.ToString("00"),
+                            fluReg.Data.Hour.ToString("00"),
+                            fluReg.Data.Minute.ToString("00"),
+                            NO_TAG_REFERENCE,
+                            MARKER_LATITUDINE,
+                            "N"
+                            );
+                            regsToWrite.Add(regRow);
+                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                fluReg.CodiceFru,
+                                AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(3, 1), 10),
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                NO_TAG_REFERENCE,
+                                MARKER_LONGITUDINE,
+                                "E"
+                            );
+                        }
+                        else {
+                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
                             fluReg.CodiceFru,
                             AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
                             fluReg.Data.Year,
@@ -622,20 +650,20 @@ namespace Business.RegFileCreators
                             MARKER_LATITUDINE,
                             "N"
                         );
-                        regsToWrite.Add(regRow);
-                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
-                            fluReg.CodiceFru,
-                            AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
-                            fluReg.Data.Year,
-                            fluReg.Data.Month.ToString("00"),
-                            fluReg.Data.Day.ToString("00"),
-                            fluReg.Data.Hour.ToString("00"),
-                            fluReg.Data.Minute.ToString("00"),
-                            NO_TAG_REFERENCE,
-                            MARKER_LONGITUDINE,
-                            "E"
-                        );
-
+                            regsToWrite.Add(regRow);
+                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                fluReg.CodiceFru,
+                                AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                NO_TAG_REFERENCE,
+                                MARKER_LONGITUDINE,
+                                "E"
+                            );
+                        }
                         #endregion
                     }
                     else if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))

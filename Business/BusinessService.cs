@@ -3603,7 +3603,7 @@ namespace Business
 
 
             //controllo se la mia cella è una cella di modifica
-            if ((tipo == (int)RegModifyTypeEnum.Entry_Modified && tipoReg == 0) || (tipo == (int)RegModifyTypeEnum.Exit_Modified && tipoReg == 1) || (tipo == (int)RegModifyTypeEnum.Both))
+            if ((tipo == (int)RegModifyTypeEnum.Entry_Modified && tipoReg == 0) || (tipo == (int)RegModifyTypeEnum.Exit_Modified && tipoReg == 1) || (tipo == (int)RegModifyTypeEnum.Both) || (tipo == (int)RegModifyTypeEnum.Deelay && tipoReg == 0))
                 return RegColorModifyEnum.Modify;
             //controllo se la cella è una cella di inserimento manuale
             if ((tipo == (int)RegModifyTypeEnum.Entry_Manual && tipoReg == 0) || (tipo == (int)RegModifyTypeEnum.Exit_Manual && tipoReg == 1) ||

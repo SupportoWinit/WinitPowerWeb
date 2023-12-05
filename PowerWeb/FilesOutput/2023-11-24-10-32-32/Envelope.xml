@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExportID>sa-2023-11-24-10-32-34</ExportID>
+  <Description>I files dei dati del documento Rapportino di lavoro per Commessa sono stati generati con Profilo di esportazione .</Description>
+  <DocumentInfo>
+    <Domain>DEFAULT_DOMAIN</Domain>
+    <Site>DEFAULT_SITE</Site>
+    <SiteCode>DESI</SiteCode>
+    <EnvelopeClass>Rapportini</EnvelopeClass>
+    <RootDocNamespace>Document.ImpiantiNet.Rapportini.INRapportini.Rapportino</RootDocNamespace>
+    <Datatime>2023-11-24T10:32:34</Datatime>
+  </DocumentInfo>
+  <Contents>
+    <File type="Root" dataurl="0001.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0002.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0003.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0004.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0005.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0006.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0007.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0008.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0009.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0010.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0011.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0012.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0013.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0014.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0015.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl="0016.xml" envelopeclass="Rapportini" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+  </Contents>
+</Envelope>

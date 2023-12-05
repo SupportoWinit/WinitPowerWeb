@@ -12,6 +12,7 @@
     <script type="text/javascript">function getMotivazioni() { return <%=_motivazioni%>; }</script>
     <script type="text/javascript">function getExports() { return <%=_exports%>; }</script>
     <script type="text/javascript">function getConfig() { return <%= _cartellinoOptionsJSON%>; }</script>
+    <script type="text/javascript">function getRespId() { return <%= _RespId%>; }</script>
     <script type="text/javascript">function getDisabledColsCustomization() { return <%=_disabledColsCustomization.ToString().ToString().ToLower()%>; }</script>
 
 

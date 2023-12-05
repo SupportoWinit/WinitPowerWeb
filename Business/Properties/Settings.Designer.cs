@@ -12,7 +12,7 @@ namespace Business.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -31,17 +31,6 @@ namespace Business.Properties {
         public string Power_TabelleConnectionString {
             get {
                 return ((string)(this["Power_TabelleConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\MDBSchema\\PowerMDB.m" +
-            "db;Persist Security Info=True")]
-        public string PowerMDBConnectionString {
-            get {
-                return ((string)(this["PowerMDBConnectionString"]));
             }
         }
         
@@ -86,6 +75,17 @@ namespace Business.Properties {
         public string Power_Tabelle_MOSAICO_2012_06_22_PER_POWER_WEBConnectionString {
             get {
                 return ((string)(this["Power_Tabelle_MOSAICO_2012_06_22_PER_POWER_WEBConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\MDBSchema\\PowerMDB.m" +
+            "db;Persist Security Info=True")]
+        public string PowerMDBConnectionString {
+            get {
+                return ((string)(this["PowerMDBConnectionString"]));
             }
         }
     }

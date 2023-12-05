@@ -448,6 +448,47 @@ namespace Business.Repository.Custom
                 {
                     try
                     {
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NotificaRitardo) == 1) {
+                            regVs = GetRegVsForRounding(regs);
+
+                            BeginWork();
+
+                            HashSet<int> regColIds = new HashSet<int>();
+
+                            regVs.Where(r => r.Col_Id != null).Select(regV => regV.Col_Id).Cast<int>().ToList().ForEach(colId =>
+                            {
+                                regColIds.Add(colId);
+                            });
+
+                            HashSet<int> regCantIds = new HashSet<int>();
+
+                            regVs.Where(r => r.Cant_Id != null).Select(regV => regV.Cant_Id).Cast<int>().ToList().ForEach(colId =>
+                            {
+                                regCantIds.Add(colId);
+                            });
+
+                            //IEnumerable<int> regColIds = new HashSet<int>(regVs.Where(r => r.Col_Id != null).Select(regV => regV.Col_Id).Distinct().Cast<int>().ToArray());
+                            //IEnumerable<int> regCantIds = regVs.Where(r => r.Cant_Id != null).Select(regV => regV.Cant_Id).Distinct().Cast<int>().ToList();
+
+                            // dagli id dei collaboratori e dei cantieri precedentemente recuperati si recuperano le anagrafiche
+
+                            _log.Info("Accesso a database per la raccolta di cantieri e collaboratori");
+
+                            List<Col> regCols = RepoManager.ColRepo.Find(col => regColIds.Contains(col.Col_Id), true).ToList();
+                            List<Cant> regCants = RepoManager.CantRepo.Find(cant => regCantIds.Contains(cant.Cant_Id), true).ToList();
+
+
+                            // recupera il metodo di arrotondamento impostato nei parametri
+                            RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
+
+                            // applicazione degli arrotondamenti per inizio-fine
+                            _log.Info(String.Format("Inizio Controllo Ritardo di {0} regV", regVs.Count()));
+                            errors.AddRange(RepoManager.Reg_VRepo.CheckDeelay(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                                , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication));
+
+                            CommitWork();
+                        }
+
                         #region 11.1 Gestione degli arrotondamenti per inizio/fine
 
                         // si gestiscono gli arrotondamenti solamente se c'è lo specifico flag abilitato nella param
