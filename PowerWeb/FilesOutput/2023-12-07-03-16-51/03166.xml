@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Fornitura>
+  <Dipendente CodAziendaUfficiale="001059" CodDipendenteUfficiale="0003166">
+    <Movimenti CodDipendenteUfficiale="N">
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>01/11/2023</Data>
+        <NumOre>10</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>01/11/2023</Data>
+        <NumOre>05</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>01/11/2023</Data>
+        <NumOre>04</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+    </Movimenti>
+    <VociRetributive>
+    </VociRetributive>
+  </Dipendente>
+</Fornitura>

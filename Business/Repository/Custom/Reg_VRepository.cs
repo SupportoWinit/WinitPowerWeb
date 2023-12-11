@@ -7,8 +7,10 @@ using Data;
 using DevExpress.Data.Linq;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraPrinting.XamlExport;
+using DevExpress.XtraRichEdit.Import.Html;
 using Domain;
 using log4net;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6017,7 +6019,7 @@ namespace Business.Repository.Custom
                             var dayRegRowToProcess = new List<RegvRow>();
 
                             // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo e per ora fisica)
-                            var regvsByDateAndColOrdered = regvsByDateAndCol.OrderBy(regv => regv.Registrazione_Tipo_Reg).ThenBy(regv => regv.Data_Ora_Fis_E).ToList();
+                            var regvsByDateAndColOrdered = regvsByDateAndCol.OrderBy(regv => regv.Data_Ora_Fis_E).ToList();
                             foreach (Reg_V regv in regvsByDateAndColOrdered)
                             {
                                 // inizializzazione della variabile che indica l'intenzione di processare la registrazione (di default la si processa)
@@ -6031,124 +6033,122 @@ namespace Business.Repository.Custom
 
                                     // si procede all'elaborazione delle sole reg_v abbinate, cioè che hanno un'uscita, hanno un data registrazione e una durata
                                     int endHour = regv.Data_Ora_Fis_U != null ? Convert.ToInt32((new TimeSpan(regv.Data_Ora_Fis_U.Value.Hour, regv.Data_Ora_Fis_U.Value.Minute, 0)).TotalMinutes) * 60 : 0;
-                                    if (endHour != 0 && regv.Data_Reg != null && regv.Durata_Fis != 0)
+                                    // calcolo del tipo di registrazione che si sta processando (può cambiare in base ai parametri delle personalizzazioni)
+                                    RegTypeEnum currentRegType = RegTypeEnum.None;
+                                    bool wasTrip = false;
+                                    // generazione di una nuova riga per il rapportino
+                                    newRegRow = new RegvRow();
+
+                                    // compilazione dei dati di riga
+                                    newRegRow.ColId = Convert.ToInt32(regv.Col_Id);
+                                    newRegRow.ColMnemonic = regv.Col_Mnemonic;
+                                    newRegRow.CantId = Convert.ToInt32(regv.Cant_Id);
+                                    newRegRow.CantMnemonic = regv.Cant_Mnemonic;
+                                    newRegRow.DataReg = Convert.ToDateTime(regv.Data_Reg);
+                                    var noteCode = String.Format("{0}#{1}#{2}", regv.Col_Mnemonic, regv.Cant_Id, regv.Data_Reg.Value.ToString("yy-MM-dd"));
+                                    newRegRow.Note = String.Format("Inserimento automatico {0}", noteCode);
+                                    newRegRow.StartHour = Convert.ToInt32((new TimeSpan(regv.Data_Ora_Fis_E.Hour, regv.Data_Ora_Fis_E.Minute, 0)).TotalMinutes) * 60;
+                                    newRegRow.EndHour = endHour;
+                                    newRegRow.DurataOre = regv.Durata_Fig.Value/60;
+                                    newRegRow.DurataMinuti = regv.Durata_Fig.Value % 60;
+                                    newRegRow.Motivazione = regv.Motivazione_Reg_Cod;
+                                    newRegRow.Type = currentRegType;
+                                    newRegRow.IsTripUnderKm = wasTrip;
+
+                                    // inizializazione dei campi delle ore nella riga
+                                    newRegRow.OrdinaryHours = 0;
+                                    newRegRow.OvertimeHours = 0;
+                                    newRegRow.TravelHours = 0;
+
+                                    // calcolo durata in secondi della registrazione
+                                    int regvDuration = newRegRow.EndHour - newRegRow.StartHour;
+
+                                    // calcolo i totali parziali per la gestione della riga
+                                    totalWorkingHours += currentRegType == RegTypeEnum.None ? regvDuration : 0;
+
+                                    // se si sta elaborando un sabato, si tratta sempre di straordinari
+                                    if (regv.Data_Reg.Value.DayOfWeek == DayOfWeek.Sunday || regv.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday)
                                     {
-                                        // calcolo del tipo di registrazione che si sta processando (può cambiare in base ai parametri delle personalizzazioni)
-                                        RegTypeEnum currentRegType = RegTypeEnum.None;
-                                        bool wasTrip = false;
-                                        // generazione di una nuova riga per il rapportino
-                                        newRegRow = new RegvRow();
+                                        newRegRow.OvertimeHours += regvDuration;
+                                    }
 
-                                        // compilazione dei dati di riga
-                                        newRegRow.ColId = Convert.ToInt32(regv.Col_Id);
-                                        newRegRow.ColMnemonic = regv.Col_Mnemonic;
-                                        newRegRow.CantId = Convert.ToInt32(regv.Cant_Id);
-                                        newRegRow.CantMnemonic = regv.Cant_Mnemonic;
-                                        newRegRow.DataReg = Convert.ToDateTime(regv.Data_Reg);
-                                        var noteCode = String.Format("{0}#{1}#{2}", regv.Col_Mnemonic, regv.Cant_Id, regv.Data_Reg.Value.ToString("yy-MM-dd"));
-                                        newRegRow.Note = String.Format("Inserimento automatico {0}", noteCode);
-                                        newRegRow.StartHour = Convert.ToInt32((new TimeSpan(regv.Data_Ora_Fis_E.Hour, regv.Data_Ora_Fis_E.Minute, 0)).TotalMinutes) * 60;
-                                        newRegRow.EndHour = endHour;
-                                        newRegRow.DurataOre = regv.Durata_Fig.Value/60;
-                                        newRegRow.DurataMinuti = regv.Durata_Fig.Value % 60;
-                                        newRegRow.Type = currentRegType;
-                                        newRegRow.IsTripUnderKm = wasTrip;
-
-                                        // inizializazione dei campi delle ore nella riga
-                                        newRegRow.OrdinaryHours = 0;
-                                        newRegRow.OvertimeHours = 0;
-                                        newRegRow.TravelHours = 0;
-
-                                        // calcolo durata in secondi della registrazione
-                                        int regvDuration = newRegRow.EndHour - newRegRow.StartHour;
-
-                                        // calcolo i totali parziali per la gestione della riga
-                                        totalWorkingHours += currentRegType == RegTypeEnum.None ? regvDuration : 0;
-
-                                        // se si sta elaborando un sabato, si tratta sempre di straordinari
-                                        if (regv.Data_Reg.Value.DayOfWeek == DayOfWeek.Sunday || regv.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday)
+                                    else
+                                    {
+                                        if (currentRegType == RegTypeEnum.None && String.IsNullOrEmpty(regv.Motivazione_Reg_Cod)) // se la registrazione è un'ora normale (cioè non un viaggio senza motivazione)
                                         {
-                                            newRegRow.OvertimeHours += regvDuration;
-                                        }
-
-                                        else
-                                        {
-                                            if (currentRegType == RegTypeEnum.None && String.IsNullOrEmpty(regv.Motivazione_Reg_Cod)) // se la registrazione è un'ora normale (cioè non un viaggio senza motivazione)
+                                            // se la durata totale del giorno è maggiore del numero di ore ordinarie configurate
+                                            if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
                                             {
-                                                // se la durata totale del giorno è maggiore del numero di ore ordinarie configurate
+                                                // in caso non si stia processando un viaggio sotto kilometrato allora si tolgono gli elementi
+                                                // viaggio già creati fino a esaurimento o rientro in ordinario
+                                                if (dayRegRowToProcess.Any(regRow => regRow.IsTripUnderKm))
+                                                {
+                                                    // inizializzazione della lista di elementi da rimuovere dalla lista
+                                                    var regvRowsToRemove = new List<RegvRow>();
+
+                                                    // ciclo di elaborazione dei viaggi sotto kilometraggio già inseriti
+                                                    foreach (RegvRow regvRow in dayRegRowToProcess.Where(regRow => regRow.IsTripUnderKm).ToList())
+                                                    {
+                                                        // procedo a elaborare solamente se non sono già a posto con le ore
+                                                        if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
+                                                        {
+                                                            // tolgo le ore della registrrazione corrente e la marco da cancellare
+                                                            totalWorkingHours -= regvRow.OrdinaryHours + regvRow.OvertimeHours;
+                                                            totalOvertimeHours -= regvRow.OvertimeHours;
+                                                            regvRowsToRemove.Add(regvRow);
+                                                        }
+                                                        else // se invece sono a posto smetto di ciclare, ho tolto il necessario
+                                                            break;
+                                                    }
+
+                                                    // al termine dell'elaborazione, se ci sono da eliminare delle righe con le ore provenienti da viaggi sotto kilometrati
+                                                    // lo effettuo
+                                                    if (regvRowsToRemove.Any())
+                                                        regvRowsToRemove.ForEach(regvRow => dayRegRowToProcess.Remove(regvRow));
+                                                }
+
+                                                // si procede alla gestione degli straordinari solamente se ce ne sono ancora
                                                 if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
                                                 {
-                                                    // in caso non si stia processando un viaggio sotto kilometrato allora si tolgono gli elementi
-                                                    // viaggio già creati fino a esaurimento o rientro in ordinario
-                                                    if (dayRegRowToProcess.Any(regRow => regRow.IsTripUnderKm))
-                                                    {
-                                                        // inizializzazione della lista di elementi da rimuovere dalla lista
-                                                        var regvRowsToRemove = new List<RegvRow>();
+                                                    // il totale delle ore straordinarie per la regv che si sta processando è dato dal toltale
+                                                    // delle ore del coll/giorno meno le ore straordinarie già assegnate meno le ore previste in giornata
+                                                    newRegRow.OvertimeHours = totalWorkingHours - totalOvertimeHours - XmlToPerfettoConstants.OrdinaryHours;
+                                                    totalOvertimeHours += newRegRow.OvertimeHours;
 
-                                                        // ciclo di elaborazione dei viaggi sotto kilometraggio già inseriti
-                                                        foreach (RegvRow regvRow in dayRegRowToProcess.Where(regRow => regRow.IsTripUnderKm).OrderByDescending(regRow => regRow.StartHour).ToList())
-                                                        {
-                                                            // procedo a elaborare solamente se non sono già a posto con le ore
-                                                            if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
-                                                            {
-                                                                // tolgo le ore della registrrazione corrente e la marco da cancellare
-                                                                totalWorkingHours -= regvRow.OrdinaryHours + regvRow.OvertimeHours;
-                                                                totalOvertimeHours -= regvRow.OvertimeHours;
-                                                                regvRowsToRemove.Add(regvRow);
-                                                            }
-                                                            else // se invece sono a posto smetto di ciclare, ho tolto il necessario
-                                                                break;
-                                                        }
-
-                                                        // al termine dell'elaborazione, se ci sono da eliminare delle righe con le ore provenienti da viaggi sotto kilometrati
-                                                        // lo effettuo
-                                                        if (regvRowsToRemove.Any())
-                                                            regvRowsToRemove.ForEach(regvRow => dayRegRowToProcess.Remove(regvRow));
-                                                    }
-
-                                                    // si procede alla gestione degli straordinari solamente se ce ne sono ancora
-                                                    if (totalWorkingHours > XmlToPerfettoConstants.OrdinaryHours)
-                                                    {
-                                                        // il totale delle ore straordinarie per la regv che si sta processando è dato dal toltale
-                                                        // delle ore del coll/giorno meno le ore straordinarie già assegnate meno le ore previste in giornata
-                                                        newRegRow.OvertimeHours = totalWorkingHours - totalOvertimeHours - XmlToPerfettoConstants.OrdinaryHours;
-                                                        totalOvertimeHours += newRegRow.OvertimeHours;
-
-                                                        // le ore ordinarie in questo caso sono il restante degli straordinari
-                                                        newRegRow.OrdinaryHours = regvDuration - newRegRow.OvertimeHours;
-                                                    }
-                                                    else // nel caso invece si sia rientrati nell'alveo della normalità si registrano le ore ordinarie
-                                                        newRegRow.OrdinaryHours = regvDuration;
-                                                    
-
-
+                                                    // le ore ordinarie in questo caso sono il restante degli straordinari
+                                                    newRegRow.OrdinaryHours = regvDuration - newRegRow.OvertimeHours;
                                                 }
-                                                else // nel caso invece non si sia superato il numero di ore ordinarrie configurate (in questo caso sono tutte ore ordinarie)
+                                                else // nel caso invece si sia rientrati nell'alveo della normalità si registrano le ore ordinarie
                                                     newRegRow.OrdinaryHours = regvDuration;
-                                            }
-                                            else if (currentRegType == RegTypeEnum.None & !String.IsNullOrEmpty(regv.Motivazione_Reg_Cod)) // se la registrazione è un'ora normale con motivazione
-                                            {
-                                                // in base al tipo di registrazione si impostano ferie/permessi o malattie/infortuni
-                                                switch (regv.Motivazione_Reg_Cod)
-                                                {
-                                                    case "FP":
-                                                        newRegRow.VacationHours = regvDuration;
-                                                        break;
-                                                    case "M":
-                                                        newRegRow.SickHours = regvDuration;
-                                                        break;
-                                                    case "IC":
-                                                        newRegRow.InjuryHours = regvDuration;
-                                                        break;
-                                                }
-                                            }
+                                                
 
+
+                                            }
+                                            else // nel caso invece non si sia superato il numero di ore ordinarrie configurate (in questo caso sono tutte ore ordinarie)
+                                                newRegRow.OrdinaryHours = regvDuration;
+                                        }
+                                        else if (currentRegType == RegTypeEnum.None & !String.IsNullOrEmpty(regv.Motivazione_Reg_Cod)) // se la registrazione è un'ora normale con motivazione
+                                        {
+                                            // in base al tipo di registrazione si impostano ferie/permessi o malattie/infortuni
+                                            switch (regv.Motivazione_Reg_Cod)
+                                            {
+                                                case "FP":
+                                                    newRegRow.VacationHours = regvDuration;
+                                                    break;
+                                                case "M":
+                                                    newRegRow.SickHours = regvDuration;
+                                                    break;
+                                                case "IC":
+                                                    newRegRow.InjuryHours = regvDuration;
+                                                    break;
+                                            }
                                         }
 
-                                        // aggiunta della riga all'elenco (se non marcata per la non creazione)
-                                        if (newRegRow != null)
-                                            dayRegRowToProcess.Add(newRegRow);
                                     }
+
+                                    // aggiunta della riga all'elenco (se non marcata per la non creazione)
+                                    if (newRegRow != null)
+                                        dayRegRowToProcess.Add(newRegRow);
                                 }
                             }
 
@@ -6160,11 +6160,11 @@ namespace Business.Repository.Custom
                     if (regRowToProcess.Any())
                     {
 
-                        int cantNumber = 0;
+                        string matricolaCol = "";
                         var totalCant = regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.CantMnemonic).Count();
-                        foreach (var regvRowsByCant in regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.ColMnemonic).ToList())
+                        regRowToProcess = regRowToProcess.OrderBy(regv => regv.DataReg).ToList();
+                        foreach (var regvRowsByCol in regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.ColId).ToList())
                         {
-                            cantNumber++;
                             // per ogni cantiere viene generato un rapportino, e quindi si genera e salvata un file per ogni cantiere
 
                             // creo il documento
@@ -6173,9 +6173,11 @@ namespace Business.Repository.Custom
                             // viene generato un master per ogni data all'interno della stessa commessa
                             var master = new Business.XmlExportsData.Scs.XmlMaster();
 
+                            List<Col> collaboratore = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Col_Id == regvRowsByCol.Key).ToList();
+
                             // ciclo di elaborazione delle timbrature per cantiere anche per collaboratore/giorno,
                             // questo per calcolare correttamente i dati di totale
-                            foreach (var regvRowsByDate in regvRowsByCant.GroupBy(regv => regv.DataReg))
+                            foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
                             {
                                 // calcolo della data attualmente in processo (formato stringa)
                                 string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
@@ -6186,37 +6188,45 @@ namespace Business.Repository.Custom
                                 foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
                                 {
                                     // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
-                                    foreach (var regv in regvRowsByDateAndCol.OrderBy(regv => Convert.ToInt32(regv.Type)))
+                                    foreach (var regv in regvRowsByDateAndCol.OrderBy(r=>r.StartHour))
                                     {
                                         // inizializzazione della riga rapportino
                                         Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
-
+                                        
+                                        Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
                                         // compilazione dei dati di riga
                                         //newRow.number = rowsNumber;
-                                        newRow.CodGiustificativoUfficiale = regv.ColMnemonic;
-                                        newRow.Data = regv.DataReg.ToString();
-                                        newRow.NumOre = regv.DurataOre;
-                                        newRow.NumMinuti = regv.DurataMinuti;
-                                        newRow.NumMinutiInCentesimi = (regv.DurataMinuti*100)/60;
+                                        string motivazione = "01";
+                                        if (regv.Motivazione != "" && regv.Motivazione != null) {
+                                            motivazione = regv.Motivazione;
+                                        }
+                                        matricolaCol = collaboratore.First().Matricola_Col;
+                                        newRow.CodGiustificativoUfficiale = motivazione;
+                                        string[] data = regv.DataReg.ToString().Split(' ');
+                                        newRow.Data = data[0];
+                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(),2);
+                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
+                                        int centesimi = (regv.DurataMinuti * 100) / 60;
+                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
                                         newRow.GiornoDiRiposo = "N";
                                         newRow.GiornoChiusuraStraordinari = "N";
 
                                         // aggiunta della riga alla testata
-                                        document.Dipendente.CodAziendaUfficiale = "Prova";
-                                        document.Dipendente.CodDipendenteUfficiale = "Prova";
-                                        document.Dipendente.Movimenti.Add(newRow);
+                                        document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(cantiere.Codice_Gestionale_Can,6);
+                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                        document.Dipendente.Masters.Master.Add(newRow);
 
                                         // incremento del numero di linee
                                         rowsNumber++;
                                     }
                                 }
-
-
-
                             }
+                            //Business.XmlExportsData.Scs.Voci vociRetr = new Business.XmlExportsData.Scs.Voci();
+                            //vociRetr.CodVoceUfficiale = "000370";
+                            //document.Dipendente.VociRetributive.Add(vociRetr);
 
                             // calcolo il nome del file preparato per Perfetto
-                            string currentFileName = String.Format("{0}{1}", cantNumber.ToString("0000"), XmlToPerfettoConstants.ReturnXmlExtension);
+                            string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
 
                             // serializzazione e salvataggio del rapportino generato
                             var xsn = new XmlSerializerNamespaces();

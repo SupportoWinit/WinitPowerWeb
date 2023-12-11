@@ -155,6 +155,8 @@ namespace Business.XmlExportsData.Perfetto
 
         public int DurataMinuti { get; set; }
 
+        public string Motivazione { get; set; }
+
         #endregion
 
     }

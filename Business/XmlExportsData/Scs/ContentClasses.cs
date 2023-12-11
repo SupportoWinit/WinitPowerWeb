@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Business.XmlExportsData.Perfetto;
+using DevExpress.XtraRichEdit.Import.Html;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,26 +70,39 @@ namespace Business.XmlExportsData.Scs
 
         #region Fields
 
-        private List<Movimento> _lista = new List<Movimento>();
+        private Movimenti _lista = new Movimenti();
+
+        private List<Voci> _lista2 = new List<Voci>();
 
         private string attribute = "";
 
         private string attribute2 = "";
-
         #endregion
 
         #region Properties
-
-        public List<Movimento> Movimenti
+        [XmlElement("Movimenti")]
+        public Movimenti Masters
         {
             get
             {
                 if (_lista == null)
-                    _lista = new List<Movimento>();
+                    _lista = new Movimenti();
 
                 return _lista;
             }
             set { _lista = value; }
+        }
+
+        public List<Voci> VociRetributive
+        {
+            get
+            {
+                if (_lista2 == null)
+                    _lista2 = new List<Voci>();
+
+                return _lista2;
+            }
+            set { _lista2 = value; }
         }
 
         [XmlAttribute]
@@ -108,30 +124,38 @@ namespace Business.XmlExportsData.Scs
 
     #region Masters
 
-    public class XmlMasters
+    public class Movimenti
     {
 
         #region Constructor
-        public XmlMasters()
+        public Movimenti()
         {
-
+            
         }
         #endregion
 
         #region Fields
 
 
-        private List<XmlMaster> _master = new List<XmlMaster>();
+        private List<Movimento> _lista = new List<Movimento>();
+
+        private string attribute3 = "N";
 
         #endregion
 
         #region Properties
 
-        [XmlElementAttribute("Master")]
-        public List<XmlMaster> Master
+        [XmlAttribute]
+        public string GenerazioneAutomaticaDaTeorico
         {
-            get { return _master ?? (_master = new List<XmlMaster>()); }
-            set { _master = value; }
+            get { return attribute3; }
+            set { attribute3 = value; }
+        }
+        [XmlElement("Movimento")]
+        public List<Movimento> Master
+        {
+            get { return _lista ?? (_lista = new List<Movimento>()); }
+            set { _lista = value; }
         }
 
         #endregion
@@ -275,11 +299,11 @@ namespace Business.XmlExportsData.Scs
 
         public string Data { get; set; }
 
-        public int NumOre { get; set; }
+        public string NumOre { get; set; }
 
-        public int NumMinuti { get; set; }
+        public string NumMinuti { get; set; }
 
-        public int NumMinutiInCentesimi { get; set; }
+        public string NumMinutiInCentesimi { get; set; }
 
         public string GiornoDiRiposo { get; set; }
 
@@ -299,13 +323,12 @@ namespace Business.XmlExportsData.Scs
         #region Constructor
         public Movimento()
         {
-
+           
         }
         #endregion
     }
 
-    public class VociRetributive
-    {
+    public class Voci { 
 
         #region Fields
 
@@ -345,7 +368,7 @@ namespace Business.XmlExportsData.Scs
         #endregion
 
         #region Constructor
-        public VociRetributive()
+        public Voci()
         {
         }
         #endregion

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraRichEdit.Import.Html;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -13,8 +14,6 @@ namespace Business.XmlExportsData.Scs
         #region Fields
 
         private XmlDocuments _documents;
-
-        private XmlMasters _masters = new XmlMasters();
 
         #endregion
 

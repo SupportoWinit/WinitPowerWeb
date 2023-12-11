@@ -156,7 +156,7 @@
   <!-- NoCreateTripOnSameMunicipalityUnderKmEnum=0 Indica di generare il viaggio senza effettuare alcun controllo su stesso comune e kilometraggio
   NoCreateTripOnSameMunicipalityUnderKmEnum=1 Indica di generare i viaggi che cominciano e terminano nello stesso comune solo se superiori a i km come parametro  -->
   <!-- ********************************************************ESPORTAZIONE XML DELLE TIMBRATURE*********************************************************-->
-  <c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="1">
+  <c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="2">
     <param Name="TreatTripAsWorkedUnderKM" Value="10" />
     <param Name="DoNotTreatStartEndTripUnderKM" Value="true" />
     <param Name="DoNotTreatTripUnderKmAsOvertine" Value="false" />

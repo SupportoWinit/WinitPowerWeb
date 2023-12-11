@@ -613,7 +613,8 @@ namespace Common
     public enum RegExportToXmlEnum
     {
         None = 0,
-        Perfetto = 1
+        Perfetto = 1,
+        Scs = 2
     }
 
     /// <summary>

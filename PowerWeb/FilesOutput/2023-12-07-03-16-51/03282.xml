@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Fornitura>
+  <Dipendente CodAziendaUfficiale="001091" CodDipendenteUfficiale="0003282">
+    <Movimenti CodDipendenteUfficiale="N">
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>18/11/2023</Data>
+        <NumOre>05</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>18/11/2023</Data>
+        <NumOre>03</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>18/11/2023</Data>
+        <NumOre>02</NumOre>
+        <NumMinuti>30</NumMinuti>
+        <NumMinutiInCentesimi>50</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>18/11/2023</Data>
+        <NumOre>05</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>18/11/2023</Data>
+        <NumOre>05</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+      <Movimento>
+        <CodGiustificativoUfficiale>01</CodGiustificativoUfficiale>
+        <Data>18/11/2023</Data>
+        <NumOre>05</NumOre>
+        <NumMinuti>00</NumMinuti>
+        <NumMinutiInCentesimi>00</NumMinutiInCentesimi>
+        <GiornoDiRiposo>N</GiornoDiRiposo>
+        <GiornoChiusuraStraordinari>N</GiornoChiusuraStraordinari>
+      </Movimento>
+    </Movimenti>
+    <VociRetributive>
+    </VociRetributive>
+  </Dipendente>
+</Fornitura>
