@@ -497,6 +497,7 @@
     <Compile Include="XmlExportsData\Perfetto\RegvRow.cs" />
     <Compile Include="XmlExportsData\Scs\ContentClasses.cs" />
     <Compile Include="XmlExportsData\Scs\Document.cs" />
+    <Compile Include="XmlExportsData\DocumentEmpty.cs" />
     <Compile Include="XmlExportsData\Scs\Envelope.cs" />
     <Compile Include="XmlExportsData\Scs\ScsWriter.cs" />
   </ItemGroup>

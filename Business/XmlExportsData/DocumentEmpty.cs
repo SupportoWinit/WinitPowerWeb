@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraRichEdit.Import.Html;
+﻿using Business.XmlExportsData.Scs;
+using DevExpress.XtraRichEdit.Import.Html;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using System;
 using System.Collections.Generic;
@@ -7,26 +8,25 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Business.XmlExportsData.Scs
+namespace Business.XmlExportsData
 {
-
     public sealed class Fornitura
     {
         #region Fields
 
-        private XmlDocuments _documents;
+        private XmlDocument _documents;
 
         #endregion
 
         #region Properties
 
         //Corpo del documento Xml
-        public XmlDocuments Dipendente
+        public XmlDocument Dipendente
         {
             get
             {
                 if (_documents == null)
-                    _documents = new XmlDocuments();
+                    _documents = new XmlDocument();
 
                 return _documents;
             }

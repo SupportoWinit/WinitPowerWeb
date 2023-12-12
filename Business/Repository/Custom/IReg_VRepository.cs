@@ -80,7 +80,7 @@ namespace Business.Repository.Custom
         /// <param name="regVsToProcess">Le Reg_V da processare nell'esportazione Xml.</param>
         /// <param name="filesOutputFolder">La cartella in cui salvare i dati preparati nell'export xml</param>
         /// <returns>Ritorna il percorso del file da ritornare al browser con i dati esportati</returns>
-        string PrepareXmlExportToScs(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder);
+        string PrepareXmlExportToScs(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder, DateTime fine);
 
         /// <summary>
         /// Determina se il viaggio passato come parametro è fatto all'interno della stesso comune

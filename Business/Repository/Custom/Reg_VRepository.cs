@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Westwind.Utilities.Extensions;
 
 namespace Business.Repository.Custom
 {
@@ -5971,7 +5972,7 @@ namespace Business.Repository.Custom
         /// <returns>
         /// Ritorna il percorso del file da ritornare al browser con i dati esportati
         /// </returns>
-        public string PrepareXmlExportToScs(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder)
+        public string PrepareXmlExportToScs(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder, DateTime fine)
         {
             #region Utilities
 
@@ -6165,87 +6166,170 @@ namespace Business.Repository.Custom
                         regRowToProcess = regRowToProcess.OrderBy(regv => regv.DataReg).ToList();
                         foreach (var regvRowsByCol in regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.ColId).ToList())
                         {
-                            // per ogni cantiere viene generato un rapportino, e quindi si genera e salvata un file per ogni cantiere
-
-                            // creo il documento
-                            var document = new XmlExportsData.Scs.Fornitura();
-
-                            // viene generato un master per ogni data all'interno della stessa commessa
-                            var master = new Business.XmlExportsData.Scs.XmlMaster();
-
-                            List<Col> collaboratore = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Col_Id == regvRowsByCol.Key).ToList();
-
-                            // ciclo di elaborazione delle timbrature per cantiere anche per collaboratore/giorno,
-                            // questo per calcolare correttamente i dati di totale
-                            foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
+                            DateTime ultimo = fine.EndOfMonth();
+                            if (!fine.Equals(ultimo))
                             {
-                                // calcolo della data attualmente in processo (formato stringa)
-                                string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
+                                // creo il documento
+                                var document = new XmlExportsData.Fornitura();
+                                // viene generato un master per ogni data all'interno della stessa commessa
+                                var master = new Business.XmlExportsData.Scs.XmlMaster();
 
-                                // inizializzazione del numero di righe in processo
-                                int rowsNumber = 0;
+                                List<Col> collaboratore = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Col_Id == regvRowsByCol.Key).ToList();
 
-                                foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
+                                // ciclo di elaborazione delle timbrature per cantiere anche per collaboratore/giorno,
+                                // questo per calcolare correttamente i dati di totale
+                                foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
                                 {
-                                    // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
-                                    foreach (var regv in regvRowsByDateAndCol.OrderBy(r=>r.StartHour))
+                                    // calcolo della data attualmente in processo (formato stringa)
+                                    string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
+
+                                    // inizializzazione del numero di righe in processo
+                                    int rowsNumber = 0;
+
+                                    foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
                                     {
-                                        // inizializzazione della riga rapportino
-                                        Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
-                                        
-                                        Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
-                                        // compilazione dei dati di riga
-                                        //newRow.number = rowsNumber;
-                                        string motivazione = "01";
-                                        if (regv.Motivazione != "" && regv.Motivazione != null) {
-                                            motivazione = regv.Motivazione;
+                                        // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
+                                        foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
+                                        {
+                                            // inizializzazione della riga rapportino
+                                            Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+
+                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                            // compilazione dei dati di riga
+                                            //newRow.number = rowsNumber;
+                                            string motivazione = "01";
+                                            if (regv.Motivazione != "" && regv.Motivazione != null)
+                                            {
+                                                motivazione = regv.Motivazione;
+                                            }
+                                            matricolaCol = collaboratore.First().Matricola_Col;
+                                            newRow.CodGiustificativoUfficiale = motivazione;
+                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                            newRow.Data = data[0];
+                                            newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(), 2);
+                                            newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
+                                            int centesimi = (regv.DurataMinuti * 100) / 60;
+                                            newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                            newRow.GiornoDiRiposo = "N";
+                                            newRow.GiornoChiusuraStraordinari = "N";
+
+                                            // aggiunta della riga alla testata
+                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(cantiere.Codice_Gestionale_Can, 6);
+                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                            document.Dipendente.Masters.Master.Add(newRow);
+
+                                            // incremento del numero di linee
+                                            rowsNumber++;
                                         }
-                                        matricolaCol = collaboratore.First().Matricola_Col;
-                                        newRow.CodGiustificativoUfficiale = motivazione;
-                                        string[] data = regv.DataReg.ToString().Split(' ');
-                                        newRow.Data = data[0];
-                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(),2);
-                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
-                                        int centesimi = (regv.DurataMinuti * 100) / 60;
-                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
-                                        newRow.GiornoDiRiposo = "N";
-                                        newRow.GiornoChiusuraStraordinari = "N";
-
-                                        // aggiunta della riga alla testata
-                                        document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(cantiere.Codice_Gestionale_Can,6);
-                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
-                                        document.Dipendente.Masters.Master.Add(newRow);
-
-                                        // incremento del numero di linee
-                                        rowsNumber++;
                                     }
                                 }
+
+                                //Business.XmlExportsData.Scs.Voci vociRetr = new Business.XmlExportsData.Scs.Voci();
+                                //vociRetr.CodVoceUfficiale = "000370";
+                                //document.Dipendente.VociRetributive.Add(vociRetr);
+
+                                // calcolo il nome del file preparato per Perfetto
+                                string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
+
+                                // serializzazione e salvataggio del rapportino generato
+                                var xsn = new XmlSerializerNamespaces();
+                                xsn.Add("", "");
+                                var serializer = new XmlSerializer(typeof(XmlExportsData.Fornitura));
+                                if (!Directory.Exists(folderpath))
+                                    Directory.CreateDirectory(folderpath);
+
+                                using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
+                                using (var writer = new ScsWriter(textWriter))
+                                {
+                                    writer.Formatting = Formatting.Indented;
+
+                                    serializer.Serialize(writer, document, xsn);
+                                    writer.Close();
+                                    textWriter.Close();
+                                }
+
+                                reportsFileName.Add(Path.Combine(folderpath, currentFileName));
                             }
-                            //Business.XmlExportsData.Scs.Voci vociRetr = new Business.XmlExportsData.Scs.Voci();
-                            //vociRetr.CodVoceUfficiale = "000370";
-                            //document.Dipendente.VociRetributive.Add(vociRetr);
+                            else {
+                                var document = new XmlExportsData.Scs.Fornitura();
+                                // viene generato un master per ogni data all'interno della stessa commessa
+                                var master = new Business.XmlExportsData.Scs.XmlMaster();
 
-                            // calcolo il nome del file preparato per Perfetto
-                            string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
+                                List<Col> collaboratore = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Col_Id == regvRowsByCol.Key).ToList();
 
-                            // serializzazione e salvataggio del rapportino generato
-                            var xsn = new XmlSerializerNamespaces();
-                            xsn.Add("", "");
-                            var serializer = new XmlSerializer(typeof(XmlExportsData.Scs.Fornitura));
-                            if (!Directory.Exists(folderpath))
-                                Directory.CreateDirectory(folderpath);
+                                // ciclo di elaborazione delle timbrature per cantiere anche per collaboratore/giorno,
+                                // questo per calcolare correttamente i dati di totale
+                                foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
+                                {
+                                    // calcolo della data attualmente in processo (formato stringa)
+                                    string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
 
-                            using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
-                            using (var writer = new ScsWriter(textWriter))
-                            {
-                                writer.Formatting = Formatting.Indented;
-                                
-                                serializer.Serialize(writer, document, xsn);
-                                writer.Close();
-                                textWriter.Close();
+                                    // inizializzazione del numero di righe in processo
+                                    int rowsNumber = 0;
+
+                                    foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
+                                    {
+                                        // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
+                                        foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
+                                        {
+                                            // inizializzazione della riga rapportino
+                                            Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+
+                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                            // compilazione dei dati di riga
+                                            //newRow.number = rowsNumber;
+                                            string motivazione = "01";
+                                            if (regv.Motivazione != "" && regv.Motivazione != null)
+                                            {
+                                                motivazione = regv.Motivazione;
+                                            }
+                                            matricolaCol = collaboratore.First().Matricola_Col;
+                                            newRow.CodGiustificativoUfficiale = motivazione;
+                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                            newRow.Data = data[0];
+                                            newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(), 2);
+                                            newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
+                                            int centesimi = (regv.DurataMinuti * 100) / 60;
+                                            newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                            newRow.GiornoDiRiposo = "N";
+                                            newRow.GiornoChiusuraStraordinari = "N";
+
+                                            // aggiunta della riga alla testata
+                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(cantiere.Codice_Gestionale_Can, 6);
+                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                            document.Dipendente.Masters.Master.Add(newRow);
+
+                                            // incremento del numero di linee
+                                            rowsNumber++;
+                                        }
+                                    }
+                                }
+
+                                // calcolo il nome del file preparato per Perfetto
+                                string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
+
+                                // serializzazione e salvataggio del rapportino generato
+                                var xsn = new XmlSerializerNamespaces();
+                                xsn.Add("", "");
+                                var serializer = new XmlSerializer(typeof(XmlExportsData.Scs.Fornitura));
+                                if (!Directory.Exists(folderpath))
+                                    Directory.CreateDirectory(folderpath);
+
+                                using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
+                                using (var writer = new ScsWriter(textWriter))
+                                {
+                                    writer.Formatting = Formatting.Indented;
+
+                                    serializer.Serialize(writer, document, xsn);
+                                    writer.Close();
+                                    textWriter.Close();
+                                }
+
+                                reportsFileName.Add(Path.Combine(folderpath, currentFileName));
                             }
+                            
 
-                            reportsFileName.Add(Path.Combine(folderpath, currentFileName));
+                            
                         }
 
                         // generazione dell'oggetto envelope da scrivere

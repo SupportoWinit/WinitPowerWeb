@@ -65,6 +65,50 @@ namespace Business.XmlExportsData.Scs
     #region Documents
 
     //classe che gestisce il corpo del documento
+    public class XmlDocument
+    {
+
+        #region Fields
+
+        private Movimenti _lista = new Movimenti();
+
+        private List<Voci> _lista2 = new List<Voci>();
+
+        private string attribute = "";
+
+        private string attribute2 = "";
+        #endregion
+
+        #region Properties
+        [XmlElement("Movimenti")]
+        public Movimenti Masters
+        {
+            get
+            {
+                if (_lista == null)
+                    _lista = new Movimenti();
+
+                return _lista;
+            }
+            set { _lista = value; }
+        }  
+
+        [XmlAttribute]
+        public string CodAziendaUfficiale
+        {
+            get { return attribute; }
+            set { attribute = value; }
+        }
+
+        [XmlAttribute]
+        public string CodDipendenteUfficiale
+        {
+            get { return attribute2; }
+            set { attribute2 = value; }
+        }
+        #endregion
+
+    }
     public class XmlDocuments
     {
 
@@ -102,8 +146,14 @@ namespace Business.XmlExportsData.Scs
 
                 return _lista2;
             }
-            set { _lista2 = value; }
+            set
+            {
+                _lista2 = value;
+            }
         }
+
+
+
 
         [XmlAttribute]
         public string CodAziendaUfficiale
