@@ -53,7 +53,7 @@ namespace PowerWeb.Modules
         {
             string connection = "/app/ws/Synched";
             Business.HttpHub.FlutterAppHttpModule bridge = new FlutterAppHub();
-            bridge.Host = "mobile.clockapp.it";
+            bridge.Host = "testmobile.clockapp.it";
             int index = RepoManager.ParamRepo.ParametersRow.Indice_Timbrature_FlutterApp;
             IEnumerable<Business.DataClasses.FlutterAppDTOs.CountReg> count = bridge.Get<List<Business.DataClasses.FlutterAppDTOs.CountReg>>(CreateStandardPayload(index),connection);
             return count.First();

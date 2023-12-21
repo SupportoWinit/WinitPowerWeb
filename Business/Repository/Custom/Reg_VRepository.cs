@@ -6214,7 +6214,7 @@ namespace Business.Repository.Custom
                                             newRow.GiornoChiusuraStraordinari = "N";
 
                                             // aggiunta della riga alla testata
-                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(cantiere.Codice_Gestionale_Can, 6);
+                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
                                             document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
                                             document.Dipendente.Masters.Master.Add(newRow);
 
@@ -6227,6 +6227,15 @@ namespace Business.Repository.Custom
                                 //Business.XmlExportsData.Scs.Voci vociRetr = new Business.XmlExportsData.Scs.Voci();
                                 //vociRetr.CodVoceUfficiale = "000370";
                                 //document.Dipendente.VociRetributive.Add(vociRetr);
+
+                                foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
+                                {
+                                    // calcolo della data attualmente in processo (formato stringa)
+                                    string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
+
+                                    // inizializzazione del numero di righe in processo
+                                    int rowsNumber = 0;
+                                }
 
                                 // calcolo il nome del file preparato per Perfetto
                                 string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
@@ -6295,7 +6304,7 @@ namespace Business.Repository.Custom
                                             newRow.GiornoChiusuraStraordinari = "N";
 
                                             // aggiunta della riga alla testata
-                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(cantiere.Codice_Gestionale_Can, 6);
+                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
                                             document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
                                             document.Dipendente.Masters.Master.Add(newRow);
 
@@ -6303,7 +6312,40 @@ namespace Business.Repository.Custom
                                             rowsNumber++;
                                         }
                                     }
+
+                                    foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
+                                    {
+                                        // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
+                                        foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
+                                        {
+                                            // inizializzazione della riga rapportino
+                                            Business.XmlExportsData.Scs.ForzaturaZoneCantieri newRow = new Business.XmlExportsData.Scs.ForzaturaZoneCantieri();
+
+                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                            // compilazione dei dati di riga
+                                            //newRow.number = rowsNumber;
+                                            string motivazione = "01";
+                                            if (regv.Motivazione != "" && regv.Motivazione != null)
+                                            {
+                                                motivazione = regv.Motivazione;
+                                            }
+                                            matricolaCol = collaboratore.First().Matricola_Col;
+                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                            newRow.DataMovimento = data[0];
+                                            newRow.IdPosizione = "";
+                                            newRow.CodiceCantiere = cantiere.Codice_Gestionale_Can;
+
+                                            // aggiunta della riga alla testata
+                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
+                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                            document.Dipendente.ForzatureZoneCantieri.Add(newRow);
+
+                                            // incremento del numero di linee
+                                            rowsNumber++;
+                                        }
+                                    }
                                 }
+
 
                                 // calcolo il nome del file preparato per Perfetto
                                 string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);

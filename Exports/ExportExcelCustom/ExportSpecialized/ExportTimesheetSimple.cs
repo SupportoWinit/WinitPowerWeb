@@ -223,7 +223,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     else {
                         valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
                     }
-
+                    
                     RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                 }

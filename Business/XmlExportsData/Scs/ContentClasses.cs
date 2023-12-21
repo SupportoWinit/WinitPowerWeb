@@ -118,6 +118,8 @@ namespace Business.XmlExportsData.Scs
 
         private List<Voci> _lista2 = new List<Voci>();
 
+        private List<ForzaturaZoneCantieri> _lista3 = new List<ForzaturaZoneCantieri>();
+
         private string attribute = "";
 
         private string attribute2 = "";
@@ -149,6 +151,21 @@ namespace Business.XmlExportsData.Scs
             set
             {
                 _lista2 = value;
+            }
+        }
+
+        public List<ForzaturaZoneCantieri> ForzatureZoneCantieri
+        {
+            get
+            {
+                if (_lista2 == null)
+                    _lista3 = new List<ForzaturaZoneCantieri>();
+
+                return _lista3;
+            }
+            set
+            {
+                _lista3 = value;
             }
         }
 
@@ -374,6 +391,38 @@ namespace Business.XmlExportsData.Scs
         public Movimento()
         {
            
+        }
+        #endregion
+    }
+
+    public class ForzaturaZoneCantieri
+    {
+
+        #region Fields
+
+        #region Properties
+
+        public string DataMovimento { get; set; }
+
+        public string IdPosizione { get; set; }
+
+        public string InquadramentoAzienda { get; set; }
+
+        public string InquadramentoAziendaDIpendenze { get; set; }
+
+        public string CodiceCantiere { get; set; }
+
+
+        #endregion
+
+        // private XmlRowFields _fields = new XmlRowFields();
+
+        #endregion
+
+        #region Constructor
+        public ForzaturaZoneCantieri()
+        {
+
         }
         #endregion
     }

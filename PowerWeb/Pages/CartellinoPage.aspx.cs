@@ -1720,10 +1720,10 @@ namespace PowerWeb.Pages
                 //Solo reg con durata raggruppate per data
                 foreach (var group in regsByCol.GroupBy(r => r.Data_Reg).ToList())
                 {
-
+                
                     int dayDuration = 0;
-
-
+                
+                
                     if (useOrario)
                     {
                         int tabOrarioDay = (int)Enum.Parse(typeof(DayofWeekTabOrario), group.Key.Value.DayOfWeek.ToString());
@@ -1764,11 +1764,11 @@ namespace PowerWeb.Pages
                                 Reg singRett = RepoManager.RegRepo.GenerateManualRett(col.Col_Id, (DateTime)group.Key, CorrectionTypeEnum.CorrectionMinus, TimeSpan.FromMinutes(Math.Abs(minutesToTake)), (int)gRegs.Key);
                                 manualRegToAdd.Add(singRett);
                             }
-                            //else if (sum < dayDuration && !customization)
-                            //{
-                            //    Reg singRett = RepoManager.RegRepo.GenerateManualRett(col.Col_Id, (DateTime)group.Key, CorrectionTypeEnum.CorrectionPlus, TimeSpan.FromMinutes(Math.Abs(minutesToTake)), (int)gRegs.Key);
-                            //    manualRegToAdd.Add(singRett);
-                            //}
+                            else if (sum < dayDuration && !customization)
+                            {
+                                Reg singRett = RepoManager.RegRepo.GenerateManualRett(col.Col_Id, (DateTime)group.Key, CorrectionTypeEnum.CorrectionPlus, TimeSpan.FromMinutes(Math.Abs(minutesToTake)), (int)gRegs.Key);
+                                manualRegToAdd.Add(singRett);
+                            }
                         }
                     }
 

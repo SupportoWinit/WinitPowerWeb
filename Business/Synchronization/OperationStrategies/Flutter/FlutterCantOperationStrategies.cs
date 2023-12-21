@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using Domain;
 using Business.Repository;
 using System.Data.Entity;
+using Business.Repository.Custom;
 
 namespace Business.Synchronization.OperationStrategies.Flutter
 {
@@ -29,6 +30,8 @@ namespace Business.Synchronization.OperationStrategies.Flutter
 
             JArray toShipEntities = new JArray();
 
+            double raggio = RepoManager.ParamRepo.GetAll().First().RaggioGpsDefault.Value;
+
             foreach (var cant in entities)
             {
                 JObject entity = new JObject();
@@ -38,6 +41,14 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 entity.Add("Latitudine", cant.LatitudineGps_Can);
                 entity.Add("Longitudine", cant.LongitudineGps_Can);
+                if (cant.RaggioGps_Can > 0)
+                {
+                    entity.Add("Raggio", cant.RaggioGps_Can);
+                }
+                else
+                {
+                    entity.Add("Raggio", raggio);
+                }
                 toShipEntities.Add(entity);
             }
 
@@ -60,6 +71,8 @@ namespace Business.Synchronization.OperationStrategies.Flutter
 
             JArray toShipEntities = new JArray();
 
+            double raggio = RepoManager.ParamRepo.GetAll().First().RaggioGpsDefault.Value;
+
             foreach (var cant in entities)
             {
                 JObject entity = new JObject();
@@ -69,6 +82,13 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 entity.Add("Latitudine", cant.LatitudineGps_Can);
                 entity.Add("Longitudine", cant.LongitudineGps_Can);
+                if (cant.RaggioGps_Can > 0)
+                {
+                    entity.Add("Raggio", cant.RaggioGps_Can);
+                }
+                else {
+                    entity.Add("Raggio", raggio);
+                }
                 toShipEntities.Add(entity);
             }
 
@@ -89,6 +109,8 @@ namespace Business.Synchronization.OperationStrategies.Flutter
 
             JArray toShipEntities = new JArray();
 
+            double raggio = RepoManager.ParamRepo.GetAll().First().RaggioGpsDefault.Value;
+
             foreach (var cant in entities)
             {
                 JObject entity = new JObject();
@@ -98,6 +120,14 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 entity.Add("Latitudine", cant.LatitudineGps_Can);
                 entity.Add("Longitudine", cant.LongitudineGps_Can);
+                if (cant.RaggioGps_Can > 0)
+                {
+                    entity.Add("Raggio", cant.RaggioGps_Can);
+                }
+                else
+                {
+                    entity.Add("Raggio", raggio);
+                }
                 toShipEntities.Add(entity);
             }
 

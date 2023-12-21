@@ -362,6 +362,37 @@ namespace PowerWeb.Modules
 
             PowerWebService.FillEntityProperties(initCant, e.NewValues);
             RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(initCant);
+            #region Gestione GPS
+            bool isToCalculateLatLong = true;
+
+            if (RepoManager.ParamRepo.ParametersRow.Flag_GPS == 1)
+            //Nel caso in cui sia attivata la Gestione GPS in CANT 
+            {
+
+                if ((isToCalculateLatLong || initCant.LongitudineGps_Can == 0.0d || initCant.LatitudineGps_Can == 0.0d))
+                //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
+                //Ricalcola la LAT/LONG usando BING 
+                {
+                    Location geocode = BusinessService.GetGeocode(initCant.GeocodeAddress);
+                    if (geocode != null)
+                    {
+                        initCant.LatitudineGps_Can = geocode.Point.Coordinates[0];
+                        initCant.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                    }
+                }
+                //se is to calculate è true allora vado a generarmi l'indirizzo per la tab dist
+                if (isToCalculateLatLong && RepoManager.ParamRepo.ParametersRow.Tipo_Assegnazione_KMMinuti == 2)
+                //Nel caso in cui il Flag di Ricalcolo Lat/Long sia True e il Flag di Calcolo TAB_DISTANZE sia = 2 (CALCULATE)
+                //CANCELLA TUUTI gli eventuali Record esistenti con quel Cantiere con Chiave = G + Chiave Partenza e/o Chiave Arrivo = Cap/Comune/Indirizzo
+                {
+                    var cantAddress = "";
+                    cantAddress = string.Format("{0} | {1} | {2}", initCant.Luogo_Can, initCant.Indirizzo_Can, initCant.Cap_Can);
+                    var tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
+                    var toBeDeletedDistances = RepoManager.Tab_DistRepo.Find(td => td.Tab_Decod_Id == tabDecod.Tab_Decod_Id && (td.Arrivo_Tab_Dist == cantAddress || td.Partenza_Tab_Dist == cantAddress));
+                    RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
+                }
+            }
+            #endregion
 
             if (RepoManager.ParamRepo.ParametersRow.Attiva_Num_Aut_Can)
             {

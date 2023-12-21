@@ -30,7 +30,24 @@
       <modify  value="/api/ManagePowerWebCant" />
       <delete  value="/api/ManagePowerWebCant" />
     </OperationStrategy>
-    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="1">
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
+      <create  value="/api/ManagePowerWebCol" />
+      <modify  value="/api/ManagePowerWebCol" />
+      <delete  value="/api/ManagePowerWebCol" />
+    </OperationStrategy>
+  </Synch>
+
+  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="1" >
+    <HostConfig host="mobile.clockapp.it" port="80" protocol="http"/>
+    <ExtraInfos>
+      <IdCliente  value="47" />
+    </ExtraInfos>
+    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.Flutter.FlutterCantOperationStrategies,Business" enabled="1">
+      <create  value="/app/ws/insertCantieri" />
+      <modify  value="/app/ws/updateCantieri" />
+      <delete  value="/app/ws/deleteCantieri" />
+    </OperationStrategy>
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
       <create  value="/api/ManagePowerWebCol" />
       <modify  value="/api/ManagePowerWebCol" />
       <delete  value="/api/ManagePowerWebCol" />
@@ -41,12 +58,22 @@
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="boschrexroth" />
-      <pw value="Power2017W!" />
-      <idTenant value="1465" />
+      <uid  value="DolomitiServizi" />
+      <pw value="Dolomiti2021!" />
+      <idTenant value="1902" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
+    </OperationStrategy>
+  </ExternalImport>
+  
+  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
+    <HostConfig host="mobile.clockapp.it" protocol="http" />
+    <ExtraInfos>
+      <IdCliente  value="97" />
+    </ExtraInfos>
+    <OperationStrategy >
+      <getTimbrature  value="/app/ws/Winit" />
     </OperationStrategy>
   </ExternalImport>
   
