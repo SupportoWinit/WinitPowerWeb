@@ -204,15 +204,6 @@ namespace PowerWeb
         protected global::DevExpress.Web.ASPxEditors.ASPxButton btnSavePrintLayout;
 
         /// <summary>
-        /// Controllo btnDeletePrintLayout.
-        /// </summary>
-        /// <remarks>
-        /// Campo generato automaticamente.
-        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
-        /// </remarks>
-        protected global::DevExpress.Web.ASPxEditors.ASPxButton btnDeletePrintLayout;
-
-        /// <summary>
         /// Controllo lblPrintCover.
         /// </summary>
         /// <remarks>

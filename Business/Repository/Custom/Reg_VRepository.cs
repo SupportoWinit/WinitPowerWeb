@@ -3384,15 +3384,45 @@ namespace Business.Repository.Custom
                                             {
                                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DurationTrip) == 1)
                                                 {
-                                                    int minuti = (int)routeResult.TravelDistance;
-                                                    distRow = new Tab_Dist()
+                                                    List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantU.Cant_Id).ToList();
+                                                    int minuti = 0;
+                                                    if (cantiere.First().Note_Can == "1.5")
                                                     {
-                                                        Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                        Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                        Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                        KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                                        Minuti_Tab_Dist = minuti,
-                                                    };
+                                                        minuti = (int)routeResult.TravelDistance;
+                                                        minuti = (int)(minuti * 1.5);
+                                                        distRow = new Tab_Dist()
+                                                        {
+                                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
+                                                            Minuti_Tab_Dist = minuti,
+                                                        };
+                                                    }
+                                                    else if (cantiere.First().Note_Can == "2")
+                                                    {
+                                                        minuti = (int)routeResult.TravelDistance;
+                                                        minuti = (int)(minuti * 2);
+                                                        distRow = new Tab_Dist()
+                                                        {
+                                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
+                                                            Minuti_Tab_Dist = minuti,
+                                                        };
+                                                    }
+                                                    else {
+                                                        minuti = (int)routeResult.TravelDistance;
+                                                        distRow = new Tab_Dist()
+                                                        {
+                                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
+                                                            Minuti_Tab_Dist = minuti,
+                                                        };
+                                                    }
                                                 }
                                                 else {
                                                     distRow = new Tab_Dist()
@@ -6167,7 +6197,8 @@ namespace Business.Repository.Custom
                         foreach (var regvRowsByCol in regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.ColId).ToList())
                         {
                             DateTime ultimo = fine.EndOfMonth();
-                            if (!fine.Equals(ultimo))
+                            #region Generazione riga se si sta esportando il mese intero
+                            if (fine.Day != ultimo.Day)
                             {
                                 // creo il documento
                                 var document = new XmlExportsData.Fornitura();
@@ -6191,35 +6222,38 @@ namespace Business.Repository.Custom
                                         // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
                                         foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
                                         {
-                                            // inizializzazione della riga rapportino
-                                            Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
-
-                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
-                                            // compilazione dei dati di riga
-                                            //newRow.number = rowsNumber;
-                                            string motivazione = "01";
-                                            if (regv.Motivazione != "" && regv.Motivazione != null)
+                                            if (regv.CantId > 0 && regv.CantId != 0) 
                                             {
-                                                motivazione = regv.Motivazione;
-                                            }
-                                            matricolaCol = collaboratore.First().Matricola_Col;
-                                            newRow.CodGiustificativoUfficiale = motivazione;
-                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
-                                            newRow.Data = data[0];
-                                            newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(), 2);
-                                            newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
-                                            int centesimi = (regv.DurataMinuti * 100) / 60;
-                                            newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
-                                            newRow.GiornoDiRiposo = "N";
-                                            newRow.GiornoChiusuraStraordinari = "N";
+                                                // inizializzazione della riga rapportino
+                                                Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
 
-                                            // aggiunta della riga alla testata
-                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
-                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
-                                            document.Dipendente.Masters.Master.Add(newRow);
+                                                Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                // compilazione dei dati di riga
+                                                //newRow.number = rowsNumber;
+                                                string motivazione = "01";
+                                                if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                {
+                                                    motivazione = regv.Motivazione;
+                                                }
+                                                matricolaCol = collaboratore.First().Matricola_Col;
+                                                newRow.CodGiustificativoUfficiale = motivazione;
+                                                string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                newRow.Data = data[0];
+                                                newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(), 2);
+                                                newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
+                                                int centesimi = (regv.DurataMinuti * 100) / 60;
+                                                newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                newRow.GiornoDiRiposo = "N";
+                                                newRow.GiornoChiusuraStraordinari = "N";
 
-                                            // incremento del numero di linee
-                                            rowsNumber++;
+                                                // aggiunta della riga alla testata
+                                                document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
+                                                document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                document.Dipendente.Masters.Master.Add(newRow);
+
+                                                // incremento del numero di linee
+                                                rowsNumber++;
+                                            }                                            
                                         }
                                     }
                                 }
@@ -6228,38 +6262,36 @@ namespace Business.Repository.Custom
                                 //vociRetr.CodVoceUfficiale = "000370";
                                 //document.Dipendente.VociRetributive.Add(vociRetr);
 
-                                foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
+                                if (matricolaCol != "")
                                 {
-                                    // calcolo della data attualmente in processo (formato stringa)
-                                    string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");
+                                    // calcolo il nome del file preparato per Perfetto
+                                    string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
+                                    matricolaCol = "";
 
-                                    // inizializzazione del numero di righe in processo
-                                    int rowsNumber = 0;
+                                    // serializzazione e salvataggio del rapportino generato
+                                    var xsn = new XmlSerializerNamespaces();
+                                    xsn.Add("", "");
+                                    var serializer = new XmlSerializer(typeof(XmlExportsData.Fornitura));
+                                    if (!Directory.Exists(folderpath))
+                                        Directory.CreateDirectory(folderpath);
+
+                                    using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
+                                    using (var writer = new ScsWriter(textWriter))
+                                    {
+                                        writer.Formatting = Formatting.Indented;
+
+                                        serializer.Serialize(writer, document, xsn);
+                                        writer.Close();
+                                        textWriter.Close();
+                                    }
+
+                                    reportsFileName.Add(Path.Combine(folderpath, currentFileName));
                                 }
-
-                                // calcolo il nome del file preparato per Perfetto
-                                string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
-
-                                // serializzazione e salvataggio del rapportino generato
-                                var xsn = new XmlSerializerNamespaces();
-                                xsn.Add("", "");
-                                var serializer = new XmlSerializer(typeof(XmlExportsData.Fornitura));
-                                if (!Directory.Exists(folderpath))
-                                    Directory.CreateDirectory(folderpath);
-
-                                using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
-                                using (var writer = new ScsWriter(textWriter))
-                                {
-                                    writer.Formatting = Formatting.Indented;
-
-                                    serializer.Serialize(writer, document, xsn);
-                                    writer.Close();
-                                    textWriter.Close();
-                                }
-
-                                reportsFileName.Add(Path.Combine(folderpath, currentFileName));
                             }
-                            else {
+                            #endregion
+                            #region Generazione parziale del mese
+                            else
+                            {
                                 var document = new XmlExportsData.Scs.Fornitura();
                                 // viene generato un master per ogni data all'interno della stessa commessa
                                 var master = new Business.XmlExportsData.Scs.XmlMaster();
@@ -6281,35 +6313,38 @@ namespace Business.Repository.Custom
                                         // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
                                         foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
                                         {
-                                            // inizializzazione della riga rapportino
-                                            Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
-
-                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
-                                            // compilazione dei dati di riga
-                                            //newRow.number = rowsNumber;
-                                            string motivazione = "01";
-                                            if (regv.Motivazione != "" && regv.Motivazione != null)
+                                            if (regv.CantId > 0 && regv.CantId != 0)
                                             {
-                                                motivazione = regv.Motivazione;
+                                                // inizializzazione della riga rapportino
+                                                Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+
+                                                Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                // compilazione dei dati di riga
+                                                //newRow.number = rowsNumber;
+                                                string motivazione = "01";
+                                                if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                {
+                                                    motivazione = regv.Motivazione;
+                                                }
+                                                matricolaCol = collaboratore.First().Matricola_Col;
+                                                newRow.CodGiustificativoUfficiale = motivazione;
+                                                string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                newRow.Data = data[0];
+                                                newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(), 2);
+                                                newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
+                                                int centesimi = (regv.DurataMinuti * 100) / 60;
+                                                newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                newRow.GiornoDiRiposo = "N";
+                                                newRow.GiornoChiusuraStraordinari = "N";
+
+                                                // aggiunta della riga alla testata
+                                                document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
+                                                document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                document.Dipendente.Masters.Master.Add(newRow);
+
+                                                // incremento del numero di linee
+                                                rowsNumber++;
                                             }
-                                            matricolaCol = collaboratore.First().Matricola_Col;
-                                            newRow.CodGiustificativoUfficiale = motivazione;
-                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
-                                            newRow.Data = data[0];
-                                            newRow.NumOre = CommonService.AggiungiZeriASinistra(regv.DurataOre.ToString(), 2);
-                                            newRow.NumMinuti = CommonService.AggiungiZeriASinistra(regv.DurataMinuti.ToString(), 2);
-                                            int centesimi = (regv.DurataMinuti * 100) / 60;
-                                            newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
-                                            newRow.GiornoDiRiposo = "N";
-                                            newRow.GiornoChiusuraStraordinari = "N";
-
-                                            // aggiunta della riga alla testata
-                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
-                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
-                                            document.Dipendente.Masters.Master.Add(newRow);
-
-                                            // incremento del numero di linee
-                                            rowsNumber++;
                                         }
                                     }
 
@@ -6318,60 +6353,68 @@ namespace Business.Repository.Custom
                                         // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
                                         foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
                                         {
-                                            // inizializzazione della riga rapportino
-                                            Business.XmlExportsData.Scs.ForzaturaZoneCantieri newRow = new Business.XmlExportsData.Scs.ForzaturaZoneCantieri();
-
-                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
-                                            // compilazione dei dati di riga
-                                            //newRow.number = rowsNumber;
-                                            string motivazione = "01";
-                                            if (regv.Motivazione != "" && regv.Motivazione != null)
+                                            if (regv.CantId > 0 && regv.CantId != 0)
                                             {
-                                                motivazione = regv.Motivazione;
+                                                // inizializzazione della riga rapportino
+                                                Business.XmlExportsData.Scs.ForzaturaZoneCantieri newRow = new Business.XmlExportsData.Scs.ForzaturaZoneCantieri();
+
+                                                Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                // compilazione dei dati di riga
+                                                //newRow.number = rowsNumber;
+                                                string motivazione = "01";
+                                                if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                {
+                                                    motivazione = regv.Motivazione;
+                                                }
+                                                matricolaCol = collaboratore.First().Matricola_Col;
+                                                string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                newRow.DataMovimento = data[0];
+                                                string posizione = "000";
+                                                if (cantiere.Note_Can != "" && cantiere.Note_Can != null) {
+                                                    posizione = cantiere.Note_Can;
+                                                }
+                                                newRow.IdPosizione = posizione;
+                                                string codice = "000000";
+                                                if (cantiere.Codice_Commessa_Can != "" && cantiere.Codice_Commessa_Can != null) {
+                                                    codice = cantiere.Codice_Commessa_Can;
+                                                }
+                                                newRow.CodiceCantiere = codice;
+
+                                                // aggiunta della riga alla testata
+                                                document.Dipendente.ForzatureZoneCantieri.Add(newRow);
+
+                                                // incremento del numero di linee
+                                                rowsNumber++;
                                             }
-                                            matricolaCol = collaboratore.First().Matricola_Col;
-                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
-                                            newRow.DataMovimento = data[0];
-                                            newRow.IdPosizione = "";
-                                            newRow.CodiceCantiere = cantiere.Codice_Gestionale_Can;
-
-                                            // aggiunta della riga alla testata
-                                            document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
-                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
-                                            document.Dipendente.ForzatureZoneCantieri.Add(newRow);
-
-                                            // incremento del numero di linee
-                                            rowsNumber++;
                                         }
                                     }
                                 }
+                                if (matricolaCol != "") {
+                                    // calcolo il nome del file preparato per Perfetto
+                                    string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
+                                    matricolaCol = "";
 
+                                    // serializzazione e salvataggio del rapportino generato
+                                    var xsn = new XmlSerializerNamespaces();
+                                    xsn.Add("", "");
+                                    var serializer = new XmlSerializer(typeof(XmlExportsData.Scs.Fornitura));
+                                    if (!Directory.Exists(folderpath))
+                                        Directory.CreateDirectory(folderpath);
 
-                                // calcolo il nome del file preparato per Perfetto
-                                string currentFileName = String.Format("{0}{1}", matricolaCol, XmlToPerfettoConstants.ReturnXmlExtension);
+                                    using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
+                                    using (var writer = new ScsWriter(textWriter))
+                                    {
+                                        writer.Formatting = Formatting.Indented;
 
-                                // serializzazione e salvataggio del rapportino generato
-                                var xsn = new XmlSerializerNamespaces();
-                                xsn.Add("", "");
-                                var serializer = new XmlSerializer(typeof(XmlExportsData.Scs.Fornitura));
-                                if (!Directory.Exists(folderpath))
-                                    Directory.CreateDirectory(folderpath);
+                                        serializer.Serialize(writer, document, xsn);
+                                        writer.Close();
+                                        textWriter.Close();
+                                    }
 
-                                using (TextWriter textWriter = new StreamWriter(Path.Combine(folderpath, currentFileName)))
-                                using (var writer = new ScsWriter(textWriter))
-                                {
-                                    writer.Formatting = Formatting.Indented;
-
-                                    serializer.Serialize(writer, document, xsn);
-                                    writer.Close();
-                                    textWriter.Close();
-                                }
-
-                                reportsFileName.Add(Path.Combine(folderpath, currentFileName));
+                                    reportsFileName.Add(Path.Combine(folderpath, currentFileName));
+                                } 
                             }
-                            
-
-                            
+                            #endregion
                         }
 
                         // generazione dell'oggetto envelope da scrivere
@@ -6381,14 +6424,14 @@ namespace Business.Repository.Custom
                         if (envelope != default(Business.XmlExportsData.Scs.Envelope))
                         {
                             using (var envelopeWriter = new StreamWriter(Path.Combine(folderpath, XmlToPerfettoConstants.EnvelopeFileName)))
-                            using (var writer = new PerfettoWriter(envelopeWriter))
+                            using (var writer = new ScsWriter(envelopeWriter))
                             {
                                 try
                                 {
                                     writer.Formatting = Formatting.Indented;
 
                                     // Serialize the object, and close the TextWriter
-                                    var serializer = new XmlSerializer(typeof(Business.XmlExportsData.Perfetto.Envelope));
+                                    var serializer = new XmlSerializer(typeof(Business.XmlExportsData.Scs.Envelope));
                                     serializer.Serialize(writer, envelope);
                                     writer.Close();
                                     envelopeWriter.Close();

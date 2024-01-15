@@ -994,8 +994,8 @@ namespace PowerWeb
 
                 SetGridViewEditingMode();
             }
-
-            btnDeletePrintLayout.Visible = true;
+            //if (PowerWebContext.Current.User.Codice_Utente != "WINIT")
+            //    btnDeletePrintLayout.Visible = false;
             btnSavePrintLayout.Visible = true;
         }
 

@@ -8,7 +8,7 @@
 <%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxUploadControl" TagPrefix="dx" %>
 <%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxTimer" TagPrefix="dx" %>
 
-<script type="text/javascript" src="http://www.bing.com/api/maps/mapcontrol"></script>
+<script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol"></script>
 
 <script type="text/javascript">
     //#region --------------- Gestione CASCADE----------------------------------------
