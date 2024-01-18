@@ -107,6 +107,7 @@
             if (typeof btnExportXLSX != 'undefined') {
                 btnExportXLSX.SetVisible(isVisible);
             }
+            
         }
 
         function grid_OnEndCallback(s, e) {

@@ -6373,7 +6373,7 @@ namespace Business.Repository.Custom
                                                 if (cantiere.Note_Can != "" && cantiere.Note_Can != null) {
                                                     posizione = cantiere.Note_Can;
                                                 }
-                                                newRow.IdPosizione = posizione;
+                                                newRow.IdPosizione = CommonService.AggiungiZeriASinistra(posizione, 3);
                                                 string codice = "000000";
                                                 if (cantiere.Codice_Commessa_Can != "" && cantiere.Codice_Commessa_Can != null) {
                                                     codice = cantiere.Codice_Commessa_Can;

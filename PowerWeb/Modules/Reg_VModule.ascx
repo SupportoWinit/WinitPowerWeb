@@ -150,7 +150,7 @@
 
         bingMap = new Microsoft.Maps.Map(mapElement, { credentials: bingKey });
         bingMap.setView({ mapTypeId: Microsoft.Maps.MapTypeId.road });
-
+        
 
         if (currentLat && currentLon) {
             var currentLatValue = parseFloat(currentLat.replace(",", "."));

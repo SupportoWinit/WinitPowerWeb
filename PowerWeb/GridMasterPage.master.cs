@@ -1072,6 +1072,10 @@ namespace PowerWeb
                 if (GeoLocationModule != null && (RepoManager.ParamRepo.ParametersRow.Flag_GPS != 0 || RepoManager.ParamRepo.ParametersRow.Abilita_GPS))
                     btnShowMap.Visible = true;
 
+                if (GridModule.EntityType == typeof(Reg_V)) {
+                    btnShowMap.Visible = false;
+                }
+
                 //Attiva il Bottone che permette la scelta dell'Export Custom
                 if (ExportXLSXModule == null)
                     btnExportXLSX.Visible = false;

@@ -70,7 +70,7 @@ namespace Business.Synchronization.Implementations
             {
                 modified = Strategies.ExecuteModifyStrategy(modifiedEntities, this.connectionConfig);
                 foreach (JObject json in modified)
-                {
+                { 
                     externalBridge.Post(json, apiPaths["modify"]);
                 }
             }
