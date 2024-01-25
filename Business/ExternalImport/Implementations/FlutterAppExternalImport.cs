@@ -10,15 +10,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls.WebParts;
 
 namespace Business.ExternalImport.Implementations
 {
     class FlutterAppExternalImport : IExternalImport
     {
         private FlutterAppHttpModule bridge;
+        private FlutterAppHttpModuleOld bridgeOld;
         private IEnumerable<FlutterAppReg> registrazioni;
+        private IEnumerable<FlutterAppRegOld> registrazioniOld;
         private IRegFileCreator<FlutterAppReg> fileWriter;
-
+        private string[] ids = new string[2];
+ 
         /// <summary>
         /// Container per le varie stringhe di configurazione dell'httpClient
         /// </summary>
@@ -36,7 +40,12 @@ namespace Business.ExternalImport.Implementations
             this.apiPaths = apiPaths;
 
             bridge = new FlutterAppHub();
-            bridge.Host = connectionConfig["host"];
+            bridgeOld = new FlutterAppHttpModuleOld();
+
+            string[] urls = new string[2];
+            urls = connectionConfig["host"].Split(',');
+            bridge.Host = urls[0];
+            bridge.Host = urls[1];
             fileWriter = new FlutterAppRegFileCreator();
         }
 
@@ -44,11 +53,12 @@ namespace Business.ExternalImport.Implementations
         public void GetTimbrature()
         {
             int index = RepoManager.ParamRepo.ParametersRow.Indice_Timbrature_FlutterApp;
+            ids = connectionConfig["IdCliente"].Split(',');
 
             registrazioni = bridge.Get<List<FlutterAppReg>>(CreateStandardPayload(index), apiPaths["getTimbrature"]);
-
+            registrazioniOld = bridgeOld.Get<List<FlutterAppRegOld>>(CreateStandardPayloadOld(index), apiPaths["getTimbrature"]);
             
-            if (registrazioni != null && registrazioni.Any())
+            if ((registrazioni != null && registrazioni.Any()) || (registrazioniOld != null && registrazioniOld.Any()))
             {
                 BusinessService.BackUpJsonObject(registrazioni, Common.Properties.Settings.Default.Files_Input_JSON_Backup_Path);
 
@@ -60,7 +70,17 @@ namespace Business.ExternalImport.Implementations
         {
             JObject request = JObject.FromObject(new
             {
-                IdCliente = connectionConfig["IdCliente"]
+                IdCliente = ids[0]
+            });
+
+            return request;
+        }
+
+        private JObject CreateStandardPayloadOld(int index)
+        {
+            JObject request = JObject.FromObject(new
+            {
+                IdCliente = ids[1]
             });
 
             return request;
@@ -73,7 +93,7 @@ namespace Business.ExternalImport.Implementations
 
         public void WriteToFile()
         {
-            fileWriter.WriteToFile(registrazioni);
+            fileWriter.WriteToFile(registrazioni,registrazioniOld);
         }
     }
 }

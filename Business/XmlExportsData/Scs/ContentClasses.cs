@@ -118,7 +118,7 @@ namespace Business.XmlExportsData.Scs
 
         private List<Voci> _lista2 = new List<Voci>();
 
-        private List<ForzaturaZoneCantieri> _lista3 = new List<ForzaturaZoneCantieri>();
+        private List<ZonaCantiere> _lista3 = new List<ZonaCantiere>();
 
         private string attribute = "";
 
@@ -154,12 +154,12 @@ namespace Business.XmlExportsData.Scs
             }
         }
 
-        public List<ForzaturaZoneCantieri> ForzatureZoneCantieri
+        public List<ZonaCantiere> ForzatureZoneCantieri
         {
             get
             {
                 if (_lista2 == null)
-                    _lista3 = new List<ForzaturaZoneCantieri>();
+                    _lista3 = new List<ZonaCantiere>();
 
                 return _lista3;
             }
@@ -395,7 +395,7 @@ namespace Business.XmlExportsData.Scs
         #endregion
     }
 
-    public class ForzaturaZoneCantieri
+    public class ZonaCantiere
     {
 
         #region Fields
@@ -420,7 +420,7 @@ namespace Business.XmlExportsData.Scs
         #endregion
 
         #region Constructor
-        public ForzaturaZoneCantieri()
+        public ZonaCantiere()
         {
 
         }

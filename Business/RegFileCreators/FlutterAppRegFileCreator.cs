@@ -41,7 +41,7 @@ namespace Business.RegFileCreators
                 );
         }
 
-        public void WriteToFile(IEnumerable<FlutterAppReg> unEncodedRegs)
+        public void WriteToFile(IEnumerable<FlutterAppReg> unEncodedRegs, IEnumerable<FlutterAppRegOld> unEncodedRegsOld)
         {
             if (unEncodedRegs == null || !unEncodedRegs.Any())
                 return;
@@ -60,6 +60,21 @@ namespace Business.RegFileCreators
                     var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
                 }
                 
+                regsToOrder.Add(var);
+            }
+
+            foreach (var regs in unEncodedRegsOld)
+            {
+                FlutterOrderedReg var = null;
+                if (regs.Value.First().CodicePru != "")
+                {
+                    var = new FlutterOrderedReg(regs.Nome, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                }
+                else
+                {
+                    var = new FlutterOrderedReg(regs.Nome, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                }
+
                 regsToOrder.Add(var);
             }
             regsToOrder = regsToOrder.OrderBy(reg => reg.CodiceFru).ThenBy(reg => reg.Dataord).ToList();

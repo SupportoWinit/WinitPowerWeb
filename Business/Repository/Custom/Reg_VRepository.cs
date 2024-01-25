@@ -8,8 +8,10 @@ using DevExpress.Data.Linq;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraPrinting.XamlExport;
 using DevExpress.XtraRichEdit.Import.Html;
+using DevExpress.XtraSpellChecker.Parser;
 using Domain;
 using log4net;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
@@ -6190,7 +6192,7 @@ namespace Business.Repository.Custom
 
                     if (regRowToProcess.Any())
                     {
-
+                        int mese = fine.Month;
                         string matricolaCol = "";
                         var totalCant = regRowToProcess.Where(regv => regv != null).GroupBy(regv => regv.CantMnemonic).Count();
                         regRowToProcess = regRowToProcess.OrderBy(regv => regv.DataReg).ToList();
@@ -6198,7 +6200,7 @@ namespace Business.Repository.Custom
                         {
                             DateTime ultimo = fine.EndOfMonth();
                             #region Generazione riga se si sta esportando il mese intero
-                            if (fine.Day != ultimo.Day)
+                            if (fine.Day == ultimo.Day)
                             {
                                 // creo il documento
                                 var document = new XmlExportsData.Fornitura();
@@ -6336,9 +6338,13 @@ namespace Business.Repository.Custom
                                                 newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
                                                 newRow.GiornoDiRiposo = "N";
                                                 newRow.GiornoChiusuraStraordinari = "N";
-
+                                                string codiceAzienda = "000000";
+                                                if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                {
+                                                    codiceAzienda = collaboratore.First().Note_Col;
+                                                }
                                                 // aggiunta della riga alla testata
-                                                document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Note_Col, 6);
+                                                document.Dipendente.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
                                                 document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
                                                 document.Dipendente.Masters.Master.Add(newRow);
 
@@ -6347,16 +6353,79 @@ namespace Business.Repository.Custom
                                             }
                                         }
                                     }
+                                }
+                                int i = 1;
+                                int giorni = 31;
+                                int month = 0;
+                                int anno = 0;
+                                string lastCant = "000000";
+                                string LastPosizione = "000";
+                                foreach (var regvRowsByDate in regvRowsByCol.GroupBy(regv => regv.DataReg))
+                                {
+                                    // calcolo della data attualmente in processo (formato stringa)
+                                    string currentRegVDate = regvRowsByDate.Key.ToString("yyyy-MM-dd");                                
+                                    if (mese == 2) {
+                                        giorni = 29;
+                                    } else if (mese == 11 || mese == 4 || mese == 6 || mese == 9) {
+                                        giorni = 30;
+                                    }
+
+                                    if (i != regvRowsByDate.Key.Day)
+                                    {
+                                        if (i< regvRowsByDate.Key.Day)
+                                        {
+                                            while (i < regvRowsByDate.Key.Day)
+                                            {
+                                                // inizializzazione della riga rapportino
+                                                Business.XmlExportsData.Scs.ZonaCantiere newRow = new Business.XmlExportsData.Scs.ZonaCantiere();
+                                                // compilazione dei dati di riga
+                                                matricolaCol = collaboratore.First().Matricola_Col;
+                                                if (i < 10)
+                                                {
+                                                    if (mese < 10)
+                                                    {
+                                                        newRow.DataMovimento = "" + regvRowsByDate.Key.Year + "-0" + regvRowsByDate.Key.Month + "-0" + i;
+                                                    }
+                                                    else {
+                                                        newRow.DataMovimento = "" + regvRowsByDate.Key.Year + "-" + regvRowsByDate.Key.Month + "-0" + i;
+                                                    }
+                                                    
+                                                }
+                                                else
+                                                {
+                                                    if (mese < 10)
+                                                    {
+                                                        newRow.DataMovimento = "" + regvRowsByDate.Key.Year + "-0" + regvRowsByDate.Key.Month + "-" + i;
+                                                    }
+                                                    else {
+                                                        newRow.DataMovimento = "" + regvRowsByDate.Key.Year + "-" + regvRowsByDate.Key.Month + "-" + i;
+                                                    }
+                                                    
+                                                }
+                                                newRow.IdPosizione = CommonService.AggiungiZeriASinistra(LastPosizione, 3);
+                                                newRow.CodiceCantiere = lastCant;
+
+                                                // aggiunta della riga alla testata
+                                                document.Dipendente.ForzatureZoneCantieri.Add(newRow);
+                                                i++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            i++;
+                                        }
+                                    }
 
                                     foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
                                     {
+                                        string test = regvRowsByDateAndCol.Key;
                                         // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
                                         foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
                                         {
                                             if (regv.CantId > 0 && regv.CantId != 0)
                                             {
                                                 // inizializzazione della riga rapportino
-                                                Business.XmlExportsData.Scs.ForzaturaZoneCantieri newRow = new Business.XmlExportsData.Scs.ForzaturaZoneCantieri();
+                                                Business.XmlExportsData.Scs.ZonaCantiere newRow = new Business.XmlExportsData.Scs.ZonaCantiere();
 
                                                 Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
                                                 // compilazione dei dati di riga
@@ -6373,21 +6442,37 @@ namespace Business.Repository.Custom
                                                 if (cantiere.Note_Can != "" && cantiere.Note_Can != null) {
                                                     posizione = cantiere.Note_Can;
                                                 }
+                                                LastPosizione = posizione;
                                                 newRow.IdPosizione = CommonService.AggiungiZeriASinistra(posizione, 3);
                                                 string codice = "000000";
                                                 if (cantiere.Codice_Commessa_Can != "" && cantiere.Codice_Commessa_Can != null) {
                                                     codice = cantiere.Codice_Commessa_Can;
                                                 }
                                                 newRow.CodiceCantiere = codice;
-
+                                                lastCant = codice;
                                                 // aggiunta della riga alla testata
                                                 document.Dipendente.ForzatureZoneCantieri.Add(newRow);
-
-                                                // incremento del numero di linee
-                                                rowsNumber++;
+                                                month = regv.DataReg.Month;
+                                                anno = regv.DataReg.Year;
                                             }
+
                                         }
                                     }
+                                    i++;  
+                                }
+                                while (i <= giorni)
+                                {
+                                    // inizializzazione della riga rapportino
+                                    Business.XmlExportsData.Scs.ZonaCantiere newRow = new Business.XmlExportsData.Scs.ZonaCantiere();
+                                    // compilazione dei dati di riga
+                                    matricolaCol = collaboratore.First().Matricola_Col;
+                                    newRow.DataMovimento = "" + anno + "-" + month + "-" + i;
+                                    newRow.IdPosizione = CommonService.AggiungiZeriASinistra(LastPosizione, 3);
+                                    newRow.CodiceCantiere = lastCant;
+
+                                    // aggiunta della riga alla testata
+                                    document.Dipendente.ForzatureZoneCantieri.Add(newRow);
+                                    i++;
                                 }
                                 if (matricolaCol != "") {
                                     // calcolo il nome del file preparato per Perfetto
