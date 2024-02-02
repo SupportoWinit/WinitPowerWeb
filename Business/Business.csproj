@@ -194,8 +194,9 @@
     <Compile Include="ExternalImport\IExternalImport.cs" />
     <Compile Include="ExternalImport\Implementations\FlutterAppExternalImport.cs" />
     <Compile Include="HttpHub\FlutterAppHttpModule.cs" />
-    <Compile Include="HttpHub\HttpHubs\FlutterAppHttpModuleOld.cs" />
+    <Compile Include="HttpHub\FlutterAppHttpModuleOld.cs" />
     <Compile Include="HttpHub\HttpHubs\FlutterAppHub.cs" />
+    <Compile Include="HttpHub\HttpHubs\FlutterAppHubOld.cs" />
     <Compile Include="HttpHub\HttpHubs\GeoBadgeHub.cs" />
     <Compile Include="HttpHub\HttpModule.cs" />
     <Compile Include="ImportModules\CantImportModule\Factory\CantImportFactory.cs" />

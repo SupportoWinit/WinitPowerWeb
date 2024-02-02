@@ -797,10 +797,17 @@ namespace PowerWeb.Modules
 
                                     response.ContentType = "application/zip";
                                     response.AddHeader("Accept-Header", fs.Length.ToString(CultureInfo.InvariantCulture));
-                                    if (comapny == ComapanyNameEnum.Sogedi)
-                                        response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Sogedi", Path.GetFileName(outputFilePath)));
-                                    else if (comapny == ComapanyNameEnum.Tiseco)
-                                        response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Tiseco", Path.GetFileName(outputFilePath)));
+                                    if ((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Scs)
+                                    {
+                                        response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Scs", Path.GetFileName(outputFilePath)));
+                                    }
+                                    else
+                                    {
+                                        if (comapny == ComapanyNameEnum.Sogedi)
+                                            response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Sogedi", Path.GetFileName(outputFilePath)));
+                                        else if (comapny == ComapanyNameEnum.Tiseco)
+                                            response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Tiseco", Path.GetFileName(outputFilePath)));
+                                    }
                                     response.Cache.SetCacheability(HttpCacheability.NoCache);
                                     response.AddHeader("Content-Length", fs.Length.ToString(CultureInfo.InvariantCulture));
                                     var fsBytes = new byte[fs.Length];

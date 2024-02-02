@@ -1668,6 +1668,7 @@ namespace PowerWeb.Pages
 
                 from = CommonService.GetFirstMonthDay(period);
                 to = CommonService.GetLastMonthDay(period);
+                to = to.AddDays(1);
                 month = period.ToString("yyyy/MM");
 
                 #region Deduzione durata

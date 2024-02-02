@@ -14,9 +14,6 @@ namespace Business.DataClasses.FlutterAppDTOs
         [JsonProperty("name")]
         public string CodiceFru { get; set; }
 
-        [JsonProperty("name")]
-        public string Nome { get; set; }
-
         [JsonProperty("tecnologia")]
         public string tecnologia { get; set; }
 

@@ -116,7 +116,7 @@ namespace Business.XmlExportsData.Scs
 
         private Movimenti _lista = new Movimenti();
 
-        private List<Voci> _lista2 = new List<Voci>();
+        //private List<Voci> _lista2 = new List<Voci>();
 
         private List<ZonaCantiere> _lista3 = new List<ZonaCantiere>();
 
@@ -139,26 +139,26 @@ namespace Business.XmlExportsData.Scs
             set { _lista = value; }
         }
 
-        public List<Voci> VociRetributive
-        {
-            get
-            {
-                if (_lista2 == null)
-                    _lista2 = new List<Voci>();
-
-                return _lista2;
-            }
-            set
-            {
-                _lista2 = value;
-            }
-        }
+        //public List<Voci> VociRetributive
+        //{
+        //    get
+        //    {
+        //        if (_lista2 == null)
+        //            _lista2 = new List<Voci>();
+        //
+        //        return _lista2;
+        //    }
+        //    set
+        //    {
+        //        _lista2 = value;
+        //    }
+        //}
 
         public List<ZonaCantiere> ForzatureZoneCantieri
         {
             get
             {
-                if (_lista2 == null)
+                if (_lista3 == null)
                     _lista3 = new List<ZonaCantiere>();
 
                 return _lista3;

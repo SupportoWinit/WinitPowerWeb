@@ -293,17 +293,32 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             // calcolo del nome del foglio di lavoro da utilizzare
                             string currentWorksheetName = "";
+                            string nome = "";
                             if (ModelFirstEntity == ExcelModelSelectionTypeEnum.Cant)
                             {
                                 collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == groupedRegV.Value.First().Col_Id.Value).First();
                                 cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == groupedRegV.Value.First().Cant_Id.Value).First();
-                                currentWorksheetName = cantiere.Descrizione_Can;
+                                if (cantiere.Descrizione_Can.Length < 31)
+                                {
+                                    currentWorksheetName = cantiere.Descrizione_Can;
+                                }
+                                else {
+                                    nome = cantiere.Descrizione_Can.Substring(0,31);
+                                    currentWorksheetName = nome;
+                                }
                             }
                             else
                             {
                                 collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First();
                                 cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Codice_Cantiere == GetWorksheetName(groupedRegV.Value.First())).First();
-                                currentWorksheetName = collaboratore.CognomeNome_Col; ;
+                                if (collaboratore.CognomeNome_Col.Length < 31)
+                                {
+                                    currentWorksheetName = collaboratore.CognomeNome_Col;
+                                }
+                                else {
+                                    nome = collaboratore.CognomeNome_Col.Substring(0, 31);
+                                    currentWorksheetName = nome;
+                                }
                             }
                             
 

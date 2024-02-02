@@ -112,6 +112,7 @@
   <c ID="CustomizationEnum.Export56VersionEnum" Des="Indica la versione dell'export 56 presente nell'applicativo" Value="0" />
   <!-- Export56VersionEnum=0 Indica l'utilizzo della versione standard dell'export 56
   Export56VersionEnum=1 Indica l'utilizzo della versione Kleo dell'export 56 -->
+  <c ID="CustomizationEnum.DurationTrip" Des="Indica se utilizzare i dati anagrafici su base storica (cant var/col var) o sui dati anagrafici correnti" Value="1" />
   <!-- ********************************************************GESTIONE DELL'USO DI DATI STORICI NELL'EXPORT 56*********************************************************-->
   <c ID="CustomizationEnum.Export56HistoricUseEnum" Des="Indica se utilizzare i dati anagrafici su base storica (cant var/col var) o sui dati anagrafici correnti" Value="0" />
   <!-- Export56HistoricUseEnum=0 indica l'utilizzo dei dati sul base storica

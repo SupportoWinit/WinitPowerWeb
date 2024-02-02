@@ -40,11 +40,11 @@ namespace Business.ExternalImport.Implementations
             this.apiPaths = apiPaths;
 
             bridge = new FlutterAppHub();
-            bridgeOld = new FlutterAppHttpModuleOld();
+            bridgeOld = new FlutterAppHubOld();
 
             string[] urls = new string[2];
             urls = connectionConfig["host"].Split(',');
-            bridge.Host = urls[0];
+            bridgeOld.Host = urls[0];
             bridge.Host = urls[1];
             fileWriter = new FlutterAppRegFileCreator();
         }
@@ -60,9 +60,16 @@ namespace Business.ExternalImport.Implementations
             
             if ((registrazioni != null && registrazioni.Any()) || (registrazioniOld != null && registrazioniOld.Any()))
             {
-                BusinessService.BackUpJsonObject(registrazioni, Common.Properties.Settings.Default.Files_Input_JSON_Backup_Path);
+                if (registrazioni != null && registrazioni.Any()) {
+                    BusinessService.BackUpJsonObject(registrazioni, Common.Properties.Settings.Default.Files_Input_JSON_Backup_Path);
 
-                RepoManager.ParamRepo.SaveFlutterAppRegIndex(Math.Max(registrazioni.Max(c => c.Id) + 1, index));
+                    RepoManager.ParamRepo.SaveFlutterAppRegIndex(Math.Max(registrazioni.Max(c => c.Id) + 1, index));
+                }
+                if (registrazioniOld != null && registrazioniOld.Any()) {
+                    BusinessService.BackUpJsonObject(registrazioniOld, Common.Properties.Settings.Default.Files_Input_JSON_Backup_Path);
+
+                    RepoManager.ParamRepo.SaveFlutterAppRegIndex(Math.Max(registrazioniOld.Max(c => c.Id) + 1, index));
+                }
             }
         }
 
@@ -70,7 +77,7 @@ namespace Business.ExternalImport.Implementations
         {
             JObject request = JObject.FromObject(new
             {
-                IdCliente = ids[0]
+                IdCliente = ids[1]
             });
 
             return request;
@@ -80,7 +87,7 @@ namespace Business.ExternalImport.Implementations
         {
             JObject request = JObject.FromObject(new
             {
-                IdCliente = ids[1]
+                IdCliente = ids[0]
             });
 
             return request;

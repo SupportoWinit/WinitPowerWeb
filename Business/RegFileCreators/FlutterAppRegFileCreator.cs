@@ -43,7 +43,7 @@ namespace Business.RegFileCreators
 
         public void WriteToFile(IEnumerable<FlutterAppReg> unEncodedRegs, IEnumerable<FlutterAppRegOld> unEncodedRegsOld)
         {
-            if (unEncodedRegs == null || !unEncodedRegs.Any())
+            if ((unEncodedRegs == null || !unEncodedRegs.Any()) && (unEncodedRegsOld == null || !unEncodedRegsOld.Any()))
                 return;
 
             var regsToWrite = new List<string>();
@@ -68,11 +68,11 @@ namespace Business.RegFileCreators
                 FlutterOrderedReg var = null;
                 if (regs.Value.First().CodicePru != "")
                 {
-                    var = new FlutterOrderedReg(regs.Nome, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
                 }
                 else
                 {
-                    var = new FlutterOrderedReg(regs.Nome, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
                 }
 
                 regsToOrder.Add(var);

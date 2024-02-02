@@ -1,17 +1,19 @@
 ﻿//------------------------------------------------------------------------------
 // <generato automaticamente>
-//     Codice generato da uno strumento.
+//     Questo codice è stato generato da uno strumento.
 //
 //     Le modifiche a questo file possono causare un comportamento non corretto e verranno perse se
 //     il codice viene rigenerato. 
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace PowerWeb.Modules {
-    
-    
-    public partial class ColModule {
-        
+namespace PowerWeb.Modules
+{
+
+
+    public partial class ColModule
+    {
+
         /// <summary>
         /// Controllo gridSelectionChange.
         /// </summary>
@@ -20,7 +22,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback gridSelectionChange;
-        
+
         /// <summary>
         /// Controllo gvCol.
         /// </summary>
@@ -29,7 +31,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.ASPxGridView gvCol;
-        
+
         /// <summary>
         /// Controllo add.
         /// </summary>
@@ -38,7 +40,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.GridViewCommandColumnCustomButton add;
-        
+
         /// <summary>
         /// Controllo addClone.
         /// </summary>
@@ -47,7 +49,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.GridViewCommandColumnCustomButton addClone;
-        
+
         /// <summary>
         /// Controllo delete.
         /// </summary>
@@ -56,7 +58,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.GridViewCommandColumnCustomButton delete;
-        
+
         /// <summary>
         /// Controllo view.
         /// </summary>
@@ -65,7 +67,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxGridView.GridViewCommandColumnCustomButton view;
-        
+
         /// <summary>
         /// Controllo __ReferenceDateEdit.
         /// </summary>
@@ -74,7 +76,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit @__ReferenceDateEdit;
-        
+
         /// <summary>
         /// Controllo FlElaborate.
         /// </summary>
@@ -83,7 +85,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxFormLayout.ASPxFormLayout FlElaborate;
-        
+
         /// <summary>
         /// Controllo lblNColSel.
         /// </summary>
@@ -92,7 +94,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblNColSel;
-        
+
         /// <summary>
         /// Controllo lblNColSelValue.
         /// </summary>
@@ -101,7 +103,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblNColSelValue;
-        
+
         /// <summary>
         /// Controllo lblDal.
         /// </summary>
@@ -110,7 +112,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblDal;
-        
+
         /// <summary>
         /// Controllo deFrom.
         /// </summary>
@@ -119,7 +121,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit deFrom;
-        
+
         /// <summary>
         /// Controllo lblAl.
         /// </summary>
@@ -128,7 +130,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblAl;
-        
+
         /// <summary>
         /// Controllo deTo.
         /// </summary>
@@ -137,7 +139,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit deTo;
-        
+
         /// <summary>
         /// Controllo BtnLaunchElaborate.
         /// </summary>
@@ -146,7 +148,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnLaunchElaborate;
-        
+
         /// <summary>
         /// Controllo BtnDeleteTrips.
         /// </summary>
@@ -155,7 +157,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnDeleteTrips;
-        
+
         /// <summary>
         /// Controllo BtnDeleteRoundings.
         /// </summary>
@@ -164,7 +166,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnDeleteRoundings;
-        
+
         /// <summary>
         /// Controllo LblCol.
         /// </summary>
@@ -173,7 +175,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblCol;
-        
+
         /// <summary>
         /// Controllo CmbColToElaborate.
         /// </summary>
@@ -182,7 +184,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxComboBox CmbColToElaborate;
-        
+
         /// <summary>
         /// Controllo BtnLaunchExport56.
         /// </summary>
@@ -191,7 +193,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnLaunchExport56;
-        
+
         /// <summary>
         /// Controllo BtnTrips.
         /// </summary>
@@ -200,7 +202,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnTrips;
-        
+
         /// <summary>
         /// Controllo BtnRoundings.
         /// </summary>
@@ -209,7 +211,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnRoundings;
-        
+
         /// <summary>
         /// Controllo ASPxProgressBarElaborate.
         /// </summary>
@@ -218,7 +220,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxProgressBar ASPxProgressBarElaborate;
-        
+
         /// <summary>
         /// Controllo lblResult.
         /// </summary>
@@ -227,7 +229,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel lblResult;
-        
+
         /// <summary>
         /// Controllo flImport.
         /// </summary>
@@ -236,7 +238,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxFormLayout.ASPxFormLayout flImport;
-        
+
         /// <summary>
         /// Controllo uploader.
         /// </summary>
@@ -245,7 +247,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxUploadControl.ASPxUploadControl uploader;
-        
+
         /// <summary>
         /// Controllo ASPxButton1.
         /// </summary>
@@ -254,7 +256,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton ASPxButton1;
-        
+
         /// <summary>
         /// Controllo ImportProgressBar.
         /// </summary>
@@ -263,7 +265,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxProgressBar ImportProgressBar;
-        
+
         /// <summary>
         /// Controllo ASPxLabel1.
         /// </summary>
@@ -272,7 +274,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel ASPxLabel1;
-        
+
         /// <summary>
         /// Controllo FlAddNewAssociation.
         /// </summary>
@@ -281,7 +283,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxFormLayout.ASPxFormLayout FlAddNewAssociation;
-        
+
         /// <summary>
         /// Controllo LblNewAssociationPru.
         /// </summary>
@@ -290,7 +292,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblNewAssociationPru;
-        
+
         /// <summary>
         /// Controllo CmbPruToAssociate.
         /// </summary>
@@ -299,7 +301,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxComboBox CmbPruToAssociate;
-        
+
         /// <summary>
         /// Controllo LblNewAssociationCol.
         /// </summary>
@@ -308,7 +310,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblNewAssociationCol;
-        
+
         /// <summary>
         /// Controllo CmbColToAssociate.
         /// </summary>
@@ -317,7 +319,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxComboBox CmbColToAssociate;
-        
+
         /// <summary>
         /// Controllo LblNewAssociationDate.
         /// </summary>
@@ -326,7 +328,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblNewAssociationDate;
-        
+
         /// <summary>
         /// Controllo DeNewAssociationDate.
         /// </summary>
@@ -335,7 +337,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit DeNewAssociationDate;
-        
+
         /// <summary>
         /// Controllo BtnAddNewAssociation.
         /// </summary>
@@ -344,7 +346,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnAddNewAssociation;
-        
+
         /// <summary>
         /// Controllo InitMinutesAmmountPanel.
         /// </summary>
@@ -353,7 +355,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxRoundPanel.ASPxRoundPanel InitMinutesAmmountPanel;
-        
+
         /// <summary>
         /// Controllo LblNewMinutesAmmountValue.
         /// </summary>
@@ -362,7 +364,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblNewMinutesAmmountValue;
-        
+
         /// <summary>
         /// Controllo TxtNewMinutesAmmountValue.
         /// </summary>
@@ -371,7 +373,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxTextBox TxtNewMinutesAmmountValue;
-        
+
         /// <summary>
         /// Controllo BtnInitMinutesAmmountForSelecteds.
         /// </summary>
@@ -380,7 +382,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxButton BtnInitMinutesAmmountForSelecteds;
-        
+
         /// <summary>
         /// Controllo ChkBoxNegativeDuration.
         /// </summary>
@@ -389,7 +391,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxNegativeDuration;
-        
+
         /// <summary>
         /// Controllo cPing.
         /// </summary>
@@ -398,7 +400,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cPing;
-        
+
         /// <summary>
         /// Controllo tPing.
         /// </summary>
@@ -407,7 +409,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxTimer.ASPxTimer tPing;
-        
+
         /// <summary>
         /// Controllo cTrips.
         /// </summary>
@@ -416,7 +418,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cTrips;
-        
+
         /// <summary>
         /// Controllo cRoundings.
         /// </summary>
@@ -425,7 +427,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cRoundings;
-        
+
         /// <summary>
         /// Controllo tPingLoadingExport.
         /// </summary>
@@ -434,7 +436,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxTimer.ASPxTimer tPingLoadingExport;
-        
+
         /// <summary>
         /// Controllo cPingLoadingExport.
         /// </summary>
@@ -443,7 +445,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cPingLoadingExport;
-        
+
         /// <summary>
         /// Controllo tPingElaborate.
         /// </summary>
@@ -452,7 +454,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxTimer.ASPxTimer tPingElaborate;
-        
+
         /// <summary>
         /// Controllo cElaborate.
         /// </summary>
@@ -461,7 +463,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cElaborate;
-        
+
         /// <summary>
         /// Controllo pcShowMap.
         /// </summary>
@@ -470,7 +472,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxPopupControl.ASPxPopupControl pcShowMap;
-        
+
         /// <summary>
         /// Controllo cUplImportCommand.
         /// </summary>
@@ -479,7 +481,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cUplImportCommand;
-        
+
         /// <summary>
         /// Controllo cUplImportPing.
         /// </summary>
@@ -488,7 +490,7 @@ namespace PowerWeb.Modules {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallback.ASPxCallback cUplImportPing;
-        
+
         /// <summary>
         /// Controllo tUplImportPing.
         /// </summary>
