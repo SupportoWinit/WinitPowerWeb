@@ -528,6 +528,8 @@ namespace Business.Repository.Custom
                             // recupera il metodo di arrotondamento impostato nei parametri
                             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
 
+
+
                             // se sono impostati gli arrotondamenti per inizio-fine
                             if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
                             {
@@ -5706,300 +5708,303 @@ namespace Business.Repository.Custom
             // si procede all'elaborazione solamente se sono state passte delle timbrature
             if (nonGpsLines.Any())
             {
+                if (!(nonGpsLines.First() == "")) {
+                    // inizializzazione della personalizzazione che indica se autogenerare le attività di presidio all'uscita di specifici turni
+                    AutoGeneratePresidiumActivityEnum presidiumCustomization = (AutoGeneratePresidiumActivityEnum)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoGeneratePresidiumActivityEnum);
 
-                // inizializzazione della personalizzazione che indica se autogenerare le attività di presidio all'uscita di specifici turni
-                AutoGeneratePresidiumActivityEnum presidiumCustomization = (AutoGeneratePresidiumActivityEnum)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoGeneratePresidiumActivityEnum);
+                    // se la customizzazione dei presidi risulta attiva, si recuperano anche i relativi parametri
+                    List<string> presidiumTurns = new List<string>();
+                    int presidiumCantId = 0;
+                    if (presidiumCustomization == AutoGeneratePresidiumActivityEnum.Generate)
+                    {
+                        string presidiumTurnsTmp = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoGeneratePresidiumActivityEnum, "PresidiumTurnCodes");
+                        if (!String.IsNullOrEmpty(presidiumTurnsTmp))
+                            if (presidiumTurnsTmp.Contains("#"))
+                                presidiumTurns = presidiumTurnsTmp.Split('#').ToList();
+                            else
+                                presidiumTurns.Add(presidiumTurnsTmp);
 
-                // se la customizzazione dei presidi risulta attiva, si recuperano anche i relativi parametri
-                List<string> presidiumTurns = new List<string>();
-                int presidiumCantId = 0;
-                if (presidiumCustomization == AutoGeneratePresidiumActivityEnum.Generate)
-                {
-                    string presidiumTurnsTmp = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoGeneratePresidiumActivityEnum, "PresidiumTurnCodes");
-                    if (!String.IsNullOrEmpty(presidiumTurnsTmp))
-                        if (presidiumTurnsTmp.Contains("#"))
-                            presidiumTurns = presidiumTurnsTmp.Split('#').ToList();
-                        else
-                            presidiumTurns.Add(presidiumTurnsTmp);
+                        string presidiumCantCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoGeneratePresidiumActivityEnum, "PresidiumCantCode");
+                        Cant currentPresidiumCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Codice_Cantiere == presidiumCantCode);
+                        if (currentPresidiumCant != default(Cant))
+                            presidiumCantId = currentPresidiumCant.Cant_Id;
+                    }
 
-                    string presidiumCantCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoGeneratePresidiumActivityEnum, "PresidiumCantCode");
-                    Cant currentPresidiumCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Codice_Cantiere == presidiumCantCode);
-                    if (currentPresidiumCant != default(Cant))
-                        presidiumCantId = currentPresidiumCant.Cant_Id;
-                }
+                    #region DIZIONARIO RICERCA PRU-FRU
 
-                #region DIZIONARIO RICERCA PRU-FRU
+                    RepoManager.FruRepo.Context.Configuration.LazyLoadingEnabled = false;
+                    RepoManager.FruRepo.Context.Configuration.ProxyCreationEnabled = false;
 
-                RepoManager.FruRepo.Context.Configuration.LazyLoadingEnabled = false;
-                RepoManager.FruRepo.Context.Configuration.ProxyCreationEnabled = false;
+                    var pruFruYetProcessed = RepoManager.FruRepo.GetAll(true).Cast<Object>().ToDictionary(x => x.GetType().GetProperty("Codice_Fru").GetValue(x, null).ToString().ToUpper());
+                    pruFruYetProcessed = pruFruYetProcessed.Concat(RepoManager.PruRepo.GetAll(true).Cast<Object>().ToDictionary(x => x.GetType().GetProperty("Codice_Pru").GetValue(x, null).ToString().ToUpper())).ToDictionary(x => x.Key, x => x.Value);
 
-                var pruFruYetProcessed = RepoManager.FruRepo.GetAll(true).Cast<Object>().ToDictionary(x => x.GetType().GetProperty("Codice_Fru").GetValue(x, null).ToString().ToUpper());
-                pruFruYetProcessed = pruFruYetProcessed.Concat(RepoManager.PruRepo.GetAll(true).Cast<Object>().ToDictionary(x => x.GetType().GetProperty("Codice_Pru").GetValue(x, null).ToString().ToUpper())).ToDictionary(x => x.Key, x => x.Value);
-
-                RepoManager.FruRepo.Context.Configuration.LazyLoadingEnabled = true;
-                RepoManager.FruRepo.Context.Configuration.ProxyCreationEnabled = true;
-
-                #endregion
-
-                // inizializzazione della variabile che terrà traccia della registrazione precedente a quella attualmente in processo
-                PreReg previousPreReg = null;
-
-                // inizializzazione dell'ultima registazione senza informazioni aggiuntive processata per l'inserimento
-                Reg previousReg = null;
-
-                // ciclo di elaborazione di tutte le righe non commenti o vuote nel file
-                List<string> loopLines = nonGpsLines.Where(ln => !ln.StartsWith("*") && !String.IsNullOrEmpty(ln)).ToList();
-                foreach (var nonGpsLine in loopLines)
-                {
-
-                    #region Recupero e normalizzazione dei dati di timbratura dalla riga
-
-                    // calcolo dei dati della registrazione per la linea in elaborazione
-                    var currentPreReg = new PreReg(nonGpsLine);
+                    RepoManager.FruRepo.Context.Configuration.LazyLoadingEnabled = true;
+                    RepoManager.FruRepo.Context.Configuration.ProxyCreationEnabled = true;
 
                     #endregion
 
-                    // se si sta trattando una registrazione normale (no informazioni aggiuntive)
-                    if (currentPreReg.AdditionalInfoType == AdditionalInfoEnum.None)
+                    // inizializzazione della variabile che terrà traccia della registrazione precedente a quella attualmente in processo
+                    PreReg previousPreReg = null;
+
+                    // inizializzazione dell'ultima registazione senza informazioni aggiuntive processata per l'inserimento
+                    Reg previousReg = null;
+
+                    // ciclo di elaborazione di tutte le righe non commenti o vuote nel file
+                    List<string> loopLines = nonGpsLines.Where(ln => !ln.StartsWith("*") && !String.IsNullOrEmpty(ln)).ToList();
+                    foreach (var nonGpsLine in loopLines)
                     {
-                        #region Recupero delle anagrafiche (PRU/FRU) del dispositivo
 
-                        // salvataggio del codice badge corrente attualmente in processo
-                        string originalBadgeCode = currentPreReg.BadgeCode;
+                        #region Recupero e normalizzazione dei dati di timbratura dalla riga
 
-                        // calcolo degli oggetti PRU/FRU corrispondenti ai codici della timbratura
-                        object machineRegistry = GetPruFruRegistry(currentPreReg.DeviceCode, pruFruYetProcessed);
-                        object badgeRegistry = GetPruFruRegistry(currentPreReg.BadgeCode, pruFruYetProcessed);
-
-                        // se l'anagrafica del dispositivo è stata trovata allora si gestisce la sua modifica per eventuale
-                        // presenza di causali sul fisso
-                        machineRegistry = ManageDeviceActivityMachineRegistry(previousPreReg, currentPreReg, machineRegistry, pruFruYetProcessed);
+                        // calcolo dei dati della registrazione per la linea in elaborazione
+                        var currentPreReg = new PreReg(nonGpsLine);
 
                         #endregion
 
-                        #region Convalida input dei dati di timbratura
-
-                        // entrambe le matricole devono essere valorizzate, se anche solo una delle stesse non è stata trovata allora
-                        // si segnala la linea attuale come errore e si passa al record successivo (l'errore viene anche riportato nel log)
-                        if (machineRegistry == null)
+                        // se si sta trattando una registrazione normale (no informazioni aggiuntive)
+                        if (currentPreReg.AdditionalInfoType == AdditionalInfoEnum.None)
                         {
-                            string errorMessage = string.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, currentPreReg.DeviceCode));
-                            processErrors.Add(new KeyValuePair<string, string>(errorMessage, nonGpsLine));
-                            Log.Warn(errorMessage);
+                            #region Recupero delle anagrafiche (PRU/FRU) del dispositivo
 
-                            continue;
-                        }
+                            // salvataggio del codice badge corrente attualmente in processo
+                            string originalBadgeCode = currentPreReg.BadgeCode;
 
-                        if (badgeRegistry == null)
-                        {
-                            string errorMessage = string.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, currentPreReg.BadgeCode));
-                            processErrors.Add(new KeyValuePair<string, string>(errorMessage, nonGpsLine));
-                            Log.Warn(errorMessage);
+                            // calcolo degli oggetti PRU/FRU corrispondenti ai codici della timbratura
+                            object machineRegistry = GetPruFruRegistry(currentPreReg.DeviceCode, pruFruYetProcessed);
+                            object badgeRegistry = GetPruFruRegistry(currentPreReg.BadgeCode, pruFruYetProcessed);
 
-                            continue;
-                        }
+                            // se l'anagrafica del dispositivo è stata trovata allora si gestisce la sua modifica per eventuale
+                            // presenza di causali sul fisso
+                            machineRegistry = ManageDeviceActivityMachineRegistry(previousPreReg, currentPreReg, machineRegistry, pruFruYetProcessed);
 
-                        // se entrambe le macchine sono fru potrebbe trattarsi della timbratura attività su una app configurata come dispositivo fisso;
-                        // in questo caso, prima di scartare la timbratura è necessario ciclare sui record successivi alla stessa e verificare 
-                        // se ci sono delle informazioni aggiuntive che indicano il dispositivo portatile di timbratura dell'attività;
-                        // se così fosse il machine registry verrà sostituito con quanto trovato
-                        if (machineRegistry is Fru && badgeRegistry is Fru)
-                        {
-                            string newMachineRegistry = PruCodeForActivity(loopLines.IndexOf(nonGpsLine) + 1, loopLines);
+                            #endregion
 
-                            if (!string.IsNullOrEmpty(newMachineRegistry) && newMachineRegistry != "STOP")
-                                machineRegistry = GetPruFruRegistry(newMachineRegistry, pruFruYetProcessed);
-                        }
+                            #region Convalida input dei dati di timbratura
 
-                        // arrivato a questo punto si è certi che entrambe le matricole sono valorizzate e condizione essenziale
-                        // affinché l'importazione possa avvenire è che le due matricole siano di anagrafiche differenti; se quindi le
-                        // anagrafiche sono entrambe pru o fru allora si segnala l'errore e si passa alla linea successiva
-                        if ((machineRegistry is Pru && badgeRegistry is Pru) || (machineRegistry is Fru && badgeRegistry is Fru))
-                        {
-                            string errorMessage = string.Format("*{0}|{1}|{2}", BusinessService.GetLocalizedString(PowerWebResources.ERR_PRIMA_SECONDA_MATRICOLA_STESSA_ANAGRAFICA)
-                                , currentPreReg.DeviceCode, currentPreReg.BadgeCode);
-                            processErrors.Add(new KeyValuePair<string, string>(errorMessage, nonGpsLine));
-
-                            Log.Warn(errorMessage);
-
-                            continue;
-                        }
-
-
-                        #endregion
-
-                        #region Trasformazione delle anagrafiche generiche in Pru e Fru
-
-                        // inizializzazione dell'anagrafica Pru e dell'anagrafica Fru della timbratura:
-                        // - se la matricola del dispositivo è una pru allora è lei la pru, altrimenti sicuramente il badge
-                        // - se la matricola del dispositivo è una fru allora è lei la fru, altrimenti sicuramente il badge
-                        Pru regPru = (Pru)(machineRegistry is Pru ? machineRegistry : badgeRegistry);
-                        Fru regFru = (Fru)(machineRegistry is Fru ? machineRegistry : badgeRegistry);
-                        var motivation = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Chiave_Tab == currentPreReg.Motivate);
-
-                        #endregion
-
-                        #region Generazione della reg e aggiunta della stessa all'elenco di reg da aggiungere
-
-                        if (motivation == null)
-                        {
-                            regsToAdd.Add(new Reg
+                            // entrambe le matricole devono essere valorizzate, se anche solo una delle stesse non è stata trovata allora
+                            // si segnala la linea attuale come errore e si passa al record successivo (l'errore viene anche riportato nel log)
+                            if (machineRegistry == null)
                             {
-                                Fru_Id = regFru.Fru_Id,
-                                Pru_Id = regPru.Pru_Id,
-                                Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
-                                Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
-                                Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
-                                Data_Registrazione_Reg = DateTime.UtcNow,
-                                DataOraUltimaModifica_Reg = DateTime.UtcNow,
-                                Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                                Registrazione_Badge_Originale = currentPreReg.BadgeCode
-                            });
-                        }
-                        else
-                        {
-                            if (currentPreReg.RegistrationDirection == "U")
+                                string errorMessage = string.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, currentPreReg.DeviceCode));
+                                processErrors.Add(new KeyValuePair<string, string>(errorMessage, nonGpsLine));
+                                Log.Warn(errorMessage);
+
+                                continue;
+                            }
+
+                            if (badgeRegistry == null)
+                            {
+                                string errorMessage = string.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, currentPreReg.BadgeCode));
+                                processErrors.Add(new KeyValuePair<string, string>(errorMessage, nonGpsLine));
+                                Log.Warn(errorMessage);
+
+                                continue;
+                            }
+
+                            // se entrambe le macchine sono fru potrebbe trattarsi della timbratura attività su una app configurata come dispositivo fisso;
+                            // in questo caso, prima di scartare la timbratura è necessario ciclare sui record successivi alla stessa e verificare 
+                            // se ci sono delle informazioni aggiuntive che indicano il dispositivo portatile di timbratura dell'attività;
+                            // se così fosse il machine registry verrà sostituito con quanto trovato
+                            if (machineRegistry is Fru && badgeRegistry is Fru)
+                            {
+                                string newMachineRegistry = PruCodeForActivity(loopLines.IndexOf(nonGpsLine) + 1, loopLines);
+
+                                if (!string.IsNullOrEmpty(newMachineRegistry) && newMachineRegistry != "STOP")
+                                    machineRegistry = GetPruFruRegistry(newMachineRegistry, pruFruYetProcessed);
+                            }
+
+                            // arrivato a questo punto si è certi che entrambe le matricole sono valorizzate e condizione essenziale
+                            // affinché l'importazione possa avvenire è che le due matricole siano di anagrafiche differenti; se quindi le
+                            // anagrafiche sono entrambe pru o fru allora si segnala l'errore e si passa alla linea successiva
+                            if ((machineRegistry is Pru && badgeRegistry is Pru) || (machineRegistry is Fru && badgeRegistry is Fru))
+                            {
+                                string errorMessage = string.Format("*{0}|{1}|{2}", BusinessService.GetLocalizedString(PowerWebResources.ERR_PRIMA_SECONDA_MATRICOLA_STESSA_ANAGRAFICA)
+                                    , currentPreReg.DeviceCode, currentPreReg.BadgeCode);
+                                processErrors.Add(new KeyValuePair<string, string>(errorMessage, nonGpsLine));
+
+                                Log.Warn(errorMessage);
+
+                                continue;
+                            }
+
+
+                            #endregion
+
+                            #region Trasformazione delle anagrafiche generiche in Pru e Fru
+
+                            // inizializzazione dell'anagrafica Pru e dell'anagrafica Fru della timbratura:
+                            // - se la matricola del dispositivo è una pru allora è lei la pru, altrimenti sicuramente il badge
+                            // - se la matricola del dispositivo è una fru allora è lei la fru, altrimenti sicuramente il badge
+                            Pru regPru = (Pru)(machineRegistry is Pru ? machineRegistry : badgeRegistry);
+                            Fru regFru = (Fru)(machineRegistry is Fru ? machineRegistry : badgeRegistry);
+                            var motivation = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Chiave_Tab == currentPreReg.Motivate);
+
+                            #endregion
+
+                            #region Generazione della reg e aggiunta della stessa all'elenco di reg da aggiungere
+
+                            if (motivation == null)
                             {
                                 regsToAdd.Add(new Reg
                                 {
                                     Fru_Id = regFru.Fru_Id,
                                     Pru_Id = regPru.Pru_Id,
-                                    Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(-1),
+                                    Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
                                     Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
                                     Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
                                     Data_Registrazione_Reg = DateTime.UtcNow,
                                     DataOraUltimaModifica_Reg = DateTime.UtcNow,
                                     Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode,
-                                    Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode
                                 });
                             }
-                            else {
-                                regsToAdd.Add(new Reg
-                                {
-                                    Fru_Id = regFru.Fru_Id,
-                                    Pru_Id = regPru.Pru_Id,
-                                    Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(1),
-                                    Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
-                                    Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
-                                    Data_Registrazione_Reg = DateTime.UtcNow,
-                                    DataOraUltimaModifica_Reg = DateTime.UtcNow,
-                                    Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode,
-                                    Motivazione_Reg_Id = motivation.Tab_Decod_Id
-                                });
-                            }
-                            
-                        }
-
-
-
-
-                        #endregion
-
-                        // prima di procedere alla lavorazione del record successivo si procede al salvataggio della registrazione precedente
-                        // sia quella con solo i dati di processo sia quella che sarà scritta a database. Si imposta la registrazione di processo precedente
-                        // solamente se la stessa non risulta essere un'attività
-                        if (!CommonService.IsActivityDeviceCode(originalBadgeCode))
-                            previousPreReg = currentPreReg;
-
-                        previousReg = regsToAdd.Last();
-                    }
-                    else // se si sta invece trattando una registrazione con informazioni aggiuntive...
-                    {
-                        // allora si procede all'inserimento del dato aggiuntivo sulla registrazione, se già impostata
-                        if (previousReg != null)
-                            switch (currentPreReg.AdditionalInfoType)
+                            else
                             {
-                                case AdditionalInfoEnum.Turn:
-                                    previousReg.Turno = currentPreReg.TurnCode;
-
-                                    // se si è nel ciclo precedente* processando un'uscita, è richiesta la generazione delle attviità di presidio e la registazione è in un turno
-                                    // tra quelli configurati
-                                    // * si controlla la registrazione precedente in quanto i dati di turno sono scirtti successivamente alla registrazione principale, che rimane tale fino alla successiva
-                                    //   registrazione "buona"
-                                    if (previousReg.Flag_EU_Reg == "U" && presidiumCustomization == AutoGeneratePresidiumActivityEnum.Generate && !String.IsNullOrEmpty(previousReg.Turno) && presidiumTurns.Any(tCode => tCode == previousReg.Turno)
-                                        && presidiumCantId != 0)
+                                if (currentPreReg.RegistrationDirection == "U")
+                                {
+                                    regsToAdd.Add(new Reg
                                     {
-                                        // ... allora si inserisce una nuova registrazione nell'elenco con la chiusura del presidio
-                                        // prima dell'ultima registrazione
-                                        Reg currentLastReg = regsToAdd.Last();
-                                        regsToAdd.Add(new Reg
-                                        {
-                                            Fru_Id = currentLastReg.Fru_Id,
-                                            Pru_Id = currentLastReg.Pru_Id,
-                                            Registrazione_Data_Ora_Fis_Reg = currentLastReg.Registrazione_Data_Ora_Fis_Reg,
-                                            Registrazione_Data_Ora_Fig_Reg = currentLastReg.Registrazione_Data_Ora_Fig_Reg,
-                                            Registrazione_Data_Ora_Orig_Reg = currentLastReg.Registrazione_Data_Ora_Orig_Reg,
-                                            Data_Registrazione_Reg = currentLastReg.Data_Registrazione_Reg,
-                                            DataOraUltimaModifica_Reg = currentLastReg.DataOraUltimaModifica_Reg,
-                                            Flag_EU_Reg = currentLastReg.Flag_EU_Reg,
-                                            Registrazione_Badge_Originale = currentLastReg.Registrazione_Badge_Originale,
-                                            Turno = currentLastReg.Turno,
-                                            Sotto_Cantiere = currentLastReg.Sotto_Cantiere,
-                                            Tipo_Attivita = currentLastReg.Tipo_Attivita
-                                        });
-                                        currentLastReg.Cant_Id = presidiumCantId;
-                                        currentLastReg.Fru_Id = null;
-                                        currentLastReg.Flag_EU_Reg = null;
-
-                                        // ricalcolo l'ultima registrazione da processare
-                                        previousReg = regsToAdd.Last();
-                                    }
-                                    break;
-
-                                //viene aggiunta l'informazione aggiunta sul sottocantiere
-                                case AdditionalInfoEnum.SubCant:
-                                    previousReg.Sotto_Cantiere = currentPreReg.SubCantDesc;
-                                    break;
-
-
-                                case AdditionalInfoEnum.ActivityType:
-                                    previousReg.Tipo_Attivita = currentPreReg.ActivityTypeCode;
-                                    break;
-
-                                case AdditionalInfoEnum.Squadra:
-                                    //Aggiunge una registrazione per ogni PRU della squadra
-                                    foreach (string pruCode in currentPreReg.SquadraArray)
+                                        Fru_Id = regFru.Fru_Id,
+                                        Pru_Id = regPru.Pru_Id,
+                                        Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(-1),
+                                        Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
+                                        Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
+                                        Data_Registrazione_Reg = DateTime.UtcNow,
+                                        DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                        Flag_EU_Reg = currentPreReg.RegistrationDirection,
+                                        Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                                        Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                    });
+                                }
+                                else
+                                {
+                                    regsToAdd.Add(new Reg
                                     {
-                                        //Controlla che la PRU esista
-                                        Pru pru = GetPruFruRegistry(pruCode, pruFruYetProcessed) as Pru;
+                                        Fru_Id = regFru.Fru_Id,
+                                        Pru_Id = regPru.Pru_Id,
+                                        Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(1),
+                                        Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
+                                        Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
+                                        Data_Registrazione_Reg = DateTime.UtcNow,
+                                        DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                        Flag_EU_Reg = currentPreReg.RegistrationDirection,
+                                        Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                                        Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                    });
+                                }
 
-                                        if (pru == null)
-                                        {
-                                            //Se la PRU non esiste, si costruisce la riga di input specifica per la PRU corrente, in modo da poterla importare correttamente la prossima volta.
-                                            string errorMessage = string.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, pruCode));
-                                            string[] splittedLine = nonGpsLine.Split(';');
-                                            string[] errorLine = splittedLine.Take(8).ToArray();
-                                            errorLine[0] = pruCode;
+                            }
 
-                                            processErrors.Add(new KeyValuePair<string, string>(errorMessage, string.Join(";", errorLine)));
-                                            Log.Warn(errorMessage);
-                                        }
-                                        else
+
+
+
+                            #endregion
+
+                            // prima di procedere alla lavorazione del record successivo si procede al salvataggio della registrazione precedente
+                            // sia quella con solo i dati di processo sia quella che sarà scritta a database. Si imposta la registrazione di processo precedente
+                            // solamente se la stessa non risulta essere un'attività
+                            if (!CommonService.IsActivityDeviceCode(originalBadgeCode))
+                                previousPreReg = currentPreReg;
+
+                            previousReg = regsToAdd.Last();
+                        }
+                        else // se si sta invece trattando una registrazione con informazioni aggiuntive...
+                        {
+                            // allora si procede all'inserimento del dato aggiuntivo sulla registrazione, se già impostata
+                            if (previousReg != null)
+                                switch (currentPreReg.AdditionalInfoType)
+                                {
+                                    case AdditionalInfoEnum.Turn:
+                                        previousReg.Turno = currentPreReg.TurnCode;
+
+                                        // se si è nel ciclo precedente* processando un'uscita, è richiesta la generazione delle attviità di presidio e la registazione è in un turno
+                                        // tra quelli configurati
+                                        // * si controlla la registrazione precedente in quanto i dati di turno sono scirtti successivamente alla registrazione principale, che rimane tale fino alla successiva
+                                        //   registrazione "buona"
+                                        if (previousReg.Flag_EU_Reg == "U" && presidiumCustomization == AutoGeneratePresidiumActivityEnum.Generate && !String.IsNullOrEmpty(previousReg.Turno) && presidiumTurns.Any(tCode => tCode == previousReg.Turno)
+                                            && presidiumCantId != 0)
                                         {
+                                            // ... allora si inserisce una nuova registrazione nell'elenco con la chiusura del presidio
+                                            // prima dell'ultima registrazione
+                                            Reg currentLastReg = regsToAdd.Last();
                                             regsToAdd.Add(new Reg
                                             {
-                                                Fru_Id = previousReg.Fru_Id,
-                                                Pru_Id = pru.Pru_Id,
-                                                Registrazione_Data_Ora_Fis_Reg = previousReg.Registrazione_Data_Ora_Fis_Reg,
-                                                Registrazione_Data_Ora_Fig_Reg = previousReg.Registrazione_Data_Ora_Fig_Reg,
-                                                Registrazione_Data_Ora_Orig_Reg = previousReg.Registrazione_Data_Ora_Orig_Reg,
-                                                Data_Registrazione_Reg = previousReg.Data_Registrazione_Reg,
-                                                DataOraUltimaModifica_Reg = previousReg.DataOraUltimaModifica_Reg,
-                                                Flag_EU_Reg = previousReg.Flag_EU_Reg,
-                                                Registrazione_Badge_Originale = previousReg.Registrazione_Badge_Originale,
-                                                Turno = previousReg.Turno,
-                                                Sotto_Cantiere = previousReg.Sotto_Cantiere,
-                                                Tipo_Attivita = previousReg.Tipo_Attivita
+                                                Fru_Id = currentLastReg.Fru_Id,
+                                                Pru_Id = currentLastReg.Pru_Id,
+                                                Registrazione_Data_Ora_Fis_Reg = currentLastReg.Registrazione_Data_Ora_Fis_Reg,
+                                                Registrazione_Data_Ora_Fig_Reg = currentLastReg.Registrazione_Data_Ora_Fig_Reg,
+                                                Registrazione_Data_Ora_Orig_Reg = currentLastReg.Registrazione_Data_Ora_Orig_Reg,
+                                                Data_Registrazione_Reg = currentLastReg.Data_Registrazione_Reg,
+                                                DataOraUltimaModifica_Reg = currentLastReg.DataOraUltimaModifica_Reg,
+                                                Flag_EU_Reg = currentLastReg.Flag_EU_Reg,
+                                                Registrazione_Badge_Originale = currentLastReg.Registrazione_Badge_Originale,
+                                                Turno = currentLastReg.Turno,
+                                                Sotto_Cantiere = currentLastReg.Sotto_Cantiere,
+                                                Tipo_Attivita = currentLastReg.Tipo_Attivita
                                             });
-                                        }
-                                    }
-                                    break;
-                            }
-                    }
+                                            currentLastReg.Cant_Id = presidiumCantId;
+                                            currentLastReg.Fru_Id = null;
+                                            currentLastReg.Flag_EU_Reg = null;
 
+                                            // ricalcolo l'ultima registrazione da processare
+                                            previousReg = regsToAdd.Last();
+                                        }
+                                        break;
+
+                                    //viene aggiunta l'informazione aggiunta sul sottocantiere
+                                    case AdditionalInfoEnum.SubCant:
+                                        previousReg.Sotto_Cantiere = currentPreReg.SubCantDesc;
+                                        break;
+
+
+                                    case AdditionalInfoEnum.ActivityType:
+                                        previousReg.Tipo_Attivita = currentPreReg.ActivityTypeCode;
+                                        break;
+
+                                    case AdditionalInfoEnum.Squadra:
+                                        //Aggiunge una registrazione per ogni PRU della squadra
+                                        foreach (string pruCode in currentPreReg.SquadraArray)
+                                        {
+                                            //Controlla che la PRU esista
+                                            Pru pru = GetPruFruRegistry(pruCode, pruFruYetProcessed) as Pru;
+
+                                            if (pru == null)
+                                            {
+                                                //Se la PRU non esiste, si costruisce la riga di input specifica per la PRU corrente, in modo da poterla importare correttamente la prossima volta.
+                                                string errorMessage = string.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, pruCode));
+                                                string[] splittedLine = nonGpsLine.Split(';');
+                                                string[] errorLine = splittedLine.Take(8).ToArray();
+                                                errorLine[0] = pruCode;
+
+                                                processErrors.Add(new KeyValuePair<string, string>(errorMessage, string.Join(";", errorLine)));
+                                                Log.Warn(errorMessage);
+                                            }
+                                            else
+                                            {
+                                                regsToAdd.Add(new Reg
+                                                {
+                                                    Fru_Id = previousReg.Fru_Id,
+                                                    Pru_Id = pru.Pru_Id,
+                                                    Registrazione_Data_Ora_Fis_Reg = previousReg.Registrazione_Data_Ora_Fis_Reg,
+                                                    Registrazione_Data_Ora_Fig_Reg = previousReg.Registrazione_Data_Ora_Fig_Reg,
+                                                    Registrazione_Data_Ora_Orig_Reg = previousReg.Registrazione_Data_Ora_Orig_Reg,
+                                                    Data_Registrazione_Reg = previousReg.Data_Registrazione_Reg,
+                                                    DataOraUltimaModifica_Reg = previousReg.DataOraUltimaModifica_Reg,
+                                                    Flag_EU_Reg = previousReg.Flag_EU_Reg,
+                                                    Registrazione_Badge_Originale = previousReg.Registrazione_Badge_Originale,
+                                                    Turno = previousReg.Turno,
+                                                    Sotto_Cantiere = previousReg.Sotto_Cantiere,
+                                                    Tipo_Attivita = previousReg.Tipo_Attivita
+                                                });
+                                            }
+                                        }
+                                        break;
+                                }
+                        }
+
+                    }
                 }
+                
             }
         }
 

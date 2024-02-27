@@ -321,7 +321,7 @@
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
 
   <!-- *******************************************VIAGGI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
+  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="0" />
   <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
 		TripHourIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
 
@@ -588,5 +588,10 @@
   <c ID="CustomizationEnum.NotCalcolatePausaTrip" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
   <!--  NotCalcolatePausaTrip=0 Indica di non chiudere le timbrature in modo automatico
         NotCalcolatePausaTrip=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+		
+		  <!-- ********************************************************SOMMA LA REPERIBILITA NEL TOTALE*********************************************************-->
+  <c ID="CustomizationEnum.ReperibilitaTotale" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
+  <!--  ReperibilitaTotale=0 Indica di non contare la reperibilita
+        ReperibilitaTotale=1 Indica di contare la reperibilita-->
 
 </Customizations>

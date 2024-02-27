@@ -118,6 +118,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportSSSConInt.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetItieffe.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetLampo.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimple.cs" />
     <Compile Include="ExportExcelCustom\IExportExcelCustom.cs" />
     <Compile Include="ExportExcelGeneric\ExportExcelGenericCant.cs" />

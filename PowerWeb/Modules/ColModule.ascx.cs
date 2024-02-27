@@ -515,11 +515,15 @@ namespace PowerWeb.Modules
                     RepoManager.ColRepo.AddPendingElabForActivity(currentCol);
                 }
             }
-            Location geocode = BusinessService.GetGeocode(currentCol.GeocodeAddress);
-            if (geocode != null)
+
+            if (currentCol.GeocodeAddress != null) 
             {
-                currentCol.LatitudineGps_Col = geocode.Point.Coordinates[0];
-                currentCol.LongitudineGps_Col = geocode.Point.Coordinates[1];
+                Location geocode = BusinessService.GetGeocode(currentCol.GeocodeAddress);
+                if (geocode != null)
+                {
+                    currentCol.LatitudineGps_Col = geocode.Point.Coordinates[0];
+                    currentCol.LongitudineGps_Col = geocode.Point.Coordinates[1];
+                }
             }
             RepoManager.ColRepo.SaveChanges();
             e.Cancel = true;

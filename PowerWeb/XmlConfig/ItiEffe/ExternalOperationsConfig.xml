@@ -51,9 +51,9 @@
   </ExternalImport>
   
   <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
-    <HostConfig host="backend.winitsrl.eu" protocol="http" />
+    <HostConfig host="backend.winitsrl.eu,mobile.clockapp.it" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="67" />
+      <IdCliente  value="67,-1" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

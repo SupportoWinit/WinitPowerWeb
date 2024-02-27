@@ -552,15 +552,15 @@
                                                 </td>
                                             </tr>
                                                <tr>
-                                                <td id="dettaglioTD" style="width: 33%; text-align: center;margin-bottom:auto; visibility: hidden;">
-                                                    <table>
-                                                        <tr>
-                                                            <td>
-                                                                <dx:ASPxCheckBox runat="server" ID="ASPxCheckBoxDetali" ClientInstanceName="cbExportDetail" Text="prova"/>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
+                                                   <td id="dettaglioTD" style="width: 33%; text-align: center; visibility: hidden;">
+                                                       <table>
+                                                           <tr>
+                                                               <td>
+                                                                   <dx:ASPxCheckBox runat="server" ID="ASPxCheckBoxDetali" ClientInstanceName="cbExportDetail" Text="prova" />
+                                                               </td>
+                                                           </tr>
+                                                       </table>
+                                                   </td>
                                             </tr>
                                             <tr id="calculationTR">
                                                 <td id="calculationTypeTD" style="width: 33%; text-align: center; visibility: hidden;">

@@ -186,7 +186,8 @@ namespace Common
         NotCalcolatePausaTrip,
         CloseDifferentCant,
         ReperibilitaTotale,
-        NotificaRitardo
+        NotificaRitardo,
+        ArrotondamentoPausa
     }
 
     public enum ClockAppsOperationEnum
