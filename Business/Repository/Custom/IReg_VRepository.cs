@@ -12,10 +12,12 @@ namespace Business.Repository.Custom
 {
     public interface IReg_VRepository : IRepository<Reg_V>
     {
-        List<KeyValuePair<String, String>> Rounding(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application);
+        List<KeyValuePair<String, String>> Rounding(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application,bool delete);
         List<KeyValuePair<String, String>> CheckDeelay(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application);
 
-        List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs);
+        List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs,RoundingMethodEnum metodo);
+
+        List<KeyValuePair<String, String>> PausaPranzo(IEnumerable<Reg_V> regVs);
 
         List<KeyValuePair<String, String>> DeleteDurationRounding(IEnumerable<Reg> regVs);
 

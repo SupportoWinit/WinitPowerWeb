@@ -331,23 +331,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                      catch(Exception e) { }   
 
-                    if ((motivazione && (int)baseDuration > 0)) {
-                        
-                        RangeSetBorders(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                        RangeSetFontSize(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, 8);
-
-                        RangeSetWrapText(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, true);
-                        CellInsertValue(worksheetIndex, rowIndex + 1, day.Day + 3, valueToPrint, ExcelInsertTypeEnum.Content);
-                        totale = totale - (int)baseDuration;
-                    }
-                    if (!motivazione) {
-                        totale = totale + (int)baseDuration;
-                        RangeSetBorders(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                        RangeSetFontSize(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, 8);
-
-                        RangeSetWrapText(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, true);
-                        CellInsertValue(worksheetIndex, rowIndex + 1, day.Day + 3, valueToPrint, ExcelInsertTypeEnum.Content);
-                    }
+                    
                     
 
                     try
@@ -385,6 +369,25 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             {
                                 RangeSetBackgroundColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.LightGreen, ExcelFillStyle.Solid);
                             }
+                        }
+                        if ((motivazione && (int)baseDuration > 0))
+                        {
+
+                            RangeSetBorders(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            RangeSetFontSize(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, 8);
+
+                            RangeSetWrapText(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, true);
+                            CellInsertValue(worksheetIndex, rowIndex + 1, day.Day + 3, valueToPrint, ExcelInsertTypeEnum.Content);
+                            totale = totale - (int)baseDuration;
+                        }
+                        if (!motivazione)
+                        {
+                            totale = totale + (int)baseDuration;
+                            RangeSetBorders(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            RangeSetFontSize(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, 8);
+
+                            RangeSetWrapText(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, true);
+                            CellInsertValue(worksheetIndex, rowIndex + 1, day.Day + 3, valueToPrint, ExcelInsertTypeEnum.Content);
                         }
                     }
                     catch (Exception e)

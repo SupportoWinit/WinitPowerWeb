@@ -246,7 +246,7 @@ namespace PowerWeb.Pages
 
             List<Col> collaboratori = RepoManager.ColRepo.Find(c => selectedCollab.Contains(c.Col_Id)).ToList();
             bool str = false;
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Overtime) == 1)
+            if (parameters.Cartellino_Usa_Cartellino_Modificabile)
             {
                 str = true;
                 

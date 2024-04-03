@@ -536,7 +536,7 @@ namespace Business.Repository.Custom
                                 // applicazione degli arrotondamenti per inizio-fine
                                 _log.Info(String.Format("Inizio arrotondamento di {0} regV", regVs.Count()));
                                 errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
-                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication));
+                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication,false));
                                 _log.Info(String.Format("Arrotondamento di {0} regs terminato", regVs.Count()));
                             } else if (roundingParamEnum == RoundingMethodEnum.Disabled) {
                                 //se non servono gli arrotondamenti imposto i parametri a zero così da toglierli
@@ -548,7 +548,7 @@ namespace Business.Repository.Custom
                                 RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = TimeSpan.MinValue;
                                 _log.Info(String.Format("Tolgo gli arrotondamenti a {0} regV", regVs.Count()));
                                 errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
-                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication));
+                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication,false));
 
                                 _log.Info(String.Format("Arrotondamento tolti per {0} regs", regVs.Count()));
                             }
@@ -676,9 +676,23 @@ namespace Business.Repository.Custom
 
                                 // applicazione degli arrotondamenti per durata
                                 _log.Info(String.Format("starting rounding duration regVs at {0}", regVs.Count()));
-                                errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs));
+                                errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs, roundingParamEnum));
                                 _log.Info(String.Format("finished rounding duration regVs at {0}", regVs.Count()));
                             }
+                        }
+                        #endregion
+
+                        #region 11.6 Creazione pausa per cantiere
+
+                        //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1) {
+                            var roundingRegVs1 = regVs.ToList();
+                            // Recupera i viaggi appena creati  
+                            var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
+                                                regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
+
+                            roundingRegVs1.AddRange(tripsRegvs1);
+                            errors.AddRange(RepoManager.Reg_VRepo.PausaPranzo(roundingRegVs1));
                         }
                         #endregion
 
@@ -5009,6 +5023,33 @@ namespace Business.Repository.Custom
             newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.ArrotDur;
             newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
             newRounding.Rettifica_Durata = Convert.ToInt32(roundingType == RoundingTypeEnum.RoundingMinus ? (-1) * roundingDuration.TotalMinutes : roundingDuration.TotalMinutes);
+
+            // ritorno dell'arrotondamento generato
+            return newRounding;
+        }
+
+        public Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newRounding = Init();
+            double arrot = 0;
+            List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantId).ToList();
+            if (cantieri.First().Importo1 != null) {
+                arrot = cantieri.First().Importo1.Value;
+            }
+            List<Tab_Decod> motivazioni = RepoManager.Tab_DecodRepo.GetAllQueryable(m => m.Decodifica_Tab == "Pausa").ToList();
+            if (arrot > 0) {
+                // popolamento dei dati della registrazione
+                newRounding.Col_Id = colId;
+                newRounding.Cant_Id = cantId;
+                newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
+                newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
+                newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
+                newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.ArrotDur;
+                newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
+                newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);
+            }
 
             // ritorno dell'arrotondamento generato
             return newRounding;

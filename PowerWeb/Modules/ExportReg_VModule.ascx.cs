@@ -1372,8 +1372,11 @@ namespace PowerWeb.Modules
                     exportToProcess.EUTollerance = exportToProcess.UseEUTollerance ? Convert.ToInt32(SpedtTolleranzaEU.Number) : 0;
                     exportToProcess.CalculationType = excelModel.Selezione_Figurative_Fisiche ? (ExportRegVCalculationTypeEnum)RdBtnTipoCalcolo.Value : default(ExportRegVCalculationTypeEnum);
                     exportToProcess.HourType = excelModel.Selezione_Solo_Durata_EU ? (ExportRegVHourTypeEnum)RdBtnTipoOre.Value : default(ExportRegVHourTypeEnum);
-                    //exportToProcess.UseExportDetail = (bool)ASPxCheckBoxDetali.Value;
-                    exportToProcess.UseExportDetail = false;
+                    bool dettagli = false;
+                    if (!(bool)ASPxCheckBoxDetail.Value)
+                        dettagli = true;
+                    exportToProcess.UseExportDetail = dettagli;
+                    //exportToProcess.UseExportDetail = false;
 
                    exportToProcess.ModelFirstEntity = firstEntityModel;
 

@@ -41,42 +41,64 @@ namespace Business.RegFileCreators
                 );
         }
 
-        public void WriteToFile(IEnumerable<FlutterAppReg> unEncodedRegs, IEnumerable<FlutterAppRegOld> unEncodedRegsOld)
+        public void WriteToFile(IEnumerable<FlutterAppReg> unEncodedRegs, IEnumerable<FlutterAppRegOld> unEncodedRegsOld, IEnumerable<FlutterAppReg> unEncodedRegs2)
         {
-            if ((unEncodedRegs == null || !unEncodedRegs.Any()) && (unEncodedRegsOld == null || !unEncodedRegsOld.Any()))
+            if ((unEncodedRegs == null || !unEncodedRegs.Any()) && (unEncodedRegsOld == null || !unEncodedRegsOld.Any()) && (unEncodedRegs2 == null || !unEncodedRegs2.Any()))
                 return;
 
             var regsToWrite = new List<string>();
             List<FlutterOrderedReg> regsToOrder = new List<FlutterOrderedReg>();
             int gpsnfc = 0;
-            foreach (var regs in unEncodedRegs)
-            {
-                FlutterOrderedReg var = null;
-                if (regs.Value.First().CodicePru != "")
+            if (unEncodedRegs != null) {
+                foreach (var regs in unEncodedRegs)
                 {
-                    var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    FlutterOrderedReg var = null;
+                    if (regs.Value.First().CodicePru != "")
+                    {
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    }
+                    else
+                    {
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    }
+
+                    regsToOrder.Add(var);
                 }
-                else {
-                    var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+            }
+            
+            if (unEncodedRegs2 != null) {
+                foreach (var regs in unEncodedRegs2)
+                {
+                    FlutterOrderedReg var = null;
+                    if (regs.Value.First().CodicePru != "")
+                    {
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    }
+                    else
+                    {
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    }
+
+                    regsToOrder.Add(var);
                 }
-                
-                regsToOrder.Add(var);
             }
 
-            foreach (var regs in unEncodedRegsOld)
-            {
-                FlutterOrderedReg var = null;
-                if (regs.Value.First().CodicePru != "")
+            if (unEncodedRegsOld != null) {
+                foreach (var regs in unEncodedRegsOld)
                 {
-                    var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
-                }
-                else
-                {
-                    var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
-                }
+                    FlutterOrderedReg var = null;
+                    if (regs.Value.First().CodicePru != "")
+                    {
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    }
+                    else
+                    {
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                    }
 
-                regsToOrder.Add(var);
-            }
+                    regsToOrder.Add(var);
+                }
+            }        
             regsToOrder = regsToOrder.OrderBy(reg => reg.CodiceFru).ThenBy(reg => reg.Dataord).ToList();
             String codGpsNfc = "";
             FlutterOrderedReg temp = regsToOrder.First();

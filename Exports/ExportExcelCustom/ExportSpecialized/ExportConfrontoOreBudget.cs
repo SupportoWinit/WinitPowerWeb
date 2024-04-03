@@ -298,9 +298,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             {
                                 collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == groupedRegV.Value.First().Col_Id.Value).First();
                                 cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == groupedRegV.Value.First().Cant_Id.Value).First();
-                                if (cantiere.Descrizione_Can.Length < 31)
+                                if (cantiere.Codice_Cantiere.Length < 31)
                                 {
-                                    currentWorksheetName = cantiere.Descrizione_Can;
+                                    currentWorksheetName = cantiere.Codice_Cantiere;
                                 }
                                 else {
                                     nome = cantiere.Descrizione_Can.Substring(0,31);

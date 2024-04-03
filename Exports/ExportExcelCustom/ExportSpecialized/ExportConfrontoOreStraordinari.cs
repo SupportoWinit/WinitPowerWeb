@@ -63,6 +63,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                     col,
                                                     true,
+                                                    false,
                                                     true,
                                                     true,
                                                     parameters.Cartellino_Visualizza_Ore,
@@ -269,6 +270,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (var justification in ord)
             {
                 int totalDays = 0;
+                //controllo se si ripete il cantiere, se si ripete significa che stiamo controllando le motivazioni inerenti a quel cantiere
                 if (lastCant.Equals(justification.CantDesc))
                 {
                     rowIndex -= 2;
@@ -311,7 +313,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
-
+                    int lastDuration = 0;
                     negative = false;
                     var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     var timeDuration = TimeSpan.FromHours(baseDuration);
@@ -369,21 +371,35 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                     
                     try {
-                        if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration > 0)
-                        {
-                            int timb = RepoManager.RegRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Registrazione_Data_Ora_Fig_Reg.Value.Day == day.Day && r.Registrazione_Data_Ora_Fig_Reg.Value.Month == day.Month && r.Registrazione_Data_Ora_Fig_Reg.Value.Year == day.Year).Count();
-                            if (timb > 0)
-                            {
-                                RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.LightBlue);
-                            }
-                            else {
-                                RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
-                            }
-                        }
+                         if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration > 0)
+                         {
+                             RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
+                         }
                     }
                      catch(Exception e) { }   
 
                     if ((motivazione && (int)baseDuration > 0)) {
+                        if ((double)justification["Day" + day.Day.ToString("00")] == (double)last["Day" + day.Day.ToString("00")])
+                        {
+                            if (justification.Justification.Equals("M"))
+                            {
+                                valueToPrint = "-- --";
+                            }
+                            else if (justification.Justification.Equals("OFF"))
+                            {
+                                valueToPrint = "-- --";
+                            }
+                            else if (justification.Justification.Equals("F"))
+                            {
+                                valueToPrint = "-- --";
+                            }
+                            print = (double)last["Day" + day.Day.ToString("00")];
+                        }
+                        else {
+                            double tmp = (double)last["Day" + day.Day.ToString("00")];
+                            tmp = (tmp - (double)justification["Day" + day.Day.ToString("00")]) * 60;
+                            valueToPrint = FromTotalMinutesToFormattedType((int)tmp);
+                        }
                         
                         RangeSetBorders(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         RangeSetFontSize(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, 8);
@@ -408,15 +424,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration > 0)
                             {
-                                int timb = RepoManager.RegRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Registrazione_Data_Ora_Fig_Reg.Value.Day == day.Day && r.Registrazione_Data_Ora_Fig_Reg.Value.Month == day.Month && r.Registrazione_Data_Ora_Fig_Reg.Value.Year == day.Year).Count();
-                                if (timb > 0)
-                                {
-                                    RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.LightBlue);
-                                }
-                                else
-                                {
-                                    RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
-                                }
+                                RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Red);
+                                
                             }
                             else if ((double)tmpdel["Day" + day.Day.ToString("00")] < 0 && baseDuration == 0)
                             {
@@ -444,7 +453,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                     }
 
-
+                    lastDuration = (int)baseDuration;
                 }
                 string totalHours = FromTotalMinutesToFormattedType(totale);
                 giorni = totalDays;
@@ -453,8 +462,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     giorni = giorni - totalDays;
                 }
                 RangeSetBorders(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, totalHours, ExcelInsertTypeEnum.Content);
-                    RangeSetFontSize(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, 8);
+                CellInsertValue(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, totalHours, ExcelInsertTypeEnum.Content);
+                RangeSetFontSize(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, 8);
                 if (!motivazione)
                 {
                     

@@ -556,7 +556,7 @@
                                                        <table>
                                                            <tr>
                                                                <td>
-                                                                   <dx:ASPxCheckBox runat="server" ID="ASPxCheckBoxDetali" ClientInstanceName="cbExportDetail" Text="prova" />
+                                                                   <dx:ASPxCheckBox runat="server" ID="ASPxCheckBoxDetali" ClientInstanceName="ASPxCheckBoxDetali" Text="prova" />
                                                                </td>
                                                            </tr>
                                                        </table>
@@ -574,6 +574,9 @@
                                                                     RepeatColumns="2" Border-BorderWidth="0">
                                                                     <Border BorderWidth="0px"></Border>
                                                                 </dx:ASPxRadioButtonList>
+                                                            </td>
+                                                            <td>
+                                                                <dx:ASPxCheckBox runat="server" ID="ASPxCheckBoxDetail" ClientInstanceName="ASPxCheckBoxDetail" Text="Modalita Compatta" Checked="false" />
                                                             </td>
                                                         </tr>
                                                     </table>

@@ -1201,7 +1201,7 @@ namespace PowerWeb.Modules
                     if (regvsToElaborate.Any())
                     {
                         // lancia l'elaborazione degli arrotondamentii per durata
-                        errors = RepoManager.Reg_VRepo.DurationRounding(regvsToElaborate);
+                        errors = RepoManager.Reg_VRepo.DurationRounding(regvsToElaborate,RoundingMethodEnum.Duration);
                     }
                 }
                 #endregion

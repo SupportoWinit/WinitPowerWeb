@@ -1,4 +1,5 @@
-﻿using Common;
+﻿
+using Common;
 using Domain;
 using Business.Repository;
 using Business.BusinessExtension;
@@ -118,7 +119,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable().Where(c => c.DisAbilitazione_Can == false).ToList();
 
             //vado a fare un foreach per ogni cantiere
-            foreach (Cant cant in cantieri) {
+            foreach (Cant cant in cantieri)
+            {
                 TimeSpan totale = new TimeSpan();
                 int giorni = 0;
                 rowIndex = 1;
@@ -130,7 +132,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                               out tmp, out tmp2, true, "Can", false);
                 var colPlan = TimesheetModuleItem.GenerateNewPlanTimesheet(true, planMinutes.First().Value, false, 1, 0, minDate, planMinutes.First().Key);
                 int i = 0;
-                List<Reg_V> regs = RepoManager.Reg_VRepo.GetAll().Where(r => r.Cant_Id == cant.Cant_Id).ToList(); 
+                List<Reg_V> regs = RepoManager.Reg_VRepo.GetAll().Where(r => r.Cant_Id == cant.Cant_Id).ToList();
                 foreach (DateTime day in monthDays)
                 {
                     i++;
@@ -140,12 +142,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     int daySum = 0;
                     double today = 0;
                     string tot = "-- --";
-                    foreach (Reg_V reg in dayReg) {
-                        if (reg.Durata_Fig != null) {
+                    foreach (Reg_V reg in dayReg)
+                    {
+                        if (reg.Durata_Fig != null)
+                        {
                             daySum += reg.Durata_Fig.Value;
-                        }          
+                        }
                     }
-                    if (daySum > 0) {
+                    if (daySum > 0)
+                    {
                         giorni++;
                         TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
                         totale = totale + totalDuration;
@@ -156,16 +161,22 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     RangeSetWrapText(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, true);
                     CellInsertValue(1, day.Day + 1, columnIndex, tot, ExcelInsertTypeEnum.Content);
-                    var prova  = colPlan["Day" + i.ToString("00")];
+                    var prova = colPlan["Day" + i.ToString("00")];
                     today = (double)prova;
-                    if (today * 60 > 0 && daySum == 0) {
+                    if (today * 60 > 0 && daySum == 0)
+                    {
                         RangeSetBackgroundColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.Red, ExcelFillStyle.Solid);
-                    } else if (today * 60 > daySum) {
+                    }
+                    else if (today * 60 > daySum)
+                    {
                         RangeSetFontColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.Red);
-                    } else if (today == 0 && daySum > 0) {
+                    }
+                    else if (today == 0 && daySum > 0)
+                    {
                         RangeSetBackgroundColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.LightBlue, ExcelFillStyle.Solid);
                     }
-                    if (CommonService.GetLastMonthDay(ExportPeriod) == day) {
+                    if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                    {
                         tot = String.Format("{0}.{1}", (totale.Days * 24) + totale.Hours, Math.Abs(totale.Minutes).ToString("00"));
                         RangeSetBorders(1, day.Day + 2, columnIndex, day.Day + 2, columnIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         RangeSetFontSize(1, day.Day + 2, columnIndex, day.Day + 2, columnIndex, 8);
@@ -284,7 +295,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             RangeSetBackgroundColor(1, rowIndex, columnIndex, rowIndex, date.Day, Color.LightGray, fillStyle);
             RangeSetWrapText(1, rowIndex, columnIndex, rowIndex, date.Day, true);
             ColumnsSetWidth(1, rowIndex, rowIndex, 6);
-            RangeSetFontBold(1, rowIndex, columnIndex , rowIndex, date.Day);
+            RangeSetFontBold(1, rowIndex, columnIndex, rowIndex, date.Day);
 
             if (date.DayOfWeek == DayOfWeek.Sunday)
             {

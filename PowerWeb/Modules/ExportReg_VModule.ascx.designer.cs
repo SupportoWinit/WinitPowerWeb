@@ -105,6 +105,15 @@ namespace PowerWeb.Modules
         protected global::DevExpress.Web.ASPxEditors.ASPxRadioButtonList RdBtnTipoCalcolo;
 
         /// <summary>
+        /// Controllo ASPxCheckBoxDetail.
+        /// </summary>
+        /// <remarks>
+        /// Campo generato automaticamente.
+        /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ASPxCheckBoxDetail;
+
+        /// <summary>
         /// Controllo LblTipoOre.
         /// </summary>
         /// <remarks>

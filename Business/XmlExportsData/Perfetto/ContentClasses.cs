@@ -112,7 +112,7 @@ namespace Business.XmlExportsData.Perfetto
         #region Fields
 
         //private string _namespace_OLD = "Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.DBTRapportiniTesta";
-        private string _namespace = "Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.RapportinoCommessa";
+        private string _namespace = "Dbt.Perfetto.WorkingReports.Documents.JobWorkingReports.WorkingReport";
         
         private string _table = "IM_WorkingReports";
 
@@ -261,7 +261,7 @@ namespace Business.XmlExportsData.Perfetto
 
         //private string _namespace_OLD = "Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.DBTRapportiniRighe";
 
-        private string _namespace = "Dbt.ImpiantiNet.Rapportini.INRapportini.Rapportino.Righe";
+        private string _namespace = "Dbt.Perfetto.WorkingReports.Documents.JobWorkingReports.Details";
 
         private string _table = "IM_WorkingReportsDetails";
 

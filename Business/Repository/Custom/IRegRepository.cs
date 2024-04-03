@@ -97,6 +97,19 @@ namespace Business.Repository.Custom
         Reg GenerateRoundingReg(int colId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration);
 
         /// <summary>
+        /// Genera e restituisce una nuova reg di pausa con durata negativa in base ai parametri presenti nel cantiere.
+        /// </summary>
+        /// <param name="colId">L'id collaboratore a cui collegare la nuova registrazione.</param>
+        /// <param name="cantId">L'id cantiere a cui collegare la nuova registrazione.</param>
+        /// <param name="roundingDate">La data da utilizzare nella registrazione.</param>
+        /// <param name="roundingType">Il tipo di arrotondamento (positiva/negativa) da generare.</param>
+        /// <param name="roundingDuration">La durata (valore assoluto) con cui generare l'arrotondamento.</param>
+        /// <returns>
+        /// La registrazione contenente la pausa passata come parametro.
+        /// </returns>
+        Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration);
+
+        /// <summary>
         /// Genera e restituisce una nuova reg di tipo durata utilizzando i dati passati come parametro.
         /// </summary>
         /// <param name="colId">L'id collaboratore a cui collegare la nuova registrazione.</param>

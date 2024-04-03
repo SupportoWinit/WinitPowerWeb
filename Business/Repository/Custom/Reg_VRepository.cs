@@ -5,6 +5,7 @@ using Business.XmlExportsData.Scs;
 using Common;
 using Data;
 using DevExpress.Data.Linq;
+using DevExpress.Data.PLinq.Helpers;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraPrinting.XamlExport;
 using DevExpress.XtraRichEdit.Import.Html;
@@ -213,7 +214,7 @@ namespace Business.Repository.Custom
         /// <param name="elaborateDateTime">La data e ora dell'operazione (utilizzata per la scrittura della tabella messaggi).</param>
         /// <param name="application">L'applicazione di lancio dell'operazione (utilizzata per la scrittura della tabella messaggi).</param>
         /// <returns>L'elenco degli errori eventualmente riscontrato durante le operazioni di arrotondamento.</returns>
-        public List<KeyValuePair<string, string>> Rounding(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application)
+        public List<KeyValuePair<string, string>> Rounding(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application,bool delete)
         {
             var regsDic = new Dictionary<int, Reg>();
 
@@ -306,6 +307,15 @@ namespace Business.Repository.Custom
                                             thresholdEnd = paramThresholdEnd;
                                             minutesStart = paramTinutesStart;
                                             minutesEnd = paramTinutesEnd;
+                                        }
+
+                                        if (roundingEnum == RoundingMethodEnum.Duration || roundingEnum == RoundingMethodEnum.Disabled) {
+                                            roundingEnum = RoundingMethodEnum.None;
+
+                                            thresholdStart = 0;
+                                            thresholdEnd = 0;
+                                            minutesStart = 0;
+                                            minutesEnd = 0;
                                         }
 
                                         List<Reg_V> currentRegVs = cantGroup.OrderBy(regV => regV.Data_Ora_Fis_E).ToList();
@@ -748,9 +758,9 @@ namespace Business.Repository.Custom
 
                                                 #endregion
 
-                                             
-                                                    //Personalizzazione casp
-                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1 && !currentCant.Raggruppamento1_Can.Equals("5"))
+                                                #region Arrotondamenti Casp
+                                                //Personalizzazione casp
+                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.Casp) == 1 && !currentCant.Raggruppamento1_Can.Equals("5"))
                                                 {
                                                     if (currentRegU != null)
                                                     {
@@ -917,10 +927,11 @@ namespace Business.Repository.Custom
                                                     }
 
                                                 }
+                                                #endregion
                                             }
 
-                                            #endregion
 
+                                            #endregion
                                         }
                                     }
                                 }
@@ -1133,6 +1144,14 @@ namespace Business.Repository.Custom
                                 }
                             }
                             #endregion
+
+                            #region ARROTONDAMENTO PER DURATA
+                            if (currentCol.RoundingMethodEnum == RoundingMethodEnum.Duration)
+                            {
+                                DurationRounding(colGroup,currentCol.RoundingMethodEnum);
+                            }
+                            #endregion
+
                         }
                     }
                 }
@@ -1184,7 +1203,7 @@ namespace Business.Repository.Custom
         }
 
 
-        public List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs)
+        public List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs,RoundingMethodEnum metodo)
         {
             // Lista che conteerrà gli errori di elaborazione
             List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
@@ -1193,6 +1212,10 @@ namespace Business.Repository.Custom
 
             // Recupero il metodo di arrotondamento dalla scheda parametri
             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
+
+            if (roundingParamEnum == RoundingMethodEnum.None || roundingParamEnum == RoundingMethodEnum.StartEnd) {
+                roundingParamEnum = metodo;
+            }
 
             List<Reg_V> filteredRegVs = new List<Reg_V>();
             List<Tab_Decod> pausa = RepoManager.Tab_DecodRepo.GetAllQueryable(p => p.Decodifica_Tab == "Pausa").ToList();
@@ -1249,8 +1272,10 @@ namespace Business.Repository.Custom
                                 int workDayDuration = 0;
                                 foreach (Reg_V regv in colDateGroup)
                                 {
-                                    // Accumula la durata delle registrazioni della giornata
-                                    workDayDuration += regv.Durata_Fis.Value;
+                                    if (regv.Durata_Fis != null) {
+                                        // Accumula la durata delle registrazioni della giornata
+                                        workDayDuration += regv.Durata_Fis.Value;
+                                    }
                                 }
 
                                 if (workDayDuration > 0)
@@ -1298,6 +1323,85 @@ namespace Business.Repository.Custom
                 {
                     // salvataggio nel database delle rettifiche
                     RepoManager.RegRepo.Add(roundingsToAdd, true);
+                }
+
+                //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+                //BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+            }
+            return errors;
+        }
+
+        public List<KeyValuePair<String, String>> PausaPranzo(IEnumerable<Reg_V> regVs)
+        {
+            // Lista che conterrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà le timbrature da aggiungere a db
+            List<Reg> regsToAdd = new List<Reg>();
+
+            List<Reg_V> filteredRegVs = new List<Reg_V>();
+            List<Tab_Decod> pausa = RepoManager.Tab_DecodRepo.GetAllQueryable(p => p.Decodifica_Tab == "Pausa").ToList();
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotondamentoPausa) == 0)
+            {
+                // Filtra le regv selezionando solo quelle 'lavorative' (ore e viaggi)
+                filteredRegVs = regVs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip).ToList();
+            }
+            else
+            {
+                // Filtra le regv selezionando solo quelle 'lavorative' (ore e viaggi) senza contare le pause
+                filteredRegVs = regVs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip) && reg.Motivazione_Reg_Id != pausa.First().Tab_Decod_Id).ToList();
+            }
+            // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
+            if (filteredRegVs.Count() > 0)
+            {
+                // Raggruppa le registrazioni per collaboratore
+                var regsByCol = filteredRegVs.GroupBy(reg => reg.Col_Id).ToList();
+
+                double totalCol = regsByCol.Count();
+
+                foreach (var colGroup in regsByCol)
+                {
+                    var currColId = colGroup.Key.HasValue ? colGroup.Key : -1;
+
+                    if (currColId != -1)
+                    {
+                        Col currentCol = RepoManager.ColRepo.SingleOrDefault(col => col.Col_Id == currColId);
+
+                        if (currentCol != default(Col))
+                        {
+                            // Raggruppa le registrazioni per data (giorno)
+                            var regsByColDate = colGroup.GroupBy(reg => reg.Data_Reg).ToList();
+
+                            foreach (var colDateGroup in regsByColDate)
+                            {
+                                int tmpcantId = 0;
+                                DateTime tmpDate = new DateTime(1999,12,31);
+                                foreach (Reg_V regv in colDateGroup)
+                                {
+                                    if (regv.Durata_Fis != null && regv.Durata_Fis > 60)
+                                    {
+                                        if (!(tmpcantId == regv.Cant_Id.Value && tmpDate.Equals(colDateGroup.Key.Value)))
+                                        {
+                                            //creo la registrazione con durata negativa in base al parametro presente nel cantiere
+                                            TimeSpan roundingTime = new TimeSpan(0, 0, 0);
+                                            Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime);
+                                            if (tmp.Col_Id != null)
+                                            {
+                                                regsToAdd.Add(tmp);
+                                            }
+                                            tmpcantId = regv.Cant_Id.Value;
+                                            tmpDate = colDateGroup.Key.Value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // se al termine del ciclo sono state generate delle rettifiche allora si procede alla loro scrittura nel database
+                if (regsToAdd.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    RepoManager.RegRepo.Add(regsToAdd, true);
                 }
 
                 //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
@@ -5483,9 +5587,9 @@ namespace Business.Repository.Custom
         {
             #region Temporary Constants
 
-            const string documentNamespace = "Document.ImpiantiNet.Rapportini.INRapportini.Rapportino";
+            const string documentNamespace = "Document.Perfetto.WorkingReports.Documents.JobWorkingReports";
             const string documentProfile = "RapportiniSogedi";
-            const string documentTitle = "Rapportino di lavoro per Commessa";
+            const string documentTitle = "Rapportini per commessa";
             const string documentDescription = "";
             const string documentDomain = "DEFAULT_DOMAIN";
             const string documentSite = "DEFAULT_SITE";
@@ -6227,56 +6331,419 @@ namespace Business.Repository.Custom
 
                                 foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
                                 {
+                                    int tmpOre = 0;
+                                    int tmpMinuti = 0;
+                                    string tmpMotivazione = "01";
+                                    int dayCount = 1;
+                                    DateTime tmpData = new DateTime(1999,12,31);
+                                    regvRowsByDateAndCol.OrderBy(r => r.Motivazione);
                                     // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
-                                    foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
-                                    {
-                                        if (regv.CantId > 0 && regv.CantId != 0)
-                                        {
-                                            // inizializzazione della riga rapportino
-                                            Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                    foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.Motivazione)) {
+                                        if (regv.CantId > 0 && regv.CantId != 0) {
+                                            string[] data = tmpData.ToString("yyyy-MM-dd").Split(' ');
+                                            if (dayCount < regvRowsByDateAndCol.Count()) {
+                                                if (tmpOre == 0 && tmpMinuti == 0 && tmpMotivazione == "01")
+                                                {
+                                                    tmpData = regv.DataReg;
+                                                    tmpOre += regv.DurataOre;
+                                                    tmpMinuti += regv.DurataMinuti;
+                                                    tmpMotivazione = regv.Motivazione;
+                                                }
+                                                else if ((regv.DataReg == tmpData && regv.Motivazione == tmpMotivazione) || regv.DurataOre < 0)
+                                                {
+                                                    tmpOre += regv.DurataOre;
+                                                    tmpMinuti += regv.DurataMinuti;
+                                                }
+                                                else if (regv.DataReg == tmpData && regv.Motivazione != tmpMotivazione)
+                                                {
+                                                    // inizializzazione della riga rapportino
+                                                    Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                    Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                    matricolaCol = collaboratore.First().Matricola_Col;
+                                                    string motivazione = "01";
+                                                    if (tmpMotivazione != "" && tmpMotivazione != null)
+                                                    {
+                                                        motivazione = tmpMotivazione;
+                                                    }
+                                                    newRow.CodGiustificativoUfficiale = motivazione;
+                                                    newRow.Data = data[0];
+                                                    int ore = tmpOre;
+                                                    int minuti = tmpMinuti;
+                                                    if (ore > 0)
+                                                    {
+                                                        if (minuti < 0)
+                                                        {
+                                                            minuti = System.Math.Abs(minuti);
+                                                        }
+                                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                        int centesimi = (tmpMinuti * 100) / 60;
+                                                        if (centesimi < 0)
+                                                        {
+                                                            centesimi = System.Math.Abs(centesimi);
+                                                        }
+                                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                        newRow.GiornoDiRiposo = "N";
+                                                        newRow.GiornoChiusuraStraordinari = "N";
+                                                        string codiceAzienda = "000000";
+                                                        if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                        {
+                                                            codiceAzienda = collaboratore.First().Note_Col;
+                                                        }
+                                                        // aggiunta della riga alla testata
+                                                        document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                        document.Dipendente.Masters.Master.Add(newRow);
+                                                        tmpOre = regv.DurataOre;
+                                                        tmpMinuti = regv.DurataMinuti;
+                                                    }
+                                                    else {
+                                                        tmpOre = regv.DurataOre + ore;
+                                                        tmpMinuti = regv.DurataMinuti + tmpMinuti;
+                                                    }  
+                                                    tmpData = regv.DataReg;    
+                                                    tmpMotivazione = regv.Motivazione;
+                                                }
+                                                else if (regv.DataReg != tmpData && regv.Motivazione == tmpMotivazione)
+                                                {
+                                                    // inizializzazione della riga rapportino
+                                                    Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                    Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                    matricolaCol = collaboratore.First().Matricola_Col;
 
-                                            Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
-                                            // compilazione dei dati di riga
-                                            //newRow.number = rowsNumber;
-                                            string motivazione = "01";
-                                            if (regv.Motivazione != "" && regv.Motivazione != null)
-                                            {
-                                                motivazione = regv.Motivazione;
+                                                    newRow.CodGiustificativoUfficiale = tmpMotivazione;
+                                                    newRow.Data = data[0];
+                                                    int ore = tmpOre;
+                                                    int minuti = tmpMinuti;
+                                                    if (ore < 0)
+                                                    {
+                                                        ore = System.Math.Abs(ore);
+                                                    }
+                                                    if (minuti < 0)
+                                                    {
+                                                        minuti = System.Math.Abs(minuti);
+                                                    }
+                                                    newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                    newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                    int centesimi = (tmpMinuti * 100) / 60;
+                                                    if (centesimi < 0)
+                                                    {
+                                                        centesimi = System.Math.Abs(centesimi);
+                                                    }
+                                                    newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                    newRow.GiornoDiRiposo = "N";
+                                                    newRow.GiornoChiusuraStraordinari = "N";
+                                                    string codiceAzienda = "000000";
+                                                    if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                    {
+                                                        codiceAzienda = collaboratore.First().Note_Col;
+                                                    }
+                                                    // aggiunta della riga alla testata
+                                                    document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                    document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                    document.Dipendente.Masters.Master.Add(newRow);
+                                                    tmpData = regv.DataReg;
+                                                    tmpOre = regv.DurataOre;
+                                                    tmpMinuti = regv.DurataMinuti;
+                                                    tmpMotivazione = regv.Motivazione;
+                                                }
+                                            } else {
+                                                if (regv.DataReg == tmpData && regv.Motivazione == tmpMotivazione)
+                                                {
+                                                    tmpOre += regv.DurataOre;
+                                                    tmpMinuti += regv.DurataMinuti;
+                                                    // inizializzazione della riga rapportino
+                                                    Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                    Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                    matricolaCol = collaboratore.First().Matricola_Col;
+                                                    string motivazione = "01";
+                                                    if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                    {
+                                                        motivazione = regv.Motivazione;
+                                                    }
+                                                    newRow.CodGiustificativoUfficiale = motivazione;
+                                                    data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                    newRow.Data = data[0];
+                                                    int ore = tmpOre;
+                                                    int minuti = tmpMinuti;
+                                                    if (minuti == 60)
+                                                    {
+                                                        minuti = 0;
+                                                        ore = ore + 1;
+                                                    }
+                                                    if (ore < 0)
+                                                    {
+                                                        ore = System.Math.Abs(ore);
+                                                    }
+                                                    if (minuti < 0)
+                                                    {
+                                                        minuti = System.Math.Abs(minuti);
+                                                    }
+                                                    newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                    newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                    int centesimi = (minuti * 100) / 60;
+                                                    if (centesimi < 0)
+                                                    {
+                                                        centesimi = System.Math.Abs(centesimi);
+                                                    }
+                                                    newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                    newRow.GiornoDiRiposo = "N";
+                                                    newRow.GiornoChiusuraStraordinari = "N";
+                                                    string codiceAzienda = "000000";
+                                                    if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                    {
+                                                        codiceAzienda = collaboratore.First().Note_Col;
+                                                    }
+                                                    // aggiunta della riga alla testata
+                                                    document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                    document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                    document.Dipendente.Masters.Master.Add(newRow);
+                                                }
+                                                else
+                                                {
+                                                    if (tmpOre < 0)
+                                                    {
+                                                        // inizializzazione della riga rapportino
+                                                        Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                        Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                        matricolaCol = collaboratore.First().Matricola_Col;
+                                                        string motivazione = "01";
+                                                        if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                        {
+                                                            motivazione = regv.Motivazione;
+                                                        }
+                                                        newRow.CodGiustificativoUfficiale = motivazione;
+                                                        data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                        newRow.Data = data[0];
+                                                        int ore = regv.DurataOre - tmpOre;
+                                                        int minuti = regv.DurataMinuti;
+                                                        if (minuti == 60)
+                                                        {
+                                                            minuti = 0;
+                                                            ore = ore + 1;
+                                                        }
+                                                        if (ore < 0)
+                                                        {
+                                                            ore = System.Math.Abs(ore);
+                                                        }
+                                                        if (minuti < 0)
+                                                        {
+                                                            minuti = System.Math.Abs(minuti);
+                                                        }
+                                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                        int centesimi = (minuti * 100) / 60;
+                                                        if (centesimi < 0)
+                                                        {
+                                                            centesimi = System.Math.Abs(centesimi);
+                                                        }
+                                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                        newRow.GiornoDiRiposo = "N";
+                                                        newRow.GiornoChiusuraStraordinari = "N";
+                                                        string codiceAzienda = "000000";
+                                                        if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                        {
+                                                            codiceAzienda = collaboratore.First().Note_Col;
+                                                        }
+                                                        // aggiunta della riga alla testata
+                                                        document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                        document.Dipendente.Masters.Master.Add(newRow);
+                                                    }
+                                                    else if (regv.DurataOre < 0) {
+                                                        // inizializzazione della riga rapportino
+                                                        Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                        Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                        matricolaCol = collaboratore.First().Matricola_Col;
+                                                        string motivazione = "01";
+                                                        if (tmpMotivazione != "" && tmpMotivazione != null)
+                                                        {
+                                                            motivazione = tmpMotivazione;
+                                                        }
+                                                        newRow.CodGiustificativoUfficiale = motivazione;
+                                                        data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                        newRow.Data = data[0];
+                                                        int ore = tmpOre + regv.DurataOre;
+                                                        int minuti = regv.DurataMinuti;
+                                                        if (minuti == 60)
+                                                        {
+                                                            minuti = 0;
+                                                            ore = ore + 1;
+                                                        }
+                                                        if (ore < 0)
+                                                        {
+                                                            ore = System.Math.Abs(ore);
+                                                        }
+                                                        if (minuti < 0)
+                                                        {
+                                                            minuti = System.Math.Abs(minuti);
+                                                        }
+                                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                        int centesimi = (minuti * 100) / 60;
+                                                        if (centesimi < 0)
+                                                        {
+                                                            centesimi = System.Math.Abs(centesimi);
+                                                        }
+                                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                        newRow.GiornoDiRiposo = "N";
+                                                        newRow.GiornoChiusuraStraordinari = "N";
+                                                        string codiceAzienda = "000000";
+                                                        if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                        {
+                                                            codiceAzienda = collaboratore.First().Note_Col;
+                                                        }
+                                                        // aggiunta della riga alla testata
+                                                        document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                        document.Dipendente.Masters.Master.Add(newRow);
+                                                    }
+                                                    else if (tmpOre == 0 && tmpMinuti == 0 && tmpMotivazione == "01") {
+                                                        // inizializzazione della riga rapportino
+                                                        Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                        Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                        matricolaCol = collaboratore.First().Matricola_Col;
+                                                        string motivazione = "01";
+                                                        if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                        {
+                                                            motivazione = regv.Motivazione;
+                                                        }
+                                                        newRow.CodGiustificativoUfficiale = motivazione;
+                                                        data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                        newRow.Data = data[0];
+                                                        int ore = regv.DurataOre;
+                                                        int minuti = regv.DurataMinuti;
+                                                        if (minuti == 60)
+                                                        {
+                                                            minuti = 0;
+                                                            ore = ore + 1;
+                                                        }
+                                                        if (ore < 0)
+                                                        {
+                                                            ore = System.Math.Abs(ore);
+                                                        }
+                                                        if (minuti < 0)
+                                                        {
+                                                            minuti = System.Math.Abs(minuti);
+                                                        }
+                                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                        int centesimi = (minuti * 100) / 60;
+                                                        if (centesimi < 0)
+                                                        {
+                                                            centesimi = System.Math.Abs(centesimi);
+                                                        }
+                                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                        newRow.GiornoDiRiposo = "N";
+                                                        newRow.GiornoChiusuraStraordinari = "N";
+                                                        string codiceAzienda = "000000";
+                                                        if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                        {
+                                                            codiceAzienda = collaboratore.First().Note_Col;
+                                                        }
+                                                        // aggiunta della riga alla testata
+                                                        document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                        document.Dipendente.Masters.Master.Add(newRow);
+                                                    }
+                                                    else {
+                                                        // inizializzazione della riga rapportino
+                                                        Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                        Cant cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                        matricolaCol = collaboratore.First().Matricola_Col;
+                                                        string motivazione = "01";
+                                                        if (tmpMotivazione != "" && tmpMotivazione != null)
+                                                        {
+                                                            motivazione = tmpMotivazione;
+                                                        }
+                                                        newRow.CodGiustificativoUfficiale = motivazione;
+                                                        data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                        newRow.Data = data[0];
+                                                        int ore = tmpOre;
+                                                        int minuti = tmpMinuti;
+                                                        if (minuti == 60)
+                                                        {
+                                                            minuti = 0;
+                                                            ore = ore + 1;
+                                                        }
+                                                        if (ore < 0)
+                                                        {
+                                                            ore = System.Math.Abs(ore);
+                                                        }
+                                                        if (minuti < 0)
+                                                        {
+                                                            minuti = System.Math.Abs(minuti);
+                                                        }
+                                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                        int centesimi = (minuti * 100) / 60;
+                                                        if (centesimi < 0)
+                                                        {
+                                                            centesimi = System.Math.Abs(centesimi);
+                                                        }
+                                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                        newRow.GiornoDiRiposo = "N";
+                                                        newRow.GiornoChiusuraStraordinari = "N";
+                                                        string codiceAzienda = "000000";
+                                                        if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                        {
+                                                            codiceAzienda = collaboratore.First().Note_Col;
+                                                        }
+                                                        // aggiunta della riga alla testata
+                                                        document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                        document.Dipendente.Masters.Master.Add(newRow);
+                                                        // inizializzazione della riga rapportino
+                                                        newRow = new Business.XmlExportsData.Scs.Movimento();
+                                                        cantiere = RepoManager.CantRepo.First(c => c.Cant_Id == regv.CantId);
+                                                        matricolaCol = collaboratore.First().Matricola_Col;
+                                                        motivazione = "01";
+                                                        if (regv.Motivazione != "" && regv.Motivazione != null)
+                                                        {
+                                                            motivazione = regv.Motivazione;
+                                                        }
+                                                        newRow.CodGiustificativoUfficiale = motivazione;
+                                                        data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
+                                                        newRow.Data = data[0];
+                                                        ore = regv.DurataOre;
+                                                        minuti = regv.DurataMinuti;
+                                                        if (minuti == 60)
+                                                        {
+                                                            minuti = 0;
+                                                            ore = ore + 1;
+                                                        }
+                                                        if (ore < 0)
+                                                        {
+                                                            ore = System.Math.Abs(ore);
+                                                        }
+                                                        if (minuti < 0)
+                                                        {
+                                                            minuti = System.Math.Abs(minuti);
+                                                        }
+                                                        newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
+                                                        newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
+                                                        centesimi = (minuti * 100) / 60;
+                                                        if (centesimi < 0)
+                                                        {
+                                                            centesimi = System.Math.Abs(centesimi);
+                                                        }
+                                                        newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
+                                                        newRow.GiornoDiRiposo = "N";
+                                                        newRow.GiornoChiusuraStraordinari = "N";
+                                                        codiceAzienda = "000000";
+                                                        if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
+                                                        {
+                                                            codiceAzienda = collaboratore.First().Note_Col;
+                                                        }
+                                                        // aggiunta della riga alla testata
+                                                        document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                                                        document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
+                                                        document.Dipendente.Masters.Master.Add(newRow);
+                                                    }
+                                                }
                                             }
-                                            matricolaCol = collaboratore.First().Matricola_Col;
-                                            newRow.CodGiustificativoUfficiale = motivazione;
-                                            string[] data = regv.DataReg.ToString("yyyy-MM-dd").Split(' ');
-                                            newRow.Data = data[0];
-                                            int ore = regv.DurataOre;
-                                            int minuti = regv.DurataMinuti;
-                                            if (ore < 0) {
-                                                ore = System.Math.Abs(ore);
-                                            }
-                                            if (minuti < 0) {
-                                                minuti = System.Math.Abs(minuti);
-                                            }
-                                            newRow.NumOre = CommonService.AggiungiZeriASinistra(ore.ToString(), 2);
-                                            newRow.NumMinuti = CommonService.AggiungiZeriASinistra(minuti.ToString(), 2);
-                                            int centesimi = (regv.DurataMinuti * 100) / 60;
-                                            if (centesimi < 0) {
-                                                centesimi = System.Math.Abs(centesimi);
-                                            }
-                                            newRow.NumMinutiInCentesimi = CommonService.AggiungiZeriASinistra(centesimi.ToString(), 2);
-                                            newRow.GiornoDiRiposo = "N";
-                                            newRow.GiornoChiusuraStraordinari = "N";
-                                            string codiceAzienda = "000000";
-                                            if (collaboratore.First().Note_Col != "" && collaboratore.First().Note_Col != null)
-                                            {
-                                                codiceAzienda = collaboratore.First().Note_Col;
-                                            }
-                                            // aggiunta della riga alla testata
-                                            document.Dipendente.CodAziendaUfficiale = "000115";//CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
-                                            document.Dipendente.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(collaboratore.First().Matricola_Col, 7);
-                                            document.Dipendente.Masters.Master.Add(newRow);
-
-                                            // incremento del numero di linee
-                                            rowsNumber++;
                                         }
+                                        dayCount++;
                                     }
                                 }
                             }
@@ -6346,8 +6813,10 @@ namespace Business.Repository.Custom
 
                                 foreach (var regvRowsByDateAndCol in regvRowsByDate.GroupBy(regv => regv.ColMnemonic).ToList())
                                 {
+                                    int j = 0;
+                                    string LastMovimento = "";
                                     string test = regvRowsByDateAndCol.Key;
-                                    // per ogni registrazione all'interno della data (ordinata per tipo registrazione per processare i viaggi in fondo)
+                                    // vado a generare un nodo forzatureZone cantieri per giorno
                                     foreach (var regv in regvRowsByDateAndCol.OrderBy(r => r.StartHour))
                                     {
                                         if (regv.CantId > 0 && regv.CantId != 0)
@@ -6382,11 +6851,13 @@ namespace Business.Repository.Custom
                                             newRow.CodiceCantiere = codice;
                                             lastCant = codice;
                                             // aggiunta della riga alla testata
-                                            document.Dipendente.ForzatureZoneCantieri.Add(newRow);
+                                            if (LastMovimento != newRow.DataMovimento) {
+                                                document.Dipendente.ForzatureZoneCantieri.Add(newRow);
+                                            }
+                                            LastMovimento = newRow.DataMovimento;
                                             month = regv.DataReg.Month;
                                             anno = regv.DataReg.Year;
                                         }
-
                                     }
                                 }
                                 i++;  
@@ -6636,8 +7107,8 @@ namespace Business.Repository.Custom
             envelope.DocumentInfo.Domain = "DEFAULT_DOMAIN";
             envelope.DocumentInfo.Site = "DEFAULT_SITE";
             envelope.DocumentInfo.SiteCode = "DESI";
-            envelope.DocumentInfo.EnvelopeClass = "Rapportini";
-            envelope.DocumentInfo.RootDocNamespace = "Document.ImpiantiNet.Rapportini.INRapportini.Rapportino";
+            envelope.DocumentInfo.EnvelopeClass = "WorkingReports";
+            envelope.DocumentInfo.RootDocNamespace = "Document.Perfetto.WorkingReports.Documents.JobWorkingReports";
             envelope.DocumentInfo.Datatime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
             foreach (string file in files)
             {
@@ -6646,7 +7117,7 @@ namespace Business.Repository.Custom
                     var newFile = new Business.XmlExportsData.Perfetto.XmlFileTag();
                     newFile.type = "Root";
                     newFile.dataurl = Path.GetFileName(file);
-                    newFile.envelopeclass = "Rapportini";
+                    newFile.envelopeclass = "WorkingReports";
                     newFile.documentname = "Rapportino di lavoro per Commessa";
                     newFile.documentnumber = documentnumber.ToString();
                     //documentnumber++;
@@ -6691,7 +7162,7 @@ namespace Business.Repository.Custom
                     var newFile = new Business.XmlExportsData.Scs.XmlFileTag();
                     newFile.type = "Root";
                     newFile.dataurl = Path.GetFileName(file);
-                    newFile.envelopeclass = "Rapportini";
+                    newFile.envelopeclass = "WorkingReports";
                     newFile.documentname = "Rapportino di lavoro per Commessa";
                     newFile.documentnumber = documentnumber.ToString();
                     //documentnumber++;

@@ -29,15 +29,13 @@
   <!-- ARANCIONE -->
   <fc ID="RegTypeEnum.Duration" Des="Colore per il Tipo Registrazione ORE E/U" R="0" G="0" B="0" />
   <!--NERO-->
-  <fc ID="RegTypeEnum.RettTimeSheetManual" Des="Colore per le rettifiche manuali di tipo 11" R="0" G="128" B="128" />
-  <!--FOGLIA DI THE-->
   <!--******************************************************************************************************************************************************************************-->
   <fc ID="RegModifyTypeEnum.None" Des="Colore per le Ore NON MODIFICATE" R="0" G="0" B="0" />
   <!--NERO-->
   <fc ID="RegModifyTypeEnum.Exit_Modified" Des="Colore per le Ore di USCITA MODIFICATE ED ENTRATA NON MODIFICATA" R="255" G="0" B="0" />
-  <!--BLU-->
-  <fc ID="RegModifyTypeEnum.Exit_Manual" Des="Colore per le Ore di USCITA MANUALE ED ENTARTA NON MODIFICATA" R="0" G="0" B="255" />
   <!--ROSSO-->
+  <fc ID="RegModifyTypeEnum.Exit_Manual" Des="Colore per le Ore di USCITA MANUALE ED ENTARTA NON MODIFICATA" R="0" G="0" B="255" />
+  <!--BLU-->
   <fc ID="RegModifyTypeEnum.Entry_Modified" Des="Colore per le Ore di ENTRATA MODIFICATE ED USCITA NON MODIFICATA" R="255" G="0" B="0" />
   <!--ROSSO-->
   <fc ID="RegModifyTypeEnum.Both" Des="Colore per le Ore di ENTRATA/USCITA MODIFICATE" R="255" G="0" B="0" />
@@ -104,16 +102,7 @@
   <fc ID="WhereIsItRecordState.IsInIt" Des="Colore per rappresentare nel modulo Where Is It il collaboratore presente in cantiere" R="124" G="205" B="124" />
   <fc ID="WhereIsItRecordState.IsOutOfIt" Des="Colore per rappresentare nel modulo Where Is It il collaboratore non presente in cantiere" R="217" G="0" B="0" />
   <fc ID="WhereIsItRecordState.NoRegPresent" Des="Colore per rappresentare nel modulo Where Is It il collaboratore senza registrazioni" R="0" G="0" B="1" />
-  <fc ID="WhereIsItRecordState.LastPass" Des="Colore per rappresentare nel modulo Where Is It il collaboratore con ultima registrazione passaggio" R="245" G="145" B="62" />
   <fc ID="ActivityEvaluationStateEnum.NoCompliantNotResolvable" Des="Colore di identificazione delle attività marcate non conformi e non risolvibili" R="217" G="0" B="0" />
   <fc ID="ActivityEvaluationStateEnum.NotCompliantResolving" Des="Colore di identificazione delle attività marcate non conformi e in risoluzione" R="177" G="158" B="0" />
   <fc ID="ActivityEvaluationStateEnum.Compliant" Des="Colore di identificazione delle attività marcate conformi" R="0" G="125" B="0" />
-  <!-- GRADAZIONE DI BLU -->
-  <fc ID="DelayEnum.Delay" Des="Colore di del ritardo" R="191" G="0" B="140" />
-
-
-  <!-- DELTA FIGURATIVE FISICHE -->
-  <fc ID="DeltaFigFis.Zero" Des="Delta nullo" R="0" G="0" B="0" />
-  <fc ID="DeltaFigFis.Positive" Des="Delta nullo" R="0" G="0" B="255" />
-  <fc ID="DeltaFigFis.Negative" Des="Delta nullo" R="0" G="0" B="0" />
 </ForeColors>

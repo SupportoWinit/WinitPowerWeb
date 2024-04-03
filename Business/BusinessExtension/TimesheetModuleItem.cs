@@ -3723,6 +3723,65 @@ namespace Business.BusinessExtension
             return returnList;
         }
 
+        private static TimesheetModuleItem GenerateRegVTimesheetsByOtherEntityPausa(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals,int colId, int cantId, bool usaFisiche = false, List<int> cantList = null)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newTimesheet = new TimesheetModuleItem(isDecimalHours);
+
+            // inserimento della data che indica il mese di elaborazione
+            newTimesheet.StartDate = firstMonthDate;
+            DateTime processingDate = firstMonthDate;
+
+            // inizializzazione del piano vuoto in cui andare a compilare i totali per giornata
+            var daysMinutes = RepoManager.Tab_OrariRepo.GetEmptyMinutesPlan(firstMonthDate, lastMonthDate, requestedForWeeklyTotals);
+
+            // inizializzazione del valore di ritorno del metodo
+            var returnList = new List<TimesheetModuleItem>();
+
+            // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
+            var cantIdList = regVsToSplit.Select(regv => regv.Cant_Id).Distinct().ToList();
+
+            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            {
+                cantIdList = cantList.Cast<int?>().ToList();
+            }
+            // per ogni id cantiere presente nella lista
+            foreach (var listCantId in cantIdList)
+            {
+                // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                var currentCantId = listCantId ?? 0;
+
+                // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+            }
+            for (int i = 1;i <= lastMonthDate.Day;i++) {
+                double dayTotal = 0;
+                string dayName = "Day" + i.ToString("00");
+                double pausa = 0;
+                foreach (var total in returnList) {
+                    dayTotal += CommonService.FromHoursToMinutes((double)total[dayName], isDecimalHours);
+                    List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == total.CantId).ToList();
+                    pausa += cantiere.First().Importo1.Value;
+                }
+                if (daysMinutes.ContainsKey(processingDate))
+                {
+                    daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                }
+                processingDate = processingDate.AddDays(1);
+            }
+
+            newTimesheet.PopulateHoursWithDate(daysMinutes);
+            newTimesheet.IsFromFreeTimeSheet = false;
+            newTimesheet.FreeTimeSheetId = 0;
+            newTimesheet.InsertColValues(colId);
+            newTimesheet.InsertCantValues(cantId);
+            newTimesheet.Justification = timesheetJustification;
+            newTimesheet.Order = timesheetOrder;
+
+            return newTimesheet;
+        }
+
         private static List<TimesheetModuleItem> GenerateRegVTimesheetsByOtherEntityExportStr(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
            DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> plan, bool usaFisiche = false, List<int> cantList = null)
         {
@@ -4015,7 +4074,6 @@ namespace Business.BusinessExtension
                         dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
                     }
                 }
-
                 if (daysMinutes.ContainsKey(processingDate))
                 {
                     daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
@@ -4045,7 +4103,6 @@ namespace Business.BusinessExtension
                             dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
                         }
                     }
-
                     if (daysMinutes.ContainsKey(currDate))
                     {
                         daysMinutes[currDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
@@ -5651,14 +5708,28 @@ namespace Business.BusinessExtension
             List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
             if (rounding.Any())
             {
-                // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-                if (isByOtherEntity)
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
                 {
-                    justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                    if (isByOtherEntity)
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                    }
+                    else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                    }
                 }
-                else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-                {
-                    justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                else {
+                    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                    if (isByOtherEntity)
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                    }
+                    else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                    }
                 }
                 // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
             }
@@ -5726,9 +5797,11 @@ namespace Business.BusinessExtension
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
             }
 
+            TimesheetModuleItem colTotal = null;
 
-            TimesheetModuleItem colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
-
+            if (colTotal == null) {
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+            }
             if (!isByOtherEntity)
             {
                 justificationCartellini.Add(colTotal);
