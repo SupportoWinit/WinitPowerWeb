@@ -91,7 +91,7 @@ namespace Business.ExternalImport.Implementations
             }
 
             if (bridge.Host != null) {
-                registrazioni = bridge.Get<List<FlutterAppReg>>(CreateStandardPayloadOld(index), apiPaths["getTimbrature"]);
+                registrazioni = bridge.Get<List<FlutterAppReg>>(CreateStandardPayload(index), apiPaths["getTimbrature"]);
             }
 
             if (bridge2.Host != null) {
@@ -122,8 +122,12 @@ namespace Business.ExternalImport.Implementations
         private JObject CreateStandardPayload(int index)
         {
             string id = connectionConfig["IdCliente"];
-            if (ids[1] != null) {
+            if (ids[1] != null)
+            {
                 id = ids[1];
+            }
+            else {
+                id = ids[0];
             }
             JObject request = JObject.FromObject(new
             {

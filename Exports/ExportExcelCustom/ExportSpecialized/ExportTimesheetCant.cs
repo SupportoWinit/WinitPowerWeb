@@ -1,6 +1,8 @@
 ﻿using Business.BusinessExtension;
 using Business.Repository;
+using Common;
 using Domain;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,6 +22,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         private Color borderColor = Color.Black;
 
+        private DateTime startMonth;
+        private DateTime endMonth;
+
         public override void LaunchExport()
         {
             Param parameters = RepoManager.ParamRepo.ParametersRow;
@@ -28,18 +33,28 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             var collaboratori = RepoManager.ColRepo.Find(c => SelectedIds.Contains(c.Col_Id), true).ToList();
 
-            foreach (Col col  in collaboratori)
-                cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
-                                                    col,
-                                                    isByOtherEntity: true,
-                                                    calculateWorkedHours: parameters.Cartellino_Visualizza_Ore,
-                                                    calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni,
-                                                    calculateTrips: parameters.Cartellino_Visualizza_Viaggi,
-                                                    calculateDelta: parameters.Cartellino_Visualizza_Delta,
-                                                    calculateOrdStrTimesheet: false,
-                                                    devidePlanByDayNight: parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                    showWeeklyTotal: false,
-                                                    insertCorrectionRow: false));
+            startMonth = CommonService.GetFirstMonthDay(ExportDate);
+            endMonth = CommonService.GetLastMonthDay(ExportDate);
+
+            foreach (Col col in collaboratori) {
+                IEnumerable<int> lis = new List<int>();
+                lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
+                if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
+                {
+                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
+                                                   col,
+                                                   isByOtherEntity: true,
+                                                   calculateWorkedHours: parameters.Cartellino_Visualizza_Ore,
+                                                   calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni,
+                                                   calculateTrips: parameters.Cartellino_Visualizza_Viaggi,
+                                                   calculateDelta: parameters.Cartellino_Visualizza_Delta,
+                                                   calculateOrdStrTimesheet: false,
+                                                   devidePlanByDayNight: parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                   showWeeklyTotal: false,
+                                                   insertCorrectionRow: false));
+                }
+                }
+               
 
             ExcelWorkbookGenerateNew(ModelFilePath);
 

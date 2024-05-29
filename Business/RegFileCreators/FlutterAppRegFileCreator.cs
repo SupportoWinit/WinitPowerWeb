@@ -115,6 +115,9 @@ namespace Business.RegFileCreators
                     fluReg.Squadra = fluReg.Squadra.Trim();
                     String[] cols = fluReg.Squadra.Split(separator);
                     List<string> lastReg = new List<string>();
+                    if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U") {
+                        fluReg.Motivazione = "";
+                    }
                     if (fluReg.Cantiere != null && fluReg.Cantiere != "")
                     {
                         if (fluReg.Cantiere.Length == 10)
@@ -240,7 +243,7 @@ namespace Business.RegFileCreators
                                                 fluReg.Data.Day.ToString("00"),
                                                 fluReg.Data.Hour.ToString("00"),
                                                 fluReg.Data.Minute.ToString("00"),
-                                                fluReg.Verso
+                                                ""
                                             );
                                             #endregion
                                         }
@@ -294,7 +297,7 @@ namespace Business.RegFileCreators
                                                 fluReg.Data.Day.ToString("00"),
                                                 fluReg.Data.Hour.ToString("00"),
                                                 fluReg.Data.Minute.ToString("00"),
-                                                fluReg.Verso
+                                                ""
                                             );
                                             #endregion
                                         }
@@ -445,7 +448,7 @@ namespace Business.RegFileCreators
                                 fluReg.Data.Day.ToString("00"),
                                 fluReg.Data.Hour.ToString("00"),
                                 fluReg.Data.Minute.ToString("00"),
-                                fluReg.Verso,
+                                "",
                                 fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                             );
                             #endregion
@@ -524,7 +527,7 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
-                                        fluReg.Verso
+                                        ""
                                     );
                                     #endregion
                                 }
@@ -578,7 +581,7 @@ namespace Business.RegFileCreators
                                             fluReg.Data.Day.ToString("00"),
                                             fluReg.Data.Hour.ToString("00"),
                                             fluReg.Data.Minute.ToString("00"),
-                                            fluReg.Verso
+                                            ""
                                         );
                                         #endregion
                                     }
@@ -715,7 +718,7 @@ namespace Business.RegFileCreators
                             fluReg.Data.Day.ToString("00"),
                             fluReg.Data.Hour.ToString("00"),
                             fluReg.Data.Minute.ToString("00"),
-                            fluReg.Verso,
+                            "",
                             fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                         );
                         #endregion

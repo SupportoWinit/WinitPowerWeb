@@ -5621,8 +5621,15 @@ namespace Business.Repository.Custom
                         ciclo++;
                         ManageElaborateMessageDictionaries(progress - step, String.Format("Elaborate : Fase {0} di {1}", ciclo, periods.Count));
 
-                        fromChunk = period.Key;
-                        toChunk = period.Value;
+                        if (RepoManager.ParamRepo.First().Abilita_Notturno)
+                        {
+                            fromChunk = period.Key.Subtract(TimeSpan.FromDays(1));
+                            toChunk = period.Value.AddDays(1);
+                        }
+                        else {
+                            fromChunk = period.Key;
+                            toChunk = period.Value;
+                        }
 
                         GC.Collect();
 

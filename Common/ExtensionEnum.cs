@@ -616,7 +616,8 @@ namespace Common
     {
         None = 0,
         Perfetto = 1,
-        Scs = 2
+        Scs = 2,
+        Orlando = 3
     }
 
     /// <summary>

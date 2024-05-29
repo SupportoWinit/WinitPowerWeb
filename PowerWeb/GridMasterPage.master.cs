@@ -996,7 +996,16 @@ namespace PowerWeb
             }
             //if (PowerWebContext.Current.User.Codice_Utente != "WINIT")
             //    btnDeletePrintLayout.Visible = false;
-            btnSavePrintLayout.Visible = true;
+            btnSavePrintLayout.Visible = false;
+            if (PowerWebContext.Current.User.Liv_Utente < 11) {
+                btnSaveLayout.Visible = false;
+                btnCustomizeColumns.Visible = false;
+                btnPrint.Visible = false;
+                btnPrintPdf.Visible = false;
+                btnExportXLSX.Visible = false;
+                btnHelp.Visible = false;
+                btnPrintXlsx.Visible = false;
+            }
         }
 
         protected void Page_Init(object sender, EventArgs e)

@@ -5787,13 +5787,9 @@ namespace Business.BusinessExtension
             }
             else if(customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
-            }
-                
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
+            }else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-            }
-
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0) {
+            }else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
             }
 

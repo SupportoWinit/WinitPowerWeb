@@ -36,6 +36,23 @@
       <delete  value="/api/ManagePowerWebCol" />
     </OperationStrategy>
   </Synch>
+  
+  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="0" >
+    <HostConfig host="mobile.clockapp.it" port="80" protocol="http"/>
+    <ExtraInfos>
+      <IdCliente  value="97" />
+    </ExtraInfos>
+    <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.Flutter.FlutterCantOperationStrategies,Business" enabled="1">
+      <create  value="/app/ws/syncHotspot" />
+      <modify  value="/app/ws/syncHotspot" />
+      <delete  value="/app/ws/deleteHotspot" />
+    </OperationStrategy>
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
+      <create  value="/api/ManagePowerWebCol" />
+      <modify  value="/api/ManagePowerWebCol" />
+      <delete  value="/api/ManagePowerWebCol" />
+    </OperationStrategy>
+  </Synch>
 
 
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
@@ -51,12 +68,12 @@
   </ExternalImport>
 
   <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
-    <HostConfig host="mobile.clockapp.it,mobile.clockapp.it" protocol="http" />
+    <HostConfig host="mobile.clockapp.it" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="79,97" />
+      <IdCliente  value="97" />
     </ExtraInfos>
     <OperationStrategy >
-      <getTimbrature  value="/app/ws/Winit" />
+      <getTimbrature  value="/app/ws/WinitAuthorized" />
     </OperationStrategy>
   </ExternalImport>
   

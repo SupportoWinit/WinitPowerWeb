@@ -776,6 +776,9 @@ namespace PowerWeb.Modules
                             case RegExportToXmlEnum.Scs:
                                 outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToScs(regVsToProcess, outputPath, to);
                                 break;
+                            case RegExportToXmlEnum.Orlando:
+                                outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToOrlando(regVsToProcess, outputPath, to);
+                                break;
 
                         }
 

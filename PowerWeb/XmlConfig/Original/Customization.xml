@@ -604,4 +604,9 @@
   <!--  RimozionePausaHotel=0 Indica di non rimuovere la pausa
         RimozionePausaHotel=1 Indica di rimuovere la pausa-->
 
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.DelayAfter" Des="(Personalizzazione Komplett) Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
+  <!--  RimozionePausaHotel=0 Indica di non rimuovere la pausa
+        RimozionePausaHotel=1 Indica di rimuovere la pausa-->
+
 </Customizations>

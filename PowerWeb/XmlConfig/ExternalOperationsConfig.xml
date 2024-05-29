@@ -30,22 +30,22 @@
       <modify  value="/api/ManagePowerWebCant" />
       <delete  value="/api/ManagePowerWebCant" />
     </OperationStrategy>
-    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
+    <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="1">
       <create  value="/api/ManagePowerWebCol" />
       <modify  value="/api/ManagePowerWebCol" />
       <delete  value="/api/ManagePowerWebCol" />
     </OperationStrategy>
   </Synch>
-
-  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="1" >
+  
+  <Synch company="FlutterAppCant" class="Business.Synchronization.Implementations.FlutterAppManagerSynchronizer`1,Business" enabled="0" >
     <HostConfig host="mobile.clockapp.it" port="80" protocol="http"/>
     <ExtraInfos>
-      <IdCliente  value="47" />
+      <IdCliente  value="97" />
     </ExtraInfos>
     <OperationStrategy type="Cant" class="Business.Synchronization.OperationStrategies.Flutter.FlutterCantOperationStrategies,Business" enabled="1">
-      <create  value="/app/ws/insertCantieri" />
-      <modify  value="/app/ws/updateCantieri" />
-      <delete  value="/app/ws/deleteCantieri" />
+      <create  value="/app/ws/syncHotspot" />
+      <modify  value="/app/ws/syncHotspot" />
+      <delete  value="/app/ws/deleteHotspot" />
     </OperationStrategy>
     <OperationStrategy type="Col"  class="Business.Synchronization.OperationStrategies.ClockApp.ClockAppColOperationStrategies,Business" enabled="0">
       <create  value="/api/ManagePowerWebCol" />
@@ -58,19 +58,19 @@
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="DolomitiServizi" />
-      <pw value="Dolomiti2021!" />
-      <idTenant value="1902" />
+      <uid  value="Niagara" />
+      <pw value="Niagara2021W!" />
+      <idTenant value="1897" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
     </OperationStrategy>
   </ExternalImport>
-  
-  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
-    <HostConfig host="backend.winitsrl.eu,mobile.clockapp.it" protocol="http" />
+
+  <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="0">
+    <HostConfig host="mobile.clockapp.it" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="67,-1" />
+      <IdCliente  value="97" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

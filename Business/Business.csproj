@@ -496,6 +496,10 @@
     <Compile Include="XmlExportsData\Perfetto\PerfettoWriter.cs" />
     <Compile Include="XmlExportsData\Perfetto\RapportiniPerfetto.cs" />
     <Compile Include="XmlExportsData\Perfetto\RegvRow.cs" />
+    <Compile Include="XmlExportsData\Orlando\ContentClasses.cs" />
+    <Compile Include="XmlExportsData\Orlando\Document.cs" />
+    <Compile Include="XmlExportsData\Orlando\Envelope.cs" />
+    <Compile Include="XmlExportsData\Orlando\OrlandoWriter.cs" />
     <Compile Include="XmlExportsData\Scs\ContentClasses.cs" />
     <Compile Include="XmlExportsData\Scs\Document.cs" />
     <Compile Include="XmlExportsData\DocumentEmpty.cs" />

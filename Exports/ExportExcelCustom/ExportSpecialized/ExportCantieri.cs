@@ -124,7 +124,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 TimeSpan totale = new TimeSpan();
                 int giorni = 0;
                 rowIndex = 1;
-                ColumnsSetWidth(1, rowIndex, rowIndex, 55);
+                ColumnsSetWidth(1, rowIndex, rowIndex, 70);
                 CellInsertValue(1, rowIndex, columnIndex, cant.Descrizione_Can, ExcelInsertTypeEnum.Content);
                 //recupero il piano delle ore per ogni cantiere che vado ad elaborare
                 Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> planMinutes = RepoManager.Tab_OrariRepo.GetPlanMinutes(cant.Cant_Id,
@@ -163,15 +163,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     CellInsertValue(1, day.Day + 1, columnIndex, tot, ExcelInsertTypeEnum.Content);
                     var prova = colPlan["Day" + i.ToString("00")];
                     today = (double)prova;
-                    if (today * 60 > 0 && daySum == 0)
-                    {
-                        RangeSetBackgroundColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.Red, ExcelFillStyle.Solid);
-                    }
-                    else if (today * 60 > daySum)
-                    {
-                        RangeSetFontColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.Red);
-                    }
-                    else if (today == 0 && daySum > 0)
+                    //if (today * 60 > 0 && daySum == 0)
+                    //{
+                    //    RangeSetBackgroundColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.Red, ExcelFillStyle.Solid);
+                    //}
+                    //else if (today * 60 > daySum)
+                    //{
+                    //    RangeSetFontColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.Red);
+                    //} else
+                    if (today == 0 && daySum >= 0)
                     {
                         RangeSetBackgroundColor(1, day.Day + 1, columnIndex, day.Day + 1, columnIndex, Color.LightBlue, ExcelFillStyle.Solid);
                     }
@@ -267,7 +267,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             //RangeSetBackgroundColor(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day, Color.LightGray, fillStyle);
             RangeSetFontSize(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1, 12);
             RangeSetWrapText(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1, true);
-            ColumnsSetWidth(1, rowIndex + 1, rowIndex + 1, 7);
+            ColumnsSetWidth(1, rowIndex + 1, rowIndex + 1, 8);
 
             RangeSetFontBold(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1);
             if (date.DayOfWeek == DayOfWeek.Sunday)

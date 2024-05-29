@@ -52,8 +52,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             startMonth = CommonService.GetFirstMonthDay(ExportDate);
             endMonth = CommonService.GetLastMonthDay(ExportDate);
 
-            foreach (Col col in collaboratori)
-                cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
+            foreach (Col col in collaboratori) {
+                IEnumerable<int> lis = new List<int>();
+                lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
+                if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
+                {
+                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
                                                     col,
                                                     false,
                                                     false,
@@ -66,6 +70,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
                                                     true,
                                                     parameters.Cartellino_Visualizza_Piano));
+                }
+            }
+                
 
 
             cartellini = cartellini.OrderBy(c => c.Key.Codice_Collaboratore).ToDictionary(c => c.Key, d => d.Value);
