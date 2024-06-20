@@ -125,6 +125,7 @@ namespace Business.ExternalImport.Implementations
             if (ids[1] != null)
             {
                 id = ids[1];
+                ids[1] = null;
             }
             else {
                 id = ids[0];

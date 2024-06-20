@@ -2524,12 +2524,14 @@ namespace Business.Repository.Custom
         {
             get
             {
-                if ((PowerWebContext.Current.DomainFilter & DomainFilterEnum.Fil) == DomainFilterEnum.Fil && PowerWebContext.Current.Fils != null && PowerWebContext.Current.User.Liv_Utente < 10)
+                if (PowerWebContext.Current.DomainFilter /*& DomainFilterEnum.Fil)*/ == DomainFilterEnum.Fil && PowerWebContext.Current.Fils != null && PowerWebContext.Current.User.Liv_Utente < 10)
                 {
                     var allFilIds = PowerWebContext.Current.Fils.Select(fil => fil.Fil_Id).ToList();
                     return cant =>/*/* cant.Fil_Id == null || */allFilIds.Contains(cant.Fil_Id.Value);
-                }
-                else return base.Filter;
+                } else if (PowerWebContext.Current.DomainFilter == DomainFilterEnum.Both && PowerWebContext.Current.Fils != null && PowerWebContext.Current.User.Liv_Utente < 10) {
+                    var allFilIds = PowerWebContext.Current.Fils.Select(fil => fil.Fil_Id).ToList();
+                    return cant => cant.Fil_Id == null || allFilIds.Contains(cant.Fil_Id.Value);
+                } else return base.Filter;
             }
         }
 

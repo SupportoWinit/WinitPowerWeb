@@ -1808,9 +1808,7 @@ namespace Business.Repository.Custom
                     // se la registrazione da processare ha collegata un'unità portatile
                     if (reg.Pru_Id != null)
                     {
-
                         #region Associazione del collaboratore
-
                         // in ogni caso si reinizializza sulla registrazione il collaboratore
                         reg.Col_Id = null;
 
@@ -1833,7 +1831,6 @@ namespace Business.Repository.Custom
                                 : reg.Pru.Codice_Pru);
                             errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
                         }
-
                         #endregion
 
                     }

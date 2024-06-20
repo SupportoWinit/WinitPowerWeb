@@ -4952,7 +4952,7 @@ namespace Business.Repository.Custom
                         StringBuilder tmpFilter = new StringBuilder();
 
                         //se ho delle filiali E dai parametri è richiesta la gestione delle filiali o entrambi allora viene fatto un filtro per le filiali
-                        if (allFilIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Fil) && PowerWebContext.Current.User.Liv_Utente > 10)
+                        if (allFilIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Fil) && PowerWebContext.Current.User.Liv_Utente < 10)
 
                         {
                             //istanzia la stringa che costituirà il filtro 
@@ -5031,6 +5031,43 @@ namespace Business.Repository.Custom
                             }
 
 
+                        }
+                        //nel caso di gestione sia di responsabili che di filiali ma si abbia associato all' utente solo i responsabili
+                        else if (allRespIds.Any() && RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both) {
+                            //nel caso si voglia gestire solo il responsabile devo ottenere tutti i reponsabili con resp diverso da 
+                            tmpFilter.Append("(Resp_Id != null");
+
+                            //viene cilato per ogni responabile
+                            foreach (int respId in allRespIds)
+                            {
+                                if (userRespIds.Any())
+                                    foreach (var userResp in userRespIds)
+                                    {
+                                        //se lo user che ha fatto l'accesso è fra i responsabili allora le RegV vengono filtrate su esso
+                                        if (userResp.Resp_Id == respId)
+                                            //nel filtro viene fatta una or fra tutti i responsabili (anche quelli null)
+                                            tmpFilter.AppendFormat(" OR Resp_Id = {0}", respId);
+                                    }
+                            }
+                        }
+                        //nel caso di gestione sia di responsabili che di filiali ma si abbia associato all' utente solo le filiali
+                        else if (allFilIds.Any() && RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both)
+                        {
+                            //istanzia la stringa che costituirà il filtro 
+                            tmpFilter.Append("(Fil_Id != null");
+
+                            //viene cilato per ogni responabile
+                            foreach (int fillId in allFilIds)
+                            {
+                                if (userFilIds.Any())
+                                    foreach (var userfill in userFilIds)
+                                    {
+                                        //se lo user che ha fatto l'accesso è fra i responsabili allora le RegV vengono filtrate su esso
+                                        if (userfill.Fil_Id == fillId)
+                                            //nel filtro viene fatta una or fra tutti i responsabili (anche quelli null)
+                                            tmpFilter.AppendFormat(" OR Fil_Id = {0}", fillId);
+                                    }
+                            }
                         }
                         if (tmpFilter.Length != 0)
                             tmpFilter.Append(")");

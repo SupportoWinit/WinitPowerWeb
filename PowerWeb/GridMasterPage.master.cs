@@ -17,6 +17,7 @@ using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;
 using Domain;
 using Domain.Exceptions;
+using Microsoft.Ajax.Utilities;
 using PowerWeb.Modules;
 using PowerWeb.Pages;
 using Reports;
@@ -531,7 +532,7 @@ namespace PowerWeb
                 }
             }
             else {
-                listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID).OrderBy(tgd => tgd.Nome_Layout).ToList();
+                listLayout = RepoManager.Tab_DataGridRepo.Find(tdg => tdg.Nome_DataGrid == GridView.ID).OrderBy(tgd => tgd.Nome_Layout).DistinctBy(list => list.Nome_Layout).ToList();
             }
             
 
@@ -997,7 +998,8 @@ namespace PowerWeb
             //if (PowerWebContext.Current.User.Codice_Utente != "WINIT")
             //    btnDeletePrintLayout.Visible = false;
             btnSavePrintLayout.Visible = false;
-            if (PowerWebContext.Current.User.Liv_Utente < 11) {
+            List<Tab_Aut> livelli = RepoManager.Tab_AutRepo.GetAll().Where(user => user.Utenti_Id == PowerWebContext.Current.User.Utenti_Id).ToList();
+            if (livelli.First().Del_Aut < 10) {
                 btnSaveLayout.Visible = false;
                 btnCustomizeColumns.Visible = false;
                 btnPrint.Visible = false;

@@ -7,6 +7,7 @@ using System.Web.Http;
 using Business.Profile;
 using Business.Repository;
 using Domain;
+using Newtonsoft.Json.Linq;
 
 namespace PowerWeb.Api
 {
@@ -43,6 +44,22 @@ namespace PowerWeb.Api
         }
 
         /// <summary>
+        /// Recupera il json della risposta dell API.
+        /// </summary>
+        /// <value>
+        /// Il json contenente i dati estrapolati.
+        /// </value>
+        public JObject Json
+        {
+            get
+            {
+                return Json;
+            }
+            set { 
+            }
+        }
+
+        /// <summary>
         /// Recupera o imposta la data di inizio del periodo di riferimento per l'operazione.
         /// </summary>
         /// <value>
@@ -65,6 +82,22 @@ namespace PowerWeb.Api
         /// La stringa con i dati Json utilizzat dalla api in riferimento all'operazione da eseguire.
         /// </value>
         public string JsonData { get; set; }
+
+        /// <summary>
+        /// Recupera o imposta l'id del collaboratore di cui cercare le timbrature.
+        /// </summary>
+        /// <value>
+        /// Il valore utilizzato nella api di komplett.
+        /// </value>
+        public int ColId { get; set; }
+
+        /// <summary>
+        /// Recupera o imposta l'id del cantiere di cui cercare le timbrature.
+        /// </summary>
+        /// <value>
+        /// Il valore utilizzato nella api di komplett.
+        /// </value>
+        public int CantId { get; set; }
 
         #endregion
 
@@ -125,7 +158,34 @@ namespace PowerWeb.Api
             // ritorno degli errori eventualmente recuperati nell'elaborazione
             return ParseErrorForReturnValue();
         }
-        
+
+        /// <summary>
+        /// Funzione di get della api corrente; utilizza il template pattern per l'operazione da eseguire.
+        /// L'operazione per questo overload di get richiede un from e un to.
+        /// </summary>
+        /// <param name="from">La data di inizio elaborazione.</param>
+        /// <param name="to">La data di fine elaborazione.</param>
+        /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
+        public string Get(DateTime date, int colId, int cantId)
+        {
+            // si procede con l'elaborazione solamente se l'utente è stato trovato
+            if (InitializeApiUser())
+            {
+                // inserimento dei parametri nell'oggetto
+                From = date;
+                ColId = colId;
+                CantId = cantId;
+
+                // si procede all'elaborazione solamente se le date sono coerenti
+                ExecuteOperation();
+            }
+            else
+                AddUserError();
+
+            // ritorno degli errori eventualmente recuperati nell'elaborazione
+            return ParseJsonrForReturnValue();
+        }
+
         /// <summary>
         /// Funzione di get della api corrente; utilizza il template pattern per l'operazione da eseguire.
         /// </summary>
@@ -162,6 +222,15 @@ namespace PowerWeb.Api
         private IEnumerable<string> ParseErrorForReturnValue()
         {
             return Errors.Any() ? Errors.Select(kvp => kvp.Value).AsEnumerable() : new List<string>() { String.Empty };
+        }
+
+        /// <summary>
+        /// Converte l'elenco degli errori di procedura nel formato di ritorno della API.
+        /// </summary>
+        /// <returns>L'elenco degli errori in formato ritornabile dalla API</returns>
+        private string ParseJsonrForReturnValue()
+        {
+            return JsonData;//Json.ToString();
         }
 
         /// <summary>

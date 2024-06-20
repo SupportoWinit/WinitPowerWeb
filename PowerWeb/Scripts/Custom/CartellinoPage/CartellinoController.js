@@ -1030,7 +1030,7 @@ cartellino.controller("cartellinoController", function ($scope) {
             showAllText: "(Mostra tutti)",
         },
         filterSyncEnabled: true,
-        filterValue: (getRespId() > 0) ? [["DisAbilitazione_Col", "=", getDisabledColsCustomization()], ["and"], ["Codice_Collaboratore", "contains", getRespId()]] : [["DisAbilitazione_Col", "=", getDisabledColsCustomization()]],
+        filterValue: [["DisAbilitazione_Col", "=", getDisabledColsCustomization()]],
         headerFilter: {
             visible: true,
             allowSearch: true,

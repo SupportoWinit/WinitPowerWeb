@@ -738,17 +738,27 @@ namespace Business.RegFileCreators
                         );
                     }
                     regsToWrite.Add(regRow);
-                    var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
+                    String attivitaFInale = "";
+                    if (fluReg.Attivita.Contains(','))
+                    {
+                        String[] att = fluReg.Attivita.Split(',');
+                        attivitaFInale = att[0];
+                    }
+                    else {
+                        attivitaFInale = fluReg.Attivita;
+                    }
+                    
+                    var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
                     if (firstLine != "")
                     {
                         regsToWrite.Add(firstLine);
                     }
-                    var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Attivita);
+                    var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
                     if (activityLine != "")
                     {
                         regsToWrite.Add(activityLine);
                     }
-                    var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, fluReg.Attivita, fluReg.Data, fluReg.CodiceFru);
+                    var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, attivitaFInale, fluReg.Data, fluReg.CodiceFru);
                     if (pruCodeAtivity != null)
                     {
                         regsToWrite.AddRange(pruCodeAtivity);

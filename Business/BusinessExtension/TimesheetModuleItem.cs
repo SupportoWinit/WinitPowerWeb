@@ -5797,11 +5797,26 @@ namespace Business.BusinessExtension
 
             if (colTotal == null) {
                 colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                var cartelliniToInitializeExport = new List<TimesheetModuleItem>();
+                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
+                Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
+                just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
+                if (isByOtherEntity)
+                {
+                    cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                }
+                cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
+                TotaleCartellini.Add(colTotal);
+                cartellini.Add("totale", TotaleCartellini);
             }
             if (!isByOtherEntity)
             {
                 justificationCartellini.Add(colTotal);
             }
+
             #endregion
 
             #region DELTA

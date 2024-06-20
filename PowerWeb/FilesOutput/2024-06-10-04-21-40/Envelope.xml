@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExportID>sa-2024-06-10-16-21-41</ExportID>
+  <DocumentInfo>
+  </DocumentInfo>
+  <Contents>
+    <File type="Root" dataurl=".xml" envelopeclass="WorkingReports" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+    <File type="Root" dataurl=".xml" envelopeclass="WorkingReports" documentname="Rapportino di lavoro per Commessa" documentnumber="1">
+    </File>
+  </Contents>
+</Envelope>

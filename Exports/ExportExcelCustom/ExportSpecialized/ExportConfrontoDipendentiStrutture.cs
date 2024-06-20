@@ -3,6 +3,7 @@ using Business.Repository;
 using Common;
 using Domain;
 using log4net;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
@@ -84,17 +85,57 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             // per prima cosa si procede all'apertura del modello
             ExcelWorkbookGenerateNew();
 
+           
+            String mese = "";
+            switch (ExportDate.Month)
+            {
+                case 1:
+                    mese = "Gennaio";
+                    break;
+                case 2:
+                    mese = "Febbraio";
+                    break;
+                case 3:
+                    mese = "Marzo";
+                    break;
+                case 4:
+                    mese = "Aprile";
+                    break;
+                case 5:
+                    mese = "Maggio";
+                    break;
+                case 6:
+                    mese = "Giugno";
+                    break;
+                case 7:
+                    mese = "Luglio";
+                    break;
+                case 8:
+                    mese = "Agosto";
+                    break;
+                case 9:
+                    mese = "Settembre";
+                    break;
+                case 10:
+                    mese = "Ottobre";
+                    break;
+                case 11:
+                    mese = "Novembre";
+                    break;
+                case 12:
+                    mese = "Dicembre";
+                    break;
+            }
             if (!_multiPagedExport)
             {
                 //Not multipagedExport
-                WorksheetCreateNew();
+                WorksheetCreateNew(mese + " " + ExportDate.Year);
                 worksheetIndex++;
 
                 WriteTimesheetHeader();
 
                 //rowIndex += 2;
             }
-
 
             // una volta generato il file, se ci sono elementi da processare
             if (cartellini.Any())
@@ -112,63 +153,23 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                         //rowIndex += 2;
                     }
-                    String mese = "";
-                    switch (ExportDate.Month)
-                    {
-                        case 1:
-                            mese = "Gennaio";
-                            break;
-                        case 2:
-                            mese = "Febbraio";
-                            break;
-                        case 3:
-                            mese = "Marzo";
-                            break;
-                        case 4:
-                            mese = "Aprile";
-                            break;
-                        case 5:
-                            mese = "Maggio";
-                            break;
-                        case 6:
-                            mese = "Giugno";
-                            break;
-                        case 7:
-                            mese = "Luglio";
-                            break;
-                        case 8:
-                            mese = "Agosto";
-                            break;
-                        case 9:
-                            mese = "Settembre";
-                            break;
-                        case 10:
-                            mese = "Ottobre";
-                            break;
-                        case 11:
-                            mese = "Novembre";
-                            break;
-                        case 12:
-                            mese = "Dicembre";
-                            break;
-                    }
-                    CellInsertValue(worksheetIndex, 1, 1, col.Key.CognomeNome_Col + " " + mese + " " + ExportDate.Year, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(worksheetIndex, 1, 1, col.Key.CognomeNome_Col, ExcelInsertTypeEnum.Content);
                     RangeUnion(worksheetIndex, 1, 1, 5, 1);
                     RangeSetBorders(worksheetIndex, 1, 1, 4, 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
 
                     //WriteTimesheetColName(col.Key);
 
-                    WriteTimesheetColHeader();
+                    WriteTimesheetColHeader(cartellini.Count());
 
                     WriteColTimesheetOrd(col.Value, col.Key);
 
-                    columnIndex = 3;
+                    rowIndex = 5;
 
                     //WriteColTimesheetStr(col.Value);
 
                     //rowIndex = 3;
 
-                    //WriteTotaleHourColOrd(col.Value);
+                    WriteTotaleHourColOrd(col.Value);
 
                     columnIndex++;
 
@@ -224,11 +225,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             rowIndex++;
         }
 
-        private void WriteTimesheetColHeader()
+        private void WriteTimesheetColHeader(int tot)
         {
             List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
 
-            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
+            RangeSetFontBold(worksheetIndex, columnIndex + 2, rowIndex, tot + 3, rowIndex);
 
             days.ForEach(day =>
             {
@@ -243,9 +244,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             rowIndex++;
 
-            WriteHeaderTotalDaysCell();
-
-            rowIndex++;
+            //WriteHeaderTotalDaysCell();
+            
+            //rowIndex++;
 
             //WriteHeaderTotalFest();
 
@@ -292,17 +293,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 justificationDec = justificationDec.ToUpper();
 
-                CellInsertValue(worksheetIndex, 2, rowIndex + 2, justification.CantDesc, ExcelInsertTypeEnum.Content);
-                RangeSetBorders(worksheetIndex, 2, rowIndex + 2, 2, rowIndex + 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                RangeSetFontSize(worksheetIndex, 2, rowIndex + 2, 2, rowIndex + 2, 7);
+                CellInsertValue(worksheetIndex,3, rowIndex + 1, justification.CantDesc, ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, 3, rowIndex + 1, 3, rowIndex + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetFontSize(worksheetIndex, 3, rowIndex + 1, 3, rowIndex + 1, 7);
 
-                ColumnsSetWidth(worksheetIndex, rowIndex + 1, rowIndex + 1, 5);
-
-                RangeSetWrapText(worksheetIndex, 2, rowIndex + 1, 2, rowIndex + 1, true);
-
-                CellInsertValue(worksheetIndex, 3, rowIndex + 2, "ORE", ExcelInsertTypeEnum.Content);
-                RangeSetBorders(worksheetIndex, 3, rowIndex + 2, 3, rowIndex + 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                RangeSetFontSize(worksheetIndex, 3, rowIndex + 2, 3, rowIndex + 2, 8);
+                RangeSetWrapText(worksheetIndex, 3, rowIndex + 1, 3, rowIndex + 1, true);
 
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
@@ -351,11 +346,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         }
                     }
                     totale = totale + (int)baseDuration;
-                    RangeSetBorders(worksheetIndex, day.Day + 3, rowIndex + 2, day.Day + 3, rowIndex + 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    RangeSetFontSize(worksheetIndex, day.Day + 3, rowIndex + 2, day.Day + 3, rowIndex + 2, 8);
+                    RangeSetBorders(worksheetIndex, day.Day + 3, rowIndex + 1, day.Day + 3, rowIndex + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetFontSize(worksheetIndex, day.Day + 3, rowIndex + 1, day.Day + 3, rowIndex + 1, 8);
 
-                    RangeSetWrapText(worksheetIndex, day.Day + 3, rowIndex + 2, day.Day + 3, rowIndex + 2, true);
-                    CellInsertValue(worksheetIndex, day.Day+ 3, rowIndex + 2, valueToPrint, ExcelInsertTypeEnum.Content);
+                    RangeSetWrapText(worksheetIndex, day.Day + 3, rowIndex + 1, day.Day + 3, rowIndex + 1, true);
+                    CellInsertValue(worksheetIndex, day.Day+ 3, rowIndex + 1, valueToPrint, ExcelInsertTypeEnum.Content);
 
                     lastDuration = (int)baseDuration;
                 }
@@ -366,19 +361,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     giorni = giorni - totalDays;
                 }
-                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 2, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 2, totalHours, ExcelInsertTypeEnum.Content);
-                RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 2, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 2, 8);
-                if (!motivazione)
-                {
-
-                    RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 2, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 2, totalHours, ExcelInsertTypeEnum.Content);
-                    RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 2, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 2, 8);
-
-                }
-
-
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, totalHours, ExcelInsertTypeEnum.Content);
+                RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, 8);
 
                 rowIndex = rowIndex + 1;
 
@@ -577,12 +562,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             String lastCant = "";
             int totalMotivazioni = 0;
             List<TimesheetModuleItem> tot = cartellini["totale"].OrderBy(c => c.CantDesc).ToList();
-            List<TimesheetModuleItem> str = cartellini["Totstraordinari"].OrderBy(c => c.CantDesc).ToList();
-            RangeSetBorders(worksheetIndex, rowIndex, 2, rowIndex, 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
 
-            RangeSetBorders(worksheetIndex, rowIndex, 3, rowIndex, 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            CellInsertValue(worksheetIndex, rowIndex, 3, "Tot Ord", ExcelInsertTypeEnum.Content);
-            RangeSetFontSize(worksheetIndex, rowIndex, 3, rowIndex, 3, 8);
+            RangeSetBorders(worksheetIndex, 3, rowIndex + 1, 3, rowIndex + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            CellInsertValue(worksheetIndex, 3, rowIndex + 1, "Tot Ord", ExcelInsertTypeEnum.Content);
+            RangeSetFontSize(worksheetIndex, 3, rowIndex + 1, 3, rowIndex + 1, 8);
             foreach (var justification in tot)
             {
                 if (lastCant.Equals(justification.CantDesc))
@@ -590,19 +573,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     motivazione = true;
                 }
                 lastCant = justification.CantDesc;
-                TimesheetModuleItem strCan = str.First(c => c.CantId == justification.CantId);
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
+                    if (day.Day == 1) {
+                        RangeSetBackgroundColor(worksheetIndex, day.Day + 2, rowIndex + 1, day.Day + 2, rowIndex + 1, Color.SkyBlue, fillStyle);
+                    }
                     bool errore = false;
-                    double justStr = 0.0;
-                    try
-                    {
-                        justStr = (double)strCan["Day" + day.Day.ToString("00")];
-                    }
-                    catch (Exception e)
-                    {
-                        errore = true;
-                    }
                     double baseDuration = 0.0;
                     if (errore)
                     {
@@ -610,7 +586,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                     else
                     {
-                        baseDuration = (double)justification["Day" + day.Day.ToString("00")] - justStr;
+                        baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     }
 
                     var timeDuration = TimeSpan.FromHours(baseDuration);
@@ -621,19 +597,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         valueToPrint = "-- --";
                     }
 
-                    RangeSetBorders(worksheetIndex, rowIndex, day.Day + 3, rowIndex, day.Day + 3, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    RangeSetFontSize(worksheetIndex, rowIndex, day.Day + 3, rowIndex, day.Day + 3, 8);
-                    CellInsertValue(worksheetIndex, rowIndex, day.Day + 3, valueToPrint, ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(worksheetIndex, day.Day + 3, rowIndex + 1, day.Day + 3, rowIndex + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetFontSize(worksheetIndex, day.Day + 3, rowIndex + 1, day.Day + 3, rowIndex + 1, 8);
+                    CellInsertValue(worksheetIndex, day.Day + 3, rowIndex + 1, valueToPrint, ExcelInsertTypeEnum.Content);
+                    RangeSetBackgroundColor(worksheetIndex, day.Day + 3, rowIndex + 1, day.Day + 3, rowIndex + 1, Color.SkyBlue, fillStyle);
                 }
-                string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes - strCan.TotalMinutes);
+                string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
 
-                RangeSetBorders(worksheetIndex, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, justification.TotalDays, ExcelInsertTypeEnum.Content);
-                RangeSetFontSize(worksheetIndex, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, 8);
-
-                RangeSetBorders(worksheetIndex, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, totalHours, ExcelInsertTypeEnum.Content);
-                RangeSetFontSize(worksheetIndex, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, 8);
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, totalHours, ExcelInsertTypeEnum.Content);
+                RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, 8);
+                RangeSetBackgroundColor(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, Color.SkyBlue, fillStyle);
                 //totalDaysStr += justification.TotalDays;
                 ColumnsSetWidth(worksheetIndex, rowIndex, rowIndex, 6);
                 RangeSetWrapText(worksheetIndex, rowIndex, 2, rowIndex, 2, true);
