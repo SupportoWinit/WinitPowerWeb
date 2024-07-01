@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -20,7 +20,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
      * 
      */
 
-    public class ExportConfrontoDipendentiStrutture : ExcelToolBox
+    public class ExportCentriDiCosto : ExcelToolBox
     {
 
         #region Constants
@@ -41,7 +41,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private DateTime startMonth;
         private DateTime endMonth;
 
-        private bool _multiPagedExport = Convert.ToBoolean(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheetMultiPagedExport));
+        private bool _multiPagedExport = true;// Convert.ToBoolean(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheetMultiPagedExport));
 
         #endregion
 
@@ -50,46 +50,60 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         public override void LaunchExport()
         {
             Param parameters = RepoManager.ParamRepo.ParametersRow;
+
             Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>> cartellini = new Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>();
+            Dictionary<string, Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>> centri = new Dictionary<string, Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>>();
 
-            Dictionary<string, Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>> test = new Dictionary<string, Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>>();
-
-            List<Col> collaboratori = RepoManager.ColRepo.Find(c => SelectedIds.Contains(c.Col_Id), true).Where(c => c.DisAbilitazione_Col == false).OrderBy(c => c.Cognome_Col).ToList();
+            List<CentroDiCosto> cdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();
 
             startMonth = CommonService.GetFirstMonthDay(ExportDate);
             endMonth = CommonService.GetLastMonthDay(ExportDate);
 
-            foreach (Col col in collaboratori)
+            foreach (CentroDiCosto centro in cdc)
             {
-                var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
-                    && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && regv.Codice_Commessa_Can == "Hotel", true);
-                if (regs.Count() > 0)
+
+                var regVs = RepoManager.Reg_VRepo.Find(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.CentroDiCosto_Id == centro.CentroDiCosto_Id).GroupBy(r => r.Col_Id).ToList();
+
+                cartellini = new Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>();
+                foreach (var reg in regVs)
                 {
-                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
-                                                    col,
-                                                    true,
-                                                    false,
-                                                    true,
-                                                    true,
-                                                    parameters.Cartellino_Visualizza_Ore,
-                                                    parameters.Cartellino_Visualizza_Motivazioni,
-                                                    parameters.Cartellino_Visualizza_Viaggi,
-                                                    parameters.Cartellino_Visualizza_Delta,
-                                                    parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                    false,
-                                                    parameters.Cartellino_Visualizza_Piano));
+                    if (SelectedIds.Contains(reg.Key.Value))
+                    {
+                        List<Col> collaboratori = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == reg.Key && c.DisAbilitazione_Col == false).OrderBy(c => c.Cognome_Col).ToList();
+                        foreach (Col col in collaboratori)
+                        {
+                            var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
+                                && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
+                                && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && regv.Codice_Commessa_Can == "Pulizie Civile", true);
+                            if (regs.Count() > 0)
+                            {
+                                cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
+                                                                col,
+                                                                centro.CentroDiCosto_Id,
+                                                                true,
+                                                                false,
+                                                                true,
+                                                                true,
+                                                                parameters.Cartellino_Visualizza_Ore,
+                                                                parameters.Cartellino_Visualizza_Motivazioni,
+                                                                parameters.Cartellino_Visualizza_Viaggi,
+                                                                parameters.Cartellino_Visualizza_Delta,
+                                                                parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                                false,
+                                                                parameters.Cartellino_Visualizza_Piano));
+                            }
+                        }
+                    }
                 }
+                centri.Add(centro.Descrizione, cartellini);
             }
-
-
 
             cartellini = cartellini.OrderBy(c => c.Key.CognomeNome_Col).ToDictionary(c => c.Key, d => d.Value);
 
             // per prima cosa si procede all'apertura del modello
             ExcelWorkbookGenerateNew();
 
-           
+
             String mese = "";
             switch (ExportDate.Month)
             {
@@ -138,34 +152,31 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             }
 
             // una volta generato il file, se ci sono elementi da processare
-            if (cartellini.Any())
+            if (centri.Any())
             {
-                foreach (var col in cartellini)
+                foreach (var centro in centri)
                 {
-                    columnIndex = 1;
-                    if (_multiPagedExport)
+                    string tmpCentro = "";
+                    foreach (var col in centro.Value)
                     {
-                        ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
-                        worksheetIndex++;
-                    }
-                    CellInsertValue(worksheetIndex, columnIndex, rowIndex, col.Key.CognomeNome_Col, ExcelInsertTypeEnum.Content);
-                    RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-
-                    //WriteTimesheetColName(col.Key);
-
-                    WriteTimesheetColHeader(cartellini.Count());
-
-                    WriteColTimesheetOrd(col.Value, col.Key);
-
-                    WriteTotaleHourColOrd(col.Value);
-
-                    if (_multiPagedExport)
-                    {
-                        rowIndex = 1;
                         columnIndex = 1;
-                    }
-                    else
-                    {
+                        if (_multiPagedExport && (tmpCentro != centro.Key))
+                        {
+                            ExcelWorkbook.Workbook.Worksheets.Add(centro.Key);
+                            worksheetIndex++;
+                            tmpCentro = centro.Key;
+                            rowIndex = 1;
+                            columnIndex = 1;
+                        }
+                        CellInsertValue(worksheetIndex, columnIndex, rowIndex, col.Key.CognomeNome_Col, ExcelInsertTypeEnum.Content);
+                        RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+
+                        WriteTimesheetColHeader(cartellini.Count());
+
+                        WriteColTimesheetOrd(col.Value, col.Key);
+
+                        WriteTotaleHourColOrd(col.Value);
+
                         rowIndex += 3;
                     }
                 }
@@ -180,7 +191,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         {
             List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
 
-            RangeSetFontBold(worksheetIndex, columnIndex , rowIndex, tot + 1, rowIndex);
+            RangeSetFontBold(worksheetIndex, columnIndex, rowIndex, tot + 1, rowIndex);
 
             int tmp = columnIndex;
 
@@ -202,7 +213,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         private void WriteColTimesheetOrd(Dictionary<string, List<TimesheetModuleItem>> cartellini, Col col)
         {
-            bool negative = false;
             int totale = 0;
             String lastCant = "";
             bool motivazione = false;
@@ -210,7 +220,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<TimesheetModuleItem> ord = cartellini["justification"].OrderBy(c => c.CantDesc).ToList();
             List<TimesheetModuleItem> mod = cartellini["Modifiche"].OrderBy(c => c.CantDesc).ToList();
             List<TimesheetModuleItem> sing = cartellini["Singole"].OrderBy(c => c.CantDesc).ToList();
-
+            TimesheetModuleItem last = null;
             foreach (var justification in ord)
             {
                 int totalDays = 0;
@@ -243,28 +253,23 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 justificationDec = justificationDec.ToUpper();
 
-                CellInsertValue(worksheetIndex,1, rowIndex, justification.CantDesc, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, 1, rowIndex, justification.CantDesc, ExcelInsertTypeEnum.Content);
                 RangeSetBorders(worksheetIndex, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(worksheetIndex, 1, rowIndex, 1, rowIndex, 10);
-                ColumnsSetWidth(worksheetIndex, 1, 1, 30);
+                ColumnsSetWidth(worksheetIndex, 1, 1, 40);
 
                 RangeSetWrapText(worksheetIndex, 1, rowIndex, 1, rowIndex, true);
 
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
                     int lastDuration = 0;
-                    negative = false;
                     var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     var timeDuration = TimeSpan.FromHours(baseDuration);
-                    if (baseDuration < 0)
-                    {
-                        negative = true;
-                    }
                     double print = 0.0;
                     //nel caso in cui nello stesso giorno ci siano sia motivazione che ore lavorate nello stesso cantiere andiamo a stampare il totale di queste ore
                     try
                     {
-                            print = baseDuration;
+                        print = baseDuration;
                     }
                     catch (Exception e)
                     {
@@ -301,94 +306,46 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     RangeSetFontSize(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, 8);
 
                     RangeSetWrapText(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, true);
-                    CellInsertValue(worksheetIndex, day.Day+ 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
 
-                    if ((double)tmpMod["Day" + day.Day.ToString("00")] > 0) {
+                    if ((double)tmpMod["Day" + day.Day.ToString("00")] > 0)
+                    {
                         RangeSetFontColor(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, Color.Red);
                     }
 
-                    if ((double)tmpSing["Day" + day.Day.ToString("00")] > 0) {
+                    if ((double)tmpSing["Day" + day.Day.ToString("00")] > 0)
+                    {
                         RangeSetBackgroundColor(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, Color.OrangeRed, ExcelFillStyle.Solid);
                     }
 
                     lastDuration = (int)baseDuration;
                 }
-                _log.InfoFormat("Imposto il totale");
+
                 string totalHours = FromTotalMinutesToFormattedTypeKomplett(totale);
                 giorni = totalDays;
                 if (motivazione)
                 {
                     giorni = giorni - totalDays;
                 }
-                _log.InfoFormat("Scrivo il totale");
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
-                _log.InfoFormat("totale scritto");
+
                 rowIndex = rowIndex + 1;
 
                 if (giorno == 2)
                 {
                     giorno += CommonService.GetDatesFromPeriod(startMonth, endMonth).Count;
                 }
-                _log.InfoFormat("Imposto motivazione");
                 motivazione = false;
-                _log.InfoFormat("metodo finito");
+                last = justification;
             }
-
-        }
-        #region Header
-
-        private void WriteHeaderDayCell(DateTime date)
-        {
-            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
-            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, "0");
-            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
-            RangeSetWrapText(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, true);
-            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 6);
-            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
-
-            if (date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                //Se giorno festivo
-                RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
-            }
-        }
-        private void WriteHeaderDayCellDay(DateTime date)
-        {
-            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
-            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, "0");
-            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
-            RangeSetWrapText(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, true);
-            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 6);
-            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
-            RangeSetFontSize(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, 12);
-
-            if (date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                //Se giorno festivo
-                RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
-            }
-            
-           
-        }
-
-        private void WriteHeaderTotalCell()
-        {
-
-            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "Totale", ExcelInsertTypeEnum.Content);
-            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
-            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
 
         }
 
         private void WriteTotaleHourColOrd(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
             String lastCant = "";
-            _log.InfoFormat("Scrivo i totali");
             List<TimesheetModuleItem> tot = cartellini["totale"].OrderBy(c => c.CantDesc).ToList();
 
             RangeSetBorders(worksheetIndex, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -399,7 +356,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 lastCant = justification.CantDesc;
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
-                    if (day.Day == 1) {
+                    if (day.Day == 1)
+                    {
                         RangeSetBackgroundColor(worksheetIndex, day.Day, rowIndex, day.Day, rowIndex, Color.SkyBlue, fillStyle);
                     }
                     bool errore = false;
@@ -432,10 +390,57 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
                 RangeSetBackgroundColor(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, Color.SkyBlue, fillStyle);
-                //totalDaysStr += justification.TotalDays;
                 ColumnsSetWidth(worksheetIndex, rowIndex, rowIndex, 6);
                 RangeSetWrapText(worksheetIndex, rowIndex, 2, rowIndex, 2, true);
             }
+        }
+
+        #region Header
+
+        private void WriteHeaderDayCell(DateTime date)
+        {
+            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, "0");
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
+            RangeSetWrapText(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, true);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 6);
+            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
+
+            if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                //Se giorno festivo
+                RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
+            }
+        }
+        private void WriteHeaderDayCellDay(DateTime date)
+        {
+            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, "0");
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 3, rowIndex, Color.LightGray, fillStyle);
+            RangeSetWrapText(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, true);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 6);
+            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
+            RangeSetFontSize(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, 12);
+
+            if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                //Se giorno festivo
+                RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
+            }
+
+
+        }
+
+        private void WriteHeaderTotalCell()
+        {
+
+            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "Totale", ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
+            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
+
         }
 
         #endregion

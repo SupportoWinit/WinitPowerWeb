@@ -99,6 +99,8 @@
     <Compile Include="ExportExcelCustom\ExcelToolbox.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAec.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCantieri.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCosto.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCostoTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoDipendentiStrutture.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinariTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
@@ -169,7 +171,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Scripts\App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

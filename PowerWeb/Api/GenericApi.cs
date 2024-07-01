@@ -137,7 +137,7 @@ namespace PowerWeb.Api
         /// <param name="from">La data di inizio elaborazione.</param>
         /// <param name="to">La data di fine elaborazione.</param>
         /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
-        public IEnumerable<string> Get(DateTime from, DateTime to)
+        public string Get(DateTime from, DateTime to)
         {
             // si procede con l'elaborazione solamente se l'utente è stato trovato
             if (InitializeApiUser())
@@ -156,7 +156,7 @@ namespace PowerWeb.Api
                 AddUserError();
 
             // ritorno degli errori eventualmente recuperati nell'elaborazione
-            return ParseErrorForReturnValue();
+            return ParseJsonrForReturnValue();
         }
 
         /// <summary>

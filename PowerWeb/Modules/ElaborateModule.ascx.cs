@@ -756,7 +756,7 @@ namespace PowerWeb.Modules
                 {
                     // calcolo delle reg_v nel periodo richiesto
                     IQueryable<Reg_V> regVsToProcess = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg >= from && regv.Data_Reg <= to & regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass
-                        && (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Att || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Col_Id != 0);
+                        && (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Att || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual) && regv.Col_Id != 0);
 
                     // se sono presenti delle reg_v da processare
                     if (regVsToProcess.Any())

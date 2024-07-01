@@ -188,7 +188,8 @@ namespace Common
         ReperibilitaTotale,
         NotificaRitardo,
         ArrotondamentoPausa,
-        RimozionePausaHotel
+        RimozionePausaHotel,
+        ExportHotelKomplett
     }
 
     public enum ClockAppsOperationEnum

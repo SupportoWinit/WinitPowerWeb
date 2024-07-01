@@ -2326,6 +2326,32 @@ namespace Exports
         }
 
         /// <summary>
+        /// Converte i minuti totali passati come parametro in sessantesimi o centesimi (dipende da come è impostato l'export)
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        protected string FromTotalMinutesToFormattedTypeKomplett(int value)
+        {
+            string result = "";
+
+            if (CentHours) //Centesimi
+            {
+                TimeSpan totalDuration = TimeSpan.FromMinutes(value);
+
+                result = String.Format("{0}{1},{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
+
+            }
+            else //Sessantesimi
+            {
+                TimeSpan totalDuration = TimeSpan.FromMinutes(value);
+
+                result = String.Format("{0},{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Trasforma i minuti in centesimi (risultato di due cifre)
         /// </summary>
         /// <param name="minutes">The minutes.</param>

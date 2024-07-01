@@ -1857,6 +1857,32 @@ namespace Business.Repository.Custom
                         if (currentFruCant != null)
                         {
                             reg.Cant_Id = currentFruCant.Cant_Id;
+                            var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
+                            if (allCdc.Count() > 0) {
+                                bool centro = false;
+                                int cid = 0;
+                                foreach (var tmp in allCdc)
+                                {
+                                    if (centro == false)
+                                    {
+                                        var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == currentFruCant.Cant_Id);
+                                        foreach (var test1 in test)
+                                        {
+                                            if (test1.Cant_Id == currentFruCant.Cant_Id)
+                                            {
+                                                centro = true;
+                                                cid = test1.CentroDiCosto_Id;
+                                            }
+                                        }
+                                    }
+                                }
+                                var temp = allCdc.First().Cant_CentroDiCosto;
+                                var cdc = temp.Where(c => c.Cant_Id == currentFruCant.Cant_Id);
+                                if (centro)
+                                {
+                                    reg.CentroDiCosto_Id = cid;
+                                }
+                            }
                         }
                         else
                         {

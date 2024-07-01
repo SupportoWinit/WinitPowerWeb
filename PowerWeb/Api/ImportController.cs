@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Http;
 using Business;
+using Business.ExternalImport;
 using Business.Profile;
 using Business.Repository;
 using Common;
@@ -53,6 +54,16 @@ namespace PowerWeb.Api
                         {
                             exclusiveExecutionFile.Close();
                             exclusiveExecutionFile.Dispose();
+                        }
+
+                        //Vengono richieste le timbrature da un server esterno e creato il relativo txt
+                        try
+                        {
+                            ExternalImportManager.GetFromRemoteSource();
+                        }
+                        catch (Exception ex)
+                        {
+                            _log.ErrorFormat("Errori durante l'import da server esterno : {0}", ex.Message);
                         }
 
                         // Inizializzaizone del file che conterrà le reg sospese

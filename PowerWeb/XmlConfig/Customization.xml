@@ -233,7 +233,7 @@
 		NoCreateTripOnSameMunicipalityUnderKmEnum=1 Indica di generare i viaggi che cominciano e terminano nello stesso comune solo se superiori a i km come parametro  -->
  
 	<!-- ********************************************************ESPORTAZIONE XML DELLE TIMBRATURE*********************************************************-->
-	<c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="0" />
+	<c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="2" />
 	<!-- RegExportToXmlEnum=0 Indica che l'esportazione xml delle timbrature non è attiva
 		RegExportToXmlEnum=1 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Perfetto -->
  
@@ -513,4 +513,9 @@
   <c ID="CustomizationEnum.DoNotShowDisabledColCantId" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="0"/>
     <!--	DoNotShowDisabledColCantId = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
 			DoNotShowDisabledColCantId = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
+
+  <!-- ********************************************************INDICA SE E' ABILITATO L'EXPORT DI KOMPLETT************************************************************************************** -->
+  <c ID="CustomizationEnum.ExportHotelKomplett" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="1"/>
+    <!--	ExportHotelKomplett = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
+    ExportHotelKomplett = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
 </Customizations>

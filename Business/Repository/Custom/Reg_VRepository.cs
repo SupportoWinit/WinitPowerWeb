@@ -258,6 +258,10 @@ namespace Business.Repository.Custom
                         if (currentCol.Limite_Entrata_Inizio_Pomeriggio_Col.HasValue)
                             midDay = currentCol.Limite_Entrata_Inizio_Pomeriggio_Col.Value;
 
+                        if (currentCol.Col_Id == 5364) {
+                            int i = 0;
+                        }
+
                         //Recupera la tolleranza del ritardo dal COL o dai PARAM, altrimenti la setta a 0
                         delayTollerance = currentCol.Ritardo_Tolleranza_Minuti_Col ?? (RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti ?? 0);
 

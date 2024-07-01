@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
 using Business;
+using Business.DataClasses.SupportClasses;
 using Business.Profile;
 using Business.Repository;
 using Common;
@@ -13,6 +15,9 @@ using Domain;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Business.DataClasses.WebApiDataClasses;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
+using DevExpress.Web.ASPxTitleIndex.Internal;
 
 namespace PowerWeb.Api
 {
@@ -34,112 +39,128 @@ namespace PowerWeb.Api
         /// </summary>
         protected override void ExecuteOperation()
         {
-            // Create a JArray
-            JArray jsonArray = new JArray();
-
-            // Add elements to the JArray
-            jsonArray.Add("Element 1");
-            jsonArray.Add(2);
-            jsonArray.Add(true);
-
-            // Create a JObject and add the array to it
-            JObject jsonObject = new JObject
-            {
-                ["ArrayKey"] = jsonArray
-            };
-
+            List<JArray> list = new List<JArray>();
+            List<ExportJson> jsons = new List<ExportJson>();
             // Serialize the JObject to a JSON string
-            string jsonString = jsonObject.ToString();
-            jsonString = JsonConvert.SerializeObject(jsonObject);
-
-            // Output the JSON string
-            Console.WriteLine(jsonString);
-
-            Json = jsonObject;
-            JsonData = jsonString;
-            if (ColId == 0)
-            {
-            }
-            else { 
-            }
-            // calcolo del percorso di files input
-            string filesInputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Path.Replace("~", "").Replace("\\", ""));
-
-            // calcolo del nome del file utilizzato per l'esecuzione esclusiva delle operazioni
-            string exclusiveAccessFilePath = Path.Combine(filesInputPath, ExclusiveAccessFileName);
-
-            // si procede all'elaborazione solamente se il file non esiete
-            if (!File.Exists(exclusiveAccessFilePath))
-            {
-                try
+            string jsonString = "";// jsonObject.ToString();
+            //jsonString = JsonConvert.SerializeObject(jsonObject);
+            DateTime date = From;
+            while (date <= To) {
+                var regVs = RepoManager.Reg_VRepo.GetAll().Where(r => r.Data_Ora_Fig_E.Value.Day == date.Day && r.Data_Ora_Fig_E.Value.Month == date.Month && r.Data_Ora_Fig_E.Value.Year == date.Year && r.Codice_Commessa_Can == "Hotel" && r.Registrazione_Stato_Reg != (int)RegStateEnum.None).OrderBy(r => r.Data_Ora_Fig_E).GroupBy(r => r.Col_Id).ToList();
+                string day = "";
+                if (date.Day < 10)
                 {
-                    // viene generato il file di lock della api
-                    using (FileStream exclusiveExecutionFile = File.Create(exclusiveAccessFilePath))
+                    if (date.Month < 10)
                     {
-                        exclusiveExecutionFile.Close();
-                        exclusiveExecutionFile.Dispose();
+                        day = "0" + date.Day + "/0" + date.Month + "/" + date.Year;
                     }
-
-                    // Inizializzaizone del file che conterrà le reg sospese
-                    string regSuspendedFile = Path.Combine(filesInputPath, String.Format("{0}_{1}.txt", Common.Properties.Settings.Default.SuspendedRegsFile, DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss")));
-
-                    // Flag richiesto obbligatoriamente dal metodo CalcolaFilesRegDaImportare, ma non utilizzato in questa routine
-                    bool fittizzio;
-
-                    bool importaSospese = RepoManager.ParamRepo.ParametersRow.ImportaFileTimbratureSospese;
-
-                    // calcolo dell'elenco dei file da importare
-                    List<string> filesToImportList = BusinessService.CalcolaFilesRegDaImportare(filesInputPath, out fittizzio, importaSospese);
-
-                    // se ci sono dei files da importare allora si procede alla loro elaborazione
-                    if (filesToImportList.Any())
+                    else {
+                        day = "0" + date.Day + "/" + date.Month + "/" + date.Year;
+                    }
+                    
+                }
+                else {
+                    if (date.Month < 10)
                     {
-                        // recupero tutte le timbrature non gps presenti nei file da importare
-                        List<string> regNoGpsToImport = BusinessService.GetRegsNoGpsFromFiles(filesToImportList);
-
-                        // recupero tutte le timbrature gps presenti nei file da GetRegsGpsFromFilesimportare
-                        List<string> regGpsToImport = BusinessService.GetRegsGpsFromFiles(filesToImportList);
-
-                        // se ci sono delle timbrature da importare allora si procede all'importazione
-                        var importErrors = new List<KeyValuePair<string, string>>();
-                        if (regNoGpsToImport.Any() || regGpsToImport.Any())
+                        day = "" + date.Day + "/0" + date.Month + "/" + date.Year;
+                    }
+                    else {
+                        day = "" + date.Day + "/" + date.Month + "/" + date.Year;
+                    }
+                }
+                
+                JArray jsonArray = new JArray();
+                
+                foreach (var regs in regVs)
+                {
+                    string tmpCol = "";
+                    string tmpCant = "";
+                    int tmpDurata = 0;
+                    int dayTimb = 1;
+                    List<Col> collaboratore = RepoManager.ColRepo.GetAllQueryable(c => c.Col_Id == regs.Key).ToList();
+                    string col = collaboratore.First().Matricola_Col;
+                    if (col == null) {
+                        col = collaboratore.First().CognomeNome_Col;
+                    }
+                    foreach (Reg_V regv in regs){
+                        if (dayTimb < regs.Count())
                         {
-                            importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray()));
+                            if (tmpCol == "" && tmpCant == "" && tmpDurata == 0)
+                            {
+                                tmpCol = col;
+                                tmpCant = regv.Codice_Gestionale_Can;
+                                tmpDurata = regv.Durata_Fig.Value;
+                            }
+                            else if (tmpCant == regv.Codice_Gestionale_Can)
+                            {
+                                tmpDurata += regv.Durata_Fig.Value;
+                            }
+                            else if(tmpCant != regv.Codice_Gestionale_Can)
+                            {
+                                string durata = oreCentesimi(tmpDurata);
+                                ExportJson tmp = new ExportJson();
+                                tmp.Durata = durata;
+                                tmp.CantId = tmpCant;
+                                tmp.ColId = tmpCol;
+                                tmp.Data = day;
+                                tmp.Serale = 0;
+                                jsons.Add(tmp);
+                                tmpDurata = 0;
+                                tmpCant = regv.Codice_Gestionale_Can;
+                            }
+                            dayTimb++;
                         }
-                        else // altrimenti si segnala l'informazione
-                            Errors.Add(new KeyValuePair<string, string>("Import", "Nessuna timbratura da importare"));
-
-                        // effettuazione del backup di tutti i file della lista
-                        string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));
-
-                        // backup dei files processati
-                        BusinessService.BackupProcessedFiles(filesToImportList, backupFolder);
-
-                        // se si sono verificati degli errori allora si creano le registrazioni sospese
-                        if (importErrors.Count > 0)
-                            BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
-                    }
-                    else // altrimenti si segnala l'informazione
-                        Errors.Add(new KeyValuePair<string, string>("Import", String.Format("Nessun file da importare nella cartella {0}", filesInputPath)));
+                        else
+                        {
+                            if (tmpCant != regv.Codice_Gestionale_Can)
+                            {
+                                // Create a JArray  
+                                string durata = oreCentesimi(regv.Durata_Fig.Value);
+                                ExportJson tmp = new ExportJson();
+                                tmp.Durata = durata;
+                                tmp.CantId = regv.Codice_Gestionale_Can;
+                                tmp.ColId = col;
+                                tmp.Data = day;
+                                tmp.Serale = 0;
+                                jsons.Add(tmp);
+                            }
+                            else
+                            {
+                                tmpDurata += regv.Durata_Fig.Value;
+                                string durata = oreCentesimi(tmpDurata);
+                                ExportJson tmp = new ExportJson();
+                                tmp.Durata = durata;
+                                tmp.CantId = regv.Codice_Gestionale_Can;
+                                tmp.ColId = col;
+                                tmp.Data = day;
+                                tmp.Serale = 0;
+                                jsons.Add(tmp);
+                            }
+                        }
+                    }                           
                 }
-                catch (Exception ex)
-                {
-                    _log.Error(String.Format("Errore import schedulato con exception {0} ", ex.Message));
-                    Errors.Add(new KeyValuePair<string, string>("Import", String.Format("Eccezione nell'esecuzione della web api: {0} - {1}", ex.GetType(), ex.Message)));
-                }
-                finally
-                {
-                    // al termine dell'operazione comunque si elimina il file
-                    File.Delete(exclusiveAccessFilePath);
-                    RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
-                    RepoManager.ParamRepo.SaveChanges();
-                }
+                var rtn = JsonConvert.SerializeObject(jsons);
+                jsonString = jsonString + rtn;
+                date = date.AddDays(1);
             }
-            else
-            {
-                Errors.Add(new KeyValuePair<string, string>("Import", "E' indicata un'altra web api in esecuzione"));
-            }
+            //var jsonObject1 = JsonConvert.DeserializeObject(jsonString);
+            // Output the JSON string
+            //string test = jsonObject1.ToString();
+            Console.WriteLine(jsonString);
+            JsonData = jsonString;
         }
 
+        public string oreCentesimi(int minuti) {
+            string result = "";
+            TimeSpan totalDuration = TimeSpan.FromMinutes(minuti);
+
+            return result = String.Format("{0}{1},{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
+
+        }
+
+        protected string FromMinutesToCent(int minutes)
+        {
+            return ((minutes / 60.0) * 100).ToString("00");
+        }
     }
 }
