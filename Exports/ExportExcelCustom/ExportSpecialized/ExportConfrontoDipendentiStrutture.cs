@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -168,6 +169,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                         rowIndex += 3;
                     }
+                    
                 }
             }
         }
@@ -313,29 +315,23 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     lastDuration = (int)baseDuration;
                 }
-                _log.InfoFormat("Imposto il totale");
                 string totalHours = FromTotalMinutesToFormattedTypeKomplett(totale);
                 giorni = totalDays;
                 if (motivazione)
                 {
                     giorni = giorni - totalDays;
                 }
-                _log.InfoFormat("Scrivo il totale");
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
-                _log.InfoFormat("totale scritto");
                 rowIndex = rowIndex + 1;
 
                 if (giorno == 2)
                 {
                     giorno += CommonService.GetDatesFromPeriod(startMonth, endMonth).Count;
                 }
-                _log.InfoFormat("Imposto motivazione");
                 motivazione = false;
-                _log.InfoFormat("metodo finito");
             }
-
         }
         #region Header
 
@@ -388,7 +384,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private void WriteTotaleHourColOrd(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
             String lastCant = "";
-            _log.InfoFormat("Scrivo i totali");
             List<TimesheetModuleItem> tot = cartellini["totale"].OrderBy(c => c.CantDesc).ToList();
 
             RangeSetBorders(worksheetIndex, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);

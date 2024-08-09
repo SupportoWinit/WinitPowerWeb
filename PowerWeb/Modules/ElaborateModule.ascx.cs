@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.UI;
 
@@ -803,6 +804,9 @@ namespace PowerWeb.Modules
                                     if ((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Scs)
                                     {
                                         response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Scs", Path.GetFileName(outputFilePath)));
+                                    }else if ((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Orlando)
+                                    {
+                                        response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Orlando", Path.GetFileName(outputFilePath)));
                                     }
                                     else
                                     {

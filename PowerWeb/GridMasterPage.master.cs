@@ -1378,7 +1378,8 @@ namespace PowerWeb
                     #region COLORAZIONE ORE FISICHE
                     // si processa la colorazione solamente per le ore fisiche
                     if (e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_E) ||
-                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_ETime))
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_ETime) ||
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fig_ETime))
                     {
                         // si colora la cella solamente se non è un'attività o se è attiva la colorazione per le attività
                         if (registrazioneTipoReg != (int)RegTypeEnum.Att || customizationVersion == (int)NoColorForEditedActivityEnum.Color)
@@ -1386,6 +1387,9 @@ namespace PowerWeb
                             // se si sta processando un viaggio allora le ore assumono il colore del tipo registrazione
                             if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
                             {
+                                e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                            }
+                            else if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur) {
                                 e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
                             }
                             else // in caso contrario si procede al check del tipo modifica
@@ -1417,7 +1421,9 @@ namespace PowerWeb
                     }
 
                 }
-                else if (e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_U) || e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_UTime))
+                else if (e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_U) || 
+                         e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fis_UTime) ||
+                         e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Ora_Fig_UTime))
                 // si colora l'ora di uscita fisica in bas al tipo modifica apportata
                 {
                     // calcolo della posizione attuale in elaborazione
@@ -1439,6 +1445,10 @@ namespace PowerWeb
                     {
                         // se si sta processando un viaggio allora le ore assumono il colore del tipo registrazione
                         if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
+                        {
+                            e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                        }
+                        else if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur)
                         {
                             e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
                         }
@@ -1513,6 +1523,55 @@ namespace PowerWeb
                         }
 
                         e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(color, false);
+                    }
+                    // calcolo della posizione attuale in elaborazione
+                    var checkIndex = e.VisibleIndex - GridView.VisibleStartIndex;
+
+                    // verifico la presenza della customizzazione riguardante la non colorazione delle attività
+                    int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoColorForEditedActivityEnum);
+
+                    // recupero il valore di tipo della registrazione in elaborazione
+                    var listaTipiReg = GridView.GetCurrentPageRowValues(CommonService.GetPropertyName(() => _regvStub.Registrazione_Tipo_Reg));
+                    int registrazioneTipoReg = (int)RegTypeEnum.None;
+                    if (listaTipiReg.Count > 0 && checkIndex >= 0 && checkIndex <= listaTipiReg.Count)
+                    {
+                        registrazioneTipoReg = Convert.ToInt32(listaTipiReg[checkIndex]);
+                    }
+                    if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur)
+                    {
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                    }
+                    else if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
+                    {
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                    }
+                } 
+                else if (e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Col_Desc) || 
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Cant_Mnemonic) || 
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Col_Id) || 
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Cant_Id) ||
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Data_Reg) ||
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Durata_Fis_HH_S) ||
+                    e.DataColumn.FieldName == CommonService.GetPropertyName(() => _regvStub.Durata_Fig_HH_S)) {
+                    // calcolo della posizione attuale in elaborazione
+                    var checkIndex = e.VisibleIndex - GridView.VisibleStartIndex;
+
+                    // verifico la presenza della customizzazione riguardante la non colorazione delle attività
+                    int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoColorForEditedActivityEnum);
+
+                    // recupero il valore di tipo della registrazione in elaborazione
+                    var listaTipiReg = GridView.GetCurrentPageRowValues(CommonService.GetPropertyName(() => _regvStub.Registrazione_Tipo_Reg));
+                    int registrazioneTipoReg = (int)RegTypeEnum.None;
+                    if (listaTipiReg.Count > 0 && checkIndex >= 0 && checkIndex <= listaTipiReg.Count)
+                    {
+                        registrazioneTipoReg = Convert.ToInt32(listaTipiReg[checkIndex]);
+                    }
+                    if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur)
+                    {
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                    }else if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
+                    {
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
                     }
                 }
 
@@ -2172,11 +2231,18 @@ namespace PowerWeb
             {
                 if (GridModule.GridView.VisibleRowCount > 1000)
                 {
-                    btnPrintXlsx.ClientEnabled = false;
-                    btnPrintXlsx.Enabled = false;
-                    btnPrintPdf.ClientEnabled = false;
-                    btnPrintPdf.Enabled = false;
+                //    btnPrintXlsx.ClientEnabled = false;
+                //    btnPrintXlsx.Enabled = false;
+                //    btnPrintPdf.ClientEnabled = false;
+                //    btnPrintPdf.Enabled = false;
+                //}
+                //else {
+                //    btnPrintXlsx.ClientEnabled = true;
+                //    btnPrintXlsx.Enabled = true;
+                //    btnPrintPdf.ClientEnabled = true;
+                //    btnPrintPdf.Enabled = true;
                 }
+                
 
             }
         }

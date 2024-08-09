@@ -189,7 +189,11 @@ namespace Common
         NotificaRitardo,
         ArrotondamentoPausa,
         RimozionePausaHotel,
-        ExportHotelKomplett
+        ExportHotelKomplett,
+        LimitiDaTurni,
+        CopertureSerali,
+        TripFigHours,
+        RimozionePausaPranzo
     }
 
     public enum ClockAppsOperationEnum

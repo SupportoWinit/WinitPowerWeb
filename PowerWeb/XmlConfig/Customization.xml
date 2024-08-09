@@ -233,9 +233,11 @@
 		NoCreateTripOnSameMunicipalityUnderKmEnum=1 Indica di generare i viaggi che cominciano e terminano nello stesso comune solo se superiori a i km come parametro  -->
  
 	<!-- ********************************************************ESPORTAZIONE XML DELLE TIMBRATURE*********************************************************-->
-	<c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="2" />
+	<c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="3" />
 	<!-- RegExportToXmlEnum=0 Indica che l'esportazione xml delle timbrature non è attiva
-		RegExportToXmlEnum=1 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Perfetto -->
+		RegExportToXmlEnum=1 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Perfetto
+    RegExportToXmlEnum=2 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Scs
+    RegExportToXmlEnum=3 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Orlando-->
  
 	<!-- ********************************************************ACCOPPIAMENTO TIMBRATURE DISPARI*********************************************************-->
 	<c ID="CustomizationEnum.DoNotCoupleIfDayOddsRegsEnum" Des="Indica se evitare l'accoppiamento di registrazioni per stesso giorno, cantiere, collaboratore se in numero dispari" Value="0" />
@@ -321,6 +323,11 @@
   <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
   <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
 		TripHourIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
+
+  <!-- *******************************************PAUSA PRANZO COME ONL*********************************************************-->
+  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore della pausa pranzo come se fossero ore lavorate" Value="1" />
+  <!--PausaPranzoIsWorkedHoursEnum=0 Non saranno utilizzate le ore di pausa all'interno delle ore lavorate
+		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore di pausa all'interno delle ore lavorate -->
   
 	<!-- *******************************************MONTE MINUTI TOTALE NEL CARTELLINO*********************************************************-->		
 	<c ID="CustomizationEnum.TimesheeetTotalWithoutMonthlyMinutes" Des="Indica se visualizzare nel cartellino il totale delle ore senza il monte minuti" Value="0" />
@@ -515,7 +522,43 @@
 			DoNotShowDisabledColCantId = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
 
   <!-- ********************************************************INDICA SE E' ABILITATO L'EXPORT DI KOMPLETT************************************************************************************** -->
-  <c ID="CustomizationEnum.ExportHotelKomplett" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="1"/>
+  <c ID="CustomizationEnum.ExportHotelKomplett" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="0"/>
     <!--	ExportHotelKomplett = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
     ExportHotelKomplett = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
+
+  <!--<********************************************************EXPORT CONFRONTE ORE STRAORDINARIE************************************************************-->
+  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="0"/>
+  <!-- ExportStr = 0 non visualizza gli straordinari
+      ExportStr = 1 visualizza gli straordinari-->
+
+  <!--<********************************************************PRENDE I LIMITI D'ENTRATA DAI TURNI DEI CANTIERI************************************************************-->
+  <c ID="CustomizationEnum.LimitiDaTurni" Des="Imposta i limiti di entrata dai turni dei cantieri" Value="1"/>
+  <!-- LimitiDaTurni = 0 utilizza i limiti normali
+      LimitiDaTurni = 1 utilizza i turni come limiti-->
+
+  <!--<********************************************************CONOTROLLA SE LE TIMBRATURE SONO COPERTURE SERALI************************************************************-->
+  <c ID="CustomizationEnum.CopertureSerali" Des="Controlla se le timbrature sono coperture serali" Value="1"/>
+  <!-- CopertureSerali = 0 non controlla se le timbrature sono coperture serali
+      CopertureSerali = 1 controlla se le timbrature sono coperture serali-->
+
+		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.RimozionePausaHotel" Des="(Personalizzazione Komplett) Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
+  <!--  RimozionePausaHotel=0 Indica di non rimuovere la pausa
+        RimozionePausaHotel=1 Indica di rimuovere la pausa-->
+  
+		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.DoublePushPin" Des="(Personalizzazione Komplett) Indice se rimuovere la pausa giornaliera dal totale" Value="1"/>
+  <!--  DoublePushPin=0 Indica di non rimuovere la pausa
+        DoublePushPin=1 Indica di rimuovere la pausa-->
+
+  <!-- ********************************************************UTILIZZA LE ORE FIGURATIVE PER I VIAGGI*********************************************************-->
+  <c ID="CustomizationEnum.TripFigHours" Des="Indica se utilizzare le ore figurative o le ore fisiche nella creazione dei viaggi" Value="1"/>
+  <!--  TripFigHours=0 Indica di usare le ore fisiche
+        TripFigHours=1 Indica di usare le ore figurative-->
+  
+		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="1"/>
+  <!--  RimozionePausaPranzo=0 Indica di non rimuovere la pausa
+        RimozionePausaPranzo=1 Indica di rimuovere la pausa-->
+
 </Customizations>

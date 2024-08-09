@@ -2,6 +2,7 @@
 using Business.BusinessExtension;
 using Business.Repository;
 using Common;
+using DevExpress.Data.Linq;
 using DevExpress.XtraReports.UI;
 using Domain;
 using Exports;
@@ -16,6 +17,10 @@ using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Services;
+using Spire.Pdf;
+using Spire.Xls;
+using System.Drawing;
+using DevExpress.XtraPrinting;
 
 namespace PowerWeb.Pages
 {
@@ -1895,6 +1900,8 @@ namespace PowerWeb.Pages
                 response = JObject.FromObject(_exportContext.GetDownloadExportParams());
                 if (errors.Any())
                     response.Add(nameof(errors), errors);
+
+                bool rtn = SaveAsPdf("D:\\download\\Export Hotel (6).xlsx");
             }
             else
             {
@@ -1948,17 +1955,30 @@ namespace PowerWeb.Pages
 
             List<Domain.Col> collaboratori = RepoManager.ColRepo.Find(c => selectedCols.Contains(c.Col_Id)).ToList();
 
-
+            DateTime minDate = CommonService.GetFirstMonthDay(selectedDate);
+            DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
 
             foreach (Col col in collaboratori)
             {
-                cartellini.AddRange(TimesheetModuleItem.GenerateCartellino(selectedDate, col, false, false,true)["justification"]);
+                var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
+                    && (regv.Data_Reg >= minDate && regv.Data_Reg <= monthLastDate)
+                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true);
+                if (regs.Count() > 0)
+                {
+                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
+                }     
             }
 
             var timesheetColReport = new XRColCartellino(cartellini, null, null, optionsObj);
             Modules.ExtXtraReport xrReport = new Modules.ExtXtraReport { Report = timesheetColReport, PictureBox = timesheetColReport.CompanyLogo };
             //Nasconde la copertin
             xrReport.Report.Bands[BandKind.ReportHeader].Visible = false;
+            byte[] companyLogo = RepoManager.ParamRepo.ParametersRow.CompanyLogo;
+            if (companyLogo != null && xrReport.PictureBox != null)
+            {
+                //xrReport.PictureBox.Image = Image.FromStream(new MemoryStream(companyLogo));
+                xrReport.PictureBox.Sizing = ImageSizeMode.ZoomImage;
+            }
             MemoryStream stream = CommonServiceReport.CreateReport(null, "Report", false, xrReport.Report);
 
             var fileName = "Report Cartellino";
@@ -2063,6 +2083,25 @@ namespace PowerWeb.Pages
         public static JArray Normalize(JObject loadOptions, string property)
         {
             return loadOptions[property] != null && loadOptions[property].HasValues ? loadOptions[property].ToObject<JArray>() : new JArray();
+        }
+
+        public static bool SaveAsPdf(string saveAsLocation)
+        {
+            string saveas = (saveAsLocation.Split('.')[0]) + ".pdf";
+            try
+            {
+                Workbook workbook = new Workbook();
+                workbook.LoadFromFile(saveAsLocation);
+
+                //Save the document in PDF format
+
+                workbook.SaveToFile(saveas, Spire.Xls.FileFormat.PDF);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         /// <summary>

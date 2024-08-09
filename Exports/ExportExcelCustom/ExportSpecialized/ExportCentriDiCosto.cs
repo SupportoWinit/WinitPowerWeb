@@ -74,7 +74,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                 && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                                && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && regv.Codice_Commessa_Can == "Pulizie Civile", true);
+                                && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
                             if (regs.Count() > 0)
                             {
                                 cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,

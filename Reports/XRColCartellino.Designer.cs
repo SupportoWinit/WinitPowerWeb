@@ -568,7 +568,7 @@
             // xrTableRow3
             // 
             this.xrTableRow3.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.cdCant,
+            //this.cdCant,
             this.cdMot,
             this.cdG01,
             this.cdG02,
@@ -648,7 +648,7 @@
             this.cdMot.StylePriority.UseFont = false;
             this.cdMot.StylePriority.UseTextAlignment = false;
             this.cdMot.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            this.cdMot.Weight = 0.179887470146808D;
+            this.cdMot.Weight = 0.277514859754761D;
             // 
             // cdG01
             // 
@@ -1233,7 +1233,6 @@
             // ReportHeader
             // 
             this.ReportHeader.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.CompanyLogo,
             this.xrLabel9,
             this.xrLabel8,
             this.xrLabel7,
@@ -1247,9 +1246,9 @@
             // 
             this.CompanyLogo.Borders = DevExpress.XtraPrinting.BorderSide.None;
             this.CompanyLogo.Dpi = 254F;
-            this.CompanyLogo.LocationFloat = new DevExpress.Utils.PointFloat(3.5F, 0F);
+            this.CompanyLogo.LocationFloat = new DevExpress.Utils.PointFloat(3.10F,10F);
             this.CompanyLogo.Name = "CompanyLogo";
-            this.CompanyLogo.SizeF = new System.Drawing.SizeF(480F, 220F);
+            this.CompanyLogo.SizeF = new System.Drawing.SizeF(400F, 200F);
             this.CompanyLogo.StylePriority.UseBorders = false;
             // 
             // xrLabel9
@@ -1351,6 +1350,7 @@
             // Inizio_Col
             // 
             this.Inizio_Col.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.CompanyLogo,
             this.headerDayTable,
             this.xrLine4,
             this.Info,
@@ -1359,7 +1359,7 @@
             this.Inizio_Col.GroupFields.AddRange(new DevExpress.XtraReports.UI.GroupField[] {
             new DevExpress.XtraReports.UI.GroupField("ColDesc", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending),
             new DevExpress.XtraReports.UI.GroupField("StartDate", DevExpress.XtraReports.UI.XRColumnSortOrder.Ascending)});
-            this.Inizio_Col.HeightF = 304.2707F;
+            this.Inizio_Col.HeightF = 200F;
             this.Inizio_Col.Name = "Inizio_Col";
             this.Inizio_Col.RepeatEveryPage = true;
             // 
@@ -1387,7 +1387,7 @@
             // xrTableRow2
             // 
             this.xrTableRow2.Cells.AddRange(new DevExpress.XtraReports.UI.XRTableCell[] {
-            this.chCant,
+            //this.chCant,
             this.chMot,
             this.chGg01,
             this.chGg02,
@@ -1471,7 +1471,7 @@
             this.chMot.StylePriority.UseFont = false;
             this.chMot.StylePriority.UseTextAlignment = false;
             this.chMot.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            this.chMot.Weight = 0.180341419047418D;
+            this.chMot.Weight = 0.277514859754761D;
             // 
             // Lbl_Mot
             // 

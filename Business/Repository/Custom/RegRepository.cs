@@ -4,6 +4,7 @@ using Common;
 using Common.Properties;
 using Data;
 using DevExpress.XtraPrinting.Native;
+using DevExpress.XtraRichEdit.Layout;
 using Domain;
 using log4net;
 using System;
@@ -682,10 +683,35 @@ namespace Business.Repository.Custom
                         }
                         #endregion
 
-                        #region 11.6 Creazione pausa per cantiere
+                        #region 11.6 Creazione pausa per Hotel
 
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1) {
+                            regs = DeleteCopertureSerali(regs, isToSaveChanges);
+
+                            // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
+                            RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
+                            regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+                            var roundingRegVs1 = regVs.ToList();
+                            // Recupera i viaggi appena creati  
+                            var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
+                                                regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
+
+                            roundingRegVs1.AddRange(tripsRegvs1);
+                            errors.AddRange(RepoManager.Reg_VRepo.PausaPranzoKomplett(roundingRegVs1));
+                        }
+                        #endregion
+
+                        #region 11.6 Creazione pausa per Cantiere
+
+                        //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaPranzo) == 1)
+                        {
+                            regs = DeleteCopertureSerali(regs, isToSaveChanges);
+
+                            // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
+                            RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
+                            regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  
                             var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
@@ -696,12 +722,62 @@ namespace Business.Repository.Custom
                         }
                         #endregion
 
+                        #region (Personalizzazione) Coperture Serali
+                        // se la personalizzazione è attiva controllo se le timbrature
+                        //sono coperture serali
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CopertureSerali) == 1)
+                        {
+                            regVs = GetRegVsForRounding(regs);
+
+                            BeginWork();
+
+                            // calcolo gli id dei collaboratori e dei cantieri collegati alle registrazioni correnti
+
+                            HashSet<int> regColIds = new HashSet<int>();
+
+                            regVs.Where(r => r.Col_Id != null).Select(regV => regV.Col_Id).Cast<int>().ToList().ForEach(colId =>
+                            {
+                                regColIds.Add(colId);
+                            });
+
+                            HashSet<int> regCantIds = new HashSet<int>();
+
+                            regVs.Where(r => r.Cant_Id != null).Select(regV => regV.Cant_Id).Cast<int>().ToList().ForEach(colId =>
+                            {
+                                regCantIds.Add(colId);
+                            });
+
+                            //IEnumerable<int> regColIds = new HashSet<int>(regVs.Where(r => r.Col_Id != null).Select(regV => regV.Col_Id).Distinct().Cast<int>().ToArray());
+                            //IEnumerable<int> regCantIds = regVs.Where(r => r.Cant_Id != null).Select(regV => regV.Cant_Id).Distinct().Cast<int>().ToList();
+
+                            // dagli id dei collaboratori e dei cantieri precedentemente recuperati si recuperano le anagrafiche
+
+                            _log.Info("Accesso a database per la raccolta di cantieri e collaboratori");
+
+                            List<Col> regCols = RepoManager.ColRepo.Find(col => regColIds.Contains(col.Col_Id), true).ToList();
+                            List<Cant> regCants = RepoManager.CantRepo.Find(cant => regCantIds.Contains(cant.Cant_Id), true).ToList();
+
+
+                            // recupera il metodo di arrotondamento impostato nei parametri
+                            RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
+
+                            // Controllo coperture serali
+                            _log.Info(String.Format("Inizio controllo coperture serali di {0} regV", regVs.Count()));
+                            errors.AddRange(RepoManager.Reg_VRepo.CopertureSerali(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                                , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+                            _log.Info(String.Format("Controllo coperture serali di {0} regs terminato", regVs.Count()));
+
+                            CommitWork();
+                            //RepoManager.Reg_VRepo.InviaRitardi();
+                        }
+                        #endregion
+
 
                     }
                     catch (Exception ex)
                     {
                         //_//Client.sendMessage(JsonConvert.SerializeObject(CommonService.signalRMessage(DateTime.Now, "ERROR", "Elaborazione interrotta durante la fase di post-processing")));
-                        ManageElaborateMessageDictionaries(100d, "Elaborazione interrotta per errori");
+                        ManageElaborateMessageDictionaries(100d, "Elaborazione interrotta per errori"); 
                         errors.Add(new KeyValuePair<String, String>(FunctionMessageEnum.Elaborate.ToString(), "RollbackWork"));
 
                         if (IsInTransaction)
@@ -1803,7 +1879,7 @@ namespace Business.Repository.Custom
 
                 // si cicla su tutte le registrazioni da associare (si considerano registrazioni da associare tutte le registrazioni
                 // che hanno almeno o la Pru o la Fru)
-                foreach (Reg reg in regs.Where(rg => rg.Fru_Id != null || rg.Pru_Id != null).ToList())
+                foreach (Reg reg in regs.Where(rg => rg.Fru_Id != null || rg.Pru_Id != null || rg.Cant_Id != null).ToList())
                 {
                     // se la registrazione da processare ha collegata un'unità portatile
                     if (reg.Pru_Id != null)
@@ -1911,6 +1987,35 @@ namespace Business.Repository.Custom
 
                     }
 
+                    if (reg.Cant_Id != null) {
+                        var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
+                        if (allCdc.Count() > 0)
+                        {
+                            bool centro = false;
+                            int cid = 0;
+                            foreach (var tmp in allCdc)
+                            {
+                                if (centro == false)
+                                {
+                                    var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == reg.Cant_Id);
+                                    foreach (var test1 in test)
+                                    {
+                                        if (test1.Cant_Id == reg.Cant_Id)
+                                        {
+                                            centro = true;
+                                            cid = test1.CentroDiCosto_Id;
+                                        }
+                                    }
+                                }
+                            }
+                            var temp = allCdc.First().Cant_CentroDiCosto;
+                            var cdc = temp.Where(c => c.Cant_Id == reg.Cant_Id);
+                            if (centro)
+                            {
+                                reg.CentroDiCosto_Id = cid;
+                            }
+                        }
+                    }
                 }
 
 
@@ -2185,6 +2290,39 @@ namespace Business.Repository.Custom
                     returnRegs = regs.Where(reg => reg.Custom_Data_Reg != Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
                 }
             }            
+
+            // ritorno del valore calcolato dal metodo
+            return returnRegs;
+        }
+
+        /// <summary>
+        /// Elimina dalle registrazioni attuali e dal database tutte le registrazioni generate automaticamente a chiusura delle causali.
+        /// </summary>
+        /// <param name="regs">Le registrazioni da prendere in carico in processo da parte dell'elaborate.</param>
+        /// <param name="saveChanges">se impostato a <c>true</c> salva le modifiche apportate al database.</param>
+        /// <returns>L'elenco di registrazioni senza le cancellate (quelle generate automaticamente a chiusura delle causali)</returns>
+        private ICollection<Reg> DeleteCopertureSerali(ICollection<Reg> regs, bool saveChanges)
+        {
+            // inzializzazione del valore di ritorno del metodo
+            ICollection<Reg> returnRegs = regs;
+            // se sono presenti delle registrazioni provenienti da causali nell'elenco passato come parametro
+            if (regs.Any(reg => reg.Turno == "Coperture Serali"))
+            {
+                // si tolgono tutti i riferimenti alle registrazioni da cancellare dalle registrazioni ad esse abbinate per evitare errori di integrità
+                // referenziale
+                IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Turno == "Coperture Serali").ToList();
+                var regsToUpdate = new List<Reg>();
+                //regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.RiferimentoRRN_Reg == reg.Reg_Id || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
+                //regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
+                //Context.BulkUpdate(regsToUpdate);
+
+                // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
+                Context.BulkDelete(regs.Where(reg => reg.Turno == "Coperture Serali" && reg.Registrazione_Tipo_Reg == 10));
+
+                // inoltre alla lista passata come parametro si procede a togliere 
+                // le registrazioni cancellate dal database
+                returnRegs = regs.Where(reg => !(reg.Turno == "Coperture Serali" && reg.Registrazione_Tipo_Reg == 10)).ToList();
+            }
 
             // ritorno del valore calcolato dal metodo
             return returnRegs;
@@ -5051,13 +5189,14 @@ namespace Business.Repository.Custom
             return newRounding;
         }
 
-        public Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration)
+        public Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration, string turno)
         {
             // inizializzazione del valore di ritorno del metodo
             var newRounding = Init();
             double arrot = 0;
             List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantId).ToList();
-            if (cantieri.First().Importo1 != null) {
+            if (cantieri.Count() > 0) {
+                if(cantieri.First().Importo1 != null)
                 arrot = cantieri.First().Importo1.Value;
             }
             List<Tab_Decod> motivazioni = RepoManager.Tab_DecodRepo.GetAllQueryable(m => m.Decodifica_Tab == "Pausa").ToList();
@@ -5072,6 +5211,7 @@ namespace Business.Repository.Custom
                 newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
                 newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
                 newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);
+                newRounding.Turno = turno;
             }
 
             // ritorno dell'arrotondamento generato
