@@ -182,12 +182,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             {
                                 // si recuperano tutte le registrazioni del giorno che si sta processando
                                 var dayColRegVs = regVsByCol.Where(regv => regv.Data_Reg == monthDate);
+                                dayColRegVs = dayColRegVs.OrderBy(regv => regv.Cant_Id);
 
                                 foreach (Reg_V regVToWrite in dayColRegVs)
                                     WriteRegV(regVToWrite, monthDate, writeIndex++, currentCol);
                             }
-                            else // non sono presenti registrazioni nella giornata, si procede alla scrittura del giorno non lavorato
-                                WriteRegV(null, monthDate, writeIndex++, currentCol);
+                           // else // non sono presenti registrazioni nella giornata, si procede alla scrittura del giorno non lavorato
+                           //     WriteRegV(null, monthDate, writeIndex++, currentCol);
                         }
                     }
                 }
@@ -226,29 +227,38 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         {
             CellInsertValue(1, 1, writeIndex, processingCol.Codice_Collaboratore, ExcelInsertTypeEnum.Content);
             CellInsertValue(1, 2, writeIndex, processingCol.CognomeNome_Col, ExcelInsertTypeEnum.Content);
-            if (regvToWrite != null)
-            {
+            
                 CellInsertValue(1, 3, writeIndex, regvToWrite.Cant_Mnemonic, ExcelInsertTypeEnum.Content);
                 CellInsertValue(1, 4, writeIndex, regvToWrite.Cant_Desc, ExcelInsertTypeEnum.Content);
 
                 // si estrare se nell'export mostrare le ore fisiche o figurative in base alla selezione del radio button nella pagina dell'export
-                if (UseCalculationType)
-                    switch (CalculationType)
-                    {
-                        case ExportRegVCalculationTypeEnum.Physical:
-                            CellInsertValue(1, 6, writeIndex, regvToWrite.Data_Ora_Fis_E.TimeOfDay, ExcelInsertTypeEnum.Content);
-                            if (regvToWrite.Data_Ora_Fis_U != null)
-                                CellInsertValue(1, 7, writeIndex, regvToWrite.Data_Ora_Fis_U.Value.TimeOfDay, ExcelInsertTypeEnum.Content);
-                            CellInsertValue(1, 8, writeIndex, regvToWrite.Durata_Fis_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
-                            break;
-                        case ExportRegVCalculationTypeEnum.Rounded:
-                            TimeSpan? currentTime = regvToWrite.Data_Ora_Fig_E != null ? regvToWrite.Data_Ora_Fig_E.Value.TimeOfDay : (TimeSpan?)null;
-                            CellInsertValue(1, 6, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
-                            currentTime = regvToWrite.Data_Ora_Fig_U != null ? regvToWrite.Data_Ora_Fig_U.Value.TimeOfDay : (TimeSpan?)null;
-                            CellInsertValue(1, 7, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
-                            CellInsertValue(1, 8, writeIndex, regvToWrite.Durata_Fig_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
-                            break;
-                            }
+                //if (UseCalculationType)
+                    //switch (CalculationType)
+                    //{
+                    //    case ExportRegVCalculationTypeEnum.Physical:
+                    //        CellInsertValue(1, 6, writeIndex, regvToWrite.Data_Ora_Fis_E.TimeOfDay, ExcelInsertTypeEnum.Content);
+                    //        if (regvToWrite.Data_Ora_Fis_U != null)
+                    //            CellInsertValue(1, 7, writeIndex, regvToWrite.Data_Ora_Fis_U.Value.TimeOfDay, ExcelInsertTypeEnum.Content);
+                    //        CellInsertValue(1, 8, writeIndex, regvToWrite.Durata_Fis_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
+                    //        break;
+                    //    case ExportRegVCalculationTypeEnum.Rounded:
+                    //        TimeSpan? currentTime = regvToWrite.Data_Ora_Fig_E != null ? regvToWrite.Data_Ora_Fig_E.Value.TimeOfDay : (TimeSpan?)null;
+                    //        CellInsertValue(1, 6, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
+                    //        currentTime = regvToWrite.Data_Ora_Fig_U != null ? regvToWrite.Data_Ora_Fig_U.Value.TimeOfDay : (TimeSpan?)null;
+                    //        CellInsertValue(1, 7, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
+                    //        CellInsertValue(1, 8, writeIndex, regvToWrite.Durata_Fig_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
+                    //        break;
+                    //        }
+
+                CellInsertValue(1, 6, writeIndex, regvToWrite.Data_Ora_Fis_E.TimeOfDay, ExcelInsertTypeEnum.Content);
+                if (regvToWrite.Data_Ora_Fis_U != null)
+                    CellInsertValue(1, 7, writeIndex, regvToWrite.Data_Ora_Fis_U.Value.TimeOfDay, ExcelInsertTypeEnum.Content);
+                CellInsertValue(1, 8, writeIndex, regvToWrite.Durata_Fis_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
+                TimeSpan? currentTime = regvToWrite.Data_Ora_Fig_E != null ? regvToWrite.Data_Ora_Fig_E.Value.TimeOfDay : (TimeSpan?)null;
+                CellInsertValue(1, 9, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
+                currentTime = regvToWrite.Data_Ora_Fig_U != null ? regvToWrite.Data_Ora_Fig_U.Value.TimeOfDay : (TimeSpan?)null;
+                CellInsertValue(1, 10, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
+                CellInsertValue(1, 11, writeIndex, regvToWrite.Durata_Fig_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
 
                 // se la registrazione che si sta processando possiede una motivaizone
                 string displayJustfification = String.Empty;
@@ -260,16 +270,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         displayJustfification = justConf.Decodifica_Tab;
                 }
                 // inserimento della motivazione della registrazione
-                CellInsertValue(1, 10, writeIndex, displayJustfification, ExcelInsertTypeEnum.Content);
+                CellInsertValue(1, 13, writeIndex, displayJustfification, ExcelInsertTypeEnum.Content);
 
 
                 //se la personalizzazione è attiva allora inserisco il codice commessa 
                 if (ShowOrderCutom != ManageOrderCodeSimpleExport.Disabled)
-                    CellInsertValue(1, 11, writeIndex, regvToWrite.Codice_Commessa_Can, ExcelInsertTypeEnum.Content);
-            }
+                    CellInsertValue(1, 14, writeIndex, regvToWrite.Codice_Commessa_Can, ExcelInsertTypeEnum.Content);
+            
             CellInsertValue(1, 5, writeIndex, dateToProcess, ExcelInsertTypeEnum.Content);
-            CellInsertValue(1, 9, writeIndex, dateToProcess.ToString("ddddd"), ExcelInsertTypeEnum.Content);
-
+            CellInsertValue(1, 12, writeIndex, dateToProcess.ToString("ddddd"), ExcelInsertTypeEnum.Content);
         }
 
         #endregion

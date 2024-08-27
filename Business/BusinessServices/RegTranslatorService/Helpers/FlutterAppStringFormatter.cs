@@ -52,7 +52,7 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
                         , regDateTime.Day.ToString("00")
                         , regDateTime.Hour.ToString("00")
                         , regDateTime.Minute.ToString("00")
-                        , "0" //Reg direction per ora vuota
+                        , " " //Reg direction per ora vuota
                         );
                     // aggiunta della stringa alla lista di scrittura
                     activityLines = line;

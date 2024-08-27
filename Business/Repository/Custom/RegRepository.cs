@@ -5189,6 +5189,25 @@ namespace Business.Repository.Custom
             return newRounding;
         }
 
+        public Reg GenerateRoundingRegCan(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newRounding = Init();
+
+            // popolamento dei dati della registrazione
+            newRounding.Col_Id = colId;
+            newRounding.Cant_Id = cantId;
+            newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
+            newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
+            newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
+            newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.ArrotDur;
+            newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+            newRounding.Rettifica_Durata = Convert.ToInt32(roundingType == RoundingTypeEnum.RoundingMinus ? (-1) * roundingDuration.TotalMinutes : roundingDuration.TotalMinutes);
+
+            // ritorno dell'arrotondamento generato
+            return newRounding;
+        }
+
         public Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration, string turno)
         {
             // inizializzazione del valore di ritorno del metodo

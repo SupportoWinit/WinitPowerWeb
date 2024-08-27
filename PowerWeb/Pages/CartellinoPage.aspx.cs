@@ -1976,7 +1976,7 @@ namespace PowerWeb.Pages
             byte[] companyLogo = RepoManager.ParamRepo.ParametersRow.CompanyLogo;
             if (companyLogo != null && xrReport.PictureBox != null)
             {
-                //xrReport.PictureBox.Image = Image.FromStream(new MemoryStream(companyLogo));
+                xrReport.PictureBox.Image = Image.FromStream(new MemoryStream(companyLogo));
                 xrReport.PictureBox.Sizing = ImageSizeMode.ZoomImage;
             }
             MemoryStream stream = CommonServiceReport.CreateReport(null, "Report", false, xrReport.Report);

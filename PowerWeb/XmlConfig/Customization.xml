@@ -547,18 +547,33 @@
         RimozionePausaHotel=1 Indica di rimuovere la pausa-->
   
 		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
-  <c ID="CustomizationEnum.DoublePushPin" Des="(Personalizzazione Komplett) Indice se rimuovere la pausa giornaliera dal totale" Value="1"/>
-  <!--  DoublePushPin=0 Indica di non rimuovere la pausa
-        DoublePushPin=1 Indica di rimuovere la pausa-->
+  <c ID="CustomizationEnum.DoublePushPin" Des="Mostra nel tracking sia il pushpin dell'entrata sia dell'uscita" Value="1"/>
+  <!--  DoublePushPin = 0 Indica di mostrarne solo uno
+        DoublePushPin = 1 Indica di mostrarli entrambi-->
 
   <!-- ********************************************************UTILIZZA LE ORE FIGURATIVE PER I VIAGGI*********************************************************-->
   <c ID="CustomizationEnum.TripFigHours" Des="Indica se utilizzare le ore figurative o le ore fisiche nella creazione dei viaggi" Value="1"/>
-  <!--  TripFigHours=0 Indica di usare le ore fisiche
-        TripFigHours=1 Indica di usare le ore figurative-->
+  <!--  TripFigHours = 0 Indica di usare le ore fisiche
+        TripFigHours = 1 Indica di usare le ore figurative-->
   
 		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
-  <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="1"/>
-  <!--  RimozionePausaPranzo=0 Indica di non rimuovere la pausa
-        RimozionePausaPranzo=1 Indica di rimuovere la pausa-->
+  <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
+  <!--  RimozionePausaPranzo = 0 Indica di non rimuovere la pausa
+        RimozionePausaPranzo = 1 Indica di rimuovere la pausa-->
 
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.NoArrotondamentoOreModificate" Des="Indica di non arrotondare le timbrature modificate" Value="1"/>
+  <!--  NoArrotondamentoOreModificate = 0 Arrotonda le timbrature modificate
+        NoArrotondamentoOreModificate = 1 Non arrotonda le timbrature modificate-->
+
+  <!-- ********************************************************CALCOLA I VIAGGI SOLO TRA DUE TIMBRATURE GPS*********************************************************-->
+  <c ID="CustomizationEnum.TripOnlyGpsReg" Des="Indica di calcolare i viaggi solo tra due timbrature GPS" Value="1"/>
+  <!--  TripOnlyGpsReg = 0 Calcola in qualsiasi caso il viaggio
+        TripOnlyGpsReg = 1 Calcola il viaggio solo se le due timbrature sono GPS-->
+
+  <!-- ********************************************************APPLICA L'ARROTONDAMENTO PER DURATA AD OGNI TIMBRATURA E NON ALLA GIORNATA*********************************************************-->
+  <c ID="CustomizationEnum.ArrotAllRegs" Des="Indica se arrotondare l'intera giornata o ogni registrazione" Value="0"/>
+  <!--  ArrotAllRegs = 0 Arrotonda la giornata
+        ArrotAllRegs = 1 Arrotonda tutte le timbrature-->
+  
 </Customizations>

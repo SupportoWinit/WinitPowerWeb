@@ -838,6 +838,7 @@ namespace PowerWeb.Modules
                             N_Serie_Fru = r.N_Serie_Fru,
                             Costo_Orario_Fig = r.Costo_Orario_Fig,
                             Costo_Orario_Fis = r.Costo_Orario_Fis,
+                            CentroDiCosto_Id = r.CentroDiCosto_Id,
                         });
 
                         e.QueryableSource = newQueryable.AsQueryable();

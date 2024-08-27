@@ -96,6 +96,8 @@ namespace Business.Repository.Custom
         /// </returns>
         Reg GenerateRoundingReg(int colId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration);
 
+        Reg GenerateRoundingRegCan(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration);
+
         /// <summary>
         /// Genera e restituisce una nuova reg di pausa con durata negativa in base ai parametri presenti nel cantiere.
         /// </summary>

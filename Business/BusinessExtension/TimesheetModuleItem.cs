@@ -3715,8 +3715,19 @@ namespace Business.BusinessExtension
                 // calcolo l'id cantiere facendo si di convertire in 0 i valori null
                 var currentCantId = listCantId ?? 0;
 
-                // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == currentCantId).ToList();
+
+                if (cantiere.Count() > 0)
+                {
+                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                }
+                else {
+                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                }
+
+
             }
 
             // ritorno del valore calcolato dal metodo
@@ -5455,6 +5466,8 @@ namespace Business.BusinessExtension
                             string tipoCantiere = currCant != null ? currCant.Tipo_Cantiere_Can : String.Empty;
 
                             return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && !regv.Motivazione_Reg_Id.HasValue && tipoCantiere != "ONL";
+                            //riga di codice per report pdf FIDENTE
+                            //return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && /*!regv.Motivazione_Reg_Id.HasValue &&*/ tipoCantiere != "ONL";
                         }).ToList();
                     }
                     else
@@ -7181,30 +7194,30 @@ namespace Business.BusinessExtension
             List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
             if (rounding.Any())
             {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
-                {
-                    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-                    if (isByOtherEntity)
-                    {
-                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
-                    }
-                    else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-                    {
-                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
-                    }
-                }
-                else
-                {
-                    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-                    if (isByOtherEntity)
-                    {
-                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
-                    }
-                    else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-                    {
-                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
-                    }
-                }
+                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
+                //{
+                //    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                //    if (isByOtherEntity)
+                //    {
+                //        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                //    }
+                //    else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                //    {
+                //        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                //    }
+                //}
+                //else
+                //{
+                //    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                //    if (isByOtherEntity)
+                //    {
+                //        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                //    }
+                //    else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                //    {
+                //        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                //    }
+                //}
                 // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
             }
             #endregion

@@ -193,7 +193,10 @@ namespace Common
         LimitiDaTurni,
         CopertureSerali,
         TripFigHours,
-        RimozionePausaPranzo
+        RimozionePausaPranzo,
+        NoArrotondamentoOreModificate,
+        TripOnlyGpsReg,
+        ArrotAllRegs
     }
 
     public enum ClockAppsOperationEnum

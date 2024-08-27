@@ -330,8 +330,9 @@ namespace PowerWeb.Modules
         {
             var newDate = deNewStoredRegDate.Date;
 
-            DateTime from = DateTime.MinValue;
+            //DateTime from = DateTime.MinValue;
             DateTime to = newDate;
+            DateTime from = to.AddDays(-1);
             Boolean isBackward = false;
 
             //data ultima archiviazione eseguita
