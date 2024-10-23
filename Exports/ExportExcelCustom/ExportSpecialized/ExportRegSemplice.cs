@@ -260,7 +260,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 CellInsertValue(1, 10, writeIndex, currentTime, ExcelInsertTypeEnum.Content);
                 CellInsertValue(1, 11, writeIndex, regvToWrite.Durata_Fig_HH_C.TimeOfDay, ExcelInsertTypeEnum.Content);
 
-                // se la registrazione che si sta processando possiede una motivaizone
+                // se la registrazione che si sta processando possiede una motivazione
                 string displayJustfification = String.Empty;
                 if (regvToWrite.Motivazione_Reg_Id.HasValue)
                 {

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms.VisualStyles;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -454,11 +453,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         }
                         if (motivazione && (int)baseDuration > 0){
                             // RangeSetFontColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Black);
-                            if (justification.Justification.Equals("M"))
+                            if (justification.Justification.Equals("M") || justification.Justification.Equals("I"))
                             {
                                 RangeSetBackgroundColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Yellow, ExcelFillStyle.Solid);
                             }
-                            else if (justification.Justification.Equals("OFF")) 
+                            else if (justification.Justification.Equals("OFF"))
                             {
                                 RangeSetBackgroundColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.LightGray, ExcelFillStyle.Solid);
                             }

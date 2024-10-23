@@ -1347,7 +1347,7 @@ namespace PowerWeb
                     else if (regType == (int)RegTypeEnum.Pass) // se è un passaggio
                         e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)regType, false);
                     else if (regType == (int)RegTypeEnum.Duration) // se è una registrazione solo durata
-                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)regType, false);
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)10, false);
                     else if (regType == (int)RegTypeEnum.RettTimesheet) // se si tratta di una rettifica
                         e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)regType, false);
                     else if (regType == (int)RegTypeEnum.ArrotDur) // se si tratta di una rettifica
@@ -1389,8 +1389,8 @@ namespace PowerWeb
                             {
                                 e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
                             }
-                            else if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur) {
-                                e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                            else if (registrazioneTipoReg == (int)RegTypeEnum.Duration) {
+                                e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)10, false);
                             }
                             else // in caso contrario si procede al check del tipo modifica
                             {
@@ -1448,9 +1448,9 @@ namespace PowerWeb
                         {
                             e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
                         }
-                        else if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur)
+                        else if (registrazioneTipoReg == (int)RegTypeEnum.Duration) 
                         {
-                            e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                            e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)10, false);
                         }
                         else // in caso contrario si procede al check del tipo modifica
                         {
@@ -1537,9 +1537,9 @@ namespace PowerWeb
                     {
                         registrazioneTipoReg = Convert.ToInt32(listaTipiReg[checkIndex]);
                     }
-                    if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur)
+                    else if (registrazioneTipoReg == (int)RegTypeEnum.Duration)
                     {
-                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)10, false);
                     }
                     else if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
                     {
@@ -1566,10 +1566,11 @@ namespace PowerWeb
                     {
                         registrazioneTipoReg = Convert.ToInt32(listaTipiReg[checkIndex]);
                     }
-                    if (registrazioneTipoReg == (int)RegTypeEnum.ArrotDur)
+                    if (registrazioneTipoReg == (int)RegTypeEnum.Duration)
                     {
-                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
-                    }else if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
+                        e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)10, false);
+                    }
+                    else if (registrazioneTipoReg == (int)RegTypeEnum.Trip)
                     {
                         e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum((RegTypeEnum)registrazioneTipoReg, false);
                     }
@@ -2231,16 +2232,16 @@ namespace PowerWeb
             {
                 if (GridModule.GridView.VisibleRowCount > 1000)
                 {
-                //    btnPrintXlsx.ClientEnabled = false;
-                //    btnPrintXlsx.Enabled = false;
-                //    btnPrintPdf.ClientEnabled = false;
-                //    btnPrintPdf.Enabled = false;
-                //}
-                //else {
-                //    btnPrintXlsx.ClientEnabled = true;
-                //    btnPrintXlsx.Enabled = true;
-                //    btnPrintPdf.ClientEnabled = true;
-                //    btnPrintPdf.Enabled = true;
+                    btnPrintXlsx.ClientEnabled = false;
+                    btnPrintXlsx.Enabled = false;
+                    btnPrintPdf.ClientEnabled = false;
+                    btnPrintPdf.Enabled = false;
+                }
+                else {
+                    btnPrintXlsx.ClientEnabled = true;
+                    btnPrintXlsx.Enabled = true;
+                    btnPrintPdf.ClientEnabled = true;
+                    btnPrintPdf.Enabled = true;
                 }
                 
 
@@ -2954,6 +2955,7 @@ namespace PowerWeb
 
                             ManageDoubleAndTripleGridLayout(null, null, null);
                         }
+                        hideOrShowExportButtons();
 
                         BindLayoutCombo();
                     }

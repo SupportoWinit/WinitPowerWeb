@@ -196,7 +196,10 @@ namespace Common
         RimozionePausaPranzo,
         NoArrotondamentoOreModificate,
         TripOnlyGpsReg,
-        ArrotAllRegs
+        ArrotAllRegs,
+        NoArrotColAuthorized,
+        AutoClosuresXMinuteEnum,
+        AllColLimitiByOrario
     }
 
     public enum ClockAppsOperationEnum

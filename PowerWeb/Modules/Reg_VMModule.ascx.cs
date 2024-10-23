@@ -1589,28 +1589,30 @@ namespace PowerWeb.Modules
                 // sono ciclate tutte le nuove reg_v generate ed è effettuata su di loro la check
                 foreach (var regV in newRegVs)
                 {
-                    // calcolo il vecchio stato di blocco della regv (non bloccata se nuova)
-                    bool wasBlocked = regV.RegE != 0
-                        ? RepoManager.Reg_VRepo.SingleOrDefault(regv => regv.RegE == regV.RegE, true).Registrazione_Bloccata
-                        : false;
+                    if (regV.Registrazione_Tipo_Reg != 4) {
+                        // calcolo il vecchio stato di blocco della regv (non bloccata se nuova)
+                        bool wasBlocked = regV.RegE != 0
+                            ? RepoManager.Reg_VRepo.SingleOrDefault(regv => regv.RegE == regV.RegE, true).Registrazione_Bloccata
+                            : false;
 
-                    // si effettua la check della regv solamente se le ore non la marcano per la cancellazione
-                    // e se sia quella attualche che quella precedente sono bloccate
-                    if ((regV.Data_Ora_Fis_E != DateTime.MinValue || regV.Data_Ora_Fis_U != null) &&
-                        (!regV.Registrazione_Bloccata || !wasBlocked))
-                        validationErrors = RepoManager.Reg_VRepo.Check(regV, regV.RegE == 0, false);
-                    else
-                    {
-                        // se non si sta processando una reg nuova allora segnalo il fatto che non vada elaborata
-                        if (regV.RegE != 0)
-                            if (!doNotUpdateDic.ContainsKey(regV.RegE))
-                                doNotUpdateDic.Add(regV.RegE, true);
+                        // si effettua la check della regv solamente se le ore non la marcano per la cancellazione
+                        // e se sia quella attualche che quella precedente sono bloccate
+                        if ((regV.Data_Ora_Fis_E != DateTime.MinValue || regV.Data_Ora_Fis_U != null) &&
+                            (!regV.Registrazione_Bloccata || !wasBlocked))
+                            validationErrors = RepoManager.Reg_VRepo.Check(regV, regV.RegE == 0, false);
+                        else
+                        {
+                            // se non si sta processando una reg nuova allora segnalo il fatto che non vada elaborata
+                            if (regV.RegE != 0)
+                                if (!doNotUpdateDic.ContainsKey(regV.RegE))
+                                    doNotUpdateDic.Add(regV.RegE, true);
+                        }
+
+
+
+                        if (validationErrors.Count > 0)
+                            break;
                     }
-
-
-
-                    if (validationErrors.Count > 0)
-                        break;
                 }
 
                 #endregion
@@ -1626,7 +1628,7 @@ namespace PowerWeb.Modules
                     #region Adding new Regs
 
                     //lista di registrazioni nuove da aggiungere 
-                    var toAddRegVs = newRegVs.Where(regv => regv.RegE == 0).ToList();
+                    var toAddRegVs = newRegVs.Where(regv => regv.RegE == 0 && regv.Registrazione_Tipo_Reg != 4).ToList();
 
                     List<Reg> toAddRegs = new List<Reg>();
 
@@ -1735,7 +1737,7 @@ namespace PowerWeb.Modules
 
                     if (validationErrors.Count == 0)
                     {
-                        var toUpdateRegVs = newRegVs.Where(regv => regv.RegE != 0).ToList();
+                        var toUpdateRegVs = newRegVs.Where(regv => regv.RegE != 0 && regv.Registrazione_Tipo_Reg != 4).ToList();
 
                         foreach (var regv in toUpdateRegVs)
                         {

@@ -2338,14 +2338,14 @@ namespace Exports
             {
                 TimeSpan totalDuration = TimeSpan.FromMinutes(value);
 
-                result = String.Format("{0}{1},{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
+                result = String.Format("{0}{1}.{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
 
             }
             else //Sessantesimi
             {
                 TimeSpan totalDuration = TimeSpan.FromMinutes(value);
 
-                result = String.Format("{0},{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
+                result = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
             }
 
             return result;

@@ -268,7 +268,10 @@ namespace PowerWeb.Api
                         }
                     }                      
                 }
-                var rtn = JsonConvert.SerializeObject(jsons);
+                var rtn = "";
+                if (jsons.Count > 0) { 
+                    rtn = JsonConvert.SerializeObject(jsons);
+                } 
                 jsonString = jsonString + rtn;
                 date = date.AddDays(1);
                 jsons = new List<ExportJson>();

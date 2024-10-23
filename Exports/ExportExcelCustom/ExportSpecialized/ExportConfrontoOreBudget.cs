@@ -2176,6 +2176,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             break;
                     }
                 DateTime minutesToAdd = DateTime.Today.AddMinutes(Convert.ToDouble(regvDuration));
+                if (dayRegV.Motivazione_Reg_Id != null) {
+                    regvDuration = 0;
+                }
                 if (regvDuration > 0)
                 {                    
                     confrontationsByOtherEntity[otherEntityId].ExecutionDuration = confrontationsByOtherEntity[otherEntityId].ExecutionDuration == null
@@ -2460,19 +2463,41 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 // inserimento dei dati di esecuzione nell'oggetto di confronto
                 if (UseCalculationType)
-                    switch (CalculationType)
+                {
+                    if (dayRegV.Motivazione_Reg_Id == null)
                     {
-                        case ExportRegVCalculationTypeEnum.Physical:
-                            newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fis_E.TimeOfDay;
-                            newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fis_U != null ? dayRegV.Data_Ora_Fis_U.Value.TimeOfDay : TimeSpan.Zero;
-                            newConfrontation.ExecutionDuration = dayRegV.Durata_Fis != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fis.Value) : TimeSpan.Zero;
-                            break;
-                        case ExportRegVCalculationTypeEnum.Rounded:
-                            newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fig_E != null ? dayRegV.Data_Ora_Fig_E.Value.TimeOfDay : TimeSpan.Zero;
-                            newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fig_U != null ? dayRegV.Data_Ora_Fig_U.Value.TimeOfDay : TimeSpan.Zero;
-                            newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
-                            break;
+                        switch (CalculationType)
+                        {
+                            case ExportRegVCalculationTypeEnum.Physical:
+                                newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fis_E.TimeOfDay;
+                                newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fis_U != null ? dayRegV.Data_Ora_Fis_U.Value.TimeOfDay : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = TimeSpan.Zero;
+                                break;
+                            case ExportRegVCalculationTypeEnum.Rounded:
+                                newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fig_E != null ? dayRegV.Data_Ora_Fig_E.Value.TimeOfDay : TimeSpan.Zero;
+                                newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fig_U != null ? dayRegV.Data_Ora_Fig_U.Value.TimeOfDay : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = TimeSpan.Zero;
+                                break;
+                        }
                     }
+                    else {
+                        switch (CalculationType)
+                        {
+                            case ExportRegVCalculationTypeEnum.Physical:
+                                newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fis_E.TimeOfDay;
+                                newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fis_U != null ? dayRegV.Data_Ora_Fis_U.Value.TimeOfDay : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fis != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fis.Value) : TimeSpan.Zero;
+                                break;
+                            case ExportRegVCalculationTypeEnum.Rounded:
+                                newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fig_E != null ? dayRegV.Data_Ora_Fig_E.Value.TimeOfDay : TimeSpan.Zero;
+                                newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fig_U != null ? dayRegV.Data_Ora_Fig_U.Value.TimeOfDay : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
+                                break;
+                        }
+                    }
+                    
+                }
+                    
 
                 // si recupera il dettaglio di orario associato alla presente registrazione; nel caso dell'analisi per entrata/uscita e durata
                 // si accopiano gli orari con le registrazioni nell'ordine della giornata (crescente)

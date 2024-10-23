@@ -15,6 +15,8 @@ namespace Business.Repository.Custom
         List<KeyValuePair<String, String>> Rounding(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application,bool delete);
 
         List<KeyValuePair<String, String>> CopertureSerali(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application, bool delete);
+        List<KeyValuePair<String, String>> AdjustOverlappedRegs(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application, bool delete);
+
         List<KeyValuePair<String, String>> CheckDeelay(IEnumerable<Reg_V> regVs, IEnumerable<Reg> regs, List<Cant> cants, List<Col> cols, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application);
 
         List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs,RoundingMethodEnum metodo);
@@ -24,6 +26,8 @@ namespace Business.Repository.Custom
         List<KeyValuePair<String, String>> PausaPranzoKomplett(IEnumerable<Reg_V> regVs);
 
         List<KeyValuePair<String, String>> DeleteDurationRounding(IEnumerable<Reg> regVs);
+
+        List<KeyValuePair<String, String>> DeletePausaPranzo(IEnumerable<Reg> regVs);
 
         List<KeyValuePair<String, String>> CheckOverlaps(IEnumerable<Reg_V> regvs, bool isOnLine = false);
 

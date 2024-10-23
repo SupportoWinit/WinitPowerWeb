@@ -116,7 +116,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                         WriteTimesheetColName(col.Key);
 
-                        WriteTimesheetColHeaderSettimanale();
+                        WriteTimesheetColHeaderSettimanale(col.Value);
 
                         WriteColTimesheetSettimanale(col.Value);
 
@@ -126,7 +126,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             WriteStrTimesheetTitle();
 
-                            WriteTimesheetColHeaderSettimanale();
+                            WriteTimesheetColHeaderSettimanale(col.Value);
 
                             WriteStrTimesheetSettimanale(col.Value);
 
@@ -245,11 +245,25 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             rowIndex++;
         }
 
-        private void WriteTimesheetColHeaderSettimanale()
+        private void WriteTimesheetColHeaderSettimanale(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
             int settimana = 1;
 
-            List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
+            var car = cartellini["justification"];
+
+            int negativeDays = 0;
+
+            DateTime tmpExportDate = ExportDate;
+
+            DateTime endMonth = ExportDate.AddMonths(1).AddDays(-1);
+
+            //if (car.First().DaysHours.First().Key < 0)
+            //{
+            //    ExportDate = ExportDate.AddDays(car.First().DaysHours.First().Key);
+            //    negativeDays = negativeDays + car.First().DaysHours.First().Key;
+            //}
+
+            List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, endMonth); //Calcolo i giorni per l'header
 
             RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
 
@@ -280,6 +294,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             columnIndex = 1;
 
             rowIndex++;
+
+            ExportDate = tmpExportDate;
         }
 
         private void WriteStrTimesheetTitle()
@@ -341,6 +357,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             {
                 int tmp = columnIndex;
                 var justificationDec = justification.Justification;
+                DateTime tmpStart = startMonth;
+                int days = 1;
 
                 int settimana = 1;
 
@@ -351,28 +369,39 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 CellInsertValue(worksheetIndex, 1, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);
 
+                int negativeDays = 0;
+
+                if (justification.DaysHours.First().Key < 0) {
+                    startMonth = startMonth.AddDays(justification.DaysHours.First().Key);
+                    negativeDays = negativeDays + justification.DaysHours.First().Key;
+                }
+
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
-                    var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
-                    var timeDuration = TimeSpan.FromHours(baseDuration);
-                    string valueToPrint = "";
-                    if (baseDuration < 0 && baseDuration > -1)
-                    {
-                        valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
-                    }
-                    else
-                    {
-                        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
-                    }
-
-                    RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
-
-                    if (day.DayOfWeek == DayOfWeek.Sunday) {
-
-                        baseDuration = (double)justification["TotalWeek" + settimana.ToString("0")];
-                        timeDuration = TimeSpan.FromHours(baseDuration);
-                        valueToPrint = "";
+                    //if (negativeDays < 0)
+                    //{
+                    //    var cartRow = justification.DaysHours.Where(d => d.Key == negativeDays);
+                    //    var baseDuration = (double)cartRow.First().Value.Item1;
+                    //    var timeDuration = TimeSpan.FromMinutes(baseDuration);
+                    //    string valueToPrint = "";
+                    //    if (baseDuration < 0 && baseDuration > -1)
+                    //    {
+                    //        valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    //    }
+                    //    else
+                    //    {
+                    //        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    //    }
+                    //
+                    //    RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    //    CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    //    negativeDays++;
+                    //    columnIndex++;
+                    //}
+                    //else {
+                        var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
+                        var timeDuration = TimeSpan.FromHours(baseDuration);
+                        string valueToPrint = "";
                         if (baseDuration < 0 && baseDuration > -1)
                         {
                             valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
@@ -382,13 +411,32 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
                         }
 
-                        columnIndex++;
-
                         RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
 
-                        settimana++;
-                    }
+                        if (day.DayOfWeek == DayOfWeek.Sunday)
+                        {
+
+                            baseDuration = (double)justification["TotalWeek" + settimana.ToString("0")];
+                            timeDuration = TimeSpan.FromHours(baseDuration);
+                            valueToPrint = "";
+                            if (baseDuration < 0 && baseDuration > -1)
+                            {
+                                valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                            }
+                            else
+                            {
+                                valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                            }
+
+                            columnIndex++;
+
+                            RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+
+                            settimana++;
+                        }
+                    //}
                 }
 
                 string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
@@ -402,6 +450,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 rowIndex++;
                 columnIndex = tmp;
+                startMonth = tmpStart;
             }
 
         }
@@ -445,10 +494,27 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         }
         private void WriteStrTimesheetSettimanale(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
+            var car = cartellini["justification"];
+
+            int negativeDays = 0;
+
+            DateTime tmpExportDate = ExportDate;
+
+            DateTime endMonth = ExportDate.AddMonths(1).AddDays(-1);
+
             foreach (var justification in cartellini["straordinari"])
             {
                 int tmp = columnIndex;
                 int settimana = 1;
+
+                if (car.First().DaysHours.First().Key < 0)
+                {
+                    ExportDate = ExportDate.AddDays(car.First().DaysHours.First().Key);
+                    negativeDays = negativeDays + car.First().DaysHours.First().Key;
+                }
+
+                DateTime tmpStart = startMonth;
+                int days = 1;
 
                 var justificationDesc = justification.Justification;
 
@@ -459,40 +525,64 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 CellInsertValue(worksheetIndex, 1, rowIndex, justificationDesc, ExcelInsertTypeEnum.Content);
 
-                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                foreach (var day in CommonService.GetDatesFromPeriod(ExportDate, endMonth))
                 {
-                    var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
-                    var timeDuration = TimeSpan.FromHours(baseDuration);
+                    //if (negativeDays < 0)
+                    //{
+                    //    var cartRow = justification.DaysHours.Where(d => d.Key == negativeDays);
+                    //    var baseDuration = 0;
+                    //    var timeDuration = TimeSpan.FromMinutes(baseDuration);
+                    //    string valueToPrint = "";
+                    //    if (baseDuration < 0 && baseDuration > -1)
+                    //    {
+                    //        valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    //    }
+                    //    else
+                    //    {
+                    //        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                    //    }
+                    //
+                    //    RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    //    CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    //    negativeDays++;
+                    //    columnIndex++;
+                    //}
+                    //else {
+                        var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
+                        var timeDuration = TimeSpan.FromHours(baseDuration);
 
-                    string valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        string valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
 
-                    RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
-
-                    if (day.DayOfWeek == DayOfWeek.Sunday) {
-                        baseDuration = (double)justification["TotalWeek" + settimana.ToString("0")];
-                        timeDuration = TimeSpan.FromHours(baseDuration);
-
-                        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
-
-                        columnIndex++;
                         RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
 
-                        settimana++;
-                    }
+                        if (day.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            baseDuration = (double)justification["TotalWeek" + settimana.ToString("0")];
+                            timeDuration = TimeSpan.FromHours(baseDuration);
+
+                            valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+
+                            columnIndex++;
+                            RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+
+                            settimana++;
+                        }
+                    //}     
                 }
 
                 string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
 
-                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1 + settimana, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1 + settimana, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1 + settimana, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(ExportDate, endMonth).Count + 1 + settimana, rowIndex, CommonService.GetDatesFromPeriod(ExportDate, endMonth).Count + 1 + settimana, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(ExportDate, endMonth).Count + 1 + settimana, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
 
-                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2 + settimana, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2 + settimana, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2 + settimana, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(ExportDate, endMonth).Count + 2 + settimana, rowIndex, CommonService.GetDatesFromPeriod(ExportDate, endMonth).Count + 2 + settimana, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(ExportDate, endMonth).Count + 2 + settimana, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
 
                 rowIndex++;
                 columnIndex = tmp;
+                ExportDate = tmpStart;
             }
 
         }

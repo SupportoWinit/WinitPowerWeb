@@ -8,6 +8,7 @@ using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
@@ -72,26 +73,29 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         List<Col> collaboratori = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == reg.Key && c.DisAbilitazione_Col == false).OrderBy(c => c.Cognome_Col).ToList();
                         foreach (Col col in collaboratori)
                         {
-                            var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
+                            if (col.Qualifica_Col != "0") {
+                                var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                 && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
                                 && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
-                            if (regs.Count() > 0)
-                            {
-                                cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
-                                                                col,
-                                                                centro.CentroDiCosto_Id,
-                                                                true,
-                                                                false,
-                                                                true,
-                                                                true,
-                                                                parameters.Cartellino_Visualizza_Ore,
-                                                                parameters.Cartellino_Visualizza_Motivazioni,
-                                                                parameters.Cartellino_Visualizza_Viaggi,
-                                                                parameters.Cartellino_Visualizza_Delta,
-                                                                parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                                false,
-                                                                parameters.Cartellino_Visualizza_Piano));
+                                if (regs.Count() > 0)
+                                {
+                                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
+                                                                    col,
+                                                                    centro.CentroDiCosto_Id,
+                                                                    true,
+                                                                    false,
+                                                                    true,
+                                                                    true,
+                                                                    parameters.Cartellino_Visualizza_Ore,
+                                                                    parameters.Cartellino_Visualizza_Motivazioni,
+                                                                    parameters.Cartellino_Visualizza_Viaggi,
+                                                                    parameters.Cartellino_Visualizza_Delta,
+                                                                    parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                                    false,
+                                                                    parameters.Cartellino_Visualizza_Piano));
+                                }
                             }
+                            
                         }
                     }
                 }
@@ -157,7 +161,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 foreach (var centro in centri)
                 {
                     string tmpCentro = "";
-                    foreach (var col in centro.Value)
+                    foreach (var col in centro.Value.OrderBy(c => c.Key.Cognome_Col))
                     {
                         columnIndex = 1;
                         if (_multiPagedExport && (tmpCentro != centro.Key))
@@ -227,7 +231,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 //controllo se si ripete il cantiere, se si ripete significa che stiamo controllando le motivazioni inerenti a quel cantiere
                 if (lastCant.Equals(justification.CantDesc))
                 {
-                    rowIndex -= 2;
+                    rowIndex -= 1;
                     motivazione = true;
                 }
                 else
@@ -279,6 +283,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     string valueToPrint = "";
                     if (motivazione)
                     {
+                        double ieri = (double)last["Day" + day.Day.ToString("00")];
                         valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)print);
                         if (print == 0)
                         {
@@ -287,6 +292,20 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         else
                         {
                             totalDays++;
+                        }
+                        ieri = ieri * 60;
+                        if ((int)print < 0)
+                        {
+                            if (ieri * 60 > 0)
+                            {
+                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)ieri + (int)print);
+                            }
+                        }
+                        else {
+                            if (ieri * 60 > 0)
+                            {
+                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)ieri - (int)print);
+                            }
                         }
                     }
                     else
@@ -302,11 +321,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         }
                     }
                     totale = totale + (int)baseDuration;
+                    double stampa = 0.0;
+                    if (valueToPrint != "") {
+                        stampa = double.Parse(valueToPrint, CultureInfo.InvariantCulture);
+                    }
+                    
                     RangeSetBorders(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     RangeSetFontSize(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, 8);
 
                     RangeSetWrapText(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, true);
-                    CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, stampa, ExcelInsertTypeEnum.Content);
 
                     if ((double)tmpMod["Day" + day.Day.ToString("00")] > 0)
                     {
@@ -327,8 +351,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     giorni = giorni - totalDays;
                 }
+                double stampaTotale = 0.0;
+                if (totalHours != "") {
+                    stampaTotale = double.Parse(totalHours, CultureInfo.InvariantCulture);
+                }
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, stampaTotale, ExcelInsertTypeEnum.Content);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
 
                 rowIndex = rowIndex + 1;
@@ -378,16 +406,26 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                         valueToPrint = "";
                     }
+                    double stampa = 0.0;
+                    if (valueToPrint != "")
+                    {
+                        stampa = double.Parse(valueToPrint, CultureInfo.InvariantCulture);
+                    }
 
                     RangeSetBorders(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     RangeSetFontSize(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, 8);
-                    CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, stampa, ExcelInsertTypeEnum.Content);
                     RangeSetBackgroundColor(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, Color.SkyBlue, fillStyle);
                 }
                 string totalHours = FromTotalMinutesToFormattedTypeKomplett(justification.TotalMinutes);
+                double stampaTotale = 0.0;
+                if (totalHours != "")
+                {
+                    stampaTotale = double.Parse(totalHours, CultureInfo.InvariantCulture);
+                }
 
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, stampaTotale, ExcelInsertTypeEnum.Content);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
                 RangeSetBackgroundColor(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, Color.SkyBlue, fillStyle);
                 ColumnsSetWidth(worksheetIndex, rowIndex, rowIndex, 6);
@@ -418,7 +456,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, date.Day, ExcelInsertTypeEnum.Content);
             RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
             RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, "0");
-            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 3, rowIndex, Color.LightGray, fillStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 2, rowIndex, Color.LightGray, fillStyle);
             RangeSetWrapText(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, true);
             ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 6);
             RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);

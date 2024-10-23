@@ -749,7 +749,9 @@ namespace Business.RegFileCreators
                     else {
                         attivitaFInale = fluReg.Attivita;
                     }
-                    
+                    if (attivitaFInale == "none") {
+                        attivitaFInale = "";
+                    }
                     var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
                     if (firstLine != "")
                     {

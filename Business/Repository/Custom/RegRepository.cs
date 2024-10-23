@@ -529,8 +529,6 @@ namespace Business.Repository.Custom
                             // recupera il metodo di arrotondamento impostato nei parametri
                             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
 
-
-
                             // se sono impostati gli arrotondamenti per inizio-fine
                             if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
                             {
@@ -574,6 +572,15 @@ namespace Business.Repository.Custom
                         // se sono state trovate delle registrazioni in sovrapposizione
                         if (overlapErrors.Any())
                         {
+                            HashSet<int> regColIds = new HashSet<int>();
+
+                            regVs.Where(r => r.Col_Id != null).Select(regV => regV.Col_Id).Cast<int>().ToList().ForEach(colId =>
+                            {
+                                regColIds.Add(colId);
+                            });
+                            List<Col> regCols = RepoManager.ColRepo.Find(col => regColIds.Contains(col.Col_Id), true).ToList();
+                            errors.AddRange(RepoManager.Reg_VRepo.AdjustOverlappedRegs(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                                    , regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
                             // si aggiunge l'errore all'elenco degli errori da ritornare
                             errors.AddRange(overlapErrors);
 
@@ -690,19 +697,19 @@ namespace Business.Repository.Custom
                             regs = DeleteCopertureSerali(regs, isToSaveChanges);
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
-                            RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
-                            regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+                            RepoManager.Reg_VRepo.DeletePausaPranzo(regs);
+                            //regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  
                             var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
                                                 regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
 
-                            roundingRegVs1.AddRange(tripsRegvs1);
+                            //roundingRegVs1.AddRange(tripsRegvs1);
                             errors.AddRange(RepoManager.Reg_VRepo.PausaPranzoKomplett(roundingRegVs1));
                         }
                         #endregion
 
-                        #region 11.6 Creazione pausa per Cantiere
+                        #region 11.7 Creazione pausa per Cantiere
 
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaPranzo) == 1)
@@ -720,6 +727,63 @@ namespace Business.Repository.Custom
                             roundingRegVs1.AddRange(tripsRegvs1);
                             errors.AddRange(RepoManager.Reg_VRepo.PausaPranzo(roundingRegVs1));
                         }
+                        #endregion
+
+                        #region 11.8 Rigenerazione viaggi in caso di modifica komplett
+
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1)
+                        {
+                            var allRegs = RepoManager.RegRepo.Find(reg => reg.Registrazione_Data_Ora_Fig_Reg >= fromDate && reg.Registrazione_Data_Ora_Fig_Reg <= toDate).ToList();
+
+                            errors.AddRange(AssociatePruFru(allRegs));
+                            // si gestiscono eventuali errori di scrittura
+                            try
+                            {
+                                // se è richiesto all'elaborate di salvare i dati processati
+                                if (isToSaveChanges)
+                                {
+                                    // si segnala l'inizio delle operazioni per l'eventuale rollback
+                                    BeginWork();
+
+                                    // aggiornamento delle registrazione e cancellazione dei viaggi
+                                    UpdateDataAndDeleteTrips(allRegs);
+
+                                    // sono rilette le registrazioni per interecettare eventuali modifiche di arrotondamento 
+                                    // o altro interevenute precedentemente
+                                    regVs = GetRegVsToPostProcess(regs);
+                                    //se ci sono delle registrazioni lette da database si richiama l'elaborazione dei viaggi
+                                    if (regVs.Any())
+                                    {
+                                        _log.Info("Inizio elaborazione viaggi");
+
+                                        errors.AddRange(RepoManager.Reg_VRepo.ElaborateTrips(regVs));
+
+                                        _log.Info("Elaborazione viaggi terminata");
+                                    }
+
+
+                                    // al termine delle operazioni si effettua la commit del lavoro effettuato
+                                    CommitWork();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ManageElaborateMessageDictionaries(100d, "Elaborazione interrotta per errori");
+                                errors.Add(new KeyValuePair<String, String>(FunctionMessageEnum.Elaborate.ToString(), "RollbackWork"));
+
+                                if (IsInTransaction)
+                                    RollbackWork();
+
+                                var result = new Dictionary<String, String>();
+                                var strError = String.Format("Errore:  {0},", ex.Message);
+                                result.AddOrAppend(BusinessService.GetLocalizedString(PowerWebResources.STR_ERRORE), strError);
+
+                                WriteCheckLog(new Reg_V(), result, Log);
+
+                                throw ex;
+                            }
+                        }
+
                         #endregion
 
                         #region (Personalizzazione) Coperture Serali
@@ -965,6 +1029,26 @@ namespace Business.Repository.Custom
                 BulkUpdate(regsToUpdate);
 
                 _log.Info(String.Format("Terminato update di {0} regs", regsToUpdate.Count()));
+
+            }
+
+            #endregion
+
+        }
+
+        private void UpdateData(ICollection<Reg> regs)
+        {
+            #region Salvataggio registrazioni aggiornate
+
+            // se ci sono delle registrazioni da salvare, le salvo
+            IEnumerable<Reg> regsToUpdate = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip && reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration).ToList();
+            if (regsToUpdate.Any())
+            {
+                _log.Info(String.Format("Inizio Update post generazione pause", regs.Count));
+
+                BulkUpdate(regsToUpdate);
+
+                _log.Info(String.Format("Terminato update"));
 
             }
 
@@ -2051,7 +2135,7 @@ namespace Business.Repository.Custom
 
                 // dalle registrazioni passate come parametro si tolgono le registrazioni dopo la data blocco, le rettifiche, le solo durata, le registrazioni bloccate
                 regs = regs.Where(reg => reg.Registrazione_Data_Ora_Fis_Reg >= blockDate && reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet
-                    && reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration &&
+                    /*&& reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration*/ &&
                     reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimeSheetManual &&
                     !reg.Registrazione_Bloccata).ToList();
             }
@@ -2269,7 +2353,7 @@ namespace Business.Repository.Custom
             ICollection<Reg> returnRegs = regs;
 
             // si procede solamente se il modulo delle attività risulta correnttamente attivato
-            if (RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1)
+            if (RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1)
             {
                 // se sono presenti delle registrazioni provenienti da causali nell'elenco passato come parametro
                 if (regs.Any(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData))
@@ -2317,11 +2401,11 @@ namespace Business.Repository.Custom
                 //Context.BulkUpdate(regsToUpdate);
 
                 // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
-                Context.BulkDelete(regs.Where(reg => reg.Turno == "Coperture Serali" && reg.Registrazione_Tipo_Reg == 10));
+                Context.BulkDelete(regs.Where(reg => reg.Turno == "Coperture Serali" && (reg.Registrazione_Tipo_Reg == 10 || reg.Registrazione_Tipo_Reg == 8)));
 
                 // inoltre alla lista passata come parametro si procede a togliere 
                 // le registrazioni cancellate dal database
-                returnRegs = regs.Where(reg => !(reg.Turno == "Coperture Serali" && reg.Registrazione_Tipo_Reg == 10)).ToList();
+                returnRegs = regs.Where(reg => !(reg.Turno == "Coperture Serali" && (reg.Registrazione_Tipo_Reg == 10 || reg.Registrazione_Tipo_Reg == 8))).ToList();
             }
 
             // ritorno del valore calcolato dal metodo
@@ -2644,7 +2728,7 @@ namespace Business.Repository.Custom
                 closures = new List<Reg>();
 
                 //vengono recuperate solo le registrazioni no passaggi, viaggi, attività...
-                IEnumerable<Reg> regsToClose = RepoManager.RegRepo.Find(reg => reg.Registrazione_Tipo_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+                IEnumerable<Reg> regsToClose = regs.Where(reg => reg.Registrazione_Tipo_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
 
                 tmpCoupleCode = "ActivityAutoClosure";
                 //string autoGeneratedDataStart = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "AutoGeneratedRegCustomData");
@@ -3217,9 +3301,199 @@ namespace Business.Repository.Custom
                 }
 
             }
-            
 
 
+
+            #endregion
+
+            #region CHIUSURA AUTOMATICA DI X MINUTI
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 && mode == Common.ApplicationMessageEnum.Elaborate)
+            {
+                // inizializzazione dell'elenco di registrazione nuove da aggiungere alle attualmente da processare
+                closures = new List<Reg>();
+
+                //vengono recuperate solo le registrazioni no passaggi, viaggi, attività...
+                IEnumerable<Reg> regsToClose = RepoManager.RegRepo.Find(reg => reg.Registrazione_Tipo_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+
+                tmpCoupleCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "TmpCoupleCode");
+                string autoGeneratedDataStart = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "AutoGeneratedRegCustomData");
+
+
+                // inizializzazione delle configurazioni del presenti nella scheda parametri
+                //viene controllato se è abilitato il nattoruno
+                bool nocturneModuleActive = RepoManager.ParamRepo.ParametersRow.Abilita_Notturno;
+                // tipo notturno
+                NocturneTypeEnum nocturneTypeParam = nocturneModuleActive ? (NocturneTypeEnum)RepoManager.ParamRepo.ParametersRow.TipoNotturno : NocturneTypeEnum.None;
+                // threshold del notturno (nuova mezzanotte) 
+                TimeSpan nocturneParamTs = RepoManager.ParamRepo.ParametersRow.Default_Durata_Max_Gruppo_Notte_Ril ?? TimeSpan.Zero;
+
+                // per ognuna delle registrazioni provenienti da causali si procede, se le condizioni lo permettono,
+                // a generare la relativa chiusura di blocco
+
+                //le registrazioni vengono regruppate per collaboratore
+                foreach (var regByCol in regsToClose.GroupBy(reg => reg.Col_Id))
+                {
+                    var a = regByCol.Key;
+
+                    if (a != null)
+                    {
+                        List<Col> collaboratori = RepoManager.ColRepo.GetAllQueryable().Where(c => c.Col_Id == a).ToList();
+
+                        Col collaboratore = collaboratori.First();
+
+                        int day = 0;
+                        //le registrazioni raggruppate per collaboratore vengono ragruppate per data
+                        foreach (var regByColDate in regByCol.GroupBy(reg => reg.Registrazione_Data_Ora_Fis_Reg.Date))
+                        {
+                            //indice delle registrazioni allinterno della lista
+                            int index = 0;
+
+
+                            //variabile booleana che indica se chiudere oppure no la timbratura
+                            bool doNotClose = false;
+
+                            //viene presa la singola registrazione del giorno per il collaboratore specifico
+                            foreach (var reg in regByColDate)
+                            {
+                                // caricamento della registrazione successiva a quella proveniente da timbratura
+                                int currentRegPosition = index;
+
+                                //viene estratta la registrazione corrente
+                                Reg currentReg = reg;
+
+                                // caricamento della registrazione successiva a quella proveniente da timbratura
+                                int nextRegPosition = currentRegPosition + 1;
+
+                                //se l'indice della registrazione seguente va oltre il numero totale di registrazioni allora restituisco una registrazione di default
+                                //altrimenti restiruisco la registrazione corrispondente all'indice
+                                Reg nextReg = nextRegPosition >= regByColDate.Count() ? default(Reg) : regByColDate.ElementAt(nextRegPosition);
+
+                                //viene incrementato l'indice delle registrazioni all'interno della lista
+                                index++;
+
+                                //viene controllato se la registrazione corrente è valida altrimenti non faccio nulla
+                                if (currentReg != default(Reg))
+                                {
+                                    // recupero dell'id del cantiere della registrazione precedente e successiva alla causale in processo
+
+                                    int currentRegCantId = currentReg.Cant_Id ?? 0;
+
+                                    Cant nextRegCant = null;
+
+                                    Cant currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentRegCantId);
+                                    int dayAfter = 0;
+                                    if (nextReg != null)
+                                    {
+                                        int nextRegCantId = nextReg.Cant_Id ?? 0;
+                                        // recupero dei cantieri della registrazione precedente e successiva alla causale in processo
+                                        nextRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == nextRegCantId);
+                                        dayAfter = nextReg.Registrazione_Data_Ora_Fis_Reg.Day;
+                                    }
+                                    else
+                                    {
+                                        nextRegCant = currentRegCant;
+                                        dayAfter = day + 1;
+                                    }
+                                    //se il cantiere attuale è una sede e il successivo no viene effettuata una chiususra
+                                    if ((nextRegCant != default(Cant) && currentRegCant != default(Cant)))
+                                    {
+                                        //se è richiesta la chiusura
+                                        if (!doNotClose)
+                                        {
+                                            if (currentReg.Registrazione_Stato_Reg != 1 && currentRegCant.Importo3 != null)
+                                            {
+                                                if (currentRegCant.Importo3.Value > 0) {
+                                                    DateTime dataReg = currentReg.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(currentRegCant.Importo3.Value);
+                                                    // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
+                                                    Reg newReg = Init();
+                                                    //duplicazione delle reg passate come parametro
+                                                    CommonService.DuplicateEntity(currentReg, newReg);
+                                                    newReg.Reg_Id = 0;
+                                                    newReg.Cant_Id = currentReg.Cant_Id.Value;
+                                                    newReg.Col_Id = currentReg.Col_Id.Value;
+                                                    newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(dataReg.Year, dataReg.Month,
+                                                        dataReg.Day, dataReg.Hour, dataReg.Minute, dataReg.Second);
+                                                    newReg.Data_Registrazione_Reg = DateTime.Now;
+                                                    newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
+                                                    newReg.Custom_Data_Reg = autoGeneratedDataStart;
+                                                    newReg.Flag_EU_Reg = "";
+                                                    newReg.Cant = currentReg.Cant;
+                                                    //imposto una stringa per capire in fase di eliminazione quali timbrature sono autochiusure
+                                                    newReg.Custom_Data_Reg = "ActivityAutoClosure";
+                                                    newReg.Registrazione_Badge_Originale = currentReg.Registrazione_Badge_Originale;
+                                                    newReg.ParentReg = currentReg;
+
+                                                    // aggiunta della registrazione generata all'elenco
+                                                    closures.Add(newReg);
+
+                                                    day = currentReg.Registrazione_Data_Ora_Fis_Reg.Day;
+                                                }     
+                                            }
+                                        }
+
+                                        else
+                                        {
+                                            doNotClose = false;
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        // recupero dell'id del cantiere della registrazione successiva alla timbrature processata
+                                        int currentCantId = currentReg.Cant_Id ?? 0;
+
+                                        //viene recuperato il cantiere corrispondente all'unica registrazione presente
+                                        currentRegCant = RepoManager.CantRepo.FirstOrDefault(cant => cant.Cant_Id == currentCantId);
+
+                                        // si procede alla generazione della chiusura solamente se i cantieri della registrazione attuale è una sede e la successiva no
+                                        if (currentRegCant != default(Cant))
+                                        {
+                                            if (currentReg.Registrazione_Stato_Reg != 1 && currentRegCant.Importo3 != null)
+                                            {
+                                                if (currentRegCant.Importo3.Value > 0)
+                                                {
+                                                    DateTime dataReg = currentReg.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(currentRegCant.Importo3.Value);
+                                                    // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
+                                                    Reg newReg = Init();
+                                                    //duplicazione delle reg passate come parametro
+                                                    CommonService.DuplicateEntity(currentReg, newReg);
+                                                    newReg.Reg_Id = 0;
+                                                    newReg.Cant_Id = currentReg.Cant_Id.Value;
+                                                    newReg.Col_Id = currentReg.Col_Id.Value;
+                                                    newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(dataReg.Year, dataReg.Month,
+                                                        dataReg.Day, dataReg.Hour, dataReg.Minute, dataReg.Second);
+                                                    newReg.Data_Registrazione_Reg = DateTime.Now;
+                                                    newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
+                                                    newReg.Custom_Data_Reg = autoGeneratedDataStart;
+                                                    newReg.Flag_EU_Reg = "";
+                                                    newReg.Cant = currentReg.Cant;
+                                                    newReg.Custom_Data_Reg = "ActivityAutoClosure";
+                                                    newReg.ParentReg = currentReg;
+
+                                                    // aggiunta della registrazione generata all'elenco
+                                                    closures.Add(newReg);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (closures.Count != 0)
+                {
+                    //le registrazioni che effettuano una chiusura vengono aggiunte al database
+                    Add(closures, true);
+                    //vengono estratte dal db solo le registrazioni di chiusura e il codice di accopiamento viene messo a null
+                    closures = Find(reg => reg.Codice_Accoppiamento == tmpCoupleCode).ToList();
+                    closures.ForEach(reg => reg.Codice_Accoppiamento = null);
+
+                    //vengonoa aggiunte le registrazioni di chiusura nella lista delle registrazioni da processare.
+                    regs.AddRange(closures);
+                }
+
+            }
             #endregion
 
         }
@@ -3676,8 +3950,9 @@ namespace Business.Repository.Custom
         private HashSet<Reg> AdjustFisRegByCol(IEnumerable<Reg> regsToProcess)
         //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
         {
-            //regsToProcess = regsToProcess.OrderBy(r => r.Motivazione_Reg_Id).ToList();
-            regsToProcess = regsToProcess.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();// ThenBy(r => r.Motivazione_Reg_Id).ToList();
+            regsToProcess = regsToProcess.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();//.ThenBy(r => r.Fru).ThenBy(r => r.Fru_Id).ToList();
+            //regsToProcess = regsToProcess.OrderBy(r => r.Fru_Id == regsToProcess.First().Fru_Id).ToList();
+            //regsToProcess = regsToProcess.OrderBy(r => r.Fru_Id).ToList();
             var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();
             regsByDate.ForEach(byDateList =>
             {
@@ -5213,20 +5488,32 @@ namespace Business.Repository.Custom
             // inizializzazione del valore di ritorno del metodo
             var newRounding = Init();
             double arrot = 0;
+            int centroDiCostoId = 0;
             List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantId).ToList();
-            if (cantieri.Count() > 0) {
-                if(cantieri.First().Importo1 != null)
-                arrot = cantieri.First().Importo1.Value;
+            List<Col> collaboratori = RepoManager.ColRepo.GetAllQueryable(c => c.Col_Id == colId).ToList();
+            if (collaboratori.Count > 0 && cantieri.Count > 0) {
+                if (collaboratori.First().Retribuzione_Oraria_Col != null)
+                {
+                    arrot = collaboratori.First().Retribuzione_Oraria_Col.Value;
+                }
+                else if (cantieri.First().Importo1 != null)
+                    arrot = cantieri.First().Importo1.Value;
+            } else if (collaboratori.Count > 0) {
+                if (collaboratori.First().Retribuzione_Oraria_Col != null)
+                {
+                    arrot = collaboratori.First().Retribuzione_Oraria_Col.Value;
+                }
             }
             List<Tab_Decod> motivazioni = RepoManager.Tab_DecodRepo.GetAllQueryable(m => m.Decodifica_Tab == "Pausa").ToList();
             if (arrot > 0) {
                 // popolamento dei dati della registrazione
                 newRounding.Col_Id = colId;
                 newRounding.Cant_Id = cantId;
+                //newRounding.CentroDiCosto_Id = centroDiCostoId;
                 newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
                 newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
                 newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
-                newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.ArrotDur;
+                newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
                 newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
                 newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
                 newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);

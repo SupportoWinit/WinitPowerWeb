@@ -3440,6 +3440,459 @@ namespace Business.BusinessExtension
                         }
 
                         //C'è del notturno nei casi in cui non c'è diurno (se la registrazione è completamente a 'sinistra' o a 'destra' del notturno
+                        if ((!((oraE < oraIn_Nott && oraU <= oraIn_Nott) || (oraE >= oraOut_Nott && oraU > oraOut_Nott))) || (oraE < oraIn_Nott && oraU > oraIn_Nott && oraU < oraOut_Nott) || 
+                                oraE < nocturnEndHour)
+                        {
+                            return true;
+                        }
+
+                        return false;
+
+
+                    }).ToList();
+
+
+                #region Aggiustamento delle reg a cavallo dell'orario notturno
+
+                // per calcolare correttamente il numero di ore notturne devo aggiustare l'entrata o l'uscita di quanto selezionato ai parametri di inzio/fine notturno
+                nocturnRegVs.ForEach(regv =>
+                {
+                    // inizializzazione del valore che indica se la reg_v è stata modificata o meno
+                    bool regVEdited = false;
+
+                    // se le date sono diverse e l'entrata è prima dell'inzio del notturno e l'uscita dopo la fine significa che sto comprendendo il notturno e quindi
+                    // la registrazione di riferimento è il notturno
+                    if (regv.Data_Ora_Fis_E.Date != regv.Data_Ora_Fis_U.Value.Date && regv.Data_Ora_Fig_E.Value.TimeOfDay <= nocturnStartHourModify.Value && regv.Data_Ora_Fig_U.Value.TimeOfDay <= nocturnEndHour.Value)
+                    {
+                        // salvo l'attuale data figurativa e la durata in una extension, così da poterla poi recuperare
+                        // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali)
+                        regv.TmpDataOraFigE = regv.Data_Ora_Fig_E;
+                        regv.TmpDataOraFigU = regv.Data_Ora_Fig_U;
+                        regv.TmpDurataFigU = regv.Durata_Fig;
+
+                        // l'entrata e l'uscita sono l'inizio e la fine del notturno
+                        regv.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                    regv.Data_Ora_Fig_E.Value.Month,
+                                    regv.Data_Ora_Fig_E.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    nocturnStartHour.Value.Seconds);
+
+                        //se l'inizio del notturno è uguale alla mezzanotte(00:00) e la Reg di entrata avviene nel giorno prima di quella dell uscita
+                        if ((regv.Data_Ora_Fig_E.Value.Date < regv.TmpDataOraFigU.Value.Date) && nocturnStartHour == TimeSpan.Zero)
+                            //l'ora di entrata è pari alla mezzanotte ma del giorno stesso della reg di uscita
+                            regv.Data_Ora_Fig_E = regv.Data_Ora_Fig_E.Value.AddDays(1);
+
+                        //regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
+                        //            regv.Data_Ora_Fig_U.Value.Month,
+                        //            regv.Data_Ora_Fig_U.Value.Day,
+                        //            nocturnEndHour.Value.Hours,
+                        //            nocturnEndHour.Value.Minutes,
+                        //            nocturnEndHour.Value.Seconds);
+
+                        regVEdited = true;
+                    }
+                    else
+                    {
+                        // altrimenti se la reg_v comincia prima della fascia di notturno la si fa cominciare all'inzio notturno (solo per il calcolo del cartellino)
+                        // viene controllata l'ora nuda e cruda, ma se la data di inizio è inferiore alla data di fine allora si è sicuramente a cavallo della notte
+                        if (regv.Data_Ora_Fig_E.Value.TimeOfDay <= nocturnStartHourModify && (regv.Data_Ora_Fig_E.Value.Date < regv.Data_Ora_Fig_U.Value.Date || regv.Data_Ora_Fig_U.Value.TimeOfDay > nocturnStartHourModify))
+                        {
+                            // salvo l'attuale data figurativa e la durata in una extension, così da poterla poi recuperare
+                            // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali)
+                            regv.TmpDataOraFigE = regv.Data_Ora_Fig_E;
+                            regv.TmpDurataFigU = regv.Durata_Fig;
+
+                            // se il notturno (valore assoluto ora) comincia prima dell'ora da modificare allora significa che sto cambiando giorno e quindi la data di entrata va normalizzata
+                            if (regv.Data_Ora_Fig_E.Value.TimeOfDay <= nocturnStartHourModify)
+
+                                regv.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                    regv.Data_Ora_Fig_E.Value.Month,
+                                    regv.Data_Ora_Fig_E.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    nocturnStartHour.Value.Seconds);
+                            else
+                                regv.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
+                                    regv.Data_Ora_Fig_U.Value.Month,
+                                    regv.Data_Ora_Fig_U.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    nocturnStartHour.Value.Seconds);
+
+
+                            //se l'inizio del notturno è uguale alla mezzanotte(00:00) e la Reg di entrata avviene nel giorno prima di quella dell uscita
+                            if (regv.TmpDataOraFigU.HasValue && (regv.Data_Ora_Fig_E.Value.Date < regv.TmpDataOraFigU.Value.Date) && nocturnStartHour == TimeSpan.Zero)
+                                //l'ora di entrata è pari alla mezzanotte ma del giorno stesso della reg di uscita
+                                regv.Data_Ora_Fig_E = regv.Data_Ora_Fig_E.Value.AddDays(1);
+
+
+                            regVEdited = true;
+                        }
+
+                        // se la reg_v finisce dopo la fascia di notturno la si fa terminare alla fine del notturno (solo per il calcolo del cartellino)
+                        if (regv.Data_Ora_Fig_U.Value.TimeOfDay > nocturnEndHour && regv.Data_Ora_Fig_U.Value.TimeOfDay < nocturnStartHourModify && (regv.Data_Ora_Fig_E.Value.TimeOfDay > nocturnStartHourModify || regv.Data_Ora_Fig_E.Value.TimeOfDay < nocturnEndHour))
+                        {
+                            // salvo l'attuale data figurativa e la durata in una extension, così da poterla poi recuperare
+                            // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali)
+                            regv.TmpDataOraFigE = regv.Data_Ora_Fig_E;
+                            regv.TmpDurataFigU = regv.Durata_Fig;
+
+                            regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
+                                regv.Data_Ora_Fig_U.Value.Month, regv.Data_Ora_Fig_U.Value.Day,
+                                nocturnEndHour.Value.Hours,
+                                nocturnEndHour.Value.Minutes,
+                                nocturnEndHour.Value.Seconds);
+                            regVEdited = true;
+                        }
+
+                        //nel caso in cui le reg_v sia completamente nel range del notturno
+                        if (
+                            (
+                                (regv.Data_Ora_Fig_E.Value.Date == regv.Data_Ora_Fig_U.Value.Date)
+                                &&
+                                ((regv.Data_Ora_Fig_E.Value.TimeOfDay > nocturnStartHourModify && regv.Data_Ora_Fig_U.Value.TimeOfDay > nocturnStartHourModify) || (regv.Data_Ora_Fig_E.Value.TimeOfDay < nocturnEndHour && regv.Data_Ora_Fig_U.Value.TimeOfDay <= nocturnEndHour))
+                            )
+                            ||
+                            (
+                                (regv.Data_Ora_Fig_E.Value.Date != regv.Data_Ora_Fig_U.Value.Date)
+                                &&
+                                (regv.Data_Ora_Fig_E.Value.TimeOfDay > nocturnStartHourModify && regv.Data_Ora_Fig_U.Value.TimeOfDay < nocturnStartHourModify)
+                            )
+                        )
+                        {
+                            regVEdited = true;
+                        }
+                    }
+                    //se non vi sono ore che cadono nell'intervallo notturno
+                    if (!regVEdited)
+                        regv.Durata_Fig = 0;
+
+                    // se la reg_v è stata modificata allora si procede al ricalcolo della durata
+                    regv.Durata_Fig = regVEdited ? Convert.ToInt32(regv.Data_Ora_Fig_U.Value.Subtract(regv.Data_Ora_Fig_E.Value).TotalMinutes) : regv.Durata_Fig;
+
+                });
+                #endregion
+
+                #endregion
+
+                // inserimento delle ore notturne calcolate
+                tsmItems.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, nocturnRegVs, BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_NOTTURNE), minDate, maxDate, 1, 0, false));
+
+                #region Eventuale ripristino delle date figurative delle reg modificate
+
+                // prima di procedere al calcolo delle reg_v notturne metto a posto la lista delle reg_v diurne eventualmente modificate sopra
+                // (controllo tutte le date temporanee diverse da null perché quando sono qua, ho solo reg abbinate, quindi con entrata e uscita)
+                nocturnRegVs.Where(regv => regv.TmpDataOraFigE != null || regv.TmpDataOraFigU != null).ForEach(regv =>
+                {
+                    regv.Data_Ora_Fig_E = regv.TmpDataOraFigE ?? regv.Data_Ora_Fig_E;
+                    regv.Data_Ora_Fig_U = regv.TmpDataOraFigU ?? regv.Data_Ora_Fig_U;
+                    regv.Durata_Fig = regv.Durata_Fig;
+                });
+                #endregion
+            }
+            else
+            {
+                _log.InfoFormat("Il collaboratore {0} ha date di assunzione/licenziamento non congruenti con il periodo richiesto", col.Codice_Collaboratore);
+            }
+
+            return tsmItems;
+        }
+
+        public static List<TimesheetModuleItem> GenerateDayNightTimesheetsOld(DateTime selectedDate, bool isDecimalHours, int colId, TimesheetModuleItem colPlan)
+        {
+            // calcolo, a partire dalla data passata come parametro, l'inzio e la fine del mese in elaborazione
+            DateTime minDate = CommonService.GetFirstMonthDay(selectedDate);
+            DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
+            DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
+
+            // inizializzazione della lista di oggetti timesheet che sarà il ritorno del metodo
+            var tsmItems = new List<TimesheetModuleItem>();
+
+            Col col = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == colId);
+
+            // se è stato trovato il collaboratore e le date di disponibilità dello stesso sono valide nel periodo richiesto
+            if (col != default(Col) && HasColValidDates(col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, minDate, maxDate))
+            {
+                // una volta generati i piani recupero (per uso successivo) il primo piano inserito
+                TimeSpan? nocturnStartHour = RepoManager.ParamRepo.ParametersRow.Cartellino_Inizio_Notturno ?? TimeSpan.FromHours(0);
+                TimeSpan? nocturnStartHourModify = null;
+                TimeSpan? nocturnEndHour = RepoManager.ParamRepo.ParametersRow.Cartellino_Fine_Notturno ?? TimeSpan.FromHours(6); ;
+                if (colPlan != default(TimesheetModuleItem))
+                {
+                    nocturnStartHour = colPlan.NocturnsStartHour ?? nocturnStartHour;
+                    nocturnEndHour = colPlan.NocturnEndHour ?? nocturnEndHour;
+                }
+
+                var baseColRegVs = GetPeriodColRegVs(col, minDate, maxDate, false).OrderBy(r => r.Data_Reg).ToList();
+                List<Reg_V> workedRegVs = new List<Reg_V>();
+
+                TimeSpan oraIn_Nott = nocturnStartHour.Value;
+                TimeSpan oraOut_Nott = nocturnEndHour.Value > nocturnStartHour.Value ? nocturnEndHour.Value : nocturnEndHour.Value.Add(new TimeSpan(1, 0, 0, 0));
+
+                // se il collaboratore ha delle reg_v nel periodo specificato
+                if (baseColRegVs.Any())
+                {
+                    // 3. Calcolo di tutte le ore (ore diurne, ore notturne, non viaggi e senza motivazione)
+                    // recupero di tutte le ore lavorate, non viaggi, per il periodo e il collaboratore prescelto
+                    workedRegVs = baseColRegVs.ToList();
+                    // calcolo delle ore diurne tra le ore lavorate calcolate in precedenza
+                    // le ore diurne sono quelle che cominciano o finiscono nel lasso di tempo non notturno
+                    var dayRegVsAll = workedRegVs.Where(regv =>
+                    {
+                        if (!regv.Data_Ora_Fig_U.HasValue || !regv.Data_Ora_Fig_E.HasValue)  //Se non abbiamo E o U
+                        {
+                            return true;
+                        }
+
+                        TimeSpan oraE = regv.Data_Ora_Fig_E.Value.TimeOfDay;
+                        TimeSpan oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay;
+
+                        if (regv.Data_Ora_Fig_U.Value.Date > regv.Data_Ora_Fig_E.Value.Date) //Se l' U è maggiore dell'entrata
+                        {
+                            oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay.Add(new TimeSpan(1, 0, 0, 0)); //Aggiungo un giorno 
+                        }
+                        else
+                        {
+                            if (oraE <= nocturnEndHour.Value && oraU <= nocturnEndHour.Value)
+                            {
+                                oraE = oraE.Add(new TimeSpan(1, 0, 0, 0));
+                                oraU = oraU.Add(new TimeSpan(1, 0, 0, 0));
+                            }
+                        }
+
+
+                        /*  if ((regv.Data_Ora_Fig_E != null && regv.Data_Ora_Fig_E.Value.TimeOfDay < nocturnStartHour.Value) ||
+                              (regv.Data_Ora_Fig_U != null && regv.Data_Ora_Fig_U.Value.TimeOfDay > nocturnEndHour.Value && regv.Data_Ora_Fig_U.Value.DayOfYear != regv.Data_Ora_Fig_E.Value.DayOfYear) ||
+                              (regv.Data_Ora_Fig_U != null && regv.Data_Ora_Fig_U.Value.TimeOfDay < nocturnStartHour.Value && regv.Data_Ora_Fig_U.Value.DayOfYear == regv.Data_Ora_Fig_E.Value.DayOfYear) && !regv.IsOnlyDuration)
+                          {
+                              return true;
+                          }
+                          */
+
+                        if (oraE < oraIn_Nott || oraU > oraOut_Nott)
+                        {
+                            return true;
+                        }
+                        return false;
+
+                    }).ToList();
+
+                    //vengono estratte le registrazioni di sola durata
+                    var dayRegVsDuration = workedRegVs.Where(regv => regv.Data_Ora_Fig_U == null && regv.IsOnlyDuration).ToList();
+
+                    //vengono estratte sono le registrazioni che non sono durata
+                    var dayRegVs = dayRegVsAll.Where(regv => regv.Data_Ora_Fig_U != null && !regv.IsOnlyDuration).ToList();
+
+                    #region Aggiustamento delle reg a cavallo dell'orario notturno
+
+                    // inizializzazione della lista di reg_v aggiuntive da aggiungere al giorno
+                    var dayRegVsToAdd = new List<Reg_V>();
+
+                    //viene controllato se l'ora di inizio notturno è uguale alla mezzanotte
+                    if (nocturnStartHour == TimeSpan.Zero)
+                        nocturnStartHourModify = new TimeSpan(23, 59, 59);
+                    else
+                        nocturnStartHourModify = nocturnStartHour;
+
+                    // per calcolare correttamente il numero di ore diurne devo aggiustare l'entrata o l'uscita di quanto selezionato ai parametri di inzio/fine notturno
+                    dayRegVs.ForEach(regv =>
+                    {
+                        // si trattano solamente le registrazioni che hanno un'uscita (potrebbero essere presenti anche registrazioni solo durata)
+                        if (regv.Data_Ora_Fis_U.HasValue)
+                        {
+                            // inizializzazione del valore che indica se la reg_v è stata modificata o meno
+                            bool regVEdited = false;
+
+                            // se la reg_v comincia nella fascia di notturno, per il calcolo delle ore del cartellino la si fa cominciare al termine del notturno
+                            if (regv.Data_Ora_Fig_E.Value.TimeOfDay >= nocturnStartHourModify || regv.Data_Ora_Fig_E.Value.TimeOfDay <= nocturnEndHour)
+                            {
+                                // salvo l'attuale data figurativa e la durata in una extension, così da poterla poi recuperare
+                                // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali)
+                                regv.TmpDataOraFigE = regv.Data_Ora_Fig_E;
+                                regv.TmpDurataFigU = regv.Durata_Fig;
+
+                                regv.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                    regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day,
+                                    nocturnEndHour.Value.Hours,
+                                    nocturnEndHour.Value.Minutes,
+                                    nocturnEndHour.Value.Seconds);
+
+                                if (regv.Data_Ora_Fig_U.Value.Date != null)
+                                {
+                                    if (regv.Data_Ora_Fig_U.Value.Date > regv.TmpDataOraFigE.Value.Date)
+                                        regv.Data_Ora_Fig_E = regv.Data_Ora_Fig_E.Value.AddDays(1);
+                                }
+
+                                regVEdited = true;
+                            }
+
+                            // se la reg_v finisce nella fascia di notturno, per il calcolo delle ore del cartellino la si fa finire all'inizio del notturno
+                            if ((regv.Data_Ora_Fig_U.Value.TimeOfDay >= nocturnStartHourModify || regv.Data_Ora_Fig_U.Value.TimeOfDay <= nocturnEndHour) && !regVEdited)
+                            {
+                                // salvo l'attuale data figurativa in una extension, così da poterla poi recuperare
+                                // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali)
+                                regv.TmpDataOraFigU = regv.Data_Ora_Fig_U;
+                                regv.TmpDurataFigU = regv.Durata_Fig;
+
+                                regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
+                                    regv.Data_Ora_Fig_U.Value.Month, regv.Data_Ora_Fig_U.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    nocturnStartHour.Value.Seconds);
+
+                                if ((regv.Data_Ora_Fig_E.Value.Date < regv.TmpDataOraFigU.Value.Date) && nocturnStartHour != TimeSpan.Zero)
+                                    regv.Data_Ora_Fig_U = regv.Data_Ora_Fig_U.Value.AddDays(-1);
+
+                                regVEdited = true;
+                            }
+
+                            // se la reg_v non inizia ne finisce ne finisce nella fascia di notturno ma la attraversa (giorni differenti, entrata minore inizio notturno
+                            // e fine maggiore di fine notturno) allora si procede alla generazione di due reg_v
+                            Reg_V newRegV = default(Reg_V);
+                            if (regv.Data_Ora_Fig_E.Value.Date != regv.Data_Ora_Fig_U.Value.Date && regv.Data_Ora_Fig_E.Value.TimeOfDay < nocturnStartHourModify && regv.Data_Ora_Fig_U.Value.TimeOfDay > nocturnEndHour)
+                            {
+                                newRegV = RepoManager.Reg_VRepo.Init();
+
+                                // procedo alla modifica dell'entrata (salvando l'attuale data figurativa in una extension, così da poterla poi recuperare
+                                // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali
+                                regv.TmpDataOraFigU = regv.Data_Ora_Fig_U;
+                                regv.TmpDurataFigU = regv.Durata_Fig;
+
+                                regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                    regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    nocturnStartHour.Value.Seconds);
+
+                                //se l'inizio del notturno è uguale alla mezzanotte(00:00) e la Reg di entrata avviene nel giorno prima di quella dell uscita
+                                if ((regv.Data_Ora_Fig_E.Value.Date < regv.TmpDataOraFigU.Value.Date) && nocturnStartHour == TimeSpan.Zero)
+                                    //l'ora di entrata è pari alla mezzanotte ma del giorno stesso della reg di uscita
+                                    regv.Data_Ora_Fig_U = regv.Data_Ora_Fig_U.Value.AddDays(1);
+
+
+                                // genero la nuova registrazione del giorno che parte dalla fine del notturno e arriva alla chiusura della stessa
+                                CommonService.DuplicateEntity(regv, newRegV);
+
+                                newRegV.RegE = 0;
+                                newRegV.Data_Ora_Fig_U = newRegV.TmpDataOraFigU;
+                                newRegV.Durata_Fig = newRegV.TmpDurataFigU;
+
+                                newRegV.TmpDataOraFigE = newRegV.Data_Ora_Fig_E;
+                                newRegV.TmpDurataFigU = newRegV.Durata_Fig;
+
+                                newRegV.Data_Ora_Fig_E = new DateTime(newRegV.Data_Ora_Fig_U.Value.Year,
+                                    newRegV.Data_Ora_Fig_U.Value.Month, newRegV.Data_Ora_Fig_U.Value.Day,
+                                    nocturnEndHour.Value.Hours,
+                                    nocturnEndHour.Value.Minutes,
+                                    nocturnEndHour.Value.Seconds);
+
+                                regVEdited = true;
+                            }
+
+                            regv.Durata_Fig = regVEdited ? Convert.ToInt32(regv.Data_Ora_Fig_U.Value.Subtract(regv.Data_Ora_Fig_E.Value).TotalMinutes) : regv.Durata_Fig;
+                            if (newRegV != default(Reg_V))
+                            {
+                                newRegV.Durata_Fig = Convert.ToInt32(newRegV.Data_Ora_Fig_U.Value.Subtract(newRegV.Data_Ora_Fig_E.Value).TotalMinutes);
+                                dayRegVsToAdd.Add(newRegV);
+                            }
+                        }
+                    });
+
+                    //se si hanno registrazioni da aggiungere vengono aggiunte al totale del giorno
+                    if (dayRegVsToAdd.Any())
+                    {
+                        dayRegVs.AddRange(dayRegVsToAdd);
+                    }
+
+                    //se si hanno nel giorno registrazioni di sola durata vengono aggiunte alla lista totale dell ore lavorate giornaliere
+                    if (dayRegVsDuration.Any())
+                    {
+                        dayRegVs.AddRange(dayRegVsDuration);
+                    }
+
+                    #endregion
+
+                    int customizationVersionTrip = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheeetTotalWithoutMonthlyMinutes);
+                    if (customizationVersionTrip == (int)TripHourIsWorkedHoursEnum.DoNotUse)
+                        dayRegVs = dayRegVs.Where(d => d.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip).ToList();
+
+                    int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
+                    if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse)
+                        dayRegVs = dayRegVs.Where(d => d.Motivazione_Reg_Id == null).ToList();
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+                        dayRegVs = dayRegVs.Where(d => d.Motivazione_Reg_Cod != "Pausa Pranzo").ToList();
+
+                    // inserimento delle ore diurne calcolate,
+                    tsmItems.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, dayRegVs, BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_DIURNE), minDate, maxDate, 0, 0, false));
+
+                    #region Eventuale ripristino delle date figurative delle reg modificate
+
+                    // prima di procedere al calcolo delle reg_v notturne metto a posto la lista delle reg_v diurne eventualmente modificate sopra
+                    // (controllo tutte le date temporanee diverse da null perché quando sono qua, ho solo reg abbinate, quindi con entrata e uscita);
+                    // sono anche cancellate le registrazioni a che comprendono il notturno (id a 0 perché generate appositamente sopra)
+                    dayRegVs = dayRegVs.Where(regv => regv.RegE != 0).ToList();
+                    dayRegVs.Where(regv => regv.TmpDataOraFigE != null || regv.TmpDataOraFigU != null).ForEach(regv =>
+                    {
+                        regv.Data_Ora_Fig_E = regv.TmpDataOraFigE ?? regv.Data_Ora_Fig_E;
+                        regv.Data_Ora_Fig_U = regv.TmpDataOraFigU ?? regv.Data_Ora_Fig_U;
+                        regv.Durata_Fig = regv.Durata_Fig;
+                    });
+                    #endregion
+                }
+
+
+                #region calcolo delle ore notturne  
+                //se l'inizio del notturno è uguale alla mezzanotte (00:00)
+                if (nocturnStartHour == TimeSpan.Zero)
+                    //allora inserisco un valore inferiore alla mezzanotte che serve solo nei controlli
+                    nocturnStartHourModify = new TimeSpan(23, 59, 59);
+                else
+                    //altrimenti viene mantenuto il vlaore originale
+                    nocturnStartHourModify = nocturnStartHour;
+
+                // calcolo delle ore notturne tra le ore lavorate calcolate in precedenza
+                // le ore notturne sono ore che cominciano o finiscono all'interno della fascia di notturno
+                // oppure avendo date diverse lo attraversano
+                var nocturnRegVs = workedRegVs.Where(regv => regv.Data_Ora_Fis_U.HasValue).
+                    Where(regv =>
+                    {
+                        /*
+                    if ((regv.Data_Ora_Fig_E.Value.TimeOfDay >= nocturnStartHourModify.Value ||
+                                     regv.Data_Ora_Fig_E.Value.TimeOfDay <= nocturnEndHour.Value)
+                                     || (regv.Data_Ora_Fig_U.Value.TimeOfDay >= nocturnStartHourModify.Value
+                                     || regv.Data_Ora_Fig_U.Value.TimeOfDay <= nocturnEndHour.Value) ||
+                                    (regv.Data_Ora_Fig_E.Value.Date != regv.Data_Ora_Fig_U.Value.Date && regv.Data_Ora_Fig_E.Value.TimeOfDay <= nocturnStartHourModify.Value && regv.Data_Ora_Fig_U.Value.TimeOfDay >= nocturnEndHour.Value))
+                    */
+
+                        //Se per qualche motivo la registrazione non ha entrata, non è notturna
+                        if (!regv.Data_Ora_Fig_E.HasValue)
+                        {
+                            return false;
+                        }
+
+                        /*Aggiunge 1 giorno a entrata e uscita se richiesto in modo da poterle confrontare agevolmente con inizio/fine notturno*/
+
+                        TimeSpan oraE = regv.Data_Ora_Fig_E.Value.TimeOfDay;
+                        TimeSpan oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay;
+
+                        //Se entrata e uscita sono su due giorni diversi, l'uscita avrà un giorno in più
+                        if (regv.Data_Ora_Fig_U.Value.Date > regv.Data_Ora_Fig_E.Value.Date)
+                        {
+                            oraU = regv.Data_Ora_Fig_U.Value.TimeOfDay.Add(new TimeSpan(1, 0, 0, 0));
+                        }
+
+                        else
+                        {
+                            //Se E e U sono sullo stesso giorno e vengono entrambe prima della fine del notturno, sono entrambe nel secondo giorno
+                            if (oraE <= nocturnEndHour.Value && oraU <= nocturnEndHour.Value)
+                            {
+                                oraE = oraE.Add(new TimeSpan(1, 0, 0, 0));
+                                oraU = oraU.Add(new TimeSpan(1, 0, 0, 0));
+                            }
+                        }
+
+                        //C'è del notturno nei casi in cui non c'è diurno (se la registrazione è completamente a 'sinistra' o a 'destra' del notturno
                         if ((!((oraE < oraIn_Nott && oraU <= oraIn_Nott) || (oraE >= oraOut_Nott && oraU > oraOut_Nott))) ||
                                 oraE < nocturnEndHour)
                         {
@@ -3717,15 +4170,15 @@ namespace Business.BusinessExtension
 
                 List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == currentCantId).ToList();
 
-                if (cantiere.Count() > 0)
-                {
-                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                }
-                else {
+                //if (cantiere.Count() > 0)
+                //{
+                //    // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                //    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                //}
+                //else {
                     // aggiungo il timesheet specifico del cantiere alla list di ritorno
                     returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                }
+                //}
 
 
             }
@@ -3829,7 +4282,7 @@ namespace Business.BusinessExtension
                 List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == currentCantId).ToList();
 
                 // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
             }
 
             // ritorno del valore calcolato dal metodo
@@ -4248,7 +4701,7 @@ namespace Business.BusinessExtension
                 double dayTotal = 0;
                 string dayName = "Day" + i.ToString("00");
 
-                List<Reg_V> reg = regs.Where(r => r.Data_Ora_Fig_E.Value.Day == i && r.Data_Ora_Fig_E.Value.Month == firstMonthDate.Month && r.Data_Ora_Fig_E.Value.Year == firstMonthDate.Year && r.Tipo_Modifica != 0).ToList();
+                List<Reg_V> reg = regs.Where(r => r.Data_Ora_Fig_E.Value.Day == i && r.Data_Ora_Fig_E.Value.Month == firstMonthDate.Month && r.Data_Ora_Fig_E.Value.Year == firstMonthDate.Year && (r.Tipo_Modifica != 0 && r.Registrazione_Tipo_Reg != 10)).ToList();
                 if (reg.Count() > 0) {
                     dayTotal = 1;
                 }
@@ -4305,7 +4758,7 @@ namespace Business.BusinessExtension
                 double dayTotal = 0;
                 string dayName = "Day" + i.ToString("00");
 
-                List<Reg_V> reg = regs.Where(r => r.Data_Ora_Fig_E.Value.Day == i && r.Data_Ora_Fig_E.Value.Month == firstMonthDate.Month && r.Data_Ora_Fig_E.Value.Year == firstMonthDate.Year && r.RegU == null).ToList();
+                List<Reg_V> reg = regs.Where(r => r.Data_Ora_Fig_E.Value.Day == i && r.Data_Ora_Fig_E.Value.Month == firstMonthDate.Month && r.Data_Ora_Fig_E.Value.Year == firstMonthDate.Year && r.RegU == null && r.Registrazione_Stato_Reg == 0).ToList();
                 if (reg.Count() > 0)
                 {
                     dayTotal = 1;
@@ -5523,6 +5976,90 @@ namespace Business.BusinessExtension
             return searchedRegVs;
         }
 
+        private static List<Reg_V> GetRegVToProcessReport(RegSearchTypeForTimesheetEnum searchType, IEnumerable<Reg_V> baseRegVs)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var searchedRegVs = new List<Reg_V>();
+
+            // verifico la presenza della customizzazione riguardante la visualizzazione delle ore viaggio unite/separate rispetto alle ore lavorate
+            int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowTimesheetTripHoursSameRowEnum);
+
+            // sono aggiunge le condizioni specifiche di ricerca in base al tipo di ricerca richiesta
+            switch (searchType)
+            {
+                case RegSearchTypeForTimesheetEnum.WorkedRegs: // ore lavorate (a cui sono aggiunte le ore solo durata)
+
+                    // se è richiesto dalla customizzazione e non sono state esplicitamente rifiutate da un'opzione, le ore lavorate, oltre allo standard, prevedono anche i viaggi
+                    // si procede al calcolo delle ore viaggio solamente se tra le opzioni non è esplicitamente richiesto di toglierlo
+                    if (customizationVersion == (int)ShowTimesheetTripHoursSameRowEnum.TwoRows ||
+                        TimesheetOptions.Any(tsopt => tsopt == NoTripHoursOptions))
+                    {
+                        // le ore lavorate sono ore di tipo Ora E/U, abbinate, dove il cantiere non è ONL e la motivazione non è valorizzata
+                        searchedRegVs = baseRegVs.ToList().Where(regv =>
+                        {
+                            //
+                            var currCant = regv.Cant_Id.HasValue ? RepoManager.CantRepo.DbSet.FirstOrDefault(cant => cant.Cant_Id == regv.Cant_Id) : null;
+
+                            string tipoCantiere = currCant != null ? currCant.Tipo_Cantiere_Can : String.Empty;
+
+                            return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && !regv.Motivazione_Reg_Id.HasValue && tipoCantiere != "ONL";
+                            //riga di codice per report pdf FIDENTE
+                            //return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && /*!regv.Motivazione_Reg_Id.HasValue &&*/ tipoCantiere != "ONL";
+                        }).ToList();
+                    }
+                    else
+                    {
+                        // le ore lavorate sono ore di tipo Ora E/U, abbinate, dove il cantiere non è ONL e la motivazione non è valorizzata, più i viaggi
+                        searchedRegVs = baseRegVs.Where(regv =>
+                        {
+                            var currCant = regv.Cant_Id.HasValue ? RepoManager.CantRepo.DbSet.FirstOrDefault(cant => cant.Cant_Id == regv.Cant_Id) : null;
+                            string tipoCantiere = currCant != null ? currCant.Tipo_Cantiere_Can : String.Empty;
+                            return ((regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && !regv.Motivazione_Reg_Id.HasValue && tipoCantiere != "ONL") || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip;
+                        }).ToList();
+                    }
+
+                    break;
+                case RegSearchTypeForTimesheetEnum.TripRegs: // ore viaggio
+                    // se è richiesto dalla customizzazione che le ore viaggio siano accorpate alle ore lavorate allora si ritorna in questo caso
+                    // una lista vuota
+                    if (customizationVersion == (int)ShowTimesheetTripHoursSameRowEnum.TwoRows)
+                    {
+                        // le ore viaggio sono le ore di tipo viaggio
+                        searchedRegVs = baseRegVs.Where(regv => regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip).ToList();
+                    }
+
+                    break;
+                case RegSearchTypeForTimesheetEnum.JustificationRegs: // ore con motivazione
+                    // le ore con motivazione sono ore di tipo Ora E/U, abbinate, dove il campo di motivazione è valorizzato
+                    searchedRegVs = baseRegVs.Where(regv => (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && regv.Motivazione_Reg_Id.HasValue).ToList();
+                    break;
+                case RegSearchTypeForTimesheetEnum.CorrectionRegs: // ore rettifiche
+                    // le ore rettifiche sono le registrazioni di tipo rettifica
+                    searchedRegVs = baseRegVs.Where(regv => regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimesheet).ToList();
+                    break;
+                case RegSearchTypeForTimesheetEnum.CorrectionRegsManu: // ore rettifiche manuali
+                    // le ore rettifiche sono le registrazioni di tipo rettifica
+                    searchedRegVs = baseRegVs.Where(regv => regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual).ToList();
+                    break;
+                case RegSearchTypeForTimesheetEnum.DurationRoundingRegs: // arrotondamenti per durata
+                    // gli arrotondamenti per durata sono le registrazioni di tipo arrotondamenti per durata
+                    searchedRegVs = baseRegVs.Where(regv => regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur).ToList();
+                    break;
+                case RegSearchTypeForTimesheetEnum.OnlRegs:
+                    // le ore non lavorate sono ore di tipo Ora E/U o durata, abbinate, dove il cantiere è ONL e la motivazione non è valorizzata
+                    searchedRegVs = baseRegVs.Where(regv =>
+                    {
+                        var currCant = regv.Cant_Id.HasValue ? RepoManager.CantRepo.DbSet.FirstOrDefault(cant => cant.Cant_Id == regv.Cant_Id) : null;
+                        string tipoCantiere = currCant != null ? currCant.Tipo_Cantiere_Can : String.Empty;
+                        return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && !regv.Motivazione_Reg_Id.HasValue && tipoCantiere == "ONL";
+                    }).ToList();
+                    break;
+            }
+
+            // ritorno del valore del metodo
+            return searchedRegVs;
+        }
+
         /// <summary>
         /// Ricerca e ritorna per il periodo specificato e il collaboratore indicato tutte le registrazioni presenti.
         /// </summary>
@@ -5688,7 +6225,7 @@ namespace Business.BusinessExtension
             //Recupera il piano ore del collaboratore
             Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> planMinutes = RepoManager.Tab_OrariRepo.GetPlanMinutes(col.Col_Id,
                                                                     minDate, maxDate, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col,
-                                                                    out isFromFreeTimesheet, out freeTimesheetId, isByOtherEntity, "Col", showWeeklyTotal);
+                                                                    out isFromFreeTimesheet, out freeTimesheetId, isByOtherEntity, "Col", false);
             var colPlan = GenerateNewPlanTimesheet(isDecimalHours, planMinutes.First().Value, isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, planMinutes.First().Key);
 
 
@@ -5750,7 +6287,7 @@ namespace Business.BusinessExtension
                 }
                 else
                 {
-                    justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, false));
                 }
             }
             #endregion
@@ -6047,7 +6584,7 @@ namespace Business.BusinessExtension
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
             if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
             {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
             }
             else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
             {
@@ -6056,7 +6593,15 @@ namespace Business.BusinessExtension
             else if(customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
+                if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+                {
+                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
+                }
+                else
+                {
+                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
+                }
+                
             }else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
             }
@@ -6064,7 +6609,7 @@ namespace Business.BusinessExtension
             TimesheetModuleItem colTotal = null;
 
             if (colTotal == null) {
-                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, false);
             }
             if (!isByOtherEntity)
             {
@@ -6077,11 +6622,11 @@ namespace Business.BusinessExtension
                 string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
                 Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
                 just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
-                if (isByOtherEntity)
-                {
+                //if (isByOtherEntity)
+                //{
                     cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
-                }
-                cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                //}
+                //cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
                 colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
                 List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
                 TotaleCartellini.Add(colTotal);
@@ -6115,7 +6660,7 @@ namespace Business.BusinessExtension
                 }
                 else {
                     colRigth = colPlan;
-                    TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan,colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                    TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan,colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, false);
                     colDelta.setCurrentMonthMonteMinuti();
                     if (!isByOtherEntity)
                     {
@@ -6687,12 +7232,12 @@ namespace Business.BusinessExtension
                 string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
                 Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
                 just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
-                if (isByOtherEntity)
-                {
+                //if (isByOtherEntity)
+                //{
                     cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
-                }
-                cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
-                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                //}
+                //cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
                 List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
                 TotaleCartellini.Add(colTotal);
                 cartellini.Add("totale", TotaleCartellini);
@@ -6933,7 +7478,7 @@ namespace Business.BusinessExtension
             #region ORE LAVORATE
             //Recupera e ordina per data tutte le reg del collaboratore
             IQueryable<Reg_V> baseColRegVs = GetPeriodColRegVs(col, minDate, maxDate, showWeeklyTotal).OrderBy(r => r.Data_Reg);
-            workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+            workedRegVs = GetRegVToProcessReport(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
             var cantIdList1 = workedRegVs.Select(regv => regv.Cant_Id).Distinct().ToList();
 
             // inizializzazione dell'ordine di visualizzazione
@@ -6941,7 +7486,7 @@ namespace Business.BusinessExtension
 
             if (calculateWorkedHours)
             {
-                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                workedRegVs = GetRegVToProcessReport(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
                 test = baseColRegVs.ToList();
                 string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
                 Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);

@@ -35,7 +35,7 @@ namespace PowerWeb.Api
         {
             if (!RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo)
             {
-                RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = true;
+                //RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = true;
                 RepoManager.ParamRepo.SaveChanges();
 
                 // calcolo del percorso di files input

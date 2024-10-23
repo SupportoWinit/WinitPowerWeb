@@ -1901,7 +1901,7 @@ namespace PowerWeb.Pages
                 if (errors.Any())
                     response.Add(nameof(errors), errors);
 
-                bool rtn = SaveAsPdf("D:\\download\\Export Hotel (6).xlsx");
+                //bool rtn = SaveAsPdf("D:\\download\\Export Hotel (6).xlsx");
             }
             else
             {
@@ -1965,7 +1965,7 @@ namespace PowerWeb.Pages
                     && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true);
                 if (regs.Count() > 0)
                 {
-                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
+                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, false, false, true)["justification"]);
                 }     
             }
 

@@ -107,6 +107,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCantieri.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCosto.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCostoTotali.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCondomini.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoDipendentiStrutture.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinariTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
@@ -119,8 +120,10 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportGoldberg.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportImporti.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportHoursReport.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportManutentori.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportMovitrento.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportPerFatture.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportPulizieCivile.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportRegSemplice.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoSimple.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportSSSFiduciario.cs" />
