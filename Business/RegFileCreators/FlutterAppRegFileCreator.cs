@@ -11,6 +11,7 @@ using Business.BusinessServices.RegTranslatorService.Helpers;
 using Business.Repository;
 using Domain;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
+using Business.Profile;
 
 namespace Business.RegFileCreators
 {

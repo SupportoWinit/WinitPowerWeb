@@ -495,7 +495,7 @@ namespace Business.Repository.Custom
                         // si gestiscono gli arrotondamenti solamente se c'è lo specifico flag abilitato nella param
                         if (RepoManager.ParamRepo.ParametersRow.Abilita_Arrotondamenti)
                         {
-                            regVs = GetRegVsForRounding(regs);
+                             regVs = GetRegVsForRounding(regs);
 
                             BeginWork();
 
@@ -693,7 +693,7 @@ namespace Business.Repository.Custom
                         #region 11.6 Creazione pausa per Hotel
 
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
-                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1) {
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1 && currentApplication == ApplicationMessageEnum.Elaborate) {
                             regs = DeleteCopertureSerali(regs, isToSaveChanges);
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
@@ -5518,6 +5518,7 @@ namespace Business.Repository.Custom
                 newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
                 newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);
                 newRounding.Turno = turno;
+                newRounding.Note_Reg = "Pausa";
             }
 
             // ritorno dell'arrotondamento generato

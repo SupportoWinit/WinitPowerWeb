@@ -381,19 +381,21 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     if ((motivazione && (int)baseDuration > 0)) {
                         if ((double)justification["Day" + day.Day.ToString("00")] == (double)last["Day" + day.Day.ToString("00")])
                         {
-                            if (justification.Justification.Equals("M"))
+                            //if (justification.Justification.Equals("M"))
+                            //{
+                            //    valueToPrint = "-- --";
+                            //}
+                            //else
+                            if (justification.Justification.Equals("OFF"))
                             {
                                 valueToPrint = "-- --";
                             }
-                            else if (justification.Justification.Equals("OFF"))
-                            {
-                                valueToPrint = "-- --";
-                            }
-                            else if (justification.Justification.Equals("F"))
-                            {
-                                valueToPrint = "-- --";
-                            }
+                            //else if (justification.Justification.Equals("F"))
+                            //{
+                            //    valueToPrint = "-- --";
+                            //}
                             print = (double)last["Day" + day.Day.ToString("00")];
+                            valueToPrint = "-- --";
                         }
                         else {
                             double tmp = (double)last["Day" + day.Day.ToString("00")];
@@ -401,18 +403,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             if (tmp <= 0) {
                                 valueToPrint = "-- --";
                             }
-                            else if (justification.Justification.Equals("M"))
-                            {
-                                valueToPrint = "-- --";
-                            }
+                            //else if (justification.Justification.Equals("M"))
+                            //{
+                            //    valueToPrint = "-- --";
+                            //}
                             else if (justification.Justification.Equals("OFF"))
                             {
                                 valueToPrint = "-- --";
                             }
-                            else if (justification.Justification.Equals("F"))
-                            {
-                                valueToPrint = "-- --";
-                            }
+                            //else if (justification.Justification.Equals("F"))
+                            //{
+                            //    valueToPrint = "-- --";
+                            //}
                             else
                             {
                                 valueToPrint = FromTotalMinutesToFormattedType((int)tmp);

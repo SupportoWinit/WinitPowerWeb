@@ -28,8 +28,17 @@ namespace PowerWeb.Api
             List<Domain.Reg> regs = RepoManager.RegRepo.Find(r => r.Registrazione_Data_Ora_Fis_Reg >= From && r.Registrazione_Data_Ora_Fis_Reg <= To, true).ToList();
 
             // si procede ad elaborare solamente se sono presenti delle registrazioni
-            if (regs.Any())
-                Errors.AddRange(RepoManager.RegRepo.Elaborate(regs, From, To, true, true));
+            if (regs.Any()) {
+                try
+                {
+                    Errors.AddRange(RepoManager.RegRepo.Elaborate(regs, From, To, true, true));
+                }
+                catch (Exception e) {
+                    _log.Error(String.Format("Errore elaborate schedulato con exception {0} ", e.Message));
+                }
+                Errors.Add(new KeyValuePair<string, string>("Elaborate", "Elaborazione eseguita con successo"));
+                
+            }
             else
             {
                 Errors.Add(new KeyValuePair<string, string>("Regs", String.Format("Nessuna registrazione presente nel periodo (from: {0}; to: {1})", From, To)));

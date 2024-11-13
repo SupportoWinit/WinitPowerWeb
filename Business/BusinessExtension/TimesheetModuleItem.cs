@@ -7510,6 +7510,36 @@ namespace Business.BusinessExtension
             }
             #endregion
 
+            #region DETTAGLI TIMBRATURE
+
+            //if (workedRegVs.Any()) {
+            //    Dictionary<string, List<Reg_V>> lista = new Dictionary<string, List<Reg_V>>();
+            //    foreach (var groupedRegs in workedRegVs.GroupBy(r => r.Data_Reg)) {
+            //        int i = 1;
+            //        foreach (var timbs in groupedRegs) {
+            //            string justification = "Timb" + i;
+            //            var tmp = lista.Where(l => l.Key == justification).ToList();
+            //            if (tmp.Count() == 0)
+            //            {
+            //                List<Reg_V> tmpList = new List<Reg_V>();
+            //                tmpList.Add(timbs);
+            //                lista.Add(justification, tmpList);
+            //            }
+            //            else
+            //            {
+            //                List<Reg_V> tmpLista = lista["Timb" + i];
+            //                tmpLista.Add(timbs);
+            //            }
+            //            i++;
+            //        }
+            //    }
+            //    foreach (var tmp in lista) {
+            //        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, tmp.Value, tmp.Key, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+            //    }
+            //}
+
+            #endregion
+
             #region MOTIVAZIONI
 
             if (calculateJustifications)

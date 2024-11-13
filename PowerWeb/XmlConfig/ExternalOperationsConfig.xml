@@ -41,9 +41,9 @@
   <ExternalImport company="GeoBadge" class="Business.ExternalImport.Implementations.GeoBadgeExternalConnection,Business" enabled="0">
     <HostConfig host="my.geo-badge.com" protocol="https" />
     <ExtraInfos>
-      <uid  value="BPCleaning" />
-      <pw value="BPCleaning2017W!" />
-      <idTenant value="1821" />
+      <uid  value="DolomitiServizi" />
+      <pw value="Dolomiti2021!" />
+      <idTenant value="1902" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/api/Timbratura_V1/GetTimbrature" />
@@ -51,9 +51,9 @@
   </ExternalImport>
   
   <ExternalImport company="FlutterApp" class="Business.ExternalImport.Implementations.FlutterAppExternalImport,Business" enabled="1">
-    <HostConfig host="backend.winitsrl.eu,mobile.clockapp.it" protocol="http" />
+    <HostConfig host="mobile.clockapp.it" protocol="http" />
     <ExtraInfos>
-      <IdCliente  value="29,147" />
+      <IdCliente  value="97" />
     </ExtraInfos>
     <OperationStrategy >
       <getTimbrature  value="/app/ws/Winit" />

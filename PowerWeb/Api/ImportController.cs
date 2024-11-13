@@ -12,6 +12,7 @@ using Business.Repository;
 using Common;
 using Domain;
 using log4net;
+using Westwind.Utilities.Extensions;
 
 namespace PowerWeb.Api
 {
@@ -91,6 +92,22 @@ namespace PowerWeb.Api
                             if (regNoGpsToImport.Any() || regGpsToImport.Any())
                             {
                                 importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray()));
+
+                                int _elaborateUserId = PowerWebContext.Current.User.Utenti_Id;
+                                DateTime _elaborateDateTime = DateTime.Now;
+                                List<KeyValuePair<string, string>> elabErrors = new List<KeyValuePair<string, string>>();
+
+                                
+                                DateTime toChunk = DateTime.Now.EndOfDay();
+                                DateTime fromChunk = DateTime.Now.BeginningOfMonth();
+
+                                List<Reg> toElaborateRegs = null;
+
+                                toElaborateRegs = RepoManager.RegRepo.Find(reg => reg.Registrazione_Data_Ora_Fis_Reg >= fromChunk && reg.Registrazione_Data_Ora_Fis_Reg < toChunk, true).ToList();
+
+                                _log.Info(String.Format("Trovate {0} regs.", toElaborateRegs.Count));
+
+                                elabErrors.AddRange(RepoManager.RegRepo.Elaborate(toElaborateRegs, fromChunk, toChunk, true, true, _elaborateUserId, _elaborateDateTime, application: ApplicationMessageEnum.Elaborate));
                             }
                             else // altrimenti si segnala l'informazione
                                 Errors.Add(new KeyValuePair<string, string>("Import", "Nessuna timbratura da importare"));
@@ -117,17 +134,29 @@ namespace PowerWeb.Api
                     {
                         // al termine dell'operazione comunque si elimina il file
                         File.Delete(exclusiveAccessFilePath);
-                        RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
-                        RepoManager.ParamRepo.SaveChanges();
+                        try {
+                            //RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
+                            RepoManager.ParamRepo.SaveChanges();
+                        } 
+                        catch (Exception e) {
+                            _log.Error(String.Format("Errore import schedulato con exception {0} ", e.Message));
+                        }      
                     }
                 }
                 else
                 {
                     Errors.Add(new KeyValuePair<string, string>("Import", "E' indicata un'altra web api in esecuzione"));
                 }
+
+                try {
+                    //RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
+                    RepoManager.ParamRepo.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    _log.Error(String.Format("Errore import schedulato con exception {0} ", e.Message));
+                }
                 
-                RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
-                RepoManager.ParamRepo.SaveChanges();
             }else
             {
                 _log.Warn(String.Format("Import schedulato bloccato a causa del semaforo"));

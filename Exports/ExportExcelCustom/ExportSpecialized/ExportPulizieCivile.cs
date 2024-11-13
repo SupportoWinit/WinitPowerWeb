@@ -95,7 +95,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
                     DateTime tomorrow = day.AddDays(1);
-                    var dayReg = regs.Where(r => r.Data_Ora_Fis_E > day && r.Data_Ora_Fis_U < tomorrow).ToList();
+                    var dayReg = regs.Where(r => r.Data_Reg.Value.Year == day.Year && r.Data_Reg.Value.Month == day.Month && r.Data_Reg.Value.Day == day.Day).ToList();
                     int daySum = 0;
                     string tot = "-- --";
                     foreach (Reg_V reg in dayReg)

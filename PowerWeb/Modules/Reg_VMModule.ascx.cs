@@ -601,7 +601,15 @@ namespace PowerWeb.Modules
 
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay)
             {
-                newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, currTimeOfDay.Second);
+                //nel caso sia notturno vado a mettere il giorno corretto
+                if (newRegV.Data_Ora_Fis_U.Value.Hour < newRegV.Data_Ora_Fis_E.Hour)
+                {
+                    data_Reg = data_Reg.AddDays(1);
+                    newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, currTimeOfDay.Second);
+                }
+                else {
+                    newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, currTimeOfDay.Second);
+                }
             }
             else if (newRegV.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration)
             {
@@ -1866,7 +1874,7 @@ namespace PowerWeb.Modules
                                         RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.None && RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.Disabled)
                                     {
                                         //se la data dell'uscita è minore di quella dell'entrata (es U=05:00 E=22:00)
-                                        if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
+                                        if (regv.Data_Ora_Fis_U.Value.Hour < regv.Data_Ora_Fis_E.Hour &&
                                             regv.Data_Ora_Fis_U.Value.Date > regUDate.Date)
 
                                             // viene aggiunto un giorno alla registrazione dell'uscita solamente se non si è all'interno dello stesso giorno

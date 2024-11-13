@@ -310,7 +310,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             else
                             {
                                 collaboratore = RepoManager.ColRepo.GetAll().Where(c => c.Codice_Collaboratore == GetWorksheetName(groupedRegV.Value.First())).First();
-                                cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Codice_Cantiere == GetWorksheetName(groupedRegV.Value.First())).First();
+                                //cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Codice_Cantiere == GetWorksheetName(groupedRegV.Value.First())).First();
                                 if (collaboratore.CognomeNome_Col.Length < 31)
                                 {
                                     currentWorksheetName = collaboratore.CognomeNome_Col;
@@ -2471,12 +2471,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             case ExportRegVCalculationTypeEnum.Physical:
                                 newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fis_E.TimeOfDay;
                                 newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fis_U != null ? dayRegV.Data_Ora_Fis_U.Value.TimeOfDay : TimeSpan.Zero;
-                                newConfrontation.ExecutionDuration = TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fis != null && dayRegV.Durata_Fis.Value > 0 ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fis.Value) : TimeSpan.Zero;
                                 break;
                             case ExportRegVCalculationTypeEnum.Rounded:
                                 newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fig_E != null ? dayRegV.Data_Ora_Fig_E.Value.TimeOfDay : TimeSpan.Zero;
                                 newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fig_U != null ? dayRegV.Data_Ora_Fig_U.Value.TimeOfDay : TimeSpan.Zero;
-                                newConfrontation.ExecutionDuration = TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null && dayRegV.Durata_Fig.Value > 0 ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
                                 break;
                         }
                     }
@@ -2486,12 +2486,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             case ExportRegVCalculationTypeEnum.Physical:
                                 newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fis_E.TimeOfDay;
                                 newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fis_U != null ? dayRegV.Data_Ora_Fis_U.Value.TimeOfDay : TimeSpan.Zero;
-                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fis != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fis.Value) : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fis != null && dayRegV.Durata_Fis.Value > 0 ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fis.Value) : TimeSpan.Zero;
                                 break;
                             case ExportRegVCalculationTypeEnum.Rounded:
                                 newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fig_E != null ? dayRegV.Data_Ora_Fig_E.Value.TimeOfDay : TimeSpan.Zero;
                                 newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fig_U != null ? dayRegV.Data_Ora_Fig_U.Value.TimeOfDay : TimeSpan.Zero;
-                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null && dayRegV.Durata_Fig.Value > 0 ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
                                 break;
                         }
                     }

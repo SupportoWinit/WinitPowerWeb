@@ -613,4 +613,9 @@
   <c ID="CustomizationEnum.TripOnlyGpsReg" Des="Indica di calcolare i viaggi solo tra due timbrature GPS" Value="0"/>
   <!--  TripOnlyGpsReg = 0 Calcola in qualsiasi caso il viaggio
         TripOnlyGpsReg = 1 Calcola il viaggio solo se le due timbrature sono GPS-->
+		
+  <!-- *******************************************PRENDERE I LIMITI DA ORARIO PER ALCUNI COLLAORATORI*********************************************************-->
+  <c ID="CustomizationEnum.AllColLimitiByOrario" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
+  <!--AllColLimitiByOrario=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
+		AllColLimitiByOrario=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
 </Customizations>

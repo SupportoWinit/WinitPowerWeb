@@ -616,7 +616,7 @@ namespace PowerWeb
                     DateTime yesterday = CommonService.Yestarday(currDate);
 
                     // calcolo in formato stringa delle date limite di mese corrente e mese precedente
-                    var currMonthString = currDate.ToString("yyyy-MM-dd");
+                    var currMonthString = currDate.AddDays(1).ToString("yyyy-MM-dd");
                     var prevMonthString = prevMonth.ToString("yyyy-MM-dd");
                     var ultimoGiorno = meseCorrenteUltimoGgpiu1.ToString("yyyy-MM-dd");
                     var meseCorrenteUltimoGgString = meseCorrenteUltimoGg.ToString("yyyy-MM-dd");
@@ -723,7 +723,7 @@ namespace PowerWeb
                         // sostituzione della data attuale con il mese corrente o il mese indicato se si tratta di mesi precedenti
 
                         currentGridLayout = currentGridLayout.Remove(dateIndex + 1, 10);
-                        currentGridLayout = currentGridLayout.Insert(dateIndex + 1, (nomeLayout.Contains("PRECEDENTE")) ? CommonService.GetLastMonthDay(currDate.AddMonths(-mese)).ToString("yyyy-MM-dd") : currMonthString);
+                        currentGridLayout = currentGridLayout.Insert(dateIndex + 1, (nomeLayout.Contains("PRECEDENTE")) ? CommonService.GetFirstMonthDay(currDate.AddMonths(-mese + 1)).ToString("yyyy-MM-dd") : currMonthString);
                     }
                     else // se invece la data di fine non è presente
                     {
@@ -2230,7 +2230,7 @@ namespace PowerWeb
             // i Dati mostrati NON superino i 1000 Records
             if (GridModule != null && GridModule.GridView != null)
             {
-                if (GridModule.GridView.VisibleRowCount > 1000)
+                if (GridModule.GridView.VisibleRowCount > 2000)
                 {
                     btnPrintXlsx.ClientEnabled = false;
                     btnPrintXlsx.Enabled = false;

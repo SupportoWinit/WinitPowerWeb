@@ -2,10 +2,12 @@
 using Business.ExternalImports;
 using Business.HttpHub;
 using Business.HttpHub.HttpHubs;
+using Business.Profile;
 using Business.RegFileCreators;
 using Business.Repository;
 using Newtonsoft.Json.Linq;
 using System;
+using log4net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +18,7 @@ namespace Business.ExternalImport.Implementations
 {
     class FlutterAppExternalImport : IExternalImport
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(PowerWebMembershipProvider));
         private FlutterAppHttpModule bridge;
         private FlutterAppHttpModule bridge2;
         private FlutterAppHttpModuleOld bridgeOld;
@@ -84,7 +87,7 @@ namespace Business.ExternalImport.Implementations
             {
                 ids[0] = connectionConfig["IdCliente"];
             }
-            
+
 
             if (bridgeOld.Host != null) {
                 registrazioniOld = bridgeOld.Get<List<FlutterAppRegOld>>(CreateStandardPayloadOld(index), apiPaths["getTimbrature"]);
@@ -96,6 +99,27 @@ namespace Business.ExternalImport.Implementations
 
             if (bridge2.Host != null) {
                 registrazioni2 = bridge.Get<List<FlutterAppReg>>(CreateStandardPayload(index), apiPaths["getTimbrature"]);
+            }
+            if (registrazioniOld != null && registrazioniOld.Any())
+            {
+                _log.InfoFormat("Registrazioni da backend vecchio recuperate = " + registrazioniOld.Count());
+            }
+            else {
+                _log.InfoFormat("Nessuna registrazione da backend veccio recuperata");
+            }
+            if (registrazioni != null && registrazioni.Any())
+            {
+                _log.InfoFormat("Registrazioni da backend nuovo 1 recuperate = " + registrazioni.Count());
+            }
+            else {
+                _log.InfoFormat("Nessuna registrazione da backend nuovo 1 recuperata");
+            }
+            if (registrazioni2 != null && registrazioniOld.Any())
+            {
+                _log.InfoFormat("Registrazioni da backend nuovo 2 recuperate = " + registrazioni2.Count());
+            }
+            else {
+                _log.InfoFormat("Nessuna registrazione da backend nuovo 1 recuperata");
             }
             
             if ((registrazioni != null && registrazioni.Any()) || (registrazioniOld != null && registrazioniOld.Any()) || (registrazioni2 != null && registrazioni2.Any()))
