@@ -11,7 +11,7 @@ namespace PowerWeb.Modules
 {
 
 
-    public partial class RegVErrModule
+    public partial class Aut_FerPerModule
     {
 
         /// <summary>
@@ -24,13 +24,13 @@ namespace PowerWeb.Modules
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel StateLabel;
 
         /// <summary>
-        /// Controllo ErrorsComboBox.
+        /// Controllo FerPerComboBox.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxEditors.ASPxDropDownEdit ErrorsComboBox;
+        protected global::DevExpress.Web.ASPxEditors.ASPxDropDownEdit FerPerComboBox;
 
         /// <summary>
         /// Controllo SearchDateFromLabel.
@@ -276,13 +276,13 @@ namespace PowerWeb.Modules
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox cbIncludeBlocked;
 
         /// <summary>
-        /// Controllo gvRegVErrEdit.
+        /// Controllo gvAutFerPerEdit.
         /// </summary>
         /// <remarks>
         /// Campo generato automaticamente.
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView.ASPxGridView gvRegVErrEdit;
+        protected global::DevExpress.Web.ASPxGridView.ASPxGridView gvAutFerPerEdit;
 
         /// <summary>
         /// Controllo add.

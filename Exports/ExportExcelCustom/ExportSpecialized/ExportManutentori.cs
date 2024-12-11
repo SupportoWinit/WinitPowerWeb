@@ -81,6 +81,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             string lastAtt = "";
             string lastCant = "";
             int lastDurata = 0;
+            int totaleReg = 0;
             //vado a fare un foreach per ogni cantiere
             foreach (var reg in regVs.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E))
             { 
@@ -114,7 +115,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 esiste = true;
                                             }
                                         }
-                                    }  
+                                    }
                                 }
                             }
                             if (esiste)
@@ -134,7 +135,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
                                     tmpDi[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
                                     tmpAttivita.Add(tmpDi);
-                                }   
+                                }
                                 aggiornato = true;
                                 lastAtt = "";
                                 lastDurata = 0;
@@ -157,7 +158,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             lastDurata = 0;
                             lastAtt = "";
                         }
-                        
+
                     }
                     else {
                         if (lastAtt != "") {
@@ -222,100 +223,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                 } else if (reg.Registrazione_Tipo_Reg == 0) {
                     if (reg.Durata_Fig != null) {
-                        lastDurata = reg.Durata_Fig.Value;
+                        lastDurata += reg.Durata_Fig.Value;
                         lastCant = reg.Cant_Desc;
                     }
                 }
                 listaAttivita = tmpAttivita;
-                //List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regs.Key).ToList();
-                //string lastAtt = "";
-                //int lastDurata = 0;
-                //foreach (Reg_V reg in regs)
-                //{
-                //    if (reg.Registrazione_Tipo_Reg == 2) {
-                //        List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                //        if (reg.Registrazione_Stato_Reg == 1)
-                //        {
-                //            foreach (var att in listaAttivita) {
-                //                if (att.First().Key == attivita.First().Descrizione_Can) {
-                //                    int tmp = att[attivita.First().Descrizione_Can];
-                //                    att[attivita.First().Descrizione_Can] = tmp + lastDurata;
-                //                    lastAtt = "";
-                //                    lastDurata = 0;
-                //                }
-                //            }
-                //        }
-                //        else {
-                //            if (lastAtt != "") {
-                //                attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == lastAtt).ToList();
-                //                foreach (var att in listaAttivita)
-                //                {
-                //                    if (att.First().Key == attivita.First().Descrizione_Can)
-                //                    {
-                //                        int tmp = att[attivita.First().Descrizione_Can];
-                //                        att[attivita.First().Descrizione_Can] = tmp + lastDurata;
-                //                        lastAtt = "";
-                //                        lastDurata = 0;
-                //                    }
-                //                }
-                //            }
-                //            attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                //            lastAtt = attivita.First().Descrizione_Can;
-                //        }
-                //    } else if (reg.Registrazione_Tipo_Reg == 0) {
-                //        if (reg.Durata_Fig != null) {
-                //            lastDurata = reg.Durata_Fig.Value;
-                //        }
-                //    }
-                //    CellInsertValue(1, 1, rowIndex, currentCant.First().Descrizione_Can + " ", ExcelInsertTypeEnum.Content);
-                //    RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                //    RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
-                //    RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
-                //}
-
-                //CellInsertValue(1, 1, rowIndex, currentCant.First().Descrizione_Can + " ", ExcelInsertTypeEnum.Content);
-                //RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                //RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
-                //RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
-                //
-                //CellInsertValue(1, 2, rowIndex, "PULIZIE CIVILI", ExcelInsertTypeEnum.Content);
-                //RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                //RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
-                //RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
-
-                //TimeSpan totaleMensile = new TimeSpan();
-                //foreach (DateTime day in monthDays)
-                //{
-                //    //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
-                //    DateTime tomorrow = day.AddDays(1);
-                //    var dayReg = regs.Where(r => r.Data_Ora_Fis_E > day && r.Data_Ora_Fis_U < tomorrow).ToList();
-                //    int daySum = 0;
-                //    string tot = "-- --";
-                //    foreach (Reg_V reg in dayReg)
-                //    {
-                //        if (reg.Durata_Fig != null)
-                //        {
-                //            daySum += reg.Durata_Fig.Value;
-                //        }
-                //    }
-                //    if (daySum > 0)
-                //    {
-                //        TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
-                //        totaleMensile = totaleMensile + totalDuration;
-                //        tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
-                //    }
-                //    if (CommonService.GetLastMonthDay(ExportPeriod) == day)
-                //    {
-                //        tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
-                //
-                //        RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                //        RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
-                //
-                //        RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
-                //        CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
-                //    }
-                //}
-                //rowIndex++;
             }
             foreach (var prova in listaAttivita.OrderBy(p => p.First().Key)) {
                 CellInsertValue(1, 1, rowIndex, prova.First().Key + " ", ExcelInsertTypeEnum.Content);

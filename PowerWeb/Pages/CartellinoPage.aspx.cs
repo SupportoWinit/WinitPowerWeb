@@ -57,7 +57,7 @@ namespace PowerWeb.Pages
         protected void Page_Init(object sender, EventArgs e)
         {
             if (!Page.IsCallback && !Page.IsPostBack)
-            {
+             {
                 int id = PowerWebContext.Current.User.Utenti_Id;
 
                 var utenti = RepoManager.Utenti_RespRepo.GetAll();
@@ -73,7 +73,7 @@ namespace PowerWeb.Pages
                     _RespId = 0;
                 }
 
-                var parameters = RepoManager.ParamRepo.First(true);
+                var parameters = RepoManager.ParamRepo.First(true); 
 
                 dataSource = new DevExtremeLinqServerRepository<Col>(RepoManager.ColRepo);
 
@@ -194,6 +194,7 @@ namespace PowerWeb.Pages
                 colonna.Add("dataField", "Resp_Id");
                 colonna.Add("caption", field);
                 colonna.Add("visible", true);
+                colonna.Add("allowHeaderFiltering", true);
                 _colColumns.Add(colonna);
 
                 field = "Ultimo Elaborato";
@@ -1963,10 +1964,10 @@ namespace PowerWeb.Pages
                 var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                     && (regv.Data_Reg >= minDate && regv.Data_Reg <= monthLastDate)
                     && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true);
-                if (regs.Count() > 0)
-                {
-                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, false, false, true)["justification"]);
-                }     
+                //if (regs.Count() > 0)
+                //{
+                   cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
+                //}     
             }
 
             var timesheetColReport = new XRColCartellino(cartellini, null, null, optionsObj);

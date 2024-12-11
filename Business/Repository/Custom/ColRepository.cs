@@ -1415,7 +1415,7 @@ namespace Business.Repository.Custom
                 else return base.Filter;
             }
         }
-        
+
         public void UpdateMothlyHour(DateTime? oldBreakRegDate, DateTime newBreakRegDate)
         {
             if (RepoManager.ParamRepo.ParametersRow.MonthlyHoursEnum != MothlyHoursEnum.None)

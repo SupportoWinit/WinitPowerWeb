@@ -567,6 +567,7 @@
     <Content Include="Modules\BaseGridModule.ascx" />
     <Content Include="Modules\MonteMinutiModule.ascx" />
     <Content Include="Modules\Cant_FruModule.ascx" />
+    <Content Include="Modules\Aut_FerPerModule.ascx" />
     <Content Include="Modules\SchedulesModule.ascx" />
     <Content Include="Modules\CliModule.ascx" />
     <Content Include="Modules\ColModule.ascx" />
@@ -628,6 +629,7 @@
     <Content Include="Pages\CentroDiCostoPage.aspx" />
     <Content Include="Pages\ErrorPages\ErrorPage.aspx" />
     <Content Include="Pages\MonteMinutiPage.aspx" />
+    <Content Include="Pages\Aut_FerPerPage.aspx" />
     <Content Include="Pages\SchedulesPage.aspx" />
     <Content Include="Pages\ColPage.aspx" />
     <Content Include="Pages\CliPage.aspx" />
@@ -1803,6 +1805,13 @@
     <Compile Include="Modules\CantModule.ascx.designer.cs">
       <DependentUpon>CantModule.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Aut_FerPerModule.ascx.cs">
+      <DependentUpon>Aut_FerPerModule.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Modules\Aut_FerPerModule.ascx.designer.cs">
+      <DependentUpon>Aut_FerPerModule.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Modules\SchedulesModule.ascx.cs">
       <DependentUpon>SchedulesModule.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1945,6 +1954,13 @@
     </Compile>
     <Compile Include="Pages\MonteMinutiPage.aspx.designer.cs">
       <DependentUpon>MonteMinutiPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Aut_FerPerPage.aspx.cs">
+      <DependentUpon>Aut_FerPerPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Aut_FerPerPage.aspx.designer.cs">
+      <DependentUpon>Aut_FerPerPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SchedulesPage.aspx.cs">
       <DependentUpon>SchedulesPage.aspx</DependentUpon>

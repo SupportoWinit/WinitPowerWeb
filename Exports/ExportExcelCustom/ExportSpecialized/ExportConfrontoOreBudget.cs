@@ -392,6 +392,21 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     // altrimenti in caso contrario al prossimo giro si deve riscrivere l'header a partire dalla posizione originale,
                                     // e per questo viene ripristinata
                                     rowIndex = oldRowIndex != rowIndex ? ++rowIndex : originalHeaderRowIndex;
+                                } else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowHourNoTimb) == 1) {
+                                    // scrittura dell'intestazione della tabella del foglio
+                                    int originalHeaderRowIndex = rowIndex;
+                                    //ritorna la nuova riga per andare avanti con la scrittura dell'export
+                                    rowIndex = WriteWorksheetTableHeaderEmpty(currentWorksheetName, rowIndex);
+
+                                    int oldRowIndex = rowIndex;
+                                    // scrittura dei dati delle registrazioni nel foglio
+                                    rowIndex = WriteWorksheetRegVs(currentWorksheetName, monthDay, dayRegVs, rowIndex, entityMonthTimesheets, detailPlan);
+
+                                    // se sono state aggiunge delle righe allora
+                                    // una volta scritta la riga procedo ad aggiungere una riga di pausa per la scrittura
+                                    // altrimenti in caso contrario al prossimo giro si deve riscrivere l'header a partire dalla posizione originale,
+                                    // e per questo viene ripristinata
+                                    rowIndex = oldRowIndex != rowIndex ? ++rowIndex : originalHeaderRowIndex;
                                 }
                             }
 
@@ -884,6 +899,85 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         }
 
         /// <summary>
+        /// Scrive l'header della tabella dei dati per il worksheet specificato a partire dalla posizione specificata.
+        /// </summary>
+        /// <param name="worksheetName">Il nome del worksheet in cui scrivere.</param>
+        /// <param name="rowIndex">La posizione di partenza di scrittura del table header</param>
+        /// <returns>Il nuovo row index che corrisponde alla prima posizione utile per l'inserimento dei dati del giorno</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        private int WriteWorksheetTableHeaderEmpty(string worksheetName, int rowIndex)
+        {
+            // calcolo della prima e seconda riga dell'header della tabella
+            int firstTableHeaderRow = rowIndex + 1;
+            int secondTableHeaderRow = rowIndex + 2;
+
+
+            // altra entità di riferimento timbratura
+            string otherEntityTitle = String.Empty;
+            switch (ModelFirstEntity)
+            {
+                case ExcelModelSelectionTypeEnum.Col:
+                    otherEntityTitle = BusinessService.GetLocalizedString(PowerWebResources.STR_NOTE).ToUpper();
+                    break;
+                case ExcelModelSelectionTypeEnum.Cant:
+                    otherEntityTitle = BusinessService.GetLocalizedString(PowerWebResources.STR_NOTE).ToUpper();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (UseExportDetail)
+                CellInsertValue(worksheetName, 2, secondTableHeaderRow, otherEntityTitle, ExcelInsertTypeEnum.Content);
+
+            CellInsertValue(worksheetName, 3, secondTableHeaderRow, BusinessService.GetLocalizedString(PowerWebResources.STR_DATA).ToUpper(), ExcelInsertTypeEnum.Content);
+
+            // calcolo delle colonne di esecuzione, confronto, previsione
+            int? confrontationEColumn = null;
+            int? confrontationUColumn = null;
+            int? confrontationDurationColumn = null;
+            int? previsionalDurationColumn = null;
+            int? previsionalEColumn = null;
+            int? previsionalUColumn = null;
+            int? previsionalEntityDesColumn = null;
+            int? executionEColumn = null;
+            int? executionUColumn = null;
+            int? executionDurationColumn = null;
+            int? numeroInterventiColum = null;
+            int lastExecutionColumn = 4;
+
+            CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
+                    ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColum);
+
+            // inserisco la colonna note
+            RangeSetBorders(worksheetName, 2, secondTableHeaderRow, 2, secondTableHeaderRow, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium);
+            RangeSetBorders(worksheetName, 3, secondTableHeaderRow, 3, secondTableHeaderRow, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Thin);
+            // impostazione della lunghezza delle colonne in base al tipo di ora
+            if (UseHourType)
+            {
+                switch (HourType)
+                {
+                    case ExportRegVHourTypeEnum.OnlyDuration:
+                        ColumnsSetWidth(worksheetName, 10, 10, 15);
+                        break;
+                    case ExportRegVHourTypeEnum.Eu:
+                        ColumnsSetWidth(worksheetName, 10, 10, 14.5);
+                        ColumnsSetWidth(worksheetName, 11, 11, 14.5);
+                        break;
+                    case ExportRegVHourTypeEnum.Both:
+                        ColumnsSetWidth(worksheetName, 12, 12, 15);
+                        ColumnsSetWidth(worksheetName, 13, 13, 14.5);
+                        ColumnsSetWidth(worksheetName, 14, 14, 14.5);
+                        break;
+                }
+            }
+
+            // ritorno del nuovo row index calcolato
+            return secondTableHeaderRow + 1;
+
+
+        }
+
+        /// <summary>
         /// Scrive sullo specifico foglio di lavoro le registrazioni passate come parametro (di una specifica entità per uno specifico giorno).
         /// </summary>
         /// <param name="worksheetName">Il nome del foglio di lavoro in cui inserire le registrazioni.</param>
@@ -1008,7 +1102,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 else
                                 {
-                                    CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, cObject.ExecutionDuration, ExcelInsertTypeEnum.HhmmTime);
+                                    if (cObject.ExecutionDuration.Value.TotalMinutes > 0)
+                                    {
+                                        CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, cObject.ExecutionDuration, ExcelInsertTypeEnum.HhmmTime);
+                                    }
+                                    else {
+                                        CellInsertValue(worksheetName, executionDurationColumn.Value, rowIndex, TimeSpan.Zero, ExcelInsertTypeEnum.HhmmTime);
+                                    }
                                 }
                                 // se sto inserendo la durata di esecizione allora la sommo ai minuti totali della giornata
                                 totalExecutionDuration += Convert.ToInt32(cObject.ExecutionDuration.HasValue ? cObject.ExecutionDuration.Value.TotalMinutes : TimeSpan.Zero.TotalMinutes);
@@ -1062,9 +1162,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 else
                                 {
-                                    CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDuration, ExcelInsertTypeEnum.HhmmTime);
-                                    if (!String.IsNullOrEmpty(cObject.ConfrontationDurationNumberFormat))
-                                        CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDurationNumberFormat);
+                                    if (cObject.ConfrontationDuration.Value.TotalMinutes > 0)
+                                    {
+                                        CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDuration, ExcelInsertTypeEnum.HhmmTime);
+                                        if (!String.IsNullOrEmpty(cObject.ConfrontationDurationNumberFormat))
+                                            CellSetNumberFormat(worksheetName, confrontationDurationColumn.Value, rowIndex, cObject.ConfrontationDurationNumberFormat);
+                                    }
+                                    else {
+                                        CellInsertValue(worksheetName, confrontationDurationColumn.Value, rowIndex, TimeSpan.Zero, ExcelInsertTypeEnum.HhmmTime);
+                                    }
+                                    
                                 }                               
                                 
 
@@ -2476,7 +2583,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             case ExportRegVCalculationTypeEnum.Rounded:
                                 newConfrontation.ExecutionHourE = dayRegV.Data_Ora_Fig_E != null ? dayRegV.Data_Ora_Fig_E.Value.TimeOfDay : TimeSpan.Zero;
                                 newConfrontation.ExecutionHourU = dayRegV.Data_Ora_Fig_U != null ? dayRegV.Data_Ora_Fig_U.Value.TimeOfDay : TimeSpan.Zero;
-                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null && dayRegV.Durata_Fig.Value > 0 ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
+                                newConfrontation.ExecutionDuration = dayRegV.Durata_Fig != null ? CommonService.GetTimeSpanFromMinutes(dayRegV.Durata_Fig.Value) : TimeSpan.Zero;
                                 break;
                         }
                     }
@@ -2678,7 +2785,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     break;
                 case ExportRegVHourTypeEnum.Both:
                     // si effettua il calcolo solo se richiesto
-                    if (UseDurationTollerance)
+                    if (UseDurationTollerance && DurationTollerance > 0)
                     {
                         // in caso di controllo di entrambi i parametri basta che uno solo dei due sia
                         // fuori tolleranza perché l'intero oggetto lo sia
@@ -2686,7 +2793,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
 
                     // si effettua il calcolo solo se richiesto
-                    if (UseEUTollerance)
+                    if (UseEUTollerance && EUTollerance > 0)
                     {
                         if (!outOfTollerance)
                             outOfTollerance = Convert.ToInt32(confObject.ConfrontationHourE.HasValue ? confObject.ConfrontationHourE.Value.TotalMinutes : TimeSpan.Zero.TotalMinutes) >= EUTollerance;

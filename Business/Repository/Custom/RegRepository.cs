@@ -621,6 +621,8 @@ namespace Business.Repository.Custom
 
                         #endregion
 
+                        IEnumerable<Reg_V> tripRegVs = GetRegVsToPostProcess(regs);
+
                         // se è richiesto anche il salvataggio delle modifiche
                         if (isToSaveChanges)
                         {
@@ -648,6 +650,8 @@ namespace Business.Repository.Custom
                                 // sono rilette le registrazioni per interecettare eventuali modifiche di arrotondamento 
                                 // o altro interevenute precedentemente
                                 regVs = GetRegVsToPostProcess(regs);
+                                _log.Info("Registrazioni raccolte " + regVs.Count());
+                                tripRegVs = regVs;
                                 //se ci sono delle registrazioni lette da database si richiama l'elaborazione dei viaggi
                                 if (regVs.Any())
                                 {
@@ -731,7 +735,7 @@ namespace Business.Repository.Custom
 
                         #region 11.8 Rigenerazione viaggi in caso di modifica komplett
 
-                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1)
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1 && currentApplication == ApplicationMessageEnum.Elaborate)
                         {
                             var allRegs = RepoManager.RegRepo.Find(reg => reg.Registrazione_Data_Ora_Fig_Reg >= fromDate && reg.Registrazione_Data_Ora_Fig_Reg <= toDate).ToList();
 
@@ -754,6 +758,8 @@ namespace Business.Repository.Custom
                                     //se ci sono delle registrazioni lette da database si richiama l'elaborazione dei viaggi
                                     if (regVs.Any())
                                     {
+                                        _log.Info("Registrazioni raccolte " + regVs.Count());
+
                                         _log.Info("Inizio elaborazione viaggi");
 
                                         errors.AddRange(RepoManager.Reg_VRepo.ElaborateTrips(regVs));
@@ -2042,6 +2048,9 @@ namespace Business.Repository.Custom
                                 {
                                     reg.CentroDiCosto_Id = cid;
                                 }
+                                else {
+                                    reg.CentroDiCosto_Id = null;
+                                }
                             }
                         }
                         else
@@ -2097,6 +2106,9 @@ namespace Business.Repository.Custom
                             if (centro)
                             {
                                 reg.CentroDiCosto_Id = cid;
+                            }
+                            else {
+                                reg.CentroDiCosto_Id = null;
                             }
                         }
                     }

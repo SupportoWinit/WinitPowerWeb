@@ -712,7 +712,11 @@ namespace Business.RegFileCreators
                     else if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
                     {
                         #region Reg senza coordinate
-
+                        string verso = "";
+                        if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U") {
+                            verso = fluReg.Motivazione;
+                            fluReg.Motivazione = "";
+                        }
                         regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                             fluReg.CodiceFru,
                             fluReg.CodicePru,
@@ -721,7 +725,7 @@ namespace Business.RegFileCreators
                             fluReg.Data.Day.ToString("00"),
                             fluReg.Data.Hour.ToString("00"),
                             fluReg.Data.Minute.ToString("00"),
-                            "",
+                            verso,
                             fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                         );
                         #endregion

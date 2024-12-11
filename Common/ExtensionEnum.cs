@@ -199,7 +199,8 @@ namespace Common
         ArrotAllRegs,
         NoArrotColAuthorized,
         AutoClosuresXMinuteEnum,
-        AllColLimitiByOrario
+        AllColLimitiByOrario,
+        ShowHourNoTimb
     }
 
     public enum ClockAppsOperationEnum

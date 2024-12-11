@@ -236,7 +236,7 @@
 		NoCreateTripOnSameMunicipalityUnderKmEnum=1 Indica di generare i viaggi che cominciano e terminano nello stesso comune solo se superiori a i km come parametro  -->
 
   <!-- ********************************************************ESPORTAZIONE XML DELLE TIMBRATURE*********************************************************-->
-  <c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="3" />
+  <c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="0" />
   <!-- RegExportToXmlEnum=0 Indica che l'esportazione xml delle timbrature non è attiva
 		RegExportToXmlEnum=1 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Perfetto -->
 
@@ -316,7 +316,7 @@
 		CustomExportsBackgroundColorEnum=1 Non Visualizza i colori previsti dal codice nel export custom -->
 
   <!-- *******************************************MOTIVAZIONI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="1" />
+  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="0" />
   <!--JustificationHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore con motivazione all'interno delle ore lavorate
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
 
@@ -351,7 +351,7 @@
 		ExcludeAwayHoursInExport=1 Esclude le ore TRA dall'export-->
 
   <!-- *******************************************ORE TRASFERTA NOT IN EXP ORE/BUDGET CANT'*********************************************************-->
-  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="0" />
+  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="1" />
   <!--ScSExportBudget=0 disattiva l'export
 		ScSExportBudget=1 attiva l'export-->
 
@@ -529,7 +529,7 @@
   <!--	UserIsResp = 0 non attiva funzionalità
 			UserIsResp = 1 attiva funzionalità-->
   <!-- ********************************************************VISUALIZZAZIONE COLLABORATORE SENZA ORE************************************************************************************** -->
-  <c ID="CustomizationEnum.CollabNoHours" Des="Comprendi i collaboratori senza ore nel cartellino" Value="1"/>
+  <c ID="CustomizationEnum.CollabNoHours" Des="Comprendi i collaboratori senza ore nel cartellino" Value="0"/>
   <!--	CollabNoHours = 0 non li conta
 			CollabNoHours = 1 li conta-->
 
@@ -552,9 +552,9 @@
   <c ID="CustomizationEnum.AutoClosuresFirstLast" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
   <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-   <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
+  <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
   <c ID="CustomizationEnum.AutoClosures" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0">
-      <param Name="minuti" Value ="2"/>
+    <param Name="minuti" Value ="2"/>
   </c>
   <!--  AutoClosures=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosures=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
@@ -569,41 +569,41 @@
   <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
-    <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
+  <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
   <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
   <!--  OrderElaborateRegByCant=0 Indica di non chiudere le timbrature in modo automatico
         OrderElaborateRegByCant=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-		
-		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
   <c ID="CustomizationEnum.RimozionePausaHotel" Des="(Personalizzazione Komplett) Indice se rimuovere la pausa giornaliera dal totale" Value="1"/>
   <!--  RimozionePausaHotel=0 Indica di non rimuovere la pausa
         RimozionePausaHotel=1 Indica di rimuovere la pausa-->
 
   <!-- ********************************************************INDICA SE E' ABILITATO L'EXPORT DI KOMPLETT************************************************************************************** -->
   <c ID="CustomizationEnum.ExportHotelKomplett" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="0"/>
-    <!--	ExportHotelKomplett = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
+  <!--	ExportHotelKomplett = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
     ExportHotelKomplett = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
-	
+
   <!--<********************************************************CONOTROLLA SE LE TIMBRATURE SONO COPERTURE SERALI************************************************************-->
   <c ID="CustomizationEnum.CopertureSerali" Des="Controlla se le timbrature sono coperture serali" Value="1"/>
   <!-- CopertureSerali = 0 non controlla se le timbrature sono coperture serali
       CopertureSerali = 1 controlla se le timbrature sono coperture serali-->
-	  
+
   <!-- ********************************************************UTILIZZA LE ORE FIGURATIVE PER I VIAGGI*********************************************************-->
   <c ID="CustomizationEnum.TripFigHours" Des="Indica se utilizzare le ore figurative o le ore fisiche nella creazione dei viaggi" Value="1"/>
   <!--  TripFigHours=0 Indica di usare le ore fisiche
         TripFigHours=1 Indica di usare le ore figurative-->
-		
-		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
   <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
   <!--  RimozionePausaPranzo=0 Indica di non rimuovere la pausa
         RimozionePausaPranzo=1 Indica di rimuovere la pausa-->
-		
+
   <!-- *******************************************PAUSA PRANZO COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore della pausa pranzo come se fossero ore lavorate" Value="1" />
+  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore della pausa pranzo come se fossero ore lavorate" Value="0" />
   <!--PausaPranzoIsWorkedHoursEnum=0 Non saranno utilizzate le ore di pausa all'interno delle ore lavorate
-		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore di pausa all'interno delle ore lavorate -->		
-		
+		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore di pausa all'interno delle ore lavorate -->
+
   <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
   <c ID="CustomizationEnum.NoArrotondamentoOreModificate" Des="Indica di non arrotondare le timbrature modificate" Value="1"/>
   <!--  NoArrotondamentoOreModificate = 0 Arrotonda le timbrature modificate
@@ -613,7 +613,7 @@
   <c ID="CustomizationEnum.TripOnlyGpsReg" Des="Indica di calcolare i viaggi solo tra due timbrature GPS" Value="0"/>
   <!--  TripOnlyGpsReg = 0 Calcola in qualsiasi caso il viaggio
         TripOnlyGpsReg = 1 Calcola il viaggio solo se le due timbrature sono GPS-->
-		
+
   <!-- ********************************************************APPLICA L'ARROTONDAMENTO PER DURATA AD OGNI TIMBRATURA E NON ALLA GIORNATA*********************************************************-->
   <c ID="CustomizationEnum.ArrotAllRegs" Des="Indica se arrotondare l'intera giornata o ogni registrazione" Value="1"/>
   <!--  ArrotAllRegs = 0 Arrotonda la giornata
@@ -624,8 +624,8 @@
   <!--  ArrotAllRegs = 0 Arrotonda la giornata
         ArrotAllRegs = 1 Arrotonda tutte le timbrature-->
 
-  <!-- ********************************************************APPLICA L'ARROTONDAMENTO PER DURATA AD OGNI TIMBRATURA E NON ALLA GIORNATA*********************************************************-->
-  <c ID="CustomizationEnum.AutoClosuresXMinuteEnum" Des="Indica se arrotondare l'intera giornata o ogni registrazione" Value="1"/>
-  <!--  ArrotAllRegs = 0 Arrotonda la giornata
-        ArrotAllRegs = 1 Arrotonda tutte le timbrature-->
+  <!-- ********************************************************MOSTRA LE GIORNATE SENZA ORE NEL CONFRONTO ORE/BUDGET*********************************************************-->
+  <c ID="CustomizationEnum.ShowHourNoTimb" Des="Indica se mostrare le giornate" Value="1"/>
+  <!--  ShowHourNoTimb = 0 Arrotonda la giornata
+        ShowHourNoTimb = 1 Arrotonda tutte le timbrature-->
 </Customizations>

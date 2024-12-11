@@ -105,6 +105,8 @@
     <Compile Include="ExportExcelCustom\ExcelToolbox.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAec.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCantieri.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCdc.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCdcManutentori.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCosto.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCostoTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCondomini.cs" />

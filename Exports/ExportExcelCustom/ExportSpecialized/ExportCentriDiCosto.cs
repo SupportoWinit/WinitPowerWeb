@@ -233,6 +233,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     rowIndex -= 1;
                     motivazione = true;
+                    totale = 0;
                 }
                 else
                 {
@@ -278,8 +279,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     catch (Exception e)
                     {
                     }
+                    double tmpBaseDuration = baseDuration;
+                    double tmpPrint = print;
                     baseDuration = baseDuration * 60;
                     print = print * 60;
+                    double finale = 0.0;
                     string valueToPrint = "";
                     if (motivazione)
                     {
@@ -293,18 +297,60 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             totalDays++;
                         }
+                        double tmpIeri = ieri;
                         ieri = ieri * 60;
                         if ((int)print < 0)
                         {
                             if (ieri * 60 > 0)
                             {
-                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)ieri + (int)print);
+                                finale = tmpIeri + tmpPrint;
+                                if (finale % 1 > 0.9) {
+                                    double tmp = 1 - finale % 1;
+                                    finale += tmp;
+                                }
+                                else if (finale % 1 > 0.7)
+                                {
+                                    double tmp = 0.75 - finale % 1;
+                                    finale += tmp;
+                                }
+                                else if (finale % 1 > 0.4) {
+                                    double tmp = 0.5 - finale % 1;
+                                    finale += tmp;
+                                }
+                                else if (finale % 1 > 0.2)
+                                {
+                                    double tmp = 0.25 - finale % 1;
+                                    finale += tmp;
+                                }
+
+                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(finale * 60));
                             }
                         }
                         else {
                             if (ieri * 60 > 0)
                             {
-                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)ieri - (int)print);
+                                finale = tmpIeri - tmpPrint;
+                                if (finale % 1 > 0.9)
+                                {
+                                    double tmp = 1 - finale % 1;
+                                    finale -= tmp;
+                                }
+                                else if (finale % 1 > 0.7)
+                                {
+                                    double tmp = 0.75 - finale % 1;
+                                    finale -= tmp;
+                                }
+                                else if (finale % 1 > 0.4)
+                                {
+                                    double tmp = 0.5 - finale % 1;
+                                    finale -= tmp;
+                                }
+                                else if (finale % 1 > 0.2)
+                                {
+                                    double tmp = 0.25 - finale % 1;
+                                    finale -= tmp;
+                                }
+                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(finale * 60));
                             }
                         }
                     }
@@ -320,7 +366,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             totalDays++;
                         }
                     }
-                    totale = totale + (int)baseDuration;
+                    if (finale > 0.0)
+                    {
+                        totale = totale + (int)(finale * 60);
+                    }
+                    else {
+                        totale = totale + (int)baseDuration;
+                    }
                     double stampa = 0.0;
                     if (valueToPrint != "") {
                         stampa = double.Parse(valueToPrint, CultureInfo.InvariantCulture);

@@ -602,7 +602,7 @@ namespace PowerWeb.Modules
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay)
             {
                 //nel caso sia notturno vado a mettere il giorno corretto
-                if (newRegV.Data_Ora_Fis_U.Value.Hour < newRegV.Data_Ora_Fis_E.Hour)
+                if (newRegV.Data_Ora_Fis_U.Value.Hour < newRegV.Data_Ora_Fis_E.Hour && newRegV.Data_Ora_Fis_E.Hour < 6)
                 {
                     data_Reg = data_Reg.AddDays(1);
                     newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, currTimeOfDay.Second);

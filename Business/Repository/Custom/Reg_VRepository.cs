@@ -291,13 +291,15 @@ namespace Business.Repository.Custom
 
                                         if (roundingEnum == RoundingMethodEnum.None)
                                         {
-                                            //Recupero i Parametri di Arrotondamento del Cantiere
-                                            roundingEnum = currentCant.RoundingMethodEnum;
-                                            thresholdStart = currentCant.Soglia_Arrot_Fig_Can.HasValue ? currentCant.Soglia_Arrot_Fig_Can.Value : -1;
-                                            thresholdEnd = currentCant.Soglia_Arrot_Fig_F_Can.HasValue ? currentCant.Soglia_Arrot_Fig_F_Can.Value : -1;
+                                            if (currentCol.Qualifica_Col != "0") {
+                                                //Recupero i Parametri di Arrotondamento del Cantiere
+                                                roundingEnum = currentCant.RoundingMethodEnum;
+                                                thresholdStart = currentCant.Soglia_Arrot_Fig_Can.HasValue ? currentCant.Soglia_Arrot_Fig_Can.Value : -1;
+                                                thresholdEnd = currentCant.Soglia_Arrot_Fig_F_Can.HasValue ? currentCant.Soglia_Arrot_Fig_F_Can.Value : -1;
 
-                                            minutesStart = currentCant.Minuti_Tolleranza_Can.HasValue ? currentCant.Minuti_Tolleranza_Can.Value : -1;
-                                            minutesEnd = currentCant.Minuti_Tolleranza_F_Can.HasValue ? currentCant.Minuti_Tolleranza_F_Can.Value : -1;
+                                                minutesStart = currentCant.Minuti_Tolleranza_Can.HasValue ? currentCant.Minuti_Tolleranza_Can.Value : -1;
+                                                minutesEnd = currentCant.Minuti_Tolleranza_F_Can.HasValue ? currentCant.Minuti_Tolleranza_F_Can.Value : -1;
+                                            }
                                         }
 
                                         if (roundingEnum == RoundingMethodEnum.None)
@@ -391,7 +393,7 @@ namespace Business.Repository.Custom
                                                         moduleRegUMin = currentRegUMin % minutesEnd;
 
                                                     //se la soglia di uscita è valorizzata
-                                                    if (thresholdEnd > 0)
+                                                    if (thresholdEnd >= 0)
                                                     {
                                                         //se il modulo dei minuti è maggiore della soglia di uscita impostata nei parametri
                                                         if (moduleRegUMin > thresholdEnd)
@@ -1418,10 +1420,18 @@ namespace Business.Repository.Custom
                                                 }
                                                 #endregion
                                             }
-
-
                                             #endregion
                                         }
+                                        if (currentCol.Metodo_Arrotondamento_Col == 1 || currentCant.Metodo_Arrotondamento_Can == 1) {
+                                            roundingEnum = RoundingMethodEnum.Duration;
+                                        }
+                                                
+                                        if (roundingEnum == RoundingMethodEnum.Duration)
+                                        {
+                                            //DeleteDurationRounding(regVs);
+                                            DurationRounding(currentRegVs, roundingEnum);
+                                        }
+
                                     }
                                 }
                             }
@@ -1634,12 +1644,6 @@ namespace Business.Repository.Custom
                             }
                             #endregion
 
-                            #region ARROTONDAMENTO PER DURATA
-                            if (currentCol.RoundingMethodEnum == RoundingMethodEnum.Duration)
-                            {
-                                DurationRounding(colGroup,currentCol.RoundingMethodEnum);
-                            }
-                            #endregion
 
                         }
                     }
@@ -1950,28 +1954,99 @@ namespace Business.Repository.Custom
 
                         if (currentCol != default(Col))
                         {
-                            // Raggruppa le registrazioni per data (giorno)
-                            var regsByColDate = colGroup.GroupBy(reg => reg.Data_Reg).ToList();
+                            // Aggiungo un controllo per komplett se sono manutentori
+                            if (currentCol.Qualifica_Col != "0") {
+                                // Raggruppa le registrazioni per data (giorno)
+                                var regsByColDate = colGroup.GroupBy(reg => reg.Data_Reg).ToList();
 
-                            foreach (var colDateGroup in regsByColDate)
-                            {
-                                // Accumulatore delle durate per il giorno corrente
-                                int workDayDuration = 0;
-                                foreach (Reg_V regv in colDateGroup)
+                                foreach (var colDateGroup in regsByColDate)
                                 {
-                                    if (regv.Durata_Fis != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 0) {
-                                        // Accumula la durata delle registrazioni della giornata
-                                        workDayDuration += regv.Durata_Fis.Value;
-                                    } else if (regv.Durata_Fis != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 1) {
-                                        List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id).ToList();
-                                        thresholdDuration = cantiere.First().Soglia_Durata_Can.HasValue ? cantiere.First().Soglia_Durata_Can.Value : thresholdDuration;
-                                        minutesDuration = cantiere.First().Arrot_Durata_Can.HasValue ? cantiere.First().Arrot_Durata_Can.Value : minutesDuration;
-                                        if (fromHourThresholdDuration <= 0 && (cantiere.First().Soglia_Durata_Can.HasValue || cantiere.First().Arrot_Durata_Can.HasValue)) {
-                                            fromHourThresholdDuration = 0;
+                                    // Accumulatore delle durate per il giorno corrente
+                                    int workDayDuration = 0;
+                                    foreach (Reg_V regv in colDateGroup)
+                                    {
+                                        if (regv.Durata_Fis != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 0)
+                                        {
+                                            // Accumula la durata delle registrazioni della giornata
+                                            workDayDuration += regv.Durata_Fis.Value;
                                         }
+                                        else if (regv.Durata_Fis != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 1)
+                                        {
+                                            List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id).ToList();
+                                            int tmpThresholDuration = thresholdDuration;
+                                            int tmpMinutesDuration = minutesDuration;
+                                            int tmpFromHourThresholdDuration = fromHourThresholdDuration;
+                                            if (currentCol.RoundingMethodEnum == RoundingMethodEnum.Duration)
+                                            {
+                                                if (!currentCol.Soglia_Durata_Col.HasValue)
+                                                {
+                                                    thresholdDuration = cantiere.First().Soglia_Durata_Can.HasValue ? cantiere.First().Soglia_Durata_Can.Value : thresholdDuration;
+                                                }
+                                                if (!currentCol.Arrot_Durata_Col.HasValue)
+                                                {
+                                                    minutesDuration = cantiere.First().Arrot_Durata_Can.HasValue ? cantiere.First().Arrot_Durata_Can.Value : minutesDuration;
+                                                }
+                                                if (!currentCol.Soglia_Minima_Arrotondamento_Durata_Col.HasValue)
+                                                {
+                                                    if (fromHourThresholdDuration == 60 && (cantiere.First().Soglia_Durata_Can.HasValue || cantiere.First().Arrot_Durata_Can.HasValue))
+                                                    {
+                                                        fromHourThresholdDuration = 0;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                thresholdDuration = cantiere.First().Soglia_Durata_Can.HasValue ? cantiere.First().Soglia_Durata_Can.Value : thresholdDuration;
+                                                minutesDuration = cantiere.First().Arrot_Durata_Can.HasValue ? cantiere.First().Arrot_Durata_Can.Value : minutesDuration;
+                                                if (fromHourThresholdDuration == 60 && (cantiere.First().Soglia_Durata_Can.HasValue || cantiere.First().Arrot_Durata_Can.HasValue))
+                                                {
+                                                    fromHourThresholdDuration = 0;
+                                                }
+                                            }
+                                            // Ore e minuti lavorati nella giornata corrente
+                                            int hoursWorked = regv.Durata_Fis.Value / 60;
+                                            int minutesWorked = regv.Durata_Fis.Value % 60;
+
+                                            if (minutesDuration == 0)
+                                            {
+                                                // Se il parametro è a 0, lo porto a 60 per poter fare i calcoli
+                                                minutesDuration = 60;
+                                            }
+
+                                            if (minutesWorked < fromHourThresholdDuration) //Inserire parametro
+                                                continue;
+
+                                            int moduleMinutes = minutesWorked % minutesDuration;
+                                            //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                            if (moduleMinutes != 0)
+                                            {
+                                                //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                if (moduleMinutes > thresholdDuration)
+                                                {
+                                                    // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                    TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                    roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                }
+                                                //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                else
+                                                {
+                                                    // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                    TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                    roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                }
+                                            }
+                                            thresholdDuration = tmpThresholDuration;
+                                            minutesDuration = tmpMinutesDuration;
+                                            fromHourThresholdDuration = tmpFromHourThresholdDuration;
+                                        }
+                                    }
+
+                                    if (workDayDuration > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 0)
+                                    {
+                                        //List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == ).ToList();
                                         // Ore e minuti lavorati nella giornata corrente
-                                        int hoursWorked = regv.Durata_Fis.Value / 60;
-                                        int minutesWorked = regv.Durata_Fis.Value % 60;
+                                        int hoursWorked = workDayDuration / 60;
+                                        int minutesWorked = workDayDuration % 60;
 
                                         if (minutesDuration == 0)
                                         {
@@ -1979,10 +2054,11 @@ namespace Business.Repository.Custom
                                             minutesDuration = 60;
                                         }
 
-                                        if (minutesWorked < fromHourThresholdDuration) //Inserire parametro
+                                        if (minutesWorked <= fromHourThresholdDuration) //Inserire parametro
                                             continue;
 
                                         int moduleMinutes = minutesWorked % minutesDuration;
+
                                         //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
                                         if (moduleMinutes != 0)
                                         {
@@ -1991,57 +2067,20 @@ namespace Business.Repository.Custom
                                             {
                                                 // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
                                                 TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
-                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingReg(currColId.GetValueOrDefault(), colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
                                             }
                                             //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
                                             else
                                             {
                                                 // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
                                                 TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
-                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingReg(currColId.GetValueOrDefault(), colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
                                             }
                                         }
                                     }
                                 }
-
-                                if (workDayDuration > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 0)
-                                {
-                                    //List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == ).ToList();
-                                    // Ore e minuti lavorati nella giornata corrente
-                                    int hoursWorked = workDayDuration / 60;
-                                    int minutesWorked = workDayDuration % 60;
-
-                                    if (minutesDuration == 0)
-                                    {
-                                        // Se il parametro è a 0, lo porto a 60 per poter fare i calcoli
-                                        minutesDuration = 60;
-                                    }
-
-                                   if (minutesWorked <= fromHourThresholdDuration) //Inserire parametro
-                                        continue;
-
-                                    int moduleMinutes = minutesWorked % minutesDuration;
-
-                                    //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
-                                    if (moduleMinutes != 0)
-                                    {
-                                        //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
-                                        if (moduleMinutes > thresholdDuration)
-                                        {
-                                            // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
-                                            TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
-                                            roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingReg(currColId.GetValueOrDefault(), colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
-                                        }
-                                        //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
-                                        else
-                                        {
-                                            // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
-                                            TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
-                                            roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingReg(currColId.GetValueOrDefault(), colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
-                                        }
-                                    }
-                                }
                             }
+                            
                         }
                     }
                 }
@@ -3814,10 +3853,6 @@ namespace Business.Repository.Custom
             else return null;
 
             return null;
-
-
-
-
         }
 
         private static Reg_V GetNewRegVFromTimesheet(Col col, IEnumerable<Cant> cants, int counter, DateTime i, Tab_Orari timesheet)

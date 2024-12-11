@@ -27,8 +27,6 @@ namespace Business
 
         public bool AllowDeleting;
 
-
-
         public DevExtremeLinqServerRepository(IRepository<TEntity> repository)
         {
             _DbSet = repository.DbSet;
