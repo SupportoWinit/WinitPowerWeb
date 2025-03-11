@@ -1106,6 +1106,9 @@ namespace Business.Repository.Custom
 
                     // viene recuperato dai parametri l'eventuale default di inzio della giornata
                     var defaultInitDay = RepoManager.ParamRepo.ParametersRow.Default_Ora_Inizio_Giornata ?? new TimeSpan(0, 0, 0);
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseStartOfDay) == 1) {
+                        defaultInitDay = new TimeSpan(0,0,0);
+                    }
 
                     // inserimento del periodo di date all'interno del dizionario
                     periodDates.ForEach(pDate => returnDictionary.Add(pDate, new List<Tuple<int,TimeSpan, TimeSpan, TimeSpan?, TimeSpan?>>()));
@@ -1282,9 +1285,9 @@ namespace Business.Repository.Custom
             if (validTimesheet.Any())
             {
                 var lastTimesheetDate = validTimesheet.Max(tor => tor.Data_Inizio);
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) {
-                    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
-                }
+                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) {
+                //    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
+                //}
                 // per ognuno degli orari recuperati viene verificato se si tratta di un orario valido per la data
                 // (cioè se rispetta giorno/ripetizione, non si tratta di un giorno festivo (solo per i collaboratori) e sia flaggato il giorno corretto); se si tratta di un orario
                 // valido allora lo si aggiunge all'elenco

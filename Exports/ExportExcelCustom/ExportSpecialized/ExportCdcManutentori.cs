@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
@@ -68,10 +69,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             var exportRegVs = regVs2.GroupBy(c => c.Col_Id);
             foreach (var exportReg in exportRegVs)
             {
-                for (DateTime cond = startMonth; cond.Month <= endMonth.Month; cond = cond.AddDays(1)) {
+                for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1)) {
                     //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
                     List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
                     string lastAtt = "";
+                    int lastAttId = 0;
                     string lastCant = "";
                     int lastDurata = 1;
                     //vado a fare un foreac
@@ -106,7 +108,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 tmpDic = att.First().Value;
                                                 foreach (var lista in tmpDic)
                                                 {
-                                                    if (lista.Key == attivita.First().Descrizione_Can)
+                                                    if (lista.Key == attivita.First().Note_Can)
                                                     {
                                                         esiste = true;
                                                     }
@@ -117,11 +119,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     if (esiste)
                                     {
                                         //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                        int tmp = tmpDic[attivita.First().Descrizione_Can];
+                                        int tmp = tmpDic[attivita.First().Note_Can];
                                         //incremento il totale delle ore mensili
-                                        tmpDic[attivita.First().Descrizione_Can] = tmp + lastDurata;
+                                        tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
                                         //azzero tute le variabili
-                                        lastAtt = attivita.First().Descrizione_Can;
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
                                         lastDurata = 0;
                                         aggiornato = true;
                                     }
@@ -130,11 +133,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         if (lastDurata > 0)
                                         {
                                             Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpDi[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
+                                            tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
                                             tmpAttivita.Add(tmpDi);
-                                        }
+                                        } 
                                         aggiornato = true;
-                                        lastAtt = attivita.First().Descrizione_Can;
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
                                         lastDurata = 0;
                                     }
                                     if (!aggiornato)
@@ -142,22 +146,24 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         if (lastDurata > 0)
                                         {
                                             var tmpdic = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpdic[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
+                                            tmpdic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
                                             tmpAttivita.Add(tmpdic);
                                         }
-                                        lastAtt = attivita.First().Descrizione_Can;
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
                                     }
                                 }
                                 else
                                 {
                                     if (lastDurata > 0)
                                     {
-                                        Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
-                                        tmpDic[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
-                                        tmpAttivita.Add(tmpDic);
+                                        Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+                                        tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                        tmpAttivita.Add(tmpDi);
                                     }
                                     lastDurata = 0;
-                                    lastAtt = attivita.First().Descrizione_Can;
+                                    lastAtt = attivita.First().Note_Can;
+                                    lastAttId = attivita.First().Cant_Id;
                                 }
 
                             }
@@ -165,7 +171,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             {
                                 if (lastAtt != "" && lastDurata > 0)
                                 {
-                                    attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == lastAtt).ToList();
+                                    attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Note_Can == lastAtt).ToList();
                                     //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
                                     bool aggiornato = false;
                                     bool esiste = false;
@@ -180,7 +186,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 tmpDic = att.First().Value;
                                                 foreach (var lista in tmpDic)
                                                 {
-                                                    if (lista.Key == attivita.First().Descrizione_Can)
+                                                    if (lista.Key == attivita.First().Note_Can)
                                                     {
                                                         esiste = true;
                                                     }
@@ -191,11 +197,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     if (esiste)
                                     {
                                         //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                        int tmp = tmpDic[attivita.First().Descrizione_Can];
+                                        int tmp = tmpDic[attivita.First().Note_Can];
                                         //incremento il totale delle ore mensili
-                                        tmpDic[attivita.First().Descrizione_Can] = tmp + lastDurata;
+                                        tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
                                         //azzero tute le variabili
                                         lastAtt = "";
+                                        lastAttId = 0;
                                         lastDurata = 0;
                                         aggiornato = true;
                                     }
@@ -204,11 +211,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         if (lastDurata > 0)
                                         {
                                             Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpDi[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
+                                            tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
                                             tmpAttivita.Add(tmpDi);
                                         }
                                         aggiornato = true;
                                         lastAtt = "";
+                                        lastAttId = 0;
                                         lastDurata = 0;
                                     }
                                     if (!aggiornato)
@@ -216,15 +224,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         if (lastDurata > 0)
                                         {
                                             Dictionary<string, Dictionary<string, int>> tmpdic = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpdic[currentCant.First().Descrizione_Can] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
+                                            tmpdic[currentCant.First().Note_Can] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
                                             tmpAttivita.Add(tmpdic);
                                         }
                                         lastAtt = "";
+                                        lastAttId = 0;
                                         lastDurata = 0;
                                     }
                                 }
                                 attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                                lastAtt = attivita.First().Descrizione_Can;
+                                lastAtt = attivita.First().Note_Can;
+                                lastAttId = attivita.First().Cant_Id;
                             }
                         }
                         else if (reg.Registrazione_Tipo_Reg == 0)
@@ -233,6 +243,84 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             {
                                 lastDurata += reg.Durata_Fig.Value;
                                 lastCant = reg.Cant_Desc;
+                            }
+                            if (totaleReg + 1 == list.Count() && lastAtt != "") {
+                                //recupero la lista delle attività
+                                List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId).ToList();
+                                //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+                                bool aggiornato = false;
+                                //ciclo tutte le attività che ho recuperato in precedenza
+                                if (listaAttivita.Count() > 0)
+                                {
+                                    bool esiste = false;
+                                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+                                    foreach (var att in listaAttivita)
+                                    {
+                                        if (att.First().Key == lastCant)
+                                        {
+                                            if (!esiste)
+                                            {
+                                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+                                                tmpDic = att.First().Value;
+                                                foreach (var lista in tmpDic)
+                                                {
+                                                    if (lista.Key == attivita.First().Note_Can)
+                                                    {
+                                                        esiste = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (esiste)
+                                    {
+                                        //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+                                        int tmp = tmpDic[attivita.First().Note_Can];
+                                        //incremento il totale delle ore mensili
+                                        tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
+                                        //azzero tute le variabili
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
+                                        lastDurata = 0;
+                                        aggiornato = true;
+                                    }
+                                    else
+                                    {
+                                        if (lastDurata > 0)
+                                        {
+                                            Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+                                            tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                            tmpAttivita.Add(tmpDi);
+                                        }
+                                        aggiornato = true;
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
+                                        lastDurata = 0;
+                                    }
+                                    if (!aggiornato)
+                                    {
+                                        if (lastDurata > 0)
+                                        {
+                                            var tmpdic = new Dictionary<string, Dictionary<string, int>>();
+                                            tmpdic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                            tmpAttivita.Add(tmpdic);
+                                        }
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
+                                    }
+                                }
+                                else
+                                {
+                                    if (lastDurata > 0)
+                                    {
+                                        Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
+                                        tmpDic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                        tmpAttivita.Add(tmpDic);
+                                    }
+                                    lastDurata = 0;
+                                    lastAtt = attivita.First().Note_Can;
+                                    lastAttId = attivita.First().Cant_Id;
+                                }
                             }
                         } else if (reg.Registrazione_Tipo_Reg == 4) {
                             if (reg.Durata_Fig != null)
@@ -250,7 +338,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             foreach (var att in cant.First().Value)
                             {
-                                List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == att.Key).ToList();
+                                List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Note_Can == att.Key).ToList();
                                 var newRounding = new Reg_V();
                                 newRounding.Col_Id = exportReg.Key;
                                 newRounding.Cant_Id = cants.First().Cant_Id;
@@ -388,7 +476,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 foreach (var worksheet in ExcelWorkbook.Workbook.Worksheets)
                 {
-                    worksheet.Cells.AutoFitColumns();
+                    //worksheet.Cells.AutoFitColumns();
                 }
             }
         }
@@ -414,7 +502,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             columnIndex++;
 
-            WriteHeaderTotalDaysCell();
+            //WriteHeaderTotalDaysCell();
 
             columnIndex = 1;
 
@@ -428,16 +516,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             CellInsertValue(worksheetIndex, columnIndex, rowIndex, "COGNOME", ExcelInsertTypeEnum.Content);
             RangeSetFontColor(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, Color.Red);
             CellInsertValue(worksheetIndex, columnIndex, rowIndex + 1, col.Cognome_Col, ExcelInsertTypeEnum.Content);
+            ColumnsSetWidth(worksheetIndex, columnIndex, columnIndex, 20);
             columnIndex++;
 
             CellInsertValue(worksheetIndex, columnIndex, rowIndex, "NOME", ExcelInsertTypeEnum.Content);
             RangeSetFontColor(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, Color.Red);
             CellInsertValue(worksheetIndex, columnIndex, rowIndex + 1, col.Nome_Col, ExcelInsertTypeEnum.Content);
+            ColumnsSetWidth(worksheetIndex, columnIndex, columnIndex, 15);
             columnIndex++;
 
             CellInsertValue(worksheetIndex, columnIndex, rowIndex, "CENTRO DI COSTO", ExcelInsertTypeEnum.Content);
             RangeSetFontColor(worksheetIndex, columnIndex, rowIndex,columnIndex,rowIndex,Color.Red);
             RangeSetBackgroundColor(worksheetIndex, 1,rowIndex,3,rowIndex,Color.Yellow, fillStyle);
+            ColumnsSetWidth(worksheetIndex, columnIndex, columnIndex, 30);
         }
 
         private void WriteTimesheetHeader()
@@ -464,17 +555,63 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 CellInsertValue(worksheetIndex, 3, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);
 
-                int totaleMensile = 0;
+                double totaleMensile = 0;
+                TimeSpan totaleOrario = new TimeSpan(0,0,0);
 
                 foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
                 {
                     var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     var timeDuration = TimeSpan.FromHours(baseDuration);
+                    double minuti = 0;
                     string valueToPrint = "";
                     if (baseDuration > 0)
                     {
-                        totaleMensile += ((int)timeDuration.TotalMinutes);
-                        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        double totaleGiornaliero = baseDuration;
+                        minuti = timeDuration.TotalMinutes;
+                        if (totaleGiornaliero % 1 > 0.9)
+                        {
+                            double tmp = 1 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.75)
+                        {
+                            double tmp = totaleGiornaliero % 1 - 0.75;
+                            totaleGiornaliero -= tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.65)
+                        {
+                            double tmp = 0.75 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.5)
+                        {
+                            double tmp = totaleGiornaliero % 1 - 0.5;
+                            totaleGiornaliero -= tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.4)
+                        {
+                            double tmp = 0.5 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.25)
+                        {
+                            double tmp = totaleGiornaliero % 1 - 0.25;
+                            totaleGiornaliero -= tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.15)
+                        {
+                            double tmp = 0.25 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.0)
+                        {
+                            double tmp = totaleGiornaliero % 1;
+                            totaleGiornaliero -= tmp;
+                        }
+                        totaleOrario.Add(timeDuration);
+                        valueToPrint = FromTotalMinutesToFormattedType((int)(totaleGiornaliero * 60));
+                        totaleMensile += totaleGiornaliero;
+
                     } else if (justificationDec == "TOTALE") {
                         if (baseDuration == 0)
                         {
@@ -484,7 +621,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
                         }
                     }
-
                     RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex + day.Day + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day + 2, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                 }
@@ -492,15 +628,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 string totalHours = "0";
                 var timeDurationTotale = TimeSpan.FromHours(justification.TotalHours);
                 if (totaleMensile > 0) {
-                    totalHours = FromTotalMinutesToFormattedType(totaleMensile);
+                    totalHours = FromTotalMinutesToFormattedType((int)(totaleMensile * 60));
                 } 
 
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
 
-                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
-
+                //RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                //CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
 
                 rowIndex++;
 
@@ -540,7 +675,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     } 
                     RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
-                    ColumnsSetWidth(worksheetIndex, 4, 4,5);
                 }
 
                 string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
@@ -577,7 +711,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, "0");
             RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Yellow, fillStyle);
             RangeSetWrapText(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, true);
-            ColumnsSetWidth(worksheetIndex, columnIndex, columnIndex + 1, 6);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 6);
             RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex);
             RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
         }

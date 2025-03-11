@@ -1764,6 +1764,7 @@
     <Compile Include="Api\DamageController.cs" />
     <Compile Include="Api\FileUploaderController.cs" />
     <Compile Include="Api\ExportController.cs" />
+    <Compile Include="Api\InsertRequestController.cs" />
     <Compile Include="Api\ModelBinders\ClockAppRegModelBinder.cs" />
     <Compile Include="Api\MoveRegsController.cs" />
     <Compile Include="Api\ReceivePowerNFCRegController.cs" />

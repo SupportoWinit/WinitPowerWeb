@@ -5,6 +5,7 @@ using Business.Repository;
 using Common;
 using DevExpress.Web.ASPxCallback;
 using DevExpress.Web.ASPxClasses;
+using DevExpress.Web.ASPxScheduler.Internal;
 using DevExpress.Web.ASPxUploadControl;
 using Domain;
 using log4net;
@@ -231,76 +232,194 @@ namespace PowerWeb.Modules
         }
 
         #region IMPORTAZIONE
+        //test chatgpt
+        //protected void cImportFormServer_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
+        //{
+        //               
+        //    var semaphore = RepoManager.ParamRepo.IsElaborationReady();
+        //
+        //    if (!RepoManager.ParamRepo.LockElaboration() || !semaphore)
+        //    {
+        //        e.Result = "Elaborazione già avviata da un'altra instanza!";
+        //        _log.Warn(String.Format("Funzione di import bloccata per l'utente {0}. Import già avviato da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
+        //        return;
+        //    }
+        //
+        //
+        //    //Vengono richieste le timbrature da un server esterno e creato il relativo txt
+        //    try
+        //    {
+        //        ExternalImportManager.GetFromRemoteSource();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _log.ErrorFormat("Errori durante l'import da server esterno : {0}", ex.Message);
+        //    }
+        //
+        //
+        //    // Inizializzaizone del file che conterrà le reg sospese
+        //    string regSuspendedFile = Server.MapPath(Path.Combine(Common.Properties.Settings.Default.Files_Input_Path, String.Format("{0}_{1}.txt", Common.Properties.Settings.Default.SuspendedRegsFile, DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss"))));
+        //
+        //    // per sicurezza è ricalcolato l'elenco dei file da elaborare e la presenza dei file
+        //    CalcolaFilesRegDaImportare();
+        //
+        //    List<KeyValuePair<String, String>> importErrors = new List<KeyValuePair<string, string>>();
+        //    List<String> tmpFiles = new List<string>();
+        //
+        //    try
+        //    {
+        //        IEnumerable<string> regNoGpsToImport = BusinessService.GetRegsNoGpsFromFiles(FilesRegDaImportare);
+        //        IEnumerable<string> regGpsToImport = BusinessService.GetRegsGpsFromFiles(FilesRegDaImportare);
+        //
+        //        importErrors = RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _log.ErrorFormat("Errore durante la fase di import : {0}", ex.Message);
+        //        tmpFiles = FilesRegDaImportare;
+        //
+        //        FilesRegDaImportare = new List<String>();
+        //    }
+        //    finally
+        //    {
+        //        RepoManager.ParamRepo.UnLockElaboration();
+        //    }
+        //
+        //    // effettuazione del backup di tutti i file della lista
+        //    string backupFolder = Server.MapPath(Common.Properties.Settings.Default.Files_Input_Backup_Path);
+        //    
+        //    // backup dei files processati
+        //    BusinessService.BackupProcessedFiles(FilesRegDaImportare, backupFolder);
+        //
+        //    if (tmpFiles.Count() > 0) {
+        //        FilesRegDaImportare = tmpFiles;
+        //        importErrors.Add(new KeyValuePair<String, String>("Eccezione rilevata", "Errore in fase di import"));
+        //    }
+        //    
+        //    if(FilesRegDaImportare==null)
+        //    e.Result = "Non ci sono registrazioni da importare";
+        //
+        //    // se si sono verificati degli errori
+        //    if (importErrors.First().Key == "Eccezione rilevata") 
+        //    {
+        //        e.Result = "Si è verificato un problema durante il caricamento dei dati.\n Ti invitiamo a riprovare tra qualche minuto,\n Se il problema persiste, contatta il supporto tecnico";
+        //    }
+        //    else if (importErrors.Count > 0)
+        //    {
+        //        e.Result = "Import terminato con segnalazioni!";
+        //        // creazione delle reg sospese
+        //        BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
+        //    }
+        //    else
+        //    {
+        //        e.Result = "Import terminato!";
+        //    }
+        //}
 
         protected void cImportFormServer_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
         {
-                       
-            var semaphore = RepoManager.ParamRepo.IsElaborationReady();
-
-            if (!RepoManager.ParamRepo.LockElaboration() || !semaphore)
+            if (!CanStartElaboration(out string errorMessage))
             {
-                e.Result = "Elaborazione già avviata da un'altra instanza!";
-                _log.Warn(String.Format("Funzione di import bloccata per l'utente {0}. Import già avviato da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
+                e.Result = errorMessage;
                 return;
             }
 
+            try
+            {
+                ImportFromRemoteServer();
+                var filesToImport = CalculateFilesToImport();
+                var importErrors = ProcessImport(filesToImport);
 
-            //Vengono richieste le timbrature da un server esterno e creato il relativo txt
+                BackupFiles(filesToImport);
+
+                e.Result = GenerateResultMessage(importErrors, filesToImport);
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Errore generale durante l'importazione: {0}", ex.Message);
+                e.Result = "Si è verificato un problema durante il caricamento dei dati.\n Ti invitiamo a riprovare tra qualche minuto,\n Se il problema persiste, contatta il supporto tecnico";
+            }
+            finally
+            {
+                RepoManager.ParamRepo.UnLockElaboration();
+            }
+        }
+
+        private bool CanStartElaboration(out string errorMessage)
+        {
+            errorMessage = string.Empty;
+
+            if (!RepoManager.ParamRepo.LockElaboration() || !RepoManager.ParamRepo.IsElaborationReady())
+            {
+                errorMessage = "Elaborazione già avviata da un'altra istanza!";
+                _log.Warn($"Funzione di import bloccata per l'utente {PowerWebContext.Current.User.Codice_Utente}. Import già avviato.");
+                return false;
+            }
+            return true;
+        }
+
+        private void ImportFromRemoteServer()
+        {
             try
             {
                 ExternalImportManager.GetFromRemoteSource();
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Errori durante l'import da server esterno : {0}", ex.Message);
+                _log.ErrorFormat("Errori durante l'import da server esterno: {0}", ex.Message);
+                throw;
             }
+        }
 
-
-            // Inizializzaizone del file che conterrà le reg sospese
-            string regSuspendedFile = Server.MapPath(Path.Combine(Common.Properties.Settings.Default.Files_Input_Path, String.Format("{0}_{1}.txt", Common.Properties.Settings.Default.SuspendedRegsFile, DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss"))));
-
-            // per sicurezza è ricalcolato l'elenco dei file da elaborare e la presenza dei file
+        private List<string> CalculateFilesToImport()
+        {
             CalcolaFilesRegDaImportare();
+            return FilesRegDaImportare ?? new List<string>();
+        }
 
-            List<KeyValuePair<String, String>> importErrors = new List<KeyValuePair<string, string>>();
-
+        private List<KeyValuePair<string, string>> ProcessImport(List<string> filesToImport)
+        {
+            var importErrors = new List<KeyValuePair<string, string>>();
             try
             {
-                IEnumerable<string> regNoGpsToImport = BusinessService.GetRegsNoGpsFromFiles(FilesRegDaImportare);
-                IEnumerable<string> regGpsToImport = BusinessService.GetRegsGpsFromFiles(FilesRegDaImportare);
+                var regNoGps = BusinessService.GetRegsNoGpsFromFiles(filesToImport);
+                var regGps = BusinessService.GetRegsGpsFromFiles(filesToImport);
 
-                importErrors = RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray());
+                importErrors = RepoManager.RegRepo.Import(regNoGps.ToArray(), regGps.ToArray());
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Errore durante la fase di import : {0}", ex.Message);
-            }
-            finally
-            {
-                RepoManager.ParamRepo.UnLockElaboration();
+                _log.ErrorFormat("Errore durante la fase di import: {0}", ex.Message);
+                throw;
             }
 
-            // effettuazione del backup di tutti i file della lista
+            return importErrors;
+        }
+
+        private void BackupFiles(List<string> filesToImport)
+        {
             string backupFolder = Server.MapPath(Common.Properties.Settings.Default.Files_Input_Backup_Path);
+            BusinessService.BackupProcessedFiles(filesToImport, backupFolder);
+        }
 
-            // backup dei files processati
-            BusinessService.BackupProcessedFiles(FilesRegDaImportare, backupFolder);
+        private string GenerateResultMessage(List<KeyValuePair<string, string>> importErrors, List<string> filesToImport)
+        {
+            if (filesToImport.Count == 0)
+                return "Non ci sono registrazioni da importare.";
 
-            if(FilesRegDaImportare==null)
-            e.Result = "Non ci sono registrazioni da importare";
-
-            // se si sono verificati degli errori
             if (importErrors.Count > 0)
             {
-                e.Result = "Import terminato con segnalazioni!";
-                // creazione delle reg sospese
+                string regSuspendedFile = Server.MapPath(Path.Combine(
+                    Common.Properties.Settings.Default.Files_Input_Path,
+                    $"{Common.Properties.Settings.Default.SuspendedRegsFile}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.txt"));
+
                 BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
+                return "Import terminato con segnalazioni!";
             }
-            else
-            {
-                e.Result = "Import terminato!";
-            }
+
+            return "Import terminato!";
         }
+
 
         #endregion
 

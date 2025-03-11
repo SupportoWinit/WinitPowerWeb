@@ -1248,7 +1248,7 @@
             this.CompanyLogo.Dpi = 254F;
             this.CompanyLogo.LocationFloat = new DevExpress.Utils.PointFloat(3.10F,10F);
             this.CompanyLogo.Name = "CompanyLogo";
-            this.CompanyLogo.SizeF = new System.Drawing.SizeF(400F, 200F);
+            this.CompanyLogo.SizeF = new System.Drawing.SizeF(300F, 150F);
             this.CompanyLogo.StylePriority.UseBorders = false;
             // 
             // xrLabel9

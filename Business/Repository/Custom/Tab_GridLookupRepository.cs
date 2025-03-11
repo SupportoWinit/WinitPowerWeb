@@ -210,7 +210,7 @@ namespace Business.Repository.Custom
                         //viene prparata la query da eseguire successivamente
                         IQueryable query = dbSet;
 
-                        //se sono attivi i filtri di figliale responsabile
+                        //se sono attivi i filtri di filiale responsabile
                         if (PowerWebContext.Current.DomainFilter != DomainFilterEnum.None && dataSource == null)
                         {
                             if ((PowerWebContext.Current.DomainFilter & DomainFilterEnum.Fil) == DomainFilterEnum.Fil)

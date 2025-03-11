@@ -426,6 +426,14 @@
             if (e.buttonID == 'addCloneMulti') {
                 OnCustomAddCloneMultiButtonClick(s, e);
             }
+
+            if (e.buttonID == 'accept') {
+                OnCustomAcceptClick(s, e);
+            }
+
+            if (e.buttonID == 'deleteRequest') {
+                OnCustomAcceptClick(s, e);
+            }
         }
 
         function OnCustomButtonDetailClick(s, e) {

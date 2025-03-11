@@ -304,7 +304,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             if (ieri * 60 > 0)
                             {
                                 finale = tmpIeri + tmpPrint;
-                                if (finale % 1 > 0.9) {
+                                if (finale % 1 > 0.9)
+                                {
                                     double tmp = 1 - finale % 1;
                                     finale += tmp;
                                 }
@@ -313,7 +314,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     double tmp = 0.75 - finale % 1;
                                     finale += tmp;
                                 }
-                                else if (finale % 1 > 0.4) {
+                                else if (finale % 1 > 0.4)
+                                {
                                     double tmp = 0.5 - finale % 1;
                                     finale += tmp;
                                 }
@@ -322,7 +324,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     double tmp = 0.25 - finale % 1;
                                     finale += tmp;
                                 }
-
                                 valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(finale * 60));
                             }
                         }

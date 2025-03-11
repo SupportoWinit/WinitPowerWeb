@@ -234,10 +234,14 @@ namespace Business.Repository.Custom
         {
             get
             {
-                if ((PowerWebContext.Current.DomainFilter & DomainFilterEnum.Fil) == DomainFilterEnum.Fil && PowerWebContext.Current.Fils != null && PowerWebContext.Current.User.Liv_Utente < 10)
+                if (((PowerWebContext.Current.DomainFilter & DomainFilterEnum.Fil) == DomainFilterEnum.Fil && PowerWebContext.Current.Fils != null && PowerWebContext.Current.User.Liv_Utente < 10))
                 {
-                    var allFillIds = PowerWebContext.Current.Fils.Select(fil => fil.Fil_Id).ToList();
-                    return fil => allFillIds.Contains(fil.Fil_Id);
+                    if (PowerWebContext.Current.Fils.Count > 0 && PowerWebContext.Current.User.Liv_Utente < 10)
+                    {
+                        var allFillIds = PowerWebContext.Current.Fils.Select(fil => fil.Fil_Id).ToList();
+                        return fil => allFillIds.Contains(fil.Fil_Id);
+                    }
+                    else return base.Filter;
                 }
                 else return base.Filter;
             }

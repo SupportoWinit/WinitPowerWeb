@@ -3859,6 +3859,9 @@ namespace Business
                     case "SQUADRA":
                         returnValue = AdditionalInfoEnum.Squadra;
                         break;
+                    case "NOTE":
+                        returnValue = AdditionalInfoEnum.Note;
+                        break;
                 }
 
             return returnValue;

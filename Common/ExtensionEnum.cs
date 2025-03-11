@@ -200,7 +200,12 @@ namespace Common
         NoArrotColAuthorized,
         AutoClosuresXMinuteEnum,
         AllColLimitiByOrario,
-        ShowHourNoTimb
+        ShowHourNoTimb,
+        UseTabDistDuration,
+        NocturneOnCartellino,
+        PartialTimesheet,
+        DetailsMalattiaCartellino,
+        UseStartOfDay
     }
 
     public enum ClockAppsOperationEnum
@@ -1744,7 +1749,12 @@ namespace Common
         /// <summary>
         /// Informazione aggiuntiva della squadra che ha timbrato l'attività
         /// </summary>
-        Squadra
+        Squadra,
+
+        /// <summary>
+        /// Informazione aggiuntiva delle note allegate alla timbratura
+        /// </summary>
+        Note
 
     }
 

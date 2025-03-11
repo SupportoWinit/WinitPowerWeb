@@ -523,7 +523,7 @@ namespace PowerWeb.Modules
                                             foreach (var detailCalendar in dayCalendar.Value)
                                             {
                                                 if ((RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && cantId == detailCalendar.Item1))
-                                                {
+                                                { 
                                                     //var newRegV = RepoManager.Reg_VRepo.Init();
                                                     //newRegV.RegE = ++lastId;
                                                     //newRegV.Col_Id = colId;

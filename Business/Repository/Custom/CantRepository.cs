@@ -1874,7 +1874,7 @@ namespace Business.Repository.Custom
                             columnsNumber.Add("NOTE", Array.IndexOf(splittedRow, "NOTE"));
                             columnsNumber.Add("PROVINCIA", Array.IndexOf(splittedRow, "PROVINCIA"));
                             columnsNumber.Add("CAP", Array.IndexOf(splittedRow, "CAP"));
-
+                            columnsNumber.Add("RAGGIO", Array.IndexOf(splittedRow, "RAGGIO"));
 
 
                             if (columnsNumber.ContainsValue(-1))
@@ -1917,6 +1917,7 @@ namespace Business.Repository.Custom
                             string note = splittedLine[columnsNumber["NOTE"]].Trim();
                             string provincia = splittedLine[columnsNumber["PROVINCIA"]].Trim();
                             string cap = splittedLine[columnsNumber["CAP"]].Trim();
+                            string raggio = splittedLine[columnsNumber["RAGGIO"]].Trim();
 
                             #endregion
 
@@ -2010,6 +2011,19 @@ namespace Business.Repository.Custom
                                         cantiere.LatitudineGps_Can = geocode.Point.Coordinates[0];
                                         cantiere.LongitudineGps_Can = geocode.Point.Coordinates[1];
                                     }
+                                }
+
+                                if (raggio != "") {
+                                    if (raggio.Contains(",")) {
+                                        var tmp = raggio.Split(',');
+                                        raggio = tmp[0];
+                                    }
+                                    short s;
+                                    if (!short.TryParse(raggio, out s))
+                                    {
+                                        s = 0;
+                                    }
+                                    cantiere.RaggioGps_Can = s;
                                 }
 
                                 #endregion
@@ -2528,7 +2542,7 @@ namespace Business.Repository.Custom
                 {
                     var allFilIds = PowerWebContext.Current.Fils.Select(fil => fil.Fil_Id).ToList();
                     return cant =>/*/* cant.Fil_Id == null || */allFilIds.Contains(cant.Fil_Id.Value);
-                } else if (PowerWebContext.Current.DomainFilter == DomainFilterEnum.Both && PowerWebContext.Current.Fils != null && PowerWebContext.Current.User.Liv_Utente < 10) {
+                } else if (PowerWebContext.Current.DomainFilter == DomainFilterEnum.Both && PowerWebContext.Current.Fils.Count > 0 && PowerWebContext.Current.User.Liv_Utente < 10) {
                     var allFilIds = PowerWebContext.Current.Fils.Select(fil => fil.Fil_Id).ToList();
                     return cant => cant.Fil_Id == null || allFilIds.Contains(cant.Fil_Id.Value);
                 } else return base.Filter;

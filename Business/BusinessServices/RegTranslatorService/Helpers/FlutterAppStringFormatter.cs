@@ -4,6 +4,7 @@ using Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.AccessControl;
 
 namespace Business.BusinessServices.RegTranslatorService.Helpers
 {
@@ -114,6 +115,32 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
 
                 return new List<string>() { line };
             }
+
+        internal static string CreateNoteLines(string deviceCode, string badgeCode, DateTime regDateTime, string note)
+        {
+            if (String.IsNullOrEmpty(note))
+                return "";
+
+            string activityLines = "";
+            // costruzione della stringa da processare
+            string line = string.Format(EXTRA_INFO_STRING_FORMAT
+                , SEPARATOR
+                , deviceCode
+                , "NOTE000001"
+                , regDateTime.Year
+                , regDateTime.Month.ToString("00")
+                , regDateTime.Day.ToString("00")
+                , regDateTime.Hour.ToString("00")
+                , regDateTime.Minute.ToString("00")
+                , " " //Reg direction per ora vuota
+                , INFOAGG
+                , NOTE
+                , note
+                );
+            // aggiunta della stringa alla lista di scrittura
+            activityLines = line;
+            return activityLines;
+        }
 
     }
 }

@@ -757,7 +757,7 @@ namespace PowerWeb
                                 #region Filtro per Filiale
 
                                 //se ho delle filiali E dai parametri è richiesta la gestione delle filiali o entrambi allora viene fatto un filtro per le filiali
-                                if (allFilIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Fil) && PowerWebContext.Current.User.Liv_Utente < 10)
+                                if (allFilIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Fil) || (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both && allFilIds.Any()) && PowerWebContext.Current.User.Liv_Utente < 10)
 
                                 {
                                     //istanzia la stringa che costituirà il filtro 
@@ -784,7 +784,7 @@ namespace PowerWeb
 
                                 #region Filtro per responsabile
                                 //se ho dei responsabili E dai parametri è richiesta la gestione dei responsabili 
-                                else if (allRespIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Resp) && PowerWebContext.Current.User.Liv_Utente < 10)
+                                else if (allRespIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Resp) || (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both && allRespIds.Any()) && PowerWebContext.Current.User.Liv_Utente < 10)
                                 {
                                     //nel caso si voglia gestire solo il responsabile devo ottenere tutti i reponsabili con resp diverso da 
                                     tmpFilter.Append("(Col_Id != null AND (");

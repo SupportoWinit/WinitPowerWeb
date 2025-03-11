@@ -70,5 +70,11 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("NfcGps")]
         public string NfcGps { get; set; }
+
+        [JsonProperty("Note")]
+        public string Note { get; set; }
+
+        [JsonProperty("chiave")]
+        public string Chiave { get; set; }
     }
 }

@@ -99,6 +99,30 @@ namespace PowerWeb.Api
         /// </value>
         public int CantId { get; set; }
 
+        /// <summary>
+        /// Recupera o imposta la stringa contenente la motivazione delle richieste.
+        /// </summary>
+        /// <value>
+        /// La stringa con la motivazione.
+        /// </value>
+        public string Justification { get; set; }
+
+        /// <summary>
+        /// Recupera o imposta l'ora di inizio dei possibili permessi richiesti.
+        /// </summary>
+        /// <value>
+        /// L'ora d'inizio.
+        /// </value>
+        protected TimeSpan Start { get; set; }
+
+        /// <summary>
+        /// Recupera o imposta l'ora di fine dei possibili permessi richiesti.
+        /// </summary>
+        /// <value>
+        /// L'ora di fine.
+        /// </value>
+        protected TimeSpan End { get; set; }
+
         #endregion
 
         #region Public Methods
@@ -151,6 +175,69 @@ namespace PowerWeb.Api
                     ExecuteOperation();
                 else
                     Errors.Add(new KeyValuePair<string, string>("Date", String.Format("Date passate come parametro non coerenti (from: {0}; to: {1})", from, to)));
+            }
+            else
+                AddUserError();
+
+            // ritorno degli errori eventualmente recuperati nell'elaborazione
+            return ParseJsonrForReturnValue();
+        }
+
+        /// <summary>
+        /// Funzione di get della api corrente; utilizza il template pattern per l'operazione da eseguire.
+        /// L'operazione per questo overload di get richiede un from e un to.
+        /// </summary>
+        /// <param name="from">La data di inizio elaborazione.</param>
+        /// <param name="to">La data di fine elaborazione.</param>
+        /// <param name="matricola">La matricola del collaboratore.</param>
+        /// <param name="justification">La motivazione inserita.</param>
+        /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
+        public string Get(DateTime from, DateTime to, int matricola, string justification)
+        {
+            // si procede con l'elaborazione solamente se l'utente è stato trovato
+            if (InitializeApiUser())
+            {
+                // inserimento dei parametri nell'oggetto
+                From = from;
+                To = to;
+                ColId = matricola;
+                Justification = justification;
+                Start = new TimeSpan(0,1,0);
+
+                // si procede all'elaborazione solamente se le date sono coerenti
+                if (from <= to)
+                    ExecuteOperation();
+                else
+                    Errors.Add(new KeyValuePair<string, string>("Date", String.Format("Date passate come parametro non coerenti (from: {0}; to: {1})", from, to)));
+            }
+            else
+                AddUserError();
+
+            // ritorno degli errori eventualmente recuperati nell'elaborazione
+            return ParseJsonrForReturnValue();
+        }
+
+        /// <summary>
+        /// Funzione di get della api corrente; utilizza il template pattern per l'operazione da eseguire.
+        /// L'operazione per questo overload di get richiede un from e un to.
+        /// </summary>
+        /// <param name="from">La data di inizio elaborazione.</param>
+        /// <param name="to">La data di fine elaborazione.</param>
+        /// <param name="matricola">La matricola del collaboratore.</param>
+        /// <param name="justification">La motivazione inserita.</param>
+        /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
+        public string Get(DateTime from, int matricola, string justification, TimeSpan start, TimeSpan end)
+        {
+            // si procede con l'elaborazione solamente se l'utente è stato trovato
+            if (InitializeApiUser())
+            {
+                // inserimento dei parametri nell'oggetto
+                From = from;
+                ColId = matricola;
+                Justification = justification;
+                Start = start;
+                End = end;
+                ExecuteOperation();
             }
             else
                 AddUserError();

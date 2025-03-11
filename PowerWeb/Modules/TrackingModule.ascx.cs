@@ -575,9 +575,15 @@ namespace PowerWeb.Modules
 
                                 }
                             }
-                            List<Cant> temp = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == closestCantId).ToList();
-                            cantDesc = temp.First().Descrizione_Can;
-                            infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);
+                            if (closestCantId != 0)
+                            {
+                                List<Cant> temp = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == closestCantId).ToList();
+                                cantDesc = temp.First().Descrizione_Can;
+                                infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);
+                            }
+                            else {
+                                infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2},{3}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), regv.Registrazione_Lat_Orig_U,regv.Registrazione_Long_Orig_U);
+                            } 
                         }
                         else {
                             infoboxDescription = String.Format("<span>{0} <br><br> Uscita {1} <br><br>{2}</span>", regv.Data_Reg.Value.Date.ToString("dd/MM/yyyy"), regv.Data_Ora_Fis_UTime.Value.ToString(), cantDesc);

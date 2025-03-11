@@ -1545,17 +1545,17 @@ namespace Common
                 }
 
                 //Password dell'account dell'indirizzo del mittente
-                const string fromPassword = "GwT{&$D,q-8^";
+                const string fromPassword = "Power2022!";
 
                 //Prepara il client SMTP
                 var smtp = new SmtpClient
                 {
-                    Host = "mail.winit.it",
-                    Port = 25,
-                    EnableSsl = false,
+                    Host = "mx9.zimbra-ilger.com",
+                    Port = 587,
+                    EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("newsletter@winit.it", fromPassword)
+                    Credentials = new NetworkCredential("dtezzon@winitsrl.it", fromPassword)
                 };
 
                 //Imposta il timout al massimo, per evitare che blocchi l'operazione quando ci sono molti allegati

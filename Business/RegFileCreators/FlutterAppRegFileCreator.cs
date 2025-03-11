@@ -25,6 +25,7 @@ namespace Business.RegFileCreators
         private static readonly string SEPARATOR = ";";
         private static readonly string INFOAGG = "INFOAGG";
         private static readonly string TIPO_ATTIVITA = "TIPOATT";
+        private static readonly string NOTE = "NOTE";
 
         private static readonly string EXTRA_INFO_STRING_FORMAT = "{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}{0}{11}{0}";
 
@@ -50,6 +51,7 @@ namespace Business.RegFileCreators
             var regsToWrite = new List<string>();
             List<FlutterOrderedReg> regsToOrder = new List<FlutterOrderedReg>();
             int gpsnfc = 0;
+            //La lista è valorizzata se hanno el app sul nuovo backend
             if (unEncodedRegs != null) {
                 foreach (var regs in unEncodedRegs)
                 {
@@ -57,46 +59,46 @@ namespace Business.RegFileCreators
                     if (regs.Value != null) {
                         if (regs.Value.First().CodicePru != "")
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
                         }
                         else
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
                         }
 
                         regsToOrder.Add(var);
                     } 
                 }
             }
-            
+            //La lista è valorizzata se hanno timbrature sul vecchio backend
             if (unEncodedRegs2 != null) {
                 foreach (var regs in unEncodedRegs2)
                 {
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
                     }
 
                     regsToOrder.Add(var);
                 }
             }
-
+            //Questa lista viene utilizzata nel caso in cui si abbiano più istanze della nuova app per un cliente
             if (unEncodedRegsOld != null) {
                 foreach (var regs in unEncodedRegsOld)
                 {
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
                     }
 
                     regsToOrder.Add(var);
@@ -106,6 +108,16 @@ namespace Business.RegFileCreators
             String codGpsNfc = "";
             FlutterOrderedReg temp = regsToOrder.First();
             FlutterOrderedReg last = regsToOrder.First();
+            bool lastCoordinate = false;
+            string regRowGpsNfc = "";
+            string lastLatitudeTxt = "";
+            string lastLongitudeTxt = "";
+            string lastCodiceFru = "";
+            string lastAtt = "";
+            double lastLatitude = 0.0;
+            double lastLongitude = 0.0;
+            FlutterOrderedReg tmpLastReg = null;
+            DateTime lastData = new DateTime(1900,01,01);
             foreach (var fluReg in regsToOrder)
             {
                 if (fluReg.Squadra != null && fluReg.Squadra != "")
@@ -129,7 +141,7 @@ namespace Business.RegFileCreators
                         }
                         else
                         {
-                            if (fluReg.Cantiere != "Non selezionato") 
+                            if (fluReg.Cantiere != "Non selezionato")
                             {
                                 if (fluReg.CodicePru != "" && fluReg.CodicePru != "Non selezionato")
                                 {
@@ -175,7 +187,7 @@ namespace Business.RegFileCreators
                                     }
 
                                 }
-                            }                            
+                            }
                         }
                     }
                     else
@@ -193,7 +205,7 @@ namespace Business.RegFileCreators
                             if (fluReg.Cantiere.Length == 10) {
                                 currentMemberLines = Translate(fluReg.CodiceFru, fluReg.Cantiere, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
                             } else {
-                                if (fluReg.Cantiere != "Non selezionato") 
+                                if (fluReg.Cantiere != "Non selezionato")
                                 {
                                     if (fluReg.CodicePru != "" && fluReg.CodicePru != "Non selezionato")
                                     {
@@ -305,16 +317,16 @@ namespace Business.RegFileCreators
                                             #endregion
                                         }
                                     }
-                                    
+
                                 }
                             }
-                            
+
                         }
                         else {
                             currentMemberLines = Translate(fluReg.CodiceFru, fluReg.CodicePru, fluReg.Data, "", fluReg.Motivazione, fluReg.Latitudine, fluReg.Longitudine);
                         }
                         //pulisco la stringa e in seguito ciclo per ogni matricola così da fare una timbratura per collaboratore
-                        
+
                         regsToWrite.AddRange(currentMemberLines);
                     }
                     #endregion
@@ -322,80 +334,227 @@ namespace Business.RegFileCreators
                 else if ((fluReg.NfcGps != null && fluReg.NfcGps == "1") || gpsnfc == 1)
                 {
                     #region Creazione txt con registrazione NFC+GPS
-                    //eseguo il txt con i criteri necessari per identificare la timbratura come NFC+GPS
-                    string regRow = "";
-                    if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                    //controllo se la prima timbratura NFC/GPS era con le coordinate, nel caso è errato e devo fare altre azioni
+                    if (lastCoordinate == true && gpsnfc == 1)
                     {
-                        #region Reg con coordinate
+                        //eseguo il txt con i criteri necessari per identificare la timbratura come NFC+GPS
+                        if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                        {
+                            #region Reg con coordinate
 
-                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
-                            fluReg.CodiceFru,
-                            AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
-                            fluReg.Data.Year,
-                            fluReg.Data.Month.ToString("00"),
-                            fluReg.Data.Day.ToString("00"),
-                            fluReg.Data.Hour.ToString("00"),
-                            fluReg.Data.Minute.ToString("00"),
-                            TAG_REFERENCE,
-                            MARKER_LATITUDINE,
-                            "N"
-                        );
-                        regsToWrite.Add(regRow);
-                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
-                            fluReg.CodiceFru,
-                            AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
-                            fluReg.Data.Year,
-                            fluReg.Data.Month.ToString("00"),
-                            fluReg.Data.Day.ToString("00"),
-                            fluReg.Data.Hour.ToString("00"),
-                            fluReg.Data.Minute.ToString("00"),
-                            TAG_REFERENCE,
-                            MARKER_LONGITUDINE,
-                            "E"
-                        );
+                            regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                fluReg.CodiceFru,
+                                AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                TAG_REFERENCE,
+                                MARKER_LATITUDINE,
+                                "N"
+                            );
+                            regsToWrite.Add(regRowGpsNfc);
+                            regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                fluReg.CodiceFru,
+                                AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                TAG_REFERENCE,
+                                MARKER_LONGITUDINE,
+                                "E"
+                            );
+                            lastCoordinate = true;
+                            #endregion
+                        }
+                        else if (fluReg.CodicePru != "")
+                        {
+                            #region Reg senza coordinate
 
-                        #endregion
-                    }
-                    else if (fluReg.CodicePru != "")
-                    {
-                        #region Reg senza coordinate
+                            regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
+                                fluReg.CodiceFru,
+                                fluReg.CodicePru,
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                TAG_REFERENCE,
+                                " "
+                            );
+                            #endregion
+                        }
 
-                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
-                            fluReg.CodiceFru,
-                            fluReg.CodicePru,
-                            fluReg.Data.Year,
-                            fluReg.Data.Month.ToString("00"),
-                            fluReg.Data.Day.ToString("00"),
-                            fluReg.Data.Hour.ToString("00"),
-                            fluReg.Data.Minute.ToString("00"),
-                            TAG_REFERENCE,
-                            " "
-                        );
-                        #endregion
-                    }
+                        regsToWrite.Add(regRowGpsNfc);
+                        var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(codGpsNfc, "", fluReg.Data, fluReg.Attivita);
+                        if (firstLine != "")
+                        {
+                            regsToWrite.Add(firstLine);
+                        }
+                        var activityLine = FlutterAppStringFormatter.CreateActivityLines(codGpsNfc, "", fluReg.Data, fluReg.Attivita);
+                        if (activityLine != "")
+                        {
+                            regsToWrite.Add(activityLine);
+                        }
+                        var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(codGpsNfc, fluReg.Attivita, fluReg.Data, fluReg.CodiceFru);
+                        if (pruCodeAtivity != null)
+                        {
+                            regsToWrite.AddRange(pruCodeAtivity);
+                        }
 
-                    regsToWrite.Add(regRow);
-                    var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(codGpsNfc, "", fluReg.Data, fluReg.Attivita);
-                    if (firstLine != "")
-                    {
-                        regsToWrite.Add(firstLine);
-                    }
-                    var activityLine = FlutterAppStringFormatter.CreateActivityLines(codGpsNfc, "", fluReg.Data, fluReg.Attivita);
-                    if (activityLine != "")
-                    {
-                        regsToWrite.Add(activityLine);
-                    }
-                    var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(codGpsNfc, fluReg.Attivita, fluReg.Data, fluReg.CodiceFru);
-                    if (pruCodeAtivity != null)
-                    {
-                        regsToWrite.AddRange(pruCodeAtivity);
-                    }
-                    if (gpsnfc == 0)
-                    {
-                        gpsnfc = 1;
+                        //una volta inserita la timbratura NFC procedo ad inserire la timbratura GPS che in maniera errata si trovava come prima timbratura del gruppo
+                        regsToWrite.Add(lastLatitudeTxt);
+                        regsToWrite.Add(lastLongitudeTxt);
+                        firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(codGpsNfc, "", lastData, lastAtt);
+                        if (firstLine != "")
+                        {
+                            regsToWrite.Add(firstLine);
+                        }
+                        activityLine = FlutterAppStringFormatter.CreateActivityLines(codGpsNfc, "", lastData, lastAtt);
+                        if (activityLine != "")
+                        {
+                            regsToWrite.Add(activityLine);
+                        }
+                        pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(codGpsNfc, lastAtt, lastData, lastCodiceFru);
+                        if (pruCodeAtivity != null)
+                        {
+                            regsToWrite.AddRange(pruCodeAtivity);
+                        }
+                        if (gpsnfc == 0)
+                        {
+                            gpsnfc = 1;
+                        }
+                        else
+                        {
+                            lastCoordinate = false;
+                            gpsnfc = 0;
+                        }
+                        regRowGpsNfc = "";
                     }
                     else {
-                        gpsnfc = 0;
+                        //eseguo il txt con i criteri necessari per identificare la timbratura come NFC+GPS
+                        if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0)
+                        {
+                            #region Reg con coordinate
+                            //controllo se è la prima timbratura del gruppo GPS/NFC, se è così imposto il flag e mi salvo le registrazione nelle variabili temporanee
+                            if (gpsnfc == 0)
+                            {
+                                lastCoordinate = true;
+
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                fluReg.CodiceFru,
+                                AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                TAG_REFERENCE,
+                                MARKER_LATITUDINE,
+                                "N"
+                                );
+                                lastLatitudeTxt = regRowGpsNfc;
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                    fluReg.CodiceFru,
+                                    AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    TAG_REFERENCE,
+                                    MARKER_LONGITUDINE,
+                                    "E"
+                                );
+                                lastLongitudeTxt = regRowGpsNfc;
+                            }
+                            else {
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                fluReg.CodiceFru,
+                                AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                TAG_REFERENCE,
+                                MARKER_LATITUDINE,
+                                "N"
+                                );
+                                regsToWrite.Add(regRowGpsNfc);
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                    fluReg.CodiceFru,
+                                    AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    TAG_REFERENCE,
+                                    MARKER_LONGITUDINE,
+                                    "E"
+                                );
+                            }
+                            #endregion
+                        }
+                        else if (fluReg.CodicePru != "")
+                        {
+                            #region Reg senza coordinate
+
+                            regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
+                                fluReg.CodiceFru,
+                                fluReg.CodicePru,
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                TAG_REFERENCE,
+                                " "
+                            );
+                            #endregion
+                        }
+                        //nel caso sia la prima timbratura del gruppo GPS/NFC e sono coordinate mi salvo il tutto in variabili temporanee
+                        if (gpsnfc == 0 && lastCoordinate)
+                        {
+                            lastAtt = fluReg.Attivita;
+                            lastData = fluReg.Data;
+                            lastCodiceFru = fluReg.CodiceFru;
+                            gpsnfc = 1;
+                        }
+                        else {
+                            regsToWrite.Add(regRowGpsNfc);
+                            var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(codGpsNfc, "", fluReg.Data, fluReg.Attivita);
+                            if (firstLine != "")
+                            {
+                                regsToWrite.Add(firstLine);
+                            }
+                            var activityLine = FlutterAppStringFormatter.CreateActivityLines(codGpsNfc, "", fluReg.Data, fluReg.Attivita);
+                            if (activityLine != "")
+                            {
+                                regsToWrite.Add(activityLine);
+                            }
+                            var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(codGpsNfc, fluReg.Attivita, fluReg.Data, fluReg.CodiceFru);
+                            if (pruCodeAtivity != null)
+                            {
+                                regsToWrite.AddRange(pruCodeAtivity);
+                            }
+                            //se è la prima timbratura del gruppo me lo segno
+                            //in caso contrario resetto le variabili collegato al controllo
+                            if (gpsnfc == 0)
+                            {
+                                gpsnfc = 1;
+                            }
+                            else
+                            {
+                                lastCoordinate = false;
+                                gpsnfc = 0;
+                            }
+                            regRowGpsNfc = "";
+                        }
                     }
                     #endregion
                 }
@@ -610,6 +769,39 @@ namespace Business.RegFileCreators
                     }
                     #endregion
                 }
+                else if (fluReg.Chiave != null && fluReg.Chiave != "") 
+                {
+                    #region Reg senza coordinate
+                    string regRow = "";
+                    string verso = "";
+                    if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                    {
+                        verso = fluReg.Motivazione;
+                        fluReg.Motivazione = "";
+                    }
+                    if (fluReg.Motivazione == "none")
+                    {
+                        fluReg.Motivazione = "";
+                    }
+                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                        fluReg.Chiave,
+                        fluReg.CodicePru,
+                        fluReg.Data.Year,
+                        fluReg.Data.Month.ToString("00"),
+                        fluReg.Data.Day.ToString("00"),
+                        fluReg.Data.Hour.ToString("00"),
+                        fluReg.Data.Minute.ToString("00"),
+                        verso,
+                        fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                    );
+                    regsToWrite.Add(regRow);
+                    var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                    if (noteLine != "")
+                    {
+                        regsToWrite.Add(noteLine);
+                    }
+                    #endregion
+                }
                 else
                 {
                     #region Creazione txt normale
@@ -651,6 +843,12 @@ namespace Business.RegFileCreators
                     }
                     if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0 && !string.IsNullOrEmpty(fluReg.Latitudine.ToString()))
                     {
+                        string verso = "";
+                        if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                        {
+                            verso = fluReg.Motivazione;
+                            fluReg.Motivazione = "";
+                        }
                         #region Reg con coordinate
                         if (fluReg.Latitudine < 0 && fluReg.Longitudine < 0)
                         {
@@ -717,6 +915,9 @@ namespace Business.RegFileCreators
                             verso = fluReg.Motivazione;
                             fluReg.Motivazione = "";
                         }
+                        if (fluReg.Motivazione == "none") {
+                            fluReg.Motivazione = "";
+                        }
                         regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                             fluReg.CodiceFru,
                             fluReg.CodicePru,
@@ -745,6 +946,10 @@ namespace Business.RegFileCreators
                         );
                     }
                     regsToWrite.Add(regRow);
+                    var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                    if (noteLine != "") {
+                        regsToWrite.Add(noteLine);
+                    }
                     String attivitaFInale = "";
                     if (fluReg.Attivita.Contains(','))
                     {

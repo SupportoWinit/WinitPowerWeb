@@ -8,6 +8,8 @@
     jQuery(window).on('load', function () {
         jQuery("#gridDiv").css("display", "none");
         hideBatchMode();
+        gridDiv.style.display = 'block';
+        doCallbackFilterPanel('PreFilterSelected');
     });
 
     var isEditPending = false;
@@ -26,7 +28,7 @@
     function hideBatchMode() {
         try {
             var checkboxBatch = ASPxClientCheckBox.Cast(cbBatchMode);
-            checkboxBatch.SetEnabled(false);
+            checkboxBatch.SetEnabled(true);
         } catch (e) {
             // silenziamento dell'errore in caso di mancata presenza del checkbox per la modifica diretta
         }
@@ -93,6 +95,20 @@
 
     function Grid_BatchEditConfirmShowing(s, e) {
         e.cancel = true;
+    }
+
+    function OnCustomAcceptClick(s, e) {
+
+        var currentGrid = ASPxClientGridView.Cast(s);
+        var currGrid = ASPxClientGridView.Cast(grid);
+
+        if (e.buttonID == 'accept') {
+            var currKey = currentGrid.GetRowKey(e.visibleIndex);
+            currGrid.PerformCallback('accept|' + currKey);
+        } else if (e.buttonID == 'deleteRequest') {
+            var currKey = currentGrid.GetRowKey(e.visibleIndex);
+            currGrid.PerformCallback('deleteRequest|' + currKey);
+        }
     }
 
     function gvAutFerPerEdit_OnEndCallback(s, e) {
@@ -234,62 +250,6 @@
     }
 </script>
 
-<div style="clear: both; float: none; border: 1px solid darkgrey; padding: 5px">
-    <table>
-        <tr>
-            <td>
-                <dx:ASPxLabel ID="StateLabel" runat="server" Text="Selezione Ferie/Permessi: " Font-Bold="true" />
-            </td>
-            <td>
-                <dx:ASPxDropDownEdit ClientInstanceName="FerPerComboBox" ID="FerPerComboBox" Width="380px" runat="server" AnimationType="None" ReadOnly="True">
-                    <DropDownWindowTemplate>
-                        <dx:ASPxListBox Width="100%" ID="FerPerListBox" ClientInstanceName="FerPerListBox" SelectionMode="CheckColumn"
-                            runat="server">
-                            <Items>
-                                <dx:ListEditItem Text="99 - Seleziona tutto" Value="99" Selected="True" />
-                                <dx:ListEditItem Text="0 - Ferie" Value="0" />
-                                <dx:ListEditItem Text="1 - Permessi" Value="1" />
-                            </Items>
-                            <ClientSideEvents SelectedIndexChanged="OnListBoxSelectionChanged" Init="OnListBoxSelectionChanged" />
-                        </dx:ASPxListBox>
-                    </DropDownWindowTemplate>
-                </dx:ASPxDropDownEdit>
-            </td>
-            <td>
-                <dx:ASPxLabel ID="SearchDateFromLabel" runat="server" Text="Dal: " Font-Bold="true" />
-            </td>
-            <td>
-                <dx:ASPxDateEdit ID="SearchDateFrom" ClientInstanceName="SearchDateFrom" runat="server" Width="100px" />
-            </td>
-            <td>
-                <dx:ASPxLabel ID="SearchDateToLabel" runat="server" Text="Al: " Font-Bold="true" />
-            </td>
-            <td>
-                <dx:ASPxDateEdit ID="SearchDateTo" ClientInstanceName="SearchDateTo" runat="server" Width="100px" />
-            </td>
-            <td>
-                <dx:ASPxButton Text="Applica" ClientInstanceName="btnApplyPreSelection" ID="btnApplyPreSelection" runat="server" AutoPostBack="false">
-                    <ClientSideEvents Click="function(s, e) {applyPreFilter();}" />
-                </dx:ASPxButton>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <dx:ASPxLabel runat="server" ID="LblColPreFilter" ClientInstanceName="lblColPreFilter" Font-Bold="True" />
-            </td>
-            <td>
-                <dx:ASPxComboBox runat="server" ID="CmbColPreFilter" Width="380px" ClientInstanceName="cmbColPreFilter"></dx:ASPxComboBox>
-            </td>
-            <td colspan="2">
-                <dx:ASPxLabel runat="server" ID="LblIfEmptyAll" ClientInstanceName="lblIfEmptyAll" Font-Size="80%" />
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
-    <dx:ASPxDateEdit ID="BreakRegDate" ClientInstanceName="BreakRegDate" runat="server" ClientVisible="false" />
-</div>
 <div id="gridDiv" style="margin-top: 20px; margin-bottom: 20px;">
     <dx:ASPxCallbackPanel ID="filterPanel" runat="server" Width="100%" ClientInstanceName="filterPanel"
         OnCallback="filterPanel_Callback" ClientSideEvents-EndCallback="filterPanel_OnEndCallback" ClientSideEvents-Init="function(s, e) { hidebuttons(); hideBatchMode(); }">
@@ -298,91 +258,9 @@
 
         <PanelCollection>
             <dx:PanelContent ID="filterPanelContent" runat="server" SupportsDisabledAttribute="True">
-                <div style="clear: both; float: left;">
-                    <table>
-                        <tr>
-                            <td style="width: 40px;">
-                                <dx:ASPxLabel ID="lblCol_Id" runat="server" Text="Coll: " Font-Bold="true" />
-                            </td>
-                            <td>
-                                <dx:ASPxComboBox runat="server" ID="cmbCol_Id" ClientInstanceName="cmbCol_Id" Width="380px">
-                                    <ClientSideEvents SelectedIndexChanged="function(s, e) { doCallbackFilterPanel('colIdChanged'); }" />
-                                </dx:ASPxComboBox>
-                            </td>
-                            <td>
-                                <dx:ASPxButton ClientInstanceName="btnGoPreviousCol" ID="btnGoPreviousCol" runat="server" AutoPostBack="false" RenderMode="Link">
-                                    <Image Url="~/Icons/Previous/Previous.png"></Image>
-                                    <ClientSideEvents Click="function(s, e) { doCallbackFilterPanel('goToPreviousCol');}" />
-                                </dx:ASPxButton>
-                            </td>
-                            <td>
-                                <dx:ASPxButton ClientInstanceName="btnGoNextCol" ID="btnGoNextCol" runat="server" AutoPostBack="false" RenderMode="Link">
-                                    <Image Url="~/Icons/Next/Next.png"></Image>
-                                    <ClientSideEvents Click="function(s, e) { doCallbackFilterPanel('goToNextCol'); }" />
-                                </dx:ASPxButton>
-                            </td>
-                            <td>
-                                <div style="f  loat: left">
-                                    <dx:ASPxButton Text="Proposta Chiusura" ClientInstanceName="btnBtnPropostaChiusura" ID="BtnPropostaChiusura" runat="server" AutoPostBack="false" Visible="False" Enabled="False">
-                                        <ClientSideEvents Click="function(s, e) { doCallbackFilterPanel('automaticCorrection#' + cbChiusuraAllSelected.GetChecked()); }" />
-                                    </dx:ASPxButton>
-                                </div>
-                                <div style="float: right">
-                                    <dx:ASPxCheckBox runat="server" ID="CbChiusuraAllSelected" ClientInstanceName="cbChiusuraAllSelected" Text="Tutte le errate" Visible="false" />
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td style="width: 40px;">
-                                <dx:ASPxLabel ID="lblData_Reg" runat="server" Text="Data: " Font-Bold="true" />
-                            </td>
-                            <td>
-                                <dx:ASPxComboBox runat="server" ID="cmbData_Reg" ClientInstanceName="cmbData_Reg" Width="100px">
-                                    <ClientSideEvents SelectedIndexChanged="function(s, e) { doCallbackFilterPanel('dataRegChanged'); }" />
-                                </dx:ASPxComboBox>
-                            </td>
-                            <td>
-                                <dx:ASPxButton ClientInstanceName="btnGoPreviousDate" ID="btnGoPreviousDate" runat="server" AutoPostBack="false" RenderMode="Link">
-                                    <Image Url="~/Icons/Previous/Previous.png"></Image>
-                                    <ClientSideEvents Click="function(s, e) { gotoPreviousDate(); }" />
-                                </dx:ASPxButton>
-                            </td>
-                            <td>
-                                <dx:ASPxButton ClientInstanceName="btnGoNextDate" ID="btnGoNextDate" runat="server" AutoPostBack="false" RenderMode="Link">
-                                    <Image Url="~/Icons/Next/Next.png"></Image>
-                                    <ClientSideEvents Click="function(s, e) { gotoNextDate();}" />
-
-                                </dx:ASPxButton>
-                            </td>
-                            <td>
-                                <dx:ASPxLabel runat="server" ID="LblColDataSource" />
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div style="margin-top: 10px; margin-bottom: 10px; float: right;">
-                    <dx:ASPxCheckBox ID="cbIncludeAllDayReg" runat="server" ClientInstanceName="cbIncludeAllDayReg" CssClass="headerButtons" Text="Visualizza giorno completo" Checked="True">
-                        <ClientSideEvents CheckedChanged="function(s, e) { doCallbackFilterPanel('includeReg');}" />
-                    </dx:ASPxCheckBox>
-                    <dx:ASPxCheckBox ID="cbIncludeActivity" runat="server" ClientInstanceName="cbIncludeActivity" CssClass="headerButtons" Text="Includi Attività">
-                        <ClientSideEvents CheckedChanged="function(s, e) { doCallbackFilterPanel('includeReg');}" />
-                    </dx:ASPxCheckBox>
-                    <dx:ASPxCheckBox ID="cbIncludePass" runat="server" ClientInstanceName="cbIncludePass" CssClass="headerButtons" Text="Includi Passaggi">
-
-                        <ClientSideEvents CheckedChanged="function(s, e) { doCallbackFilterPanel('includeReg');}" />
-                    </dx:ASPxCheckBox>
-                    <dx:ASPxCheckBox ID="cbIncludeTrips" runat="server" ClientInstanceName="cbIncludeTrips" CssClass="headerButtons" Text="Includi Viaggi">
-                        <ClientSideEvents CheckedChanged="function(s, e) { doCallbackFilterPanel('includeReg');}" />
-                    </dx:ASPxCheckBox>
-                    <dx:ASPxCheckBox ID="cbIncludeBlocked" runat="server" ClientInstanceName="cbIncludeBlocked" CssClass="headerButtons" Text="Includi Bloccate">
-                        <ClientSideEvents CheckedChanged="function(s, e) { doCallbackFilterPanel('includeReg');}" />
-                    </dx:ASPxCheckBox>
-                </div>
 
                 <div style="float: left; width: 100%;">
-                    <dx:ASPxGridView ID="gvAutFerPerEdit" runat="server" AutoGenerateColumns="False" Width="100%"
+                    <dx:ASPxGridView ID="gvAutFerPerEdit" ClientInstanceName="gvAutFerPerEdit" runat="server" AutoGenerateColumns="False" Width="100%"
                         OnCustomCallback="gvAutFerPerEdit_CustomCallback" OnDataBinding="gvAutFerPerEdit_DataBinding" OnAfterPerformCallback="gvAutFerPerEdit_AfterPerformCallback"
                         OnInit="gvAutFerPerEdit_OnInit" OnRowUpdating="gvAutFerPerEdit_OnRowUpdating" OnRowDeleting="gvAutFerPerEdit_OnRowDeleting"
                         OnRowInserting="gvAutFerPerEdit_OnRowInserting" OnBatchUpdate="gvAutFerPerEdit_BatchUpdate" ClientSideEvents-BatchEditConfirmShowing="Grid_BatchEditConfirmShowing"
@@ -397,8 +275,11 @@
                                     <dx:GridViewCommandColumnCustomButton ID="add">
                                         <Image ToolTip="Add" Url="../Icons/Add/Add.png" />
                                     </dx:GridViewCommandColumnCustomButton>
-                                    <dx:GridViewCommandColumnCustomButton ID="delete">
-                                        <Image ToolTip="Delete" Url="../Icons/Delete/Delete.png" />
+                                    <dx:GridViewCommandColumnCustomButton ID="deleteRequest">
+                                        <Image ToolTip="deleteRequest" Url="../Icons/Delete/Delete.png" />
+                                    </dx:GridViewCommandColumnCustomButton>
+                                    <dx:GridViewCommandColumnCustomButton ID="accept">
+                                        <Image ToolTip="Accept" Url="../Icons/Check/Check.png" />
                                     </dx:GridViewCommandColumnCustomButton>
                                 </CustomButtons>
                                 <EditButton>
@@ -448,6 +329,10 @@
                             <dx:GridViewDataTextColumn FieldName="EntrataEU" VisibleIndex="11" Visible="False" Width="0%"/>
                             <dx:GridViewDataTextColumn FieldName="UscitaEU" VisibleIndex="12" Visible="False" Width="0%"/>
                             <dx:GridViewDataDateColumn FieldName="Data_Reg" VisibleIndex="13" Visible="False" Width="10%" ReadOnly="True"/>
+                            <dx:GridViewDataDateColumn FieldName="Note_Reg" VisibleIndex="14" Visible="False" Width="10%" ReadOnly="True"/>
+                            <dx:GridViewDataDateColumn FieldName="Durata_Fis" VisibleIndex="15" Visible="False" Width="10%" ReadOnly="True"/>
+                            <dx:GridViewDataComboBoxColumn FieldName="Col_Id" VisibleIndex="16" Width="30%">
+                            </dx:GridViewDataComboBoxColumn>
                         </Columns>
                         <SettingsBehavior ColumnResizeMode="Control" AllowGroup="false" />
                         <Settings HorizontalScrollBarMode="Auto" ShowFilterRow="false" ShowFooter="false" />

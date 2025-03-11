@@ -64,12 +64,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         public override void LaunchExport(IQueryable<Reg_V> entitiesToExport)
         {
             //List<CentroDiCosto> centro = RepoManager.CentroDiCostoRepo.GetAllQueryable(c => c.Descrizione == "PULIZIE CIVILI").ToList();
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 1 && r.Qualifica_Col != "0" &&(r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10)).ToList();
-            var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
 
             DateTime minDate = CommonService.GetFirstMonthDay(ExportPeriod);
             DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 1 && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) && (r.Data_Reg.Value.Month == maxDate.Month && r.Data_Reg.Value.Year == maxDate.Year)).ToList();
+            var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
@@ -89,9 +89,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
                 RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
-                if (regs.Key == 42261)
+                if (currentCant.First().Descrizione_Can == "GARDA DOLOMITI - BASTIONE")
                 {
-                    TimeSpan midDay = new TimeSpan(12,0,0);
+                    TimeSpan midDay = new TimeSpan(12, 0, 0);
                     int interventi = 0;
                     int mezziInterventi = 0;
                     bool interventiCheck = false;
@@ -113,7 +113,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 mezziInterventiCheck = true;
                                 dailyRegs.Add(reg);
                             }
-                            else if (reg.Durata_Fig != null && dailyRegs.Count > 0) 
+                            else if (reg.Durata_Fig != null && dailyRegs.Count > 0)
                             {
                                 bool diverso = false;
                                 foreach (Reg_V regv in dailyRegs) {
@@ -122,7 +122,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                             interventiCheck = true;
                                             mezziInterventiCheck = false;
                                         }
-                                        else if (regv.Data_Ora_Fig_ETime.Value > midDay && reg.Data_Ora_Fig_ETime < midDay) 
+                                        else if (regv.Data_Ora_Fig_ETime.Value > midDay && reg.Data_Ora_Fig_ETime < midDay)
                                         {
                                             interventiCheck = true;
                                             mezziInterventiCheck = false;
@@ -139,7 +139,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
                             totaleMensile = totaleMensile + totalDuration;
                         }
-                        else if (daySum > 0 && mezziInterventiCheck) 
+                        else if (daySum > 0 && mezziInterventiCheck)
                         {
                             mezziInterventi++;
                             TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
@@ -162,7 +162,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
                                 rowIndex++;
                             }
-                            if (totaleMensileMezzi.TotalMinutes > 0) 
+                            if (totaleMensileMezzi.TotalMinutes > 0)
                             {
                                 CellInsertValue(1, 1, rowIndex, currentCant.First().Descrizione_Can + " MEZZI", ExcelInsertTypeEnum.Content);
                                 RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -187,10 +187,208 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
                                 rowIndex++;
                             }
-                            
+
                         }
                         interventiCheck = false;
                         mezziInterventiCheck = false;
+                    }
+                }
+                else if (currentCant.First().Descrizione_Can == "BAGOZZI") {
+                    TimeSpan midDay = new TimeSpan(12, 0, 0);
+                    int interventi = 0;
+                    int mezziInterventi = 0;
+                    TimeSpan totaleMensile = new TimeSpan();
+                    TimeSpan totaleMensileMezzi = new TimeSpan();
+                    foreach (DateTime day in monthDays)
+                    {
+                        //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
+                        DateTime tomorrow = day.AddDays(1);
+                        var dayReg = regs.Where(r => r.Data_Reg.Value.Year == day.Year && r.Data_Reg.Value.Month == day.Month && r.Data_Reg.Value.Day == day.Day).ToList();
+                        int daySum = 0;
+                        string tot = "-- --";
+                        List<Reg_V> dailyRegs = new List<Reg_V>();
+                        foreach (Reg_V reg in dayReg)
+                        {
+                            daySum += reg.Durata_Fig.Value;
+                        }
+                        if (daySum > 360)
+                        {
+                            interventi++;
+                            TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                            totaleMensile = totaleMensile + totalDuration;
+                        }
+                        else if (daySum < 360 && daySum > 0) {
+                            mezziInterventi++;
+                            TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                            totaleMensileMezzi = totaleMensileMezzi + totalDuration;
+                        }
+                        if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                        {
+                            if (totaleMensile.TotalMinutes > 0)
+                            {
+                                tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
+                                RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
+
+                                RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+                                CellInsertValue(1, 3, rowIndex, interventi, ExcelInsertTypeEnum.Content);
+
+                                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+
+                                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                                CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                                rowIndex++;
+                            }
+                            if (totaleMensileMezzi.TotalMinutes > 0)
+                            {
+                                CellInsertValue(1, 1, rowIndex, currentCant.First().Descrizione_Can + " MEZZI", ExcelInsertTypeEnum.Content);
+                                RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
+                                RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
+
+                                CellInsertValue(1, 2, rowIndex, "PULIZIE CIVILI", ExcelInsertTypeEnum.Content);
+                                RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
+                                RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
+                                tot = String.Format("{0}.{1}", (totaleMensileMezzi.Days * 24) + totaleMensileMezzi.Hours, Math.Abs(totaleMensileMezzi.Minutes).ToString("00"));
+                                RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
+
+                                RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+                                CellInsertValue(1, 3, rowIndex, mezziInterventi, ExcelInsertTypeEnum.Content);
+
+                                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+
+                                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                                CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                                rowIndex++;
+                            }
+
+                        }
+                    }
+                }
+                else if (currentCant.First().Descrizione_Can == "GRUBER")
+                {
+                    TimeSpan midDay = new TimeSpan(12, 0, 0);
+                    int interventi = 0;
+                    TimeSpan totaleMensile = new TimeSpan();
+                    foreach (DateTime day in monthDays)
+                    {
+                        //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
+                        DateTime tomorrow = day.AddDays(1);
+                        var dayReg = regs.Where(r => r.Data_Reg.Value.Year == day.Year && r.Data_Reg.Value.Month == day.Month && r.Data_Reg.Value.Day == day.Day).ToList();
+                        int daySum = 0;
+                        string tot = "-- --";
+                        List<Reg_V> dailyRegs = new List<Reg_V>();
+                        foreach (Reg_V reg in dayReg)
+                        {
+                            daySum += reg.Durata_Fig.Value;
+                        }
+                        if (daySum >= 300)
+                        {
+                            interventi++;
+                            TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                            totaleMensile = totaleMensile + totalDuration;
+                        }
+                        if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                        {
+                            if (totaleMensile.TotalMinutes > 0)
+                            {
+                                tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
+                                RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
+
+                                RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+                                CellInsertValue(1, 3, rowIndex, interventi, ExcelInsertTypeEnum.Content);
+
+                                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+
+                                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                                CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                                rowIndex++;
+                            }
+                        }
+                    }
+                }
+                else if (currentCant.First().Descrizione_Can == "PIZZERIA AL PORTO")
+                {
+                    TimeSpan midDay = new TimeSpan(12, 0, 0);
+                    int interventi = 0;
+                    int mezziInterventi = 0;
+                    TimeSpan totaleMensile = new TimeSpan();
+                    TimeSpan totaleMensileMezzi = new TimeSpan();
+                    foreach (DateTime day in monthDays)
+                    {
+                        //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
+                        DateTime tomorrow = day.AddDays(1);
+                        var dayReg = regs.Where(r => r.Data_Reg.Value.Year == day.Year && r.Data_Reg.Value.Month == day.Month && r.Data_Reg.Value.Day == day.Day).ToList();
+                        int daySum = 0;
+                        string tot = "-- --";
+                        List<Reg_V> dailyRegs = new List<Reg_V>();
+                        foreach (Reg_V reg in dayReg)
+                        {
+                            daySum += reg.Durata_Fig.Value;
+                        }
+                        if (daySum > 240)
+                        {
+                            interventi++;
+                            TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                            totaleMensile = totaleMensile + totalDuration;
+                        }
+                        else if (daySum <= 240 && daySum > 0)
+                        {
+                            mezziInterventi++;
+                            TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                            totaleMensileMezzi = totaleMensileMezzi + totalDuration;
+                        }
+                        if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                        {
+                            if (totaleMensile.TotalMinutes > 0)
+                            {
+                                tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
+                                RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
+
+                                RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+                                CellInsertValue(1, 3, rowIndex, interventi, ExcelInsertTypeEnum.Content);
+
+                                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+
+                                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                                CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                                rowIndex++;
+                            }
+                            if (totaleMensileMezzi.TotalMinutes > 0)
+                            {
+                                CellInsertValue(1, 1, rowIndex, currentCant.First().Descrizione_Can + " MEZZI", ExcelInsertTypeEnum.Content);
+                                RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
+                                RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
+
+                                CellInsertValue(1, 2, rowIndex, "PULIZIE CIVILI", ExcelInsertTypeEnum.Content);
+                                RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
+                                RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
+                                tot = String.Format("{0}.{1}", (totaleMensileMezzi.Days * 24) + totaleMensileMezzi.Hours, Math.Abs(totaleMensileMezzi.Minutes).ToString("00"));
+                                RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
+
+                                RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+                                CellInsertValue(1, 3, rowIndex, mezziInterventi, ExcelInsertTypeEnum.Content);
+
+                                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+
+                                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                                CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                                rowIndex++;
+                            }
+
+                        }
                     }
                 }
                 else {

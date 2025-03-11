@@ -356,7 +356,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             }
 
                         }
-                        if (motivazione && (int)baseDuration > 0){
+                        if (motivazione /*&& (int)baseDuration > 0*/){
                             if (justification.Justification.Equals("M"))
                             {
                                 RangeSetBackgroundColor(worksheetIndex, rowIndex + 1, day.Day + 3, rowIndex + 1, day.Day + 3, Color.Yellow, ExcelFillStyle.Solid);
@@ -492,7 +492,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     try
                     {
                         
-                        if (motivazione && (int)baseDuration > 0)
+                        if (motivazione/* && (int)baseDuration > 0*/)
                         {
                             if (justification.Justification.Equals("M"))
                             {

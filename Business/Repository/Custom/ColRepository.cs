@@ -17,6 +17,7 @@ using System.Data.Entity.Infrastructure;
 using Z.BulkOperations;
 using Business.IocFactory.ClockAppSynchronizationFactory;
 using Business.Synchronization.SynchronizatioManager.Implementations;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace Business.Repository.Custom
 {
@@ -1407,10 +1408,15 @@ namespace Business.Repository.Custom
         {
             get
             {
-                if ((PowerWebContext.Current.DomainFilter & DomainFilterEnum.Resp) == DomainFilterEnum.Resp && PowerWebContext.Current.Resps != null && PowerWebContext.Current.User.Liv_Utente < 10)
+                if (PowerWebContext.Current.DomainFilter /*& DomainFilterEnum.Fil)*/ == DomainFilterEnum.Resp && PowerWebContext.Current.Resps != null && PowerWebContext.Current.User.Liv_Utente < 10)
                 {
                     var allRespIds = PowerWebContext.Current.Resps.Select(resp => resp.Resp_Id).ToList();
-                    return col => allRespIds.Contains( col.Resp_Id.Value);
+                    return col => allRespIds.Contains(col.Resp_Id.Value);
+                }
+                else if (PowerWebContext.Current.DomainFilter == DomainFilterEnum.Both && PowerWebContext.Current.Resps.Count > 0 && PowerWebContext.Current.User.Liv_Utente < 10)
+                {
+                    var allRespIds = PowerWebContext.Current.Resps.Select(resp => resp.Resp_Id).ToList();
+                    return col => allRespIds.Contains(col.Resp_Id.Value);
                 }
                 else return base.Filter;
             }
@@ -1552,6 +1558,9 @@ namespace Business.Repository.Custom
                             columnsNumber.Add("LIVELLO", Array.IndexOf(splittedRow, "LIVELLO"));
                             columnsNumber.Add("BADGE", Array.IndexOf(splittedRow, "BADGE"));
                             columnsNumber.Add("DATA ASSOCIAZIONE", Array.IndexOf(splittedRow, "DATA ASSOCIAZIONE"));
+                            columnsNumber.Add("MATRICOLA", Array.IndexOf(splittedRow, "MATRICOLA"));
+                            columnsNumber.Add("TELEFONO", Array.IndexOf(splittedRow, "TELEFONO"));
+                            columnsNumber.Add("CODICE", Array.IndexOf(splittedRow, "CODICE"));
 
                             if (columnsNumber.ContainsValue(-1))
                                 columnsNumber = null;
@@ -1577,6 +1586,10 @@ namespace Business.Repository.Custom
                             string livello = splittedLine[columnsNumber["LIVELLO"]].Trim();
                             string badge = splittedLine[columnsNumber["BADGE"]].Trim();
                             string data_ass = splittedLine[columnsNumber["DATA ASSOCIAZIONE"]].Trim();
+                            //Campi aggiuntivi per G4
+                            string matricola = splittedLine[columnsNumber["MATRICOLA"]].Trim();
+                            string telefono = splittedLine[columnsNumber["TELEFONO"]].Trim();
+                            string codicePlan = splittedLine[columnsNumber["CODICE"]].Trim();
 
                             #endregion
 
@@ -1630,6 +1643,20 @@ namespace Business.Repository.Custom
                                     newCol.Qualifica_Col = (qual != null) ? qual.Decodifica_Tab : "";
                                 }
                                 catch (Exception) { };
+
+                                #endregion
+
+                                #region CONTROLLO CAMPI AGGIUNTIVI
+
+                                if (telefono.Length == 10)
+                                {
+                                    newCol.Telefono_1_Col = telefono;
+                                }
+                                else {
+                                    errors.Add("Errore Lunghezza numero di telefono " + rowNumber, BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_TELEFONO_ERRATO, telefono));
+                                }
+                                newCol.Matricola_Col = matricola;
+                                newCol.N_Pos_INAIL_Col = codicePlan;
 
                                 #endregion
 

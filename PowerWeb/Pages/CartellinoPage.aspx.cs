@@ -21,6 +21,7 @@ using Spire.Pdf;
 using Spire.Xls;
 using System.Drawing;
 using DevExpress.XtraPrinting;
+using DevExpress.Xpo.DB;
 
 namespace PowerWeb.Pages
 {
@@ -191,7 +192,7 @@ namespace PowerWeb.Pages
 
                 field = RepoManager.ResourcesRepo.GetResourcesDictionaryString("FLD_GRUPPO_TAB");
                 colonna = new JObject();
-                colonna.Add("dataField", "Resp_Id");
+                colonna.Add("dataField", "Note_Col");
                 colonna.Add("caption", field);
                 colonna.Add("visible", true);
                 colonna.Add("allowHeaderFiltering", true);
@@ -263,6 +264,15 @@ namespace PowerWeb.Pages
                 int index = 0;
                 DateTime startMonth = CommonService.GetFirstMonthDay(selectedPickerDate);
                 DateTime endMonth = CommonService.GetLastMonthDay(selectedPickerDate);
+
+                //viene estratto l'ide dello user che ha fatto l'accesso a Powerweb
+                int userId = PowerWebContext.Current.User.Utenti_Id;
+
+                //filtro solo i responsabili che corrispondo all'utente che ha effettuato l'accesso 
+                var userRespIds = RepoManager.Utenti_RespRepo.Find(r => r.Utenti_Id == userId).ToList();
+
+                //filtro solo le filiali che corrispondo all'utente che ha effettuato l'accesso 
+                var userFilIds = RepoManager.Utenti_FilRepo.Find(r => r.Utenti_Id == userId).ToList();
                 foreach (Col col in collaboratori)
                 {
                     IEnumerable<int> lis = new List<int>();
@@ -274,21 +284,128 @@ namespace PowerWeb.Pages
                         {
                             weekly = false;
                         }
-                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, isByOtherEntity: optionsObj.devideByOtherEntity,
+                        Dictionary<string, List<TimesheetModuleItem>> cartelliniRetrieved = new Dictionary<string, List<TimesheetModuleItem>>();
+
+                        if (userFilIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Fil) && PowerWebContext.Current.User.Liv_Utente < 10)
+                        {
+                            bool mostra = false;
+                            foreach (var id in userFilIds)
+                            {
+                                List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Fil_Id == id.Fil_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                                if (regsInner.Any())
+                                {
+                                    mostra = true;
+                                }
+                            }
+                            if (mostra)
+                            {
+                                cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, isByOtherEntity: optionsObj.devideByOtherEntity,
                                                                                                                                isDecimalHours: false, showPiano: optionsObj.showPiano, calculateDelta: optionsObj.showDelta, calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni, showWeeklyTotal: weekly);
+                                JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
 
-                        JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
+                                cartelliniDataSource.Add(serCartellino);
 
-                        cartelliniDataSource.Add(serCartellino);
-
-                        #region CARTELLINI PER STRAORDINARIO/NOTTURNO
-
+                                #region CARTELLINI PER STRAORDINARIO/NOTTURNO
 
 
 
-                        #endregion
 
-                        index++;
+                                #endregion
+
+                                index++;
+                            }
+                        }
+                        else if (userRespIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Resp) && PowerWebContext.Current.User.Liv_Utente < 10)
+                        {
+                            bool mostra = false;
+                            foreach (var id in userRespIds)
+                            {
+                                List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Resp_Id == id.Resp_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                                if (regsInner.Any())
+                                {
+                                    mostra = true;
+                                }
+                            }
+                            if (mostra)
+                            {
+                                cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, isByOtherEntity: optionsObj.devideByOtherEntity,
+                                                                                                                              isDecimalHours: false, showPiano: optionsObj.showPiano, calculateDelta: optionsObj.showDelta, calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni, showWeeklyTotal: weekly);
+                                JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
+
+                                cartelliniDataSource.Add(serCartellino);
+
+                                #region CARTELLINI PER STRAORDINARIO/NOTTURNO
+
+
+
+
+                                #endregion
+
+                                index++;
+                            }
+                        }
+                        else if ((userRespIds.Any() || userFilIds.Any()) && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both) && PowerWebContext.Current.User.Liv_Utente < 10)
+                        {
+                            bool mostra = false;
+                            foreach (var id in userRespIds)
+                            {
+                                List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Resp_Id == id.Resp_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                                if (regsInner.Any())
+                                {
+                                    mostra = true;
+                                }
+                            }
+                            if (!mostra)
+                            {
+                                foreach (var id in userFilIds)
+                                {
+                                    List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Fil_Id == id.Fil_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                                    if (regsInner.Any())
+                                    {
+                                        mostra = true;
+                                    }
+                                }
+                            }
+                            if (mostra)
+                            {
+                                cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, isByOtherEntity: optionsObj.devideByOtherEntity,
+                                                                                                                              isDecimalHours: false, showPiano: optionsObj.showPiano, calculateDelta: optionsObj.showDelta, calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni, showWeeklyTotal: weekly);
+                                JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
+
+                                cartelliniDataSource.Add(serCartellino);
+
+                                #region CARTELLINI PER STRAORDINARIO/NOTTURNO
+
+
+
+
+                                #endregion
+
+                                index++;
+                            }
+                        }
+                        else
+                        {
+                            //if (regs.Count() > 0)
+                            //{
+                            cartelliniRetrieved = TimesheetModuleItem.GenerateCartellino(selectedPickerDate, col, isByOtherEntity: optionsObj.devideByOtherEntity,
+                                                                                                                              isDecimalHours: false, showPiano: optionsObj.showPiano, calculateDelta: optionsObj.showDelta, calculateOrdStrTimesheet: str, calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni, showWeeklyTotal: weekly);
+                            //} 
+                            JObject serCartellino = SerializeCartellino(cartelliniRetrieved, col, selectedPickerDate, optionsObj, index);
+
+                            cartelliniDataSource.Add(serCartellino);
+
+                            #region CARTELLINI PER STRAORDINARIO/NOTTURNO
+
+
+
+
+                            #endregion
+
+                            index++;
+                        }
+
+                       
                     }
                         
                 }
@@ -1959,15 +2076,89 @@ namespace PowerWeb.Pages
             DateTime minDate = CommonService.GetFirstMonthDay(selectedDate);
             DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
 
+            //viene estratto l'ide dello user che ha fatto l'accesso a Powerweb
+            int userId = PowerWebContext.Current.User.Utenti_Id;
+
+            //filtro solo i responsabili che corrispondo all'utente che ha effettuato l'accesso 
+            var userRespIds = RepoManager.Utenti_RespRepo.Find(r => r.Utenti_Id == userId).ToList();
+
+            //filtro solo le filiali che corrispondo all'utente che ha effettuato l'accesso 
+            var userFilIds = RepoManager.Utenti_FilRepo.Find(r => r.Utenti_Id == userId).ToList();
+
+            DateTime startMonth = CommonService.GetFirstMonthDay(selectedDate);
+            DateTime endMonth = CommonService.GetLastMonthDay(selectedDate);
+
             foreach (Col col in collaboratori)
             {
                 var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                     && (regv.Data_Reg >= minDate && regv.Data_Reg <= monthLastDate)
                     && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att, true);
-                //if (regs.Count() > 0)
-                //{
-                   cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
-                //}     
+                if (userFilIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Fil) && PowerWebContext.Current.User.Liv_Utente < 10)
+                {
+                    bool mostra = false;
+                    foreach (var id in userFilIds)
+                    {
+                        List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Fil_Id == id.Fil_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                        if (regsInner.Any())
+                        {
+                            mostra = true;
+                        }
+                    }
+                    if (mostra)
+                    {
+                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
+                    }
+                }
+                else if (userRespIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Resp) && PowerWebContext.Current.User.Liv_Utente < 10)
+                {
+                    bool mostra = false;
+                    foreach (var id in userRespIds)
+                    {
+                        List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Resp_Id == id.Resp_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                        if (regsInner.Any())
+                        {
+                            mostra = true;
+                        }
+                    }
+                    if (mostra)
+                    {
+                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
+                    }
+                }
+                else if ((userRespIds.Any() || userFilIds.Any()) && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both) && PowerWebContext.Current.User.Liv_Utente < 10)
+                {
+                    bool mostra = false;
+                    foreach (var id in userRespIds)
+                    {
+                        List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Resp_Id == id.Resp_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                        if (regsInner.Any())
+                        {
+                            mostra = true;
+                        }
+                    }
+                    if (!mostra)
+                    {
+                        foreach (var id in userFilIds)
+                        {
+                            List<Reg_V> regsInner = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Fil_Id == id.Fil_Id && r.Data_Ora_Fig_E > startMonth && r.Data_Ora_Fig_E < endMonth).ToList();
+                            if (regsInner.Any())
+                            {
+                                mostra = true;
+                            }
+                        }
+                    }
+                    if (mostra)
+                    {
+                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true)["justification"]);
+                    }
+                }
+                else
+                {
+                    //if (regs.Count() > 0)
+                    //{
+                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, false, false)["justification"]);
+                    //} 
+                }
             }
 
             var timesheetColReport = new XRColCartellino(cartellini, null, null, optionsObj);

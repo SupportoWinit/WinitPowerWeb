@@ -22,6 +22,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using System.Windows.Forms;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+using static System.Net.WebRequestMethods;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -80,7 +81,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 2 && r.Data_Ora_Fis_E > minDate && r.Data_Ora_Fis_E < maxDate && r.Registrazione_Tipo_Reg == 0).ToList();
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 2 && r.Qualifica_Col != "0" && r.Data_Ora_Fis_E >= minDate && r.Data_Ora_Fis_E <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) ).ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
             List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable().Where(c => c.DisAbilitazione_Can == false).ToList();
@@ -186,8 +187,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
                             DateTime tomorrow = day.AddDays(1);
-                            var dayReg = regs.Where(r => r.Data_Ora_Fis_E > day && r.Data_Ora_Fis_U < tomorrow).ToList();
-                            int daySum = 0;
+                            var dayReg = regs.Where(r => (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_U <= tomorrow) || (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_E < tomorrow && r.Registrazione_Tipo_Reg == 10)).ToList();
+                            double daySum = 0;
                             string tot = "-- --";
                             foreach (Reg_V reg in dayReg)
                             {
@@ -199,7 +200,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             if (daySum > 0)
                             {
                                 interventi++;
-                                TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                                TimeSpan totalDuration = TimeSpan.FromMinutes((int)daySum);
                                 totaleMensile = totaleMensile + totalDuration;
                                 tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
                             }

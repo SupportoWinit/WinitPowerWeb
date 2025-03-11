@@ -78,7 +78,7 @@ namespace PowerWeb
             btnHelp.Visible = false;
             btnPopulateGrid.Visible = false;
             btnCustomizeColumns.Visible = false;
-            cbBatchMode.Visible = false;
+            cbBatchMode.Visible = true;
             cbxExpandAll.Visible = false;
             btnUndo.Visible = false;
             btnUpdate.Visible = false;
@@ -1261,14 +1261,14 @@ namespace PowerWeb
                     {
                         // caricamento dell'eventuale layout di default
                         GridView.LoadClientLayout(PowerWebContext.GetFromSession<String>("GridLayout_" + GridView.ID));
-
+                        
                         if (!ReferenceEquals(GridModule.DefaultFilter, null))
                         {
                             GridView.FilterExpression = GridModule.DefaultFilter.ToString();
                             GridView.FilterEnabled = true;
                             GridView.DataBind();
                         }
-
+                        
                         // gestione del layout per le griglie doppie
                         ManageDoubleAndTripleGridLayout(null, null, null);
 
@@ -1405,6 +1405,10 @@ namespace PowerWeb
                                     e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(colorModify, false);
                                 }
                             }
+                            //modifica colore Fidente
+                            //var colorModify1 = BusinessService.ColorModify((RegModifyTypeEnum)11, RegEUEnum.Entry);
+                            //
+                            //e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(colorModify1, false);
                         }
                     }
                     #endregion
@@ -2172,6 +2176,34 @@ namespace PowerWeb
                 }
                 #endregion
 
+                #region BOTTONE ACCETTAZIONE
+                //se il bottone è quello di cancellazione
+                if (e.ButtonID == "accept")
+                {
+                    bool isDeletable = PowerWebContext.Current.User.IsUserAutorized(Utenti.OperationTypeEnum.Delete, CurrentPageTabAut, RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DefaultFunzAuthLevelEnum));
+
+                    if (isDeletable && RepoManager.ParamRepo.ParametersRow.DomainFilter != (int)DomainFilterEnum.None)
+                        isDeletable = DomainFilter(GridModule.EntityType, e.VisibleIndex, e.ButtonID);
+
+                    e.Enabled = isDeletable;
+                    e.Visible = isDeletable ? DevExpress.Utils.DefaultBoolean.True : DevExpress.Utils.DefaultBoolean.False;
+                }
+                #endregion
+
+                #region BOTTONE CANCELLAZIONE RICHIESTA FERIE/PERMESSO
+                //se il bottone è quello di cancellazione
+                if (e.ButtonID == "deleteRequest")
+                {
+                    bool isDeletable = PowerWebContext.Current.User.IsUserAutorized(Utenti.OperationTypeEnum.Delete, CurrentPageTabAut, RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DefaultFunzAuthLevelEnum));
+
+                    if (isDeletable && RepoManager.ParamRepo.ParametersRow.DomainFilter != (int)DomainFilterEnum.None)
+                        isDeletable = DomainFilter(GridModule.EntityType, e.VisibleIndex, e.ButtonID);
+
+                    e.Enabled = isDeletable;
+                    e.Visible = isDeletable ? DevExpress.Utils.DefaultBoolean.True : DevExpress.Utils.DefaultBoolean.False;
+                }
+                #endregion
+
                 #region BOTTONE VISUALIZZAZIONE
                 //se il bottone è quello di visualizzazione
                 if (e.ButtonID == "view")
@@ -2612,6 +2644,8 @@ namespace PowerWeb
                             }
                         }
                     }
+
+                    //reportOptions.Add("OPZ_KM",0);
 
                     ExtXtraReport ExtReport = PrintModule.GetReport(currentTabReport, unselectedTabs, reportOptions, groups, items);
 
@@ -3743,6 +3777,33 @@ namespace PowerWeb
 
             var gridIntanceId = grid.ClientID;
 
+            if (splitter[0] == "accept")
+            {
+                List<Tab_Decod> richiestaP = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Chiave_Tab == "RP" && td.Nome_Tab == "MOTIVAZIONI").ToList();
+                List<Tab_Decod> permessi = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Chiave_Tab == "P" && td.Nome_Tab == "MOTIVAZIONI").ToList();
+                //if (_regvStub.Motivazione_Reg_Id != null) {
+                //    if (_regvStub.Motivazione_Reg_Id == richiestaP.First().Tab_Decod_Id)
+                //    {
+                //        List<Reg> toDeleteRegs = new List<Reg>();
+                //        List<Reg> toAddRegs = new List<Reg>();
+                //        Reg regE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == _regvStub.RegE);
+                //        Reg regU = RepoManager.RegRepo.Single(reg => reg.Reg_Id == _regvStub.RegU);
+                //        toDeleteRegs.Add(regE);
+                //        toDeleteRegs.Add(regU);
+                //        Reg newRegE = regE;
+                //        newRegE.Motivazione_Reg_Id = permessi.First().Tab_Decod_Id;
+                //        Reg newRegU = regU;
+                //        newRegU.Motivazione_Reg_Id = permessi.First().Tab_Decod_Id;
+                //        toAddRegs.Add(newRegE);
+                //        toAddRegs.Add(newRegU);
+                //        // cancellazione di tutte le reg da cancellare
+                //        RepoManager.RegRepo.Delete(toDeleteRegs, true);
+                //        // aggiunta di tutte le reg da aggiungere                   
+                //        RepoManager.RegRepo.Add(toAddRegs, true);
+                //    }
+                //}
+            }
+
             if (splitter[0] == "addClone")
             {
                 GridClonedValues = new Hashtable();
@@ -3754,7 +3815,7 @@ namespace PowerWeb
                     if (grid.KeyFieldName != column.FieldName)
                     {
                         if (GridModule.EntityType == typeof(Reg_V))
-                        //Per le REGV_M quando si caricano i Campi dell'EDIT per il acso di Clone
+                        //Per le REGV_M quando si caricano i Campi dell'EDIT per il caso di Clone
                         //Vengono Dis_Abilitati i Campi che l'Utente NON PUO'/DEVE INSERIRE
                         {
                             // viene controllato che il nome della colonna che si sta processando; se si tratta di uno di questi il

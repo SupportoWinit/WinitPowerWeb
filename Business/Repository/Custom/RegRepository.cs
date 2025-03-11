@@ -450,6 +450,59 @@ namespace Business.Repository.Custom
                     try
                     {
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NotificaRitardo) == 1) {
+                            List<Reg_V> delayReg = new List<Reg_V>();
+                            var orariId = RepoManager.CantRepo.GetAllQueryable().GroupBy(c => c.Tab_Orari_Tipo_Id).ToList();
+                            foreach (var orario in orariId) {
+                                List<Tab_Orari> orari = RepoManager.Tab_OrariRepo.GetAllQueryable(t => t.Tab_Orari_Tipo_Id == orario.Key).OrderBy(t => t.Data_Inizio).ToList();
+                                if (orari.Last() != default(Tab_Orari))
+                                {
+                                    String entrata = "";
+                                    switch (DateTime.Today.DayOfWeek.ToString()) {
+                                        case "Monday":
+                                            if (orari.Last().G1 != false) {
+                                                entrata = orari.Last().G1.ToString();
+                                            }
+                                            break;
+                                        case "Tuesday":
+                                            if (orari.Last().G2 != false) {
+                                                entrata = orari.Last().G2.ToString();
+                                            }
+                                            break;
+                                        case "Wednesday":
+                                            if (orari.Last().G3 != false) {
+                                                entrata = orari.Last().G3.ToString();
+                                            }
+                                            break;
+                                        case "Thursday":
+                                            if (orari.Last().G4 != false) {
+                                                entrata = orari.Last().G4.ToString();
+                                            }
+                                            break;
+                                        case "Friday":
+                                            if (orari.Last().G5 != false) {
+                                                entrata = orari.Last().G5.ToString();
+                                            }
+                                            break;
+                                        case "Saturday":
+                                            if (orari.Last().G6 != false) {
+                                                entrata = orari.Last().G6.ToString();
+                                            }
+                                            break;
+                                        case "Sunday":
+                                            if (orari.Last().G7 != false) {
+                                                entrata = orari.Last().G7.ToString();
+                                            }
+                                            break;
+                                    }
+                                    if (entrata != "")
+                                    {
+                                        List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == orario.Key).ToList();
+                                        var newRounding = new Reg_V();
+                                        newRounding.Cant_Id = cants.First().Cant_Id;
+                                        delayReg.Add(newRounding);
+                                    } 
+                                }
+                            }
                             regVs = GetRegVsForRounding(regs);
 
                             BeginWork();
@@ -1780,7 +1833,7 @@ namespace Business.Repository.Custom
             Tuple<bool, NocturneTypeEnum, TimeSpan, TimeSpan> nocturneGlobalConfiguration = RepoManager.ParamRepo.NocturneGeneralConfiguration;
 
             // per ogni registrazione da processare (cioè non viaggio)
-            regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip).ToList().ForEach(reg =>
+            regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Trip && reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration).ToList().ForEach(reg =>
             {
                 // si procede a disaccoppiare la registrazione solamente se risulta necessario farlo
                 if (IsToDecuple(reg, startDate, endDate, nocturneGlobalConfiguration))
@@ -2066,7 +2119,7 @@ namespace Business.Repository.Custom
                     }
 
                     //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
-                    if (reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0)
+                    if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
                     {
 
                         #region Associazione del cantiere
@@ -3412,10 +3465,10 @@ namespace Business.Repository.Custom
                                         //se è richiesta la chiusura
                                         if (!doNotClose)
                                         {
-                                            if (currentReg.Registrazione_Stato_Reg != 1 && currentRegCant.Importo3 != null)
+                                            if (currentReg.Registrazione_Stato_Reg != 1 && currentRegCant.Importo6 != null)
                                             {
-                                                if (currentRegCant.Importo3.Value > 0) {
-                                                    DateTime dataReg = currentReg.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(currentRegCant.Importo3.Value);
+                                                if (currentRegCant.Importo6.Value > 0) {
+                                                    DateTime dataReg = currentReg.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(currentRegCant.Importo6.Value);
                                                     // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
                                                     Reg newReg = Init();
                                                     //duplicazione delle reg passate come parametro
@@ -6529,6 +6582,10 @@ namespace Business.Repository.Custom
                                             }
                                         }
                                         break;
+
+                                    case AdditionalInfoEnum.Note:
+                                        previousReg.Note_Reg = currentPreReg.NoteReg;
+                                        break;
                                 }
                         }
 
@@ -7278,6 +7335,8 @@ namespace Business.Repository.Custom
                                                 if (currentFru != default(Fru))
                                                 {
                                                     newReg.Fru_Id = currentFru.Fru_Id;
+                                                    newReg.Registrazione_Lat_Orig = latitudeToSearch;
+                                                    newReg.Registrazione_Long_Orig = longitudeToSearch;
 
                                                     // aggiunta della nuova reg all'elenco
                                                     regsToAdd.Add(newReg);
@@ -7992,6 +8051,9 @@ namespace Business.Repository.Custom
                         case AdditionalInfoEnum.Squadra:
                             SquadraArray = BusinessService.GetAdditionalInfoValueSquadra(splittedLine);
                             break;
+                        case AdditionalInfoEnum.Note:
+                            NoteReg = BusinessService.GetAdditionalInfoValue(splittedLine);
+                            break;
                     }
 
                 }
@@ -8089,6 +8151,8 @@ namespace Business.Repository.Custom
             public string[] SquadraArray { get; set; }
 
             public string Motivate { get; set; }
+
+            public string NoteReg { get; set; }
 
             #endregion
 

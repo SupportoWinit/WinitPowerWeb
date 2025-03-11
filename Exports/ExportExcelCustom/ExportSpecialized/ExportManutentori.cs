@@ -19,6 +19,7 @@ using DevExpress.XtraSpreadsheet.Model;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
+using Spire.Additions.Xps.Schema;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -68,7 +69,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2)).ToList();
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4)).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod)); 
@@ -79,6 +80,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
             List<Dictionary<string, Dictionary<string, int>>> tmpAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
             string lastAtt = "";
+            int lastAttId = 0;
             string lastCant = "";
             int lastDurata = 0;
             int totaleReg = 0;
@@ -90,7 +92,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 if (reg.Registrazione_Tipo_Reg == 2)
                 {
                     //recupero la lista delle attività
-                    List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                    List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id && c.Tipologia_Can == "ATT").ToList();
                     //controllo se la timbratura è associata o meno
                     if (reg.Registrazione_Stato_Reg == 1)
                     {
@@ -126,6 +128,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 tmpDic[attivita.First().Descrizione_Can] = tmp + lastDurata;
                                 //azzero tute le variabili
                                 lastAtt = "";
+                                lastAttId = 0;
                                 lastDurata = 0;
                                 aggiornato = true;
                             }
@@ -138,6 +141,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 aggiornato = true;
                                 lastAtt = "";
+                                lastAttId = 0;
                                 lastDurata = 0;
                             }
                             if (!aggiornato) {
@@ -147,6 +151,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     tmpAttivita.Add(tmpdic);
                                 }
                                 lastAtt = "";
+                                lastAttId = 0;
                             }
                         }
                         else {
@@ -157,12 +162,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             }
                             lastDurata = 0;
                             lastAtt = "";
+                            lastAttId = 0;
                         }
 
                     }
                     else {
                         if (lastAtt != "") {
-                            attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == lastAtt).ToList();
+                            attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == lastAtt && c.Tipologia_Can == "ATT").ToList();
                             //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
                             bool aggiornato = false;
                             bool esiste = false;
@@ -193,6 +199,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 tmpDic[attivita.First().Descrizione_Can] = tmp + lastDurata;
                                 //azzero tute le variabili
                                 lastAtt = "";
+                                lastAttId = 0;
                                 lastDurata = 0;
                                 aggiornato = true;
                             }
@@ -205,6 +212,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 aggiornato = true;
                                 lastAtt = "";
+                                lastAttId = 0;
                                 lastDurata = 0;
                             }
                             if (!aggiornato)
@@ -215,13 +223,95 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     tmpAttivita.Add(tmpdic);
                                 }
                                 lastAtt = "";
+                                lastAttId = 0;
                                 lastDurata = 0;
                             }
                         }
                         attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
                         lastAtt = attivita.First().Descrizione_Can;
+                        lastAttId = attivita.First().Cant_Id;
                     }
-                } else if (reg.Registrazione_Tipo_Reg == 0) {
+                } 
+                else if (reg.Registrazione_Tipo_Reg == 0) {
+                    if (lastAtt != "" && lastCant != reg.Cant_Desc)
+                    {
+                        //recupero la lista delle attività
+                        List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId).ToList();
+                        //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+                        bool aggiornato = false;
+                        //ciclo tutte le attività che ho recuperato in precedenza
+                        if (listaAttivita.Count() > 0)
+                        {
+                            bool esiste = false;
+                            Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+                            foreach (var att in listaAttivita)
+                            {
+                                if (att.First().Key == lastCant)
+                                {
+                                    if (!esiste)
+                                    {
+                                        //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+                                        tmpDic = att.First().Value;
+                                        foreach (var lista in tmpDic)
+                                        {
+                                            if (lista.Key == attivita.First().Note_Can)
+                                            {
+                                                esiste = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (esiste)
+                            {
+                                //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+                                int tmp = tmpDic[attivita.First().Note_Can];
+                                //incremento il totale delle ore mensili
+                                tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
+                                //azzero tute le variabili
+                                lastAtt = attivita.First().Descrizione_Can;
+                                lastAttId = attivita.First().Cant_Id;
+                                lastDurata = 0;
+                                aggiornato = true;
+                            }
+                            else
+                            {
+                                if (lastDurata > 0)
+                                {
+                                    Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+                                    tmpDi[lastCant] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                    tmpAttivita.Add(tmpDi);
+                                }
+                                aggiornato = true;
+                                lastAtt = attivita.First().Descrizione_Can;
+                                lastAttId = attivita.First().Cant_Id;
+                                lastDurata = 0;
+                            }
+                            if (!aggiornato)
+                            {
+                                if (lastDurata > 0)
+                                {
+                                    var tmpdic = new Dictionary<string, Dictionary<string, int>>();
+                                    tmpdic[lastCant] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                    tmpAttivita.Add(tmpdic);
+                                }
+                                lastAtt = attivita.First().Descrizione_Can;
+                                lastAttId = attivita.First().Cant_Id;
+                            }
+                        }
+                        else
+                        {
+                            if (lastDurata > 0)
+                            {
+                                Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
+                                tmpDic[lastCant] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                tmpAttivita.Add(tmpDic);
+                            }
+                            lastDurata = 0;
+                            lastAtt = attivita.First().Descrizione_Can;
+                            lastAttId = attivita.First().Cant_Id;
+                        }
+                    }
                     if (reg.Durata_Fig != null) {
                         lastDurata += reg.Durata_Fig.Value;
                         lastCant = reg.Cant_Desc;
@@ -236,7 +326,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
 
                 foreach (var inner in prova.First().Value) {
-                    List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == inner.Key).ToList();
+                    List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == inner.Key && c.Tipologia_Can == "ATT").ToList();
 
                     CellInsertValue(1, 2, rowIndex, cants.First().Note_Can + " ", ExcelInsertTypeEnum.Content);
                     RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);

@@ -2283,9 +2283,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             break;
                     }
                 DateTime minutesToAdd = DateTime.Today.AddMinutes(Convert.ToDouble(regvDuration));
-                if (dayRegV.Motivazione_Reg_Id != null) {
-                    regvDuration = 0;
-                }
+                //if (dayRegV.Motivazione_Reg_Id != null) {
+                //    regvDuration = 0;
+                //}
                 if (regvDuration > 0)
                 {                    
                     confrontationsByOtherEntity[otherEntityId].ExecutionDuration = confrontationsByOtherEntity[otherEntityId].ExecutionDuration == null
