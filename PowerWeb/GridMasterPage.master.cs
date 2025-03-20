@@ -1406,9 +1406,11 @@ namespace PowerWeb
                                 }
                             }
                             //modifica colore Fidente
-                            //var colorModify1 = BusinessService.ColorModify((RegModifyTypeEnum)11, RegEUEnum.Entry);
-                            //
-                            //e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(colorModify1, false);
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NotShowModifyRegs) == 1 && PowerWebContext.Current.User.Liv_Utente < 10) {
+                                var colorModify1 = BusinessService.ColorModify((RegModifyTypeEnum)11, RegEUEnum.Entry);
+                                
+                                e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(colorModify1, false);
+                            }
                         }
                     }
                     #endregion
@@ -1468,6 +1470,13 @@ namespace PowerWeb
 
                                 e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(colorModify, false);
                             }
+                        }
+                        //modifica colore Fidente
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NotShowModifyRegs) == 1 && PowerWebContext.Current.User.Liv_Utente < 10)
+                        {
+                            var colorModify1 = BusinessService.ColorModify((RegModifyTypeEnum)11, RegEUEnum.Entry);
+
+                            e.Cell.ForeColor = RepoManager.ParamRepo.GetColorFromEnum(colorModify1, false);
                         }
                     }
                 }

@@ -203,9 +203,9 @@ namespace PowerWeb.Modules
                 var richiestaFerieId = RepoManager.Tab_DecodRepo.GetAllQueryable(f => f.Chiave_Tab == "RF" && f.Nome_Tab == "MOTIVAZIONI").ToList();
                 //recupero una lista di motivazione che iniziano per 'Richiesta'
                 var motivazioniRichieste = RepoManager.Tab_DecodRepo.GetAllQueryable(mr => mr.Nome_Tab == "MOTIVAZIONI" && mr.Decodifica_Tab.Contains("Richiesta")).ToList();
-                StringBuilder sbQuery = new StringBuilder("SELECT * FROM Reg_V where");
-                sbQuery.AppendFormat("(Motivazione_Reg_Id = {0} OR Motivazione_Reg_Id = {1}", richiestaPermessoId.First().Tab_Decod_Id, richiestaFerieId.First().Tab_Decod_Id);
-                sbQuery.Append(')');
+                //StringBuilder sbQuery = new StringBuilder("SELECT * FROM Reg_V where");
+                //sbQuery.AppendFormat("(Motivazione_Reg_Id = {0} OR Motivazione_Reg_Id = {1}", richiestaPermessoId.First().Tab_Decod_Id, richiestaFerieId.First().Tab_Decod_Id);
+                //sbQuery.Append(')');
                 StringBuilder test = new StringBuilder("SELECT * FROM Reg_V where");
                 test.Append("(");
                 //per ogni motivazione di richiesta vado ad aggiornare la query
@@ -2440,7 +2440,8 @@ namespace PowerWeb.Modules
         public string InviaConferma(int esito, Col cols, DateTime from, DateTime to)
         {
             string titoloMail = "";
-            
+            string mailTo = RepoManager.ParamRepo.ParametersRow.CompanyEmail;
+
             //Prepara il body della mail caricando il css
             string mailBody = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; \">",
                    errorMessage = "";
@@ -2468,77 +2469,14 @@ namespace PowerWeb.Modules
 
             mailBody += "</div>";
 
-            errorMessage = CommonService.sendMail("dtezzon@winitsrl.it", titoloMail, mailBody, "newsletter@winit.it", titoloMail, new string[] { });
+            if (cols.Email_Col != "" && cols.Email_Col != null) {
+                mailTo = cols.Email_Col;
+            }
+
+            errorMessage = CommonService.sendMail(mailTo, titoloMail, mailBody, "newsletter@winit.it", titoloMail, new string[] { });
 
             DateTime today = DateTime.Today;
 
-            //Recupera le registrazioni di oggi con ritardo non ancora inviate
-            //List<Reg_V> delayList = RepoManager.Reg_VRepo.Find(regv => (regv.Data_Ora_Fis_E.Year == today.Year && regv.Data_Ora_Fis_E.Month == today.Month && regv.Data_Ora_Fis_E.Day == today.Day) && (regv.Ritardo_Durata != null && regv.Ritardo_Durata > 0) && (!regv.Ritardo_Mail_Sent)).ToList();
-            //
-            //if (delayList.Any())
-            //{
-            //    mailBody += "<p>Il giorno " + today.ToString("dddd d MMMM yyyy") + " sono stati registrati i seguenti ritardi:</p>";
-            //    mailBody += "<div style='margin-left: 20px;'>";
-            //
-            //    //Raggruppa le registrazioni per cantiere
-            //    var delayByCant = delayList.GroupBy(regv => regv.Cant_Id);
-            //
-            //    foreach (var cantDelays in delayByCant)
-            //    {
-            //        cant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == cantDelays.Key);
-            //        if (cant != default(Cant))
-            //        {
-            //            mailBody += "<p><u>Cantiere</u>: " + cant.Descrizione_Can.ToUpper() + "</p>";
-            //            //Raggruppa le registrazioni per collaboratore
-            //            var delayByCantByCol = cantDelays.GroupBy(regv => regv.Col_Id);
-            //
-            //            foreach (var colDelays in delayByCantByCol)
-            //            {
-            //                col = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == colDelays.Key);
-            //                //var orario = RepoManager.Tab_OrariRepo.SingleOrDefault(o => o.Tab_Orari_Tipo_Id == col.Tab_Orari_Tipo_Id && o.Cant_Id == cant.Cant_Id);
-            //
-            //                if (col != default(Col))
-            //                {
-            //                    //Per ogni collaboratore scrive i ritardi
-            //                    mailBody += "<div style='margin: 0 0 10px 20px;'>";
-            //                    mailBody += "<p><u>Collaboratore</u>: " + col.Cognome_Col.ToUpper() + " " + col.Nome_Col + "</p>";
-            //                    var orderedColDelays = colDelays.OrderBy(regv => regv.Data_Ora_Fig_E);
-            //
-            //                    foreach (Reg_V ritardo in orderedColDelays)
-            //                    {
-            //                        durata_ritardo_minuti = ritardo.Ritardo_Durata.Value % 60;
-            //                        durata_ritardo_ore = ritardo.Ritardo_Durata.Value / 60;
-            //                        mailBody += "<p style='margin: 0 20px;font-weight: bold;'>Ritardo: " + durata_ritardo_ore.ToString("00") + ":" + durata_ritardo_minuti.ToString("00") + "</p>";
-            //                    }
-            //
-            //                    mailBody += "</div>";
-            //                }
-            //            }
-            //        }
-            //    }
-            //
-            //    mailBody += "</div>";
-            //}
-            //
-            //else
-            //{
-            //    mailBody += "<p>Nessun collaboratore è in ritardo il giorno " + today.ToString("dddd d MMMM yyyy") + ".</p>";
-            //}
-            //
-            //mailBody += "</div>";
-            //Invia le mail
-            //errorMessage = CommonService.sendMail("dtezzon@winitsrl.it", titoloMail, mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
-            //
-            ////Se la mail è stata inviata correttamente, segnala che è stata inviata
-            //if (errorMessage == "Mail inviata!")
-            //{
-            //    foreach (Reg_V sent in delayList)
-            //    {
-            //        Reg regE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == sent.RegE);
-            //        regE.Ritardo_Mail_Sent = true;
-            //        RepoManager.RegRepo.Update(regE, true);
-            //    }
-            //}
             return errorMessage;
         }
 

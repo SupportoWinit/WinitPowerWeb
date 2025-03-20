@@ -539,7 +539,7 @@
       Overtime = 1 visualizza gli straordinari-->
 
   <!--<********************************************************EXPORT CONFRONTE ORE STRAORDINARIE************************************************************-->
-  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="1"/>
+  <c ID="CustomizationEnum.ExportStr" Des="Utilizza il confronte con le ore piano suddivise per cantiere" Value="0"/>
   <!-- ExportStr = 0 non visualizza gli straordinari
       ExportStr = 1 visualizza gli straordinari-->
   <!--<********************************************************IMPORTAZIONE TIMBRATURE NELLO STESSO MINUTO************************************************************-->
@@ -616,7 +616,7 @@
 		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore di pausa all'interno delle ore lavorate -->
 
   <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
-  <c ID="CustomizationEnum.NoArrotondamentoOreModificate" Des="Indica di non arrotondare le timbrature modificate" Value="1"/>
+  <c ID="CustomizationEnum.NoArrotondamentoOreModificate" Des="Indica di non arrotondare le timbrature modificate" Value="0"/>
   <!--  NoArrotondamentoOreModificate = 0 Arrotonda le timbrature modificate
         NoArrotondamentoOreModificate = 1 Non arrotonda le timbrature modificate-->
 
@@ -656,7 +656,7 @@
         DelayAfter=1 Indica di calcolare i kilometri-->
   
   <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
-  <c ID="CustomizationEnum.NocturneOnCartellino" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
+  <c ID="CustomizationEnum.NocturneOnCartellino" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="0"/>
   <!--  DelayAfter=0 Indica di non calcolare i kilometri
         DelayAfter=1 Indica di calcolare i kilometri-->
 
@@ -674,6 +674,15 @@
   <c ID="CustomizationEnum.UseStartOfDay" Des="Indica se utilizzare il parametro inizio giornata nell'inserimento massivo per orari solo durata" Value="0"/>
   <!--  UseStartOfDay=0 Indica di utilizzare il parametro
         UseStartOfDay=1 Indica di non utilizzare il parametro-->
-  
+
+  <!-- ******************************************************* MOSTRA I DETTAGLI DELLA MALATTIA NEL CARTELLINO *********************************************************-->
+  <c ID="CustomizationEnum.LimitiDaTurni" Des="Indica se utilizzare il parametro inizio giornata nell'inserimento massivo per orari solo durata" Value="1"/>
+  <!--  LimitiDaTurni=0 Indica di utilizzare il parametro
+        LimitiDaTurni=1 Indica di non utilizzare il parametro-->
+
+  <!-- ******************************************************* MOSTRA IL COLORE ROSSO SE LA TIMBRATURA E' MODIFICATA *********************************************************-->
+  <c ID="CustomizationEnum.NotShowModifyRegs" Des="Indica se mostrare il colore della timbratura diverso in caso di modifica" Value="1"/>
+  <!--  NotShowModifyRegs=0 Indica di mostrare il coloro
+        NotShowModifyRegs=1 Indica di non mostrare il colore-->
   
 </Customizations>

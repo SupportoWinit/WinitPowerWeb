@@ -217,6 +217,7 @@
     <Compile Include="DataClasses\GeoBadgeDTOs\GeoBadgeReg.cs" />
     <Compile Include="DataClasses\SupportClasses\RegsByDay.cs" />
     <Compile Include="DataClasses\WebApiDataClasses\ExportJson.cs" />
+    <Compile Include="DataClasses\WebApiDataClasses\ReturnValues.cs" />
     <Compile Include="DataClasses\WebApiDataClasses\WinitPasswordChangeDTO.cs" />
     <Compile Include="ExternalImport\ExternalImportFactory.cs" />
     <Compile Include="ExternalImport\ExternalImportManager.cs" />

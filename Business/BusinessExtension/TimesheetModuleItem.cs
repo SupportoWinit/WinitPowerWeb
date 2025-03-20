@@ -6495,6 +6495,7 @@ namespace Business.BusinessExtension
             //Recupera e ordina per data tutte le reg del collaboratore
             IQueryable<Reg_V> baseColRegVs = GetPeriodColRegVs(col, minDate, maxDate, showWeeklyTotal).OrderBy(r => r.Data_Reg);
             workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+            var testRegV = baseColRegVs.ToList();
             var cantIdList1 = workedRegVs.Select(regv => regv.Cant_Id).Distinct().ToList();
 
             // inizializzazione dell'ordine di visualizzazione

@@ -3528,7 +3528,9 @@ namespace Business.Repository.Custom
             TimeSpan? afternoonExitLimitTollerance = GetEntryLimitTolleranceValue(col, cant);
 
             if (regE != null && regU != null) {
+                //recupero l'orario del cantiere
                 List<Tab_Orari> orario = RepoManager.Tab_OrariRepo.GetAll().Where(orr => orr.Tab_Orari_Tipo_Id == cant.Tab_Orari_Tipo_Id).ToList();
+                //Creo degli orari che siano 15 minuti prima e dopo le due timbrature
                 DateTime beforeE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -15, 0));
                 DateTime afterE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 15, 0));
                 DateTime beforeU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -15, 0));
@@ -3541,6 +3543,7 @@ namespace Business.Repository.Custom
                 {
                     foreach (Tab_Orari or in orario)
                     {
+                        //in base al giorno della timbratura seleziono il giorno dell'orario corretto
                         bool valido = false;
                         switch (regE.Registrazione_Data_Ora_Fig_Reg.Value.DayOfWeek)
                         {
@@ -3575,18 +3578,24 @@ namespace Business.Repository.Custom
                         }
                         if (valido)
                         {
+                            //se siamo in un giorno con orario vado a crearmi le ore in base agli orari
                             DateTime orarioE = new DateTime(afterE.Year, afterE.Month, afterE.Day, or.Ora_E.Value.Hours, or.Ora_E.Value.Minutes, or.Ora_E.Value.Seconds);
                             DateTime orarioU = new DateTime(afterU.Year, afterU.Month, afterU.Day, or.Ora_U.Value.Hours, or.Ora_U.Value.Minutes, or.Ora_U.Value.Seconds);
-                            double tmpDiffE = (orarioE - afterE).TotalMinutes;
-                            tmpDiffE = (orarioE - beforeE).TotalMinutes;
-                            double tmpDiffU = (orarioU - afterU).TotalMinutes;
-                            tmpDiffU = (orarioU - beforeU).TotalMinutes;
-                            if (tmpDiffU <= diffU && tmpDiffE <= diffE)
-                            {
-                                diffU = Math.Abs(tmpDiffU);
-                                diffE = Math.Abs(tmpDiffE);
-                                tempE = or.Ora_E.Value;
-                                tempU = or.Ora_U.Value;
+                            if (orarioE > beforeE && orarioE < afterE) {
+                                double tmpDiffE = (orarioE - regE.Registrazione_Data_Ora_Fig_Reg.Value).TotalMinutes;
+                                //tmpDiffE = (orarioE - beforeE).TotalMinutes;
+                                double tmpDiffU = (orarioU - afterU).TotalMinutes;
+                                tmpDiffU = (orarioU - beforeU).TotalMinutes;
+                                if (tmpDiffE < 0) {
+                                    tmpDiffE = tmpDiffE * -1;
+                                }
+                                if (/*tmpDiffU <= diffU &&*/ tmpDiffE <= diffE)
+                                {
+                                    diffU = Math.Abs(tmpDiffU);
+                                    diffE = Math.Abs(tmpDiffE);
+                                    tempE = or.Ora_E.Value;
+                                    tempU = or.Ora_U.Value;
+                                }
                             }
                         }
                     }

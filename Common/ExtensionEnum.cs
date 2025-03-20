@@ -205,7 +205,8 @@ namespace Common
         NocturneOnCartellino,
         PartialTimesheet,
         DetailsMalattiaCartellino,
-        UseStartOfDay
+        UseStartOfDay,
+        NotShowModifyRegs
     }
 
     public enum ClockAppsOperationEnum

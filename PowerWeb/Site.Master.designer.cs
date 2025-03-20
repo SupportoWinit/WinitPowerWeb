@@ -1,17 +1,19 @@
 ﻿//------------------------------------------------------------------------------
 // <generato automaticamente>
-//     Codice generato da uno strumento.
+//     Questo codice è stato generato da uno strumento.
 //
 //     Le modifiche a questo file possono causare un comportamento non corretto e verranno perse se
 //     il codice viene rigenerato. 
 // </generato automaticamente>
 //------------------------------------------------------------------------------
 
-namespace PowerWeb {
-    
-    
-    public partial class SiteMaster {
-        
+namespace PowerWeb
+{
+
+
+    public partial class SiteMaster
+    {
+
         /// <summary>
         /// Controllo Head1.
         /// </summary>
@@ -20,7 +22,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
-        
+
         /// <summary>
         /// Controllo HeadContent.
         /// </summary>
@@ -29,7 +31,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
-        
+
         /// <summary>
         /// Controllo Form1.
         /// </summary>
@@ -38,7 +40,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm Form1;
-        
+
         /// <summary>
         /// Controllo TitleLabel.
         /// </summary>
@@ -47,7 +49,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel TitleLabel;
-        
+
         /// <summary>
         /// Controllo SubTitleLabel.
         /// </summary>
@@ -56,7 +58,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel SubTitleLabel;
-        
+
         /// <summary>
         /// Controllo DeployVersionLabel.
         /// </summary>
@@ -65,7 +67,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel DeployVersionLabel;
-        
+
         /// <summary>
         /// Controllo NavigationMenu.
         /// </summary>
@@ -74,7 +76,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxMenu.ASPxMenu NavigationMenu;
-        
+
         /// <summary>
         /// Controllo SiteMapPath.
         /// </summary>
@@ -83,7 +85,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SiteMapPath SiteMapPath;
-        
+
         /// <summary>
         /// Controllo ASPxSiteMapDataSource1.
         /// </summary>
@@ -92,7 +94,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxSiteMapControl.ASPxSiteMapDataSource ASPxSiteMapDataSource1;
-        
+
         /// <summary>
         /// Controllo MainContent.
         /// </summary>
@@ -101,7 +103,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-        
+
         /// <summary>
         /// Controllo pcScheduleJob.
         /// </summary>
@@ -110,7 +112,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxPopupControl.ASPxPopupControl pcScheduleJob;
-        
+
         /// <summary>
         /// Controllo cpScheduleJobLayout.
         /// </summary>
@@ -119,7 +121,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxCallbackPanel.ASPxCallbackPanel cpScheduleJobLayout;
-        
+
         /// <summary>
         /// Controllo ScheduleJobPanelContent.
         /// </summary>
@@ -128,7 +130,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxPanel.PanelContent ScheduleJobPanelContent;
-        
+
         /// <summary>
         /// Controllo MoreThanOnceADayScheduleJob.
         /// </summary>
@@ -137,7 +139,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxRadioButton MoreThanOnceADayScheduleJob;
-        
+
         /// <summary>
         /// Controllo DailyScheduleJob.
         /// </summary>
@@ -146,7 +148,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxRadioButton DailyScheduleJob;
-        
+
         /// <summary>
         /// Controllo WeeklyScheduleJob.
         /// </summary>
@@ -155,7 +157,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxRadioButton WeeklyScheduleJob;
-        
+
         /// <summary>
         /// Controllo MonthlyScheduleJob.
         /// </summary>
@@ -164,7 +166,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxRadioButton MonthlyScheduleJob;
-        
+
         /// <summary>
         /// Controllo LblMinutesInterval.
         /// </summary>
@@ -173,7 +175,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblMinutesInterval;
-        
+
         /// <summary>
         /// Controllo FldMinutesInterval.
         /// </summary>
@@ -182,7 +184,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxSpinEdit FldMinutesInterval;
-        
+
         /// <summary>
         /// Controllo LblDaysInterval.
         /// </summary>
@@ -191,7 +193,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblDaysInterval;
-        
+
         /// <summary>
         /// Controllo FldDaysInterval.
         /// </summary>
@@ -200,7 +202,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxSpinEdit FldDaysInterval;
-        
+
         /// <summary>
         /// Controllo LblFromHour.
         /// </summary>
@@ -209,7 +211,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblFromHour;
-        
+
         /// <summary>
         /// Controllo FldFromHour.
         /// </summary>
@@ -218,7 +220,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxTimeEdit FldFromHour;
-        
+
         /// <summary>
         /// Controllo LblAtHour.
         /// </summary>
@@ -227,7 +229,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblAtHour;
-        
+
         /// <summary>
         /// Controllo FldAtHour.
         /// </summary>
@@ -236,7 +238,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxTimeEdit FldAtHour;
-        
+
         /// <summary>
         /// Controllo LblToHour.
         /// </summary>
@@ -245,7 +247,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblToHour;
-        
+
         /// <summary>
         /// Controllo FldToHour.
         /// </summary>
@@ -254,7 +256,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxTimeEdit FldToHour;
-        
+
         /// <summary>
         /// Controllo LblDaysInclusions.
         /// </summary>
@@ -263,7 +265,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblDaysInclusions;
-        
+
         /// <summary>
         /// Controllo LblDaysExclusions.
         /// </summary>
@@ -272,7 +274,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblDaysExclusions;
-        
+
         /// <summary>
         /// Controllo ChkBoxsMonthDays.
         /// </summary>
@@ -281,7 +283,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBoxList ChkBoxsMonthDays;
-        
+
         /// <summary>
         /// Controllo ChkBoxMonday.
         /// </summary>
@@ -290,7 +292,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxMonday;
-        
+
         /// <summary>
         /// Controllo ChkBoxTuesday.
         /// </summary>
@@ -299,7 +301,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxTuesday;
-        
+
         /// <summary>
         /// Controllo ChkBoxWednesday.
         /// </summary>
@@ -308,7 +310,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxWednesday;
-        
+
         /// <summary>
         /// Controllo ChkBoxThursday.
         /// </summary>
@@ -317,7 +319,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxThursday;
-        
+
         /// <summary>
         /// Controllo ChkBoxFriday.
         /// </summary>
@@ -326,7 +328,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxFriday;
-        
+
         /// <summary>
         /// Controllo ChkBoxSaturday.
         /// </summary>
@@ -335,7 +337,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxSaturday;
-        
+
         /// <summary>
         /// Controllo ChkBoxSunday.
         /// </summary>
@@ -344,7 +346,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxCheckBox ChkBoxSunday;
-        
+
         /// <summary>
         /// Controllo LblPeriodType.
         /// </summary>
@@ -353,7 +355,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblPeriodType;
-        
+
         /// <summary>
         /// Controllo FldPeriodType.
         /// </summary>
@@ -362,7 +364,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxComboBox FldPeriodType;
-        
+
         /// <summary>
         /// Controllo LblStaticPeriodFrom.
         /// </summary>
@@ -371,7 +373,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblStaticPeriodFrom;
-        
+
         /// <summary>
         /// Controllo FldStaticPeriodFrom.
         /// </summary>
@@ -380,7 +382,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit FldStaticPeriodFrom;
-        
+
         /// <summary>
         /// Controllo LblStaticPeriodTo.
         /// </summary>
@@ -389,7 +391,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblStaticPeriodTo;
-        
+
         /// <summary>
         /// Controllo FldStaticPeriodTo.
         /// </summary>
@@ -398,7 +400,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit FldStaticPeriodTo;
-        
+
         /// <summary>
         /// Controllo LblStartRepetition.
         /// </summary>
@@ -407,7 +409,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblStartRepetition;
-        
+
         /// <summary>
         /// Controllo FldStartRepetitionDate.
         /// </summary>
@@ -416,7 +418,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxDateEdit FldStartRepetitionDate;
-        
+
         /// <summary>
         /// Controllo LblEndRepetition.
         /// </summary>
@@ -425,7 +427,7 @@ namespace PowerWeb {
         /// Per la modifica, spostare la dichiarazione di campo dal file di progettazione al file code-behind.
         /// </remarks>
         protected global::DevExpress.Web.ASPxEditors.ASPxLabel LblEndRepetition;
-        
+
         /// <summary>
         /// Controllo FldEndRepetitionDate.
         /// </summary>
