@@ -3539,7 +3539,7 @@ namespace Business.Repository.Custom
                 TimeSpan tempU = new TimeSpan();
                 double diffE = 5000;
                 double diffU = 5000;
-                if (orario != null)
+                if (orario.Count() > 0)
                 {
                     foreach (Tab_Orari or in orario)
                     {
@@ -3581,12 +3581,14 @@ namespace Business.Repository.Custom
                             //se siamo in un giorno con orario vado a crearmi le ore in base agli orari
                             DateTime orarioE = new DateTime(afterE.Year, afterE.Month, afterE.Day, or.Ora_E.Value.Hours, or.Ora_E.Value.Minutes, or.Ora_E.Value.Seconds);
                             DateTime orarioU = new DateTime(afterU.Year, afterU.Month, afterU.Day, or.Ora_U.Value.Hours, or.Ora_U.Value.Minutes, or.Ora_U.Value.Seconds);
-                            if (orarioE > beforeE && orarioE < afterE) {
+                            if (orarioE > beforeE && orarioE < afterE)
+                            {
                                 double tmpDiffE = (orarioE - regE.Registrazione_Data_Ora_Fig_Reg.Value).TotalMinutes;
                                 //tmpDiffE = (orarioE - beforeE).TotalMinutes;
                                 double tmpDiffU = (orarioU - afterU).TotalMinutes;
                                 tmpDiffU = (orarioU - beforeU).TotalMinutes;
-                                if (tmpDiffE < 0) {
+                                if (tmpDiffE < 0)
+                                {
                                     tmpDiffE = tmpDiffE * -1;
                                 }
                                 if (/*tmpDiffU <= diffU &&*/ tmpDiffE <= diffE)
@@ -3606,6 +3608,47 @@ namespace Business.Repository.Custom
                     else
                     {
                         afternoonEntryLimit = tempE;
+                    }
+                }
+                else {
+                    // se il collaboratore passato come parmetro è valorizzato si tenta di recuperare le configurazione da lui
+                    if (col != null)
+                    {
+                        // se il collaboratore ha impostato il limite d'entrata mattutino si inserisce il valore nella variabile utilizzata dal metodo
+                        if (col.Limite_Entrata_Mattina_Col.HasValue)
+                            morningEntryLimit = col.Limite_Entrata_Mattina_Col;
+
+                        // se il collaboratore ha impostato il limite d'entrata pomeridiano si inseriscono i valori nelle variabili utilizzate dal metodo
+                        if (col.Limite_Entrata_Pomeriggio_Col.HasValue)
+                        {
+                            afternoonEntryLimit = col.Limite_Entrata_Pomeriggio_Col;
+                        }
+                    }
+
+                    // si procede alla verifica dei dati del cantiere solamente se è valorizzato e precedentemente
+                    if (cant != null)
+                    {
+                        // se il cantiere ha impostato un valore di limite d'entrata mattutino e il collaboratore non l'ha settato, si procede all'impostazione della variabile con il dato del cantiere
+                        if (!morningEntryLimit.HasValue && cant.Limite_Entrata_Mattina_Cant.HasValue)
+                            morningEntryLimit = cant.Limite_Entrata_Mattina_Cant;
+
+                        // se il cantiere ha impostato un valore di limite d'entrata pomeridiano e il collaboratore non l'ha settato, si procede all'impostazione delle variabili con il dato del cantiere
+                        if (!afternoonEntryLimit.HasValue && cant.Limite_Entrata_Pomeriggio_Cant.HasValue)
+                        {
+                            afternoonEntryLimit = cant.Limite_Entrata_Pomeriggio_Cant;
+                        }
+                    }
+
+                    // se la configurazione centrale ha impostato un valore di limite d'entrata mattutino e il collaboratore e il cantiere non l'hanno precedentemente setttato,
+                    // si procede all'impostazione della variabile con il dato di configurazione centrale
+                    if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Mattina.HasValue && !morningEntryLimit.HasValue)
+                        morningEntryLimit = RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Mattina;
+
+                    // se la configurazione centrale ha impostato un valore di limite d'entrata pomeridiano e il collaboratore e il cantiere non l'hanno precedentemente settato,
+                    // si procede all'impostazione delle variabili con il dato di configurazione centrale
+                    if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Pomeriggio.HasValue && !afternoonEntryLimit.HasValue)
+                    {
+                        afternoonEntryLimit = RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Pomeriggio;
                     }
                 }
             }
@@ -3668,7 +3711,7 @@ namespace Business.Repository.Custom
                 TimeSpan tempU = new TimeSpan();
                 double diffE = 5000;
                 double diffU = 5000;
-                if (orario != null)
+                if (orario.Count() > 0)
                 {
                     foreach (Tab_Orari or in orario)
                     {
@@ -3706,28 +3749,82 @@ namespace Business.Repository.Custom
                         }
                         if (valido)
                         {
+                            //se siamo in un giorno con orario vado a crearmi le ore in base agli orari
                             DateTime orarioE = new DateTime(afterE.Year, afterE.Month, afterE.Day, or.Ora_E.Value.Hours, or.Ora_E.Value.Minutes, or.Ora_E.Value.Seconds);
                             DateTime orarioU = new DateTime(afterU.Year, afterU.Month, afterU.Day, or.Ora_U.Value.Hours, or.Ora_U.Value.Minutes, or.Ora_U.Value.Seconds);
-                            double tmpDiffE = (orarioE - afterE).TotalMinutes;
-                            tmpDiffE = (orarioE - beforeE).TotalMinutes;
-                            double tmpDiffU = (orarioU - afterU).TotalMinutes;
-                            tmpDiffU = (orarioU - beforeU).TotalMinutes;
-                            if (tmpDiffU <= diffU && tmpDiffE <= diffE)
+                            if (orarioU > beforeU && orarioU < afterU)
                             {
-                                diffU = Math.Abs(tmpDiffU);
-                                diffE = Math.Abs(tmpDiffE);
-                                tempE = or.Ora_E.Value;
-                                tempU = or.Ora_U.Value;
+                                double tmpDiffE = (orarioE - regE.Registrazione_Data_Ora_Fig_Reg.Value).TotalMinutes;
+                                //tmpDiffE = (orarioE - beforeE).TotalMinutes;
+                                double tmpDiffU = (orarioU - regU.Registrazione_Data_Ora_Fig_Reg.Value).TotalMinutes;
+                                //tmpDiffU = (orarioU - beforeU).TotalMinutes;
+                                if (tmpDiffU < 0)
+                                {
+                                    tmpDiffU = tmpDiffU * -1;
+                                }
+                                if (tmpDiffU <= diffU /*&& tmpDiffE <= diffE*/)
+                                {
+                                    diffU = Math.Abs(tmpDiffU);
+                                    diffE = Math.Abs(tmpDiffE);
+                                    tempE = or.Ora_E.Value;
+                                    tempU = or.Ora_U.Value;
+                                }
                             }
                         }
                     }
-                    if (tempE < midDay)
+                    if (tempU < midDay)
                     {
                         morningExitLimit = tempU;
                     }
                     else
                     {
                         afternoonExitLimit = tempU;
+                    }
+                }
+                else {
+                    // se il collaboratore passato come parmetro è valorizzato si tenta di recuperare le configurazione da lui
+                    if (col != null)
+                    {
+                        // se il collaboratore ha impostato il limite d'entrata mattutino si inserisce il valore nella variabile utilizzata dal metodo
+                        if (col.Limite_Uscita_Mattina_Col.HasValue)
+                            morningExitLimit = col.Limite_Uscita_Mattina_Col;
+
+                        // se il collaboratore ha impostato il limite d'entrata pomeridiano si inseriscono i valori nelle variabili utilizzate dal metodo
+                        if (col.Limite_Uscita_Pomeriggio_Col.HasValue)
+                        {
+                            afternoonExitLimit = col.Limite_Uscita_Pomeriggio_Col;
+                        }
+
+                        if (col.Tolleranza_Limite_Uscita_Pomeriggio_Col.HasValue)
+                        {
+
+                        }
+                    }
+
+                    // si procede alla verifica dei dati del cantiere solamente se è valorizzato e precedentemente
+                    if (cant != null)
+                    {
+                        // se il cantiere ha impostato un valore di limite d'entrata mattutino e il collaboratore non l'ha settato, si procede all'impostazione della variabile con il dato del cantiere
+                        if (!morningExitLimit.HasValue && cant.Limite_Uscita_Mattina_Cant.HasValue)
+                            morningExitLimit = cant.Limite_Uscita_Mattina_Cant;
+
+                        // se il cantiere ha impostato un valore di limite d'entrata pomeridiano e il collaboratore non l'ha settato, si procede all'impostazione delle variabili con il dato del cantiere
+                        if (!afternoonExitLimit.HasValue && cant.Limite_Uscita_Pomeriggio_Cant.HasValue)
+                        {
+                            afternoonExitLimit = cant.Limite_Uscita_Pomeriggio_Cant;
+                        }
+                    }
+
+                    // se la configurazione centrale ha impostato un valore di limite d'entrata mattutino e il collaboratore e il cantiere non l'hanno precedentemente setttato,
+                    // si procede all'impostazione della variabile con il dato di configurazione centrale
+                    if (RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Mattina.HasValue && !morningExitLimit.HasValue)
+                        morningExitLimit = RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Mattina;
+
+                    // se la configurazione centrale ha impostato un valore di limite d'entrata pomeridiano e il collaboratore e il cantiere non l'hanno precedentemente settato,
+                    // si procede all'impostazione delle variabili con il dato di configurazione centrale
+                    if (RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Pomeriggio.HasValue && !afternoonExitLimit.HasValue)
+                    {
+                        afternoonExitLimit = RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Pomeriggio;
                     }
                 }
             }
