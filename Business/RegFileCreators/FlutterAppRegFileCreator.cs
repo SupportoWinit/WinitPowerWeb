@@ -59,11 +59,11 @@ namespace Business.RegFileCreators
                     if (regs.Value != null) {
                         if (regs.Value.First().CodicePru != "")
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
+                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
                         }
                         else
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
+                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
                         }
 
                         regsToOrder.Add(var);
@@ -77,11 +77,11 @@ namespace Business.RegFileCreators
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
                     }
 
                     regsToOrder.Add(var);
@@ -94,11 +94,11 @@ namespace Business.RegFileCreators
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
                     }
 
                     regsToOrder.Add(var);
@@ -769,7 +769,7 @@ namespace Business.RegFileCreators
                     }
                     #endregion
                 }
-                else if (fluReg.Chiave != null && fluReg.Chiave != "") 
+                else if (fluReg.Chiave != null && fluReg.Chiave != "")
                 {
                     #region Reg senza coordinate
                     string regRow = "";
@@ -785,6 +785,39 @@ namespace Business.RegFileCreators
                     }
                     regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                         fluReg.Chiave,
+                        fluReg.CodicePru,
+                        fluReg.Data.Year,
+                        fluReg.Data.Month.ToString("00"),
+                        fluReg.Data.Day.ToString("00"),
+                        fluReg.Data.Hour.ToString("00"),
+                        fluReg.Data.Minute.ToString("00"),
+                        verso,
+                        fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                    );
+                    regsToWrite.Add(regRow);
+                    var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                    if (noteLine != "")
+                    {
+                        regsToWrite.Add(noteLine);
+                    }
+                    #endregion
+                }
+                else if (fluReg.CantiereSel != null && fluReg.CantiereSel != "") 
+                {
+                    #region Reg senza coordinate
+                    string regRow = "";
+                    string verso = "";
+                    if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                    {
+                        verso = fluReg.Motivazione;
+                        fluReg.Motivazione = "";
+                    }
+                    if (fluReg.Motivazione == "none")
+                    {
+                        fluReg.Motivazione = "";
+                    }
+                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                        fluReg.CantiereSel,
                         fluReg.CodicePru,
                         fluReg.Data.Year,
                         fluReg.Data.Month.ToString("00"),
@@ -946,7 +979,14 @@ namespace Business.RegFileCreators
                         );
                     }
                     regsToWrite.Add(regRow);
-                    var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                    var noteLine = "";
+                    if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
+                    {
+                        noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                    }
+                    else {
+                        noteLine = FlutterAppStringFormatter.CreateNoteGpsLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                    }
                     if (noteLine != "") {
                         regsToWrite.Add(noteLine);
                     }

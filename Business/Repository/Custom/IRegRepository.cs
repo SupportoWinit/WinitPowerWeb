@@ -132,7 +132,7 @@ namespace Business.Repository.Custom
         /// <param name="isUpdating">Se impostato a <c>true</c> allora si sta effettuando l'update di un record esistente.</param>
         /// <param name="oldRegE">La registrazione che la reg restituita andrà a sostituire.</param>
         /// <returns>La nuova registrazione popolata con i dati indicati in griglia</returns>
-        Reg GetRegEFromNewValues(OrderedDictionary newValues, bool isUpdating = false, Reg oldRegE = null);
+        Reg GetRegEFromNewValues(OrderedDictionary newValues, Reg oldRegE = null, bool isUpdating = false);
 
         /// <summary>
         /// Dati i valori inputati in griglia si prepara e ritorna una registrazione d'uscita corrispondente.
@@ -142,6 +142,15 @@ namespace Business.Repository.Custom
         /// <param name="oldRegU">La registrazione che la reg restituita andrà a sostituire.</param>
         /// <returns>La nuova registrazione popolata con i dati indicati in griglia</returns>
         Reg GetRegUFromNewValues(OrderedDictionary newValues, bool isUpdating = false, Reg oldRegU = null);
+
+        /// <summary>
+        /// Dati i valori inputati in griglia si prepara e ritorna una registrazione d'uscita corrispondente.
+        /// </summary>
+        /// <param name="newValues">I nuovi valori in griglia da processare.</param>
+        /// <param name="isUpdating">Se impostato a <c>true</c> allora si sta effettuando l'update di un record esistente.</param>
+        /// <param name="oldRegU">La registrazione che la reg restituita andrà a sostituire.</param>
+        /// <returns>La nuova registrazione popolata con i dati indicati in griglia</returns>
+        Reg GetRegUFromNewValuesCoordinates(OrderedDictionary newValues, Reg oldRegU/* = null*/, bool isUpdating = false);
 
         /// <summary>
         /// Recupera e restituisce l'anagrafica PRU/FRU per lo specifico codice passato come parametro.

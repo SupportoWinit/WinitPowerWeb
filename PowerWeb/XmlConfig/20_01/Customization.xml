@@ -8,7 +8,7 @@
       = 0 Personalizzazione NON attivata
             <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
   <!-- *******************************************************************************************************************************************-->
-  <c Value="0" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
+  <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
   <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
   <c ID="CustomizationEnum.DefaultGroupViewInCantPage" Des="Raggruppamento iniziale pagina cantiere resu vista default(no raggruppamenti)" Value="0" />
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
@@ -130,7 +130,7 @@
   ImportBlockedRegsEnum=1 blocca le registrazioni in fase di import (+ vecchie dell'ultima registrata per coll) -->
 
   <!-- ********************************************************IMPORTAZIONE FLAG_EU*********************************************************-->
-  <c ID="CustomizationEnum.ImportFlagEUEnum" Des="Indica come trattare il flag E/U in import" Value="1" />
+  <c ID="CustomizationEnum.ImportFlagEUEnum" Des="Indica come trattare il flag E/U in import" Value="0" />
   <!-- ImportFlagEUEnum=0 Indica di importare il flag E/U come da standard
   ImportFlagEUEnum=1 Indica di non importare il flag E/U anche se presente -->
 
@@ -316,12 +316,12 @@
 		CustomExportsBackgroundColorEnum=1 Non Visualizza i colori previsti dal codice nel export custom -->
 
   <!-- *******************************************MOTIVAZIONI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="2" />
+  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="1" />
   <!--JustificationHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore con motivazione all'interno delle ore lavorate
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
 
   <!-- *******************************************VIAGGI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="0" />
+  <c ID="CustomizationEnum.TripHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con viaggi come se fossero ore lavorate" Value="1" />
   <!--TripHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore viaggio all'interno delle ore lavorate
 		TripHourIsWorkedHoursEnum=1 Saranno utilizzate le ore viaggio all'interno delle ore lavorate -->
 
@@ -416,7 +416,7 @@
         PauseDeductionOnlyFascia5=1 Indica che la pausa pranzo viene detratta solo dai viaggi che ricadono in fascia 5-->
 
   <!-- ********************************************************AUTOCHIUSURA DELLE TIMBRATURE SU CANT SEDE*********************************************************-->
-  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="1" />
+  <c ID="CustomizationEnum.AutoClosuresEnum" Des="Indica se chiudere le timbrature in modo automatico" Value="0" />
   <!--  AutoClosuresEnum=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
@@ -552,61 +552,101 @@
   <c ID="CustomizationEnum.AutoClosuresFirstLast" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
   <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-   <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
+  <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
   <c ID="CustomizationEnum.AutoClosures" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0">
-      <param Name="minuti" Value ="2"/>
+    <param Name="minuti" Value ="2"/>
   </c>
   <!--  AutoClosures=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosures=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
+  <!-- ********************************************************AUTOCHIUSURA SU TUTTE LE TIMBRATURE*********************************************************-->
+  <c ID="CustomizationEnum.AutoClosuresXMinuteEnum" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
+  <!--  AutoClosuresXMinuteEnum=0 Indica di non chiudere le timbrature in modo automatico
+        AutoClosuresXMinuteEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
   <c ID="CustomizationEnum.DisableExcelExport" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
-        AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!--  DisableExcelExport=0 Indica di non chiudere le timbrature in modo automatico
+        DisableExcelExport=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
   <c ID="CustomizationEnum.TimesheetMultiPagedExport" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  AutoClosuresFirstLast=0 Indica di non chiudere le timbrature in modo automatico
-        AutoClosuresFirstLast=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!--  TimesheetMultiPagedExport=0 Indica di non chiudere le timbrature in modo automatico
+        TimesheetMultiPagedExport=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
-  <!-- *******************************************************CALCOLO DURATA VIAGGIO 1KM = 1 MIN *********************************************************-->
-  <c ID="CustomizationEnum.DurationTrip" Des="Indica se calcolare la durata dei viaggi con la formula 1 km = 1 minuto" Value="1"/>
-  <!--  DurationTrip=0 Indica di calcolarli normalmente
-        DurationTrip=1 Indica di applicare la formula-->
-		
-  <!-- *******************************************************CONTARE PAUSA PRANZO NEL CALCOLO DEL TOTALE *********************************************************-->
-  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se calcolare la durata dei viaggi con la formula 1 km = 1 minuto" Value="0"/>
-  <!--  PausaPranzoIsWorkedHoursEnum=0 Indica di calcolarli normalmente
-        PausaPranzoIsWorkedHoursEnum=1 Indica di applicare la formula-->
-		
-		    <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
-  <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
+  <!-- ********************************************************ORDINA LE REG IN BASE AL CANTIERE*********************************************************-->
+  <c ID="CustomizationEnum.OrderElaborateRegByCant" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
   <!--  OrderElaborateRegByCant=0 Indica di non chiudere le timbrature in modo automatico
         OrderElaborateRegByCant=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-		
-		  <!-- ********************************************************NON CALCOLARE VIAGGIO PAUSA PRANZO*********************************************************-->
-  <c ID="CustomizationEnum.NotCalcolatePausaTrip" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
-  <!--  NotCalcolatePausaTrip=0 Indica di non chiudere le timbrature in modo automatico
-        NotCalcolatePausaTrip=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
-		
-		  <!-- ********************************************************SOMMA LA REPERIBILITA NEL TOTALE*********************************************************-->
-  <c ID="CustomizationEnum.ReperibilitaTotale" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  ReperibilitaTotale=0 Indica di non contare la reperibilita
-        ReperibilitaTotale=1 Indica di contare la reperibilita-->
-		
-  <!-- ********************************************************CONTA LA PAUSA NELLA GENERAZIONE ARROTONDAMENTO PER DURATA*********************************************************-->
-  <c ID="CustomizationEnum.ArrotondamentoPausa" Des="Indica se tenere in considerazione la pausa pranzo nella creazione delle timbrature arrotondamento per durata" Value="1"/>
-  <!--  ArrotondamentoPausa=0 Indica di contare la pausa
-        ArrotondamentoPausa=1 Indica di non contare la pausa-->
-		
+
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.RimozionePausaHotel" Des="(Personalizzazione Komplett) Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
+  <!--  RimozionePausaHotel=0 Indica di non rimuovere la pausa
+        RimozionePausaHotel=1 Indica di rimuovere la pausa-->
+
+  <!-- ********************************************************INDICA SE E' ABILITATO L'EXPORT DI KOMPLETT************************************************************************************** -->
+  <c ID="CustomizationEnum.ExportHotelKomplett" Des="Indica di non includere i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere" Value="0"/>
+  <!--	ExportHotelKomplett = 0 Indica di INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere
+    ExportHotelKomplett = 1 Indica di NON INCLUDERE i collaboratori/cantieri nelle combobox Id.Collab./Id.Cantiere-->
+
+  <!--<********************************************************CONOTROLLA SE LE TIMBRATURE SONO COPERTURE SERALI************************************************************-->
+  <c ID="CustomizationEnum.CopertureSerali" Des="Controlla se le timbrature sono coperture serali" Value="1"/>
+  <!-- CopertureSerali = 0 non controlla se le timbrature sono coperture serali
+      CopertureSerali = 1 controlla se le timbrature sono coperture serali-->
+
+  <!-- ********************************************************UTILIZZA LE ORE FIGURATIVE PER I VIAGGI*********************************************************-->
+  <c ID="CustomizationEnum.TripFigHours" Des="Indica se utilizzare le ore figurative o le ore fisiche nella creazione dei viaggi" Value="1"/>
+  <!--  TripFigHours=0 Indica di usare le ore fisiche
+        TripFigHours=1 Indica di usare le ore figurative-->
+
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
+  <!--  RimozionePausaPranzo=0 Indica di non rimuovere la pausa
+        RimozionePausaPranzo=1 Indica di rimuovere la pausa-->
+
+  <!-- *******************************************PAUSA PRANZO COME ONL*********************************************************-->
+  <c ID="CustomizationEnum.PausaPranzoIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore della pausa pranzo come se fossero ore lavorate" Value="1" />
+  <!--PausaPranzoIsWorkedHoursEnum=0 Non saranno utilizzate le ore di pausa all'interno delle ore lavorate
+		PausaPranzoIsWorkedHoursEnum=1 Saranno utilizzate le ore di pausa all'interno delle ore lavorate -->
+
+  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
+  <c ID="CustomizationEnum.NoArrotondamentoOreModificate" Des="Indica di non arrotondare le timbrature modificate" Value="0"/>
+  <!--  NoArrotondamentoOreModificate = 0 Arrotonda le timbrature modificate
+        NoArrotondamentoOreModificate = 1 Non arrotonda le timbrature modificate-->
+
   <!-- ********************************************************CALCOLA I VIAGGI SOLO TRA DUE TIMBRATURE GPS*********************************************************-->
   <c ID="CustomizationEnum.TripOnlyGpsReg" Des="Indica di calcolare i viaggi solo tra due timbrature GPS" Value="0"/>
   <!--  TripOnlyGpsReg = 0 Calcola in qualsiasi caso il viaggio
         TripOnlyGpsReg = 1 Calcola il viaggio solo se le due timbrature sono GPS-->
 
   <!-- ********************************************************APPLICA L'ARROTONDAMENTO PER DURATA AD OGNI TIMBRATURA E NON ALLA GIORNATA*********************************************************-->
-  <c ID="CustomizationEnum.ArrotAllRegs" Des="Indica se arrotondare l'intera giornata o ogni registrazione" Value="0"/>
+  <c ID="CustomizationEnum.ArrotAllRegs" Des="Indica se arrotondare l'intera giornata o ogni registrazione" Value="1"/>
   <!--  ArrotAllRegs = 0 Arrotonda la giornata
         ArrotAllRegs = 1 Arrotonda tutte le timbrature-->
 
+  <!-- ********************************************************APPLICA L'ARROTONDAMENTO PER DURATA AD OGNI TIMBRATURA E NON ALLA GIORNATA*********************************************************-->
+  <c ID="CustomizationEnum.AllColLimitiByOrario" Des="Indica se arrotondare l'intera giornata o ogni registrazione" Value="0"/>
+  <!--  ArrotAllRegs = 0 Arrotonda la giornata
+        ArrotAllRegs = 1 Arrotonda tutte le timbrature-->
+
+  <!-- ********************************************************MOSTRA LE GIORNATE SENZA ORE NEL CONFRONTO ORE/BUDGET*********************************************************-->
+  <c ID="CustomizationEnum.ShowHourNoTimb" Des="Indica se mostrare le giornate" Value="1"/>
+  <!--  ShowHourNoTimb = 0 Arrotonda la giornata
+        ShowHourNoTimb = 1 Arrotonda tutte le timbrature-->
+
+  <!-- ********************************************************MOSTRA LE GIORNATE SENZA ORE NEL CONFRONTO ORE/BUDGET*********************************************************-->
+  <c ID="CustomizationEnum.UseTabDistDuration" Des="Indica se mostrare le giornate" Value="0"/>
+  <!--  UseTabDistDuration = 0 Arrotonda la giornata
+        UseTabDistDuration = 1 Arrotonda tutte le timbrature-->
+  
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.DoublePushPin" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
+  <!--  DounlePushPin=0 Indica di non calcolare i kilometri
+        DounlePushPin=1 Indica di calcolare i kilometri-->
+
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.DelayAfter" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="0"/>
+  <!--  DelayAfter=0 Indica di non calcolare i kilometri
+        DelayAfter=1 Indica di calcolare i kilometri-->
+  
 </Customizations>

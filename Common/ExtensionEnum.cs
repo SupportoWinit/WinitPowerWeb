@@ -206,7 +206,9 @@ namespace Common
         PartialTimesheet,
         DetailsMalattiaCartellino,
         UseStartOfDay,
-        NotShowModifyRegs
+        NotShowModifyRegs,
+        ShowActivitiesInRegV,
+        MantainCoordinateModifiedRegs,
     }
 
     public enum ClockAppsOperationEnum
@@ -386,7 +388,8 @@ namespace Common
         GeneraleCantiere = 3,
         GeneraleAssistito = 4,
         NoAssociazione = 5,
-        Solaris = 6
+        Solaris = 6,
+        G4 = 7
     }
 
     // tipo di importazione anagrafiche collaboratori da excel

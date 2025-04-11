@@ -1110,11 +1110,19 @@ namespace PowerWeb.Modules
                 isSameDay = Convert.ToBoolean(e.NewValues[CommonService.GetPropertyName(() => _regVStub.IsUTimeSameDayE)]); // altrimenti dipende dal flag di modifica
 
             //Inizializzo i Dati delle REG di Entrata e Uscita da Inserire                        
-            var currentRegENew = RepoManager.RegRepo.GetRegEFromNewValues(e.NewValues, true, currentRegEOld);
+            var currentRegENew = RepoManager.RegRepo.GetRegEFromNewValues(e.NewValues, currentRegEOld, true);
 
             // la reg u invece potrebbe essere nuova
-            var currentRegUNew = RepoManager.RegRepo.GetRegUFromNewValues(e.NewValues, currentRegUOld != null, currentRegUOld);
+            var currentRegUNew = new Reg();
 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 0)
+            {
+                currentRegUNew = RepoManager.RegRepo.GetRegUFromNewValues(e.NewValues, currentRegUOld != null, currentRegUOld);
+            }
+            else 
+            {
+                currentRegUNew = RepoManager.RegRepo.GetRegUFromNewValuesCoordinates(e.NewValues, currentRegUOld, currentRegUOld != null);
+            }
             // gestione delle date origine sulle reg da processare
             RepoManager.RegRepo.ManageOrigDates(currentRegENew, currentRegEId, origDateE, currentRegUNew, currentRegUId, origDateU, isSameDay);
 
@@ -1811,6 +1819,10 @@ namespace PowerWeb.Modules
                             newRegE.Pru_Id = regv.Pru_Id;
                             newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
                             newRegE.Registrazione_Tipo_Reg = oldRegE.Registrazione_Tipo_Reg;
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 1) {
+                                newRegE.Registrazione_Lat_Orig = oldRegE.Registrazione_Lat_Orig;
+                                newRegE.Registrazione_Long_Orig = oldRegE.Registrazione_Long_Orig;
+                            }
 
                             // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
                             RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
@@ -1928,6 +1940,12 @@ namespace PowerWeb.Modules
                                 newRegU.DisAbilitazione_Reg = false;
 
                                 newRegU.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 1)
+                                {
+                                    newRegU.Registrazione_Lat_Orig = oldRegU.Registrazione_Lat_Orig;
+                                    newRegU.Registrazione_Long_Orig = oldRegU.Registrazione_Long_Orig;
+                                }
 
                                 validationErrors = RepoManager.RegRepo.Check(newRegU);
 

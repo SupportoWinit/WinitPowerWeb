@@ -565,7 +565,7 @@ namespace PowerWeb.Modules
                 isSameDay = Convert.ToBoolean(e.NewValues[CommonService.GetPropertyName(() => _regVStub.IsUTimeSameDayE)]); // altrimenti dipende dal flag di modifica
 
             //Inizializzo i Dati delle REG di Entrata e Uscita da Inserire                        
-            var currentRegENew = RepoManager.RegRepo.GetRegEFromNewValues(e.NewValues, true, currentRegEOld); // la reg e in updating è sempre in modifica
+            var currentRegENew = RepoManager.RegRepo.GetRegEFromNewValues(e.NewValues, currentRegEOld, true); // la reg e in updating è sempre in modifica
 
             // la reg u invece potrebbe essere nuova
             var currentRegUNew = RepoManager.RegRepo.GetRegUFromNewValues(e.NewValues, currentRegUOld != null, currentRegUOld);

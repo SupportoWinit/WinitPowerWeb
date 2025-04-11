@@ -786,6 +786,7 @@ namespace PowerWeb.Modules
 
                             if (!checkErrors)
                             {
+                                toElabRegs = toElabRegs.OrderBy(r => r.Data_Ora_Fis_E).ToList();
                                 for (int i = 0; i < toElabRegs.Count; i++)
                                 {
                                     var regv = toElabRegs[i];
@@ -900,6 +901,8 @@ namespace PowerWeb.Modules
 
                                 if (toAddRegs.Count > 0)
                                 {
+                                    toAddRegs = AdjustFisRegByCol(toAddRegs);
+
                                     RepoManager.RegRepo.Add(toAddRegs, true);
 
                                     List<Reg> toElaborateTotalRegs = new List<Reg>();
@@ -1036,6 +1039,30 @@ namespace PowerWeb.Modules
         }
 
         #endregion
+
+        private List<Reg> AdjustFisRegByCol(IEnumerable<Reg> regsToProcess)
+        //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
+        {
+            List<Reg> returnList = new List<Reg>();
+            var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();
+            regsByDate.ForEach(byDateList =>
+            {
+                // se sono presenti delle reg da shiftare
+                if (byDateList.Count() > 1)
+                {
+                    // per ogi reg da shiftare viene aggiunto un secondo
+                    int secondsToAdd = 1;
+                    byDateList.ForEach(regToShift => regToShift.Registrazione_Data_Ora_Fis_Reg = regToShift.Registrazione_Data_Ora_Fis_Reg.AddSeconds(secondsToAdd++));
+                }
+            });
+            //return new HashSet<Reg>(regsByDate.SelectMany(s => s).ToList());
+            foreach (var regs in regsByDate) {
+                foreach (var reg in regs) {
+                    returnList.Add(reg);
+                }
+            }
+            return returnList;
+        }
 
     }
 

@@ -142,5 +142,31 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
             return activityLines;
         }
 
+        internal static string CreateNoteGpsLines(string deviceCode, string badgeCode, DateTime regDateTime, string note)
+        {
+            if (String.IsNullOrEmpty(note))
+                return "";
+
+            string activityLines = "";
+            // costruzione della stringa da processare
+            string line = string.Format(EXTRA_INFO_STRING_FORMAT
+                , SEPARATOR
+                , deviceCode
+                , "NOTE000002"
+                , regDateTime.Year
+                , regDateTime.Month.ToString("00")
+                , regDateTime.Day.ToString("00")
+                , regDateTime.Hour.ToString("00")
+                , regDateTime.Minute.ToString("00")
+                , " " //Reg direction per ora vuota
+                , INFOAGG
+                , NOTE
+                , note
+                );
+            // aggiunta della stringa alla lista di scrittura
+            activityLines = line;
+            return activityLines;
+        }
+
     }
 }

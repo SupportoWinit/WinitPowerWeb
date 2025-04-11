@@ -691,6 +691,10 @@ namespace PowerWeb
                         {
                             currentGridLayout = currentGridLayout.Insert(dateIndex + 1, prevMonthString);
                         }
+                        else if (nomeLayout.Contains("IERI/OGGI"))
+                        {
+                            currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ieri);
+                        }
                         else if (nomeLayout.Contains("OGGI"))
                         {
                             currentGridLayout = currentGridLayout.Insert(dateIndex + 1, now);
@@ -764,6 +768,10 @@ namespace PowerWeb
                                 {
                                     currentGridLayout = currentGridLayout.Insert(dateIndex + 1, mesePrevUltimoGgString);
 
+                                }
+                                else if (nomeLayout.Contains("IERI/OGGI"))
+                                {
+                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, now);
                                 }
                                 else if (nomeLayout.Contains("OGGI"))
                                 {

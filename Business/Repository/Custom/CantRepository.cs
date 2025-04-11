@@ -2415,6 +2415,280 @@ namespace Business.Repository.Custom
                 var importClass = CantImportFactory.CreateInstance(customizationVersion, inputCants);
                 var importErrors = importClass.Import();
             }
+            else if (customizationVersion == CantImportTypeEnum.G4) 
+            {
+                #region Import delle anagrafiche cantiere G4
+
+                // inizializzazione del dizionario che permette di recuperare il posizionamento delle colonne
+                Dictionary<string, Int32> columnsNumber = null;
+
+                // inizializzazione della lista utilizzata per l'aggiunta dei cantieri
+
+                var errorFileds = new StringBuilder();
+
+                List<Cant> cantToInsert = new List<Cant>();    //Lista contente i records che hanno passato la verifica
+
+
+                // per ogni riga del csv passato come parametro
+                foreach (String stringVar in inputCants)
+                {
+
+                    String[] splittedLine = stringVar.Split(new Char[] { ';' }, StringSplitOptions.None);
+                    var columns = splittedLine.Count();
+                    var emptyRow = new StringBuilder();
+                    for (var i = 0; i < columns - 1; i++)
+                        emptyRow.Append(";");
+
+                    //Segnala errore se manca un'intera riga
+                    if (stringVar == emptyRow.ToString() || splittedLine.Length <= 1)
+                    {
+                        //errorFileds.AppendLine(BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_RIGA_X_VUOTA, rownumber.ToString()));
+                        //throw new InvalidOperationException(errorFileds.ToString());
+                        continue;
+                    }
+
+                    if (errorFileds.ToString() == String.Empty)
+                    {
+
+                        // se sto processando la prima linea allora mi salvo il posizionamento delle colonne,
+                        // altrimenti procedo all'inserimento del record indicato
+
+                        if (columnsNumber == null)
+                        {
+                            #region SALVATAGGIO INTESTAZIONE
+
+                            string[] splittedRow = stringVar.Split(';');
+                            columnsNumber = new Dictionary<string, int>();
+                            splittedRow = splittedRow.Select(s => s.ToUpperInvariant()).ToArray();
+                            columnsNumber.Add("CODICE", Array.IndexOf(splittedRow, "CODICE"));
+                            columnsNumber.Add("DESCRIZIONE", Array.IndexOf(splittedRow, "DESCRIZIONE"));
+                            columnsNumber.Add("CODICE CLIENTE", Array.IndexOf(splittedRow, "CODICE CLIENTE"));
+                            columnsNumber.Add("DESCRIZIONE CLIENTE", Array.IndexOf(splittedRow, "DESCRIZIONE CLIENTE"));
+                            columnsNumber.Add("MATRICOLA FRU", Array.IndexOf(splittedRow, "MATRICOLA FRU"));
+                            columnsNumber.Add("DATA ASSOCIAZIONE", Array.IndexOf(splittedRow, "DATA ASSOCIAZIONE"));
+                            columnsNumber.Add("FILIALE", Array.IndexOf(splittedRow, "FILIALE"));
+                            columnsNumber.Add("COMUNE", Array.IndexOf(splittedRow, "COMUNE"));
+                            columnsNumber.Add("VIA", Array.IndexOf(splittedRow, "VIA"));
+                            columnsNumber.Add("LATITUDINE", Array.IndexOf(splittedRow, "LATITUDINE"));
+                            columnsNumber.Add("LONGITUDINE", Array.IndexOf(splittedRow, "LONGITUDINE"));
+                            columnsNumber.Add("NOTE", Array.IndexOf(splittedRow, "NOTE"));
+                            columnsNumber.Add("PROVINCIA", Array.IndexOf(splittedRow, "PROVINCIA"));
+                            columnsNumber.Add("CAP", Array.IndexOf(splittedRow, "CAP"));
+                            columnsNumber.Add("RAGGIO", Array.IndexOf(splittedRow, "RAGGIO"));
+                            columnsNumber.Add("CODICE COMMESSA", Array.IndexOf(splittedRow, "CODICE COMMESSA"));
+                            columnsNumber.Add("PIANO", Array.IndexOf(splittedRow, "PIANO"));
+                            columnsNumber.Add("UBICAZIONE", Array.IndexOf(splittedRow, "UBICAZIONE"));
+                            columnsNumber.Add("NUMERO CHIAVI MAZZI", Array.IndexOf(splittedRow, "NUMERO CHIAVI MAZZI"));
+                            columnsNumber.Add("STANZA", Array.IndexOf(splittedRow, "STANZA"));
+
+
+
+                            if (columnsNumber.ContainsValue(-1))
+                            {
+
+                                var errorSb = new StringBuilder();
+                                foreach (KeyValuePair<string, Int32> kvp in columnsNumber.Where(kvp => kvp.Value == -1))
+                                {
+                                    if (kvp.Key.Equals("CODICE") || kvp.Key.Equals("DESCRIZIONE") || kvp.Key.Equals("MATRICOLA FRU") || kvp.Key.Equals("DATA ASSOCIAZIONE"))
+                                    {
+                                        errorSb.AppendLine(BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_TESTATA_X_COLONNA, kvp.Key.ToString()));
+                                    }
+                                }
+
+                                if (errorSb.ToString() != String.Empty)
+                                    throw new InvalidOperationException(errorSb.ToString());
+
+                                columnsNumber = null;
+                            }
+
+
+                            #endregion
+                        }
+                        else
+                        {
+
+                            #region ESTRAZIONE DATI
+
+                            string codice_Can = splittedLine[columnsNumber["CODICE"]].Trim();
+                            string descrizione_Can = splittedLine[columnsNumber["DESCRIZIONE"]].Trim();
+                            string cod_Cliente = splittedLine[columnsNumber["CODICE CLIENTE"]].Trim();
+                            string descrizione_Cli = splittedLine[columnsNumber["DESCRIZIONE CLIENTE"]].Trim();
+                            string fru_matr = splittedLine[columnsNumber["MATRICOLA FRU"]];
+                            string filiale = splittedLine[columnsNumber["FILIALE"]];
+                            DateTime? data_associazione = (splittedLine[columnsNumber["DATA ASSOCIAZIONE"]] != "") ? Convert.ToDateTime(splittedLine[columnsNumber["DATA ASSOCIAZIONE"]].Trim()) as DateTime? : null;
+                            string comune = splittedLine[columnsNumber["COMUNE"]].Trim();
+                            string via = splittedLine[columnsNumber["VIA"]].Trim();
+                            string latit = splittedLine[columnsNumber["LATITUDINE"]].Trim();
+                            string longi = splittedLine[columnsNumber["LONGITUDINE"]].Trim();
+                            string note = splittedLine[columnsNumber["NOTE"]].Trim();
+                            string provincia = splittedLine[columnsNumber["PROVINCIA"]].Trim();
+                            string cap = splittedLine[columnsNumber["CAP"]].Trim();
+                            string raggio = splittedLine[columnsNumber["RAGGIO"]].Trim();
+                            string codicecommessa = splittedLine[columnsNumber["CODICE COMMESSA"]].Trim();
+                            string piano = splittedLine[columnsNumber["PIANO"]].Trim();
+                            string ubicazione = splittedLine[columnsNumber["UBICAZIONE"]].Trim();
+                            string numeroChiaviMazzi = splittedLine[columnsNumber["NUMERO CHIAVI MAZZI"]].Trim();
+                            string stanza = splittedLine[columnsNumber["STANZA"]].Trim();
+
+                            #endregion
+
+                            #region CONTROLLO CAMPI
+
+                            var exCant = RepoManager.CantRepo.FirstOrDefault(c => c.Codice_Cantiere.Trim() == codice_Can.Trim());
+
+                            Cant cantiere = null;
+
+                            if (codice_Can != "" && descrizione_Can != "" && exCant == null)     //Obbligatorio cod,desc e che non esista cantiere con lo stesso codice
+                            {
+                                cantiere = RepoManager.CantRepo.Init();
+                                cantiere.Codice_Cantiere = CommonService.AggiungiSpaziASinistraSeStringaNumerica(codice_Can, 20);
+                                cantiere.Descrizione_Can = descrizione_Can;
+
+                                if (filiale != "")
+                                {
+                                    var existFil = RepoManager.FilRepo.FirstOrDefault(f => f.Descrizione_Fil == filiale);
+
+                                    cantiere.Fil = existFil ?? null;
+
+                                }
+
+                                if (comune != "")
+                                {
+                                    var exist = RepoManager.Tab_ComuniRepo.FirstOrDefault(x => x.Luogo_Tab_Comuni == comune);
+                                    cantiere.Luogo_Can = (exist != null) ? splittedLine[columnsNumber["COMUNE"]].Trim() : "";
+                                    cantiere.Cap_Can = (exist != null) ? exist.Cap_Tab_Comuni : "";
+                                    cantiere.Provincia_Can = (exist != null) ? exist.Codice_Prov_Tab_Comuni : "";
+                                }
+
+                                via = splittedLine[columnsNumber["VIA"]].Trim();
+                                cantiere.Tipologia_Can = "CAN";
+                                cantiere.Indirizzo_Can = (via.Length < 50) ? via : via.Substring(0, 49);
+                                cantiere.LatitudineGps_Can = (latit != "") ? Double.Parse(latit) : 0;
+                                cantiere.LongitudineGps_Can = (longi != "") ? Double.Parse(longi) : 0;
+                                cantiere.Note_Can = note;
+
+
+
+                                if (cod_Cliente != "" && descrizione_Cli != "")
+                                {
+                                    try
+                                    {
+                                        var exCli = RepoManager.CliRepo.FirstOrDefault(c => c.Codice_Cliente.Trim() == cod_Cliente.Trim());
+                                        if (exCli == null)
+                                        {
+                                            Cli cliente = RepoManager.CliRepo.Init();
+                                            cliente.Codice_Cliente = CommonService.AggiungiSpaziASinistraSeStringaNumerica(cod_Cliente, 10);
+                                            cliente.Cognome_Cli = descrizione_Cli;
+                                            cantiere.Cli = cliente;
+                                        }
+                                        else
+                                        {
+                                            cantiere.Cli = exCli;
+                                        }
+                                    }
+                                    catch (Exception) { }
+                                }
+
+                                if (fru_matr != "" && (fru_matr.Length == 10 || fru_matr.Length == 5) && data_associazione != null)
+                                {
+                                    Fru currentFru = RepoManager.FruRepo.FirstOrDefault(f => f.Codice_Fru.Trim() == fru_matr);
+                                    Fru_Cant fru_cant = RepoManager.Fru_CantRepo.Init();
+
+                                    if (currentFru != default(Fru))
+                                    {
+                                        //se la fru è valorizzata viene estratto l'Id
+                                        fru_cant.Fru = currentFru;
+                                        fru_cant.Abilitazione_Data_Inizio_Fru_Can = (DateTime)data_associazione;
+                                    }
+                                    else
+                                    {
+                                        Fru newFru = RepoManager.FruRepo.Init();
+
+                                        newFru.DataOraUltimaModifica_Fru = DateTime.Now;
+                                        newFru.N_Serie_Fru = fru_matr;
+                                        newFru.Codice_Fru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(fru_matr, 5);
+                                        fru_cant.Abilitazione_Data_Inizio_Fru_Can = (DateTime)data_associazione;
+
+                                        fru_cant.Fru = newFru;
+                                    }
+
+                                    cantiere.Fru_Cant.Add(fru_cant);
+                                }
+                                if (comune != "" && via != "" && provincia != "" && cap.Length == 5)
+                                {
+                                    string indirizzo = String.Format("{0} {1} {2} {3}", via, cap, comune, provincia);
+                                    Location geocode = BusinessService.GetGeocode(indirizzo);
+                                    if (geocode != null)
+                                    {
+                                        cantiere.LatitudineGps_Can = geocode.Point.Coordinates[0];
+                                        cantiere.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                                    }
+                                }
+
+                                if (raggio != "")
+                                {
+                                    if (raggio.Contains(","))
+                                    {
+                                        var tmp = raggio.Split(',');
+                                        raggio = tmp[0];
+                                    }
+                                    short s;
+                                    if (!short.TryParse(raggio, out s))
+                                    {
+                                        s = 0;
+                                    }
+                                    cantiere.RaggioGps_Can = s;
+                                }
+
+                                if (codicecommessa != "") 
+                                {
+                                    cantiere.Codice_Commessa_Can = codicecommessa;
+                                }
+
+                                if (piano != "")
+                                {
+                                    cantiere.Telefono_1_Can = piano;
+                                }
+
+                                if (ubicazione != "")
+                                {
+                                    cantiere.Telefono_1_Rif_Can = ubicazione;
+                                }
+
+                                if (numeroChiaviMazzi != "")
+                                {
+                                    cantiere.Telefono_2_Can = numeroChiaviMazzi;
+                                }
+
+                                if (stanza != "")
+                                {
+                                    cantiere.Telefono_2_Rif_Can = stanza;
+                                }
+
+                                #endregion
+
+                            }
+
+                            if (cantiere != null)
+                                cantToInsert.Add(cantiere);
+
+                        }
+                    }
+                }
+
+                try
+                {
+                    DbSet.AddRange(cantToInsert);
+                    BulkSaveChanges(bulk => bulk.BatchSize = 100);
+                }
+                catch (Exception ex)
+                {
+                    _log.ErrorFormat("Errore durante l'inserimento dei cantieri da CSV a causa dell'exception {0}", ex.Message);
+                    errors.Add("Errore", "Errore durante l'inserimento dei cantieri! Contattare l'assistenza!");
+                }
+
+                #endregion
+            }
 
 
             return errors;

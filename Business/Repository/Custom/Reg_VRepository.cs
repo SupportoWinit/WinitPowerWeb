@@ -326,6 +326,7 @@ namespace Business.Repository.Custom
 
                                         foreach (Reg_V currentRegV in currentRegVs)
                                         {
+                                            try { 
                                             Reg currentRegE = regsDic[currentRegV.RegE];
                                             Reg currentRegU = null;
                                             if (previousReg == null) {
@@ -337,7 +338,7 @@ namespace Business.Repository.Custom
                                             {
                                                 //currentRegU = regs.Single(reg => reg.Reg_Id == currentRegV.RegU);
                                                 currentRegU = regsDic[currentRegV.RegU.Value];
-                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
+                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg; 
                                             }
 
                                             //viene impostata la data ed ora FIGURATIVA uguale a quella fisica
@@ -351,8 +352,8 @@ namespace Business.Repository.Custom
                                             {
                                                 #region 1.Arrotondo la Registrazione di Entrata
 
-                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 0 || (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1 && (currentRegV.Tipo_Modifica == 0 || currentRegV.Tipo_Modifica == 1 || currentRegV.Tipo_Modifica == 2)))
-                                                {
+                                                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 0 || (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1 && (currentRegV.Tipo_Modifica == 0 || currentRegV.Tipo_Modifica == 1 || currentRegV.Tipo_Modifica == 2)))
+                                                //{
                                                     //vengono estratti i minuti della corrente registrazione di entrata
                                                     int currentRegEMin = currentRegE.Registrazione_Data_Ora_Fis_Reg.Minute;
 
@@ -376,13 +377,13 @@ namespace Business.Repository.Custom
                                                             //altrimenti i minuti della registrazione figurativa di entrata sono uguali al modulo * -1
                                                             currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegEMin * -1);
                                                     }
-                                                }
+                                                //}
 
                                                 #endregion
 
                                                 #region 2.Arrotondo la Registrazione di Uscita
 
-                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 0 || (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1 && (currentRegV.Tipo_Modifica == 0 || currentRegV.Tipo_Modifica == 3 || currentRegV.Tipo_Modifica == 6))) {
+                                                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 0 || (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1 && (currentRegV.Tipo_Modifica == 0 || currentRegV.Tipo_Modifica == 3 || currentRegV.Tipo_Modifica == 6))) {
                                                     //se sono in presenza di una registrazione di uscita
                                                     if (currentRegU != null)
                                                     {
@@ -407,7 +408,7 @@ namespace Business.Repository.Custom
                                                                 currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegUMin * -1);
                                                         }
                                                     }
-                                                }                                                
+                                               // }                                                
                                                 #endregion
 
                                                 #region 3.Gestione del limite d'entrata
@@ -1142,6 +1143,16 @@ namespace Business.Repository.Custom
                                                                         exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Hours,
                                                                         exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Minutes,
                                                                         0);
+
+                                                                if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Subtract(exitLimitMorningTollerance.Duration()))
+                                                                {
+                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                        currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Hours,
+                                                                        exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Minutes,
+                                                                        0);
+                                                                }
                                                             }
                                                             else if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay >= midDay && exitLimitConfig[ExitLimitTypeEnum.Afternoon].IsConfigured)
                                                             {
@@ -1160,7 +1171,7 @@ namespace Business.Repository.Custom
                                                                         exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Minutes,
                                                                         0);
                                                                 }
-                                                                if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Add(exitLimitAfternoonTollerance)) {
+                                                                if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Subtract(exitLimitAfternoonTollerance)) {
                                                                     currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
                                                                         currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
                                                                         currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Day,
@@ -1388,7 +1399,11 @@ namespace Business.Repository.Custom
                                                 }
                                                 #endregion
                                             }
-                                            #endregion
+                                                #endregion
+                                            }
+                                            catch (Exception e)
+                                            {
+                                            }
                                         }
                                         if (currentCol.Metodo_Arrotondamento_Col == 1 || currentCant.Metodo_Arrotondamento_Can == 1) {
                                             roundingEnum = RoundingMethodEnum.Duration;
@@ -1831,7 +1846,7 @@ namespace Business.Repository.Custom
             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
 
             // Filtra le regv selezionando solo quelle di tipo arrotondamento per durata e cancella direttamente
-            RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || reg.Motivazione_Reg_Id == motivazioni.First().Tab_Decod_Id).ToList());
+            RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration && reg.Motivazione_Reg_Id == motivazioni.First().Tab_Decod_Id).ToList());
 
             return errors;
         }
@@ -3703,10 +3718,10 @@ namespace Business.Repository.Custom
             if (regE != null && regU != null)
             {
                 List<Tab_Orari> orario = RepoManager.Tab_OrariRepo.GetAll().Where(orr => orr.Tab_Orari_Tipo_Id == cant.Tab_Orari_Tipo_Id).ToList();
-                DateTime beforeE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -15, 0));
-                DateTime afterE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 15, 0));
-                DateTime beforeU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -15, 0));
-                DateTime afterU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 15, 0));
+                DateTime beforeE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -20, 0));
+                DateTime afterE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 20, 0));
+                DateTime beforeU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -20, 0));
+                DateTime afterU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 20, 0));
                 TimeSpan tempE = new TimeSpan();
                 TimeSpan tempU = new TimeSpan();
                 double diffE = 5000;
@@ -4430,6 +4445,7 @@ namespace Business.Repository.Custom
         {
 
             List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            List<int> listRegs = new List<int>();
 
             // se non ci sono reg da processare allora si esce senza effettuare nessuna operazione
             if (regvs.Count() > 0)
@@ -4518,7 +4534,11 @@ namespace Business.Repository.Custom
                                             reg.RiferimentoRRN_Att = currentRegv.RegE;
                                             reg.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
                                         });
-
+                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowActivitiesInRegV) == 1) {
+                                            if (currentRegv.Registrazione_Tipo_Reg != 4) {
+                                                listRegs.Add(currentRegv.RegE);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -4526,6 +4546,21 @@ namespace Business.Repository.Custom
                     }
 
                     RepoManager.RegRepo.Context.BulkUpdate(atts);
+                }
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowActivitiesInRegV) == 1) {
+                    List<Reg> updateRegs = new List<Reg>();
+                    foreach (int id in listRegs) {
+                        try {
+                            Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == id);
+                            Reg attReg = RepoManager.RegRepo.Single(r => r.RiferimentoRRN_Att == id);
+                            Cant att = RepoManager.CantRepo.Single(c => c.Cant_Id == attReg.Cant_Id);
+                            regE.Att_Id = att.Cant_Id;
+                            regE.Sotto_Cantiere = att.Note_Can;
+                            updateRegs.Add(regE);
+                        } catch (Exception e) { 
+                        }
+                    }
+                    RepoManager.RegRepo.Context.BulkUpdate(updateRegs);
                 }
             }
             return errors;
@@ -4808,7 +4843,7 @@ namespace Business.Repository.Custom
 
                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NotCalcolatePausaTrip) == 1)
                     {
-                        if (lastRegV.Cant_Desc == "PAUSAPRANZO" || currentRegV.Cant_Desc == "PAUSAPRANZO" /*|| (lastRegV.Motivazione_Reg_Cod == "Pausa" || currentRegV.Motivazione_Reg_Cod == "Pausa")*/)
+                        if (lastRegV.Cant_Desc == "PAUSAPRANZO" || currentRegV.Cant_Desc == "PAUSAPRANZO" || (lastRegV.Motivazione_Reg_Cod == "Pausa" || currentRegV.Motivazione_Reg_Cod == "Pausa"))
                         {
                             //Aggiorno le variabili e vado al prossimo passo del for
                             position++;

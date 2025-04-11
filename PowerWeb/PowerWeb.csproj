@@ -40,7 +40,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>5</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -1762,6 +1762,7 @@
     <Compile Include="Api\ChangeWinitPasswordController.cs" />
     <Compile Include="Api\CheckPasswordExpirationController.cs" />
     <Compile Include="Api\DamageController.cs" />
+    <Compile Include="Api\ExportCsvController.cs" />
     <Compile Include="Api\FileUploaderController.cs" />
     <Compile Include="Api\ExportController.cs" />
     <Compile Include="Api\InsertRequestController.cs" />

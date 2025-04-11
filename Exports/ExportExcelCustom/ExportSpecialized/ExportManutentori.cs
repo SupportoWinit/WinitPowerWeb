@@ -317,6 +317,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         lastCant = reg.Cant_Desc;
                     }
                 }
+                else if (reg.Registrazione_Tipo_Reg == 4)
+                {
+                    if (reg.Durata_Fig != null)
+                    {
+                        lastDurata += reg.Durata_Fig.Value;
+                        lastCant = reg.Cant_Desc;
+                    }
+                }
                 listaAttivita = tmpAttivita;
             }
             foreach (var prova in listaAttivita.OrderBy(p => p.First().Key)) {

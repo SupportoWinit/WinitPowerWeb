@@ -337,7 +337,10 @@ namespace Business.Repository.Custom
 
             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
             RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
-            regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+            var tmpRegs = regs;
+            //regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+            regs = newAdjustFisRegByCol(regs.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg));
+            //regs = tmpRegs;
             #endregion
 
             if (regs.Any())
@@ -454,54 +457,67 @@ namespace Business.Repository.Custom
                             var orariId = RepoManager.CantRepo.GetAllQueryable().GroupBy(c => c.Tab_Orari_Tipo_Id).ToList();
                             foreach (var orario in orariId) {
                                 List<Tab_Orari> orari = RepoManager.Tab_OrariRepo.GetAllQueryable(t => t.Tab_Orari_Tipo_Id == orario.Key).OrderBy(t => t.Data_Inizio).ToList();
-                                if (orari.Last() != default(Tab_Orari))
-                                {
-                                    String entrata = "";
-                                    switch (DateTime.Today.DayOfWeek.ToString()) {
-                                        case "Monday":
-                                            if (orari.Last().G1 != false) {
-                                                entrata = orari.Last().G1.ToString();
-                                            }
-                                            break;
-                                        case "Tuesday":
-                                            if (orari.Last().G2 != false) {
-                                                entrata = orari.Last().G2.ToString();
-                                            }
-                                            break;
-                                        case "Wednesday":
-                                            if (orari.Last().G3 != false) {
-                                                entrata = orari.Last().G3.ToString();
-                                            }
-                                            break;
-                                        case "Thursday":
-                                            if (orari.Last().G4 != false) {
-                                                entrata = orari.Last().G4.ToString();
-                                            }
-                                            break;
-                                        case "Friday":
-                                            if (orari.Last().G5 != false) {
-                                                entrata = orari.Last().G5.ToString();
-                                            }
-                                            break;
-                                        case "Saturday":
-                                            if (orari.Last().G6 != false) {
-                                                entrata = orari.Last().G6.ToString();
-                                            }
-                                            break;
-                                        case "Sunday":
-                                            if (orari.Last().G7 != false) {
-                                                entrata = orari.Last().G7.ToString();
-                                            }
-                                            break;
-                                    }
-                                    if (entrata != "")
+                                if (orari.Count() > 0) {
+                                    if (orari.Last() != default(Tab_Orari))
                                     {
-                                        List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == orario.Key).ToList();
-                                        var newRounding = new Reg_V();
-                                        newRounding.Cant_Id = cants.First().Cant_Id;
-                                        delayReg.Add(newRounding);
-                                    } 
+                                        String entrata = "";
+                                        switch (DateTime.Today.DayOfWeek.ToString())
+                                        {
+                                            case "Monday":
+                                                if (orari.Last().G1 != false)
+                                                {
+                                                    entrata = orari.Last().G1.ToString();
+                                                }
+                                                break;
+                                            case "Tuesday":
+                                                if (orari.Last().G2 != false)
+                                                {
+                                                    entrata = orari.Last().G2.ToString();
+                                                }
+                                                break;
+                                            case "Wednesday":
+                                                if (orari.Last().G3 != false)
+                                                {
+                                                    entrata = orari.Last().G3.ToString();
+                                                }
+                                                break;
+                                            case "Thursday":
+                                                if (orari.Last().G4 != false)
+                                                {
+                                                    entrata = orari.Last().G4.ToString();
+                                                }
+                                                break;
+                                            case "Friday":
+                                                if (orari.Last().G5 != false)
+                                                {
+                                                    entrata = orari.Last().G5.ToString();
+                                                }
+                                                break;
+                                            case "Saturday":
+                                                if (orari.Last().G6 != false)
+                                                {
+                                                    entrata = orari.Last().G6.ToString();
+                                                }
+                                                break;
+                                            case "Sunday":
+                                                if (orari.Last().G7 != false)
+                                                {
+                                                    entrata = orari.Last().G7.ToString();
+                                                }
+                                                break;
+                                        }
+                                        if (entrata != "")
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == orario.Key).ToList();
+                                            if (cants.Count() > 0) {
+                                                var newRounding = new Reg_V();
+                                                newRounding.Cant_Id = cants.First().Cant_Id;
+                                                delayReg.Add(newRounding);
+                                            }
+                                        }
+                                    }
                                 }
+                               
                             }
                             regVs = GetRegVsForRounding(regs);
 
@@ -606,6 +622,7 @@ namespace Business.Repository.Custom
                             }
 
                             CommitWork();
+                            //RepoManager.Reg_VRepo.InviaRitardi();
                             //RepoManager.Reg_VRepo.InviaRitardi();
                         }
 
@@ -751,10 +768,11 @@ namespace Business.Repository.Custom
 
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1 && currentApplication == ApplicationMessageEnum.Elaborate) {
+                            //regs.AddRange(tmpRegs.Where(r => r.Registrazione_Tipo_Reg != 0));
                             regs = DeleteCopertureSerali(regs, isToSaveChanges);
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
-                            RepoManager.Reg_VRepo.DeletePausaPranzo(regs);
+                            RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
                             //regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  
@@ -870,9 +888,6 @@ namespace Business.Repository.Custom
                                 regCantIds.Add(colId);
                             });
 
-                            //IEnumerable<int> regColIds = new HashSet<int>(regVs.Where(r => r.Col_Id != null).Select(regV => regV.Col_Id).Distinct().Cast<int>().ToArray());
-                            //IEnumerable<int> regCantIds = regVs.Where(r => r.Cant_Id != null).Select(regV => regV.Cant_Id).Distinct().Cast<int>().ToList();
-
                             // dagli id dei collaboratori e dei cantieri precedentemente recuperati si recuperano le anagrafiche
 
                             _log.Info("Accesso a database per la raccolta di cantieri e collaboratori");
@@ -888,6 +903,10 @@ namespace Business.Repository.Custom
                             _log.Info(String.Format("Inizio controllo coperture serali di {0} regV", regVs.Count()));
                             errors.AddRange(RepoManager.Reg_VRepo.CopertureSerali(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
                                 , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+
+                            //se cìè la modifica delle coperture serali elaboro le attività per mostrarle nella manutenzione timbrature
+                            errors.AddRange(RepoManager.Reg_VRepo.ElaborateActivities(regVs));
+
                             _log.Info(String.Format("Controllo coperture serali di {0} regs terminato", regVs.Count()));
 
                             CommitWork();
@@ -2118,19 +2137,22 @@ namespace Business.Repository.Custom
 
                     }
 
-                    //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
-                    if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
-                    {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 0) {
+                        //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
+                        if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
+                        {
 
-                        #region Associazione del cantiere
-                        int cantId = 0;
-                        cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
-                        //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
-                        if (cantId != 0 && cantId != reg.Cant_Id.Value) {
-                            reg.Cant_Id = cantId;
+                            #region Associazione del cantiere
+                            int cantId = 0;
+                            cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
+                            //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
+                            if (cantId != 0 && cantId != reg.Cant_Id.Value)
+                            {
+                                reg.Cant_Id = cantId;
+                            }
+                            #endregion
+
                         }
-                        #endregion
-
                     }
 
                     if (reg.Cant_Id != null) {
@@ -2428,7 +2450,7 @@ namespace Business.Repository.Custom
                     IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
                     var regsToUpdate = new List<Reg>();
                     regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.RiferimentoRRN_Reg == reg.Reg_Id || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
-                    regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
+                    regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null;});
                     Context.BulkUpdate(regsToUpdate);
 
                     // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
@@ -4015,7 +4037,7 @@ namespace Business.Repository.Custom
         private HashSet<Reg> AdjustFisRegByCol(IEnumerable<Reg> regsToProcess)
         //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
         {
-            regsToProcess = regsToProcess.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();//.ThenBy(r => r.Fru).ThenBy(r => r.Fru_Id).ToList();
+            //regsToProcess = regsToProcess.OrderBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();//.ThenBy(r => r.Fru).ThenBy(r => r.Fru_Id).ToList();
             //regsToProcess = regsToProcess.OrderBy(r => r.Fru_Id == regsToProcess.First().Fru_Id).ToList();
             //regsToProcess = regsToProcess.OrderBy(r => r.Fru_Id).ToList();
             var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();
@@ -4031,6 +4053,85 @@ namespace Business.Repository.Custom
             });
             return new HashSet<Reg>(regsByDate.SelectMany(s => s).ToList());
 
+        }
+
+        private HashSet<Reg> newAdjustFisRegByCol(IEnumerable<Reg> regsToProcess)
+        //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
+        {
+            List<Reg> returnList = new List<Reg>();
+            Reg reg1 = null;
+            Reg reg2 = null;
+            Reg reg3 = null;
+            foreach (var regsGroupByCol in regsToProcess.Where(r => r.Registrazione_Tipo_Reg == 0).GroupBy(r => r.Col_Id)) {
+                foreach (var regs in regsGroupByCol.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg.Date)) {
+                    foreach (Reg reg in regs)
+                    {
+                        if (reg1 == null)
+                        {
+                            //inizializzo la prima reg del gruppo nel caso sia il primo accesso oppure il gruppo sia stato azzerato
+                            reg1 = reg;
+                        }
+                        else
+                        {
+                            if (reg2 == null)
+                            {
+                                //se la prima reg del gruppo è valorizzata controllo se le due reg sono consecutive
+                                if (reg1.Cant_Id == reg.Cant_Id)
+                                {
+                                    //se le reg sono consecutive azzero il gruppo e popolo la lista di ritorno con lo stesso ordine
+                                    returnList.Add(reg1);
+                                    returnList.Add(reg);
+                                    reg1 = null;
+                                }
+                                else
+                                {
+                                    //in caso contrario valorizzo la seconda reg del gruppo per continuare il controllo
+                                    reg2 = reg;
+                                }
+                            }
+                            else
+                            {
+                                //nel caso in cui la seconda non sia null controllo se ci sono delle coppie consecutive
+                                if (reg1.Cant_Id == reg.Cant_Id)
+                                {
+                                    //se la prima e la terza sono dello stesso cantiere cambio l'ordine della lista e tengo la seconda memorizzata
+                                    returnList.Add(reg1);
+                                    returnList.Add(reg);
+                                    reg1 = reg2;
+                                    reg2 = null;
+                                }
+                                else if (reg2.Cant_Id == reg.Cant_Id)
+                                {
+                                    //se la seconda e la terza sono uguali vuol dire che la prima è singole, popolo la lista con l'ordine normale
+                                    returnList.Add(reg1);
+                                    returnList.Add(reg2);
+                                    returnList.Add(reg);
+                                    reg1 = null;
+                                    reg2 = null;
+                                }
+                                else
+                                {
+                                    returnList.Add(reg1);
+                                    reg1 = reg2;
+                                    reg2 = reg;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            var regsByDate = returnList.GroupBy(r => r.Registrazione_Data_Ora_Orig_Reg).ToList();
+            regsByDate.ForEach(byDateList =>
+            {
+                // se sono presenti delle reg da shiftare
+                if (byDateList.Count() > 1)
+                {
+                    // per ogi reg da shiftare viene aggiunto un secondo
+                    int secondsToAdd = 1;
+                    byDateList.ForEach(regToShift => regToShift.Registrazione_Data_Ora_Fis_Reg = regToShift.Registrazione_Data_Ora_Orig_Reg.AddSeconds(secondsToAdd++));
+                }
+            });        
+            return new HashSet<Reg>(regsByDate.SelectMany(s => s).ToList());
         }
 
         public override Reg Init()
@@ -5629,7 +5730,7 @@ namespace Business.Repository.Custom
         /// <returns>
         /// La nuova registrazione popolata con i dati indicati in griglia
         /// </returns>
-        public Reg GetRegEFromNewValues(OrderedDictionary newValues, bool isUpdating = false, Reg oldRegE = null)
+        public Reg GetRegEFromNewValues(OrderedDictionary newValues, Reg oldRegE/* = null*/, bool isUpdating = false)
         {
             //Prepara il Record della REG con i Dati ricevuti da Video (newValues)
             //NB: i Campi Data_Ora_Fis_E e U hanno l'Ora Nuova ma la Data Old (se clone) altrimenti la Data è 01/01/0100
@@ -5668,6 +5769,16 @@ namespace Business.Repository.Custom
 
             // lo stato di default di una registrazione di sola duarata è abbinata
             currentRegE.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 1) {
+                if (oldRegE != null) {
+                    if (oldRegE.Registrazione_Lat_Orig != null && oldRegE.Registrazione_Long_Orig != null)
+                    {
+                        currentRegE.Registrazione_Lat_Orig = oldRegE.Registrazione_Lat_Orig;
+                        currentRegE.Registrazione_Long_Orig = oldRegE.Registrazione_Long_Orig;
+                    }
+                }
+            }
 
 
             // se sto processando una registrazione solo durata allora riporto la durata presa dalla vecchia registrazione
@@ -5748,6 +5859,76 @@ namespace Business.Repository.Custom
             currentRegU.Registrazione_Data_Ora_Orig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg = DateTimeUFis;
             currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
             currentRegU.Flag_EU_Reg = Convert.ToString(newValues[CommonService.GetPropertyName(() => regVStub.UscitaEU)]);
+
+            // lo stato di default di una registrazione di sola duarata è abbinata
+            currentRegU.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+
+            // se la reg_v è marcata per essere bloccata allora si settano anche l'entrata come tale
+            currentRegU.Registrazione_Bloccata = Convert.ToBoolean(newValues[CommonService.GetPropertyName(() => regVStub.Registrazione_Bloccata)]);
+
+            if (isUpdating)
+            {
+                // sono impostati i valori di pru e fru (anche in modifica) solamente se la reg in elaborazione non è nuova
+                if (oldRegU != null)
+                {
+                    currentRegU.Pru_Id = oldRegU.Pru_Id;
+                    currentRegU.Fru_Id = oldRegU.Fru_Id;
+                    currentRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
+                }
+                else
+                {
+                    if (newValues[CommonService.GetPropertyName(() => regVStub.Pru_Id)] != null)
+                        currentRegU.Pru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Pru_Id)]);
+                    if (newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)] != null)
+                        currentRegU.Fru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)]);
+                }
+
+            }
+
+            return currentRegU;
+        }
+
+        /// <summary>
+        /// Dati i valori inputati in griglia si prepara e ritorna una registrazione d'uscita corrispondente.
+        /// </summary>
+        /// <param name="newValues">I nuovi valori in griglia da processare.</param>
+        /// <param name="isUpdating">Se impostato a <c>true</c> allora si sta effettuando l'update di un record esistente.</param>
+        /// <param name="oldRegU">La registrazione che la reg restituita andrà a sostituire.</param>
+        /// <returns>
+        /// La nuova registrazione popolata con i dati indicati in griglia
+        /// </returns>
+        public Reg GetRegUFromNewValuesCoordinates(OrderedDictionary newValues, Reg oldRegU, bool isUpdating = false)
+        {
+            //Prepara il Record della REG con i Dati ricevuti da Video (newValues)
+            //NB: i Campi Data_Ora_Fis_E e U hanno l'Ora Nuova ma la Data Old (se clone) altrimenti la Data è 01/01/0100
+            //perchè il campo Video ha solo l'Ora e non anche la Data -> occorre inizializzarne la parte di Data con la Data Reg            
+            Reg_V regVStub = null;
+            Reg currentRegU = RepoManager.RegRepo.Init();
+
+            //recupera la Data della Registrazione (che ANCHE per l'Uscita viene lasciata UGUALE a quella dell'Entrata(anche se Notturno)
+            DateTime dayDate = Convert.ToDateTime(newValues[CommonService.GetPropertyName(() => regVStub.Data_Reg)]).Date;
+            //Riceve come Nuovo Valore di Data_Ora_Fis_E l'Ora New ma la Data Old 
+            DateTime DateTimeUFis = Convert.ToDateTime(newValues[CommonService.GetPropertyName(() => regVStub.Data_Ora_Fis_U)]);
+            //Imposta nella Data_Ora_Fis_U la Data New                
+            DateTimeUFis = CommonService.ComputeDateTime(dayDate, DateTimeUFis);
+
+            //Inizializza gli altri Campi della Registrazione (anche se l'ora di Uscita non ci fosse li inizializzo lo stesso x la Check)
+            currentRegU.Col_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Col_Id)]);
+            currentRegU.Cant_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Cant_Id)]);
+            currentRegU.Motivazione_Reg_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Motivazione_Reg_Id)]);
+            if (currentRegU.Motivazione_Reg_Id == 0)
+                currentRegU.Motivazione_Reg_Id = null;
+            currentRegU.Note_Reg = Convert.ToString(newValues[CommonService.GetPropertyName(() => regVStub.Note_Reg)]);
+            currentRegU.Registrazione_Tipo_Reg = (int)RegTypeEnum.None;
+            currentRegU.Registrazione_Data_Ora_Orig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg = DateTimeUFis;
+            currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fis_Reg;
+            currentRegU.Flag_EU_Reg = Convert.ToString(newValues[CommonService.GetPropertyName(() => regVStub.UscitaEU)]);
+            if (oldRegU != null) {
+                if (oldRegU.Registrazione_Lat_Orig != null && oldRegU.Registrazione_Long_Orig != null) {
+                    currentRegU.Registrazione_Lat_Orig = oldRegU.Registrazione_Lat_Orig;
+                    currentRegU.Registrazione_Long_Orig = oldRegU.Registrazione_Long_Orig;
+                }
+            }
 
             // lo stato di default di una registrazione di sola duarata è abbinata
             currentRegU.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
@@ -5939,7 +6120,6 @@ namespace Business.Repository.Custom
                     else
                     {
                         #region PARTIZIONAMENTO REGISTRAZIONI TOTALI
-
                         //Viene creato un HashSet direttamente dalla lista delle registrazioni da inserire (durante la creazione della nuova struttura vengono automaticamente eliminati i duplicati)
                         toAddRegs = new HashSet<Reg>(newRegs.Where(reg => reg.Registrazione_Data_Ora_Fis_Reg >= limit.Key && reg.Registrazione_Data_Ora_Fis_Reg <= limit.Value).ToList());
 
@@ -6754,603 +6934,174 @@ namespace Business.Repository.Custom
                 // si cicla su tutte le reg che non sono commenti e sono valorizzati
                 foreach (string gpsLine in gpsLines.Where(ln => !ln.StartsWith("*") && !String.IsNullOrEmpty(ln)).ToList())
                 {
-                    try
-                    {
-                        bool activity = false;
-                        // lettura dei dati di timbratura GPS
-                        var currentGpsPreReg = new GpsPreReg(gpsLine);
-                        if (gpsRegGroup.Count() > 0) {
-                            GpsPreReg previousReg = gpsRegGroup.Last();
-
-                            if (previousReg.LineType == currentGpsPreReg.LineType)
+                    if (gpsLine.Contains("NOTE")) {
+                        Reg previousReg = regsToAdd.Last();
+                        string[] splittedLies = gpsLine.Split(';');
+                        previousReg.Note_Reg = splittedLies[10];
+                        //regsToAdd.Remove(regsToAdd.Last());
+                        //regsToAdd.Add(previousReg);
+                    }
+                    else {
+                        try
+                        {
+                            bool activity = false;
+                            // lettura dei dati di timbratura GPS
+                            var currentGpsPreReg = new GpsPreReg(gpsLine);
+                            if (gpsRegGroup.Count() > 0)
                             {
-                                // se il gruppo gps è sopravvissuto al controllo di coerenza
-                                if (gpsRegGroup.Any())
+                                GpsPreReg previousReg = gpsRegGroup.Last();
+
+                                if (previousReg.LineType == currentGpsPreReg.LineType)
                                 {
-                                    #region Preparazione ed aggiunta della reg costruita sul gruppo
-
-                                    // generazione della nuova reg GPS
-                                    Reg newReg = Init();
-
-                                    // impostazione dei dati diretti
-                                    newReg.Registrazione_Data_Ora_Fis_Reg = gpsRegGroup.First().RegistrationDateTime;
-                                    newReg.Registrazione_Data_Ora_Fig_Reg = gpsRegGroup.First().RegistrationDateTime;
-                                    newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
-                                    newReg.Data_Registrazione_Reg = DateTime.UtcNow;
-                                    newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
-
-
-                                    // nelle registrazioni da gps la fru id è sempre a null
-                                    newReg.Fru_Id = null;
-
-                                    // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
-                                    // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:
-                                    // - sarà la matricola del dispositivo in caso il tipo di assegnazione configurata sia Cant o non imposta
-                                    // - sarà la matricola del tag in caso di tipo assegnazione a Col
-                                    // - sarà la matricola del tag in caso di presenza anagrafica pru e assegnazione in base al tipo anagrafica; in caso
-                                    //   non sia presente viene utilizzata la device
-                                    string pruCode;
-                                    string fruCode = "";
-
-                                    if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                    // se il gruppo gps è sopravvissuto al controllo di coerenza
+                                    if (gpsRegGroup.Any())
                                     {
-                                        fruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
-                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-                                    }
-                                    else if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
-                                    {
-                                        switch (tagAndGpsAssType)
-                                        {
-                                            case GpsAssTagTypeEnum.Col:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-                                                break;
-                                            case GpsAssTagTypeEnum.CantCol:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-                                                if (!RepoManager.PruRepo.DbSet.Any(pru => pru.Codice_Pru == pruCode))
-                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-                                                break;
-                                            case GpsAssTagTypeEnum.Cant:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-                                                break;
-                                            default:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-                                                break;
-                                        }
-                                    }
-                                    else
-                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                        #region Preparazione ed aggiunta della reg costruita sul gruppo
 
-                                    // recupero della pru collegata al codice calcolato
-                                    Pru currentPru = RepoManager.PruRepo.FirstOrDefault(pru => pru.Codice_Pru == pruCode);
+                                        // generazione della nuova reg GPS
+                                        Reg newReg = Init();
 
-                                    // si procede con la generazione della reg solamente se la pru è stata trovata,
-                                    // altrimenti si segnala tutto il gruppo come errore
-                                    if (currentPru != default(Pru))
-                                    {
-                                        // impostazione dell'identificativo pru sulla reg
-                                        newReg.Pru_Id = currentPru.Pru_Id;
+                                        // impostazione dei dati diretti
+                                        newReg.Registrazione_Data_Ora_Fis_Reg = gpsRegGroup.First().RegistrationDateTime;
+                                        newReg.Registrazione_Data_Ora_Fig_Reg = gpsRegGroup.First().RegistrationDateTime;
+                                        newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
+                                        newReg.Data_Registrazione_Reg = DateTime.UtcNow;
+                                        newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
 
-                                        // dal gruppo gps viene recuperato il valore della latitudine e della longitudine
-                                        double latitudeToSearch = 0;
-                                        double longitudeToSearch = 0;
 
-                                        // inserimento delle coordinate gps originali nella timbratura
-                                        newReg.Registrazione_Lat_Orig = latitudeToSearch;
-                                        newReg.Registrazione_Long_Orig = longitudeToSearch;
+                                        // nelle registrazioni da gps la fru id è sempre a null
+                                        newReg.Fru_Id = null;
 
-                                        if (currentGroupFlagEU != null && currentGroupFlagEU != "")
-                                        {
-                                            newReg.Flag_EU_Reg = currentGroupFlagEU;
-                                        }
-
-                                        // viene normalizzato per la ricerca il codice del badge e si verifica la presenza dello stesso tra le fru
-                                        string normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                        // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
+                                        // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:
+                                        // - sarà la matricola del dispositivo in caso il tipo di assegnazione configurata sia Cant o non imposta
+                                        // - sarà la matricola del tag in caso di tipo assegnazione a Col
+                                        // - sarà la matricola del tag in caso di presenza anagrafica pru e assegnazione in base al tipo anagrafica; in caso
+                                        //   non sia presente viene utilizzata la device
+                                        string pruCode;
+                                        string fruCode = "";
 
                                         if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
-                                            normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
-
-                                        bool isBadgeFru = RepoManager.FruRepo.DbSet.Any(fru => fru.Codice_Fru == normalizedBadgeCode);
-
-                                        // se richiesto dai parametri, imposta la registrazione come passaggio
-                                        if (RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS != null && RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS.Equals(ImportGPSRegsEnum.AsPass))
                                         {
-                                            newReg.Registrazione_Tipo_Reg = (int)RegTypeEnum.Pass;
+                                            fruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
+                                            pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
                                         }
-
-                                        //Booleano per identificare se la registrazione è all'interno del raggio di lavoro (in combinazione con customization ImportGPSOnlyInWorkingRange)
-                                        bool isRegInWorkingRange = true;
-
-                                        //Se la customization che esclude dall'import le registrazioni che sono fuori dal raggio di lavoro è attiva, fa il controllo
-                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange) == (int)ImportGPSOnlyInWorkingRange.Active)
+                                        else if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
                                         {
-                                            //Recupera il raggio di lavoro (in metri) dalla customization
-                                            double radius = Double.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange, "Radius"));
-
-                                            //Controlla che il cantiere centro del raggio e le sue coordinate siano valide
-                                            if (centro_gps != default(Cant) && centro_gps.LatitudineGps_Can != 0d && centro_gps.LongitudineGps_Can != 0d)
+                                            switch (tagAndGpsAssType)
                                             {
-                                                //Crea il range di coordinate del raggio di lavoro
-                                                var range = new GpsRange(centro_gps.LatitudineGps_Can, centro_gps.LongitudineGps_Can, Convert.ToInt32(radius));
-                                                //Se la coordinata corrente non è all'interno del raggio di lavoro, la marca per l'esclusione
-                                                if (!range.IsPointInRange(latitudeToSearch, longitudeToSearch))
-                                                {
-                                                    isRegInWorkingRange = false;
-                                                }
-                                            }
-                                        }
-
-                                        //Importo le timbrature solo se sono all'interno del raggi di lavoro (customization ImportGPSOnlyInWorkingRange)
-                                        if (isRegInWorkingRange)
-                                        {
-                                            if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
-                                            {
-                                                var motivationId = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Campo1_Tab == fruCode).Tab_Decod_Id;
-                                                newReg.Motivazione_Reg_Id = motivationId;
-                                            }
-                                            // l'anagrafica fissa viene impostata secondo la seguente logica :
-                                            // - viene imposta l'unità fissa con l'anagrafica del tag se il tag è impostato per designare l'unità fissa o se l'anagrafica di appartenenza
-                                            //   e il tag è presente tra i fru e il gruppo in elaborazione è tag e gps 
-                                            // - altrimenti si procede ad impostare il cantiere utilizzando le coordinate GPS
-                                            if (((tagAndGpsAssType == GpsAssTagTypeEnum.Cant) || (tagAndGpsAssType == GpsAssTagTypeEnum.CantCol && isBadgeFru))
-                                            && currentGroupType == GpsGruopTypeEnum.TagAndGps)
-                                            {
-
-                                                Fru currentFru = RepoManager.FruRepo.FirstOrDefault(fru => fru.Codice_Fru == normalizedBadgeCode);
-                                                if (currentFru != default(Fru))
-                                                {
-                                                    newReg.Fru_Id = currentFru.Fru_Id;
-
-                                                    // aggiunta della nuova reg all'elenco
-                                                    regsToAdd.Add(newReg);
-                                                }
-                                                else
-                                                {
-                                                    // segnalazione del gruppo come errore
-                                                    string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, normalizedBadgeCode);
-                                                    gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
-                                                }
-                                            }
-
-                                            else
-                                            {
-                                                // calcolo del cantiere gps:
-                                                // - il valore del id cantiere sarà -1 se la latitudine e la longitudine da importare hanno valore 0 e non c'è un cantiere 'pozzo' (inserimento con cantiere vuoto)
-                                                // - il valore del id cantiere sarà 0 in caso bing non riesca a calcolare le coordinate
-                                                // - il valore del id cantiere sarà il valore del cantiere (nuovo o già presente) in caso di calcolo corretto da bing
-                                                int cantId = -1;
-                                                if (latitudeToSearch != 0 && longitudeToSearch != 0)
-                                                {
-                                                    cantId = GetGpsCantId(latitudeToSearch, longitudeToSearch);
-                                                }
-
-                                                //Se le coordinate della regstrazione non sono valide (=0), assegna alla registrazione il cantiere pozzo, se valorizzato
-                                                else if (RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.HasValue && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 0)
-                                                {
-                                                    cantId = RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.Value;
-                                                }
-                                                else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 1 && (latitudeToSearch == 0 && longitudeToSearch == 0))
-                                                {
-                                                    newReg = LastCant(currentPru.Pru_Id, gpsRegGroup.First().RegistrationDateTime, regsToAdd, newReg);
-                                                    cantId = newReg.Cant_Id.Value;
-                                                }
-
-                                                // si imposta il cantiere gps solamente se è stato correttamente trovato;
-                                                // in caso contrario si procede a segnalare il gruppo come errore
-                                                if (cantId != 0)
-                                                {
-                                                    newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
-
-                                                    // aggiunta della registrazione all'elenco
-                                                    regsToAdd.Add(newReg);
-                                                }
-                                                else
-                                                    gpsRegGroup.ForEach(preReg =>
-                                                        processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
-
-
-                                            }
-                                        }
-                                        //Se la timbratura non è nel raggio di lavoro, non la importo
-                                        else
-                                        {
-                                            string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_REGISTRAZIONE_FUORI_DA_RAGGIO_LAVORO);
-                                            gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // segnalazione del gruppo come errore
-                                        string errorMessage = currentGroupType == GpsGruopTypeEnum.OnlyGps || tagAndGpsAssType != GpsAssTagTypeEnum.Col
-                                            ? BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, pruCode)
-                                            : BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, pruCode);
-                                        gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
-                                    }
-
-
-                                    #endregion
-
-                                    #region Reinizializzazione gruppo per presa in carico nuove timbrature GPS
-
-                                        // reinizializzazione del gruppo GPS
-                                        gpsRegGroup = new List<GpsPreReg>();
-                                        counterTag = 0;
-
-                                        #endregion
-                                }
-                            }
-                        }
-                            if (currentGpsPreReg.BadgeCode != null)
-                            if (currentGpsPreReg.BadgeCode.Contains("ATTIV"))
-                                activity = true;
-
-
-                        // se si sta processando un nuovo blocco gps
-                        // allora si inizializzano i dati di gestione di un nuovo blocco gps
-                        if (!gpsRegGroup.Any() || activity)
-                        {
-                            counterTag++;
-
-                            #region Convalida della prima registrazione del gruppo
-
-                            // se la prima registrazione del gruppo che si intende processare è indicata come referenziata a un tag ma non è un tag
-                            // oppure 
-                            // se la prima registrazione del gruppo che si intende processare è indicata come non referenziata a un tag ed è un tag
-                            // allora si passa direttamente alla verifica del record successivo, riportando la corrente timbratura tra gli errori
-                            if ((currentGpsPreReg.IsTagReferenced && !currentGpsPreReg.IsTag) || (!currentGpsPreReg.IsTagReferenced && currentGpsPreReg.IsTag))
-                            {
-                                processErrors.Add(new KeyValuePair<string, string>(
-                                    String.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_REG_GPS_X_NON_COERENTE_CON_TIPO, gpsLine)),
-                                    gpsLine));
-
-                                continue;
-                            }
-
-                            //Flag che indica se è presente il parametro del cantiere pozzo per le timbrature con coordinate non valide
-                            bool isSinkAssigned = false;
-
-                            //Controlla che il parametro del cantiere pozzo per le timbrature con coordinate non valide sia valorizzato
-                            if (RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.HasValue)
-                            {
-                                //Recupera il cantiere pozzo
-                                Cant sinkCant = RepoManager.CantRepo.SingleOrDefault(cant => cant.Cant_Id == RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.Value);
-
-                                //Se il cantiere pozzo esiste, valorizza il relativo flag
-                                if (sinkCant != default(Cant))
-                                {
-                                    isSinkAssigned = true;
-                                }
-                            }
-
-
-                            // inoltre, se si sta processando una linea con dati gps, le coordinate devono essere valide.
-                            // Viene riportato errore a meno che non sia stato indicato un cantiere 'pozzo' dove mettere le timbrature con coordinate non valide
-                            // [l'errore di coordinate non valide non è bloccante, verrà inserita la registrazione senza cantiere e
-                            // quindi è possibile proseguire con l'operazione]
-                            //
-                            if (!currentGpsPreReg.IsTag && !currentGpsPreReg.HasValidCoordinate && isSinkAssigned)
-                            {
-                                // nella chiave dell'errore è segnalato il doppio * per evitare la riscrittura del dato tra le sospese
-                                processErrors.Add(new KeyValuePair<string, string>(
-                                    String.Format("**{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_COORDINATE_GPS_NON_VALIDE, gpsLine)),
-                                    gpsLine));
-                            }
-
-                            #endregion
-
-                            #region Inizializzazione gruppo GPS
-
-                            // numero massimo di registrazioni del gruppo
-                            currentGroupMax = currentGpsPreReg.IsTagReferenced ? tagAndGpsGroupCount : onlyGpsGroupCount;
-
-                            // se la prima registrazione del gruppo è referenziata a un tag allora il gruppo linee è di tipo tag e gps; altrimenti solo gps
-                            currentGroupType = currentGpsPreReg.IsTagReferenced ? GpsGruopTypeEnum.TagAndGps : GpsGruopTypeEnum.OnlyGps;
-
-                            currentGroupFlagEU = currentGpsPreReg.RegistrationDirection;
-
-                            if (counterTag > 1)
-                            {
-                                currentGroupMax++;
-                                currentGroupType = GpsGruopTypeEnum.TagActivityGps;
-                                counterTag = 0;
-                            }
-
-                            // aggiunta della prima registrazione al gruppo gps
-                            gpsRegGroup.Add(currentGpsPreReg);
-
-                            #endregion
-
-                        }
-                        else
-                        {
-                            // altrimenti, se il gruppo gps risulta già inizializzato si aggiunge la timbratura corrente al gruppo e si effettua il controllo di coerenza
-                            // dei dati successivi al primo:
-                            // - in caso d'errore si resetta il gruppo e si procede alla segnalazione come errore di tutte le timbrature del gruppo
-                            // - in caso invece il gruppo risulti coerente si verifica se si è a fine corsa (numero massimo registrazioni per gruppo);
-                            //   - in caso si sia a fine corsa genera la reg da scrivere e si azzera il gruppo;
-                            //   - in caso invece non si sia a fine corsa si procede alla semplice aggiunta del record al gruppo
-
-                            // aggiunta della linea gps al gruppo
-                            gpsRegGroup.Add(currentGpsPreReg);
-                            counterTag = 0;
-
-                            #region Controllo di coerenza della linea GPS diversa dalla prima
-
-                            // una linea gps successiva alla prima risulta coerente solamente se è una timbratura GPS (cioè non tag) coerente con il dato precedente:
-                            // - in caso di gruppo solo gps:
-                            //   - il dato deve essere opposto al precedente (latitudine se longitudine e viceversa)
-                            // - in caso di gruppo tag e gps:
-                            //    - la seconda e la terza timbratura devono essere tag referenced
-                            //    - la seconda timbratura basta che non si tratti di un tag (controllo iniziale)
-                            //    - la terza timbratura deve essere opposta alla precedente (latituine se longitudine e viceversa)
-
-                            bool isLastGood = true;
-
-                            bool hasInvalidCoordinates = false;
-
-                            // se si tratta di una linea con timbratura tag allora la linea non è sicuramente coerente
-                            
-                            if (currentGpsPreReg.IsTag)
-                                isLastGood = false;
-                            else
-                            {
-                                // si procede ad effettuare i controlli relativi al tipo di gruppo in elaborazione
-                                switch (currentGroupType)
-                                {
-                                    case GpsGruopTypeEnum.TagAndGps: // registrazione tag e gps
-
-                                        // per essere coerente tutte le timbrature devono essere tag referenced;
-                                        // altrimenti, se si sta trattando la terza timbratura non può trattarsi dello stesso tipo linea della
-                                        // precedente
-                                        if (!currentGpsPreReg.IsTagReferenced)
-                                            isLastGood = false;
-                                        else if (gpsRegGroup.Count() == 3)
-                                        {
-                                            GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
-
-                                            if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
-                                                isLastGood = false;
-                                        }
-
-                                        break;
-                                    case GpsGruopTypeEnum.OnlyGps: // registrazione solo gps
-
-                                        // per essere coerente la timbratura successiva alla prima di un gruppo gps non può essere tag referenced;
-                                        // altrimenti, se si sta trattando la seconda timbratura, non può trattarsi dello stesso tipo linea della 
-                                        // precedente
-                                        if (currentGpsPreReg.IsTagReferenced)
-                                            isLastGood = false;
-                                        else
-                                        {
-                                            GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
-
-                                            if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
-                                                isLastGood = false;
-                                        }
-
-                                        break;
-                                    case GpsGruopTypeEnum.TagActivityGps: // registrazione tag + attività e gps
-
-                                        // per essere coerente tutte le timbrature devono essere tag referenced;
-                                        // altrimenti, se si sta trattando la terza timbratura non può trattarsi dello stesso tipo linea della
-                                        // precedente
-                                        if (!currentGpsPreReg.IsTagReferenced)
-                                            isLastGood = false;
-                                        else if (gpsRegGroup.Count() == 4)
-                                        {
-                                            GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
-
-                                            if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
-                                                isLastGood = false;
-                                        }
-
-                                        break;
-                                }
-
-                                // se il controllo precedente è andato a buon fine allora si procede a verificare anche che le eventuali coordinate siano valide
-                                if (isLastGood)
-                                {
-                                    if (!currentGpsPreReg.IsTag && !currentGpsPreReg.HasValidCoordinate)
-                                    {
-                                        isLastGood = false;
-                                        hasInvalidCoordinates = true;
-                                    }
-                                }
-                            }
-
-                            // se la registrazione diversa dalla prima in processo risulta non coerente allora si segnalano tutte le linee del gruppo
-                            // come errore e si inizializza il gruppo come nuovo (come se si ricominciasse da zero)
-                            if (!isLastGood)
-                            {
-                                // calcolo della stringa d'errore da riportare
-                                string errorMessage = String.Empty;
-                                if (hasInvalidCoordinates)
-                                {
-                                    // se le coordinate della seconda (o terza) registrazione non sono valide allora si procede a segnalare l'errore tra i messaggi da processare
-                                    // ma si segnala che la registrazione torna buona in quanto sarà importata senza cantiere
-                                    // [nella chiave dell'errore è segnalato il doppio * per evitare la riscrittura del dato tra le sospese]
-                                    errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_COORDINATE_GPS_NON_VALIDE, currentGpsPreReg.OriginalGpsLine);
-                                    processErrors.Add(new KeyValuePair<string, string>(String.Format("**{0}", errorMessage), currentGpsPreReg.OriginalGpsLine));
-                                    isLastGood = true;
-                                }
-                                else if (gpsRegGroup.Count() == 2) { 
-                                    errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_REG_GPS_X_NON_COERENTE, currentGpsPreReg.OriginalGpsLine);
-                                }  
-                                else
-                                    errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_TERZA_REG_GPS_X_NON_COERENTE, currentGpsPreReg.OriginalGpsLine);
-
-                                // se non si tratta di un errore di coordinate
-                                // [se si tratta di un errore di coordinate si procede all'inserimento della registrazione con cantiere vuoto]
-                                if (!isLastGood)
-                                {
-                                    // segnalazione degli errori nell'apposito dizionario
-                                    gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
-
-                                    // reinizializzazione del gruppo di modo da resettare il dato
-                                    gpsRegGroup = new List<GpsPreReg>();
-                                    gpsRegGroup.Add(currentGpsPreReg);
-                                }
-
-                            }
-
-                            #endregion
-
-                            // se il gruppo gps è sopravvissuto al controllo di coerenza
-                            if (gpsRegGroup.Any())
-                            {
-                                // il gruppo attualmente in elaborazione è giunto a fine corsa?
-                                if (gpsRegGroup.Count() >= currentGroupMax)
-                                {
-
-                                    #region Preparazione ed aggiunta della reg costruita sul gruppo
-
-                                    // generazione della nuova reg GPS
-                                    Reg newReg = Init();
-
-                                    // impostazione dei dati diretti
-                                    newReg.Registrazione_Data_Ora_Fis_Reg = gpsRegGroup.First().RegistrationDateTime;
-                                    newReg.Registrazione_Data_Ora_Fig_Reg = gpsRegGroup.First().RegistrationDateTime;
-                                    newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
-                                    newReg.Data_Registrazione_Reg = DateTime.UtcNow;
-                                    newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
-
-
-                                    // nelle registrazioni da gps la fru id è sempre a null
-                                    newReg.Fru_Id = null;
-
-                                    // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
-                                    // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:
-                                    // - sarà la matricola del dispositivo in caso il tipo di assegnazione configurata sia Cant o non imposta
-                                    // - sarà la matricola del tag in caso di tipo assegnazione a Col
-                                    // - sarà la matricola del tag in caso di presenza anagrafica pru e assegnazione in base al tipo anagrafica; in caso
-                                    //   non sia presente viene utilizzata la device
-                                    string pruCode;
-                                    string fruCode = "";
-
-                                    if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
-                                    {
-                                        fruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
-                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-                                    }
-                                    else if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
-                                    {
-                                        switch (tagAndGpsAssType)
-                                        {
-                                            case GpsAssTagTypeEnum.Col:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-                                                break;
-                                            case GpsAssTagTypeEnum.CantCol:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-                                                if (!RepoManager.PruRepo.DbSet.Any(pru => pru.Codice_Pru == pruCode))
+                                                case GpsAssTagTypeEnum.Col:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                                    break;
+                                                case GpsAssTagTypeEnum.CantCol:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                                    if (!RepoManager.PruRepo.DbSet.Any(pru => pru.Codice_Pru == pruCode))
+                                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                                    break;
+                                                case GpsAssTagTypeEnum.Cant:
                                                     pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-                                                break;
-                                            case GpsAssTagTypeEnum.Cant:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-                                                break;
-                                            default:
-                                                pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-                                                break;
-                                        }
-                                    }
-                                    else
-                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
-
-                                    // recupero della pru collegata al codice calcolato
-                                    Pru currentPru = RepoManager.PruRepo.FirstOrDefault(pru => pru.Codice_Pru == pruCode);
-
-                                    // si procede con la generazione della reg solamente se la pru è stata trovata,
-                                    // altrimenti si segnala tutto il gruppo come errore
-                                    if (currentPru != default(Pru))
-                                    {
-                                        // impostazione dell'identificativo pru sulla reg
-                                        newReg.Pru_Id = currentPru.Pru_Id;
-
-                                        // dal gruppo gps viene recuperato il valore della latitudine e della longitudine
-                                        GpsPreReg preRegLatitude = gpsRegGroup.First(preReg => preReg.LineType == GpsLineTypeEnum.Latitude);
-                                        double latitudeToSearch = BusinessService.ConvertDeviceToBingLatitude(preRegLatitude.CoordinateValue, preRegLatitude.CoordinatesType);
-                                        GpsPreReg preRegLongitude = gpsRegGroup.First(preReg => preReg.LineType == GpsLineTypeEnum.Longitude);
-                                        double longitudeToSearch = BusinessService.ConvertDeviceToBingLongitude(preRegLongitude.CoordinateValue, preRegLatitude.CoordinatesType);
-
-                                        // inserimento delle coordinate gps originali nella timbratura
-                                        newReg.Registrazione_Lat_Orig = latitudeToSearch;
-                                        newReg.Registrazione_Long_Orig = longitudeToSearch;
-
-                                        if (currentGroupFlagEU != null && currentGroupFlagEU != "")
-                                        {
-                                            newReg.Flag_EU_Reg = currentGroupFlagEU;
-                                        }
-
-                                        // viene normalizzato per la ricerca il codice del badge e si verifica la presenza dello stesso tra le fru
-                                        string normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
-
-                                        if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
-                                            normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
-
-                                        bool isBadgeFru = RepoManager.FruRepo.DbSet.Any(fru => fru.Codice_Fru == normalizedBadgeCode);
-
-                                        // se richiesto dai parametri, imposta la registrazione come passaggio
-                                        if (RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS != null && RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS.Equals(ImportGPSRegsEnum.AsPass))
-                                        {
-                                            newReg.Registrazione_Tipo_Reg = (int)RegTypeEnum.Pass;
-                                        }
-
-                                        //Booleano per identificare se la registrazione è all'interno del raggio di lavoro (in combinazione con customization ImportGPSOnlyInWorkingRange)
-                                        bool isRegInWorkingRange = true;
-
-                                        //Se la customization che esclude dall'import le registrazioni che sono fuori dal raggio di lavoro è attiva, fa il controllo
-                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange) == (int)ImportGPSOnlyInWorkingRange.Active)
-                                        {
-                                            //Recupera il raggio di lavoro (in metri) dalla customization
-                                            double radius = Double.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange, "Radius"));
-
-                                            //Controlla che il cantiere centro del raggio e le sue coordinate siano valide
-                                            if (centro_gps != default(Cant) && centro_gps.LatitudineGps_Can != 0d && centro_gps.LongitudineGps_Can != 0d)
-                                            {
-                                                //Crea il range di coordinate del raggio di lavoro
-                                                var range = new GpsRange(centro_gps.LatitudineGps_Can, centro_gps.LongitudineGps_Can, Convert.ToInt32(radius));
-                                                //Se la coordinata corrente non è all'interno del raggio di lavoro, la marca per l'esclusione
-                                                if (!range.IsPointInRange(latitudeToSearch, longitudeToSearch))
-                                                {
-                                                    isRegInWorkingRange = false;
-                                                }
+                                                    break;
+                                                default:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                                    break;
                                             }
                                         }
+                                        else
+                                            pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
 
-                                        //Importo le timbrature solo se sono all'interno del raggi di lavoro (customization ImportGPSOnlyInWorkingRange)
-                                        if (isRegInWorkingRange)
+                                        // recupero della pru collegata al codice calcolato
+                                        Pru currentPru = RepoManager.PruRepo.FirstOrDefault(pru => pru.Codice_Pru == pruCode);
+
+                                        // si procede con la generazione della reg solamente se la pru è stata trovata,
+                                        // altrimenti si segnala tutto il gruppo come errore
+                                        if (currentPru != default(Pru))
                                         {
+                                            // impostazione dell'identificativo pru sulla reg
+                                            newReg.Pru_Id = currentPru.Pru_Id;
+
+                                            // dal gruppo gps viene recuperato il valore della latitudine e della longitudine
+                                            double latitudeToSearch = 0;
+                                            double longitudeToSearch = 0;
+
+                                            // inserimento delle coordinate gps originali nella timbratura
+                                            newReg.Registrazione_Lat_Orig = latitudeToSearch;
+                                            newReg.Registrazione_Long_Orig = longitudeToSearch;
+
+                                            if (currentGroupFlagEU != null && currentGroupFlagEU != "")
+                                            {
+                                                newReg.Flag_EU_Reg = currentGroupFlagEU;
+                                            }
+
+                                            // viene normalizzato per la ricerca il codice del badge e si verifica la presenza dello stesso tra le fru
+                                            string normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+
                                             if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                                normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
+
+                                            bool isBadgeFru = RepoManager.FruRepo.DbSet.Any(fru => fru.Codice_Fru == normalizedBadgeCode);
+
+                                            // se richiesto dai parametri, imposta la registrazione come passaggio
+                                            if (RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS != null && RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS.Equals(ImportGPSRegsEnum.AsPass))
                                             {
-                                                var motivationId = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Campo1_Tab == fruCode).Tab_Decod_Id;
-                                                newReg.Motivazione_Reg_Id = motivationId;
+                                                newReg.Registrazione_Tipo_Reg = (int)RegTypeEnum.Pass;
                                             }
-                                            // l'anagrafica fissa viene impostata secondo la seguente logica :
-                                            // - viene imposta l'unità fissa con l'anagrafica del tag se il tag è impostato per designare l'unità fissa o se l'anagrafica di appartenenza
-                                            //   e il tag è presente tra i fru e il gruppo in elaborazione è tag e gps 
-                                            // - altrimenti si procede ad impostare il cantiere utilizzando le coordinate GPS
-                                            if (((tagAndGpsAssType == GpsAssTagTypeEnum.Cant) || (tagAndGpsAssType == GpsAssTagTypeEnum.CantCol && isBadgeFru))
-                                            && currentGroupType == GpsGruopTypeEnum.TagAndGps)
+
+                                            //Booleano per identificare se la registrazione è all'interno del raggio di lavoro (in combinazione con customization ImportGPSOnlyInWorkingRange)
+                                            bool isRegInWorkingRange = true;
+
+                                            //Se la customization che esclude dall'import le registrazioni che sono fuori dal raggio di lavoro è attiva, fa il controllo
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange) == (int)ImportGPSOnlyInWorkingRange.Active)
                                             {
+                                                //Recupera il raggio di lavoro (in metri) dalla customization
+                                                double radius = Double.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange, "Radius"));
 
-                                                Fru currentFru = RepoManager.FruRepo.FirstOrDefault(fru => fru.Codice_Fru == normalizedBadgeCode);
-                                                if (currentFru != default(Fru))
+                                                //Controlla che il cantiere centro del raggio e le sue coordinate siano valide
+                                                if (centro_gps != default(Cant) && centro_gps.LatitudineGps_Can != 0d && centro_gps.LongitudineGps_Can != 0d)
                                                 {
-                                                    newReg.Fru_Id = currentFru.Fru_Id;
-                                                    newReg.Registrazione_Lat_Orig = latitudeToSearch;
-                                                    newReg.Registrazione_Long_Orig = longitudeToSearch;
-
-                                                    // aggiunta della nuova reg all'elenco
-                                                    regsToAdd.Add(newReg);
+                                                    //Crea il range di coordinate del raggio di lavoro
+                                                    var range = new GpsRange(centro_gps.LatitudineGps_Can, centro_gps.LongitudineGps_Can, Convert.ToInt32(radius));
+                                                    //Se la coordinata corrente non è all'interno del raggio di lavoro, la marca per l'esclusione
+                                                    if (!range.IsPointInRange(latitudeToSearch, longitudeToSearch))
+                                                    {
+                                                        isRegInWorkingRange = false;
+                                                    }
                                                 }
+                                            }
+
+                                            //Importo le timbrature solo se sono all'interno del raggi di lavoro (customization ImportGPSOnlyInWorkingRange)
+                                            if (isRegInWorkingRange)
+                                            {
+                                                if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                                {
+                                                    var motivationId = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Campo1_Tab == fruCode).Tab_Decod_Id;
+                                                    newReg.Motivazione_Reg_Id = motivationId;
+                                                }
+                                                // l'anagrafica fissa viene impostata secondo la seguente logica :
+                                                // - viene imposta l'unità fissa con l'anagrafica del tag se il tag è impostato per designare l'unità fissa o se l'anagrafica di appartenenza
+                                                //   e il tag è presente tra i fru e il gruppo in elaborazione è tag e gps 
+                                                // - altrimenti si procede ad impostare il cantiere utilizzando le coordinate GPS
+                                                if (((tagAndGpsAssType == GpsAssTagTypeEnum.Cant) || (tagAndGpsAssType == GpsAssTagTypeEnum.CantCol && isBadgeFru))
+                                                && currentGroupType == GpsGruopTypeEnum.TagAndGps)
+                                                {
+
+                                                    Fru currentFru = RepoManager.FruRepo.FirstOrDefault(fru => fru.Codice_Fru == normalizedBadgeCode);
+                                                    if (currentFru != default(Fru))
+                                                    {
+                                                        newReg.Fru_Id = currentFru.Fru_Id;
+
+                                                        // aggiunta della nuova reg all'elenco
+                                                        regsToAdd.Add(newReg);
+                                                    }
+                                                    else
+                                                    {
+                                                        // segnalazione del gruppo come errore
+                                                        string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, normalizedBadgeCode);
+                                                        gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
+                                                    }
+                                                }
+
                                                 else
                                                 {
-                                                    // segnalazione del gruppo come errore
-                                                    string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, normalizedBadgeCode);
-                                                    gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
-                                                }
-                                            }
-
-                                            else
-                                            {
                                                     // calcolo del cantiere gps:
                                                     // - il valore del id cantiere sarà -1 se la latitudine e la longitudine da importare hanno valore 0 e non c'è un cantiere 'pozzo' (inserimento con cantiere vuoto)
                                                     // - il valore del id cantiere sarà 0 in caso bing non riesca a calcolare le coordinate
@@ -7385,41 +7136,481 @@ namespace Business.Repository.Custom
                                                         gpsRegGroup.ForEach(preReg =>
                                                             processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
 
-                                                
+
+                                                }
+                                            }
+                                            //Se la timbratura non è nel raggio di lavoro, non la importo
+                                            else
+                                            {
+                                                string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_REGISTRAZIONE_FUORI_DA_RAGGIO_LAVORO);
+                                                gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
                                             }
                                         }
-                                        //Se la timbratura non è nel raggio di lavoro, non la importo
                                         else
                                         {
-                                            string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_REGISTRAZIONE_FUORI_DA_RAGGIO_LAVORO);
+                                            // segnalazione del gruppo come errore
+                                            string errorMessage = currentGroupType == GpsGruopTypeEnum.OnlyGps || tagAndGpsAssType != GpsAssTagTypeEnum.Col
+                                                ? BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, pruCode)
+                                                : BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, pruCode);
                                             gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
                                         }
+
+
+                                        #endregion
+
+                                        #region Reinizializzazione gruppo per presa in carico nuove timbrature GPS
+
+                                        // reinizializzazione del gruppo GPS
+                                        gpsRegGroup = new List<GpsPreReg>();
+                                        counterTag = 0;
+
+                                        #endregion
+                                    }
+                                }
+                            }
+                            if (currentGpsPreReg.BadgeCode != null)
+                                if (currentGpsPreReg.BadgeCode.Contains("ATTIV"))
+                                    activity = true;
+
+
+                            // se si sta processando un nuovo blocco gps
+                            // allora si inizializzano i dati di gestione di un nuovo blocco gps
+                            if (!gpsRegGroup.Any() || activity)
+                            {
+                                counterTag++;
+
+                                #region Convalida della prima registrazione del gruppo
+
+                                // se la prima registrazione del gruppo che si intende processare è indicata come referenziata a un tag ma non è un tag
+                                // oppure 
+                                // se la prima registrazione del gruppo che si intende processare è indicata come non referenziata a un tag ed è un tag
+                                // allora si passa direttamente alla verifica del record successivo, riportando la corrente timbratura tra gli errori
+                                if ((currentGpsPreReg.IsTagReferenced && !currentGpsPreReg.IsTag) || (!currentGpsPreReg.IsTagReferenced && currentGpsPreReg.IsTag))
+                                {
+                                    processErrors.Add(new KeyValuePair<string, string>(
+                                        String.Format("*{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_REG_GPS_X_NON_COERENTE_CON_TIPO, gpsLine)),
+                                        gpsLine));
+
+                                    continue;
+                                }
+
+                                //Flag che indica se è presente il parametro del cantiere pozzo per le timbrature con coordinate non valide
+                                bool isSinkAssigned = false;
+
+                                //Controlla che il parametro del cantiere pozzo per le timbrature con coordinate non valide sia valorizzato
+                                if (RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.HasValue)
+                                {
+                                    //Recupera il cantiere pozzo
+                                    Cant sinkCant = RepoManager.CantRepo.SingleOrDefault(cant => cant.Cant_Id == RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.Value);
+
+                                    //Se il cantiere pozzo esiste, valorizza il relativo flag
+                                    if (sinkCant != default(Cant))
+                                    {
+                                        isSinkAssigned = true;
+                                    }
+                                }
+
+
+                                // inoltre, se si sta processando una linea con dati gps, le coordinate devono essere valide.
+                                // Viene riportato errore a meno che non sia stato indicato un cantiere 'pozzo' dove mettere le timbrature con coordinate non valide
+                                // [l'errore di coordinate non valide non è bloccante, verrà inserita la registrazione senza cantiere e
+                                // quindi è possibile proseguire con l'operazione]
+                                //
+                                if (!currentGpsPreReg.IsTag && !currentGpsPreReg.HasValidCoordinate && isSinkAssigned)
+                                {
+                                    // nella chiave dell'errore è segnalato il doppio * per evitare la riscrittura del dato tra le sospese
+                                    processErrors.Add(new KeyValuePair<string, string>(
+                                        String.Format("**{0}", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_COORDINATE_GPS_NON_VALIDE, gpsLine)),
+                                        gpsLine));
+                                }
+
+                                #endregion
+
+                                #region Inizializzazione gruppo GPS
+
+                                // numero massimo di registrazioni del gruppo
+                                currentGroupMax = currentGpsPreReg.IsTagReferenced ? tagAndGpsGroupCount : onlyGpsGroupCount;
+
+                                // se la prima registrazione del gruppo è referenziata a un tag allora il gruppo linee è di tipo tag e gps; altrimenti solo gps
+                                currentGroupType = currentGpsPreReg.IsTagReferenced ? GpsGruopTypeEnum.TagAndGps : GpsGruopTypeEnum.OnlyGps;
+
+                                currentGroupFlagEU = currentGpsPreReg.RegistrationDirection;
+
+                                if (counterTag > 1)
+                                {
+                                    currentGroupMax++;
+                                    currentGroupType = GpsGruopTypeEnum.TagActivityGps;
+                                    counterTag = 0;
+                                }
+
+                                // aggiunta della prima registrazione al gruppo gps
+                                gpsRegGroup.Add(currentGpsPreReg);
+
+                                #endregion
+
+                            }
+                            else
+                            {
+                                // altrimenti, se il gruppo gps risulta già inizializzato si aggiunge la timbratura corrente al gruppo e si effettua il controllo di coerenza
+                                // dei dati successivi al primo:
+                                // - in caso d'errore si resetta il gruppo e si procede alla segnalazione come errore di tutte le timbrature del gruppo
+                                // - in caso invece il gruppo risulti coerente si verifica se si è a fine corsa (numero massimo registrazioni per gruppo);
+                                //   - in caso si sia a fine corsa genera la reg da scrivere e si azzera il gruppo;
+                                //   - in caso invece non si sia a fine corsa si procede alla semplice aggiunta del record al gruppo
+
+                                // aggiunta della linea gps al gruppo
+                                gpsRegGroup.Add(currentGpsPreReg);
+                                counterTag = 0;
+
+                                #region Controllo di coerenza della linea GPS diversa dalla prima
+
+                                // una linea gps successiva alla prima risulta coerente solamente se è una timbratura GPS (cioè non tag) coerente con il dato precedente:
+                                // - in caso di gruppo solo gps:
+                                //   - il dato deve essere opposto al precedente (latitudine se longitudine e viceversa)
+                                // - in caso di gruppo tag e gps:
+                                //    - la seconda e la terza timbratura devono essere tag referenced
+                                //    - la seconda timbratura basta che non si tratti di un tag (controllo iniziale)
+                                //    - la terza timbratura deve essere opposta alla precedente (latituine se longitudine e viceversa)
+
+                                bool isLastGood = true;
+
+                                bool hasInvalidCoordinates = false;
+
+                                // se si tratta di una linea con timbratura tag allora la linea non è sicuramente coerente
+
+                                if (currentGpsPreReg.IsTag)
+                                    isLastGood = false;
+                                else
+                                {
+                                    // si procede ad effettuare i controlli relativi al tipo di gruppo in elaborazione
+                                    switch (currentGroupType)
+                                    {
+                                        case GpsGruopTypeEnum.TagAndGps: // registrazione tag e gps
+
+                                            // per essere coerente tutte le timbrature devono essere tag referenced;
+                                            // altrimenti, se si sta trattando la terza timbratura non può trattarsi dello stesso tipo linea della
+                                            // precedente
+                                            if (!currentGpsPreReg.IsTagReferenced)
+                                                isLastGood = false;
+                                            else if (gpsRegGroup.Count() == 3)
+                                            {
+                                                GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
+
+                                                if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
+                                                    isLastGood = false;
+                                            }
+
+                                            break;
+                                        case GpsGruopTypeEnum.OnlyGps: // registrazione solo gps
+
+                                            // per essere coerente la timbratura successiva alla prima di un gruppo gps non può essere tag referenced;
+                                            // altrimenti, se si sta trattando la seconda timbratura, non può trattarsi dello stesso tipo linea della 
+                                            // precedente
+                                            if (currentGpsPreReg.IsTagReferenced)
+                                                isLastGood = false;
+                                            else
+                                            {
+                                                GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
+
+                                                if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
+                                                    isLastGood = false;
+                                            }
+
+                                            break;
+                                        case GpsGruopTypeEnum.TagActivityGps: // registrazione tag + attività e gps
+
+                                            // per essere coerente tutte le timbrature devono essere tag referenced;
+                                            // altrimenti, se si sta trattando la terza timbratura non può trattarsi dello stesso tipo linea della
+                                            // precedente
+                                            if (!currentGpsPreReg.IsTagReferenced)
+                                                isLastGood = false;
+                                            else if (gpsRegGroup.Count() == 4)
+                                            {
+                                                GpsPreReg prevGpsPreReg = gpsRegGroup.ElementAt(gpsRegGroup.IndexOf(currentGpsPreReg) - 1);
+
+                                                if (prevGpsPreReg.LineType == currentGpsPreReg.LineType)
+                                                    isLastGood = false;
+                                            }
+
+                                            break;
+                                    }
+
+                                    // se il controllo precedente è andato a buon fine allora si procede a verificare anche che le eventuali coordinate siano valide
+                                    if (isLastGood)
+                                    {
+                                        if (!currentGpsPreReg.IsTag && !currentGpsPreReg.HasValidCoordinate)
+                                        {
+                                            isLastGood = false;
+                                            hasInvalidCoordinates = true;
+                                        }
+                                    }
+                                }
+
+                                // se la registrazione diversa dalla prima in processo risulta non coerente allora si segnalano tutte le linee del gruppo
+                                // come errore e si inizializza il gruppo come nuovo (come se si ricominciasse da zero)
+                                if (!isLastGood)
+                                {
+                                    // calcolo della stringa d'errore da riportare
+                                    string errorMessage = String.Empty;
+                                    if (hasInvalidCoordinates)
+                                    {
+                                        // se le coordinate della seconda (o terza) registrazione non sono valide allora si procede a segnalare l'errore tra i messaggi da processare
+                                        // ma si segnala che la registrazione torna buona in quanto sarà importata senza cantiere
+                                        // [nella chiave dell'errore è segnalato il doppio * per evitare la riscrittura del dato tra le sospese]
+                                        errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_COORDINATE_GPS_NON_VALIDE, currentGpsPreReg.OriginalGpsLine);
+                                        processErrors.Add(new KeyValuePair<string, string>(String.Format("**{0}", errorMessage), currentGpsPreReg.OriginalGpsLine));
+                                        isLastGood = true;
+                                    }
+                                    else if (gpsRegGroup.Count() == 2)
+                                    {
+                                        errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_REG_GPS_X_NON_COERENTE, currentGpsPreReg.OriginalGpsLine);
                                     }
                                     else
+                                        errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_TERZA_REG_GPS_X_NON_COERENTE, currentGpsPreReg.OriginalGpsLine);
+
+                                    // se non si tratta di un errore di coordinate
+                                    // [se si tratta di un errore di coordinate si procede all'inserimento della registrazione con cantiere vuoto]
+                                    if (!isLastGood)
                                     {
-                                        // segnalazione del gruppo come errore
-                                        string errorMessage = currentGroupType == GpsGruopTypeEnum.OnlyGps || tagAndGpsAssType != GpsAssTagTypeEnum.Col
-                                            ? BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, pruCode)
-                                            : BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, pruCode);
+                                        // segnalazione degli errori nell'apposito dizionario
                                         gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
+
+                                        // reinizializzazione del gruppo di modo da resettare il dato
+                                        gpsRegGroup = new List<GpsPreReg>();
+                                        gpsRegGroup.Add(currentGpsPreReg);
                                     }
 
+                                }
 
-                                    #endregion
+                                #endregion
 
-                                    #region Reinizializzazione gruppo per presa in carico nuove timbrature GPS
+                                // se il gruppo gps è sopravvissuto al controllo di coerenza
+                                if (gpsRegGroup.Any())
+                                {
+                                    // il gruppo attualmente in elaborazione è giunto a fine corsa?
+                                    if (gpsRegGroup.Count() >= currentGroupMax)
+                                    {
 
-                                    // reinizializzazione del gruppo GPS
-                                    gpsRegGroup = new List<GpsPreReg>();
-                                    counterTag = 0;
+                                        #region Preparazione ed aggiunta della reg costruita sul gruppo
 
-                                    #endregion
+                                        // generazione della nuova reg GPS
+                                        Reg newReg = Init();
+
+                                        // impostazione dei dati diretti
+                                        newReg.Registrazione_Data_Ora_Fis_Reg = gpsRegGroup.First().RegistrationDateTime;
+                                        newReg.Registrazione_Data_Ora_Fig_Reg = gpsRegGroup.First().RegistrationDateTime;
+                                        newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
+                                        newReg.Data_Registrazione_Reg = DateTime.UtcNow;
+                                        newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
+
+
+                                        // nelle registrazioni da gps la fru id è sempre a null
+                                        newReg.Fru_Id = null;
+
+                                        // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
+                                        // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:
+                                        // - sarà la matricola del dispositivo in caso il tipo di assegnazione configurata sia Cant o non imposta
+                                        // - sarà la matricola del tag in caso di tipo assegnazione a Col
+                                        // - sarà la matricola del tag in caso di presenza anagrafica pru e assegnazione in base al tipo anagrafica; in caso
+                                        //   non sia presente viene utilizzata la device
+                                        string pruCode;
+                                        string fruCode = "";
+
+                                        if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                        {
+                                            fruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
+                                            pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                        }
+                                        else if (currentGroupType == GpsGruopTypeEnum.TagAndGps)
+                                        {
+                                            switch (tagAndGpsAssType)
+                                            {
+                                                case GpsAssTagTypeEnum.Col:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                                    break;
+                                                case GpsAssTagTypeEnum.CantCol:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+                                                    if (!RepoManager.PruRepo.DbSet.Any(pru => pru.Codice_Pru == pruCode))
+                                                        pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                                    break;
+                                                case GpsAssTagTypeEnum.Cant:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                                    break;
+                                                default:
+                                                    pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+                                                    break;
+                                            }
+                                        }
+                                        else
+                                            pruCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().DeviceCode, 10);
+
+                                        // recupero della pru collegata al codice calcolato
+                                        Pru currentPru = RepoManager.PruRepo.FirstOrDefault(pru => pru.Codice_Pru == pruCode);
+
+                                        // si procede con la generazione della reg solamente se la pru è stata trovata,
+                                        // altrimenti si segnala tutto il gruppo come errore
+                                        if (currentPru != default(Pru))
+                                        {
+                                            // impostazione dell'identificativo pru sulla reg
+                                            newReg.Pru_Id = currentPru.Pru_Id;
+
+                                            // dal gruppo gps viene recuperato il valore della latitudine e della longitudine
+                                            GpsPreReg preRegLatitude = gpsRegGroup.First(preReg => preReg.LineType == GpsLineTypeEnum.Latitude);
+                                            double latitudeToSearch = BusinessService.ConvertDeviceToBingLatitude(preRegLatitude.CoordinateValue, preRegLatitude.CoordinatesType);
+                                            GpsPreReg preRegLongitude = gpsRegGroup.First(preReg => preReg.LineType == GpsLineTypeEnum.Longitude);
+                                            double longitudeToSearch = BusinessService.ConvertDeviceToBingLongitude(preRegLongitude.CoordinateValue, preRegLatitude.CoordinatesType);
+
+                                            // inserimento delle coordinate gps originali nella timbratura
+                                            newReg.Registrazione_Lat_Orig = latitudeToSearch;
+                                            newReg.Registrazione_Long_Orig = longitudeToSearch;
+
+                                            if (currentGroupFlagEU != null && currentGroupFlagEU != "")
+                                            {
+                                                newReg.Flag_EU_Reg = currentGroupFlagEU;
+                                            }
+
+                                            // viene normalizzato per la ricerca il codice del badge e si verifica la presenza dello stesso tra le fru
+                                            string normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup.First().BadgeCode, 10);
+
+                                            if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                                normalizedBadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(gpsRegGroup[1].BadgeCode, 10);
+
+                                            bool isBadgeFru = RepoManager.FruRepo.DbSet.Any(fru => fru.Codice_Fru == normalizedBadgeCode);
+
+                                            // se richiesto dai parametri, imposta la registrazione come passaggio
+                                            if (RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS != null && RepoManager.ParamRepo.ParametersRow.Importazione_timbrature_GPS.Equals(ImportGPSRegsEnum.AsPass))
+                                            {
+                                                newReg.Registrazione_Tipo_Reg = (int)RegTypeEnum.Pass;
+                                            }
+
+                                            //Booleano per identificare se la registrazione è all'interno del raggio di lavoro (in combinazione con customization ImportGPSOnlyInWorkingRange)
+                                            bool isRegInWorkingRange = true;
+
+                                            //Se la customization che esclude dall'import le registrazioni che sono fuori dal raggio di lavoro è attiva, fa il controllo
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange) == (int)ImportGPSOnlyInWorkingRange.Active)
+                                            {
+                                                //Recupera il raggio di lavoro (in metri) dalla customization
+                                                double radius = Double.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ImportGPSOnlyInWorkingRange, "Radius"));
+
+                                                //Controlla che il cantiere centro del raggio e le sue coordinate siano valide
+                                                if (centro_gps != default(Cant) && centro_gps.LatitudineGps_Can != 0d && centro_gps.LongitudineGps_Can != 0d)
+                                                {
+                                                    //Crea il range di coordinate del raggio di lavoro
+                                                    var range = new GpsRange(centro_gps.LatitudineGps_Can, centro_gps.LongitudineGps_Can, Convert.ToInt32(radius));
+                                                    //Se la coordinata corrente non è all'interno del raggio di lavoro, la marca per l'esclusione
+                                                    if (!range.IsPointInRange(latitudeToSearch, longitudeToSearch))
+                                                    {
+                                                        isRegInWorkingRange = false;
+                                                    }
+                                                }
+                                            }
+
+                                            //Importo le timbrature solo se sono all'interno del raggi di lavoro (customization ImportGPSOnlyInWorkingRange)
+                                            if (isRegInWorkingRange)
+                                            {
+                                                if (currentGroupType == GpsGruopTypeEnum.TagActivityGps)
+                                                {
+                                                    var motivationId = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Campo1_Tab == fruCode).Tab_Decod_Id;
+                                                    newReg.Motivazione_Reg_Id = motivationId;
+                                                }
+                                                // l'anagrafica fissa viene impostata secondo la seguente logica :
+                                                // - viene imposta l'unità fissa con l'anagrafica del tag se il tag è impostato per designare l'unità fissa o se l'anagrafica di appartenenza
+                                                //   e il tag è presente tra i fru e il gruppo in elaborazione è tag e gps 
+                                                // - altrimenti si procede ad impostare il cantiere utilizzando le coordinate GPS
+                                                if (((tagAndGpsAssType == GpsAssTagTypeEnum.Cant) || (tagAndGpsAssType == GpsAssTagTypeEnum.CantCol && isBadgeFru))
+                                                && currentGroupType == GpsGruopTypeEnum.TagAndGps)
+                                                {
+
+                                                    Fru currentFru = RepoManager.FruRepo.FirstOrDefault(fru => fru.Codice_Fru == normalizedBadgeCode);
+                                                    if (currentFru != default(Fru))
+                                                    {
+                                                        newReg.Fru_Id = currentFru.Fru_Id;
+                                                        newReg.Registrazione_Lat_Orig = latitudeToSearch;
+                                                        newReg.Registrazione_Long_Orig = longitudeToSearch;
+
+                                                        // aggiunta della nuova reg all'elenco
+                                                        regsToAdd.Add(newReg);
+                                                    }
+                                                    else
+                                                    {
+                                                        // segnalazione del gruppo come errore
+                                                        string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, normalizedBadgeCode);
+                                                        gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
+                                                    }
+                                                }
+
+                                                else
+                                                {
+                                                    // calcolo del cantiere gps:
+                                                    // - il valore del id cantiere sarà -1 se la latitudine e la longitudine da importare hanno valore 0 e non c'è un cantiere 'pozzo' (inserimento con cantiere vuoto)
+                                                    // - il valore del id cantiere sarà 0 in caso bing non riesca a calcolare le coordinate
+                                                    // - il valore del id cantiere sarà il valore del cantiere (nuovo o già presente) in caso di calcolo corretto da bing
+                                                    int cantId = -1;
+                                                    if (latitudeToSearch != 0 && longitudeToSearch != 0)
+                                                    {
+                                                        cantId = GetGpsCantId(latitudeToSearch, longitudeToSearch);
+                                                    }
+
+                                                    //Se le coordinate della regstrazione non sono valide (=0), assegna alla registrazione il cantiere pozzo, se valorizzato
+                                                    else if (RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.HasValue && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 0)
+                                                    {
+                                                        cantId = RepoManager.ParamRepo.ParametersRow.Cantiere_Timbrature_GPS_Non_Valide.Value;
+                                                    }
+                                                    else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoordinateZero) == 1 && (latitudeToSearch == 0 && longitudeToSearch == 0))
+                                                    {
+                                                        newReg = LastCant(currentPru.Pru_Id, gpsRegGroup.First().RegistrationDateTime, regsToAdd, newReg);
+                                                        cantId = newReg.Cant_Id.Value;
+                                                    }
+
+                                                    // si imposta il cantiere gps solamente se è stato correttamente trovato;
+                                                    // in caso contrario si procede a segnalare il gruppo come errore
+                                                    if (cantId != 0)
+                                                    {
+                                                        newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
+
+                                                        // aggiunta della registrazione all'elenco
+                                                        regsToAdd.Add(newReg);
+                                                    }
+                                                    else
+                                                        gpsRegGroup.ForEach(preReg =>
+                                                            processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
+
+
+                                                }
+                                            }
+                                            //Se la timbratura non è nel raggio di lavoro, non la importo
+                                            else
+                                            {
+                                                string errorMessage = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_REGISTRAZIONE_FUORI_DA_RAGGIO_LAVORO);
+                                                gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // segnalazione del gruppo come errore
+                                            string errorMessage = currentGroupType == GpsGruopTypeEnum.OnlyGps || tagAndGpsAssType != GpsAssTagTypeEnum.Col
+                                                ? BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PRIMA_MATRICOLA_INESISTENTE, pruCode)
+                                                : BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_SECONDA_MATRICOLA_INESISTENTE, pruCode);
+                                            gpsRegGroup.ForEach(preReg => processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0}", errorMessage), preReg.OriginalGpsLine)));
+                                        }
+
+
+                                        #endregion
+
+                                        #region Reinizializzazione gruppo per presa in carico nuove timbrature GPS
+
+                                        // reinizializzazione del gruppo GPS
+                                        gpsRegGroup = new List<GpsPreReg>();
+                                        counterTag = 0;
+
+                                        #endregion
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
+                        catch (Exception ex)
+                        {
+                        }
                     }
                 }
                 //nel caso in cui il counter sia ad 1 significa che il dispositivo non ha trasmesso le coordinate

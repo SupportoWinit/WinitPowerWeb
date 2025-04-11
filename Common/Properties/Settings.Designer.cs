@@ -49,7 +49,18 @@ namespace Common.Properties {
                 return ((string)(this["Files_Input_Path"]));
             }
         }
-        
+
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("~\\FilesOutput--CSV_TIMBRATURE\\")]
+        public string Files_Output_Csv_Path
+        {
+            get
+            {
+                return ((string)(this["Files_Output_Csv_Path"]));
+            }
+        }
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("15")]

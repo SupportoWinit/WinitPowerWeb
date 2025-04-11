@@ -76,5 +76,8 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("chiave")]
         public string Chiave { get; set; }
+
+        [JsonProperty("CantiereSelezionato")]
+        public string CantiereSel { get; set; }
     }
 }

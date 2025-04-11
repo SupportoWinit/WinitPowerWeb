@@ -322,7 +322,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     lastAttId = attivita.First().Cant_Id;
                                 }
                             }
-                        } else if (reg.Registrazione_Tipo_Reg == 4) {
+                        } 
+                        else if (reg.Registrazione_Tipo_Reg == 4) {
                             if (reg.Durata_Fig != null)
                             {
                                 lastDurata += reg.Durata_Fig.Value;

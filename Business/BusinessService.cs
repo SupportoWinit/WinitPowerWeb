@@ -3808,7 +3808,7 @@ namespace Business
 
             // la linea risulta in formato gps se il numero di elementi in essa contenuta separati da punto e virgola è superiore a quanto
             // configurato per il pattern della registrazione standard e non è una linea di info aggiuntive
-            return (splittedLine.Count() > 9 && !IsRegLineAdditionalInfo(splittedLine));
+            return (splittedLine.Count() > 9 && !IsRegLineAdditionalInfoGps(splittedLine));
         }
 
         /// <summary>
@@ -3829,6 +3829,29 @@ namespace Business
                 returnValue = infoAgg == "INFOAGG";
             }
 
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Determina se la linea contenente i dati di registrazione risulta contenere informazioni aggiuntive.
+        /// </summary>
+        /// <param name="splittedRegLine">L'array contenente i dati della riga di timbratura.</param>
+        /// <returns><c>true</c> se la linea specificata contiene informazioni aggiuntive; altrimenti false.</returns>
+        public static bool IsRegLineAdditionalInfoGps(string[] splittedRegLine)
+        {
+            bool returnValue = false;
+
+            string infoAgg = String.Empty;
+
+            //si controlla se la stringa nella posizione specifica è uguale alla keyword che indica che nella registrazione vi sono informazionia aggiuntive
+            if (splittedRegLine.Count() > 9)
+            {
+                string codiceAdditional = splittedRegLine[1];
+                if (codiceAdditional != "NOTE000002") {
+                    infoAgg = splittedRegLine[8];
+                    returnValue = infoAgg == "INFOAGG";
+                }
+            }
             return returnValue;
         }
 
