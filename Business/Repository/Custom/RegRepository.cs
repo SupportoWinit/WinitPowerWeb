@@ -640,7 +640,7 @@ namespace Business.Repository.Custom
                         List<KeyValuePair<string, string>> overlapErrors = RepoManager.Reg_VRepo.CheckOverlaps(regVs);
 
                         // se sono state trovate delle registrazioni in sovrapposizione
-                        if (overlapErrors.Any())
+                        if (overlapErrors.Any() && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
                         {
                             HashSet<int> regColIds = new HashSet<int>();
 
@@ -749,12 +749,12 @@ namespace Business.Repository.Custom
                             // se sono impostati gli arrotondamenti per durata
                             if (roundingParamEnum == RoundingMethodEnum.Duration)
                             {
-                                var roundingRegVs = regVs.ToList();
+                                var roundingRegVs = regVs.Where(r => r.Registrazione_Tipo_Reg == 0).ToList();
                                 // Recupera i viaggi appena creati  
                                 var tripsRegvs = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
                                                     regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
 
-                                roundingRegVs.AddRange(tripsRegvs);
+                                //roundingRegVs.AddRange(tripsRegvs);
 
                                 // applicazione degli arrotondamenti per durata
                                 _log.Info(String.Format("starting rounding duration regVs at {0}", regVs.Count()));
@@ -865,7 +865,7 @@ namespace Business.Repository.Custom
 
                         #region (Personalizzazione) Coperture Serali
                         // se la personalizzazione è attiva controllo se le timbrature
-                        //sono coperture serali
+                        // sono coperture serali
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CopertureSerali) == 1)
                         {
                             regVs = GetRegVsForRounding(regs);
@@ -903,6 +903,32 @@ namespace Business.Repository.Custom
                             _log.Info(String.Format("Inizio controllo coperture serali di {0} regV", regVs.Count()));
                             errors.AddRange(RepoManager.Reg_VRepo.CopertureSerali(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
                                 , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+
+                            // se sono impostati gli arrotondamenti per inizio-fine
+                            if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
+                            {
+                                // applicazione degli arrotondamenti per inizio-fine
+                                _log.Info(String.Format("Inizio arrotondamento di {0} regV", regVs.Count()));
+                                errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+                                _log.Info(String.Format("Arrotondamento di {0} regs terminato", regVs.Count()));
+                            }
+                            else if (roundingParamEnum == RoundingMethodEnum.Disabled)
+                            {
+                                //se non servono gli arrotondamenti imposto i parametri a zero così da toglierli
+                                RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento = 0;
+                                RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Entrata = 0;
+                                RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita = 0;
+                                RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio = TimeSpan.MinValue;
+                                RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti = 0;
+                                RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = TimeSpan.MinValue;
+                                _log.Info(String.Format("Tolgo gli arrotondamenti a {0} regV", regVs.Count()));
+                                errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+
+                                _log.Info(String.Format("Arrotondamento tolti per {0} regs", regVs.Count()));
+                            }
+
 
                             //se cìè la modifica delle coperture serali elaboro le attività per mostrarle nella manutenzione timbrature
                             errors.AddRange(RepoManager.Reg_VRepo.ElaborateActivities(regVs));
@@ -4064,12 +4090,16 @@ namespace Business.Repository.Custom
             Reg reg3 = null;
             foreach (var regsGroupByCol in regsToProcess.Where(r => r.Registrazione_Tipo_Reg == 0).GroupBy(r => r.Col_Id)) {
                 foreach (var regs in regsGroupByCol.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg.Date)) {
-                    foreach (Reg reg in regs)
+                    foreach (Reg reg in regs.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg))
                     {
                         if (reg1 == null)
                         {
                             //inizializzo la prima reg del gruppo nel caso sia il primo accesso oppure il gruppo sia stato azzerato
                             reg1 = reg;
+                            if (reg == regs.Last()) {
+                                returnList.Add(reg);
+                                reg1 = null;
+                            }
                         }
                         else
                         {
@@ -4120,7 +4150,7 @@ namespace Business.Repository.Custom
                     }
                 }
             }
-            var regsByDate = returnList.GroupBy(r => r.Registrazione_Data_Ora_Orig_Reg).ToList();
+            var regsByDate = returnList.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg).ToList();
             regsByDate.ForEach(byDateList =>
             {
                 // se sono presenti delle reg da shiftare
@@ -4128,7 +4158,8 @@ namespace Business.Repository.Custom
                 {
                     // per ogi reg da shiftare viene aggiunto un secondo
                     int secondsToAdd = 1;
-                    byDateList.ForEach(regToShift => regToShift.Registrazione_Data_Ora_Fis_Reg = regToShift.Registrazione_Data_Ora_Orig_Reg.AddSeconds(secondsToAdd++));
+                    //byDateList.ForEach(regToShift => regToShift.Registrazione_Data_Ora_Fis_Reg = regToShift.Registrazione_Data_Ora_Orig_Reg.AddSeconds(secondsToAdd++));
+                    byDateList.ForEach(regToShift => regToShift.Registrazione_Data_Ora_Fis_Reg = new DateTime(regToShift.Registrazione_Data_Ora_Fis_Reg.Year, regToShift.Registrazione_Data_Ora_Fis_Reg.Month, regToShift.Registrazione_Data_Ora_Fis_Reg.Day, regToShift.Registrazione_Data_Ora_Fis_Reg.Hour, regToShift.Registrazione_Data_Ora_Fis_Reg.Minute,0).AddSeconds(secondsToAdd++));
                 }
             });        
             return new HashSet<Reg>(regsByDate.SelectMany(s => s).ToList());
@@ -5662,8 +5693,25 @@ namespace Business.Repository.Custom
                 {
                     arrot = collaboratori.First().Retribuzione_Oraria_Col.Value;
                 }
-                else if (cantieri.First().Importo1 != null)
-                    arrot = cantieri.First().Importo1.Value;
+                else if (cantieri.First().Importo1 != null) {
+                    if (cantieri.First().Importo2 != null)
+                    {
+                        if (roundingDate.Date > cantieri.First().DataVarGps_Can.Value.Date)
+                        {
+                            arrot = cantieri.First().Importo2.Value;
+                        }
+                        else
+                        {
+                            arrot = cantieri.First().Importo1.Value;
+                        }
+                    }
+                    else 
+                    {
+                        arrot = cantieri.First().Importo1.Value;
+                    }
+                    
+                }
+                    
             } else if (collaboratori.Count > 0) {
                 if (collaboratori.First().Retribuzione_Oraria_Col != null)
                 {
@@ -5769,6 +5817,9 @@ namespace Business.Repository.Custom
 
             // lo stato di default di una registrazione di sola duarata è abbinata
             currentRegE.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+            if (currentRegE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration) {
+                currentRegE.Registrazione_Stato_Reg = 0;
+            }
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 1) {
                 if (oldRegE != null) {
@@ -5861,7 +5912,7 @@ namespace Business.Repository.Custom
             currentRegU.Flag_EU_Reg = Convert.ToString(newValues[CommonService.GetPropertyName(() => regVStub.UscitaEU)]);
 
             // lo stato di default di una registrazione di sola duarata è abbinata
-            currentRegU.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+            currentRegU.Registrazione_Stato_Reg = 0;/*(int)RegStateEnum.Ass;*/
 
             // se la reg_v è marcata per essere bloccata allora si settano anche l'entrata come tale
             currentRegU.Registrazione_Bloccata = Convert.ToBoolean(newValues[CommonService.GetPropertyName(() => regVStub.Registrazione_Bloccata)]);
@@ -5931,7 +5982,7 @@ namespace Business.Repository.Custom
             }
 
             // lo stato di default di una registrazione di sola duarata è abbinata
-            currentRegU.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+            currentRegU.Registrazione_Stato_Reg = 0;/*(int)RegStateEnum.Ass;*/
 
             // se la reg_v è marcata per essere bloccata allora si settano anche l'entrata come tale
             currentRegU.Registrazione_Bloccata = Convert.ToBoolean(newValues[CommonService.GetPropertyName(() => regVStub.Registrazione_Bloccata)]);

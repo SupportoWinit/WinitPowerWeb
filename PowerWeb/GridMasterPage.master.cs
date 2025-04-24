@@ -767,7 +767,6 @@ namespace PowerWeb
                                 else if (nomeLayout.Contains("PRECEDENTE"))
                                 {
                                     currentGridLayout = currentGridLayout.Insert(dateIndex + 1, mesePrevUltimoGgString);
-
                                 }
                                 else if (nomeLayout.Contains("IERI/OGGI"))
                                 {

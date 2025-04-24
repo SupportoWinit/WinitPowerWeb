@@ -44,9 +44,11 @@ namespace PowerWeb.Api
             // Serialize the JObject to a JSON string
             string jsonString = "";// jsonObject.ToString();
             //jsonString = JsonConvert.SerializeObject(jsonObject);
+            _log.InfoFormat("Inizio a ciclare il periodo fornito: {0} - {1}", From.ToString(), To.ToString());
             DateTime date = From;
             while (date <= To) {
                 var regVs = RepoManager.Reg_VRepo.GetAll().Where(r => r.Data_Ora_Fig_E.Value.Day == date.Day && r.Data_Ora_Fig_E.Value.Month == date.Month && r.Data_Ora_Fig_E.Value.Year == date.Year && r.Codice_Commessa_Can == "Hotel" && r.Registrazione_Stato_Reg != (int)RegStateEnum.None).OrderBy(r => r.Data_Ora_Fig_E).GroupBy(r => r.Col_Id).ToList();
+                _log.InfoFormat("Recuperate {0} timbrature per il giorno {1}", regVs.Count(), date.ToString());
                 string day = "";
                 if (date.Day < 10)
                 {
@@ -54,17 +56,18 @@ namespace PowerWeb.Api
                     {
                         day = "0" + date.Day + "/0" + date.Month + "/" + date.Year;
                     }
-                    else {
+                    else 
+                    {
                         day = "0" + date.Day + "/" + date.Month + "/" + date.Year;
                     }
-                    
                 }
                 else {
                     if (date.Month < 10)
                     {
                         day = "" + date.Day + "/0" + date.Month + "/" + date.Year;
                     }
-                    else {
+                    else 
+                    {
                         day = "" + date.Day + "/" + date.Month + "/" + date.Year;
                     }
                 }
@@ -86,184 +89,200 @@ namespace PowerWeb.Api
                     if (collaboratore.First().Qualifica_Col != "0") {
                         foreach (Reg_V regv in regs.OrderBy(r => r.Cant_Id).ThenBy(r => r.Turno))
                         {
-                            string cant = regv.Codice_Gestionale_Can;
-                            if (cant == null)
+                            if (!(regv.Col_Id == 5262 && regv.Registrazione_Tipo_Reg == 4))
                             {
-                                cant = regv.Cant_Desc;
-                            }
-                            if (dayTimb < regs.Count())
-                            {
-                                if (tmpCol == "" && tmpCant == "" && tmpDurata == 0 && tmpSerale == 0)
+                                try
                                 {
-                                    tmpCol = col;
-                                    tmpCant = cant;
-                                    tmpDurata = regv.Durata_Fig.Value;
-                                    if (regv.Turno == "Coperture Serali") {
-                                        tmpSerale = 1;
-                                    }
-                                }
-                                else if (tmpCant == regv.Codice_Gestionale_Can)
-                                {
-                                    if (regv.Turno == "Coperture Serali" && tmpSerale == 0)
+                                    string cant = regv.Codice_Gestionale_Can;
+                                    if (cant == null)
                                     {
-                                        string durata = oreCentesimi(tmpDurata);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = tmpCant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = tmpSerale;
-                                        jsons.Add(tmp);
-                                        tmpDurata = regv.Durata_Fig.Value;
-                                        tmpSerale = 1;
-                                        tmpCant = cant;
+                                        cant = regv.Cant_Desc;
                                     }
-                                    else if (regv.Turno != "Coperture Serali" && tmpSerale == 1) {
-                                        string durata = oreCentesimi(tmpDurata);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = tmpCant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = tmpSerale;
-                                        jsons.Add(tmp);
-                                        tmpDurata = regv.Durata_Fig.Value;
+                                    if (dayTimb < regs.Count())
+                                    {
+                                        if (tmpCol == "" && tmpCant == "" && tmpDurata == 0 && tmpSerale == 0)
+                                        {
+                                            tmpCol = col;
+                                            tmpCant = cant;
+                                            tmpDurata = regv.Durata_Fig.Value;
+                                            if (regv.Turno == "Coperture Serali")
+                                            {
+                                                tmpSerale = 1;
+                                            }
+                                        }
+                                        else if (tmpCant == regv.Codice_Gestionale_Can)
+                                        {
+                                            if (regv.Turno == "Coperture Serali" && tmpSerale == 0)
+                                            {
+                                                string durata = oreCentesimi(tmpDurata);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = tmpCant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = tmpSerale;
+                                                jsons.Add(tmp);
+                                                tmpDurata = regv.Durata_Fig.Value;
+                                                tmpSerale = 1;
+                                                tmpCant = cant;
+                                            }
+                                            else if (regv.Turno != "Coperture Serali" && tmpSerale == 1)
+                                            {
+                                                string durata = oreCentesimi(tmpDurata);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = tmpCant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = tmpSerale;
+                                                jsons.Add(tmp);
+                                                tmpDurata = regv.Durata_Fig.Value;
+                                                tmpSerale = 0;
+                                                tmpCant = cant;
+                                            }
+                                            else
+                                            {
+                                                tmpDurata += regv.Durata_Fig.Value;
+                                            }
+                                        }
+                                        else if (tmpCant != regv.Codice_Gestionale_Can)
+                                        {
+                                            string durata = oreCentesimi(tmpDurata);
+                                            ExportJson tmp = new ExportJson();
+                                            tmp.Durata = durata;
+                                            tmp.CantId = tmpCant;
+                                            tmp.ColId = tmpCol;
+                                            tmp.Data = day;
+                                            tmp.Serale = tmpSerale;
+                                            jsons.Add(tmp);
+                                            tmpDurata = regv.Durata_Fig.Value;
+                                            tmpCant = cant;
+                                            if (regv.Turno == "Coperture Serali")
+                                            {
+                                                tmpSerale = 1;
+                                            }
+                                        }
+                                        dayTimb++;
+                                    }
+                                    else
+                                    {
+                                        if (tmpCant != regv.Codice_Gestionale_Can)
+                                        {
+                                            if (tmpCol == "" && tmpCant == "" && tmpDurata == 0 && tmpSerale == 0)
+                                            {
+                                                // Create a JArray  
+                                                string durata = oreCentesimi(regv.Durata_Fig.Value);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = cant;
+                                                tmp.ColId = col;
+                                                tmp.Data = day;
+                                                if (regv.Turno == "Coperture Serali")
+                                                {
+                                                    tmp.Serale = 1;
+                                                }
+                                                else
+                                                {
+                                                    tmp.Serale = 0;
+                                                }
+                                                jsons.Add(tmp);
+                                            }
+                                            else
+                                            {
+                                                // Create a JArray  
+                                                string durata = oreCentesimi(regv.Durata_Fig.Value);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = cant;
+                                                tmp.ColId = col;
+                                                tmp.Data = day;
+                                                if (regv.Turno == "Coperture Serali")
+                                                {
+                                                    tmp.Serale = 1;
+                                                }
+                                                else
+                                                {
+                                                    tmp.Serale = 0;
+                                                }
+                                                jsons.Add(tmp);
+
+                                                // Create a JArray  
+                                                durata = oreCentesimi(tmpDurata);
+                                                tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = tmpCant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = tmpSerale;
+                                                jsons.Add(tmp);
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (regv.Turno == "Coperture Serali" && tmpSerale == 0)
+                                            {
+                                                string durata = oreCentesimi(tmpDurata);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = tmpCant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = tmpSerale;
+                                                jsons.Add(tmp);
+
+                                                durata = oreCentesimi(regv.Durata_Fig.Value);
+                                                tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = cant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = 1;
+                                                jsons.Add(tmp);
+                                            }
+                                            else if (regv.Turno != "Coperture Serali" && tmpSerale == 1)
+                                            {
+                                                string durata = oreCentesimi(tmpDurata);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = tmpCant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = tmpSerale;
+                                                jsons.Add(tmp);
+
+                                                durata = oreCentesimi(regv.Durata_Fig.Value);
+                                                tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = cant;
+                                                tmp.ColId = tmpCol;
+                                                tmp.Data = day;
+                                                tmp.Serale = 0;
+                                                jsons.Add(tmp);
+                                            }
+                                            else
+                                            {
+                                                tmpDurata += regv.Durata_Fig.Value;
+                                                string durata = oreCentesimi(tmpDurata);
+                                                ExportJson tmp = new ExportJson();
+                                                tmp.Durata = durata;
+                                                tmp.CantId = cant;
+                                                tmp.ColId = col;
+                                                tmp.Data = day;
+                                                tmp.Serale = tmpSerale;
+                                                jsons.Add(tmp);
+                                            }
+                                        }
                                         tmpSerale = 0;
-                                        tmpCant = cant;
-                                    }
-                                    else {
-                                        tmpDurata += regv.Durata_Fig.Value;
                                     }
                                 }
-                                else if (tmpCant != regv.Codice_Gestionale_Can)
+                                catch (Exception e)
                                 {
-                                    string durata = oreCentesimi(tmpDurata);
-                                    ExportJson tmp = new ExportJson();
-                                    tmp.Durata = durata;
-                                    tmp.CantId = tmpCant;
-                                    tmp.ColId = tmpCol;
-                                    tmp.Data = day;
-                                    tmp.Serale = tmpSerale;
-                                    jsons.Add(tmp);
-                                    tmpDurata = regv.Durata_Fig.Value;
-                                    tmpCant = cant;
-                                    if (regv.Turno == "Coperture Serali")
-                                    {
-                                        tmpSerale = 1;
-                                    }
+                                    _log.ErrorFormat("Rilevato errore con la timbratura del collaboratore {0}, in data {1}", regv.Col_Desc, regv.Data_Ora_Fis_E);
                                 }
-                                dayTimb++;
                             }
-                            else
-                            {
-                                if (tmpCant != regv.Codice_Gestionale_Can)
-                                {
-                                    if (tmpCol == "" && tmpCant == "" && tmpDurata == 0 && tmpSerale == 0)
-                                    {
-                                        // Create a JArray  
-                                        string durata = oreCentesimi(regv.Durata_Fig.Value);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = cant;
-                                        tmp.ColId = col;
-                                        tmp.Data = day;
-                                        if (regv.Turno == "Coperture Serali")
-                                        {
-                                            tmp.Serale = 1;
-                                        }
-                                        else
-                                        {
-                                            tmp.Serale = 0;
-                                        }
-                                        jsons.Add(tmp);
-                                    }
-                                    else
-                                    {
-                                        // Create a JArray  
-                                        string durata = oreCentesimi(regv.Durata_Fig.Value);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = cant;
-                                        tmp.ColId = col;
-                                        tmp.Data = day;
-                                        if (regv.Turno == "Coperture Serali")
-                                        {
-                                            tmp.Serale = 1;
-                                        }
-                                        else
-                                        {
-                                            tmp.Serale = 0;
-                                        }
-                                        jsons.Add(tmp);
-
-                                        // Create a JArray  
-                                        durata = oreCentesimi(tmpDurata);
-                                        tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = tmpCant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = tmpSerale;
-                                        jsons.Add(tmp);
-                                    }
-
-                                }
-                                else
-                                {
-                                    if (regv.Turno == "Coperture Serali" && tmpSerale == 0)
-                                    {
-                                        string durata = oreCentesimi(tmpDurata);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = tmpCant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = tmpSerale;
-                                        jsons.Add(tmp);
-                                        
-                                        durata = oreCentesimi(regv.Durata_Fig.Value);
-                                        tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = cant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = 1;
-                                        jsons.Add(tmp);
-                                    }
-                                    else if (regv.Turno != "Coperture Serali" && tmpSerale == 1)
-                                    {
-                                        string durata = oreCentesimi(tmpDurata);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = tmpCant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = tmpSerale;
-                                        jsons.Add(tmp);
-
-                                        durata = oreCentesimi(regv.Durata_Fig.Value);
-                                        tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = cant;
-                                        tmp.ColId = tmpCol;
-                                        tmp.Data = day;
-                                        tmp.Serale = 0;
-                                        jsons.Add(tmp);
-                                    }
-                                    else
-                                    {
-                                        tmpDurata += regv.Durata_Fig.Value;
-                                        string durata = oreCentesimi(tmpDurata);
-                                        ExportJson tmp = new ExportJson();
-                                        tmp.Durata = durata;
-                                        tmp.CantId = cant;
-                                        tmp.ColId = col;
-                                        tmp.Data = day;
-                                        tmp.Serale = tmpSerale;
-                                        jsons.Add(tmp);
-                                    }
-                                }
-                                tmpSerale = 0;
+                            else {
+                                dayTimb++;
                             }
                         }
                     }                      
@@ -273,6 +292,7 @@ namespace PowerWeb.Api
                     rtn = JsonConvert.SerializeObject(jsons);
                 } 
                 jsonString = jsonString + rtn;
+                _log.InfoFormat("Finito di elaborare il giorno {0}", date.ToString());
                 date = date.AddDays(1);
                 jsons = new List<ExportJson>();
             }
@@ -280,6 +300,7 @@ namespace PowerWeb.Api
             // Output the JSON string
             //string test = jsonObject1.ToString();
             Console.WriteLine(jsonString);
+            _log.InfoFormat("Finito di creare il Json di ritorno");
             JsonData = jsonString;
         }
 

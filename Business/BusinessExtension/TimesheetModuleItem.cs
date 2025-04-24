@@ -4172,15 +4172,15 @@ namespace Business.BusinessExtension
 
                 List<Cant> cantiere = RepoManager.CantRepo.GetAll().Where(c => c.Cant_Id == currentCantId /*&& c.Tipologia_Can == "ATT"*/).ToList();
 
-                if (cantiere.Count() > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
-                {
-                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                }
-                else {
+                //if (cantiere.Count() > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
+                //{
+                //    // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                //    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                //}
+                //else {
                   // aggiungo il timesheet specifico del cantiere alla list di ritorno
                   returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                }
+                //}
 
 
             }

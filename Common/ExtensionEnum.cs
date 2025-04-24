@@ -209,6 +209,7 @@ namespace Common
         NotShowModifyRegs,
         ShowActivitiesInRegV,
         MantainCoordinateModifiedRegs,
+        LimitiXCol
     }
 
     public enum ClockAppsOperationEnum

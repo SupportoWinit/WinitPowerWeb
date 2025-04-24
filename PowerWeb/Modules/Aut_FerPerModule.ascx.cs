@@ -2185,7 +2185,8 @@ namespace PowerWeb.Modules
                         Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == codNuovaRichiesta);
 
                         newRegE.Motivazione_Reg_Id = mot.Tab_Decod_Id;
-                        newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
+                        if(newRegU != null)
+                            newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
 
                         #region Add Checked Regs To updates list
                         // controllo se nella timbratura è stata impostata la motivazione ferie o permesso, in questo caso provedo a processarle
@@ -2202,25 +2203,10 @@ namespace PowerWeb.Modules
                         if (oldRegU != null)
                             toDeleteRegs.Add(oldRegU);
 
-                        Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
-                        InviaConferma(0, col, from, to);
-
-                        #endregion
-
-                        #region Add Rejected Regs To deletes List
-
-                        if (newRegE.Motivazione_Reg_Id == ferieRifiutateId.First().Tab_Decod_Id || newRegE.Motivazione_Reg_Id == PermessoRifiutatoId.First().Tab_Decod_Id)
-                        {
-                            // controllo se nella timbratura è stata impostata la motivazione ferie rifiutata o permesso rifiutato, in questo caso provedo a eliminarle
-                            toDeleteRegs.Add(newRegE);
-
-                            // aggiunta la nuova reg in uscita tra quelle da aggiungere (solo se valorizzata)
-                            if (newRegU != null)
-                                toDeleteRegs.Add(newRegU);
-                        }
-
                         #endregion
                     }
+                    Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
+                    InviaConferma(0, col, from, to);
                 }
 
                 #region Elaborate all modified regs

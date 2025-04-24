@@ -69,7 +69,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4)).ToList();
+            Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod)); 
@@ -85,7 +86,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             int lastDurata = 0;
             int totaleReg = 0;
             //vado a fare un foreach per ogni cantiere
-            foreach (var reg in regVs.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E))
+            foreach (var reg in regVs.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
             { 
                 List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
                 //controllo se la timbratura è un attività
@@ -168,7 +169,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                     else {
                         if (lastAtt != "") {
-                            attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == lastAtt && c.Tipologia_Can == "ATT").ToList();
+                            attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId && c.Tipologia_Can == "ATT").ToList();
                             //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
                             bool aggiornato = false;
                             bool esiste = false;
@@ -336,7 +337,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 foreach (var inner in prova.First().Value) {
                     List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == inner.Key && c.Tipologia_Can == "ATT").ToList();
 
-                    CellInsertValue(1, 2, rowIndex, cants.First().Note_Can + " ", ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1, 2, rowIndex, cants.Last().Note_Can + " ", ExcelInsertTypeEnum.Content);
                     RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
                     RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
@@ -347,7 +348,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
 
                     TimeSpan durata = TimeSpan.FromMinutes(inner.Value);
-                    string totale = String.Format("{0}.{1}", (durata.Days * 24) + durata.Hours, Math.Abs(durata.Minutes).ToString("00"));
+                    int minuti = 00;
+                    switch (durata.Minutes) {
+                        case 15:
+                            minuti = 25;
+                            break;
+                        case 30:
+                            minuti = 50;
+                            break;     
+                        case 45:
+                            minuti = 75;
+                            break;
+                        }
+                    string totale = String.Format("{0},{1}", (durata.Days * 24) + durata.Hours, minuti.ToString("00"));
                     CellInsertValue(1, 4, rowIndex, totale + " ", ExcelInsertTypeEnum.Content);
                     RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);

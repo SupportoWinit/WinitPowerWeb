@@ -64,7 +64,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             startMonth = CommonService.GetFirstMonthDay(ExportDate);
             endMonth = CommonService.GetLastMonthDay(ExportDate);
 
-            List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4)).ToList();
+            Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
+
+            List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();           
             var exportRegVs = regVs2.GroupBy(c => c.Col_Id);
             foreach (var exportReg in exportRegVs)
@@ -359,7 +361,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             {
                 IEnumerable<int> lis = new List<int>();
                 lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
-                if (lis.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
+                if (regVs.Where(r => r.Col_Id == col.Col_Id).Count() > 0 /*|| RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1*/)
                 {
                     cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCartellinoCentri(ExportDate,
                                                    col,
@@ -610,7 +612,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             totaleGiornaliero -= tmp;
                         }
                         totaleOrario.Add(timeDuration);
-                        valueToPrint = FromTotalMinutesToFormattedType((int)(totaleGiornaliero * 60));
+                        valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)(totaleGiornaliero * 60));
                         totaleMensile += totaleGiornaliero;
 
                     } else if (justificationDec == "TOTALE") {
@@ -619,7 +621,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             valueToPrint = "0";
                         }
                         else {
-                            valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                            valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)timeDuration.TotalMinutes);
                         }
                     }
                     RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex + day.Day + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -629,7 +631,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 string totalHours = "0";
                 var timeDurationTotale = TimeSpan.FromHours(justification.TotalHours);
                 if (totaleMensile > 0) {
-                    totalHours = FromTotalMinutesToFormattedType((int)(totaleMensile * 60));
+                    totalHours = FromTotalMinutesToFormattedTypeVirgola((int)(totaleMensile * 60));
                 } 
 
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -672,13 +674,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     string valueToPrint = "";
                     if (timeDuration.TotalMinutes > 0) { 
-                        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)timeDuration.TotalMinutes);
                     } 
                     RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                 }
 
-                string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
+                string totalHours = FromTotalMinutesToFormattedTypeVirgola(justification.TotalMinutes);
 
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
