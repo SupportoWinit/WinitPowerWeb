@@ -599,7 +599,7 @@ namespace Business.Repository.Custom
                             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
 
                             // se sono impostati gli arrotondamenti per inizio-fine
-                            if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
+                            if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 1)
                             {
                                 // applicazione degli arrotondamenti per inizio-fine
                                 _log.Info(String.Format("Inizio arrotondamento di {0} regV", regVs.Count()));
@@ -769,7 +769,7 @@ namespace Business.Repository.Custom
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1 && currentApplication == ApplicationMessageEnum.Elaborate) {
                             //regs.AddRange(tmpRegs.Where(r => r.Registrazione_Tipo_Reg != 0));
-                            regs = DeleteCopertureSerali(regs, isToSaveChanges);
+                            //regs = DeleteCopertureSerali(regs, isToSaveChanges);
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                             RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
@@ -792,7 +792,7 @@ namespace Business.Repository.Custom
                             regs = DeleteCopertureSerali(regs, isToSaveChanges);
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
-                            RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
+                            RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
                             regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  
@@ -905,29 +905,30 @@ namespace Business.Repository.Custom
                                 , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
 
                             // se sono impostati gli arrotondamenti per inizio-fine
-                            if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
-                            {
-                                // applicazione degli arrotondamenti per inizio-fine
-                                _log.Info(String.Format("Inizio arrotondamento di {0} regV", regVs.Count()));
-                                errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
-                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
-                                _log.Info(String.Format("Arrotondamento di {0} regs terminato", regVs.Count()));
-                            }
-                            else if (roundingParamEnum == RoundingMethodEnum.Disabled)
-                            {
-                                //se non servono gli arrotondamenti imposto i parametri a zero così da toglierli
-                                RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento = 0;
-                                RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Entrata = 0;
-                                RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita = 0;
-                                RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio = TimeSpan.MinValue;
-                                RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti = 0;
-                                RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = TimeSpan.MinValue;
-                                _log.Info(String.Format("Tolgo gli arrotondamenti a {0} regV", regVs.Count()));
-                                errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
-                                    , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
-
-                                _log.Info(String.Format("Arrotondamento tolti per {0} regs", regVs.Count()));
-                            }
+                            //if (roundingParamEnum == RoundingMethodEnum.StartEnd || roundingParamEnum == RoundingMethodEnum.None)
+                            //{
+                            //    // applicazione degli arrotondamenti per inizio-fine
+                            //    _log.Info(String.Format("Inizio arrotondamento di {0} regV", regVs.Count()));
+                            //    RepoManager.Reg_VRepo.DeleteDurationRounding(regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList());
+                            //    errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                            //        , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+                            //    _log.Info(String.Format("Arrotondamento di {0} regs terminato", regVs.Count()));
+                            //}
+                            //else if (roundingParamEnum == RoundingMethodEnum.Disabled)
+                            //{
+                            //    //se non servono gli arrotondamenti imposto i parametri a zero così da toglierli
+                            //    RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento = 0;
+                            //    RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Entrata = 0;
+                            //    RepoManager.ParamRepo.ParametersRow.Utilizzo_Limite_Uscita = 0;
+                            //    RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio = TimeSpan.MinValue;
+                            //    RepoManager.ParamRepo.ParametersRow.Ritardo_Tolleranza_Minuti = 0;
+                            //    RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata = TimeSpan.MinValue;
+                            //    _log.Info(String.Format("Tolgo gli arrotondamenti a {0} regV", regVs.Count()));
+                            //    errors.AddRange(RepoManager.Reg_VRepo.Rounding(regVs, regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList()
+                            //        , regCants, regCols, _elaborateUserId, _elaborateDateTime, currentApplication, false));
+                            //
+                            //    _log.Info(String.Format("Arrotondamento tolti per {0} regs", regVs.Count()));
+                            //}
 
 
                             //se cìè la modifica delle coperture serali elaboro le attività per mostrarle nella manutenzione timbrature
@@ -939,7 +940,6 @@ namespace Business.Repository.Custom
                             //RepoManager.Reg_VRepo.InviaRitardi();
                         }
                         #endregion
-
 
                     }
                     catch (Exception ex)
@@ -4117,6 +4117,12 @@ namespace Business.Repository.Custom
                                 {
                                     //in caso contrario valorizzo la seconda reg del gruppo per continuare il controllo
                                     reg2 = reg;
+                                    if (reg == regs.Last()) {
+                                        returnList.Add(reg1);
+                                        returnList.Add(reg);
+                                        reg1 = null;
+                                        reg2 = null;
+                                    }
                                 }
                             }
                             else
@@ -4129,6 +4135,10 @@ namespace Business.Repository.Custom
                                     returnList.Add(reg);
                                     reg1 = reg2;
                                     reg2 = null;
+                                    if (reg == regs.Last()) {
+                                        returnList.Add(reg1);
+                                        reg1 = null;
+                                    }
                                 }
                                 else if (reg2.Cant_Id == reg.Cant_Id)
                                 {
@@ -4144,6 +4154,12 @@ namespace Business.Repository.Custom
                                     returnList.Add(reg1);
                                     reg1 = reg2;
                                     reg2 = reg;
+                                    if (reg == regs.Last()) {
+                                        returnList.Add(reg1);
+                                        returnList.Add(reg2);
+                                        reg1 = null;
+                                        reg2 = null;
+                                    }
                                 }
                             }
                         }

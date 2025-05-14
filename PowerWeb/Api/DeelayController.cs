@@ -10,6 +10,7 @@ using System.Net;
 using System.Web;
 using DevExpress.XtraRichEdit.Fields.Expression;
 using UnityEngine;
+using DevExpress.PivotGrid.OLAP.AdoWrappers;
 
 namespace PowerWeb.Api
 {
@@ -38,6 +39,7 @@ namespace PowerWeb.Api
             _log.InfoFormat("Inizio controllo ritardi delle {0}", today.DayOfWeek.ToString());
             HttpStatusCode ritorno = HttpStatusCode.OK;
             List<Cant> cantieriRitardo = new List<Cant>();
+            bool inviaMailRitardi = false;
             //creo una lista in cui inseriro i vari tipi di orario
             List<Tab_Orari_Tipo> orari = new List<Tab_Orari_Tipo>();
             List<Tab_Orari> tab_Oraris = new List<Tab_Orari>();
@@ -111,7 +113,8 @@ namespace PowerWeb.Api
                     //se valido diventa true vuol dire che oggi sono previste timbrature per il cantiere corrente 
                     List<Reg_V> cantRegs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Cant_Id == cantiere.Cant_Id && r.Data_Reg == compareToday).ToList();
                     //se non trovo timbrature vuol dire che nessuno ha timbrato sul cantiere
-                    if (cantRegs.Count() == 0) {
+                    if (cantRegs.Count() == 0)
+                    {
                         TimeSpan oraLimite = today.TimeOfDay;
                         List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
                         //calcolo l'ora limite partendo dall'orario e aggiungo la tolleranza
@@ -119,13 +122,13 @@ namespace PowerWeb.Api
                         {
                             oraLimite = orarioFinale.Ora_E.Value.Add(cantiere.Tolleranza_Limite_Entrata_Cant.Value);
                         }
-                        else 
+                        else
                         {
                             oraLimite = orarioFinale.Ora_E.Value.Add(parametri.First().Tolleranza_Limite_Entrata.Value);
                         }
-                        TimeSpan todayHour = new TimeSpan(today.Hour,today.Minute,today.Second);
+                        TimeSpan todayHour = new TimeSpan(today.Hour, today.Minute, today.Second);
                         //se l'ora attuale è oltre l'ora 
-                        if (oraLimite < todayHour) 
+                        if (oraLimite < todayHour)
                         {
                             if (cantiere.Data_Rapporto_Inizio_5_Can == null)
                             {
@@ -134,10 +137,33 @@ namespace PowerWeb.Api
                             }
                             else
                             {
-                                if (cantiere.Data_Rapporto_Inizio_5_Can < compareToday) {
+                                if (cantiere.Data_Rapporto_Inizio_5_Can < compareToday)
+                                {
                                     //se l'ora attuale è inferiore all'ora limite procedo ad inviare la mail comunicando che non ci sono timbrature
                                     cantieriRitardo.Add(cantiere);
                                 }
+                            }
+                        }
+                    }
+                    else {
+                        TimeSpan oraLimite = today.TimeOfDay;
+                        List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
+                        //calcolo l'ora limite partendo dall'orario e aggiungo la tolleranza
+                        if (cantiere.Tolleranza_Limite_Entrata_Cant != null)
+                        {
+                            oraLimite = orarioFinale.Ora_E.Value.Add(cantiere.Tolleranza_Limite_Entrata_Cant.Value);
+                        }
+                        else
+                        {
+                            oraLimite = orarioFinale.Ora_E.Value.Add(parametri.First().Tolleranza_Limite_Entrata.Value);
+                        }
+                        foreach (Reg_V reg in cantRegs) {
+                            if (reg.Data_Ora_Fig_ETime.Value > oraLimite && !reg.Ritardo_Mail_Sent) {
+                                Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                TimeSpan differenza = reg.Data_Ora_Fig_ETime.Value - oraLimite;
+                                regE.Ritardo_Durata = (int)differenza.TotalMinutes;
+                                RepoManager.RegRepo.Update(regE,true);
+                                inviaMailRitardi = true;
                             }
                         }
                     }
@@ -167,7 +193,10 @@ namespace PowerWeb.Api
                     }
                 }
             }
-
+            if (inviaMailRitardi) 
+            {
+                RepoManager.Reg_VRepo.InviaRitardi();
+            }
             return ritorno;
         }
         private string InviaResoconto(List<Cant> cantieri)

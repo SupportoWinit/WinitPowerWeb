@@ -1225,7 +1225,7 @@ namespace Business.Repository.Custom
 
             // se sono presenti degli orari per l'id passato come parametro validi per la data passata come parametro (si recupera sempre l'ultima versione valida)
             var validTimesheet = tabOrariTipoId != 0
-                ? Find(tor => tor.Tab_Orari_Tipo_Id == tabOrariTipoId && dateToSearch >= tor.Data_Inizio && tor.Cant_Id == cantId).ToList()
+                ? Find(tor => tor.Tab_Orari_Tipo_Id == tabOrariTipoId && dateToSearch >= tor.Data_Inizio && (tor.Cant_Id == cantId || tor.Cant_Id == null)).ToList()
                 : GetStandardTimeTable(dateToSearch, colId);
 
             if (validTimesheet.Any())

@@ -321,6 +321,13 @@ namespace Business.Repository.Custom
                                             minutesEnd = 0;
                                         }
 
+                                        if (currentCant.Tolleranza_Limite_Entrata_Cant != null) {
+                                            delayMorningTollerance = currentCant.Tolleranza_Limite_Entrata_Cant.Value;
+                                        }
+                                        if (currentCol.Tolleranza_Limite_Entrata_Col != null) {
+                                            delayMorningTollerance = currentCol.Tolleranza_Limite_Entrata_Col.Value;
+                                        }
+
                                         List<Reg_V> currentRegVs = cantGroup.OrderBy(regV => regV.Data_Ora_Fis_E).ToList();
                                         Reg previousReg = null;
 
@@ -348,8 +355,14 @@ namespace Business.Repository.Custom
                                                 currentCant.Raggruppamento1_Can = "";
                                             #region ARROTONDAMENTO ENTRATA/USCITA
                                             //se si è nel caso di arrotondamento sull'entrata ed uscita
-                                            if (roundingEnum == RoundingMethodEnum.StartEnd && !currentCant.Raggruppamento1_Can.Equals("5"))
+                                            if ((roundingEnum == RoundingMethodEnum.StartEnd && !currentCant.Raggruppamento1_Can.Equals("5")) || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 1)
                                             {
+                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 1) {
+                                                        if (roundingEnum != RoundingMethodEnum.StartEnd) {
+                                                            thresholdStart = -1;
+                                                            thresholdEnd = -1;
+                                                        }
+                                                    }
                                                 #region 1.Arrotondo la Registrazione di Entrata
 
                                                 //vengono estratti i minuti della corrente registrazione di entrata
@@ -435,45 +448,25 @@ namespace Business.Repository.Custom
 
                                                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
                                                                 {
-                                                                    string[] colList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "colList").Split(',');
-                                                                    string[] cantList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "cantList").Split(',');
-                                                                    string[] mornintEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningEntryLimitList").Split(',');
-                                                                    string[] afternoonEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonEntryLimitList").Split(',');
-                                                                    string[] morningExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningExitLimitList").Split(',');
-                                                                    string[] afternoonExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonExitLimitList").Split(',');
-                                                                    int id = -1;
-                                                                    for (int i = 0; i < colList.Length; i++)
+                                                                    if (currentCant.Telefono_1_Can != null) 
                                                                     {
-                                                                        if (int.Parse(colList[i]) == currentCol.Col_Id)
+                                                                        midDay = TimeSpan.Parse(currentCant.Telefono_2_Can);
+                                                                        string[] Coperture = currentCant.Telefono_1_Can.Split(',');
+                                                                        TimeSpan beforeE = TimeSpan.Parse(Coperture[1]).Subtract(new TimeSpan(0, 30, 0));
+                                                                        TimeSpan afterE = TimeSpan.Parse(Coperture[1]).Add(new TimeSpan(0, 30, 0));
+                                                                        TimeSpan beforeU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Subtract(new TimeSpan(0, 30, 0));
+                                                                        TimeSpan afterU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Add(new TimeSpan(0, 30, 0));
+                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeE/*&& (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeU && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < afterU)*/)
                                                                         {
-                                                                            id = i;
+                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(Coperture[1]);
+                                                                            currentRegE.Turno = "Coperture Serali";
                                                                         }
-                                                                    }
-                                                                    if (id > -1)
-                                                                    {
-                                                                        for (int i = 0; i < cantList.Length; i++)
+                                                                        else if (currentRegE.Turno == "Coperture Serali")
                                                                         {
-                                                                            if (int.Parse(cantList[i]) == currentCant.Cant_Id)
-                                                                            {
-                                                                                midDay = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "midDay"));
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    for (int i = 0; i < cantList.Length; i++)
-                                                                    {
-                                                                        if (int.Parse(cantList[i]) == currentCant.Cant_Id)
-                                                                        {
-                                                                            if (currentRegE.Turno == "Coperture Serali")
-                                                                            {
-                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "copertureSeraliLimit"));
-                                                                            }
+                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(Coperture[0]);
                                                                         }
                                                                     }
                                                                 }
-
-                                                                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1) {
-                                                                //    midDay = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol,"midDay"));
-                                                                //}
 
                                                                 // se è configurata la gestione del limite d'entrata (valorizzata o per la mattina, per il pomeriggio o per orario) e se la registrazione 
                                                                 // risulta abbinata allora si procede (se la registrazione d'entrata risulta presente) come segue:
@@ -1042,38 +1035,12 @@ namespace Business.Repository.Custom
 
                                                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
                                                                 {
-                                                                    string[] colList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "colList").Split(',');
-                                                                    string[] cantList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "cantList").Split(',');
-                                                                    string[] mornintEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningEntryLimitList").Split(',');
-                                                                    string[] afternoonEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonEntryLimitList").Split(',');
-                                                                    string[] morningExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningExitLimitList").Split(',');
-                                                                    string[] afternoonExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonExitLimitList").Split(',');
-                                                                    int id = -1;
-                                                                    for (int i = 0; i < colList.Length; i++)
+                                                                    if (currentCant.Telefono_1_Can != null) 
                                                                     {
-                                                                        if (int.Parse(colList[i]) == currentCol.Col_Id)
+                                                                        midDay = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can);
+                                                                        if (currentRegE.Turno == "Coperture Serali")
                                                                         {
-                                                                            id = i;
-                                                                        }
-                                                                    }
-                                                                    if (id > -1)
-                                                                    {
-                                                                        for (int i = 0; i < cantList.Length; i++)
-                                                                        {
-                                                                            if (int.Parse(cantList[i]) == currentCant.Cant_Id)
-                                                                            {
-                                                                                midDay = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "midDay"));
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                    for (int i = 0; i < cantList.Length; i++)
-                                                                    {
-                                                                        if (int.Parse(cantList[i]) == currentCant.Cant_Id)
-                                                                        {
-                                                                            if (currentRegE.Turno == "Coperture Serali")
-                                                                            {
-                                                                                exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "copertureSeraliExitLimit"));
-                                                                            }
+                                                                            exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can);
                                                                         }
                                                                     }
                                                                 }
@@ -1803,10 +1770,39 @@ namespace Business.Repository.Custom
                                                 }
                                                 else
                                                 {
-                                                    currentRegE.Turno = "";
-                                                    if (currentRegU != null)
+                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
                                                     {
-                                                        currentRegU.Turno = "";
+                                                        if (currentCant.Telefono_1_Can != null) {
+                                                            string[] Coperture = currentCant.Telefono_1_Can.Split(',');
+                                                            TimeSpan beforeE = TimeSpan.Parse(Coperture[1]).Subtract(new TimeSpan(0, 30, 0));
+                                                            TimeSpan afterE = TimeSpan.Parse(Coperture[1]).Add(new TimeSpan(0, 30, 0));
+                                                            TimeSpan beforeU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Subtract(new TimeSpan(0, 30, 0));
+                                                            TimeSpan afterU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Add(new TimeSpan(0, 30, 0));
+                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeE/*&& (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeU && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < afterU)*/)
+                                                            {
+                                                                currentRegE.Turno = "Coperture Serali";
+                                                                if (currentRegU != null)
+                                                                {
+                                                                    currentRegU.Turno = "Coperture Serali";
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                currentRegE.Turno = "";
+                                                                if (currentRegU != null)
+                                                                {
+                                                                    currentRegU.Turno = "";
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        currentRegE.Turno = "";
+                                                        if (currentRegU != null)
+                                                        {
+                                                            currentRegU.Turno = "";
+                                                        }
                                                     }
                                                 }
                                             }
@@ -2042,7 +2038,14 @@ namespace Business.Repository.Custom
                                         if (regv.Durata_Fis != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 0)
                                         {
                                             // Accumula la durata delle registrazioni della giornata
-                                            workDayDuration += regv.Durata_Fis.Value;
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 0)
+                                            {
+                                                workDayDuration += regv.Durata_Fis.Value;
+                                            }
+                                            else
+                                            {
+                                                workDayDuration += regv.Durata_Fig.Value;
+                                            }
                                         }
                                         else if (regv.Durata_Fis != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotAllRegs) == 1)
                                         {
@@ -2078,8 +2081,19 @@ namespace Business.Repository.Custom
                                                 }
                                             }
                                             // Ore e minuti lavorati nella giornata corrente
-                                            int hoursWorked = regv.Durata_Fis.Value / 60;
-                                            int minutesWorked = regv.Durata_Fis.Value % 60;
+                                            int hoursWorked = 0; 
+                                            int minutesWorked = 0; 
+
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 0)
+                                            {
+                                                hoursWorked = regv.Durata_Fis.Value / 60;
+                                                minutesWorked = regv.Durata_Fis.Value % 60;
+                                            }
+                                            else
+                                            {
+                                                hoursWorked = regv.Durata_Fig.Value / 60;
+                                                minutesWorked = regv.Durata_Fig.Value % 60;
+                                            }
 
                                             if (minutesDuration == 0)
                                             {
@@ -2242,7 +2256,7 @@ namespace Business.Repository.Custom
                                         }
                                     }
                                 }
-                                if (tmpTurno == "") {
+                                if (tmpTurno == "" && durata >= 420) {
                                     // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                     TimeSpan roundingTime = new TimeSpan(0, 0, 0);
                                     Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
@@ -2390,7 +2404,7 @@ namespace Business.Repository.Custom
                                 }
                                 if (durata >= 240)
                                 {
-                                    if (tmpTurno == "")
+                                    if (tmpTurno == "" || tmpcantId == 42192)
                                     {
                                         // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                         TimeSpan roundingTime = new TimeSpan(0, 0, 0);
@@ -2956,7 +2970,7 @@ namespace Business.Repository.Custom
             if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Usa_Orario && col.Tab_Orari_Tipo_Id.HasValue)
             {
                 // calcolo del piano di dettaglio per il giorno/collaboratore
-                List<Tuple<int, TimeSpan, TimeSpan>> dayColPlanDetail = RepoManager.Tab_OrariRepo.GetDayPlanDetail(date, col.Col_Id);
+                List<Tuple<int, TimeSpan, TimeSpan>> dayColPlanDetail = RepoManager.Tab_OrariRepo.GetDayPlanDetailCant(date, col.Col_Id,cant.Cant_Id);
 
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AllColLimitiByOrario) == 1)
                 {
@@ -3393,27 +3407,12 @@ namespace Business.Repository.Custom
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
             {
-                string[] colList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "colList").Split(',');
-                string[] cantList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "cantList").Split(',');
-                string[] mornintEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningEntryLimitList").Split(',');
-                string[] afternoonEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonEntryLimitList").Split(',');
-                string[] morningExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningExitLimitList").Split(',');
-                string[] afternoonExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonExitLimitList").Split(',');
-                int id = -1;
-                for (int i = 0; i < colList.Length; i++)
+                if (col.Telefono_3_Col != null && col.Telefono_4_Col != null && col.Fax_1_Col != null) 
                 {
-                    if (int.Parse(colList[i]) == col.Col_Id)
-                    {
-                        id = i;
-                    }
-                }
-                if (id > -1)
-                {
-                    for (int i = 0; i < cantList.Length; i++) {
-                        if (int.Parse(cantList[i]) == cant.Cant_Id) {
-                            morningEntryLimit = TimeSpan.Parse(mornintEntry[id]);
-                            afternoonEntryLimit = TimeSpan.Parse(afternoonEntry[id]);
-                        }
+                    int cantId = Int32.Parse(col.Fax_1_Col);
+                    if (cantId == cant.Cant_Id) {
+                        morningEntryLimit = TimeSpan.Parse(col.Telefono_3_Col);
+                        afternoonEntryLimit = TimeSpan.Parse(col.Telefono_4_Col);
                     }
                 }
             }
@@ -3621,29 +3620,11 @@ namespace Business.Repository.Custom
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
             {
-                string[] colList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "colList").Split(',');
-                string[] cantList = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "cantList").Split(',');
-                string[] mornintEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningEntryLimitList").Split(',');
-                string[] afternoonEntry = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonEntryLimitList").Split(',');
-                string[] morningExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "morningExitLimitList").Split(',');
-                string[] afternoonExit = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiXCol, "afternoonExitLimitList").Split(',');
-                int id = -1;
-                for (int i = 0; i < colList.Length; i++)
+                if (col.Telefono_3_Rif_Col != null && col.Telefono_4_Rif_Col != null && col.Fax_1_Col != null)
                 {
-                    if (int.Parse(colList[i]) == col.Col_Id)
-                    {
-                        id = i;
-                    }
-                }
-                if (id > -1)
-                {
-                    for (int i = 0; i < cantList.Length; i++)
-                    {
-                        if (int.Parse(cantList[i]) == cant.Cant_Id)
-                        {
-                            morningExitLimit = TimeSpan.Parse(morningExit[id]);
-                            afternoonExitLimit = TimeSpan.Parse(afternoonExit[id]);
-                        }
+                    if (int.Parse(col.Fax_1_Col) == cant.Cant_Id) {
+                        morningExitLimit = TimeSpan.Parse(col.Telefono_3_Rif_Col);
+                        afternoonExitLimit = TimeSpan.Parse(col.Telefono_4_Rif_Col);
                     }
                 }
             }
@@ -7590,8 +7571,18 @@ namespace Business.Repository.Custom
 
                                 foreach (Reg_V ritardo in orderedColDelays)
                                 {
-                                    durata_ritardo_minuti = ritardo.Ritardo_Durata.Value % 60;
-                                    durata_ritardo_ore = ritardo.Ritardo_Durata.Value / 60;
+                                    if (ritardo.Ritardo_Durata != null)
+                                    {
+                                        durata_ritardo_minuti = ritardo.Ritardo_Durata.Value % 60;
+                                        durata_ritardo_ore = ritardo.Ritardo_Durata.Value / 60;
+                                    }
+                                    else 
+                                    {
+                                        Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == ritardo.RegE);
+                                        durata_ritardo_minuti = regE.Ritardo_Durata.Value % 60;
+                                        durata_ritardo_ore = regE.Ritardo_Durata.Value / 60;
+                                    }
+                                    
                                     //if (orario != default(Tab_Orari))
                                     //{
                                     //    String entrata = "";

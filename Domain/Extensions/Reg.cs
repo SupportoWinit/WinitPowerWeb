@@ -132,7 +132,7 @@ namespace Domain
             bool fruEquals = reg.Fru_Id == this.Fru_Id;
             bool pruEquals = reg.Pru_Id == this.Pru_Id;
 
-            bool dateEquals = reg.Registrazione_Data_Ora_Orig_Reg == this.Registrazione_Data_Ora_Orig_Reg;
+            bool dateEquals = reg.Registrazione_Data_Ora_Fis_Reg == this.Registrazione_Data_Ora_Fis_Reg;
 
             bool badgeEquals = reg.Registrazione_Badge_Originale == this.Registrazione_Badge_Originale;
 
@@ -151,7 +151,7 @@ namespace Domain
                 hash += (this.Fru_Id.HasValue) ? this.Fru_Id.GetHashCode() : 0;
                 hash += (this.Pru_Id.HasValue) ? this.Pru_Id.GetHashCode() : 0;
 
-                hash += this.Registrazione_Data_Ora_Orig_Reg.ToString().GetHashCode();
+                hash += this.Registrazione_Data_Ora_Fis_Reg.ToString().GetHashCode();
 
                 hash += (this.Registrazione_Badge_Originale != null && this.Registrazione_Badge_Originale != "") ? this.Registrazione_Badge_Originale.GetHashCode() : 0;
 

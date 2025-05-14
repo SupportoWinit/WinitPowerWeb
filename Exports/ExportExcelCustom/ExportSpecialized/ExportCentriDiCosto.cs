@@ -397,13 +397,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     lastDuration = (int)baseDuration;
                 }
-
-                string totalHours = FromTotalMinutesToFormattedTypeKomplett(totale);
                 giorni = totalDays;
                 if (motivazione)
                 {
                     giorni = giorni - totalDays;
+                    if (justification.TotalMinutes < 0) {
+                        totale = last.TotalMinutes + justification.TotalMinutes;
+                    }
                 }
+                string totalHours = FromTotalMinutesToFormattedTypeKomplett(totale);
                 double stampaTotale = 0.0;
                 if (totalHours != "") {
                     stampaTotale = double.Parse(totalHours, CultureInfo.InvariantCulture);
