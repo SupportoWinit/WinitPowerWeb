@@ -342,7 +342,7 @@ healthchecksdb
 
 # File SVN
 
-*.svn/
+.svn/
 *.svn-base
 
 # Schema MDB
