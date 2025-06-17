@@ -1,5 +1,6 @@
 ﻿using Business;
 using Common;
+using Business.Repository;
 using Ionic.Zip;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -291,7 +292,18 @@ namespace Exports
                 worksheetName = String.Format("Foglio {0}", WorksheetCount);
 
             // generazione del nuovo foglio di lavoro all'interno del workbook
-            ExcelWorkbook.Workbook.Worksheets.Add(worksheetName);
+            var worksheet = ExcelWorkbook.Workbook.Worksheets.Add(worksheetName);
+
+            //byte[] companyLogo = RepoManager.ParamRepo.ParametersRow.CompanyLogo;
+            //Image image = null;
+            //if (companyLogo != null)
+            //{
+            //    image = Image.FromStream(new MemoryStream(companyLogo));
+            //}        
+            //var picture = worksheet.Drawings.AddPicture("Immagine 1", image);
+            //picture.SetSize(100,100);
+            //
+            //picture.SetPosition(7,0,7,0);
 
             // se è richiesta una specifica posizione allora si procede al riposizionamento dei fogli nella lista
             if (position != -1)

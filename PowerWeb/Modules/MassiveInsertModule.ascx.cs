@@ -1044,7 +1044,7 @@ namespace PowerWeb.Modules
         //Nel caso di 2 Registrazioni con lo Stesso Orario Aggiunge i Secondi necessari per distinguerle (operazione effettuata nella lista stessa)
         {
             List<Reg> returnList = new List<Reg>();
-            var regsByDate = regsToProcess.GroupBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();
+            var regsByDate = regsToProcess.Where(r => r.Registrazione_Tipo_Reg == 0).GroupBy(r => r.Registrazione_Data_Ora_Fig_Reg).ToList();
             regsByDate.ForEach(byDateList =>
             {
                 // se sono presenti delle reg da shiftare

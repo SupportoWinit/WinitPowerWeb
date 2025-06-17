@@ -582,7 +582,7 @@ namespace PowerWeb.Modules
             else
                 newRegV.Registrazione_Stato_Reg = (int)RegStateEnum.None;
 
-            var currTimeOfDay = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_E.Hour, data_Ora_Fis_E.Minute, 0);
+            var currTimeOfDay = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_E.Hour, data_Ora_Fis_E.Minute, data_Ora_Fis_E.Second);
 
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay || newRegV.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration)
             {

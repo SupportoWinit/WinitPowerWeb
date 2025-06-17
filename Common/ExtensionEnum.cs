@@ -210,7 +210,8 @@ namespace Common
         ShowActivitiesInRegV,
         MantainCoordinateModifiedRegs,
         LimitiXCol,
-        UseEUDurationRounding
+        UseEUDurationRounding,
+        ShowDurationRoundingTimesheet
     }
 
     public enum ClockAppsOperationEnum

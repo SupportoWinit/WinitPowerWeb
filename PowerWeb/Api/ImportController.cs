@@ -96,7 +96,6 @@ namespace PowerWeb.Api
                                 int _elaborateUserId = PowerWebContext.Current.User.Utenti_Id;
                                 DateTime _elaborateDateTime = DateTime.Now;
                                 List<KeyValuePair<string, string>> elabErrors = new List<KeyValuePair<string, string>>();
-
                                 
                                 DateTime toChunk = DateTime.Now.EndOfDay();
                                 DateTime fromChunk = DateTime.Now.BeginningOfMonth();

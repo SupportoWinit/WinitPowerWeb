@@ -594,6 +594,7 @@
           <Property Name="M10_Col_Monte_Minuti" Type="int" Nullable="false" />
           <Property Name="M11_Col_Monte_Minuti" Type="int" Nullable="false" />
           <Property Name="M12_Col_Monte_Minuti" Type="int" Nullable="false" />
+          <Property Name="Monte_Minuti_Justification" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Col_Note">
           <Key>
@@ -1519,7 +1520,7 @@
           <Property Name="Nome_Versioni" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Cant_Fil_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1529,7 +1530,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Fil_Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Cant_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1674,7 +1675,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="N_Serie_Fru" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Col_Resp_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1684,7 +1685,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Resp_Id" Type="int" Nullable="false" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Col_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1831,7 +1832,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Residenza_Provincia_GEN_Col" Type="nvarchar" MaxLength="4" />
         </EntityType>
         <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerIh2Gen.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
         <EntityType Name="Reg_V">
           <Key>
             <PropertyRef Name="RegE" />
@@ -3856,6 +3857,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="M11_Col_Monte_Minuti" Type="Int32" Nullable="false" />
           <Property Name="M12_Col_Monte_Minuti" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Col" Relationship="Self.FK_Col_Monte_Minuti_Col" FromRole="Col_Monte_Minuti" ToRole="Col" />
+          <Property Name="Monte_Minuti_Justification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Col_Note">
           <Key>
@@ -7043,6 +7045,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <EntitySetMapping Name="Col_Monte_Minuti">
             <EntityTypeMapping TypeName="PowerWebModel.Col_Monte_Minuti">
               <MappingFragment StoreEntitySet="Col_Monte_Minuti">
+                <ScalarProperty Name="Monte_Minuti_Justification" ColumnName="Monte_Minuti_Justification" />
                 <ScalarProperty Name="Col_Monte_Minuti_Id" ColumnName="Col_Monte_Minuti_Id" />
                 <ScalarProperty Name="Anno_Col_Monte_Minuti" ColumnName="Anno_Col_Monte_Minuti" />
                 <ScalarProperty Name="Col_Id" ColumnName="Col_Id" />

@@ -565,7 +565,7 @@
         AutoClosuresXMinuteEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede--> 
   
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
-  <c ID="CustomizationEnum.ExportStr" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
+  <c ID="CustomizationEnum.ExportStr" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
   <!--  AutoClosuresXMinuteEnum=0 Indica di non chiudere le timbrature in modo automatico
         AutoClosuresXMinuteEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede--> 
 		

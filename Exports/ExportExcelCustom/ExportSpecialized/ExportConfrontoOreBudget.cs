@@ -2325,7 +2325,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             #region Elaborazione degli orari non processati
 
             // per ogni orario non utilizzato viene generato corrispettivo oggetto di confronto
-            /*foreach (TimesheetModuleItem timesheet in dayTimesheets.Where(tsm => !usedTimesheetIds.Contains(tsm.ID)))
+            foreach (TimesheetModuleItem timesheet in dayTimesheets.Where(tsm => !usedTimesheetIds.Contains(tsm.ID)))
             {
                 // calcolo dell'id dell'altra entità rispetto a quella attualmente in processo
                 int otherEntityId = GetOtherEntityId(timesheet);
@@ -2353,7 +2353,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                                                         ? TimeSpan.Zero.Add(minutesToAdd.TimeOfDay)
                                                                                         : confrontationsByOtherEntity[otherEntityId].PrevisionalDuration.Value.Add(minutesToAdd.TimeOfDay);
                 }
-            }*/
+            }
 
             #endregion
 

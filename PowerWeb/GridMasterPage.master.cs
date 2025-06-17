@@ -1,6 +1,7 @@
 ﻿using Business;
 using Business.Repository;
 using Common;
+using DevExpress.Data;
 using DevExpress.Data.Filtering;
 using DevExpress.Utils;
 using DevExpress.Web.ASPxCallbackPanel;
@@ -614,6 +615,9 @@ namespace PowerWeb
                     DateTime meseCorrenteUltimoGgpiu1 = meseCorrenteUltimoGg.AddDays(1);
                     DateTime meseCorrentePrimoGg = CommonService.GetFirstMonthDay(currDate);
                     DateTime yesterday = CommonService.Yestarday(currDate);
+                    DateTime startOfYear = new DateTime(currDate.Year,1,1);
+                    DateTime startOfLastYear = new DateTime(currDate.Year - 1,1,1);
+                    DateTime endOfLastYear = new DateTime(currDate.Year - 1,12,31);
 
                     // calcolo in formato stringa delle date limite di mese corrente e mese precedente
                     var currMonthString = currDate.AddDays(1).ToString("yyyy-MM-dd");
@@ -624,7 +628,10 @@ namespace PowerWeb
                     var mesePrevUltimoGgString = mesePrevUltimoGg.ToString("yyyy-MM-dd");
                     var now = currDate.ToString("yyyy-MM-dd");
                     var ieri = yesterday.ToString("yyyy-MM-dd");
-                    var current = currDate.ToString("yy-MM-dd");
+                    var current = currDate.ToString("yyyy-MM-dd");
+                    var startYear = startOfYear.ToString("yyyy-MM-dd");
+                    var startLastYear = startOfLastYear.ToString("yyyy-MM-dd");
+                    var endLastYear = endOfLastYear.ToString("yyyy-MM-dd");
 
                     // calcolo del layout corrente
                     var currentGridLayout = currentLayout.Layout_DataGrid;
@@ -662,8 +669,20 @@ namespace PowerWeb
                         // romozione della data attuale e sostituzione con il mese precedente
                         currentGridLayout = currentGridLayout.Remove(dateIndex + 1, 10);
 
+                        if (nomeLayout.Contains("ANNO-CORRENTE"))
+                        {
+                            currentGridLayout = currentGridLayout.Insert(dateIndex + 1, startYear);
+                        }
+                        else if (nomeLayout.Contains("ANNO-PRECEDENTE")) 
+                        {
+                            currentGridLayout = currentGridLayout.Insert(dateIndex + 1, startLastYear);
+                        }
+                        else if (nomeLayout.Contains("CORRENTE-NO-OGGI")) 
+                        {
+                            currentGridLayout = currentGridLayout.Insert(dateIndex + 1, meseCorrentePrimoGgString);
+                        }
                         //controllo che all'interno della vista vi sia la stringa corrente o precedente
-                        if (nomeLayout.Contains("CORRENTE"))
+                        else if (nomeLayout.Contains("CORRENTE"))
                         {
                             currentGridLayout = currentGridLayout.Insert(dateIndex + 1, meseCorrentePrimoGgString); //prevMonthString);
                         }
@@ -743,7 +762,19 @@ namespace PowerWeb
                                 dateIndex = dataRegIndex + betweenIndex + dateIndex + 14;
                                 currentGridLayout = currentGridLayout.Remove(dateIndex + 1, 10);
 
-                                if (nomeLayout.Contains("CORRENTE"))
+                                if (nomeLayout.Contains("ANNO-CORRENTE"))
+                                {
+                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, now);
+                                }
+                                else if (nomeLayout.Contains("ANNO-PRECEDENTE")) 
+                                {
+                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, endLastYear);
+                                }
+                                else if (nomeLayout.Contains("CORRENTE-NO-OGGI"))
+                                {
+                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ieri);
+                                }
+                                else if (nomeLayout.Contains("CORRENTE"))
                                 {
                                     currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ultimoGiorno); //prevMonthString);
                                 }

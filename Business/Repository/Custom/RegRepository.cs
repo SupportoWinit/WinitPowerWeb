@@ -16,7 +16,9 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Xml.Linq;
+using Z.EntityFramework.Extensions;
 
 namespace Business.Repository.Custom
 {
@@ -29,6 +31,7 @@ namespace Business.Repository.Custom
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(Reg));
         private Reg _regStub = null;
+        private int elaborate2 = 1;
 
         private static Dictionary<Utenti, KeyValuePair<double, string>> _elaborateStatusDictionary = new Dictionary<Utenti, KeyValuePair<double, string>>();
 
@@ -305,6 +308,9 @@ namespace Business.Repository.Custom
             // inizializzazione dell'elenco di errori riscontrati durante l'elaborazione
             var errors = new List<KeyValuePair<string, string>>();
 
+            // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
+            RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
+
             #region 1. Rimozione delle registrazioni da non processare ed eventuale accoppiamento delle bloccate marcate
 
             // rimozione dalle registrazioni passate come parametro di tutte le reg non processabili
@@ -333,13 +339,12 @@ namespace Business.Repository.Custom
 
             // dalle registrazioni che si stanno processando si eliminano, se il modulo attività risulta abilitato,
             // tutte le timbrature generate automaticamente a chiusura delle attività
-            regs = DeleteAllActivitiesAutoClosures(regs, isToSaveChanges);
+            regs = DeleteAllActivitiesAutoClosures(regs,currentApplication, isToSaveChanges);
 
-            // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
-            RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
+            
             var tmpRegs = regs;
             //regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
-            regs = newAdjustFisRegByCol(regs.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg));
+            //regs = newAdjustFisRegByCol(regs.OrderBy(r => r.Registrazione_Data_Ora_Fis_Reg));
             //regs = tmpRegs;
             #endregion
 
@@ -386,7 +391,7 @@ namespace Business.Repository.Custom
                 _log.Info("Disaccoppiamento regs terminato.");
 
 
-                #endregion
+                #endregion          
 
                 #region 8. Abbinamento delle registrazioni di tipo e definizione dei passaggi
 
@@ -989,7 +994,12 @@ namespace Business.Repository.Custom
                 RepoManager.Tab_MessaggiRepo.InsertMessages(errors, currentApplication, FunctionMessageEnum.Elaborate, _elaborateUserId, _elaborateDateTime);
             }
 
-
+            //if (elaborate2 == 1) 
+            //{
+            //    elaborate2 = 0;
+            //    RepoManager.RegRepo.Elaborate(regs, fromDate, toDate);
+            //}     
+             
             // si segnala il termine dell'operazione a video
             ManageElaborateMessageDictionaries(100d, "Elaborazione terminata");
 
@@ -1129,7 +1139,7 @@ namespace Business.Repository.Custom
             if (regsToUpdate.Any())
             {
                 _log.Info(String.Format("Inizio bulk update di {0} regs", regs.Count));
-
+               
                 BulkUpdate(regsToUpdate);
 
                 _log.Info(String.Format("Terminato update di {0} regs", regsToUpdate.Count()));
@@ -2039,7 +2049,6 @@ namespace Business.Repository.Custom
             {
                 // calcolo della data massima presenti tra le registrazioni passate come parameto
                 DateTime regMaxDate = regs.Max(reg => reg.Registrazione_Data_Ora_Orig_Reg).Date;
-
                 // sono lette tutte le matricole portatili e fisse non disabilitate con data di associazione inferiore o uguale alla data massima da processare;
                 // le anagrafiche così recuperate sono ordinate in senso discendente per data abilitazione, di modo da avere le più recenti in cima alla lista
                 var pruCols = RepoManager.Pru_ColRepo.Find(pruCol => !pruCol.DisAbilitazione_Pru_Col, true)
@@ -2248,7 +2257,7 @@ namespace Business.Repository.Custom
 
                 // dalle registrazioni passate come parametro si tolgono le registrazioni dopo la data blocco, le rettifiche, le solo durata, le registrazioni bloccate
                 regs = regs.Where(reg => reg.Registrazione_Data_Ora_Fis_Reg >= blockDate && reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet
-                    /*&& reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration*/ &&
+                    && reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur &&
                     reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimeSheetManual &&
                     !reg.Registrazione_Bloccata).ToList();
             }
@@ -2460,13 +2469,13 @@ namespace Business.Repository.Custom
         /// <param name="regs">Le registrazioni da prendere in carico in processo da parte dell'elaborate.</param>
         /// <param name="saveChanges">se impostato a <c>true</c> salva le modifiche apportate al database.</param>
         /// <returns>L'elenco di registrazioni senza le cancellate (quelle generate automaticamente a chiusura delle causali)</returns>
-        private ICollection<Reg> DeleteAllActivitiesAutoClosures(ICollection<Reg> regs, bool saveChanges)
+        private ICollection<Reg> DeleteAllActivitiesAutoClosures(ICollection<Reg> regs, ApplicationMessageEnum mode, bool saveChanges)
         {
             // inzializzazione del valore di ritorno del metodo
             ICollection<Reg> returnRegs = regs;
 
             // si procede solamente se il modulo delle attività risulta correnttamente attivato
-            if (RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1)
+            if ((RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1) && mode == ApplicationMessageEnum.Elaborate)
             {
                 // se sono presenti delle registrazioni provenienti da causali nell'elenco passato come parametro
                 if (regs.Any(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData))
@@ -2475,9 +2484,9 @@ namespace Business.Repository.Custom
                     // referenziale
                     IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
                     var regsToUpdate = new List<Reg>();
-                    regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.RiferimentoRRN_Reg == reg.Reg_Id || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
-                    regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null;});
-                    Context.BulkUpdate(regsToUpdate);
+                    regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
+                    regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; });
+                    //Context.BulkUpdate(regsToUpdate);
 
                     // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
                     Context.BulkDelete(regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData));
@@ -3235,15 +3244,15 @@ namespace Business.Repository.Custom
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 && mode == Common.ApplicationMessageEnum.Elaborate)
             {
-                int minuti = int.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoClosures, "minuti"));
+                //int minuti = int.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoClosures, "minuti"));
                 // inizializzazione dell'elenco di registrazione nuove da aggiungere alle attualmente da processare
                 closures = new List<Reg>();
 
                 //vengono recuperate solo le registrazioni no passaggi, viaggi, attività...
                 IEnumerable<Reg> regsToClose = RepoManager.RegRepo.Find(reg => reg.Registrazione_Tipo_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
 
-                tmpCoupleCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "TmpCoupleCode");
-                string autoGeneratedDataStart = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "AutoGeneratedRegCustomData");
+                //tmpCoupleCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "TmpCoupleCode");
+                string autoGeneratedDataStart = "AutoGeneratedRegCustomData";
 
 
                 // inizializzazione delle configurazioni del presenti nella scheda parametri
@@ -3426,7 +3435,7 @@ namespace Business.Repository.Custom
                 closures = new List<Reg>();
 
                 //vengono recuperate solo le registrazioni no passaggi, viaggi, attività...
-                IEnumerable<Reg> regsToClose = RepoManager.RegRepo.Find(reg => reg.Registrazione_Tipo_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+                IEnumerable<Reg> regsToClose = RepoManager.RegRepo.Find(reg => reg.Registrazione_Tipo_Reg == 0 && reg.Registrazione_Stato_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
 
                 tmpCoupleCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "TmpCoupleCode");
                 string autoGeneratedDataStart = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "AutoGeneratedRegCustomData");
@@ -3526,6 +3535,10 @@ namespace Business.Repository.Custom
                                                     newReg.Col_Id = currentReg.Col_Id.Value;
                                                     newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(dataReg.Year, dataReg.Month,
                                                         dataReg.Day, dataReg.Hour, dataReg.Minute, dataReg.Second);
+                                                    newReg.Registrazione_Data_Ora_Orig_Reg = new DateTime(dataReg.Year, dataReg.Month,
+                                                        dataReg.Day, dataReg.Hour, dataReg.Minute, dataReg.Second);
+                                                    newReg.Registrazione_Data_Ora_Fig_Reg = new DateTime(dataReg.Year, dataReg.Month,
+                                                       dataReg.Day, dataReg.Hour, dataReg.Minute, dataReg.Second);
                                                     newReg.Data_Registrazione_Reg = DateTime.Now;
                                                     newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                                     newReg.Custom_Data_Reg = autoGeneratedDataStart;
@@ -4162,6 +4175,16 @@ namespace Business.Repository.Custom
                                     }
                                 }
                             }
+                        }
+                        if (reg == regs.Last()) 
+                        {
+                            if (reg1 != null) {
+                                returnList.Add(reg1);
+                            }
+                            if (reg2 != null) {
+                                returnList.Add(reg2);
+                            }
+                            returnList.Add(reg);
                         }
                     }
                 }
@@ -5805,6 +5828,10 @@ namespace Business.Repository.Custom
             DateTime dayDate = Convert.ToDateTime(newValues[CommonService.GetPropertyName(() => regVStub.Data_Reg)]).Date;
             //Riceve come Nuovo Valore di Data_Ora_Fis_E l'Ora New ma la Data Old 
             DateTime DateTimeEFis = Convert.ToDateTime(newValues[CommonService.GetPropertyName(() => regVStub.Data_Ora_Fis_E)]);
+            //if (oldRegE != null)
+            //{
+            //    DateTimeEFis = oldRegE.Registrazione_Data_Ora_Fis_Reg;
+            //}
             //Imposta nella Data_Ora_Fis_E la Data New
             DateTimeEFis = CommonService.ComputeDateTime(dayDate, DateTimeEFis);
 
@@ -8076,7 +8103,7 @@ namespace Business.Repository.Custom
 
                 // si calcola se la registrazione è un tag o meno;
                 // si tratta di una registrazione tag quando i valori di tipo direzione coordinate e direzione coordinate (utlimi due valori) sono vuoti
-                if (String.IsNullOrEmpty(splittedLine[8].Trim()) && String.IsNullOrEmpty(splittedLine[9].Trim()) || (splittedLine[8] == "U" || splittedLine[8] == "E") || String.IsNullOrEmpty(splittedLine[8].Trim()) && (splittedLine[9].Trim().Contains('*')))
+                if ((String.IsNullOrEmpty(splittedLine[8].Trim()) && String.IsNullOrEmpty(splittedLine[9].Trim()) || String.IsNullOrEmpty(splittedLine[9].Trim()) && String.IsNullOrEmpty(splittedLine[10].Trim())) || (splittedLine[8] == "U" || splittedLine[8] == "E") || String.IsNullOrEmpty(splittedLine[8].Trim()) && (splittedLine[9].Trim().Contains('*')))
                     IsTag = true;
                 else
                     IsTag = false;
@@ -8090,52 +8117,107 @@ namespace Business.Repository.Custom
                 else
                     CoordinateValue = splittedLine[1];
 
-                // i successivi 5 valori vanno a comporre la data/ora della registrazione
-                RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3])
-                    , Convert.ToInt32(splittedLine[4]), Convert.ToInt32(splittedLine[5]), Convert.ToInt32(splittedLine[6]), 0);
-
-                // il settimo valore indica se la registrazione corrente è abbinata ad un tag
-                IsTagReferenced = Convert.ToInt32(splittedLine[7]) == 1;
-
-                // impostazione del tipo sull'ottavo valore: se tag: tag; se 0: latitudine; se 1: longitudine
-                if (IsTag)
-                    LineType = GpsLineTypeEnum.Tag;
-                else
-                    LineType = Convert.ToInt32(splittedLine[8]) == 0 ? GpsLineTypeEnum.Latitude : GpsLineTypeEnum.Longitude;
-
-                // impostazione del tipo direzione: se tag: none; altrimenti ilv alore alla nona posizione
-                if (IsTag)
-                    CoordinatesType = GpsLineCoordinatesDirectionEnum.None;
-                else
+                //Provo a convertire la posizione 9 per controllare se sono presenti i secondi nel txt
+                if (int.TryParse(splittedLine[9], out int res) || Convert.ToInt32(splittedLine[8]) == 1)
                 {
-                    switch (splittedLine[9])
-                    {
-                        case "N":
-                            CoordinatesType = GpsLineCoordinatesDirectionEnum.North;
-                            break;
-                        case "S":
-                            CoordinatesType = GpsLineCoordinatesDirectionEnum.South;
-                            break;
-                        case "E":
-                            CoordinatesType = GpsLineCoordinatesDirectionEnum.East;
-                            break;
-                        case "O":
-                            CoordinatesType = GpsLineCoordinatesDirectionEnum.West;
-                            break;
-                        default:
-                            CoordinatesType = GpsLineCoordinatesDirectionEnum.None;
-                            break;
-                    }
+                    // i successivi 5 valori vanno a comporre la data/ora della registrazione
+                    RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3])
+                        , Convert.ToInt32(splittedLine[4]), Convert.ToInt32(splittedLine[5]), Convert.ToInt32(splittedLine[6]), Convert.ToInt32(splittedLine[7]));
 
-                    //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
-                    if (splittedLine.IsValidIndex(10) && !splittedLine[10].Contains('*'))
+                    // il settimo valore indica se la registrazione corrente è abbinata ad un tag
+                    IsTagReferenced = Convert.ToInt32(splittedLine[8]) == 1;
+
+                    // impostazione del tipo sull'ottavo valore: se tag: tag; se 0: latitudine; se 1: longitudine
+                    if (IsTag)
+                        LineType = GpsLineTypeEnum.Tag;
+                    else
+                        LineType = Convert.ToInt32(splittedLine[9]) == 0 ? GpsLineTypeEnum.Latitude : GpsLineTypeEnum.Longitude;
+
+                    // impostazione del tipo direzione: se tag: none; altrimenti ilv alore alla nona posizione
+                    if (IsTag)
+                        CoordinatesType = GpsLineCoordinatesDirectionEnum.None;
+                    else
                     {
-                        RegistrationDirection = splittedLine[10];
+                        switch (splittedLine[10])
+                        {
+                            case "N":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.North;
+                                break;
+                            case "S":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.South;
+                                break;
+                            case "E":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.East;
+                                break;
+                            case "O":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.West;
+                                break;
+                            default:
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.None;
+                                break;
+                        }
+
+                        //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
+                        if (splittedLine.IsValidIndex(11) && !splittedLine[11].Contains('*'))
+                        {
+                            RegistrationDirection = splittedLine[11];
+                        }
+                        //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
+                        if (splittedLine.IsValidIndex(12) && String.IsNullOrEmpty(splittedLine[12]))
+                        {
+                            //RegistrationDirection = splittedLine[10];
+                        }
                     }
-                    //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
-                    if (splittedLine.IsValidIndex(11) && String.IsNullOrEmpty(splittedLine[11]))
+                }
+                else 
+                {
+                    // i successivi 5 valori vanno a comporre la data/ora della registrazione
+                    RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3])
+                        , Convert.ToInt32(splittedLine[4]), Convert.ToInt32(splittedLine[5]), Convert.ToInt32(splittedLine[6]), 0);
+
+                    // il settimo valore indica se la registrazione corrente è abbinata ad un tag
+                    IsTagReferenced = Convert.ToInt32(splittedLine[7]) == 1;
+
+                    // impostazione del tipo sull'ottavo valore: se tag: tag; se 0: latitudine; se 1: longitudine
+                    if (IsTag)
+                        LineType = GpsLineTypeEnum.Tag;
+                    else
+                        LineType = Convert.ToInt32(splittedLine[8]) == 0 ? GpsLineTypeEnum.Latitude : GpsLineTypeEnum.Longitude;
+
+                    // impostazione del tipo direzione: se tag: none; altrimenti ilv alore alla nona posizione
+                    if (IsTag)
+                        CoordinatesType = GpsLineCoordinatesDirectionEnum.None;
+                    else
                     {
-                        //RegistrationDirection = splittedLine[10];
+                        switch (splittedLine[9])
+                        {
+                            case "N":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.North;
+                                break;
+                            case "S":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.South;
+                                break;
+                            case "E":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.East;
+                                break;
+                            case "O":
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.West;
+                                break;
+                            default:
+                                CoordinatesType = GpsLineCoordinatesDirectionEnum.None;
+                                break;
+                        }
+
+                        //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
+                        if (splittedLine.IsValidIndex(10) && !splittedLine[10].Contains('*'))
+                        {
+                            RegistrationDirection = splittedLine[10];
+                        }
+                        //Se non è nua registrazione tag, potrebbe avere l'informazione della direzione (E/U) - ClockApp
+                        if (splittedLine.IsValidIndex(11) && String.IsNullOrEmpty(splittedLine[11]))
+                        {
+                            //RegistrationDirection = splittedLine[10];
+                        }
                     }
                 }
             }
@@ -8270,24 +8352,47 @@ namespace Business.Repository.Custom
                 // popolamento dei dati di timbratura
                 DeviceCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(splittedLine[0], 10); // codice apparecchio
                 BadgeCode = CommonService.AggiungiSpaziASinistraSeStringaNumerica(splittedLine[1], 10); // codice del badge
-                RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3]),
+                if (int.TryParse(splittedLine[7], out int res))
+                {
+                    RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3]),
+                    Convert.ToInt32(splittedLine[4]), Convert.ToInt32(splittedLine[5]), Convert.ToInt32(splittedLine[6]), Convert.ToInt32(splittedLine[7])); // data e or timbratura
+                    if (regLine.Contains("[Motivazione]"))
+                    {
+                        Motivate = splittedLine[9].Split('=')[1];
+                    }
+
+
+                    if (euCustVersion == (int)ImportFlagEUEnum.Import)
+                    {
+                        //lunghezza uguale a 10 per registrazioni TAG e GPS con la selezione dell' entrata e dell'uscita
+                        if (splittedLine.Length == 11)
+                            RegistrationDirection = !String.IsNullOrEmpty(splittedLine[9].Trim()) ? splittedLine[9] : null;
+                        else
+                            RegistrationDirection = splittedLine.Length > 7 && !String.IsNullOrEmpty(splittedLine[8].Trim()) ? splittedLine[8] : null;
+                    }
+                }
+                else
+                {
+                    RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3]),
                     Convert.ToInt32(splittedLine[4]), Convert.ToInt32(splittedLine[5]), Convert.ToInt32(splittedLine[6]), 00); // data e or timbratura
-                RegistrationDirection = null; // direzione della timbratura
+                    if (regLine.Contains("[Motivazione]"))
+                    {
+                        Motivate = splittedLine[8].Split('=')[1];
+                    }
 
-                if (regLine.Contains("[Motivazione]"))
-                {
-                    Motivate = splittedLine[8].Split('=')[1];
+
+                    if (euCustVersion == (int)ImportFlagEUEnum.Import)
+                    {
+                        //lunghezza uguale a 10 per registrazioni TAG e GPS con la selezione dell' entrata e dell'uscita
+                        if (splittedLine.Length == 10)
+                            RegistrationDirection = !String.IsNullOrEmpty(splittedLine[8].Trim()) ? splittedLine[8] : null;
+                        else
+                            RegistrationDirection = splittedLine.Length > 6 && !String.IsNullOrEmpty(splittedLine[7].Trim()) ? splittedLine[7] : null;
+                    }
                 }
+                //RegistrationDirection = null; // direzione della timbratura
 
-
-                if (euCustVersion == (int)ImportFlagEUEnum.Import)
-                {
-                    //lunghezza uguale a 10 per registrazioni TAG e GPS con la selezione dell' entrata e dell'uscita
-                    if (splittedLine.Length == 10)
-                        RegistrationDirection = !String.IsNullOrEmpty(splittedLine[8].Trim()) ? splittedLine[8] : null;
-                    else
-                        RegistrationDirection = splittedLine.Length > 6 && !String.IsNullOrEmpty(splittedLine[7].Trim()) ? splittedLine[7] : null;
-                }
+                
                 // se la timbratura contiene informazioni aggiuntive
                 if (BusinessService.IsRegLineAdditionalInfo(splittedLine))
                 {

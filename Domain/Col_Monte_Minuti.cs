@@ -29,7 +29,9 @@ namespace Domain
         public int M10_Col_Monte_Minuti { get; set; }
         public int M11_Col_Monte_Minuti { get; set; }
         public int M12_Col_Monte_Minuti { get; set; }
-    
+        public string Monte_Minuti_Justification { get; set; }
+
+
         public virtual Col Col { get; set; }
     }
 }

@@ -131,7 +131,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 dailyRegs.Add(reg);
                             }
-                            daySum += reg.Durata_Fig.Value;
+                            if (reg.Durata_Fig != null) 
+                            {
+                                daySum += reg.Durata_Fig.Value;
+                            }
                         }
                         if (daySum > 0 && interventiCheck)
                         {

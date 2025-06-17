@@ -243,8 +243,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             if (reg.Durata_Fig != null)
                             {
+                                //Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == reg.Cant_Id);
                                 lastDurata += reg.Durata_Fig.Value;
                                 lastCant = reg.Cant_Desc;
+                                //lastAtt = cantiere.Note_Can;
                             }
                             if (totaleReg + 1 == list.Count() && lastAtt != "") {
                                 //recupero la lista delle attività

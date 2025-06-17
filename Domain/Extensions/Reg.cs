@@ -132,7 +132,7 @@ namespace Domain
             bool fruEquals = reg.Fru_Id == this.Fru_Id;
             bool pruEquals = reg.Pru_Id == this.Pru_Id;
 
-            bool dateEquals = reg.Registrazione_Data_Ora_Fis_Reg == this.Registrazione_Data_Ora_Fis_Reg;
+            bool dateEquals = reg.Registrazione_Data_Ora_Orig_Reg == this.Registrazione_Data_Ora_Orig_Reg;
 
             bool badgeEquals = reg.Registrazione_Badge_Originale == this.Registrazione_Badge_Originale;
 

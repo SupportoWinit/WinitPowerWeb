@@ -555,7 +555,7 @@ namespace PowerWeb.Modules
             }
             finally
             {
-                //RepoManager.ParamRepo.UnLockElaboration();
+                RepoManager.ParamRepo.UnLockElaboration();
             }
 
             BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione: Completata");

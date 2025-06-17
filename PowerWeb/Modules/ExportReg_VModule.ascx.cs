@@ -758,11 +758,27 @@ namespace PowerWeb.Modules
             }
             else
             {
-                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg.HasValue && regv.Data_Reg.Value.Month == selectedPeriodDate.Month &&
+                List<Reg_V> regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg.HasValue && regv.Data_Reg.Value.Month == selectedPeriodDate.Month &&
                 regv.Data_Reg.Value.Year == selectedPeriodDate.Year && regv.Col_Id.HasValue && regv.Cant_Id.HasValue &&
                 (allCols || SelectedColsId.Contains(regv.Col_Id.Value)) &&
-                (allCants || SelectedCantsId.Contains(regv.Cant_Id.Value))); //&&
-                                                                             //(allClis || SelectedClisId.Contains(regv.Cli_Id.Value))); ;
+                (allCants || SelectedCantsId.Contains(regv.Cant_Id.Value))).ToList(); //&&
+                                                                                      //(allClis || SelectedClisId.Contains(regv.Cli_Id.Value))); ;
+                if (!allCants) {
+                    List<Reg_V> tmpListRegVs = new List<Reg_V>();
+                    foreach (Reg_V reg in regs) {
+                        try
+                        {
+                            Reg_V tmpRegV = RepoManager.Reg_VRepo.Single(r => r.RiferimentoRRN_Att == reg.RegE);
+                            tmpListRegVs.Add(tmpRegV);
+                        }
+                        catch (Exception e) {
+                        }
+                    }
+                    regs.AddRange(tmpListRegVs);
+                }
+                return regs.AsQueryable();
+
+
             }
         }
 

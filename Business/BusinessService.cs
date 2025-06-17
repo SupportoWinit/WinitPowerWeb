@@ -3808,7 +3808,7 @@ namespace Business
 
             // la linea risulta in formato gps se il numero di elementi in essa contenuta separati da punto e virgola è superiore a quanto
             // configurato per il pattern della registrazione standard e non è una linea di info aggiuntive
-            return (splittedLine.Count() > 9 && !IsRegLineAdditionalInfoGps(splittedLine));
+            return (splittedLine.Count() > 10 && !IsRegLineAdditionalInfoGps(splittedLine));
         }
 
         /// <summary>
@@ -4152,7 +4152,7 @@ namespace Business
                 nocturnBoundMaxDayBefore = lastDayDeforeReg.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
 
                 //se il limite è superiore della prima timbratura della gioranta allora come inizio si prende il limite xche la prima timbratura appartiene al giorno prima
-                if (nocturnBoundMaxDayBefore >= firstDayReg.Registrazione_Data_Ora_Fis_Reg)
+                if (nocturneDuration.TotalMinutes < 720 && nocturnBoundMaxDayBefore >= firstDayReg.Registrazione_Data_Ora_Fis_Reg)
                 {
                     fromSearch = nocturnBoundMaxDayBefore;
                 }

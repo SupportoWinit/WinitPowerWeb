@@ -354,7 +354,7 @@ namespace Business.RegFileCreators
                                 {
                                     #region Reg con coordinate
 
-                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
                                         fluReg.CodiceFru,
                                         AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
                                         fluReg.Data.Year,
@@ -362,12 +362,13 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         TAG_REFERENCE,
                                         MARKER_LATITUDINE,
                                         "N"
                                     );
                                     regsToWrite.Add(regRowGpsNfc);
-                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10}",
                                         fluReg.CodiceFru,
                                         AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
                                         fluReg.Data.Year,
@@ -375,6 +376,7 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         TAG_REFERENCE,
                                         MARKER_LONGITUDINE,
                                         "E"
@@ -386,7 +388,7 @@ namespace Business.RegFileCreators
                                 {
                                     #region Reg senza coordinate
 
-                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
+                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
                                         fluReg.CodiceFru,
                                         fluReg.CodicePru,
                                         fluReg.Data.Year,
@@ -394,6 +396,7 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         TAG_REFERENCE,
                                         " "
                                     );
@@ -457,7 +460,7 @@ namespace Business.RegFileCreators
                                     {
                                         lastCoordinate = true;
 
-                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
                                         fluReg.CodiceFru,
                                         AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
                                         fluReg.Data.Year,
@@ -465,12 +468,13 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         TAG_REFERENCE,
                                         MARKER_LATITUDINE,
                                         "N"
                                         );
                                         lastLatitudeTxt = regRowGpsNfc;
-                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
                                             fluReg.CodiceFru,
                                             AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
                                             fluReg.Data.Year,
@@ -478,6 +482,7 @@ namespace Business.RegFileCreators
                                             fluReg.Data.Day.ToString("00"),
                                             fluReg.Data.Hour.ToString("00"),
                                             fluReg.Data.Minute.ToString("00"),
+                                            fluReg.Data.Second.ToString("00"),
                                             TAG_REFERENCE,
                                             MARKER_LONGITUDINE,
                                             "E"
@@ -486,7 +491,7 @@ namespace Business.RegFileCreators
                                     }
                                     else
                                     {
-                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
                                         fluReg.CodiceFru,
                                         AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
                                         fluReg.Data.Year,
@@ -494,12 +499,13 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         TAG_REFERENCE,
                                         MARKER_LATITUDINE,
                                         "N"
                                         );
                                         regsToWrite.Add(regRowGpsNfc);
-                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                        regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
                                             fluReg.CodiceFru,
                                             AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
                                             fluReg.Data.Year,
@@ -507,6 +513,7 @@ namespace Business.RegFileCreators
                                             fluReg.Data.Day.ToString("00"),
                                             fluReg.Data.Hour.ToString("00"),
                                             fluReg.Data.Minute.ToString("00"),
+                                            fluReg.Data.Second.ToString("00"),
                                             TAG_REFERENCE,
                                             MARKER_LONGITUDINE,
                                             "E"
@@ -518,7 +525,7 @@ namespace Business.RegFileCreators
                                 {
                                     #region Reg senza coordinate
 
-                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};",
+                                    regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
                                         fluReg.CodiceFru,
                                         fluReg.CodicePru,
                                         fluReg.Data.Year,
@@ -526,6 +533,7 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         TAG_REFERENCE,
                                         " "
                                     );
@@ -571,6 +579,104 @@ namespace Business.RegFileCreators
                                     regRowGpsNfc = "";
                                 }
                             }
+                            #endregion
+                        }
+                        else if (fluReg.NfcGps != null && (fluReg.NfcGps.StartsWith("WIN") || fluReg.NfcGps.StartsWith("CA"))) 
+                        {
+                            #region Creazione txt con registrazione NFC+GPS
+
+                                #region Reg senza coordinate
+
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};",
+                                    fluReg.CodiceFru,
+                                    fluReg.NfcGps,
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
+                                    TAG_REFERENCE,
+                                    " "
+                                );
+                                regsToWrite.Add(regRowGpsNfc);
+                                #endregion
+
+                                #region Reg con coordinate
+
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
+                                    fluReg.CodiceFru,
+                                    AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
+                                    TAG_REFERENCE,
+                                    MARKER_LATITUDINE,
+                                    "N"
+                                );
+                                regsToWrite.Add(regRowGpsNfc);
+                                regRowGpsNfc = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};",
+                                    fluReg.CodiceFru,
+                                    AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
+                                    TAG_REFERENCE,
+                                    MARKER_LONGITUDINE,
+                                    "E"
+                                );
+                                lastCoordinate = true;
+                                regsToWrite.Add(regRowGpsNfc);
+                                #endregion
+
+                                var noteLine = "";
+                                if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
+                                {
+                                    noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                                }
+                                else
+                                {
+                                    noteLine = FlutterAppStringFormatter.CreateNoteGpsLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                                }
+                                if (noteLine != "")
+                                {
+                                    regsToWrite.Add(noteLine);
+                                }
+                                String attivitaFInale = "";
+                                if (fluReg.Attivita.Contains(','))
+                                {
+                                    String[] att = fluReg.Attivita.Split(',');
+                                    attivitaFInale = att[0];
+                                }
+                                else
+                                {
+                                    attivitaFInale = fluReg.Attivita;
+                                }
+                                if (attivitaFInale == "none")
+                                {
+                                    attivitaFInale = "";
+                                }
+                                var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
+                                if (firstLine != "")
+                                {
+                                    regsToWrite.Add(firstLine);
+                                }
+                                var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
+                                if (activityLine != "")
+                                {
+                                    regsToWrite.Add(activityLine);
+                                }
+                                var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, attivitaFInale, fluReg.Data, fluReg.CodiceFru);
+                                if (pruCodeAtivity != null)
+                                {
+                                    regsToWrite.AddRange(pruCodeAtivity);
+                                }
                             #endregion
                         }
                         else if (fluReg.Cantiere != null && fluReg.Cantiere != "")
@@ -860,7 +966,7 @@ namespace Business.RegFileCreators
                             string regRow = "";
                             if ((string.IsNullOrEmpty(last.CodicePru) && last.Latitudine == 0 && last.Longitudine == 0) && (fluReg.Motivazione == "Pausa" && fluReg.Verso == "U"))
                             {
-                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
                                         last.CodiceFru,
                                         "PAUSA00001",
                                         last.Data.Year,
@@ -868,6 +974,7 @@ namespace Business.RegFileCreators
                                         last.Data.Day.ToString("00"),
                                         last.Data.Hour.ToString("00"),
                                         last.Data.Minute.ToString("00"),
+                                        last.Data.Second.ToString("00"),
                                         "E",
                                         "[Motivazione]=Pausa"
                                     );
@@ -900,10 +1007,14 @@ namespace Business.RegFileCreators
                                     verso = fluReg.Motivazione;
                                     fluReg.Motivazione = "";
                                 }
+                                else 
+                                {
+                                    verso = fluReg.Verso;    
+                                }
                                 #region Reg con coordinate
                                 if (fluReg.Latitudine < 0 && fluReg.Longitudine < 0)
                                 {
-                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
                                     fluReg.CodiceFru,
                                     AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(3, 1), 10),
                                     fluReg.Data.Year,
@@ -911,12 +1022,13 @@ namespace Business.RegFileCreators
                                     fluReg.Data.Day.ToString("00"),
                                     fluReg.Data.Hour.ToString("00"),
                                     fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
                                     NO_TAG_REFERENCE,
                                     MARKER_LATITUDINE,
                                     "N"
                                     );
                                     regsToWrite.Add(regRow);
-                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
                                         fluReg.CodiceFru,
                                         AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(3, 1), 10),
                                         fluReg.Data.Year,
@@ -924,6 +1036,7 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         NO_TAG_REFERENCE,
                                         MARKER_LONGITUDINE,
                                         "E"
@@ -931,20 +1044,21 @@ namespace Business.RegFileCreators
                                 }
                                 else
                                 {
-                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
-                                    fluReg.CodiceFru,
-                                    AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
-                                    fluReg.Data.Year,
-                                    fluReg.Data.Month.ToString("00"),
-                                    fluReg.Data.Day.ToString("00"),
-                                    fluReg.Data.Hour.ToString("00"),
-                                    fluReg.Data.Minute.ToString("00"),
-                                    NO_TAG_REFERENCE,
-                                    MARKER_LATITUDINE,
-                                    "N"
-                                );
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
+                                        fluReg.CodiceFru,
+                                        AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
+                                        NO_TAG_REFERENCE,
+                                        MARKER_LATITUDINE,
+                                        "N"
+                                    );
                                     regsToWrite.Add(regRow);
-                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};;",
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
                                         fluReg.CodiceFru,
                                         AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
                                         fluReg.Data.Year,
@@ -952,6 +1066,7 @@ namespace Business.RegFileCreators
                                         fluReg.Data.Day.ToString("00"),
                                         fluReg.Data.Hour.ToString("00"),
                                         fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
                                         NO_TAG_REFERENCE,
                                         MARKER_LONGITUDINE,
                                         "E"
@@ -968,11 +1083,15 @@ namespace Business.RegFileCreators
                                     verso = fluReg.Motivazione;
                                     fluReg.Motivazione = "";
                                 }
+                                else 
+                                {
+                                    verso = fluReg.Verso;
+                                }
                                 if (fluReg.Motivazione == "none")
                                 {
                                     fluReg.Motivazione = "";
                                 }
-                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
                                     fluReg.CodiceFru,
                                     fluReg.CodicePru,
                                     fluReg.Data.Year,
@@ -980,6 +1099,7 @@ namespace Business.RegFileCreators
                                     fluReg.Data.Day.ToString("00"),
                                     fluReg.Data.Hour.ToString("00"),
                                     fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
                                     verso,
                                     fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                                 );
@@ -987,7 +1107,7 @@ namespace Business.RegFileCreators
                             }
                             else if (string.IsNullOrEmpty(fluReg.CodicePru) && fluReg.Latitudine == 0 && fluReg.Longitudine == 0)
                             {
-                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
                                     fluReg.CodiceFru,
                                     "WINIT00001",
                                     fluReg.Data.Year,
@@ -995,6 +1115,7 @@ namespace Business.RegFileCreators
                                     fluReg.Data.Day.ToString("00"),
                                     fluReg.Data.Hour.ToString("00"),
                                     fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
                                     fluReg.Verso,
                                     fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                                 );
@@ -1051,8 +1172,6 @@ namespace Business.RegFileCreators
                         }
                     }
                 }
-               
-
             }
             //foreach (var fluReg in regsToOrder)
             //{
@@ -2017,8 +2136,8 @@ namespace Business.RegFileCreators
                 #region Reg senza coordinate
 
                 regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
-                    codiceFru,
                     codicePru,
+                    codiceFru,
                     Data.Year,
                     Data.Month.ToString("00"),
                     Data.Day.ToString("00"),

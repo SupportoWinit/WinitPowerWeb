@@ -2340,48 +2340,68 @@ namespace Business.Repository.Custom
                                     {
                                         if (regv.Durata_Fig != null && regv.Cant_Id != null)
                                         {
-                                            List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id.Value).ToList();
-                                            if (cantiere.First().Turno2_Can != null)
+                                            if (regv.Cant_Id == 42192)
                                             {
-                                                if (cantiere.First().Turno2_Can.Value > regv.Data_Ora_Fig_ETime.Value)
+                                                if (regv.Durata_Fig >= 240)
                                                 {
-                                                    durata += regv.Durata_Fig.Value;
-                                                    tmpDurata += regv.Durata_Fig.Value;
+                                                    // creo la registrazione con durata negativa in base al parametro presente nel cantiere
+                                                    TimeSpan roundingTime = new TimeSpan(0, 0, 0);
+                                                    Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, regv.Turno);
+                                                    if (tmp.Col_Id != null)
+                                                    {
+                                                        regsToAdd.Add(tmp);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                List<Cant> cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id.Value).ToList();
+                                                if (cantiere.First().Turno2_Can != null)
+                                                {
+                                                    if (cantiere.First().Turno2_Can.Value > regv.Data_Ora_Fig_ETime.Value)
+                                                    {
+                                                        durata += regv.Durata_Fig.Value;
+                                                        tmpDurata += regv.Durata_Fig.Value;
+                                                        if (currentTurno == "" && regv.Turno == "Coperture Serali")
+                                                        {
+                                                            currentTurno = "Coperture Serali";
+                                                        }
+                                                        if (inizio.Equals(new DateTime(1999, 12, 31)))
+                                                        {
+                                                            inizio = regv.Data_Ora_Fig_E.Value;
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
                                                     if (currentTurno == "" && regv.Turno == "Coperture Serali")
                                                     {
-                                                        currentTurno = "Coperture Serali";
+                                                        if (durata < regv.Durata_Fig.Value)
+                                                        {
+                                                            currentTurno = "Coperture Serali";
+                                                        }
                                                     }
                                                     if (inizio.Equals(new DateTime(1999, 12, 31)))
                                                     {
                                                         inizio = regv.Data_Ora_Fig_E.Value;
                                                     }
+                                                    durata += regv.Durata_Fig.Value;
+                                                    tmpDurata += regv.Durata_Fig.Value;
                                                 }
+                                                //List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id).ToList();
+                                                //if (cantieri.First().Importo1 != null)
+                                                //{
+                                                //    if (cantieri.First().Importo1 < arrot)
+                                                //    {
+                                                //        arrot = cantieri.First().Importo1.Value;
+                                                //        tmpcantId = regv.Cant_Id.Value;
+                                                //        if (tmpTurno == "")
+                                                //        {
+                                                //            tmpTurno = regv.Turno;
+                                                //        }
+                                                //    }
+                                                //}
                                             }
-                                            else {
-                                                durata += regv.Durata_Fig.Value;
-                                                tmpDurata += regv.Durata_Fig.Value;
-                                                if (currentTurno == "" && regv.Turno == "Coperture Serali")
-                                                {
-                                                    currentTurno = "Coperture Serali";
-                                                }
-                                                if (inizio.Equals(new DateTime(1999, 12, 31)))
-                                                {
-                                                    inizio = regv.Data_Ora_Fig_E.Value;
-                                                }
-                                            }  
-                                            //List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id).ToList();
-                                            //if (cantieri.First().Importo1 != null)
-                                            //{
-                                            //    if (cantieri.First().Importo1 < arrot)
-                                            //    {
-                                            //        arrot = cantieri.First().Importo1.Value;
-                                            //        tmpcantId = regv.Cant_Id.Value;
-                                            //        if (tmpTurno == "")
-                                            //        {
-                                            //            tmpTurno = regv.Turno;
-                                            //        }
-                                            //    }
-                                            //}
                                         }
                                     }
                                     if (tmpDurata > currentDurata)
@@ -2404,7 +2424,7 @@ namespace Business.Repository.Custom
                                 }
                                 if (durata >= 240)
                                 {
-                                    if (tmpTurno == "" || tmpcantId == 42192)
+                                    if (tmpTurno == "" || tmpcantId != 42192)
                                     {
                                         // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                         TimeSpan roundingTime = new TimeSpan(0, 0, 0);
@@ -3671,13 +3691,28 @@ namespace Business.Repository.Custom
             TimeSpan? afternoonExitLimitTollerance = GetEntryLimitTolleranceValue(col, cant);
 
             if (regE != null && regU != null) {
+                int tolleranza = 15;
+                if (regE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < midDay)
+                {
+                    if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Mattina.HasValue)
+                    {
+                        tolleranza = (int)RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Mattina.Value.TotalMinutes;
+                    }
+                }
+                else
+                {
+                    if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Pomeriggio.HasValue)
+                    {
+                        tolleranza = (int)RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Pomeriggio.Value.TotalMinutes;
+                    }
+                }
                 //recupero l'orario del cantiere
                 List<Tab_Orari> orario = RepoManager.Tab_OrariRepo.GetAll().Where(orr => orr.Tab_Orari_Tipo_Id == cant.Tab_Orari_Tipo_Id).ToList();
                 //Creo degli orari che siano 15 minuti prima e dopo le due timbrature
-                DateTime beforeE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -15, 0));
-                DateTime afterE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 15, 0));
-                DateTime beforeU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -15, 0));
-                DateTime afterU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, 15, 0));
+                DateTime beforeE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -tolleranza, 0));
+                DateTime afterE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, tolleranza, 0));
+                DateTime beforeU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -tolleranza, 0));
+                DateTime afterU = regU.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, tolleranza, 0));
                 TimeSpan tempE = new TimeSpan();
                 TimeSpan tempU = new TimeSpan();
                 double diffE = 5000;
@@ -6977,7 +7012,6 @@ namespace Business.Repository.Custom
                             }
 
                         }
-
                         //se ho dei responsabili E dai parametri è richiesta la gestione dei responsabili 
                         else if (allRespIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Resp) && PowerWebContext.Current.User.Liv_Utente < 10)
                         {
