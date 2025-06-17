@@ -213,7 +213,7 @@ namespace PowerWeb.Api
 
             mailBody += "</div>";
             //Invia le mail
-            errorMessage = CommonService.sendMail(/*RepoManager.ParamRepo.ParametersRow.CompanyEmail*/"dTezzon@winitsrl.it", "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
+            errorMessage = CommonService.sendMail(RepoManager.ParamRepo.ParametersRow.CompanyEmail, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
         
             return errorMessage;
         }

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using System.Xml.Linq;
+using Westwind.Utilities.Extensions;
 using Z.EntityFramework.Extensions;
 
 namespace Business.Repository.Custom
@@ -2474,28 +2475,60 @@ namespace Business.Repository.Custom
             // inzializzazione del valore di ritorno del metodo
             ICollection<Reg> returnRegs = regs;
 
-            // si procede solamente se il modulo delle attività risulta correnttamente attivato
-            if ((RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1) && mode == ApplicationMessageEnum.Elaborate)
+            if (mode == ApplicationMessageEnum.Elaborate)
             {
-                // se sono presenti delle registrazioni provenienti da causali nell'elenco passato come parametro
-                if (regs.Any(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData))
+                // si procede solamente se il modulo delle attività risulta correnttamente attivato
+                if (RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1)
                 {
-                    // si tolgono tutti i riferimenti alle registrazioni da cancellare dalle registrazioni ad esse abbinate per evitare errori di integrità
-                    // referenziale
-                    IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
-                    var regsToUpdate = new List<Reg>();
-                    regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
-                    regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; });
-                    //Context.BulkUpdate(regsToUpdate);
+                    // se sono presenti delle registrazioni provenienti da causali nell'elenco passato come parametro
+                    if (regs.Any(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData))
+                    {
+                        // si tolgono tutti i riferimenti alle registrazioni da cancellare dalle registrazioni ad esse abbinate per evitare errori di integrità
+                        // referenziale
+                        IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
+                        var regsToUpdate = new List<Reg>();
+                        regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
+                        regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
+                        //Context.BulkUpdate(regsToUpdate);
 
-                    // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
-                    Context.BulkDelete(regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData));
+                        // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
+                        Context.BulkDelete(regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData));
 
-                    // inoltre alla lista passata come parametro si procede a togliere 
-                    // le registrazioni cancellate dal database
-                    returnRegs = regs.Where(reg => reg.Custom_Data_Reg != Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
+                        // inoltre alla lista passata come parametro si procede a togliere 
+                        // le registrazioni cancellate dal database
+                        returnRegs = regs.Where(reg => reg.Custom_Data_Reg != Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
+                    }
                 }
-            }            
+            }
+            else if (mode == ApplicationMessageEnum.Import) 
+            {
+                // si procede solamente se il modulo delle attività risulta correnttamente attivato
+                if (RepoManager.ParamRepo.ParametersRow.Abilita_Att || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1)
+                {
+                    DateTime lastReg = regs.Last().Registrazione_Data_Ora_Fis_Reg.EndOfMonth();
+                    DateTime startOfMonth = new DateTime(lastReg.Year, lastReg.Month, 1);
+                    List<Reg> allRegsToDelete = RepoManager.RegRepo.GetAllQueryable(r => r.Registrazione_Data_Ora_Fis_Reg > startOfMonth && r.Registrazione_Data_Ora_Fis_Reg < lastReg).ToList();
+                    // se sono presenti delle registrazioni provenienti da causali nell'elenco passato come parametro
+                    if (allRegsToDelete.Any(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData))
+                    {
+                        // si tolgono tutti i riferimenti alle registrazioni da cancellare dalle registrazioni ad esse abbinate per evitare errori di integrità
+                        // referenziale
+                        IEnumerable<Reg> regsToDelete = allRegsToDelete.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
+                        var regsToUpdate = new List<Reg>();
+                        regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.RiferimentoRRN_Att == reg.Reg_Id)));
+                        regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
+                        Context.BulkUpdate(regsToUpdate);
+                
+                        // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
+                        Context.BulkDelete(allRegsToDelete.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData));
+                
+                        // inoltre alla lista passata come parametro si procede a togliere 
+                        // le registrazioni cancellate dal database
+                        returnRegs = regs.Where(reg => reg.Custom_Data_Reg != Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
+                    }
+                }
+            }
+                     
 
             // ritorno del valore calcolato dal metodo
             return returnRegs;
