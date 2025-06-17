@@ -339,3 +339,12 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /PowerWeb/FilesInput
+
+# File SVN
+
+*.svn/
+*.svn-base
+
+# Schema MDB
+
+*.mbd
