@@ -212,7 +212,8 @@ namespace Common
         LimitiXCol,
         UseEUDurationRounding,
         ShowDurationRoundingTimesheet,
-        ShowDelta
+        ShowDelta,
+        LimitPausaPranzo
     }
 
     public enum ClockAppsOperationEnum

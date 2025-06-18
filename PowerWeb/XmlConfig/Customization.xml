@@ -520,7 +520,7 @@
         TripFigHours = 1 Indica di usare le ore figurative-->
   
 		  <!-- ********************************************************RIMUOVE LA PAUSA GIORNALIERA DAL TOTALE GIORNALIERO*********************************************************-->
-  <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="0"/>
+  <c ID="CustomizationEnum.RimozionePausaPranzo" Des="Indice se rimuovere la pausa giornaliera dal totale" Value="1"/>
   <!--  RimozionePausaPranzo = 0 Indica di non rimuovere la pausa
         RimozionePausaPranzo = 1 Indica di rimuovere la pausa-->
 
@@ -569,9 +569,14 @@
   <!--  ExportStr=0 Indica di non chiudere le timbrature in modo automatico
         ExportStr=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
 
-  <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
-  <c ID="CustomizationEnum.ShowDelta" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  ShowDelta=0 Indica di non chiudere le timbrature in modo automatico
-        ShowDelta=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!-- ********************************************************MOSTRA DELTA SECONDO CONDIZIONI DETTATE DAL LIVELLO********************************************************-->
+  <c ID="CustomizationEnum.ShowDelta" Des="Indica se mostrare in base al delta e determinate specifiche" Value="1"/>
+  <!--  ShowDelta=0 Indica di mostrare il delta sempre
+        ShowDelta=1 Indica di imporre le condizioni sul mostrare il delta-->
+  
+  <!-- ********************************************************LIMITA LA CREAZIONE DELLA PAUSA PRANZO********************************************************-->
+  <c ID="CustomizationEnum.LimitPausaPranzo" Des="Indica se limitare la creazione della pausa pranzo in base al livello del collaboratore" Value="1"/>
+  <!--  LimitPausaPranzo=0 Indica di calcolare per tutti la pausa
+        LimitPausaPranzo=1 Indica di controllare il livello prima di calcolare la pausa-->
 
 </Customizations>

@@ -5720,7 +5720,31 @@ namespace Business.BusinessExtension
 
                     if (daysMinutes.ContainsKey(firstMonthDate.AddDays(-1 * i).Date))
                     {
-                        daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                        {
+                            daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        }
+                        else
+                        {
+                            Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                            if (collaboratore.Livello_Col == "1")
+                            {
+                                if (dayTotal <= 180)
+                                    daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                            else if (collaboratore.Livello_Col == "2")
+                            {
+                                if (collaboratore.Indennita_Trasporto_Col != null)
+                                {
+                                    if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                        daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                            }
+                            else 
+                            {
+                                daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                        }
                     }
                     startDate = startDate.AddDays(1);
                 }
@@ -5752,7 +5776,31 @@ namespace Business.BusinessExtension
 
                 if (daysMinutes.ContainsKey(processingDate))
                 {
-                    daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                    {
+                        daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    }
+                    else
+                    {
+                        Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                        if (collaboratore.Livello_Col == "1")
+                        {
+                            if (dayTotal <= 180)
+                                daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        }
+                        else if (collaboratore.Livello_Col == "2")
+                        {
+                            if (collaboratore.Indennita_Trasporto_Col != null)
+                            {
+                                if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                    daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                        }
+                        else 
+                        {
+                            daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        }
+                    }
                 }
 
                 processingDate = processingDate.AddDays(1);
@@ -5792,18 +5840,22 @@ namespace Business.BusinessExtension
                         else
                         {
                             Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
-                            if (collaboratore.Livello_Col == "1") 
+                            if (collaboratore.Livello_Col == "1")
                             {
-                                if (dayTotal <= 180) 
+                                if (dayTotal <= 180)
                                     daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
                             }
-                            else if(collaboratore.Livello_Col == "2")
+                            else if (collaboratore.Livello_Col == "2")
                             {
-                                if (collaboratore.Indennita_Trasporto_Col != null) 
-                                { 
-                                    if(dayTotal > collaboratore.Indennita_Trasporto_Col.Value)
+                                if (collaboratore.Indennita_Trasporto_Col != null)
+                                {
+                                    if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
                                         daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
                                 }
+                            }
+                            else
+                            {
+                                daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
                             }
                         }
                     }

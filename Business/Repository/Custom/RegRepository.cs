@@ -5791,20 +5791,43 @@ namespace Business.Repository.Custom
                 }
             }
             List<Tab_Decod> motivazioni = RepoManager.Tab_DecodRepo.GetAllQueryable(m => m.Decodifica_Tab == "Pausa").ToList();
-            if (arrot > 0) {
-                // popolamento dei dati della registrazione
-                newRounding.Col_Id = colId;
-                newRounding.Cant_Id = cantId;
-                //newRounding.CentroDiCosto_Id = centroDiCostoId;
-                newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
-                newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
-                newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
-                newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
-                newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
-                newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
-                newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);
-                newRounding.Turno = turno;
-                newRounding.Note_Reg = "Pausa";
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitPausaPranzo) == 0)
+            {
+                if (arrot > 0)
+                {
+                    // popolamento dei dati della registrazione
+                    newRounding.Col_Id = colId;
+                    newRounding.Cant_Id = cantId;
+                    //newRounding.CentroDiCosto_Id = centroDiCostoId;
+                    newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
+                    newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
+                    newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
+                    newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
+                    newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                    newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
+                    newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);
+                    newRounding.Turno = turno;
+                    newRounding.Note_Reg = "Pausa";
+                }
+            }
+            else if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitPausaPranzo) == 1)
+            {
+                if (arrot > 0 && collaboratori.First().Livello_Col == "2")
+                {
+                    // popolamento dei dati della registrazione
+                    newRounding.Col_Id = colId;
+                    newRounding.Cant_Id = cantId;
+                    //newRounding.CentroDiCosto_Id = centroDiCostoId;
+                    newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
+                    newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
+                    newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
+                    newRounding.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
+                    newRounding.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                    newRounding.Motivazione_Reg_Id = motivazioni.First().Tab_Decod_Id;
+                    newRounding.Rettifica_Durata = Convert.ToInt32((-1) * arrot);
+                    newRounding.Turno = turno;
+                    newRounding.Note_Reg = "Pausa";
+                }
             }
 
             // ritorno dell'arrotondamento generato
