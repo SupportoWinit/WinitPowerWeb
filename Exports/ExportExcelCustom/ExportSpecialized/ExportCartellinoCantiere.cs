@@ -7,16 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OfficeOpenXml.Style;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OfficeOpenXml;
+using System.IO;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
     class ExportCartellinoCantiere : ExcelToolBox
     {
-        private int rowIndex = 5;
+        private int rowIndex = 1;
         private int columnIndex = 1;
         private int worksheetIndex = 0;
 
@@ -66,13 +69,22 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             {
                 foreach (var col in cartellini)
                 {
-                    ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
-                    
+                    rowIndex = 1;
+                    var worksheet = ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
+                    byte[] companyLogo = RepoManager.ParamRepo.ParametersRow.CompanyLogo;
+                    Image image = null;
+                    if (companyLogo != null)
+                    {
+                        image = Image.FromStream(new MemoryStream(companyLogo));
+                    }
+                    var picture = worksheet.Drawings.AddPicture("Immagine 1", image);
+                    picture.SetSize(400, 100);
+
+                    picture.SetPosition(0, 0, 0, 0);
+
                     worksheetIndex++;
 
-                    rowIndex = 5;
-
-                    CellInsertValue(worksheetIndex, 1, 1, ExportDate.ToString("MMMM yyyy"), Common.ExcelInsertTypeEnum.Content);
+                    WriteTimesheetHeader();
 
                     WriteColName(col.Key);
 
@@ -100,6 +112,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             RangeUnion(worksheetIndex, 1, rowIndex, 5, rowIndex);
             RangeSetFontBold(worksheetIndex, 1, rowIndex, 5, rowIndex);
             CellInsertValue(worksheetIndex, 1, rowIndex++, col.CognomeNome_Col, Common.ExcelInsertTypeEnum.Content);
+        }
+
+        private void WriteTimesheetHeader()
+        {
+            RangeUnion(worksheetIndex, 2, rowIndex, 34, rowIndex + 4);
+            CellInsertValue(worksheetIndex, 2, 1, ExportDate.ToString("MMMM yyyy").ToUpper(), ExcelInsertTypeEnum.Content);
+            RangeSetFontBold(worksheetIndex, 2, rowIndex, 34, rowIndex + 4);
+            RangeSetTextVerticalAlignment(worksheetIndex, 2, rowIndex, 34, rowIndex + 4, ExcelVerticalAlignment.Center);
+            RangeSetTextHorizontalAlignment(worksheetIndex, 2, rowIndex, 34, rowIndex + 4, ExcelHorizontalAlignment.Center);
+
+            rowIndex += 5;
         }
         private void WriteColHeader()
         {

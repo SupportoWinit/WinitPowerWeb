@@ -5785,7 +5785,27 @@ namespace Business.BusinessExtension
 
                     if (daysMinutes.ContainsKey(lastMonthDate.AddDays(i).Date))
                     {
-                        daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                        {
+                            daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        }
+                        else
+                        {
+                            Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                            if (collaboratore.Livello_Col == "1") 
+                            {
+                                if (dayTotal <= 180) 
+                                    daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                            else if(collaboratore.Livello_Col == "2")
+                            {
+                                if (collaboratore.Indennita_Trasporto_Col != null) 
+                                { 
+                                    if(dayTotal > collaboratore.Indennita_Trasporto_Col.Value)
+                                        daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                            }
+                        }
                     }
 
                     endDate.AddDays(1);

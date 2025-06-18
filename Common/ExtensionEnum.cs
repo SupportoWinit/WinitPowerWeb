@@ -211,7 +211,8 @@ namespace Common
         MantainCoordinateModifiedRegs,
         LimitiXCol,
         UseEUDurationRounding,
-        ShowDurationRoundingTimesheet
+        ShowDurationRoundingTimesheet,
+        ShowDelta
     }
 
     public enum ClockAppsOperationEnum

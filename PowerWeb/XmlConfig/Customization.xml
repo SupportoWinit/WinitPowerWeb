@@ -561,12 +561,17 @@
 
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
   <c ID="CustomizationEnum.UseEUDurationRounding" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
-  <!--  AutoClosuresXMinuteEnum=0 Indica di non chiudere le timbrature in modo automatico
-        AutoClosuresXMinuteEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede--> 
+  <!--  UseEUDurationRounding=0 Indica di non chiudere le timbrature in modo automatico
+        UseEUDurationRounding=1 Indica di chiudere le timbrature in modo automatico sul cantire sede--> 
   
   <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
   <c ID="CustomizationEnum.ExportStr" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
-  <!--  AutoClosuresXMinuteEnum=0 Indica di non chiudere le timbrature in modo automatico
-        AutoClosuresXMinuteEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede--> 
-		
+  <!--  ExportStr=0 Indica di non chiudere le timbrature in modo automatico
+        ExportStr=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+
+  <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
+  <c ID="CustomizationEnum.ShowDelta" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="0"/>
+  <!--  ShowDelta=0 Indica di non chiudere le timbrature in modo automatico
+        ShowDelta=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+
 </Customizations>
