@@ -219,6 +219,7 @@
     <Compile Include="DataClasses\SupportClasses\ExportColCantInt.cs" />
     <Compile Include="DataClasses\SupportClasses\RegsByDay.cs" />
     <Compile Include="DataClasses\WebApiDataClasses\ExportJson.cs" />
+    <Compile Include="DataClasses\WebApiDataClasses\ExportOreForfait.cs" />
     <Compile Include="DataClasses\WebApiDataClasses\ReturnValues.cs" />
     <Compile Include="DataClasses\WebApiDataClasses\WinitPasswordChangeDTO.cs" />
     <Compile Include="ExternalImport\ExternalImportFactory.cs" />

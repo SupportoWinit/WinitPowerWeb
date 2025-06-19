@@ -52,7 +52,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                    col,
                                                    isByOtherEntity: true,
                                                    calculateWorkedHours: parameters.Cartellino_Visualizza_Ore,
-                                                   calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni,
+                                                   calculateJustifications: false,
                                                    calculateTrips: parameters.Cartellino_Visualizza_Viaggi,
                                                    calculateDelta: parameters.Cartellino_Visualizza_Delta,
                                                    calculateOrdStrTimesheet: false,
@@ -241,7 +241,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             RangeSetFontBold(worksheetIndex, 1, rowIndex, 1, rowIndex);
             CellInsertValue(worksheetIndex, 1, rowIndex, "Totale", Common.ExcelInsertTypeEnum.Content);
 
-            ILookup<int, Tuple<double, TimeSpan?, TimeSpan?>> lookupCartellini = cartellini["justification"].Where(cart => cart.Justification != "Totale").SelectMany(cart => cart.DaysHours).ToLookup(c => c.Key, x => x.Value); //Crea una lookup ( uguale ad un dictionary <int,list<...>> che quindi permette du raggruppare valori secondo la stessa chiave)
+            var cartTotale = cartellini["justification"].Where(cart => cart.Justification != "Ferie").ToList();
+            cartTotale = cartTotale.Where(cart => cart.Justification != "Malattia").ToList();
+
+            ILookup<int, Tuple<double, TimeSpan?, TimeSpan?>> lookupCartellini = cartTotale.Where(cart => cart.Justification != "Totale").SelectMany(cart => cart.DaysHours).ToLookup(c => c.Key, x => x.Value); //Crea una lookup ( uguale ad un dictionary <int,list<...>> che quindi permette du raggruppare valori secondo la stessa chiave)
 
             foreach (var dayHourList in lookupCartellini)
             {
@@ -254,7 +257,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             }
 
-            int totalHours = cartellini["justification"].Where(cart => cart.Justification != "Totale").Select(cart => cart.TotalMinutes).Sum();
+            int totalHours = cartTotale.Where(cart => cart.Justification != "Totale").Select(cart => cart.TotalMinutes).Sum();
 
             string formattedTotal = FromTotalMinutesToFormattedType((int)totalHours);
             RangeSetBorders(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
