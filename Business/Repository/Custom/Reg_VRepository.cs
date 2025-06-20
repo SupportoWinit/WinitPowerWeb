@@ -2949,7 +2949,7 @@ namespace Business.Repository.Custom
         /// <summary>
         /// Calcola e restituisce con i dati specificati le cofigurazioni specifiche del limite d'entrata.
         /// </summary>
-        /// <param name="cant">Il cantiere con cui calcolare la specifica configurazione.</param>
+        /// <param name="cant">Il cantiere con cui calcolare la specifica configurazione.</param>6
         /// <param name="col">Il collaboratore con cui calcolare la specifica configurazione.</param>
         /// <param name="date">La data di cui processare il limite d'entrata.</param>
         /// <param name="midDay">The mid day.</param>

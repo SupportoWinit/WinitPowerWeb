@@ -1764,7 +1764,7 @@
     <Compile Include="Api\DamageController.cs" />
     <Compile Include="Api\DeelayController.cs" />
     <Compile Include="Api\ExportCsvController.cs" />
-    <Compile Include="Api\ExportHour.cs" />
+    <Compile Include="Api\ExportHourController.cs" />
     <Compile Include="Api\FileUploaderController.cs" />
     <Compile Include="Api\ExportController.cs" />
     <Compile Include="Api\InsertRequestController.cs" />

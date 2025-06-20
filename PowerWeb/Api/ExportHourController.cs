@@ -16,7 +16,7 @@ using System.Web.Helpers;
 
 namespace PowerWeb.Api
 {
-    public class ExportHour : GenericApi
+    public class ExportHourController : GenericApi
     {
         /// <summary>
         /// Il nome del file utilizzato per effettuare i controlli di esecuzione esclusiva della web api
@@ -44,7 +44,7 @@ namespace PowerWeb.Api
                 {
                     // Per ogni cantiere ciclo il periodo richiesto
                     DateTime date = From;
-                    while (date > To) 
+                    while (date < To) 
                     {
                         string day = "";
                         if (date.Day < 10)
@@ -72,57 +72,63 @@ namespace PowerWeb.Api
                         //recupero le timbrature fisse ovvero quelle di Elya, di Fiammetta e le coperture serali
                         List<Reg_V> regElya = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratoreElya.Col_Id && r.Data_Reg.Value == date && r.Cant_Id == cantiere.Cant_Id).ToList();
                         List<Reg_V> regFiammetta = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratoreFiammetta.Col_Id && r.Data_Reg == date && r.Cant_Id == cantiere.Cant_Id).ToList();
-                        List<Reg_V> coperture = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Turno == "Coperture Serali" && r.Cant_Id == cantiere.Cant_Id).ToList();
-                        List<Reg_V> regPrimoGovernante = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == primoGovernante.Col_Id && r.Cant_Id == cantiere.Cant_Id).ToList();
+                        List<Reg_V> coperture = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Turno == "Coperture Serali" && r.Cant_Id == cantiere.Cant_Id && r.Data_Reg == date).ToList();
+                        List<Reg_V> regPrimoGovernante = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == primoGovernante.Col_Id && r.Cant_Id == cantiere.Cant_Id && r.Data_Reg == date).ToList();
                         int totale = 0;
                         foreach (var reg in regElya) 
                         {
-                            totale += reg.Durata_Fig.Value;
+                            if (reg.Durata_Fig != null)
+                                totale += reg.Durata_Fig.Value;
                         }
                         foreach (var reg in regFiammetta) 
                         {
-                            totale += reg.Durata_Fig.Value;
+                            if (reg.Durata_Fig != null)
+                                totale += reg.Durata_Fig.Value;
                         }
                         foreach (var reg in coperture) 
                         {
-                            totale += reg.Durata_Fig.Value;
+                            if (reg.Durata_Fig != null)
+                                totale += reg.Durata_Fig.Value;
                         }
                         // Controllo se il primo governante ha timbrature
                         if (regPrimoGovernante.Count() > 0)
                         {
                             foreach (var reg in regPrimoGovernante)
                             {
-                                totale += reg.Durata_Fig.Value;
+                                if (reg.Durata_Fig != null)
+                                    totale += reg.Durata_Fig.Value;
                             }
                         }
                         else 
                         {
                             // In caso non ne abbia recupero il secondo governante e relative timbrature
                             Col secondoGovernante = RepoManager.ColRepo.Single(c => c.Livello_Col == "2");
-                            List<Reg_V> regSecondoGovernante = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == secondoGovernante.Col_Id && r.Cant_Id == cantiere.Cant_Id).ToList();
+                            List<Reg_V> regSecondoGovernante = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == secondoGovernante.Col_Id && r.Cant_Id == cantiere.Cant_Id && r.Data_Reg == date).ToList();
                             if (regSecondoGovernante.Count() > 0)
                             {
                                 foreach (var reg in regSecondoGovernante)
                                 {
-                                    totale += reg.Durata_Fig.Value;
+                                    if (reg.Durata_Fig != null)
+                                        totale += reg.Durata_Fig.Value;
                                 }
                             }
                             else 
                             {
                                 // Se anche il secondo non ne ha recupero le timbrature del terazo
                                 Col terzoGovernante = RepoManager.ColRepo.Single(c => c.Livello_Col == "3");
-                                List<Reg_V> regTerzoGovernante = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == terzoGovernante.Col_Id && r.Cant_Id == cantiere.Cant_Id).ToList();
+                                List<Reg_V> regTerzoGovernante = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == terzoGovernante.Col_Id && r.Cant_Id == cantiere.Cant_Id && r.Data_Reg == date).ToList();
                                 foreach (var reg in regTerzoGovernante)
                                 {
-                                    totale += reg.Durata_Fig.Value;
+                                    if (reg.Durata_Fig != null)
+                                        totale += reg.Durata_Fig.Value;
                                 }
                             }
                         }
                         //Aggiungo 4 ore che sono una quantità standard
-                        totale += 4;
+                        totale += 240;
                         ExportOreForfait ore = new ExportOreForfait();
                         ore.codiceCantiere = cantiere.Codice_Gestionale_Can;
-                        ore.totaleOre = totale;
+                        ore.totaleOre = (double)totale/60;
                         ore.data = day;
                         returnList.Add(ore);
                         date = date.AddDays(1);
