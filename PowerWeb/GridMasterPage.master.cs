@@ -68,7 +68,7 @@ namespace PowerWeb
         public void HideAllMasterPageFeatures()
         {
             cmbLayout.Visible = false;
-            //btnDeleteLayout.Visible = false;
+            btnDeletePrintLayout.Visible = false;
             btnSaveLayout.Visible = false;
             btnSavePrintLayout.Visible = false;
             btnShowMap.Visible = false;
@@ -1033,9 +1033,13 @@ namespace PowerWeb
 
                 SetGridViewEditingMode();
             }
-            //if (PowerWebContext.Current.User.Codice_Utente != "WINIT")
-            //    btnDeletePrintLayout.Visible = false;
-            btnSavePrintLayout.Visible = false;
+
+            if (PowerWebContext.Current.User.Codice_Utente != "WINIT") 
+            {
+                btnDeleteLayout.Visible = false;
+                btnDeletePrintLayout.Visible = false;
+                btnSavePrintLayout.Visible = false;
+            }       
             List<Tab_Aut> livelli = RepoManager.Tab_AutRepo.GetAll().Where(user => user.Utenti_Id == PowerWebContext.Current.User.Utenti_Id).ToList();
             if (livelli.First().Del_Aut < 10) {
                 btnSaveLayout.Visible = false;
