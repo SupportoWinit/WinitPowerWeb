@@ -1041,6 +1041,7 @@ namespace PowerWeb
                 btnSavePrintLayout.Visible = false;
             }       
             List<Tab_Aut> livelli = RepoManager.Tab_AutRepo.GetAll().Where(user => user.Utenti_Id == PowerWebContext.Current.User.Utenti_Id).ToList();
+
             if (livelli.First().Del_Aut < 10) {
                 btnSaveLayout.Visible = false;
                 btnCustomizeColumns.Visible = false;

@@ -12,7 +12,7 @@ namespace Common.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -49,18 +49,7 @@ namespace Common.Properties {
                 return ((string)(this["Files_Input_Path"]));
             }
         }
-
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("~\\FilesOutput--CSV_TIMBRATURE\\")]
-        public string Files_Output_Csv_Path
-        {
-            get
-            {
-                return ((string)(this["Files_Output_Csv_Path"]));
-            }
-        }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("15")]
@@ -474,6 +463,15 @@ namespace Common.Properties {
         public string[] DeviceActivityBaseCodes {
             get {
                 return ((string[])(this["DeviceActivityBaseCodes"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FilesOutput\\")]
+        public string Files_Output_Csv_Path {
+            get {
+                return ((string)(this["Files_Output_Csv_Path"]));
             }
         }
     }

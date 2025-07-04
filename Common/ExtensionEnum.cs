@@ -213,7 +213,8 @@ namespace Common
         UseEUDurationRounding,
         ShowDurationRoundingTimesheet,
         ShowDelta,
-        LimitPausaPranzo
+        LimitPausaPranzo,
+        AutoClosuresAfterXEnum
     }
 
     public enum ClockAppsOperationEnum

@@ -132,7 +132,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             days.ForEach(day =>
             {
-                CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, day.Day, Common.ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, day.DayOfWeek.ToString() + ""+day.Day, Common.ExcelInsertTypeEnum.Content);
                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, "0");
                 RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, Color.LightGray, fillStyle);
@@ -187,15 +187,20 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, "M", Common.ExcelInsertTypeEnum.Content);
                             }
-                            else if ((int)cartRow.DaysHours[dayNumber].Item1 > 0 && justificationDec == "FERIE") 
+                            else if ((int)cartRow.DaysHours[dayNumber].Item1 > 0 && justificationDec == "FERIE")
                             {
                                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, "F", Common.ExcelInsertTypeEnum.Content);
                             }
-                            else
+                            else if ((int)cartRow.DaysHours[dayNumber].Item1 > 0)
                             {
                                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, valueToPrint, Common.ExcelInsertTypeEnum.Content);
+                            }
+                            else 
+                            {
+                                RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, "", Common.ExcelInsertTypeEnum.Content);
                             }
                         }
 

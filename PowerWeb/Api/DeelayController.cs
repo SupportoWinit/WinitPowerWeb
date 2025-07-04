@@ -39,6 +39,7 @@ namespace PowerWeb.Api
             _log.InfoFormat("Inizio controllo ritardi delle {0}", today.DayOfWeek.ToString());
             HttpStatusCode ritorno = HttpStatusCode.OK;
             List<Cant> cantieriRitardo = new List<Cant>();
+            List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
             bool inviaMailRitardi = false;
             //creo una lista in cui inseriro i vari tipi di orario
             List<Tab_Orari_Tipo> orari = new List<Tab_Orari_Tipo>();
@@ -51,13 +52,15 @@ namespace PowerWeb.Api
                 bool valido = false;
                 Tab_Orari_Tipo orario = RepoManager.Tab_OrariTipoRepo.Single(or => or.Tab_Orari_Tipo_Id == cantiere.Tab_Orari_Tipo_Id);
                 Tab_Orari orarioFinale = new Tab_Orari();
+                Tab_Orari orarioFinalePom = new Tab_Orari();
                 //recupero l'orario del cantieri raggruppando per data così da utilizzare l'ultimo in ordine cronologico
-                var listaOrari = RepoManager.Tab_OrariRepo.GetAllQueryable(or => or.Tab_Orari_Tipo_Id == orario.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).ToList();
+                var listaOrari = RepoManager.Tab_OrariRepo.GetAllQueryable(or => or.Tab_Orari_Tipo_Id == orario.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).OrderBy(or => or.Key).ToList();
                 foreach (var singoloOrario in listaOrari.Last()) {
                     switch (today.DayOfWeek)
                     {
                         case DayOfWeek.Monday:
-                            if (singoloOrario.G1) {
+                            if (singoloOrario.G1) 
+                            {
                                 orarioFinale = singoloOrario;
                                 valido = true;
                             } 
@@ -115,14 +118,13 @@ namespace PowerWeb.Api
                     //se non trovo timbrature vuol dire che nessuno ha timbrato sul cantiere
                     if (cantRegs.Count() == 0)
                     {
-                        TimeSpan oraLimite = today.TimeOfDay;
-                        List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
+                        TimeSpan oraLimite = orarioFinale.Ora_E.Value;
                         //calcolo l'ora limite partendo dall'orario e aggiungo la tolleranza
                         if (cantiere.Tolleranza_Limite_Entrata_Cant != null)
                         {
                             oraLimite = orarioFinale.Ora_E.Value.Add(cantiere.Tolleranza_Limite_Entrata_Cant.Value);
                         }
-                        else
+                        else if (parametri.First().Tolleranza_Limite_Entrata != null)
                         {
                             oraLimite = orarioFinale.Ora_E.Value.Add(parametri.First().Tolleranza_Limite_Entrata.Value);
                         }
@@ -146,14 +148,13 @@ namespace PowerWeb.Api
                         }
                     }
                     else {
-                        TimeSpan oraLimite = today.TimeOfDay;
-                        List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
+                        TimeSpan oraLimite = orarioFinale.Ora_E.Value;
                         //calcolo l'ora limite partendo dall'orario e aggiungo la tolleranza
                         if (cantiere.Tolleranza_Limite_Entrata_Cant != null)
                         {
                             oraLimite = orarioFinale.Ora_E.Value.Add(cantiere.Tolleranza_Limite_Entrata_Cant.Value);
                         }
-                        else
+                        else if (parametri.First().Tolleranza_Limite_Entrata != null)
                         {
                             oraLimite = orarioFinale.Ora_E.Value.Add(parametri.First().Tolleranza_Limite_Entrata.Value);
                         }

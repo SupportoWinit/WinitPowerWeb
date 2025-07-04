@@ -1713,6 +1713,7 @@ namespace Business.Repository.Custom
             {
                 regsDic.Add(reg.Reg_Id, reg);
             }
+            List<Reg> toUpdateRegs = new List<Reg>();
 
             List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
 
@@ -1749,23 +1750,25 @@ namespace Business.Repository.Custom
                                     {
                                         List<Reg_V> currentRegVs = cantGroup.OrderBy(regV => regV.Data_Ora_Fis_E).ToList();
 
-                                        try
+                                        foreach (Reg_V currentRegV in currentRegVs)
                                         {
-                                            foreach (Reg_V currentRegV in currentRegVs)
+                                            try
                                             {
-                                                Reg currentRegE = regsDic[currentRegV.RegE];
+                                                Reg currentRegE = RepoManager.RegRepo.Single(r => r.Reg_Id == currentRegV.RegE);
                                                 Reg currentRegU = null;
                                                 if (currentRegV.RegU.HasValue)
                                                 {
-                                                    currentRegU = regsDic[currentRegV.RegU.Value];
+                                                    currentRegU = RepoManager.RegRepo.Single(r => r.Reg_Id == currentRegV.RegU.Value);
                                                 }
 
                                                 if (currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay >= limite)
                                                 {
                                                     currentRegE.Turno = "Coperture Serali";
+                                                    toUpdateRegs.Add(currentRegE);
                                                     if (currentRegU != null)
                                                     {
                                                         currentRegU.Turno = "Coperture Serali";
+                                                        toUpdateRegs.Add(currentRegU);
                                                     }
                                                 }
                                                 else
@@ -1781,17 +1784,21 @@ namespace Business.Repository.Custom
                                                             if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeE/*&& (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeU && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < afterU)*/)
                                                             {
                                                                 currentRegE.Turno = "Coperture Serali";
+                                                                toUpdateRegs.Add(currentRegE);
                                                                 if (currentRegU != null)
                                                                 {
                                                                     currentRegU.Turno = "Coperture Serali";
+                                                                    toUpdateRegs.Add(currentRegU);
                                                                 }
                                                             }
                                                             else
                                                             {
                                                                 currentRegE.Turno = "";
+                                                                toUpdateRegs.Add(currentRegE);
                                                                 if (currentRegU != null)
                                                                 {
                                                                     currentRegU.Turno = "";
+                                                                    toUpdateRegs.Add(currentRegU);
                                                                 }
                                                             }
                                                         }
@@ -1799,14 +1806,15 @@ namespace Business.Repository.Custom
                                                     else
                                                     {
                                                         currentRegE.Turno = "";
+                                                        toUpdateRegs.Add(currentRegE);
                                                         if (currentRegU != null)
                                                         {
                                                             currentRegU.Turno = "";
+                                                            toUpdateRegs.Add(currentRegU);
                                                         }
                                                     }
                                                 }
                                             }
-                                        }
                                         catch (KeyNotFoundException ke)
                                         {
                                             _log.Error(String.Format("Chiave non trovata nella gestione coperture serali del collaboratore {0}, Errore: {1}", currentCol.Col_Id, ke.Message));
@@ -1816,12 +1824,14 @@ namespace Business.Repository.Custom
                                             _log.Error(String.Format("Errore nell'elaborazione delle coperture serali: {0}", e.Message));
                                         }
                                     }
+                                        
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                RepoManager.RegRepo.Context.BulkUpdate(regs);
+                RepoManager.RegRepo.Context.BulkUpdate(toUpdateRegs);
             }
             return errors;
         }
@@ -1931,6 +1941,8 @@ namespace Business.Repository.Custom
 
             // Recupero il metodo di arrotondamento dalla scheda parametri
             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
+
+            RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration && reg.Note_Reg == "Pausa").ToList());
 
             // Filtra le regv selezionando solo quelle di tipo arrotondamento per durata e cancella direttamente
             RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration && reg.Motivazione_Reg_Id == motivazioni.First().Tab_Decod_Id).ToList());
@@ -2220,6 +2232,9 @@ namespace Business.Repository.Custom
 
                             foreach (var colDateGroup in regsByColDate)
                             {
+                                //inizio spunti per nuovo metodo pausa
+                                //bool substract = true; variabile per verificare se si ha già arrotondato la giornata
+                                //se va arrotondata sarà da vedere che problemi da modificare timbrature già esistenti e non aggiungerne di nuove con durata negativa
                                 int tmpcantId = 0;
                                 double arrot = 100;
                                 int durata = 0;
@@ -3483,7 +3498,7 @@ namespace Business.Repository.Custom
             if (RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Usa_Orario && col.Tab_Orari_Tipo_Id.HasValue)
             {
                 // calcolo del piano di dettaglio per il giorno/collaboratore
-                List<Tuple<int, TimeSpan, TimeSpan>> dayColPlanDetail = RepoManager.Tab_OrariRepo.GetDayPlanDetail(date, col.Col_Id);
+                List<Tuple<int, TimeSpan, TimeSpan>> dayColPlanDetail = RepoManager.Tab_OrariRepo.GetDayPlanDetailCant(date, col.Col_Id, cant.Cant_Id);
 
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AllColLimitiByOrario) == 0) {
                     // se sono presenti dei piani con entrata e uscita per piano collaboratore
@@ -7270,7 +7285,7 @@ namespace Business.Repository.Custom
                         var timespan = entity.Data_Ora_Fis_U - entity.Data_Ora_Fis_E;
 
                         //se è attiva la personalizzazione di chiususra delle timbrature sulla sede
-                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1)
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
                         {
                             //viene controllato che la durata non sia negativa ma può essere 0
                             if (timespan == null || timespan < new TimeSpan(0, 0, 0))

@@ -651,13 +651,13 @@
                                                     CssClass="layoutSelector" ShowImageInEditBox="true" AutoPostBack="false" DropDownStyle="DropDown">
                                                     <ClientSideEvents SelectedIndexChanged="cmbPrintLayout_OnSelectedIndexChanged" />
                                                 </dx:ASPxComboBox>
-                                                <dx:ASPxButton ID="btnSavePrintLayout" runat="server" CssClass="layoutSelector" AutoPostBack="False"
-                                                    ClientInstanceName="btnSavePrintLayout">
-                                                    <ClientSideEvents Click="function(s, e) {cpPrintLayout.PerformCallback('save');}" />
-                                                    <Image Url="~/Icons/Save/Save.png">
-                                                    </Image>
-                                                </dx:ASPxButton>
                                             </div>
+                                            <dx:ASPxButton ID="btnSavePrintLayout" runat="server" CssClass="layoutSelector" AutoPostBack="False"
+                                                ClientInstanceName="btnSavePrintLayout">
+                                                <ClientSideEvents Click="function(s, e) {cpPrintLayout.PerformCallback('save');}" />
+                                                <Image Url="~/Icons/Save/Save.png">
+                                                </Image>
+                                            </dx:ASPxButton>
                                             <dx:ASPxButton UseSubmitBehavior="false" ID="btnDeletePrintLayout" runat="server" CssClass="layoutSelector "
                                                     AutoPostBack="false" ClientInstanceName="btnDeletePrintLayout" OnCustomJSProperties="btnDeletePrintLayout_OnCustomJSProperties">
                                                     <ClientSideEvents Click="function(s, e) {DisplayJConfirm('Power', btnDeleteLayout.cpMessage, function (r) { if(r){cpPrintLayout.PerformCallback('delete'); }});}" />

@@ -1061,6 +1061,10 @@ namespace PowerWeb.Modules
                     returnList.Add(reg);
                 }
             }
+            foreach (var reg in regsToProcess.Where(r => r.Registrazione_Tipo_Reg != 0)) 
+            {
+                returnList.Add(reg);
+            }
             return returnList;
         }
 
