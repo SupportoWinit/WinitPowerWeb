@@ -1950,6 +1950,23 @@ namespace Business.Repository.Custom
             return errors;
         }
 
+        public List<KeyValuePair<String, String>> DeleteNewPausaPranzo(IEnumerable<Reg> regs)
+        {
+            // Lista che conteerrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà gli arrotondamenti da aggiungere a db
+            List<Reg> roundingsToAdd = new List<Reg>();
+
+            // Recupero il metodo di arrotondamento dalla scheda parametri
+            RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
+
+            List<Reg> regConPausa =regs.Where(r => r.Registrazione_Tipo_Reg == 0 && r.Rettifica_Durata != null).ToList();
+
+            regConPausa.ForEach(reg => { reg.Rettifica_Durata = 0; });
+
+            return errors;
+        }
+
         /// <summary>
         /// Effettua l'arrotondamento sulle registrazioni specificate.
         /// </summary>
@@ -2290,6 +2307,73 @@ namespace Business.Repository.Custom
                 {
                     // salvataggio nel database delle rettifiche
                     RepoManager.RegRepo.Add(regsToAdd, true);
+                }
+
+                //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+                //BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+            }
+            return errors;
+        }
+
+        public List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs)
+        {
+            // Lista che conterrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà le timbrature da aggiornare a db
+            List<Reg> regsToUpdate = new List<Reg>();
+
+            List<Reg_V> filteredRegVs = new List<Reg_V>();
+            List<Tab_Decod> pausa = RepoManager.Tab_DecodRepo.GetAllQueryable(p => p.Decodifica_Tab == "Pausa").ToList();
+            // Filtra le regv selezionando solo quelle 'lavorative' (ore e viaggi)
+            filteredRegVs = regVs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None)).ToList();
+            // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
+            if (filteredRegVs.Count() > 0)
+            {
+                // Raggruppa le registrazioni per collaboratore
+                var regsByCol = filteredRegVs.GroupBy(reg => reg.Col_Id).ToList();
+
+                double totalCol = regsByCol.Count();
+
+                foreach (var colGroup in regsByCol)
+                {
+                    var currColId = colGroup.Key.HasValue ? colGroup.Key : -1;
+
+                    if (currColId != -1)
+                    {
+                        Col currentCol = RepoManager.ColRepo.SingleOrDefault(col => col.Col_Id == currColId);
+
+                        if (currentCol != default(Col))
+                        {
+                            // Raggruppa le registrazioni per data (giorno)
+                            var regsByColDate = colGroup.GroupBy(reg => reg.Data_Reg).ToList();
+
+                            foreach (var colDateGroup in regsByColDate)
+                            {
+                                if (colDateGroup.Count() == 1) 
+                                {
+                                    foreach(Reg_V reg in colDateGroup)
+                                    {
+                                        Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == reg.Cant_Id);
+                                        if (cantiere.Importo1 != null && cantiere.Importo10 != null)
+                                        {
+                                            if (reg.Durata_Fig.Value > cantiere.Importo10.Value)
+                                            {
+                                                Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                regsToUpdate.Add(regE);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // se al termine del ciclo sono state generate delle rettifiche allora si procede alla loro scrittura nel database
+                if (regsToUpdate.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    RepoManager.RegRepo.Update(regsToUpdate, true);
                 }
 
                 //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");

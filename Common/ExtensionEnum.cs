@@ -214,7 +214,8 @@ namespace Common
         ShowDurationRoundingTimesheet,
         ShowDelta,
         LimitPausaPranzo,
-        AutoClosuresAfterXEnum
+        AutoClosuresAfterXEnum,
+        NewPausaPranzo
     }
 
     public enum ClockAppsOperationEnum

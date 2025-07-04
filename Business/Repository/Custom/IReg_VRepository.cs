@@ -23,11 +23,15 @@ namespace Business.Repository.Custom
 
         List<KeyValuePair<String, String>> PausaPranzo(IEnumerable<Reg_V> regVs);
 
+        List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs);
+
         List<KeyValuePair<String, String>> PausaPranzoKomplett(IEnumerable<Reg_V> regVs);
 
         List<KeyValuePair<String, String>> DeleteDurationRounding(IEnumerable<Reg> regVs);
 
         List<KeyValuePair<String, String>> DeletePausaPranzo(IEnumerable<Reg> regVs);
+
+        List<KeyValuePair<String, String>> DeleteNewPausaPranzo(IEnumerable<Reg> regVs);
 
         List<KeyValuePair<String, String>> CheckOverlaps(IEnumerable<Reg_V> regvs, bool isOnLine = false);
 

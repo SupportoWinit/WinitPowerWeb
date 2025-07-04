@@ -810,7 +810,27 @@ namespace Business.Repository.Custom
                         }
                         #endregion
 
-                        #region 11.8 Rigenerazione viaggi in caso di modifica komplett
+                        #region 11.8 Nuova metodologia per creazione pausa
+
+                        //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NewPausaPranzo) == 1)
+                        {
+                            //regs = DeleteCopertureSerali(regs, isToSaveChanges);
+
+                            // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
+                            RepoManager.Reg_VRepo.DeleteNewPausaPranzo(tmpRegs);
+                            regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+                            var roundingRegVs1 = regVs.ToList();
+                            // Recupera i viaggi appena creati  
+                            var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
+                                                regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
+
+                            roundingRegVs1.AddRange(tripsRegvs1);
+                            errors.AddRange(RepoManager.Reg_VRepo.NewPausaPranzo(roundingRegVs1));
+                        }
+                        #endregion
+
+                        #region 11.9 Rigenerazione viaggi in caso di modifica komplett
 
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1 && currentApplication == ApplicationMessageEnum.Elaborate)
                         {
@@ -3675,8 +3695,7 @@ namespace Business.Repository.Custom
                     DateTime toArrot = new DateTime(now.Year, now.Month, now.Day, cantiere.Turno9_Can.Value.Hours, cantiere.Turno9_Can.Value.Minutes, cantiere.Turno9_Can.Value.Seconds);
                     if (now > toArrot) 
                     {
-                        regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > startOfDay && r.Registrazione_Data_Ora_Fis_Reg < fromArrot)).ToList());
-                        //regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
+                        regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
                     }    
                 }
 
@@ -3695,6 +3714,10 @@ namespace Business.Repository.Custom
                         //viene presa la singola registrazione del giorno per il collaboratore specifico
                         foreach (var reg in regsByColDate)
                         {
+                            //Vado a recuperare i valori del cantiere per poter confrontare l'ora
+                            Cant can = RepoManager.CantRepo.Single(c => c.Cant_Id == reg.Cant_Id);
+                            DateTime confReg = new DateTime(reg.Registrazione_Data_Ora_Fis_Reg.Year,reg.Registrazione_Data_Ora_Fis_Reg.Month,reg.Registrazione_Data_Ora_Fis_Reg.Day,can.Turno8_Can.Value.Hours,can.Turno8_Can.Value.Minutes,can.Turno8_Can.Value.Seconds);
+
                             // caricamento della registrazione successiva a quella proveniente da timbratura
                             int currentRegPosition = index;
 
@@ -3740,7 +3763,7 @@ namespace Business.Repository.Custom
                                     //se è richiesta la chiusura
                                     if (!doNotClose)
                                     {
-                                        if (currentReg.Registrazione_Stato_Reg != 1)
+                                        if (currentReg.Registrazione_Stato_Reg != 1 && currentReg.Registrazione_Data_Ora_Fis_Reg < confReg)
                                         {
                                             // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
                                             Reg newReg = Init();
@@ -3784,7 +3807,7 @@ namespace Business.Repository.Custom
                                     // si procede alla generazione della chiusura solamente se i cantieri della registrazione attuale è una sede e la successiva no
                                     if (currentRegCant != default(Cant))
                                     {
-                                        if (currentReg.Registrazione_Stato_Reg != 1)
+                                        if (currentReg.Registrazione_Stato_Reg != 1 && currentReg.Registrazione_Data_Ora_Fis_Reg < confReg)
                                         {
                                             // generazione di una nuova reg a chiusura con i dati d'entrata tranne l'uscita
                                             Reg newReg = Init();
