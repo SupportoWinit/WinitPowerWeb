@@ -1962,7 +1962,9 @@ namespace Business.Repository.Custom
 
             List<Reg> regConPausa =regs.Where(r => r.Registrazione_Tipo_Reg == 0 && r.Rettifica_Durata != null).ToList();
 
-            regConPausa.ForEach(reg => { reg.Rettifica_Durata = 0; });
+            regConPausa.ForEach(reg => { reg.Rettifica_Durata = 0; reg.Note_Reg = ""; });
+
+            RepoManager.RegRepo.BulkUpdate(regConPausa);
 
             return errors;
         }
@@ -2360,6 +2362,7 @@ namespace Business.Repository.Custom
                                             {
                                                 Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
                                                 regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
                                                 regsToUpdate.Add(regE);
                                             }
                                         }
