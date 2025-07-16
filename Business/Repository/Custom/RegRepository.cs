@@ -3278,7 +3278,7 @@ namespace Business.Repository.Custom
                             }
                         }
                     }
-            }
+                }
 
                 if (closures.Count != 0)
                 {
@@ -3779,7 +3779,7 @@ namespace Business.Repository.Custom
                                             newReg.Flag_EU_Reg = "";
                                             newReg.Cant = currentReg.Cant;
                                             //imposto una stringa per capire in fase di eliminazione quali timbrature sono autochiusure
-                                            //newReg.Custom_Data_Reg = "ActivityAutoClosure";
+                                            newReg.Custom_Data_Reg = "ActivityAutoClosure";
                                             newReg.Note_Reg = "ActivityAutoClosure";
                                             newReg.Registrazione_Badge_Originale = currentReg.Registrazione_Badge_Originale;
                                             newReg.ParentReg = currentReg;

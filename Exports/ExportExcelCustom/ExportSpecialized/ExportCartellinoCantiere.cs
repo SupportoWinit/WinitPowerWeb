@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OfficeOpenXml;
 using System.IO;
+using static Business.MDBSchema.PowerMDBDataSet;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -67,7 +68,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             if (cartellini.Any())
             {
-                foreach (var col in cartellini)
+                foreach (var col in cartellini.OrderBy(c => c.Key.Cognome_Col))
                 {
                     rowIndex = 1;
                     var worksheet = ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
@@ -97,10 +98,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     rowIndex += 2;
 
                 }
-
+                ExcelWorkbook.Workbook.FullCalcOnLoad = true;
                 foreach (var worksheet in ExcelWorkbook.Workbook.Worksheets)
                 {
-                    worksheet.Cells.AutoFitColumns();
+                    //worksheet.Cells.AutoFitColumns();
                 }
                 //ExcelWorkbook.Workbook.Worksheets[1].Cells.AutoFitColumns();
             }
@@ -109,7 +110,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         private void WriteColName(Col col)
         {
-            RangeUnion(worksheetIndex, 1, rowIndex, 5, rowIndex);
             RangeSetFontBold(worksheetIndex, 1, rowIndex, 5, rowIndex);
             CellInsertValue(worksheetIndex, 1, rowIndex++, col.CognomeNome_Col, Common.ExcelInsertTypeEnum.Content);
         }
@@ -132,10 +132,41 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             days.ForEach(day =>
             {
-                CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, day.DayOfWeek.ToString() + ""+day.Day, Common.ExcelInsertTypeEnum.Content);
+                string giorno = "";
+                switch (day.DayOfWeek) 
+                {
+                    case DayOfWeek.Monday:
+                        giorno = "Lun";
+                        break;
+                    case DayOfWeek.Tuesday:
+                        giorno = "Mar";
+                        break;
+                    case DayOfWeek.Wednesday:
+                        giorno = "Mer";
+                        break;
+                    case DayOfWeek.Thursday:
+                        giorno = "Gio";
+                        break;
+                    case DayOfWeek.Friday:
+                        giorno = "Ven";
+                        break;
+                    case DayOfWeek.Saturday:
+                        giorno = "Sab";
+                        break;
+                    case DayOfWeek.Sunday:
+                        giorno = "Dom";
+                        break;
+                }
+                CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex - 1, day.Day, Common.ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex - 1, day.Day + 1, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex - 1, day.Day + 1, rowIndex - 1, "0");
+                RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex - 1, day.Day + 1, rowIndex - 1, Color.LightGray, fillStyle);
+
+                CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex,giorno, Common.ExcelInsertTypeEnum.Content);
                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetValueFormat(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, "0");
                 RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, Color.LightGray, fillStyle);
+                ColumnsSetWidth(worksheetIndex, columnIndex + 1, day.Day + 1, 6.7);
 
                 if (day.DayOfWeek == DayOfWeek.Sunday)
                     RangeSetFontColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.Red);
@@ -146,12 +177,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "Totale", Common.ExcelInsertTypeEnum.Content);
             RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
             RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1, 8);
 
             columnIndex++;
 
             CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "Tot. Giorni", Common.ExcelInsertTypeEnum.Content);
             RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
             RangeSetBackgroundColor(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, Color.LightGray, fillStyle);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 1, columnIndex + 1,10.46);
+            RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 20);
 
             columnIndex = 1;
 
@@ -160,7 +194,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private void WriteColTimesheet(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
 
-            foreach (var cantCartellino in cartellini["justification"].OrderBy(c => c.CantDesc).GroupBy(c => c.CantMnemonic + " " + c.CantDesc).ToList())
+            foreach (var cantCartellino in cartellini["justification"].OrderByDescending(c => c.CantMnemonic).GroupBy(c => c.CantMnemonic + " " + c.CantDesc).ToList())
             {
                 //RangeSetFontBold(1, 1, rowIndex, 1, rowIndex);
                 //CellInsertValue(1, 1, rowIndex++, cantCartellino.Key, Common.ExcelInsertTypeEnum.Content);
@@ -176,12 +210,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     if (justificationDec != "TOTALE")
                     {
+                        RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 30);
+                        ColumnsSetWidth(worksheetIndex,1,1,43);
                         CellInsertValue(worksheetIndex, 1, rowIndex, justificationDec, Common.ExcelInsertTypeEnum.Content);
 
                         foreach (var day in Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)))
                         {
                             var dayNumber = day.Day;
-                            string valueToPrint = FromTotalMinutesToFormattedType((int)cartRow.DaysHours[dayNumber].Item1);
+                            string valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)cartRow.DaysHours[dayNumber].Item1);
                             if ((int)cartRow.DaysHours[dayNumber].Item1 > 0 && justificationDec == "MALATTIA")
                             {
                                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -200,8 +236,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             else 
                             {
                                 RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                                CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, "", Common.ExcelInsertTypeEnum.Content);
+                                CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, "-", Common.ExcelInsertTypeEnum.Content);
                             }
+                            RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex,ExcelHorizontalAlignment.Center);
+                            RangeSetTextVerticalAlignment(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, ExcelVerticalAlignment.Center);
                         }
 
                         string totalHours = FromTotalMinutesToFormattedType(cartRow.TotalMinutes);
@@ -229,6 +267,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                             CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.TotalDays, Common.ExcelInsertTypeEnum.Content);
                         }
+                        RangeSetTextHorizontalAlignment(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, ExcelHorizontalAlignment.Center);
+                        RangeSetTextVerticalAlignment(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, ExcelVerticalAlignment.Center);
+
+                        RangeSetTextHorizontalAlignment(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, ExcelHorizontalAlignment.Center);
+                        RangeSetTextVerticalAlignment(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, ExcelVerticalAlignment.Center);
                     }
                     else
                     {
@@ -260,19 +303,20 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 string valueToPrint = FromTotalMinutesToFormattedType((int)sommaGiornaliera);
                 CellInsertValue(worksheetIndex, dayHourList.Key + 1, rowIndex, valueToPrint, Common.ExcelInsertTypeEnum.Content);
 
+                RangeSetTextHorizontalAlignment(worksheetIndex, dayHourList.Key + 1, rowIndex, dayHourList.Key + 1, rowIndex, ExcelHorizontalAlignment.Center);
+                RangeSetTextVerticalAlignment(worksheetIndex, dayHourList.Key + 1, rowIndex, dayHourList.Key + 1, rowIndex, ExcelVerticalAlignment.Center);
+
             }
 
             int totalHours = cartTotale.Where(cart => cart.Justification != "Totale").Select(cart => cart.TotalMinutes).Sum();
 
             string formattedTotal = FromTotalMinutesToFormattedType((int)totalHours);
+            RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 30);
             RangeSetBorders(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
             CellInsertValue(worksheetIndex, lookupCartellini.Count + 2, rowIndex, formattedTotal, Common.ExcelInsertTypeEnum.Content);
-
+            RangeSetTextHorizontalAlignment(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, ExcelHorizontalAlignment.Center);
+            RangeSetTextVerticalAlignment(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, ExcelVerticalAlignment.Center);
             rowIndex++;
-
         }
-
-
-
     }
 }

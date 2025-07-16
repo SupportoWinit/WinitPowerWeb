@@ -115,6 +115,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoDipendentiStrutture.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinariTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportDailyHour.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportExcelADP.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\Export06.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\Export17.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportHoursReport.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportManutentori.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportMovitrento.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportOrdStr.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportPerFatture.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportPulizieCivile.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportRegSemplice.cs" />

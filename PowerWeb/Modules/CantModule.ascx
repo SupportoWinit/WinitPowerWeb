@@ -8,7 +8,7 @@
 <%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxUploadControl" TagPrefix="dx" %>
 <%@ Register Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.ASPxTimer" TagPrefix="dx" %>
 
-<script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol"></script>
+<script type="text/javascript" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script type="text/javascript">
     //#region --------------- Gestione CASCADE----------------------------------------
@@ -80,6 +80,82 @@
     var bingMap = null;
     var searchManager = null;
     var isFirstTimeRequest = true;
+
+    var map;
+    var marker;
+
+    function newinitMap() {
+        // Distruggi mappa precedente se esiste
+        if (typeof map !== "undefined" && map.remove) {
+            map.remove();
+        }
+
+        var tryInitMap = function (attemptsLeft) {
+            var container = document.getElementById('bingMap');
+            if (!container || container.clientHeight === 0 || container.clientWidth === 0) {
+                if (attemptsLeft > 0) {
+                    setTimeout(function () {
+                        tryInitMap(attemptsLeft - 1);
+                    }, 200); // Aspetta 200ms e riprova
+                } else {
+                    console.warn("Map container still not ready after retries.");
+                }
+                return;
+            }
+
+            // Ottieni coordinate dal grid
+            var currentGrid = ASPxClientGridView.Cast(grid);
+            var currentLat = currentGrid.GetEditValue("LatitudineGps_Can");
+            var currentLon = currentGrid.GetEditValue("LongitudineGps_Can");
+            if (currentLat && currentLon)
+            {
+                currentLat = parseFloat(currentLat.replace(",", "."));
+                currentLon = parseFloat(currentLon.replace(",", "."));
+            }
+            
+            var initialLatLng = [currentLat || 45.4642, currentLon || 9.1900];
+
+            // Inizializza la mappa
+            map = L.map('bingMap').setView(initialLatLng, 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            // Icona marker
+            delete L.Icon.Default.prototype._getIconUrl;
+            L.Icon.Default.mergeOptions({
+                iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+            });
+
+            marker = L.marker(initialLatLng, { draggable: true }).addTo(map);
+
+            marker.on('dragend', function (e) {
+                var latLng = e.target.getLatLng();
+                updateCoordinates(latLng.lat, latLng.lng);
+            });
+
+            updateCoordinates(initialLatLng[0], initialLatLng[1]);
+
+            // Dopo aver creato tutto, ricalcola dimensione
+            map.invalidateSize();
+        };
+
+        // Avvia tentativi di init (5 tentativi x 200ms = 1s massimo)
+        tryInitMap(5);
+    }
+
+    function updateCoordinates(lat, lon) {
+        // Converte in stringa con virgola (come nel tuo codice Bing)
+        var latString = lat.toString().replace(".", ",");
+        var lonString = lon.toString().replace(".", ",");
+
+        var currentGrid = ASPxClientGridView.Cast(grid); // Assicurati che 'grid' sia il nome corretto
+        currentGrid.SetEditValue("LatitudineGps_Can", latString);
+        currentGrid.SetEditValue("LongitudineGps_Can", lonString);
+    }
 
     function loadMap() {
         isFirstTimeRequest = true;
@@ -923,11 +999,11 @@
     </Items>
 </dx:ASPxFormLayout>
 
-<dx:ASPxPopupControl ID="pcShowMap" runat="server" Height="400px" LoadContentViaCallback="OnPageLoad"
-    Width="600px" HeaderText="Map popup" ClientSideEvents-Shown="loadMap" PopupElementID="btnShowMap" CloseAction="OuterMouseClick" ShowCloseButton="false">
+<dx:ASPxPopupControl ID="pcShowMap" runat="server" Height="400px"
+    Width="600px" HeaderText="Map popup" ClientSideEvents-Shown="newinitMap" PopupElementID="btnShowMap" CloseAction="OuterMouseClick" ShowCloseButton="false">
     <ContentCollection>
         <dx:PopupControlContentControl>
-            <div id='bingMap' style="position: relative; width: 640px; height: 400px;"></div>
+            <div id='bingMap' style="position: relative; width: 100%; height: 400px;"></div>
         </dx:PopupControlContentControl>
     </ContentCollection>
 </dx:ASPxPopupControl>

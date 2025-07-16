@@ -995,10 +995,10 @@ namespace Business.RegFileCreators
                                     regsToWrite.AddRange(pruCodeAtivity1);
                                 }
                             }
-                            if (fluReg.Motivazione == "Pausa" && fluReg.Verso == "E" && (temp.Latitudine != 0 && temp.Longitudine != 0 && !string.IsNullOrEmpty(temp.Latitudine.ToString())))
-                            {
-                                fluReg.Data = fluReg.Data.Add(new TimeSpan(0, -1, 0));
-                            }
+                            //if (fluReg.Motivazione == "Pausa" && fluReg.Verso == "E" && (temp.Latitudine != 0 && temp.Longitudine != 0 && !string.IsNullOrEmpty(temp.Latitudine.ToString())))
+                            //{
+                            //    fluReg.Data = fluReg.Data.Add(new TimeSpan(0, -1, 0));
+                            //}
                             if (fluReg.Latitudine != 0 && fluReg.Longitudine != 0 && !string.IsNullOrEmpty(fluReg.Latitudine.ToString()))
                             {
                                 string verso = "";

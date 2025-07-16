@@ -25,6 +25,7 @@
     <link href="~/Styles/jquery.alerts.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/Content/dx.common.css" />
     <link rel="stylesheet" type="text/css" href="/Content/dx.carmine.compact.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src='DX.ashx?jsfile=Scripts/jquery-2.2.3.min.js'></script>

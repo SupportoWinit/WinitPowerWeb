@@ -2290,14 +2290,18 @@ namespace Business.Repository.Custom
                                         }
                                     }
                                 }
-                                Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == tmpcantId);
-                                if (tmpTurno == "" && durata >= cantiere.Importo10.Value) {
-                                    // creo la registrazione con durata negativa in base al parametro presente nel cantiere
-                                    TimeSpan roundingTime = new TimeSpan(0, 0, 0);
-                                    Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
-                                    if (tmp.Col_Id != null)
+                                if (tmpcantId != 0) 
+                                {
+                                    Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == tmpcantId);
+                                    if (tmpTurno == "" && durata >= cantiere.Importo10.Value)
                                     {
-                                        regsToAdd.Add(tmp);
+                                        // creo la registrazione con durata negativa in base al parametro presente nel cantiere
+                                        TimeSpan roundingTime = new TimeSpan(0, 0, 0);
+                                        Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                        if (tmp.Col_Id != null)
+                                        {
+                                            regsToAdd.Add(tmp);
+                                        }
                                     }
                                 }
                             }
