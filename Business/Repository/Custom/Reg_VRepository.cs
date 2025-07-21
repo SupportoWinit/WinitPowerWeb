@@ -13,6 +13,7 @@ using DevExpress.XtraRichEdit.Import.Html;
 using DevExpress.XtraSpellChecker.Parser;
 using Domain;
 using log4net;
+using Newtonsoft.Json.Linq;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
@@ -21,6 +22,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Westwind.Utilities.Extensions;
@@ -4968,7 +4970,7 @@ namespace Business.Repository.Custom
                             //Tratta le Regv per Collaboratore/Data_Ora Entrata
                             foreach (var currentTripsByColByDate in tripsByColByDate)
                             {
-                                if (paramTripHours != (int)FlagTripHoursParamEnum.None)
+                                 if (paramTripHours != (int)FlagTripHoursParamEnum.None)
                                 //nel caso in cui il Flag della tab PARAM abiliti i Viaggi (<> 0)
                                 {
                                     //Ordina le Regv per Collaboratore/Data-Ora Entrata                                                                                              
@@ -5722,10 +5724,12 @@ namespace Business.Repository.Custom
                                         CommonService.Nz(cantU.Cap_Can, String.Empty) != String.Empty &&
                                         CommonService.Nz(cantU.Luogo_Can, String.Empty) != String.Empty)
                                     {
+                                        var service = new CalcoloPercorsoService();
+                                        var result = Task.Run(() => service.CalcolaPercorsoAsync(newStartRequest.Latitude, newStartRequest.Longitude, newEndRequest.Latitude, newEndRequest.Longitude)).Result;
                                         //Calcolo rotta tra i due punti
                                         Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
 
-                                        if (routeResult != null)
+                                        if (result.DistanzaKm > 0)
                                         //Se è riuscito a Calcolare con BING i KM e la Durata del Viaggio allora crea il REcord della TAB_DISTANZA con Tipo = "G"
                                         {
 
@@ -5747,8 +5751,8 @@ namespace Business.Repository.Custom
                                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                                            Minuti_Tab_Dist = minuti,
+                                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
                                                         };
                                                     }
                                                     else if (cantiereU.First().Note_Can == "2" || cantiereE.First().Note_Can == "2")
@@ -5760,8 +5764,8 @@ namespace Business.Repository.Custom
                                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                                            Minuti_Tab_Dist = minuti,
+                                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
                                                         };
                                                     }
                                                     else {
@@ -5771,8 +5775,8 @@ namespace Business.Repository.Custom
                                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                                            Minuti_Tab_Dist = minuti,
+                                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
                                                         };
                                                     }
                                                 }
@@ -5782,8 +5786,8 @@ namespace Business.Repository.Custom
                                                         Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                         Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                         Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                        KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                                        Minuti_Tab_Dist = (int)routeResult.TravelDuration / 60,
+                                                        KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                        Minuti_Tab_Dist = (int)result.DurataMinuti,
                                                     };
                                                 }
                                                 var errorTab_DistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
@@ -6286,21 +6290,23 @@ namespace Business.Repository.Custom
                                     CommonService.Nz(currentCol.Domicilio_Cap_Col, String.Empty) != String.Empty &&
                                     CommonService.Nz(currentCol.Domicilio_Luogo_Col, String.Empty) != String.Empty)
                                 {
-
+                                    
+                                    var service = new CalcoloPercorsoService();
+                                    var result = Task.Run(() => service.CalcolaPercorsoAsync(newStartRequest.Latitude, newStartRequest.Longitude, newEndRequest.Latitude, newEndRequest.Longitude)).Result;
                                     // calcolo del percorso tra partenza e arrivo da Bing
                                     Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
 
 
                                     // se bing è riuscito a calcolare i Km e la durate del viaggio allora si crea il corrispettivo record nella tabella distanze con tipo "G"
-                                    if (routeResult != null)
+                                    if (result.DistanzaKm > 0)
                                     {
                                         distRow = new Tab_Dist()
                                         {
                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", currentCant.Luogo_Can, currentCant.Indirizzo_Can, currentCant.Cap_Can),
                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", currentCol.Domicilio_Luogo_Col, currentCol.Domicilio_Indirizzo_Col, currentCol.Domicilio_Cap_Col),
                                             Tab_Decod_Id = tdCant.Tab_Decod_Id,
-                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                            Minuti_Tab_Dist = Convert.ToInt32((routeResult.TravelDuration / 60)),
+                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                            Minuti_Tab_Dist = Convert.ToInt32((result.DurataMinuti / 60)),
                                         };
 
                                         var errorTabDistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
@@ -6580,7 +6586,8 @@ namespace Business.Repository.Custom
                                     CommonService.Nz(cant.Cap_Can, String.Empty) != String.Empty &&
                                     CommonService.Nz(cant.Luogo_Can, String.Empty) != String.Empty)
                                 {
-
+                                    var service = new CalcoloPercorsoService();
+                                    var result = Task.Run(() => service.CalcolaPercorsoAsync(startGeocodeResult.Latitude, startGeocodeResult.Longitude, endGeocodeResult.Latitude, endGeocodeResult.Longitude)).Result;
                                     // calcolo del percorso tra partenza e arrivo da Bing
                                     Route routeResult = BusinessService.GetRoute(new Coordinate[] { startGeocodeResult, endGeocodeResult });
 
@@ -6594,8 +6601,8 @@ namespace Business.Repository.Custom
                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", sedeCant.Luogo_Can, sedeCant.Indirizzo_Can, sedeCant.Cap_Can),
                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cant.Luogo_Can, cant.Indirizzo_Can, cant.Cap_Can),
                                             Tab_Decod_Id = tdCant.Tab_Decod_Id,
-                                            KM_Tab_Dist = (decimal)routeResult.TravelDistance,
-                                            Minuti_Tab_Dist = Convert.ToInt32(routeResult.TravelDuration / 60),
+                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                            Minuti_Tab_Dist = Convert.ToInt32(result.DurataMinuti),
                                         };
 
                                         var errorTabDistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);

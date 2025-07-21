@@ -518,7 +518,7 @@
 
             var rowNumber = currGrid.GetVisibleRowsOnPage() * currGrid.GetPageCount();
 
-            if (rowNumber > 1000) {
+            if (rowNumber > 10000) {
                 alert('Non è possibile effettuare questa operazione con più di 1000 record!');
                 return false;
             } else

@@ -15,6 +15,7 @@ using Domain;
 using Domain.Extensions;
 using log4net;
 using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,8 @@ using System.Web;
 using System.Web.Security;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Business
 {

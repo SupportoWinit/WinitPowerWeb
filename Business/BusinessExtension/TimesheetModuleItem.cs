@@ -4,6 +4,7 @@ using DevExpress.Utils.Taskbar;
 using Domain;
 using log4net;
 using Microsoft.Practices.ObjectBuilder2;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -4756,6 +4757,117 @@ namespace Business.BusinessExtension
             return newTimesheet;
         }
 
+        private static TimesheetModuleItem GenerateNewTotalTimesheetEccedenza(int colId, bool isDecimalHours, List<TimesheetModuleItem> timesheetsToTotalize, TimesheetModuleItem piano, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals, bool usaFisiche = true)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newTimesheet = new TimesheetModuleItem(isDecimalHours);
+
+            // inserimento della data che indica il mese di elaborazione
+            newTimesheet.StartDate = firstMonthDate;
+            DateTime processingDate = firstMonthDate;
+
+            // inizializzazione del piano vuoto in cui andare a compilare i totali per giornata
+            var daysMinutes = RepoManager.Tab_OrariRepo.GetEmptyMinutesPlan(firstMonthDate, lastMonthDate, requestedForWeeklyTotals);
+
+            //Somma i giorni della settimana antecedente al mese in elaborazione
+
+            if (requestedForWeeklyTotals)
+            {
+                for (int i = -7; i < 0; i++)
+                {
+                    double dayTotal = 0;
+                    string dayName = "DayMinus" + Math.Abs(i).ToString();
+                    DateTime currDate = firstMonthDate.AddDays(i);
+
+                    foreach (var timesheet in timesheetsToTotalize)
+                    {
+                        dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+                    }
+
+                    if (daysMinutes.ContainsKey(currDate))
+                    {
+                        daysMinutes[currDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    }
+                }
+            }
+
+            double today1 = 0;
+            // per ogni giorno del mese calcolo i totali e inserisco nel 'piano'
+            for (int i = 1; i <= lastMonthDate.Day; i++)
+            {
+                double dayTotal = 0;
+                string dayName = "Day" + i.ToString("00");
+                today1 = CommonService.FromHoursToMinutes((double)piano[dayName], isDecimalHours);
+
+                foreach (var timesheet in timesheetsToTotalize)
+                {
+                    //dayTotal += (Math.Truncate((double)timesheet[dayName]) * 60) + Math.Round(((double)timesheet[dayName] - Math.Truncate((double)timesheet[dayName])) * 100);
+                    //con questo if non sommo al totale il tempo corretto
+                    if (timesheet.Justification == "PAU" && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubstractPausaPranzo) == 1)
+                    {
+                        dayTotal -= CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours) * 2;
+                    }
+                    if (timesheet.Justification != "Tempo Corretto")
+                    {
+                        dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+                    }
+                }
+                if (daysMinutes.ContainsKey(processingDate))
+                {
+                    if (dayTotal - today1 >= 0 && dayTotal - today1 <= 30)
+                    {
+                        daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(today1, null, null);
+                    }
+                    else 
+                    {
+                        daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    }
+                }
+
+                processingDate = processingDate.AddDays(1);
+            }
+
+            if (requestedForWeeklyTotals)
+            {
+                //Somma i giorni della settimana successiva al mese in elaborazione
+                for (int i = 1; i <= 7; i++)
+                {
+                    double dayTotal = 0;
+                    string dayName = "DayPlus" + Math.Abs(i).ToString();
+                    DateTime currDate = lastMonthDate.Date.AddDays(i);
+
+                    foreach (var timesheet in timesheetsToTotalize)
+                    {
+                        //dayTotal += (Math.Truncate((double)timesheet[dayName]) * 60) + Math.Round(((double)timesheet[dayName] - Math.Truncate((double)timesheet[dayName])) * 100);
+                        if (timesheet.Justification == "PAU" && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubstractPausaPranzo) == 1)
+                        {
+                            dayTotal -= CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours) * 2;
+                        }
+                        if (timesheet.Justification != "Tempo Corretto")
+                        {
+                            dayTotal += CommonService.FromHoursToMinutes((double)timesheet[dayName], isDecimalHours);
+                        }
+                    }
+                    if (daysMinutes.ContainsKey(currDate))
+                    {
+                        daysMinutes[currDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                    }
+                }
+            }
+
+            // inserimento del calcolo dei totali all'interno dell'oggetto timesheet
+            newTimesheet.PopulateHoursWithDate(daysMinutes);
+            newTimesheet.IsFromFreeTimeSheet = false;
+            newTimesheet.FreeTimeSheetId = 0;
+            newTimesheet.InsertColValues(colId);
+            newTimesheet.InsertCantValues(cantId);
+            newTimesheet.Justification = timesheetJustification;
+            newTimesheet.Order = timesheetOrder;
+
+            return newTimesheet;
+        }
+
         /// <summary>
         /// Genera un nuovo timesheetcome somma dei timesheet passati come parametro.
         /// </summary>
@@ -6076,6 +6188,321 @@ namespace Business.BusinessExtension
             return newTimesheet;
         }
 
+        private static TimesheetModuleItem subtractTimesheetsEccedenza(int colId, bool isDecimalHours, TimesheetModuleItem timesheet1, TimesheetModuleItem timesheet2, TimesheetModuleItem timesheet3, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var newTimesheet = new TimesheetModuleItem(isDecimalHours);
+
+            int eccedenza = 30;
+
+            // inserimento della data che indica il mese di elaborazione
+            newTimesheet.StartDate = firstMonthDate;
+            DateTime processingDate = firstMonthDate;
+            DateTime startDate = firstMonthDate;
+            DateTime endDate = lastMonthDate;
+
+            //Se il collaboratore non ha piano orario non deve essere calcolato il delta;
+            //Per fare ciò viene settato un booleano che verrà utilizzato durante il relat. calcolo
+            var currentCol = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == colId);
+            bool has_orario = currentCol.Tab_Orari_Tipo_Id.HasValue ? true : false;
+
+            if (requestedForWeeklyTotals && startDate.Date == CommonService.GetFirstMonthDay(startDate) && startDate.DayOfWeek != DayOfWeek.Monday)
+            {
+                startDate = CommonService.GetLastDayOfWeekInMonth(startDate.AddMonths(-1), DayOfWeek.Monday);
+            }
+
+            if (requestedForWeeklyTotals && endDate.Date == CommonService.GetLastMonthDay(endDate) && endDate.DayOfWeek != DayOfWeek.Sunday)
+            {
+                endDate = CommonService.GetFirstDayOfWeekInMonth(endDate.AddMonths(1), DayOfWeek.Sunday);
+
+                // la data di fine viene portata alle 23:59 così da recuperare anche le timbrature della giornata di fine
+                endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59);
+            }
+
+            // inizializzazione del piano vuoto in cui andare a compilare i totali per giornata
+            var daysMinutes = RepoManager.Tab_OrariRepo.GetEmptyMinutesPlan(startDate, endDate, requestedForWeeklyTotals);
+            double dayTotal, today1, today2, today3;
+
+            if (startDate < firstMonthDate)
+            {
+                for (int i = firstMonthDate.AddTicks(-1 * startDate.Ticks).Day - 1; i > 0; i--)
+                {
+                    //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
+                    today1 = CommonService.FromHoursToMinutes((double)timesheet1["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet1["DayMinus" + i]) * 60) + Math.Round(((double)timesheet1["DayMinus" + i] - Math.Truncate((double)timesheet1["DayMinus" + i])) * 100);
+                    today2 = CommonService.FromHoursToMinutes((double)timesheet2["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
+                    today3 = CommonService.FromHoursToMinutes((double)timesheet3["DayMinus" + i], isDecimalHours);// (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
+                    //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                    if (has_orario)
+                    {
+                        dayTotal = today1 - today2;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else if (today3 != 0)
+                    {
+                        dayTotal = today1 - today3;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else
+                    {
+                        dayTotal = 0;
+                    }
+                    if (dayTotal < 0 || dayTotal >= eccedenza)
+                    {
+                        if (daysMinutes.ContainsKey(firstMonthDate.AddDays(-1 * i).Date))
+                        {
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                            {
+                                daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                            else
+                            {
+                                Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                                if (collaboratore.Livello_Col == "1")
+                                {
+                                    if (dayTotal <= 180)
+                                        daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                                else if (collaboratore.Livello_Col == "2")
+                                {
+                                    if (collaboratore.Indennita_Trasporto_Col != null)
+                                    {
+                                        if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                            daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                    }
+                                }
+                                else
+                                {
+                                    daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        if (daysMinutes.ContainsKey(firstMonthDate.AddDays(-1 * i).Date))
+                        {
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                            {
+                                daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                            }
+                            else
+                            {
+                                Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                                if (collaboratore.Livello_Col == "1")
+                                {
+                                    if (dayTotal <= 180)
+                                        daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                }
+                                else if (collaboratore.Livello_Col == "2")
+                                {
+                                    if (collaboratore.Indennita_Trasporto_Col != null)
+                                    {
+                                        if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                            daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                    }
+                                }
+                                else
+                                {
+                                    daysMinutes[firstMonthDate.AddDays(-1 * i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                }
+                            }
+                        }
+                    }
+                    startDate = startDate.AddDays(1);
+                }
+            }
+
+            // per ogni giorno del mese calcolo i totali e inserisco nel 'piano'
+            for (int i = 1; i <= lastMonthDate.Day; i++)
+            {
+                //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
+                today1 = CommonService.FromHoursToMinutes((double)timesheet1["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet1["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet1["Day" + i.ToString("00")] - Math.Truncate((double)timesheet1["Day" + i.ToString("00")])) * 100);
+                today2 = CommonService.FromHoursToMinutes((double)timesheet2["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet2["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet2["Day" + i.ToString("00")] - Math.Truncate((double)timesheet2["Day" + i.ToString("00")])) * 100);
+                today3 = CommonService.FromHoursToMinutes((double)timesheet3["Day" + i.ToString("00")], isDecimalHours);// (Math.Truncate((double)timesheet2["Day" + i.ToString("00")]) * 60) + Math.Round(((double)timesheet2["Day" + i.ToString("00")] - Math.Truncate((double)timesheet2["Day" + i.ToString("00")])) * 100);
+                                                                                                                        //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                if (has_orario)
+                {
+                    dayTotal = today1 - today2;
+                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                }
+                else if (today3 != 0)
+                {
+                    dayTotal = today1 - today3;
+                    dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                }
+                else
+                {
+                    dayTotal = 0;
+                }
+
+                if (dayTotal < 0 || dayTotal >= eccedenza)
+                {
+                    if (daysMinutes.ContainsKey(processingDate))
+                    {
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                        {
+                            daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                        }
+                        else
+                        {
+                            Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                            if (collaboratore.Livello_Col == "1")
+                            {
+                                if (dayTotal <= 180)
+                                    daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                            else if (collaboratore.Livello_Col == "2")
+                            {
+                                if (collaboratore.Indennita_Trasporto_Col != null)
+                                {
+                                    if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                        daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                            }
+                            else
+                            {
+                                daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (daysMinutes.ContainsKey(processingDate))
+                    {
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                        {
+                            daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                        }
+                        else
+                        {
+                            Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                            if (collaboratore.Livello_Col == "1")
+                            {
+                                if (dayTotal <= 180)
+                                    daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                            }
+                            else if (collaboratore.Livello_Col == "2")
+                            {
+                                if (collaboratore.Indennita_Trasporto_Col != null)
+                                {
+                                    if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                        daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                }
+                            }
+                            else
+                            {
+                                daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                            }
+                        }
+                    }
+                }
+                processingDate = processingDate.AddDays(1);
+            }
+
+            if (endDate > lastMonthDate)
+            {
+                for (int i = 1, j = endDate.Day; i <= j; i++)
+                {
+                    //Recupera le ore di piano e le ore lavorate del giorno in elaborazione
+                    today1 = CommonService.FromHoursToMinutes((double)timesheet1["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet1["DayPlus" + i]) * 60) + Math.Round(((double)timesheet1["DayPlus" + i] - Math.Truncate((double)timesheet1["DayPlus" + i])) * 100);
+                    today2 = CommonService.FromHoursToMinutes((double)timesheet2["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet2["DayPlus" + i]) * 60) + Math.Round(((double)timesheet2["DayPlus" + i] - Math.Truncate((double)timesheet2["DayPlus" + i])) * 100);
+                    today3 = CommonService.FromHoursToMinutes((double)timesheet3["DayPlus" + i], isDecimalHours); // (Math.Truncate((double)timesheet2["DayMinus" + i]) * 60) + Math.Round(((double)timesheet2["DayMinus" + i] - Math.Truncate((double)timesheet2["DayMinus" + i])) * 100);
+                    //Se la differenza è positiva, si fa la sottrazione, altrimenti si lascia 0; Se non ha orario prestabilito è 0
+                    if (has_orario)
+                    {
+                        dayTotal = today1 - today2;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else if (today3 != 0)
+                    {
+                        dayTotal = today1 - today3;
+                        dayTotal = getDeltaMinutesWithAutStr((int)dayTotal, startDate, colId);
+                    }
+                    else
+                    {
+                        dayTotal = 0;
+                    }
+
+                    if (dayTotal < 0 || dayTotal >= eccedenza)
+                    {
+                        if (daysMinutes.ContainsKey(lastMonthDate.AddDays(i).Date))
+                        {
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                            {
+                                daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                            }
+                            else
+                            {
+                                Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                                if (collaboratore.Livello_Col == "1")
+                                {
+                                    if (dayTotal <= 180)
+                                        daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                                else if (collaboratore.Livello_Col == "2")
+                                {
+                                    if (collaboratore.Indennita_Trasporto_Col != null)
+                                    {
+                                        if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                            daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                    }
+                                }
+                                else
+                                {
+                                    daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(dayTotal, null, null);
+                                }
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        if (daysMinutes.ContainsKey(lastMonthDate.AddDays(i).Date))
+                        {
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDelta) == 0)
+                            {
+                                daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                            }
+                            else
+                            {
+                                Col collaboratore = RepoManager.ColRepo.Single(c => c.Col_Id == colId);
+                                if (collaboratore.Livello_Col == "1")
+                                {
+                                    if (dayTotal <= 180)
+                                        daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                }
+                                else if (collaboratore.Livello_Col == "2")
+                                {
+                                    if (collaboratore.Indennita_Trasporto_Col != null)
+                                    {
+                                        if (dayTotal <= collaboratore.Indennita_Trasporto_Col.Value)
+                                            daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                    }
+                                }
+                                else
+                                {
+                                    daysMinutes[lastMonthDate.AddDays(i).Date] = new Tuple<double, TimeSpan?, TimeSpan?>(0, null, null);
+                                }
+                            }
+                        }
+                    }
+                    endDate.AddDays(1);
+                }
+            }
+
+            // inserimento del calcolo dei totali all'interno dell'oggetto timesheet
+            newTimesheet.PopulateHoursWithDate(daysMinutes);
+            newTimesheet.IsFromFreeTimeSheet = false;
+            newTimesheet.FreeTimeSheetId = 0;
+            newTimesheet.InsertColValues(colId);
+            newTimesheet.InsertCantValues(cantId);
+            newTimesheet.Justification = timesheetJustification;
+            newTimesheet.Order = timesheetOrder;
+
+            return newTimesheet;
+        }
+
         private static TimesheetModuleItem subtractTimesheetsExport(int colId, bool isDecimalHours, TimesheetModuleItem timesheet1, TimesheetModuleItem timesheet2, TimesheetModuleItem timesheet3, string timesheetJustification, DateTime firstMonthDate,
             DateTime lastMonthDate, int timesheetOrder, int cantId, bool requestedForWeeklyTotals)
         {
@@ -7203,15 +7630,19 @@ namespace Business.BusinessExtension
             TimesheetModuleItem colTotal = null;
 
             if (colTotal == null) {
-                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CountEccedenza) != 1)
+                {
+                    colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                }
+                else 
+                {
+                    colTotal = GenerateNewTotalTimesheetEccedenza(col.Col_Id, isDecimalHours, cartelliniToTotalize, colPlan, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                }
             }
 
             if (!isByOtherEntity)
             {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CountEccedenza) != 1) 
-                {
-                    justificationCartellini.Add(colTotal);
-                }  
+                justificationCartellini.Add(colTotal);
             }
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportHotelKomplett) == 1) {
@@ -7247,24 +7678,51 @@ namespace Business.BusinessExtension
 
             if (calculateDelta)
             {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1 && colRigth != null)
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CountEccedenza) != 1)
                 {
-                    TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_ECCEDENZA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
-                    colDelta.setCurrentMonthMonteMinuti();
-                    if (!isByOtherEntity)
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1 && colRigth != null)
                     {
-                        justificationCartellini.Add(colDelta);
+                        TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_ECCEDENZA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
+                    }
+                    else
+                    {
+                        colRigth = colPlan;
+                        TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
                     }
                 }
-                else {
-                    colRigth = colPlan;
-                    TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan,colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
-                    colDelta.setCurrentMonthMonteMinuti();
-                    if (!isByOtherEntity)
+                else 
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1 && colRigth != null)
                     {
-                        justificationCartellini.Add(colDelta);
+                        TimesheetModuleItem colDelta = subtractTimesheetsEccedenza(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_ECCEDENZA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
+                    }
+                    else
+                    {
+                        colRigth = colPlan;
+                        TimesheetModuleItem colDelta = subtractTimesheetsEccedenza(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
                     }
                 }
+                
                 
             }
             #endregion

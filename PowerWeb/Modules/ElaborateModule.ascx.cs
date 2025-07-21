@@ -693,7 +693,7 @@ namespace PowerWeb.Modules
                 }
                 catch (Exception ex)
                 {
-                    _log.Error(ex.Message);
+                    _log.Error("Elaborazione viaggi terminata son errore" + ex.InnerException);
                 }
             }
         }       
