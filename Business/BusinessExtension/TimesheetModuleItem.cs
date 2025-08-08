@@ -4763,6 +4763,8 @@ namespace Business.BusinessExtension
             // inizializzazione del valore di ritorno del metodo
             var newTimesheet = new TimesheetModuleItem(isDecimalHours);
 
+            int eccedenza = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CountEccedenza, "Eccedenza"));
+
             // inserimento della data che indica il mese di elaborazione
             newTimesheet.StartDate = firstMonthDate;
             DateTime processingDate = firstMonthDate;
@@ -4815,7 +4817,7 @@ namespace Business.BusinessExtension
                 }
                 if (daysMinutes.ContainsKey(processingDate))
                 {
-                    if (dayTotal - today1 >= 0 && dayTotal - today1 <= 30)
+                    if (dayTotal - today1 >= 0 && dayTotal - today1 <= eccedenza)
                     {
                         daysMinutes[processingDate] = new Tuple<double, TimeSpan?, TimeSpan?>(today1, null, null);
                     }
@@ -6194,7 +6196,7 @@ namespace Business.BusinessExtension
             // inizializzazione del valore di ritorno del metodo
             var newTimesheet = new TimesheetModuleItem(isDecimalHours);
 
-            int eccedenza = 30;
+            int eccedenza = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CountEccedenza, "Eccedenza"));
 
             // inserimento della data che indica il mese di elaborazione
             newTimesheet.StartDate = firstMonthDate;

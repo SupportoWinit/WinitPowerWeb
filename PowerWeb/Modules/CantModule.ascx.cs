@@ -376,8 +376,8 @@ namespace PowerWeb.Modules
                     Location geocode = BusinessService.GetGeocode(initCant.GeocodeAddress);
                     if (geocode != null)
                     {
-                        initCant.LatitudineGps_Can = geocode.Point.Coordinates[0];
-                        initCant.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                        initCant.LatitudineGps_Can = geocode.Latitudine;
+                        initCant.LongitudineGps_Can = geocode.Longitudine;
                     }
                 }
                 //se is to calculate è true allora vado a generarmi l'indirizzo per la tab dist
@@ -505,8 +505,8 @@ namespace PowerWeb.Modules
                     Location geocode = BusinessService.GetGeocode(currentCant.GeocodeAddress);
                     if (geocode != null)
                     {
-                        currentCant.LatitudineGps_Can = geocode.Point.Coordinates[0];
-                        currentCant.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                        currentCant.LatitudineGps_Can = geocode.Latitudine;
+                        currentCant.LongitudineGps_Can = geocode.Longitudine;
                     }
                 }
                 // se non era già True imposta a True il Flag di Ricalcolo se è Cambiata la LAT e/o la LONG

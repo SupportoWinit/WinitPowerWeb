@@ -922,7 +922,7 @@ namespace Business
                     routeRequest.Waypoints.Add(new SimpleWaypoint(coord));
                 }
 
-                var response = Task.Run(() => ServiceManager.GetResponseAsync(routeRequest)).Result;
+                var response = Task.Run(() => ServiceManager.GetResponseAsync(routeRequest)).Result;                
 
                 if (response.StatusCode == 200)
                 {
@@ -968,11 +968,12 @@ namespace Business
                 // Make the geocode request
                 var response = Task.Run(() => ServiceManager.GetResponseAsync(geocodeRequest)).Result;
 
-                if (response.StatusCode == 200)
-                {
-                    location = (Location)response.ResourceSets.First().Resources.First();
+                //if (response.StatusCode == 200)
+                //{
+                    var geo = new ReverseGeocodeService("a442f14174a945dd9aff62023727b914");
+                    location = Task.Run(() => geo.OttieniLocationDaIndirizzoAsync(address)).Result;
 
-                }
+                //}
             }
             catch (Exception ex)
             {
@@ -1010,18 +1011,20 @@ namespace Business
                     {
                         var geoResponse = Task.Run(() => ServiceManager.GetResponseAsync(geoRequest)).Result;
 
+                        var geo = new ReverseGeocodeService("a442f14174a945dd9aff62023727b914");
+                        var indirizzo = Task.Run(() => geo.OttieniIndirizzoAsync(cantToEdit.LatitudineGps_Can, cantToEdit.LongitudineGps_Can)).Result;
+
                         // se sono state ottenute delle risposte da bing
-                        if (geoResponse.StatusCode == 200)
+                        if (indirizzo != null)
                         {
-                            Address address = ((Location)geoResponse.ResourceSets[0].Resources[0]).Address;
                             // si recuperano i risultati e si impostano i dati del cantiere
-                            cantToEdit.Indirizzo_Can = address.AddressLine;
-                            cantToEdit.Cap_Can = address.PostalCode;
-                            cantToEdit.Luogo_Can = address.Locality;
+                            cantToEdit.Indirizzo_Can = indirizzo.Via;
+                            cantToEdit.Cap_Can = indirizzo.CAP;
+                            cantToEdit.Luogo_Can = indirizzo.Citta;
 
                             //string Provincia_Can = RepoManager.Tab_ProvRepo.First(p => p.Descrizione_Prov == address.AdminDistrict2).Sigla_Prov;
 
-                            string Provincia_Can = address.AdminDistrict2;
+                            string Provincia_Can = indirizzo.Provincia;
 
                             //string provinciaCan = address.FormattedAddress.Substring(address.FormattedAddress.Length - 2);
                             //

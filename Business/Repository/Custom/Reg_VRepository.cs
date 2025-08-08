@@ -2361,7 +2361,13 @@ namespace Business.Repository.Custom
                                 {
                                     foreach(Reg_V reg in colDateGroup)
                                     {
-                                        Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == reg.Cant_Id);
+                                        Reg attreg = RepoManager.RegRepo.SingleOrDefault(r => r.RiferimentoRRN_Att == reg.RegE);
+                                        Cant att = default;
+                                        if (attreg != default)
+                                        {
+                                            att = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == attreg.Cant_Id && c.Tipologia_Can == "ATT");
+                                        }
+                                        Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == reg.Cant_Id);
                                         if (cantiere.Importo1 != null && cantiere.Importo10 != null)
                                         {
                                             if (reg.Durata_Fig.Value > cantiere.Importo10.Value)
@@ -2370,6 +2376,19 @@ namespace Business.Repository.Custom
                                                 regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
                                                 regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
                                                 regsToUpdate.Add(regE);
+                                            }
+                                        } 
+                                        else if (cantiere.Importo1 != null)
+                                        {
+                                            if (att != default) 
+                                            {
+                                                if (att.Descrizione_Can == "Pausa") 
+                                                {
+                                                    Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                    regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                    regsToUpdate.Add(regE);
+                                                }
                                             }
                                         }
                                     }
@@ -6306,7 +6325,7 @@ namespace Business.Repository.Custom
                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", currentCol.Domicilio_Luogo_Col, currentCol.Domicilio_Indirizzo_Col, currentCol.Domicilio_Cap_Col),
                                             Tab_Decod_Id = tdCant.Tab_Decod_Id,
                                             KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                            Minuti_Tab_Dist = Convert.ToInt32((result.DurataMinuti / 60)),
+                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
                                         };
 
                                         var errorTabDistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);

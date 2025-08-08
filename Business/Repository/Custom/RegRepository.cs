@@ -3297,6 +3297,7 @@ namespace Business.Repository.Custom
 
             #region CHIUSURA AUTOMATICA DI TUTTE LE REG
 
+            
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 && mode == Common.ApplicationMessageEnum.Elaborate)
             {
                 //int minuti = int.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.AutoClosures, "minuti"));
@@ -8368,7 +8369,7 @@ namespace Business.Repository.Custom
                     CoordinateValue = splittedLine[1];
 
                 //Provo a convertire la posizione 9 per controllare se sono presenti i secondi nel txt
-                if (int.TryParse(splittedLine[9], out int res) || Convert.ToInt32(splittedLine[8]) == 1)
+                if (!splittedLine[7].Equals("0") && (int.TryParse(splittedLine[9], out int res) || Convert.ToInt32(splittedLine[8]) == 1))
                 {
                     // i successivi 5 valori vanno a comporre la data/ora della registrazione
                     RegistrationDateTime = new DateTime(Convert.ToInt32(splittedLine[2]), Convert.ToInt32(splittedLine[3])

@@ -2008,8 +2008,8 @@ namespace Business.Repository.Custom
                                     Location geocode = BusinessService.GetGeocode(indirizzo);
                                     if (geocode != null)
                                     {
-                                        cantiere.LatitudineGps_Can = geocode.Point.Coordinates[0];
-                                        cantiere.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                                        cantiere.LatitudineGps_Can = geocode.Latitudine;
+                                        cantiere.LongitudineGps_Can = geocode.Longitudine;
                                     }
                                 }
 
@@ -2620,8 +2620,8 @@ namespace Business.Repository.Custom
                                     Location geocode = BusinessService.GetGeocode(indirizzo);
                                     if (geocode != null)
                                     {
-                                        cantiere.LatitudineGps_Can = geocode.Point.Coordinates[0];
-                                        cantiere.LongitudineGps_Can = geocode.Point.Coordinates[1];
+                                        cantiere.LatitudineGps_Can = geocode.Latitudine;
+                                        cantiere.LongitudineGps_Can = geocode.Longitudine;
                                     }
                                 }
 
@@ -2846,13 +2846,13 @@ namespace Business.Repository.Custom
 
                 if (geoRes.StatusCode == 200)
                 {
-                    var points = ((Location)geoRes.ResourceSets[0].Resources[0]).Point.Coordinates;
-                    if (points.Any())
-                    {
-
-                        cant.LatitudineGps_Can = points[0];
-                        cant.LongitudineGps_Can = points[1];
-                    }
+                    //var points = ((Location)geoRes.ResourceSets[0].Resources[0]).Point.Coordinates;
+                    //if (points.Any())
+                    //{
+                    //
+                    //    cant.LatitudineGps_Can = points[0];
+                    //    cant.LongitudineGps_Can = points[1];
+                    //}
 
                     SaveChanges();
                 }

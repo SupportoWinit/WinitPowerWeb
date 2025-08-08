@@ -1486,8 +1486,8 @@ namespace Business.Repository.Custom
 
                 if (point != null)
                 {
-                    col.LatitudineGps_Col = point.Point.GetCoordinate().Latitude;
-                    col.LongitudineGps_Col = point.Point.GetCoordinate().Longitude;
+                    col.LatitudineGps_Col = point.Latitudine;
+                    col.LongitudineGps_Col = point.Longitudine;
                     Update(col, true);
                 }
 

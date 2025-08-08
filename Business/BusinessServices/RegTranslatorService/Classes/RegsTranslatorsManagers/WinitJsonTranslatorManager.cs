@@ -29,16 +29,16 @@ namespace Business.BusinessServices.RegTranslatorService.Classes.RegsTranslators
                 winitJsonReg.Source = "ANDROID";
                 winitJsonReg.Coordinates = new Coordinates
                 {
-                    Latitude = new Location
-                    {
-                        Point = (float)clockappReg.Latitude,
-                        Sector = (clockappReg.Latitude) < 0f ? 'S' : 'N'
-                    },
-                    Longitude = new Location
-                    {
-                        Point = (float)clockappReg.Longitude,
-                        Sector = (clockappReg.Longitude) < 0f ? 'W' : 'E'
-                    }
+                    //Latitude = new Location
+                    //{
+                    //    Point = (float)clockappReg.Latitude,
+                    //    Sector = (clockappReg.Latitude) < 0f ? 'S' : 'N'
+                    //},
+                    //Longitude = new Location
+                    //{
+                    //    Point = (float)clockappReg.Longitude,
+                    //    Sector = (clockappReg.Longitude) < 0f ? 'W' : 'E'
+                    //}
                 };
 
                 jsonStringRegs.Add(JObject.FromObject(winitJsonReg));

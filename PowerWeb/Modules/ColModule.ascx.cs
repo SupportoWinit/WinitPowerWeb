@@ -521,8 +521,8 @@ namespace PowerWeb.Modules
                 Location geocode = BusinessService.GetGeocode(currentCol.GeocodeAddress);
                 if (geocode != null)
                 {
-                    currentCol.LatitudineGps_Col = geocode.Point.Coordinates[0];
-                    currentCol.LongitudineGps_Col = geocode.Point.Coordinates[1];
+                    currentCol.LatitudineGps_Col = geocode.Longitudine;
+                    currentCol.LongitudineGps_Col = geocode.Longitudine;
                 }
             }
             RepoManager.ColRepo.SaveChanges();

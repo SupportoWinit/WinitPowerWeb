@@ -186,6 +186,7 @@
     <Compile Include="BusinessServices\ElaborateService\CoupleRegsHelper.cs" />
     <Compile Include="BusinessServices\ElaborateService\Helpers\CalcoloRoute.cs" />
     <Compile Include="BusinessServices\ElaborateService\Helpers\ElaborateServiceHelper.cs" />
+    <Compile Include="BusinessServices\ElaborateService\Helpers\ReverseGeocodeService.cs" />
     <!-- <Compile Include="BusinessServices\ImportCustomerService\CantCustomerImport\DefaultImport.cs" /> -->
     <!-- <Compile Include="BusinessServices\ImportCustomerService\Factory\CustomerImportFactory.cs" /> -->
     <!-- <Compile Include="BusinessServices\ImportCustomerService\Helpers\ImportCustomerHelper.cs" /> -->
