@@ -5042,6 +5042,13 @@ namespace Business.Repository.Custom
                             {
                                 //il viaggio viene orinato per data ora(è una RegV cioè una coppia di Reg)
                                 var tripByFis = trip.OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+
+                                //se vengono contate le ore figurative per i viaggi vengono ordinati secondo le ore figurative e non fisiche
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1)
+                                {
+                                    tripByFis = trip.OrderBy(reg => reg.Registrazione_Data_Ora_Fig_Reg).ToList();
+                                }
+
                                 int? lastTripId = null;
 
                                 //per ogni valore della RegV , cioè per ogni reg si vanno a mettere a NULL i riferimenti verso le attività,
@@ -5252,6 +5259,11 @@ namespace Business.Repository.Custom
                             //l'ora figurativa di inizio viaggio è calcolata dall 'ora figurativa della ragistrazione precedente
                             var tripEFigDateTime = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fis_U : lastRegV.Data_Ora_Fis_E; //DA VERIFICARE
                                                                                                                                                                  //var tripEFigDateTime =lastRegV.Data_Ora_Fig_U;
+                            //isFigurative indica se i viaggi sono da calcolare sulle ore figurative o sulle ore fisiche
+                            bool isFigurative = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1;
+
+                            //Indica la differenza del viaggio tra le ore fisiche
+                            var deltaFisTrip = currentRegV.Data_Ora_Fis_E.Subtract(tripEFisDateTime);
 
                             //se il viaggio ha un'ora valida di inizio
                             //viene calcolata l'ora di entrata figurativa prendendola dalle ore figurative
@@ -5273,7 +5285,7 @@ namespace Business.Repository.Custom
                                 newRegU.ParentReg = newRegE;
                                 newRegU.Registrazione_Data_Ora_Orig_Reg = currentRegV.Data_Ora_Fis_E;
                                 newRegU.Registrazione_Data_Ora_Fis_Reg = currentRegV.Data_Ora_Fis_E;
-                                newRegU.Registrazione_Data_Ora_Fig_Reg = currentRegV.Data_Ora_Fig_E;
+                                newRegU.Registrazione_Data_Ora_Fig_Reg = deltaFisTrip <= TimeSpan.Zero ? tripEFigDateTime : currentRegV.Data_Ora_Fig_E; //se entrata e uscita del viaggio fisiche hanno durata negativa o pari a zero l'ora figurativa viene settata speculare a quella d'entrata
                                 newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
                                 newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
                                 newRegU.Col_Id = currentCol.Col_Id;
