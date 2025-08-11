@@ -2509,7 +2509,7 @@ namespace Business.Repository.Custom
                         var regsToUpdate = new List<Reg>();
                         regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.RiferimentoRRN_Att == reg.Reg_Id || dbReg.RiferimentoRRN_Reg == reg.Reg_Id)));
                         regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
-                        Context.BulkUpdate(regsToUpdate);
+                        //Context.BulkUpdate(regsToUpdate);
 
                         regsToDelete.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
 

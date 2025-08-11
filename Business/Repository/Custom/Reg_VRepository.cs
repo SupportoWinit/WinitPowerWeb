@@ -2357,9 +2357,9 @@ namespace Business.Repository.Custom
 
                             foreach (var colDateGroup in regsByColDate)
                             {
-                                if (colDateGroup.Count() == 1) 
+                                if (colDateGroup.Count() == 1)
                                 {
-                                    foreach(Reg_V reg in colDateGroup)
+                                    foreach (Reg_V reg in colDateGroup)
                                     {
                                         Reg attreg = RepoManager.RegRepo.SingleOrDefault(r => r.RiferimentoRRN_Att == reg.RegE);
                                         Cant att = default;
@@ -2377,12 +2377,38 @@ namespace Business.Repository.Custom
                                                 regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
                                                 regsToUpdate.Add(regE);
                                             }
-                                        } 
+                                        }
                                         else if (cantiere.Importo1 != null)
                                         {
-                                            if (att != default) 
+                                            if (att != default)
                                             {
-                                                if (att.Descrizione_Can == "Pausa") 
+                                                if (att.Descrizione_Can == "Pausa")
+                                                {
+                                                    Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                    regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                    regsToUpdate.Add(regE);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else 
+                                {
+                                    foreach (Reg_V reg in colDateGroup)
+                                    {
+                                        Reg attreg = RepoManager.RegRepo.SingleOrDefault(r => r.RiferimentoRRN_Att == reg.RegE);
+                                        Cant att = default;
+                                        if (attreg != default)
+                                        {
+                                            att = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == attreg.Cant_Id && c.Tipologia_Can == "ATT");
+                                        }
+                                        Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == reg.Cant_Id);
+                                        if (cantiere.Importo1 != null)
+                                        {
+                                            if (att != default)
+                                            {
+                                                if (att.Descrizione_Can == "Pausa")
                                                 {
                                                     Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
                                                     regE.Rettifica_Durata = (int)cantiere.Importo1.Value;

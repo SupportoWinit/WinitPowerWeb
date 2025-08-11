@@ -216,7 +216,8 @@ namespace Common
         LimitPausaPranzo,
         AutoClosuresAfterXEnum,
         NewPausaPranzo,
-        CountEccedenza
+        CountEccedenza,
+        ShowActivityInModifyRegs
     }
 
     public enum ClockAppsOperationEnum

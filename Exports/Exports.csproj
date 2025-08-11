@@ -162,6 +162,7 @@
     <Compile Include="ExportTxtCustom\ExportPagheLombarda.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2Annuale.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtInternationalCare.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtSCS.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtVecomp.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtZucchetti.cs" />

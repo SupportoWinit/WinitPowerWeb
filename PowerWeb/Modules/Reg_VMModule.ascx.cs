@@ -1532,6 +1532,12 @@ namespace PowerWeb.Modules
                             // al momento non si visualizzano nella griglia di edit multiplo le registrazioni rettifica, di tipo durata e di arrotondamento per durata
                             EditRegVs = RepoManager.Reg_VRepo.Find(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration && regv.Col_Id == currentReg.Col_Id && regv.Data_Reg >= from && regv.Data_Reg < to, true).ToList();
 
+                        //Escludo le attività dalle timbrature mostrate premendo la matita con la M
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowActivityInModifyRegs) == 1) 
+                        {
+                            EditRegVs = EditRegVs.Where(r => r.Registrazione_Tipo_Reg != 2).ToList();
+                        }
+
                         //ordinamento per ora di entrata delle registrazionid della stessa data della registrazione dove ho cliccato il pulsante
                         EditRegVs = EditRegVs.OrderBy(regv => regv.Data_Ora_Fis_E).ToList();
 
