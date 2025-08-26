@@ -19,6 +19,8 @@ public class CalcoloPercorsoService
 
     public async Task<CalcoloRoute> CalcolaPercorsoAsync(double lat1, double lon1, double lat2, double lon2)
     {
+        double durata = 0;
+        double distanza = 0;
         var client = new HttpClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
 
@@ -49,17 +51,20 @@ public class CalcoloPercorsoService
         var document = JsonDocument.Parse(responseString);
         var root = document.RootElement;
 
-        double distanza = root
+        if (lon1 != lon2 && lat1 != lat2) 
+        {
+            distanza = root
             .GetProperty("routes")[0]
             .GetProperty("summary")
             .GetProperty("distance")
             .GetDouble();
 
-        double durata = root
-            .GetProperty("routes")[0]
-            .GetProperty("summary")
-            .GetProperty("duration")
-            .GetDouble();
+            durata = root
+                .GetProperty("routes")[0]
+                .GetProperty("summary")
+                .GetProperty("duration")
+                .GetDouble();
+        }
 
         return new CalcoloRoute
         {

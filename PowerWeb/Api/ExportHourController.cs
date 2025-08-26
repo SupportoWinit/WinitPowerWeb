@@ -13,6 +13,7 @@ using Spire.Xls;
 using DevExpress.XtraScheduler;
 using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
 using System.Web.Helpers;
+using System.Text.RegularExpressions;
 
 namespace PowerWeb.Api
 {
@@ -42,10 +43,12 @@ namespace PowerWeb.Api
                 Col primoGovernante = RepoManager.ColRepo.Single(c => c.Livello_Col == "1");
                 foreach (Cant cantiere in cantieriToExport)
                 {
+                    _log.InfoFormat("Inizio a ciclare per il cantiere {0}", cantiere.Descrizione_Can);
                     // Per ogni cantiere ciclo il periodo richiesto
                     DateTime date = From;
                     while (date < To) 
                     {
+                        _log.InfoFormat("Sto ciclando il giorno {0}", date.ToString());
                         string day = "";
                         if (date.Day < 10)
                         {

@@ -502,7 +502,8 @@ namespace PowerWeb.Modules
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
-                    Location geocode = BusinessService.GetGeocode(currentCant.GeocodeAddress);
+                    string indirizzo = currentCant.Indirizzo_Can + "," + currentCant.Luogo_Can + "," + currentCant.Cap_Can;
+                    Location geocode = BusinessService.GetGeocode(indirizzo);
                     if (geocode != null)
                     {
                         currentCant.LatitudineGps_Can = geocode.Latitudine;

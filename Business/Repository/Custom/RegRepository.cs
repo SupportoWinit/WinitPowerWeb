@@ -799,6 +799,7 @@ namespace Business.Repository.Custom
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                             RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
+                            RepoManager.Reg_VRepo.DeleteNewPausaPranzo(tmpRegs);
                             regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  
@@ -819,6 +820,7 @@ namespace Business.Repository.Custom
 
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                             RepoManager.Reg_VRepo.DeleteNewPausaPranzo(tmpRegs);
+                            RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
                             regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  

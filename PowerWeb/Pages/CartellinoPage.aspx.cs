@@ -404,8 +404,6 @@ namespace PowerWeb.Pages
 
                             index++;
                         }
-
-                       
                     }
                         
                 }
@@ -587,14 +585,28 @@ namespace PowerWeb.Pages
 
             });
 
+            columns.Add(column);
+
             if (_cartellinoOptions.totalInFirstColumn)
             {
                 column.Add("visibleIndex", 1);
             }
 
+            if (options.useMonteMinuti) 
+            {
+                column = JObject.FromObject(new
+                {
+                    dataField = "AmountMinutes",
+                    caption = "Monte Ore",
+                    cssClass = "totalCell",
+                    alignment = "center",
+                    allowEditing = false,
+                    allowGrouping = false,
+                    allowSorting = false,
 
-            columns.Add(column);
-
+                });
+                columns.Add(column);
+            }
             return columns;
         }
 
@@ -722,6 +734,15 @@ namespace PowerWeb.Pages
                     totalHours = ((cartRow.TotalMinutes < 0) ? "-" : "") + Math.Abs((int)TimeSpan.FromMinutes(cartRow.TotalMinutes).TotalHours).ToString("00") + ":" + Math.Abs(TimeSpan.FromMinutes(cartRow.TotalMinutes).Minutes).ToString("00");
 
                 row.Add("TotalHours", totalHours);
+
+                if (cartRow.Justification == "Delta" && options.useMonteMinuti) 
+                {
+                    int monteMinuti = cartRow.TotalMinutes + (int)cartRow.LastMonthlyMinutes;
+                    string mm = ((cartRow.TotalMinutes < 0) ? "-" : "") + Math.Abs((int)TimeSpan.FromMinutes(monteMinuti).TotalHours).ToString("00") + ":" + Math.Abs(TimeSpan.FromMinutes(monteMinuti).Minutes).ToString("00");
+
+                    row.Add("AmountMinutes", mm);
+                }  
+
                 cartellinoSer.Add(row);
             });
 

@@ -113,6 +113,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCentriDiCostoTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCondomini.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoDipendentiStrutture.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreCantieri.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinariTotali.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportConfrontoOreStraordinari.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportDailyHour.cs" />

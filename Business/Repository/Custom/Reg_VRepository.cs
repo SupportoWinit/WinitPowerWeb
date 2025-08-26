@@ -1946,8 +1946,11 @@ namespace Business.Repository.Custom
 
             RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration && reg.Note_Reg == "Pausa").ToList());
 
-            // Filtra le regv selezionando solo quelle di tipo arrotondamento per durata e cancella direttamente
-            RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration && reg.Motivazione_Reg_Id == motivazioni.First().Tab_Decod_Id).ToList());
+            if (motivazioni.Count() > 0) 
+            {
+                // Filtra le regv selezionando solo quelle di tipo arrotondamento per durata e cancella direttamente
+                RepoManager.RegRepo.Context.BulkDelete(regs.Where(reg => reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration && reg.Motivazione_Reg_Id == motivazioni.First().Tab_Decod_Id).ToList());
+            }
 
             return errors;
         }
@@ -1962,7 +1965,9 @@ namespace Business.Repository.Custom
             // Recupero il metodo di arrotondamento dalla scheda parametri
             RoundingMethodEnum roundingParamEnum = (RoundingMethodEnum)RepoManager.ParamRepo.ParametersRow.Metodo_Arrotondamento;
 
-            List<Reg> regConPausa =regs.Where(r => r.Registrazione_Tipo_Reg == 0 && r.Rettifica_Durata != null).ToList();
+            List<Reg> regConPausa = regs.Where(r => r.Registrazione_Tipo_Reg == 0 && r.Rettifica_Durata != null).ToList();
+            List<Reg> tmpRegs = regs.Where(r => r.Rettifica_Durata == null && r.Note_Reg != null).ToList();
+            regConPausa.AddRange(tmpRegs.Where(r => r.Note_Reg.StartsWith("Pausa Di")).ToList());
 
             regConPausa.ForEach(reg => { reg.Rettifica_Durata = 0; reg.Note_Reg = ""; });
 
@@ -2138,24 +2143,64 @@ namespace Business.Repository.Custom
                                                 continue;
 
                                             int moduleMinutes = minutesWorked % minutesDuration;
-                                            //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
-                                            if (moduleMinutes != 0)
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitDurationRounding) != 1)
                                             {
-                                                //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
-                                                if (moduleMinutes > thresholdDuration)
+                                                //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                if (moduleMinutes != 0)
                                                 {
-                                                    // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
-                                                    TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
-                                                    roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
-                                                }
-                                                //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
-                                                else
-                                                {
-                                                    // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
-                                                    TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
-                                                    roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                    //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                    if (moduleMinutes > thresholdDuration)
+                                                    {
+                                                        // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                        TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                        roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                    }
+                                                    //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                    else
+                                                    {
+                                                        // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                        TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                        roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                    }
                                                 }
                                             }
+                                            else 
+                                            {
+                                                List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id.Value).ToList();
+                                                if (cantieri.First().Turno10_Can != null)
+                                                {
+                                                    int arrotDuration = (int)cantieri.First().Turno10_Can.Value.TotalMinutes;
+                                                    if (arrotDuration < regv.Durata_Fis) 
+                                                    {
+                                                        // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                        TimeSpan roundingTime = new TimeSpan(0, regv.Durata_Fis.Value - arrotDuration, 0);
+                                                        roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                    if (moduleMinutes != 0)
+                                                    {
+                                                        //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                        if (moduleMinutes > thresholdDuration)
+                                                        {
+                                                            // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                            TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                            roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                        }
+                                                        //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                        else
+                                                        {
+                                                            // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                            TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                            roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                        }
+                                                    }
+                                                }
+                                                
+                                            }
+                                            
                                             thresholdDuration = tmpThresholDuration;
                                             minutesDuration = tmpMinutesDuration;
                                             fromHourThresholdDuration = tmpFromHourThresholdDuration;
@@ -2370,12 +2415,12 @@ namespace Business.Repository.Custom
                                         Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == reg.Cant_Id);
                                         if (cantiere.Importo1 != null && cantiere.Importo10 != null)
                                         {
-                                            if (reg.Durata_Fig.Value > cantiere.Importo10.Value)
+                                            if (reg.Durata_Fis.Value > cantiere.Importo10.Value)
                                             {
                                                 Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
                                                 regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
                                                 regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
-                                                regsToUpdate.Add(regE);
+                                                RepoManager.RegRepo.Update(regE, true);
                                             }
                                         }
                                         else if (cantiere.Importo1 != null)
@@ -2387,7 +2432,23 @@ namespace Business.Repository.Custom
                                                     Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
                                                     regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
                                                     regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
-                                                    regsToUpdate.Add(regE);
+                                                    try
+                                                    {
+                                                        RepoManager.RegRepo.Update(regE, true);
+                                                    }
+                                                    catch (Exception e) 
+                                                    {
+                                                        Reg regU = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegU.Value);
+                                                        regU.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                        regU.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                        try
+                                                        {
+                                                            RepoManager.RegRepo.Update(regU, true);
+                                                        }
+                                                        catch (Exception ex) 
+                                                        { }
+                                                    }
+                                                    
                                                 }
                                             }
                                         }
@@ -2395,6 +2456,9 @@ namespace Business.Repository.Custom
                                 }
                                 else 
                                 {
+                                    int lastRegEId = 0;
+                                    int lastDurata = 0;
+                                    int lastArrot  = 0;
                                     foreach (Reg_V reg in colDateGroup)
                                     {
                                         Reg attreg = RepoManager.RegRepo.SingleOrDefault(r => r.RiferimentoRRN_Att == reg.RegE);
@@ -2404,7 +2468,19 @@ namespace Business.Repository.Custom
                                             att = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == attreg.Cant_Id && c.Tipologia_Can == "ATT");
                                         }
                                         Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == reg.Cant_Id);
-                                        if (cantiere.Importo1 != null)
+                                        if (cantiere.Importo1 != null && cantiere.Importo10 != null)
+                                        {
+                                            if (reg.Durata_Fis.Value > cantiere.Importo10.Value)
+                                            {
+                                                if (reg.Durata_Fis.Value > lastDurata) 
+                                                {
+                                                    lastDurata = reg.Durata_Fis.Value;
+                                                    lastRegEId = reg.RegE;
+                                                    lastArrot = (int)cantiere.Importo1.Value;
+                                                }
+                                            }
+                                        }
+                                        else if (cantiere.Importo1 != null)
                                         {
                                             if (att != default)
                                             {
@@ -2413,10 +2489,17 @@ namespace Business.Repository.Custom
                                                     Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
                                                     regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
                                                     regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
-                                                    regsToUpdate.Add(regE);
+                                                    RepoManager.RegRepo.Update(regE, true);
                                                 }
                                             }
                                         }
+                                    }
+                                    if (lastRegEId != 0) 
+                                    {
+                                        Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == lastRegEId);
+                                        regE.Rettifica_Durata = lastArrot;
+                                        regE.Note_Reg = "Pausa Di " + lastArrot + " minuti";
+                                        RepoManager.RegRepo.Update(regE, true);
                                     }
                                 }
                             }

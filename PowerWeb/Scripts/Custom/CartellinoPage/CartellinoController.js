@@ -2615,7 +2615,7 @@ cartellino.controller("cartellinoController", function ($scope) {
         if ($scope.cartellini[$scope.index] == undefined) {
             return "";
         }
-        return "Monte minuti :  " + $scope.cartellini[$scope.index].riportoOrePrecedenti;
+        return "Monte ore :  " + $scope.cartellini[$scope.index].riportoOrePrecedenti;
     }
 
     $scope.getCurrentDate = function () {

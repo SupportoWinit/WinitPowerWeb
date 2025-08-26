@@ -304,7 +304,12 @@ namespace Business.BusinessExtension
         {
             get
             {
-                return DaysHours.Select(dh => Convert.ToInt32(dh.Value.Item1)).Sum() + Convert.ToInt32(LastMonthlyMinutes);
+                int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheeetTotalWithoutMonthlyMinutes);
+
+                int lastMonthlyMinutesToSum = (TimesheeetTotalWithoutMonthlyMinutes)customizationVersion == TimesheeetTotalWithoutMonthlyMinutes.Show
+                    ? Convert.ToInt32(LastMonthlyMinutes)
+                    : 0;
+                return DaysHours.Select(dh => Convert.ToInt32(dh.Value.Item1)).Sum() + Convert.ToInt32(lastMonthlyMinutesToSum);
             }
         }
 
@@ -1740,6 +1745,14 @@ namespace Business.BusinessExtension
                         int retrievedMm = (int)CommonService.GetPropertyValue(mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.Month.ToString("00")));
                         mm = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
                     }
+                    else 
+                    {
+                        Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == ColId);
+                        if (collaboratore.Monte_Minuti > 0) 
+                        {
+                            mm = collaboratore.Monte_Minuti;
+                        }
+                    }
 
                     _lastMonthlyHours = mm;
                 }
@@ -1751,16 +1764,24 @@ namespace Business.BusinessExtension
                 currentMm = 0;
 
             Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year);
+            int lastMonth = month.Month - 1;
             if (current_mm_row != default(Col_Monte_Minuti))
             {
-                int retrievedMm = (int)CommonService.GetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")));
+                int retrievedMm = (int)CommonService.GetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
                 currentMm = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
             }
 
             //Il monteminuti da salvare per il mese corrente
             int mm = minutes;
             //Calcola il delta tra il monteminuti appena calcolato (mm) e quello vecchio (currentMm)
-            mm_delta = mm - currentMm;
+            if (mm > currentMm)
+            {
+                mm_delta = mm + currentMm;
+            }
+            else
+            {
+                mm_delta = currentMm + mm;
+            }         
 
             bool isNew = false;
 
@@ -1802,16 +1823,16 @@ namespace Business.BusinessExtension
                     current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == processingMonth.Year);
                 }
 
-                propertyName = string.Format("M{0}_Col_Monte_Minuti", processingMonth.Month.ToString("00"));
+                propertyName = string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00"));
 
                 //Se il prossimo mese non è ancora stato elaborato, mi fermo ed esco dal triciclo
-                if (current_mm_row == default(Col_Monte_Minuti) || (int)CommonService.GetPropertyValue(current_mm_row, propertyName) == DEFAULT_MONTEMINUTI)
+                if (current_mm_row == default(Col_Monte_Minuti))
                 {
                     break;
                 }
 
                 //Imposta il nuovo monteminuti aggiungendo il delta del monteminuti appena calcolto con quello vecchio
-                CommonService.SetPropertyValue(current_mm_row, propertyName, (int)CommonService.GetPropertyValue(current_mm_row, propertyName) + mm_delta);
+                CommonService.SetPropertyValue(current_mm_row, propertyName, mm_delta);
 
                 //Se siamo a dicembre, salva l'anno
                 if (processingMonth.Month == 12)
@@ -1821,6 +1842,8 @@ namespace Business.BusinessExtension
                 }
 
                 processingMonth = processingMonth.AddMonths(1);
+
+                break;
             }
             if (current_mm_row != default(Col_Monte_Minuti))
             {
@@ -1836,7 +1859,7 @@ namespace Business.BusinessExtension
         {
             if (ColId != 0)
             {
-                if (RepoManager.ParamRepo.ParametersRow.Abilita_Monte_Minuti && RepoManager.ParamRepo.ParametersRow.Flag_Monte_Ore != (int)MothlyHoursEnum.None)
+                if (/*RepoManager.ParamRepo.ParametersRow.Abilita_Monte_Minuti && RepoManager.ParamRepo.ParametersRow.Flag_Monte_Ore != (int)MothlyHoursEnum.None*/true)
                 {
                     //Imposta il monteminuti del mese precedente come riporto ore da aggiungere al mese corrente.
                     setLastMonthMonteMinuti();
@@ -7728,7 +7751,7 @@ namespace Business.BusinessExtension
                 
             }
             #endregion
-            
+
             cartellini.Add("justification", justificationCartellini);
             
             #endregion
@@ -11322,6 +11345,743 @@ namespace Business.BusinessExtension
 
             return cartellini;
         }
+
+        public static Dictionary<string, List<TimesheetModuleItem>> GenerateCartellinoOrarioCant(DateTime selectedDate, Col col, bool isByOtherEntity, bool showWeeklyTotal, bool calculateOrdStrTimesheet, bool isDecimalHours = false, bool calculateWorkedHours = true, bool calculateJustifications = true, bool calculateTrips = true, bool calculateDelta = true, bool devidePlanByDayNight = false, bool insertCorrectionRow = false, bool showPiano = true)
+        {
+            // calcolo, a partire dalla data passata come parametro, l'inzio e la fine del mese in elaborazione
+            DateTime minDate = CommonService.GetFirstMonthDay(selectedDate);
+            DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
+            DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
+            {
+                if (selectedDate.Month == DateTime.Now.Month)
+                {
+                    maxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                }
+            }
+            List<Reg_V> workedRegVs = new List<Reg_V>();
+            List<Reg_V> test = new List<Reg_V>();
+            string just = "";
+
+
+
+            //Dictionary da ritornare
+            Dictionary<string, List<TimesheetModuleItem>> cartellini = new Dictionary<string, List<TimesheetModuleItem>>();
+
+            #region CARTELLINI PER MOTIVAZIONE
+            //Lista dei cartellini delle motivazioni
+            List<TimesheetModuleItem> justificationCartellini = new List<TimesheetModuleItem>();
+            //Recupera e ordina per data tutte le reg del collaboratore
+            IQueryable<Reg_V> baseColRegVs = GetPeriodColRegVs(col, minDate, maxDate, showWeeklyTotal).OrderBy(r => r.Data_Reg);List<int> cantId = new List<int>();
+            var ListId = baseColRegVs.Select(reg => reg.Cant_Id).Distinct().ToList();
+
+            #region ORE PIANO
+            bool isFromFreeTimesheet;
+            int freeTimesheetId;
+            //Recupera il piano ore del collaboratore
+            Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> planMinutes = RepoManager.Tab_OrariRepo.GetPlanMinutes(col.Col_Id,
+                                                                    minDate, maxDate, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col,
+                                                                    out isFromFreeTimesheet, out freeTimesheetId, isByOtherEntity, "Col", showWeeklyTotal);
+            var colPlan = GenerateNewPlanTimesheet(isDecimalHours, planMinutes.First().Value, isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, planMinutes.First().Key);
+
+
+            if (!isByOtherEntity && showPiano)
+            {
+                //Trasforma il piano recuperato in cartellino e lo aggiunge alla lista
+
+                if (devidePlanByDayNight)
+                {
+                    Dictionary<string, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> dayNightPlan = RepoManager.Tab_OrariRepo.GetDevidedPlanMinutes(col.Col_Id, planMinutes.First().Value.First().Key, planMinutes.First().Value.Last().Key, col.Data_Disponibilita_Inizio_Col, col.Data_Disponibilita_Fine_Col, out isFromFreeTimesheet, out freeTimesheetId);
+                    justificationCartellini.Add(GenerateNewPlanTimesheet(isDecimalHours, dayNightPlan[DayTimesheetKey], isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, 0, PlanTypeEnum.Day));
+                    justificationCartellini.Add(GenerateNewPlanTimesheet(isDecimalHours, dayNightPlan[NightTimesheetKey], isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, 0, PlanTypeEnum.Night));
+                }
+                else
+                {
+                    justificationCartellini.Add(colPlan);
+                }
+            }
+
+            #endregion
+
+            //Estrapolo ora inizio e fine del notturno, se presenti
+            TimeSpan? nocturnStartHour = null;
+            TimeSpan? nocturnEndHour = null;
+            TimesheetModuleItem firstPlan = justificationCartellini.FirstOrDefault();
+            if (justificationCartellini.FirstOrDefault() != default(TimesheetModuleItem))
+            {
+                nocturnStartHour = justificationCartellini.FirstOrDefault().NocturnsStartHour;
+                nocturnEndHour = justificationCartellini.FirstOrDefault().NocturnEndHour;
+            }
+
+            #region ORE LAVORATE
+            
+            workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+            var testRegV = baseColRegVs.ToList();
+            var cantIdList1 = workedRegVs.Select(regv => regv.Cant_Id).Distinct().ToList();
+
+            // inizializzazione dell'ordine di visualizzazione
+            int tsOrder = 0;
+
+            if (calculateWorkedHours)
+            {
+                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                test = baseColRegVs.ToList();
+                string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
+                Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
+                just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
+                if (isByOtherEntity)
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntityExportStr(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes));
+                    }
+                    else
+                    {
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) == 1)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        }
+                        else
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        }
+                    }
+                }
+                else
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) == 1)
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    }
+                    else
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    }
+                }
+            }
+            #endregion
+
+            #region NOTTURNO SU SINGOLA RIGA
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NocturneOnCartellino) == 1)
+            {
+                List<TimesheetModuleItem> dayNightTimesheets = GenerateDayNightTimesheets(selectedDate, isDecimalHours, col.Col_Id, colPlan);
+                var nightWorked = dayNightTimesheets.Last();
+                justificationCartellini.Add(nightWorked);
+            }
+
+            #endregion
+
+            #region MOTIVAZIONI
+
+            if (calculateJustifications)
+            {
+                //Recupera le registrazioni di tipo motivazione
+                var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+
+                //Se sono presenti motivazioni, genera i relativi cartellini
+                if (justificationRegVs.Any())
+                {
+                    //Cicla per ogni singola motivazione e ne crea il cartellino
+                    foreach (string justification in justificationRegVs.Select(regv => regv.Motivazione_Reg_Cod).Distinct().ToList())
+                    {
+
+                        // con il codice della motivazione si ricercano i dati nell'apposita tabella per il recupero della descrizione se richiesto da apposita personalizzazione
+                        string displayJustfification = justification;
+                        ShowDescriptionJustTimesheet showDescriptionJust = (ShowDescriptionJustTimesheet)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDescriptionJustTimesheet);
+                        if (showDescriptionJust == ShowDescriptionJustTimesheet.Show) // se la personalizzazione risulta attiva
+                        {
+                            Tab_Decod justConf = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "MOTIVAZIONI" && td.Chiave_Tab == justification);
+                            if (justConf != default(Tab_Decod))
+                                displayJustfification = justConf.Decodifica_Tab;
+                        }
+
+                        if (isByOtherEntity)
+                        {
+                            // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
+                                col,
+                                isDecimalHours,
+                                justification,
+                                minDate,
+                                maxDate,
+                                ++tsOrder,
+                                showWeeklyTotal,
+                                usaFisiche: false));
+                        }
+                        else
+                        {
+                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
+                                isDecimalHours,
+                                justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
+                                displayJustfification,
+                                minDate,
+                                maxDate,
+                                ++tsOrder,
+                                0,
+                                requestedForWeeklyTotals: showWeeklyTotal,
+                                usaFisiche: false));
+                        }
+
+                    }
+                }
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DetailsMalattiaCartellino) == 1)
+                {
+                    justificationRegVs = GetRegVToProcessMalattia(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+
+                    //Se sono presenti motivazioni, genera i relativi cartellini
+                    if (justificationRegVs.Any())
+                    {
+                        //Cicla per ogni singola motivazione e ne crea il cartellino
+                        foreach (string justification in justificationRegVs.Select(regv => regv.Note_Reg).Distinct().ToList())
+                        {
+                            if (isByOtherEntity)
+                            {
+                                // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
+                                    col,
+                                    isDecimalHours,
+                                    justification,
+                                    minDate,
+                                    maxDate,
+                                    ++tsOrder,
+                                    showWeeklyTotal,
+                                    usaFisiche: false));
+                            }
+                            else
+                            {
+                                justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
+                                    isDecimalHours,
+                                    justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
+                                    justification,
+                                    minDate,
+                                    maxDate,
+                                    ++tsOrder,
+                                    0,
+                                    requestedForWeeklyTotals: showWeeklyTotal,
+                                    usaFisiche: false));
+                            }
+
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            #region TEMPO CORRETTO
+            TimesheetModuleItem colRigth = null;
+            if (calculateWorkedHours && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1)
+            {
+                //Recupera le registrazioni di tipo motivazione
+                var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+                Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> OreCorrette = null;
+                //Se sono presenti motivazioni, genera i relativi cartellini
+                if (justificationRegVs.Any())
+                {
+                    //inizializzo le varibili: i cantieri, l'inizio del mese, le liste 
+                    var cant = RepoManager.CantRepo.GetAll();
+                    DateTime data = minDate;
+                    int CantId = 0;
+                    int ColId = 0;
+                    List<TimeSpan> list = new List<TimeSpan>();
+                    List<DateTime> giorni = new List<DateTime>();
+                    //ciclo per i giorni del mese
+                    foreach (var date in planMinutes[0])
+                    {
+                        List<int> cantieri = new List<int>();
+                        float totale = 0;
+                        //ciclo in base alle registrazioni del collaboratore ed in base al giorno corrente
+                        foreach (Reg_V registration in justificationRegVs.Where(regv => regv.Col_Id == colPlan.ColId && DateTime.Compare(regv.Data_Ora_Fig_EDate.Value, date.Key) == 0))
+                        {
+                            if (ColId == 0)
+                            {
+                                ColId = registration.Col_Id.Value;
+                            }
+                            int i = 1;
+                            //creo ii totale per cantiere
+                            foreach (var cants in cant.Where(cantv => cantv.Cant_Id == registration.Cant_Id))
+                            {
+                                bool single = true;
+                                if (cantieri.Count == 0)
+                                {
+                                    cantieri.Add(cants.Cant_Id);
+                                }
+                                else
+                                {
+                                    foreach (int id in cantieri)
+                                    {
+                                        if (cants.Cant_Id == id)
+                                        {
+                                            single = false;
+                                        }
+                                    }
+                                    cantieri.Add(cants.Cant_Id);
+                                }
+
+                                if (single)
+                                {
+                                    if (CantId == 0)
+                                    {
+                                        CantId = cants.Cant_Id;
+                                    }
+                                    //creo la lista contente quante persone hanno lavorato nella stessa stanza lo stesso giorno
+                                    List<Reg> reg = new List<Reg>();
+                                    foreach (Reg Try in RepoManager.RegRepo.GetAll().Where(regv => regv.Col_Id != registration.Col_Id && regv.Cant_Id == cants.Cant_Id && regv.Registrazione_Data_Ora_Fis_Reg.DayOfYear.Equals(date.Key.DayOfYear)))
+                                    {
+                                        reg.Add(Try);
+                                    }
+                                    int collab = 0;
+                                    //se altri hanno lavorato nella stessa stanza divido il tempo previsto
+                                    foreach (Reg ciclo in reg)
+                                    {
+                                        if (collab == 0)
+                                        {
+                                            i++;
+                                            collab = ciclo.Col_Id.Value;
+                                        }
+                                        else if (collab != 0)
+                                        {
+                                            if (collab != ciclo.Col_Id.Value)
+                                            {
+                                                collab = ciclo.Col_Id.Value;
+                                                i++;
+                                            }
+                                        }
+                                    }
+                                    //se la durata della registrazione è minore di 5 non inserisco il tempo stimato nel tempo corretto
+                                    if (registration.Durata_Fig > 5)
+                                    {
+                                        //in base alla motivazione prendo una quantità di tempo diversa
+                                        if (registration.Motivazione_Reg_Cod == "PART")
+                                        {
+                                            if (cants.Turno1_Can.Value != null)
+                                            {
+                                                int conversione = (int)cants.Turno1_Can.Value.TotalMinutes;
+                                                float ris = conversione / i;
+                                                if (conversione % i == 1)
+                                                {
+                                                    ris += 1;
+                                                }
+                                                //TimeSpan? converted = TimeSpan.FromMinutes(ris);
+                                                if (totale == 0)
+                                                {
+                                                    totale = ris;
+                                                }
+                                                else
+                                                {
+                                                    totale += ris;
+                                                }
+                                            }
+                                        }
+                                        else if (registration.Motivazione_Reg_Cod == "FERM")
+                                        {
+                                            int conversione = (int)cants.Turno2_Can.Value.TotalMinutes;
+                                            float ris = conversione / i;
+                                            if (conversione % i == 1)
+                                            {
+                                                ris += 1;
+                                            }
+                                            if (cants.Turno1_Can.Value != null)
+                                            {
+                                                if (totale == 0)
+                                                {
+                                                    totale = ris;
+                                                }
+                                                else
+                                                {
+                                                    totale += ris;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                        //creo le liste con i dati e le date
+                        if (totale != 0)
+                        {
+                            TimeSpan? converted = TimeSpan.FromMinutes(totale);
+                            list.Add(converted.Value);
+                        }
+                        else
+                        {
+                            list.Add(TimeSpan.MinValue);
+                        }
+                        giorni.Add(data);
+                        data = data.AddDays(1);
+                    }
+                    //OreCorrette.Add(0, planMinutes);
+                    colRigth = GenerateNewPartPermTimesheet(isDecimalHours, list, giorni, true, 0, ColId, minDate, CantId);
+                    justificationCartellini.Add(colRigth);
+                }
+            }
+            #endregion
+
+            #region VIAGGI
+            //Se sono abilitati i viaggi, vengono estrapolati e aggiunti al cartellino
+            if (calculateTrips && RepoManager.ParamRepo.ParametersRow.Abilita_Viaggi)
+            {
+                var trips = GetRegVToProcess(RegSearchTypeForTimesheetEnum.TripRegs, baseColRegVs);
+                if (trips.Any())
+                {
+                    if (!isByOtherEntity)
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, trips, BusinessService.GetLocalizedString(PowerWebResources.LBL_VIAGGI), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                    }
+                    else
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(trips, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_VIAGGI), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                    }
+                }
+            }
+            #endregion
+
+            #region ARROTONDAMENTI per DURATA
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) != 1)
+            {
+                List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
+                if (rounding.Any())
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
+                    {
+                        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                        if (isByOtherEntity)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                        }
+                        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                        {
+                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                        }
+                    }
+                    else
+                    {
+                        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                        if (isByOtherEntity)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                        }
+                        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                        {
+                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                        }
+                    }
+                    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                }
+            }
+            #endregion
+
+            #region RETTIFICHE
+            //Se sono abilitate le rettifiche, vengono estrapolate e aggiunte al cartellino
+            if (RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Auto || RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Manuali)
+            {
+                List<Reg_V> rettifiche_Auto = GetRegVToProcess(RegSearchTypeForTimesheetEnum.CorrectionRegs, baseColRegVs);
+                List<Reg_V> rettifiche_Manu = GetRegVToProcess(RegSearchTypeForTimesheetEnum.CorrectionRegsManu, baseColRegVs);
+
+                // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                if (isByOtherEntity)
+                {
+                    List<int> cantList = justificationCartellini.Select(tmi => tmi.CantId).Where(c => c != 0).Distinct().ToList();
+                    if (RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Auto)
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rettifiche_Auto, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_RETTIFICHE), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false, cantList: cantList));
+                    }
+                    if (RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Manuali)
+                    {
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rettifiche_Manu, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_RETTIFICHE_MANUALI), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false, cantList: cantList));
+                    }
+
+                }
+                else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                {
+                    if (RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Auto)
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rettifiche_Auto, BusinessService.GetLocalizedString(PowerWebResources.LBL_RETTIFICHE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                    }
+
+                    if (RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Manuali)
+                    {
+                        justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rettifiche_Manu, BusinessService.GetLocalizedString(PowerWebResources.LBL_RETTIFICHE_MANUALI), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                    }
+
+                }
+            }
+            #endregion
+
+            #region TOTALE
+            //Filtra i cartellini su cui calcolare il totale
+            var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
+
+            int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
+            }
+            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
+            }
+            else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
+            }
+            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+                {
+                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
+                }
+                else
+                {
+                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
+                }
+
+            }
+            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
+            }
+
+            TimesheetModuleItem colTotal = null;
+
+            if (colTotal == null)
+            {
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CountEccedenza) != 1)
+                {
+                    colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                }
+                else
+                {
+                    colTotal = GenerateNewTotalTimesheetEccedenza(col.Col_Id, isDecimalHours, cartelliniToTotalize, colPlan, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                }
+            }
+
+            if (!isByOtherEntity)
+            {
+                justificationCartellini.Add(colTotal);
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportHotelKomplett) == 1)
+            {
+                var cartelliniToInitializeExport = new List<TimesheetModuleItem>();
+                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
+                Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
+                just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
+                //if (isByOtherEntity)
+                //{
+                cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                //}
+                //cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
+                TotaleCartellini.Add(colTotal);
+                cartellini.Add("totale", TotaleCartellini);
+                List<TimesheetModuleItem> colModified = null;
+                colModified = GenerateRegVTimesheetsModify(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
+                List<TimesheetModuleItem> ModificheCartellini = new List<TimesheetModuleItem>();
+                ModificheCartellini.AddRange(colModified);
+                cartellini.Add("Modifiche", ModificheCartellini);
+                List<TimesheetModuleItem> colSingle = null;
+                colSingle = GenerateRegVTimesheetsSingle(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
+                List<TimesheetModuleItem> SingoleCartellini = new List<TimesheetModuleItem>();
+                SingoleCartellini.AddRange(colSingle);
+                cartellini.Add("Singole", SingoleCartellini);
+            }
+
+            #endregion
+
+            #region DELTA
+
+            if (calculateDelta)
+            {
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CountEccedenza) != 1)
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1 && colRigth != null)
+                    {
+                        TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_ECCEDENZA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
+                    }
+                    else
+                    {
+                        colRigth = colPlan;
+                        TimesheetModuleItem colDelta = subtractTimesheets(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
+                    }
+                }
+                else
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportRigthTime) == 1 && colRigth != null)
+                    {
+                        TimesheetModuleItem colDelta = subtractTimesheetsEccedenza(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_ECCEDENZA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
+                    }
+                    else
+                    {
+                        colRigth = colPlan;
+                        TimesheetModuleItem colDelta = subtractTimesheetsEccedenza(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                        colDelta.setCurrentMonthMonteMinuti();
+                        if (!isByOtherEntity)
+                        {
+                            justificationCartellini.Add(colDelta);
+                        }
+                    }
+                }
+
+
+            }
+            #endregion
+
+            cartellini.Add("justification", justificationCartellini);
+
+            #endregion
+
+
+            List<TimesheetModuleItem> straordinariCartellini = new List<TimesheetModuleItem>();
+            List<TimesheetModuleItem> listaOrari = new List<TimesheetModuleItem>();
+
+            #region CARTELLINI PER ORDINARIE/STRAORDINARIE
+            if (calculateOrdStrTimesheet)
+            {
+
+
+                #region CARTELLINI DA ELABORARE
+                //se la personalizzazione di pulitait è attiva vado a calcolare gli straordinari in base ai vari cantieri
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && colPlan.CantDesc != null)
+                {
+                    List<int> cantList = null;
+                    var returnList = new List<TimesheetModuleItem>();
+
+                    // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
+                    var cantIdList = baseColRegVs.Select(regv => regv.Cant_Id).Distinct().ToList();
+                    if (just == "Rettifiche Manu." || just == "Rettifiche Auto.")
+                    {
+                        cantIdList = cantList.Cast<int?>().ToList();
+                    }
+                    foreach (var piano in planMinutes)
+                    {
+                        if (!cantIdList.Contains(piano.Key))
+                        {
+                            cantIdList.Add(piano.Key);
+                        }
+                    }
+                    // per ogni id cantiere presente nella lista
+                    foreach (var listCantId in cantIdList)
+                    {
+                        // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                        var currentCantId = listCantId ?? 0;
+                        bool error = false;
+                        //controllo se il cantiere ha un orario assegnato, in caso non lo abbia vado ad identificare tutte le ore fatte nel cantiere come straordinarie
+                        try
+                        {
+                            var temp = planMinutes.First(m => m.Key == currentCantId);
+                        }
+                        catch (Exception e)
+                        {
+                            error = true;
+                        }
+                        if (error)
+                        {
+                            TimesheetModuleItem Total = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.C ant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            returnList.Add(GenerateNewEditableTimesheetExportStr(col.Col_Id, currentCantId, isDecimalHours, minDate, maxDate, Total));
+                        }
+                        else
+                        {
+                            TimesheetModuleItem Plans = GenerateNewPlanTimesheet(isDecimalHours, planMinutes.First(m => m.Key == currentCantId).Value, isFromFreeTimesheet, freeTimesheetId, col.Col_Id, minDate, planMinutes.First(m => m.Key == currentCantId).Key);
+                            TimesheetModuleItem Totals = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.C ant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            returnList.Add(GenerateNewEditableTimesheetExport(col.Col_Id, currentCantId, isDecimalHours, minDate, maxDate, Plans, Totals));
+                        }
+
+                    }
+                    //List<TimesheetModuleItem> generatedStraordinariCartellini = GenerateNewEditableTimesheet(col.Col_Id, isDecimalHours, minDate, maxDate, colPlan);
+                    // Salva immediatamente i cartellini a db
+                    straordinariCartellini.AddRange(returnList);
+                }
+                else if (colPlan != null)
+                {
+                    List<TimesheetModuleItem> generatedStraordinariCartellini = new List<TimesheetModuleItem>();
+                    //se è attiva la customization di non contare gli straordinari notturni (inizialmente ideata per Cl) utilizzo un metodo di calcolo degli straordinari apposito
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoNocturneStr) == 1)
+                    {
+                        generatedStraordinariCartellini = GenerateNewEditableTimesheetNoStr(col.Col_Id, isDecimalHours, minDate, maxDate, colPlan);
+                    }
+                    else
+                    {
+                        generatedStraordinariCartellini = GenerateNewEditableTimesheet(col.Col_Id, isDecimalHours, minDate, maxDate, colPlan);
+                    }
+                    // Salva immediatamente i cartellini a db
+                    straordinariCartellini.AddRange(generatedStraordinariCartellini);
+                }
+
+                #endregion
+                cartellini.Add("straordinari", straordinariCartellini);
+
+            }
+            #endregion
+
+            #region CARTELLINO PER EXPORT DIVISO PER CANTIERE E PER GIORNO
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1 && colPlan.CantDesc != null)
+            {
+                List<TimesheetModuleItem> deltaCartellini = new List<TimesheetModuleItem>();
+                deltaCartellini.AddRange(GenerateDeltaRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes, colRigth, freeTimesheetId, isFromFreeTimesheet, cartelliniToTotalize));
+                cartellini.Add("delta", deltaCartellini);
+
+                //cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
+                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+                //{
+                //    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                //
+                //}
+                var cartelliniToInitializeExport = new List<TimesheetModuleItem>();
+                workedRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.WorkedRegs, baseColRegVs);
+                string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
+                Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
+                just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
+                if (isByOtherEntity)
+                {
+                    cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                }
+                //cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+                List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
+                TotaleCartellini.Add(colTotal);
+                cartellini.Add("totale", TotaleCartellini);
+
+                TimesheetModuleItem colTotalStr = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, straordinariCartellini, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+
+                List<TimesheetModuleItem> StrCartellini = new List<TimesheetModuleItem>();
+                StrCartellini.Add(colTotalStr);
+                cartellini.Add("Totstraordinari", StrCartellini);
+
+                TimesheetModuleItem colTotalDelta = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, deltaCartellini, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
+
+                List<TimesheetModuleItem> DeltaCartellini = new List<TimesheetModuleItem>();
+                DeltaCartellini.Add(colTotalDelta);
+                cartellini.Add("TotDelta", DeltaCartellini);
+            }
+            #endregion
+
+
+            return cartellini;
+        }
+
 
         public static int durataCamere(int colId, List<Reg_V> lista)
         {
