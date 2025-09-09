@@ -1134,37 +1134,64 @@ namespace Business.RegFileCreators
                             {
                                 regsToWrite.Add(noteLine);
                             }
-                            String attivitaFInale = "";
+                            var fruCants = RepoManager.Fru_CantRepo.Find(fruCant => !fruCant.DisAbilitazione_Fru_Can, true)
+                            .OrderByDescending(fru => fru.Abilitazione_Data_Inizio_Fru_Can).ToList();
+
+                            var fruCantDic = new Dictionary<int, List<Fru_Cant>>();
+                            fruCants.ForEach(fruCant =>
+                            {
+                                if (!fruCantDic.ContainsKey(fruCant.Fru_Id))
+                                    fruCantDic.Add(fruCant.Fru_Id, new List<Fru_Cant>());
+                                fruCantDic[fruCant.Fru_Id].Add(fruCant);
+                            });
+
+                            Fru fru_id = RepoManager.FruRepo.FirstOrDefault(f => f.Codice_Fru == fluReg.CodicePru);
+
+                            // inizializzazione della variabile di appoggio dell'associazione cant_fru da impostare
+                            Fru_Cant currentFruCant = null;
+
+                            if (fru_id != default) 
+                            {
+                                // se nel dizionario con l'elenco delle unità fisse è presente l'unità fissa della registrazione
+                                // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
+                                if (fruCantDic.ContainsKey(fru_id.Fru_Id))
+                                    currentFruCant = fruCantDic[fru_id.Fru_Id].FirstOrDefault(fruCant => fruCant.Abilitazione_Data_Inizio_Fru_Can <= fluReg.Data);
+
+
+                            }
+
+                            String attivitaFinale = "";
                             if (fluReg.Attivita.Contains(','))
                             {
                                 String[] att = fluReg.Attivita.Split(',');
-                                attivitaFInale = att[0];
+                                attivitaFinale = att[0];
                             }
                             else
                             {
-                                attivitaFInale = fluReg.Attivita;
+                                attivitaFinale = fluReg.Attivita;
                             }
-                            if (attivitaFInale == "none")
+                            if (attivitaFinale == "none")
                             {
-                                attivitaFInale = "";
+                                attivitaFinale = "";
                             }
-                            var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
+                            var firstLine = FlutterAppStringFormatter.CreateFirstActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFinale);
                             if (firstLine != "")
                             {
                                 regsToWrite.Add(firstLine);
                             }
-                            var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFInale);
+                            var activityLine = FlutterAppStringFormatter.CreateActivityLines(fluReg.CodiceFru, "", fluReg.Data, attivitaFinale);
                             if (activityLine != "")
                             {
                                 regsToWrite.Add(activityLine);
                             }
-                            var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, attivitaFInale, fluReg.Data, fluReg.CodiceFru);
+                            var pruCodeAtivity = FlutterAppStringFormatter.CreatePruCodeActivityLines(fluReg.CodiceFru, attivitaFinale, fluReg.Data, fluReg.CodiceFru);
                             if (pruCodeAtivity != null)
                             {
                                 regsToWrite.AddRange(pruCodeAtivity);
                             }
                             #endregion
                         }
+
                         last = fluReg;
                         if (fluReg.Motivazione != "Pausa")
                         {

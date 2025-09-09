@@ -518,10 +518,11 @@ namespace PowerWeb.Modules
 
             if (currentCol.GeocodeAddress != null) 
             {
+                string indirizzo = currentCol.Domicilio_Indirizzo_Col + "," + currentCol.Domicilio_Luogo_Col + "," + currentCol.Domicilio_Cap_Col;
                 Location geocode = BusinessService.GetGeocode(currentCol.GeocodeAddress);
                 if (geocode != null)
                 {
-                    currentCol.LatitudineGps_Col = geocode.Longitudine;
+                    currentCol.LatitudineGps_Col = geocode.Latitudine;
                     currentCol.LongitudineGps_Col = geocode.Longitudine;
                 }
             }

@@ -2170,11 +2170,32 @@ namespace Business.Repository.Custom
                                                 if (cantieri.First().Turno10_Can != null)
                                                 {
                                                     int arrotDuration = (int)cantieri.First().Turno10_Can.Value.TotalMinutes;
-                                                    if (arrotDuration < regv.Durata_Fis) 
+                                                    if (arrotDuration < regv.Durata_Fis)
                                                     {
                                                         // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
                                                         TimeSpan roundingTime = new TimeSpan(0, regv.Durata_Fis.Value - arrotDuration, 0);
                                                         roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                    }
+                                                    else 
+                                                    {
+                                                        //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                        if (moduleMinutes != 0)
+                                                        {
+                                                            //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                            if (moduleMinutes > thresholdDuration)
+                                                            {
+                                                                // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                                TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                            }
+                                                            //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                            else
+                                                            {
+                                                                // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                                TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                            }
+                                                        }
                                                     }
                                                 }
                                                 else 
@@ -2378,7 +2399,7 @@ namespace Business.Repository.Custom
             List<Reg_V> filteredRegVs = new List<Reg_V>();
             List<Tab_Decod> pausa = RepoManager.Tab_DecodRepo.GetAllQueryable(p => p.Decodifica_Tab == "Pausa").ToList();
             // Filtra le regv selezionando solo quelle 'lavorative' (ore e viaggi)
-            filteredRegVs = regVs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None)).ToList();
+            filteredRegVs = regVs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None) && reg.Registrazione_Stato_Reg != 0).ToList();
             // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
             if (filteredRegVs.Count() > 0)
             {
@@ -2438,15 +2459,18 @@ namespace Business.Repository.Custom
                                                     }
                                                     catch (Exception e) 
                                                     {
-                                                        Reg regU = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegU.Value);
-                                                        regU.Rettifica_Durata = (int)cantiere.Importo1.Value;
-                                                        regU.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
-                                                        try
+                                                        Reg regU = RepoManager.RegRepo.SingleOrDefault(r => r.Reg_Id == reg.RegU.Value);
+                                                        if (regU != default(Reg)) 
                                                         {
-                                                            RepoManager.RegRepo.Update(regU, true);
+                                                            regU.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                            regU.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                            try
+                                                            {
+                                                                RepoManager.RegRepo.Update(regU, true);
+                                                            }
+                                                            catch (Exception ex)
+                                                            { }
                                                         }
-                                                        catch (Exception ex) 
-                                                        { }
                                                     }
                                                     
                                                 }

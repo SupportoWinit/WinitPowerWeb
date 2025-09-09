@@ -1545,7 +1545,7 @@ namespace Common
                 }
 
                 //Password dell'account dell'indirizzo del mittente
-                const string fromPassword = "Power2022!";
+                const string fromPassword = "Power25!!";
 
                 //Prepara il client SMTP
                 var smtp = new SmtpClient

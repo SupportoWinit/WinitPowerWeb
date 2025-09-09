@@ -209,7 +209,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             {
                 foreach (var col in cartellini)
                 {
-                    if (settimanali) {
+                    if (settimanali) 
+                    {
                         if (_multiPagedExport)
                         {
                             ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
@@ -248,7 +249,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             rowIndex += 2;
                         }
-                    } else {
+                    } 
+                    else
+                    {
                         if (_multiPagedExport)
                         {
                             ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);

@@ -1762,6 +1762,7 @@ namespace Business.BusinessExtension
         {
             int mm_delta = 0,
                 currentMm = 0;
+            Col currentCol = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == colId);
 
             Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year);
             int lastMonth = month.Month - 1;
@@ -1800,8 +1801,29 @@ namespace Business.BusinessExtension
                 current_mm_row.Col_Id = colId;
                 isNew = true;
             }
-            //Imposta il monteminuti del mese corrente
-            CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), mm);
+            int mesePrec = month.Month - 1;
+            
+            if (currentCol != default(Col) && CommonService.GetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", mesePrec.ToString("00"))).Equals(DEFAULT_MONTEMINUTI))
+            {
+                if (currentCol.Monte_Minuti > 0)
+                {
+                    int newMonte = currentCol.Monte_Minuti + minutes;
+                    //Imposta il monteminuti del mese precedente col valore
+                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", mesePrec.ToString("00")), currentCol.Monte_Minuti);
+                    //Imposta il monteminuti del mese corrente
+                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), newMonte);
+                }
+                else
+                {
+                    //Imposta il monteminuti del mese corrente
+                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), mm);
+                }
+            }
+            else 
+            {
+                //Imposta il monteminuti del mese corrente
+                CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), mm);
+            }
 
             //Salva/aggiorna il repository
             if (isNew)
@@ -1815,36 +1837,39 @@ namespace Business.BusinessExtension
 
             DateTime processingMonth = month.AddMonths(1);
             string propertyName = "";
-            //TODO TOGLIERE STO TRUE, CAMBIARE CONDIZIONE DI USCITA
-            while (true)
+            if (!isNew) 
             {
-                if (current_mm_row.Anno_Col_Monte_Minuti != processingMonth.Year)
+                //TODO TOGLIERE STO TRUE, CAMBIARE CONDIZIONE DI USCITA
+                while (true)
                 {
-                    current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == processingMonth.Year);
-                }
+                    if (current_mm_row.Anno_Col_Monte_Minuti != processingMonth.Year)
+                    {
+                        current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == processingMonth.Year);
+                    }
 
-                propertyName = string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00"));
+                    propertyName = string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00"));
 
-                //Se il prossimo mese non è ancora stato elaborato, mi fermo ed esco dal triciclo
-                if (current_mm_row == default(Col_Monte_Minuti))
-                {
+                    //Se il prossimo mese non è ancora stato elaborato, mi fermo ed esco dal triciclo
+                    if (current_mm_row == default(Col_Monte_Minuti))
+                    {
+                        break;
+                    }
+
+                    //Imposta il nuovo monteminuti aggiungendo il delta del monteminuti appena calcolto con quello vecchio
+                    CommonService.SetPropertyValue(current_mm_row, propertyName, mm_delta);
+
+                    //Se siamo a dicembre, salva l'anno
+                    if (processingMonth.Month == 12)
+                    {
+                        RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                        RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+                    }
+
+                    processingMonth = processingMonth.AddMonths(1);
+
                     break;
                 }
-
-                //Imposta il nuovo monteminuti aggiungendo il delta del monteminuti appena calcolto con quello vecchio
-                CommonService.SetPropertyValue(current_mm_row, propertyName, mm_delta);
-
-                //Se siamo a dicembre, salva l'anno
-                if (processingMonth.Month == 12)
-                {
-                    RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
-                    RepoManager.Col_Monte_MinutiRepo.SaveChanges();
-                }
-
-                processingMonth = processingMonth.AddMonths(1);
-
-                break;
-            }
+            }   
             if (current_mm_row != default(Col_Monte_Minuti))
             {
                 RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
@@ -1859,7 +1884,7 @@ namespace Business.BusinessExtension
         {
             if (ColId != 0)
             {
-                if (/*RepoManager.ParamRepo.ParametersRow.Abilita_Monte_Minuti && RepoManager.ParamRepo.ParametersRow.Flag_Monte_Ore != (int)MothlyHoursEnum.None*/true)
+                if (/*RepoManager.ParamRepo.ParametersRow.Abilita_Monte_Minuti && */RepoManager.ParamRepo.ParametersRow.Flag_Monte_Ore != (int)MothlyHoursEnum.None)
                 {
                     //Imposta il monteminuti del mese precedente come riporto ore da aggiungere al mese corrente.
                     setLastMonthMonteMinuti();
@@ -5518,10 +5543,10 @@ namespace Business.BusinessExtension
                     pianoNotturne = CommonService.SumDoubleHours(pianoNotturne, CommonService.SubtractDoubleHours(pianoDiurne, effettiveDiurne));
                 }
 
-                else if (effettiveNotturne <= pianoNotturne && effettiveDiurne > pianoDiurne)
-                {
-                    pianoDiurne = CommonService.SumDoubleHours(pianoDiurne, CommonService.SubtractDoubleHours(pianoNotturne, effettiveNotturne));
-                }
+                //else if (effettiveNotturne <= pianoNotturne && effettiveDiurne > pianoDiurne)
+                //{
+                //    pianoDiurne = CommonService.SumDoubleHours(pianoDiurne, CommonService.SubtractDoubleHours(pianoNotturne, effettiveNotturne));
+                //}
 
                 /* DIVISIONE ORDINARIE/STRAORDINARIE */
                 //Se ci sono più ore lavorate che piano, assegna lo straordinario
@@ -6732,9 +6757,9 @@ namespace Business.BusinessExtension
 
                             string tipoCantiere = currCant != null ? currCant.Tipo_Cantiere_Can : String.Empty;
 
-                            return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && !regv.Motivazione_Reg_Id.HasValue && tipoCantiere != "ONL";
+                            //return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && !regv.Motivazione_Reg_Id.HasValue && tipoCantiere != "ONL";
                             //riga di codice per report pdf FIDENTE
-                            //return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && /*!regv.Motivazione_Reg_Id.HasValue &&*/ tipoCantiere != "ONL";
+                            return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && /*!regv.Motivazione_Reg_Id.HasValue &&*/ tipoCantiere != "ONL";
                         }).ToList();
                     }
                     else
@@ -7236,13 +7261,13 @@ namespace Business.BusinessExtension
                 {
                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
                     {
-                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntityExportStr(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes));
+                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntityExportStr(baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes));
                     }
                     else 
                     {
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) == 1) 
                         {
-                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
                         }
                         else 
                         {
@@ -7254,7 +7279,7 @@ namespace Business.BusinessExtension
                 {
                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) == 1)
                     {
-                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
                     }
                     else 
                     {
@@ -7859,9 +7884,9 @@ namespace Business.BusinessExtension
                     just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
                     if (isByOtherEntity)
                     {
-                        cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
                     }
-                    //cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                    cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
                     colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToInitializeExport, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
                     List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
                     TotaleCartellini.Add(colTotal);

@@ -482,12 +482,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     giorni = giorni - totalDays;
                 }
-                RangeSetBorders(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, totalHours, ExcelInsertTypeEnum.Content);
-                RangeSetFontSize(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, 8);
+                
                 if (!motivazione)
                 {
-                    
+
+                    RangeSetBorders(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, totalHours, ExcelInsertTypeEnum.Content);
+                    RangeSetFontSize(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, 8);
+
                     RangeSetBorders(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, totalDays, ExcelInsertTypeEnum.Content);
                     RangeSetFontSize(worksheetIndex, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex + 1, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, 8);

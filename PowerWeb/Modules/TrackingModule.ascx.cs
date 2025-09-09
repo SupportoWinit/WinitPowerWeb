@@ -204,6 +204,7 @@ namespace PowerWeb.Modules
                             {
                                 if (distanceE > raggio)
                                 {
+
                                     // Istanzia un nuovo oggetto da visualizzare in mappa e lo aggiunge alla lista
                                     coordinates.Add(new CoordinatesData
                                     {
@@ -464,10 +465,11 @@ namespace PowerWeb.Modules
 
                     }
                 }
-                
-                if (coordinates.Count() > 0)
+                List<CoordinatesData> newCoord = new List<CoordinatesData>();
+                newCoord.AddRange(coordinates.Where(c => c.CurrentLatitude != 0 && c.CurrentLongitude != 0));
+                if (newCoord.Count() > 0)
                 {
-                    ((ASPxCallback)source).JSProperties["cpCoordinatesToShow"] = coordinates;
+                    ((ASPxCallback)source).JSProperties["cpCoordinatesToShow"] = newCoord;
                 }
 
                 else

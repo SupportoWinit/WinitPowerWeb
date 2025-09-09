@@ -549,6 +549,7 @@ namespace PowerWeb.Modules
                     RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
                 }
             }
+
             #endregion
 
             #region Tipologia_Can (Se cambiata da/a Attività indico al sistema di rielaborarne le relative Registrazioni in Tab PendingElab

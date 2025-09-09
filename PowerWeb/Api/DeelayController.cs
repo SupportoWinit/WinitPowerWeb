@@ -159,13 +159,40 @@ namespace PowerWeb.Api
                             oraLimite = orarioFinale.Ora_E.Value.Add(parametri.First().Tolleranza_Limite_Entrata.Value);
                         }
                         foreach (Reg_V reg in cantRegs) {
-                            if (reg.Data_Ora_Fig_ETime.Value > oraLimite && !reg.Ritardo_Mail_Sent) {
-                                Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
-                                TimeSpan differenza = reg.Data_Ora_Fig_ETime.Value - oraLimite;
-                                regE.Ritardo_Durata = (int)differenza.TotalMinutes;
-                                RepoManager.RegRepo.Update(regE,true);
-                                inviaMailRitardi = true;
+                            if (orario.Tab_Orari.Count() == 1)
+                            {
+                                if (reg.Data_Ora_Fig_ETime.Value > oraLimite && !reg.Ritardo_Mail_Sent)
+                                {
+                                    Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                    TimeSpan differenza = reg.Data_Ora_Fig_ETime.Value - oraLimite;
+                                    regE.Ritardo_Durata = (int)differenza.TotalMinutes;
+                                    RepoManager.RegRepo.Update(regE, true);
+                                    inviaMailRitardi = true;
+                                }
                             }
+                            else 
+                            {
+                                var lastOr = orario.Tab_Orari.GroupBy(or => or.Data_Inizio);
+                                if (reg.Data_Ora_Fig_ETime.Value < new TimeSpan(12, 0, 0))
+                                {
+                                    var newOr = lastOr.Last().First(or => or.Ora_E < new TimeSpan(12, 0, 0));
+                                    oraLimite = newOr.Ora_E.Value;
+                                }
+                                else 
+                                {
+                                    var newOr = lastOr.Last().First(or => or.Ora_E > new TimeSpan(12, 0, 0));
+                                    oraLimite = newOr.Ora_E.Value;
+                                }
+                                if (reg.Data_Ora_Fig_ETime.Value > oraLimite && !reg.Ritardo_Mail_Sent)
+                                {
+                                    Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                    TimeSpan differenza = reg.Data_Ora_Fig_ETime.Value - oraLimite;
+                                    regE.Ritardo_Durata = (int)differenza.TotalMinutes;
+                                    RepoManager.RegRepo.Update(regE, true);
+                                    inviaMailRitardi = true;
+                                }
+                            }
+                            
                         }
                     }
                 }

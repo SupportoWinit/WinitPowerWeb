@@ -500,8 +500,8 @@
 
             // Ottieni coordinate dal grid
             var currentGrid = ASPxClientGridView.Cast(grid);
-            var currentLat = currentGrid.GetEditValue("LatitudineGps_Can");
-            var currentLon = currentGrid.GetEditValue("LongitudineGps_Can");
+            var currentLat = currentGrid.GetEditValue("LatitudineGps_Col");
+            var currentLon = currentGrid.GetEditValue("LongitudineGps_Col");
             if (currentLat && currentLon) {
                 currentLat = parseFloat(currentLat.replace(",", "."));
                 currentLon = parseFloat(currentLon.replace(",", "."));

@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxEditors" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <%@ Register TagPrefix="dx" Namespace="DevExpress.Web.ASPxPopupControl" Assembly="DevExpress.Web.v14.1, Version=14.1.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" %>
 <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+<script type="text/javascript" src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="text/javascript">
     
 
@@ -42,7 +43,7 @@
         //Altrimenti chiama la routine per visualizzare la mappa
         else
         {
-            loadMap(s.cpCoordinatesToShow);
+            loadMapNew(s.cpCoordinatesToShow);
         }
     }
 
@@ -50,6 +51,74 @@
     var bingMap = null;
     var pinInfobox;
     var infoboxLayer;
+
+    var osmMaps;
+
+    function loadMapNew(coordinatesToShow) {
+        const mapElement = document.getElementById('bingMap');
+        mapElement.style.visibility = 'visible';
+
+        // Rimuove la mappa esistente se ne esiste una per evitare duplicazioni.
+        if (osmMaps) {
+            osmMaps.remove();
+            osmMaps = null;
+        }
+
+        // Inizializza la mappa Leaflet. La vista iniziale è solo un placeholder.
+        osmMaps = L.map('bingMap').setView([0, 0], 2);
+
+        // Aggiunge il layer di base di OpenStreetMap.
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(osmMaps);
+
+        const showedPinsLoc = [];
+
+        // Mappa per la selezione dinamica delle icone in base al colore.
+        // L'oggetto L.Icon permette di specificare l'icona personalizzata.
+        const iconMap = {
+            0: L.icon({ iconUrl: '/images/green_pushpin.png', iconSize: [32, 32], iconAnchor: [16, 32] }),
+            1: L.icon({ iconUrl: '/images/red_pushpin.png', iconSize: [32, 32], iconAnchor: [16, 32] }),
+            2: L.icon({ iconUrl: '/images/orange_pushpin.png', iconSize: [32, 32], iconAnchor: [16, 32] }),
+        };
+
+        // Itera su tutte le coordinate per creare i marker.
+        coordinatesToShow.forEach((coord, index) => {
+            const lat = parseFloat(String(coord.CurrentLatitude).replace(",", "."));
+            const lon = parseFloat(String(coord.CurrentLongitude).replace(",", "."));
+
+            // La prima registrazione ha un'icona verde, l'ultima può essere rossa (o verde/arancione).
+            let iconType = coord.Color;
+            if (index === 0) {
+                iconType = 0; // Primo pin sempre verde
+            } else if (index === coordinatesToShow.length - 1 && coord.Color === 2) {
+                iconType = 1; // Ultimo pin rosso solo se il colore è 2
+            }
+
+            const pushpinIcon = iconMap[iconType];
+            const pushpinLocation = L.latLng(lat, lon);
+            showedPinsLoc.push(pushpinLocation);
+
+            const marker = L.marker(pushpinLocation, {
+                icon: pushpinIcon
+                
+            }).addTo(osmMaps);
+
+            // Aggiunge un popup (equivalente all'infoBox) al marker.
+            marker.bindPopup(`<b>${coord.InfoboxTitle}</b><br>${coord.InfoboxDescription}`);
+
+            // Aggiunge l'evento click per mostrare il popup
+            marker.on('click', function (e) {
+                marker.openPopup();
+            });
+        });
+
+        // Adatta la vista della mappa per includere tutti i marker.
+        if (showedPinsLoc.length > 0) {
+            const bounds = L.latLngBounds(showedPinsLoc);
+            osmMaps.fitBounds(bounds, { padding: [20, 20] });
+        }
+    }
 
     //Caricamento della mappa e dei pushpin
     function loadMap(coordinatesToShow)

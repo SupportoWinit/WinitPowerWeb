@@ -303,6 +303,8 @@ namespace Business.Repository.Custom
            // RepoManager.Reg_VRepo.delete10mins();
             _log.Info(String.Format("Inizio elaborazione di {0} regs", regs.Count));
 
+            DateTime backupTo = toDate;
+
             // inizializzazione dei dati utilizzati per la scrittura nella tabella messaggi e recupero dell'applicazione attuale (da utilizzare in fase di scrittura tab messaggi)
             ApplicationMessageEnum currentApplication = InitializeElaborateMessagesParameters(elaborateUserId, elaborateDateTime, application);
 
@@ -821,12 +823,14 @@ namespace Business.Repository.Custom
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                             RepoManager.Reg_VRepo.DeleteNewPausaPranzo(tmpRegs);
                             RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
+                            regVs = GetRegVsForRounding(tmpRegs);
                             regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
                             var roundingRegVs1 = regVs.ToList();
                             // Recupera i viaggi appena creati  
                             var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
                                                 regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
-
+                            var pausaReg = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate && regv.Registrazione_Tipo_Reg == 1).ToList();
+                            
                             roundingRegVs1.AddRange(tripsRegvs1);
                             errors.AddRange(RepoManager.Reg_VRepo.NewPausaPranzo(roundingRegVs1));
                         }

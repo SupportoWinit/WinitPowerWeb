@@ -538,9 +538,9 @@ namespace PowerWeb.Modules
 
                     BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(progress, String.Format("Elaborazione: Fase {0} di {1}", ciclo, periods.Count));
 
-                    toElaborateRegs = RepoManager.RegRepo.FindRegsByDataFis(period.Key, period.Value, false).ToList();
+                    toElaborateRegs = RepoManager.RegRepo.FindRegsByDataFis(period.Key, to, false).ToList();
 
-                    errors.AddRange(RepoManager.RegRepo.Elaborate(toElaborateRegs, period.Key, period.Value, true, true));
+                    errors.AddRange(RepoManager.RegRepo.Elaborate(toElaborateRegs, period.Key, to, true, true));
 
                     progress += step;
 
