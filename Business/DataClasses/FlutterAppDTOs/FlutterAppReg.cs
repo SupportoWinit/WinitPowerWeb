@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Business.DataClasses.FlutterAppDTOs
@@ -82,5 +83,11 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("CantiereSelezionato")]
         public string CantiereSel { get; set; }
+    }
+
+    public class IdsResponse
+    {
+        [JsonPropertyName("ids")]
+        public List<int> Ids { get; set; }
     }
 }

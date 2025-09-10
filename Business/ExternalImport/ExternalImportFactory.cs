@@ -32,6 +32,7 @@ namespace Business.ExternalImports
             {
                 ext.GetTimbrature();
                 ext.WriteToFile();
+                ext.SetSynced();
             }
         }
 

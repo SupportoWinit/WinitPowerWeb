@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Business.ExternalImport.Implementations
 {
@@ -180,6 +182,57 @@ namespace Business.ExternalImport.Implementations
         public void WriteToFile()
         {
             fileWriter.WriteToFile(registrazioni,registrazioniOld,registrazioni2);
+        }
+
+        /// <summary>
+        /// Metodo per confermare la ricezione delle timbrature ed effettuare la chiamata api per segnalare le timbrature come inviate
+        /// </summary>
+        public async void SetSynced()
+        {
+            string apiEndpoint = "/app/ws/setSynced";
+            List<int> ids = new List<int>();
+
+            //venogno prelevati gli id delle timbrature ricavate dal backend app e inseriti nella lista per la chiamata api, sia di registrazioni che di registrazioni2
+            foreach (var reg in registrazioni)
+            {
+                ids.Add(reg.acquisizioneId);
+            }
+
+            foreach (var reg in registrazioni2)
+            {
+                ids.Add(reg.acquisizioneId);
+            }
+
+            try
+            {
+                //Oggetto per il content del body per la chiamata api 
+                IdsResponse idsPayload = new IdsResponse { Ids = ids };
+                string jsonContent = JsonSerializer.Serialize(idsPayload);  //serializzazione dell'oggetto
+
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                    client.Timeout = TimeSpan.FromMinutes(1);
+                    HttpResponseMessage resp = client.PostAsync(bridge + apiEndpoint, content); //chiamata api con json body
+
+                    string respBody = resp.Content.ReadAsStringAsync();
+                    if (resp.StatusCode == System.Net.HttpStatusCode.OK) _log.InfoFormat("Timbrature acquisitore app contrassegnate inviate correttamente");
+                    else _log.ErrorFormat("Errore nella contrassegnazione delle timbrature del backend app come inviate: " +
+                        respBody);
+                }
+            }
+            catch (TimeoutException te)
+            {
+                _log.ErrorFormat("Timeout nella contrassegnazione delle timbrature acquisitore app: " +
+                    te.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Errore nel metodo della contrassegnazione delle timbrature app:" +
+                        ex.Message);
+            }
+
+
         }
     }
 }
