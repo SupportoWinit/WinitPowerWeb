@@ -189,48 +189,59 @@ namespace Business.ExternalImport.Implementations
         /// </summary>
         public void SetSynced()
         {
-            _ = Task.Run(async () =>
-            {
-                string apiEndpoint = "/app/ws/setSynced";
-                List<int> ids = new List<int>();
+            string apiEndpoint = "/app/ws/setSynced";
+            List<int> ids = new List<int>();
 
+            if (registrazioni != null)
+            {
                 foreach (var reg in registrazioni)
                 {
                     ids.Add(reg.acquisizioneId);
                 }
+            }
 
+            if (registrazioni2 != null)
+            {
                 foreach (var reg in registrazioni2)
                 {
                     ids.Add(reg.acquisizioneId);
                 }
+            }
 
-                try
+            if (ids.Count > 0)
+            {
+                _ = Task.Run(async () =>
                 {
-                    IdsResponse idsPayload = new IdsResponse { Ids = ids };
-                    string jsonContent = JsonSerializer.Serialize(idsPayload);
 
-                    using (HttpClient client = new HttpClient())
+                    try
                     {
-                        HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                        client.Timeout = TimeSpan.FromMinutes(1);
-                        HttpResponseMessage resp = await client.PostAsync(bridge + apiEndpoint, content);
+                        IdsResponse idsPayload = new IdsResponse { Ids = ids };
+                        string jsonContent = JsonSerializer.Serialize(idsPayload);
 
-                        string respBody = await resp.Content.ReadAsStringAsync();
-                        if (resp.StatusCode == System.Net.HttpStatusCode.OK)
-                            _log.InfoFormat("Timbrature acquisitore app contrassegnate inviate correttamente");
-                        else
-                            _log.ErrorFormat("Errore nella contrassegnazione delle timbrature del backend app come inviate: " + respBody);
+                        using (HttpClient client = new HttpClient())
+                        {
+                            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                            client.Timeout = TimeSpan.FromMinutes(1);
+                            String endpoint = "https://" + bridge.Host + apiEndpoint;
+                            HttpResponseMessage resp = await client.PostAsync(endpoint, content);
+
+                            string respBody = await resp.Content.ReadAsStringAsync();
+                            if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+                                _log.InfoFormat("Timbrature acquisitore app contrassegnate inviate correttamente");
+                            else
+                                _log.ErrorFormat("Errore nella contrassegnazione delle timbrature del backend app come inviate: " + respBody);
+                        }
                     }
-                }
-                catch (TimeoutException te)
-                {
-                    _log.ErrorFormat("Timeout nella contrassegnazione delle timbrature acquisitore app: " + te.Message);
-                }
-                catch (Exception ex)
-                {
-                    _log.ErrorFormat("Errore nel metodo della contrassegnazione delle timbrature app:" + ex.Message);
-                }
-            });
+                    catch (TimeoutException te)
+                    {
+                        _log.ErrorFormat("Timeout nella contrassegnazione delle timbrature acquisitore app: " + te.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.ErrorFormat("Errore nel metodo della contrassegnazione delle timbrature app:" + ex.Message);
+                    }
+                });
+            }
         }
 
     }
