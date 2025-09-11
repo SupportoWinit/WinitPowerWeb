@@ -213,9 +213,9 @@ namespace Business.ExternalImport.Implementations
                 {
                     HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                     client.Timeout = TimeSpan.FromMinutes(1);
-                    HttpResponseMessage resp = client.PostAsync(bridge + apiEndpoint, content); //chiamata api con json body
+                    HttpResponseMessage resp = await client.PostAsync(bridge + apiEndpoint, content); //chiamata api con json body
 
-                    string respBody = resp.Content.ReadAsStringAsync();
+                    string respBody = await resp.Content.ReadAsStringAsync();
                     if (resp.StatusCode == System.Net.HttpStatusCode.OK) _log.InfoFormat("Timbrature acquisitore app contrassegnate inviate correttamente");
                     else _log.ErrorFormat("Errore nella contrassegnazione delle timbrature del backend app come inviate: " +
                         respBody);

@@ -14,6 +14,9 @@ namespace Business.ExternalImports
         void GetTimbrature(DateTime from, DateTime to);
 
         void WriteToFile();
-        
+
+        void SetSynced();
+
+
     }
 }
