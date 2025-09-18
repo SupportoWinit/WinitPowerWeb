@@ -46,7 +46,7 @@ namespace PowerWeb.Api
                     _log.InfoFormat("Inizio a ciclare per il cantiere {0}", cantiere.Descrizione_Can);
                     // Per ogni cantiere ciclo il periodo richiesto
                     DateTime date = From;
-                    while (date < To) 
+                    while (date <= To) 
                     {
                         _log.InfoFormat("Sto ciclando il giorno {0}", date.ToString());
                         string day = "";
