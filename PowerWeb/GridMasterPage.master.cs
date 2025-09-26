@@ -3072,7 +3072,7 @@ namespace PowerWeb
 
                         if (cmbLayout.Text.ToUpper() != "DEFAULT")
                         {
-                            if (PowerWebContext.Current.UserLevel.Funz_Aut >= Common.Properties.Settings.Default.Admin_Level)
+                            if (PowerWebContext.Current.UserLevel.Funz_Aut > Common.Properties.Settings.Default.Admin_Level)
                             //Se l'utente ha un Livello >= al Livello di Admin definito in Tab Param allora il Layout veine salvato SENZA UTENTE
                             {
                                 Tab_DataGrid savedLayout = RepoManager.Tab_DataGridRepo.FirstOrDefault(tdg => tdg.Nome_DataGrid == GridView.ID

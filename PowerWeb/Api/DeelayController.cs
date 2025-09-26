@@ -183,6 +183,14 @@ namespace PowerWeb.Api
                                     var newOr = lastOr.Last().First(or => or.Ora_E > new TimeSpan(12, 0, 0));
                                     oraLimite = newOr.Ora_E.Value;
                                 }
+                                if (cantiere.Tolleranza_Limite_Entrata_Cant != null)
+                                {
+                                    oraLimite = orarioFinale.Ora_E.Value.Add(cantiere.Tolleranza_Limite_Entrata_Cant.Value);
+                                }
+                                else if (parametri.First().Tolleranza_Limite_Entrata != null)
+                                {
+                                    oraLimite = orarioFinale.Ora_E.Value.Add(parametri.First().Tolleranza_Limite_Entrata.Value);
+                                }
                                 if (reg.Data_Ora_Fig_ETime.Value > oraLimite && !reg.Ritardo_Mail_Sent)
                                 {
                                     Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);

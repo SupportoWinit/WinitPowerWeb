@@ -218,7 +218,8 @@ namespace Common
         NewPausaPranzo,
         CountEccedenza,
         ShowActivityInModifyRegs,
-        LimitDurationRounding
+        LimitDurationRounding,
+        CoupleOutOfOrderRegs
     }
 
     public enum ClockAppsOperationEnum

@@ -594,32 +594,32 @@ namespace PowerWeb.Modules
 
             #region Gestione attività automatica
 
-            var tipoIntervento = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);
-
-            if (e.NewValues.Contains(tipoIntervento))
-            {
-                string TipoInterventoCantOld = (string)e.OldValues[tipoIntervento];
-                string TipoInterventoCantNew = (string)e.NewValues[tipoIntervento];
-                Tab_Decod newTd = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == TipoInterventoCantNew);
-                Utenti winit = RepoManager.UtentiRepo.FirstOrDefault(ut => ut.Codice_Utente == "WINIT");
-                Cant_Note newAssoc = new Cant_Note();
-                newAssoc.Cant_Id = currentCant.Cant_Id;
-                DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,00,00,00);
-                newAssoc.Data_Nota_Can_Note = ConvertToSmallDateTime(today);
-                newAssoc.Data_Registrazione_Can_Note = ConvertToSmallDateTime(today);
-                newAssoc.DataOraUltimaModifica_Can_Note = ConvertToSmallDateTime(today);
-                newAssoc.Nota_Can_Note = newTd.Decodifica_Tab;
-                newAssoc.Utenti_Id = winit.Utenti_Id;
-                newAssoc.Tipo_Nota_Can_Note = "";
-
-                if (TipoInterventoCantOld != TipoInterventoCantNew)
-                //Se il Cantiere ha cambiato l'intervento creo una nuova note per inserirlo automaticamente
-                {
-                    RepoManager.Cant_NoteRepo.Add(newAssoc);
-                    RepoManager.Cant_NoteRepo.SaveChanges();
-                }
-            }
-
+            //var tipoIntervento = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);
+            //
+            //if (e.NewValues.Contains(tipoIntervento))
+            //{
+            //    string TipoInterventoCantOld = (string)e.OldValues[tipoIntervento];
+            //    string TipoInterventoCantNew = (string)e.NewValues[tipoIntervento];
+            //    Tab_Decod newTd = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == TipoInterventoCantNew);
+            //    Utenti winit = RepoManager.UtentiRepo.FirstOrDefault(ut => ut.Codice_Utente == "WINIT");
+            //    Cant_Note newAssoc = new Cant_Note();
+            //    newAssoc.Cant_Id = currentCant.Cant_Id;
+            //    DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,00,00,00);
+            //    newAssoc.Data_Nota_Can_Note = ConvertToSmallDateTime(today);
+            //    newAssoc.Data_Registrazione_Can_Note = ConvertToSmallDateTime(today);
+            //    newAssoc.DataOraUltimaModifica_Can_Note = ConvertToSmallDateTime(today);
+            //    newAssoc.Nota_Can_Note = newTd.Decodifica_Tab;
+            //    newAssoc.Utenti_Id = winit.Utenti_Id;
+            //    newAssoc.Tipo_Nota_Can_Note = "";
+            //
+            //    if (TipoInterventoCantOld != TipoInterventoCantNew)
+            //    //Se il Cantiere ha cambiato l'intervento creo una nuova note per inserirlo automaticamente
+            //    {
+            //        RepoManager.Cant_NoteRepo.Add(newAssoc);
+            //        RepoManager.Cant_NoteRepo.SaveChanges();
+            //    }
+            //}
+            //
             #endregion
 
             try

@@ -2107,7 +2107,8 @@ namespace PowerWeb.Modules
                 Reg_V newRegV = RepoManager.Reg_VRepo.Init();
                 newRegV.Data_Reg = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
                 newRegV.Col_Id = EditRegVs.Where(regv => regv.RegE != 0).Select(regv => regv.Col_Id).FirstOrDefault();
-                newRegV.Cant_Id = null;
+                newRegV.Cant_Id = EditRegVs.Where(regv => regv.RegE != 0).Select(regv => regv.Cant_Id).FirstOrDefault();
+                //newRegV.Cant_Id = null;
                 newRegV.Registrazione_Stato_Reg = (int)RegStateEnum.None;
                 newRegV.Registrazione_Tipo_Reg = (int)RegTypeEnum.None;
 
