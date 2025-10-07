@@ -261,7 +261,7 @@ namespace PowerWeb.Modules
             isChanged = prevRegV.Cant_Id != editedRegv.Cant_Id || prevRegV.Motivazione_Reg_Id != editedRegv.Motivazione_Reg_Id
                 || prevRegV.Data_Ora_Fis_E != editedRegv.Data_Ora_Fis_E || prevRegV.Data_Ora_Fis_U != editedRegv.Data_Ora_Fis_U
                 || editedRegv.Registrazione_Bloccata != prevRegV.Registrazione_Bloccata || editedRegv.EntrataEU != prevRegV.EntrataEU
-                || editedRegv.UscitaEU != prevRegV.UscitaEU || editedRegv.Activity_Evaluation != prevRegV.Activity_Evaluation;
+                || editedRegv.UscitaEU != prevRegV.UscitaEU || editedRegv.Activity_Evaluation != prevRegV.Activity_Evaluation || prevRegV.Note_Reg != editedRegv.Note_Reg;
 
             return isChanged;
         }
@@ -295,6 +295,7 @@ namespace PowerWeb.Modules
                 GridViewDataColumn EntrataEU = gvRegVMEdit.Columns[CommonService.GetPropertyName(() => _regVStub.EntrataEU)] as GridViewDataColumn;
                 GridViewDataColumn UscitaEU = gvRegVMEdit.Columns[CommonService.GetPropertyName(() => _regVStub.UscitaEU)] as GridViewDataColumn;
                 GridViewDataColumn ActivityEvaluation = gvRegVMEdit.Columns[CommonService.GetPropertyName(() => _regVStub.Activity_Evaluation)] as GridViewDataColumn;
+                GridViewDataColumn NoteReg = gvRegVMEdit.Columns[CommonService.GetPropertyName(() => _regVStub.Note_Reg)] as GridViewDataColumn;
 
 
                 for (int i = start; i < end; i++)
@@ -313,6 +314,7 @@ namespace PowerWeb.Modules
                     ASPxTextBox txtEntrataEU = (ASPxTextBox)gvRegVMEdit.FindRowCellTemplateControl(i, EntrataEU, "txtEntrataEU");
                     ASPxTextBox txtUscitaEU = (ASPxTextBox)gvRegVMEdit.FindRowCellTemplateControl(i, UscitaEU, "txtUscitaEU");
                     ASPxComboBox cbActivity_Evaluation = (ASPxComboBox)gvRegVMEdit.FindRowCellTemplateControl(i, ActivityEvaluation, "cbActivity_Evaluation");
+                    ASPxTextBox txtNoteReg = (ASPxTextBox)gvRegVMEdit.FindRowCellTemplateControl(i, NoteReg, "txtNote_Reg");
 
                     //si vanno ad estrarre i valori dalla colonna
                     int regU = Convert.ToInt32(gvRegVMEdit.GetRowValues(i, CommonService.GetPropertyName(() => _regVStub.RegU)));
@@ -331,6 +333,9 @@ namespace PowerWeb.Modules
                     string uscitaEU = null;
                     if (txtUscitaEU != null)
                         uscitaEU = String.IsNullOrEmpty(txtUscitaEU.Text) ? null : txtUscitaEU.Text;
+                    string noteReg = null;
+                    if (txtNoteReg != null)
+                        noteReg = String.IsNullOrEmpty(txtNoteReg.Text) ? null : txtNoteReg.Text;
 
 
                     int actEvaluationId = Convert.ToInt32(cbActivity_Evaluation.Value);
@@ -356,7 +361,7 @@ namespace PowerWeb.Modules
                             }
 
                             //viene creata una nuova nuova registrazione
-                            newRegV = initReg_V(0, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, "");
+                            newRegV = initReg_V(0, regU, tmpData_Ora_fis_E, tmpData_Ora_fis_U.Value, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, "", noteReg);
                         }
                     }
 
@@ -365,7 +370,7 @@ namespace PowerWeb.Modules
                         if (teData_Ora_Fis_E == null || teData_Ora_Fis_U == null)
                             continue;
 
-                        newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, teData_Ora_Fis_U.Text);
+                        newRegV = initReg_V(regE, regU, teData_Ora_Fis_E.Date, teData_Ora_Fis_U.Date, cantId, motivazioneId, isUTimeSameDayE, blockedReg, registrazioneStatoReg, entrataEU, uscitaEU, actEvaluationId, teData_Ora_Fis_U.Text, noteReg);
                     }
                     // viene in ogni caso controllata se cambia solamente una reg non nuova; in caso la reg sia nuova viene comunque aggiunta per l'elaborazione
                     if (checkChanged && newRegV.RegE != 0)
@@ -520,7 +525,7 @@ namespace PowerWeb.Modules
         /// <param name="actEvaluationId">The act evaluation identifier.</param>
         /// <returns></returns>
         private Reg_V initReg_V(int regE, int regU, DateTime data_Ora_Fis_E, DateTime data_Ora_Fis_U, int cantId, int motivazioneId,
-            bool isUTimeSameDayE, bool blockedReg, int registrazioneStatoReg, string entrataEU, string uscitaEU, int actEvaluationId, string valueU)
+            bool isUTimeSameDayE, bool blockedReg, int registrazioneStatoReg, string entrataEU, string uscitaEU, int actEvaluationId, string valueU, string noteReg)
         {
             Reg_V oldRegV = null;
             if (regE != 0)
@@ -561,6 +566,23 @@ namespace PowerWeb.Modules
 
 
             Reg_V newRegV = RepoManager.Reg_VRepo.Init();
+            if (noteReg != "")
+            {
+                Reg currentRegE = RepoManager.RegRepo.FirstOrDefault(r => r.Reg_Id == regE);
+                if (currentRegE != null) 
+                {
+                    currentRegE.Note_Reg = noteReg;
+                    try
+                    {
+                        RepoManager.RegRepo.Update(currentRegE);
+                        RepoManager.RegRepo.SaveChanges();
+                    }
+                    catch (Exception e) { }   
+                    
+                }
+                newRegV.Note_Reg = noteReg;
+               
+            }
             newRegV.RegE = regE;
             newRegV.RegU = regU;
             newRegV.Data_Reg = data_Reg;
@@ -859,7 +881,26 @@ namespace PowerWeb.Modules
             }
             else currQueryable = emptyQueryable;
 
-            e.QueryableSource = currQueryable;
+            var regsByCol = currQueryable.ToList().GroupBy(c => c.Col_Id).Select(r => new { colId = r.Key.Value, Oggetti = r.ToList()}).ToList();
+            List<Reg_V> returnRegs = new List<Reg_V>();
+            foreach (var reg in regsByCol) 
+            {
+                if (reg.colId != null) 
+                {
+                    Col currentCol = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == reg.colId);
+                    if (currentCol.Data_Disponibilita_Fine_Col != null)
+                    {
+                        var regs = reg.Oggetti.Where(r => r.Data_Reg < currentCol.Data_Disponibilita_Fine_Col.Value).ToList();
+                        returnRegs.AddRange(regs);
+                    }
+                    else 
+                    {
+                        returnRegs.AddRange(reg.Oggetti); 
+                    }
+                }
+            }
+            e.QueryableSource = returnRegs.AsQueryable();
+            //e.QueryableSource = currQueryable;
 
 
         }
@@ -1829,6 +1870,8 @@ namespace PowerWeb.Modules
                                 newRegE.Registrazione_Lat_Orig = oldRegE.Registrazione_Lat_Orig;
                                 newRegE.Registrazione_Long_Orig = oldRegE.Registrazione_Long_Orig;
                             }
+                            _log.Info("Inserimento Note");
+                            newRegE.Note_Reg = oldRegE.Note_Reg;
 
                             // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
                             RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);

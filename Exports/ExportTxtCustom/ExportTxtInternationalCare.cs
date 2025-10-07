@@ -198,23 +198,27 @@ namespace Exports.ExportTxtCustom
                             {
                                 stringaFinale = stringaFinale + "" + ToCent(totaleGiornaliero % 60).ToString();
                             }
+                            string motFinale = mot.Chiave_Tab;
+                            if (mot.Chiave_Tab.Length == 1) {
+                                motFinale = mot.Chiave_Tab + " ";
+                            }
                             switch (j)
                             {
                                 case 1:
                                     oreGiustificativo1 = oreGiustificativo1 + stringaFinale + ";";
-                                    giustificativo1 = giustificativo1 + mot.Chiave_Tab + ";";
+                                    giustificativo1 = giustificativo1 + motFinale + ";";
                                     break;
                                 case 2:
                                     oreGiustificativo2 = oreGiustificativo2 + stringaFinale + ";";
-                                    giustificativo2 = giustificativo2 + mot.Chiave_Tab + ";"; ;
+                                    giustificativo2 = giustificativo2 + motFinale + ";"; ;
                                     break;
                                 case 3:
                                     oreGiustificativo3 = oreGiustificativo3 + stringaFinale + ";";
-                                    giustificativo3 = giustificativo3 + mot.Chiave_Tab + ";"; ;
+                                    giustificativo3 = giustificativo3 + motFinale + ";"; ;
                                     break;
                                 case 4:
                                     oreGiustificativo4 = oreGiustificativo4 + stringaFinale + ";";
-                                    giustificativo4 = giustificativo4 + mot.Chiave_Tab + ";"; ;
+                                    giustificativo4 = giustificativo4 + motFinale + ";"; ;
                                     break;
                             }
                             lastDate = dayRegs.Key.Value;

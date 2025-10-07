@@ -18,16 +18,19 @@ namespace PowerWeb
 
             if (!File.Exists(Server.MapPath(@"\Scripts\debug.txt")))
             {
-                if (PowerWebContext.Current.User.Codice_Utente != "APIUSER") 
+                if (PowerWebContext.Current.User != null) 
                 {
-                    BusinessService.CheckFirstTimeInitializeLicence();
+                    if (PowerWebContext.Current.User.Codice_Utente != "APIUSER") 
+                    {
+                        BusinessService.CheckFirstTimeInitializeLicence();
 
-                    BusinessService.CheckFirstTimeIntializeModulesActivation();
+                        BusinessService.CheckFirstTimeIntializeModulesActivation();
 
-                    BusinessService.CheckFirstTimeIntializeWinitPasswordUpdate();
+                        BusinessService.CheckFirstTimeIntializeWinitPasswordUpdate();
 
-                    var paramsRow = RepoManager.ParamRepo.ParametersRow;
-                    expiryDate = BusinessService.GetExpirationDate(paramsRow);
+                        var paramsRow = RepoManager.ParamRepo.ParametersRow;
+                        expiryDate = BusinessService.GetExpirationDate(paramsRow);
+                    }
                 }
             }
             else

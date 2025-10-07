@@ -218,7 +218,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             WriteTimesheetHeader();
 
-                            rowIndex += 2;
+                            if (parameters.Flag_Monte_Ore != 0)
+                            {
+                                WriteTimesheetColMountMinutes(col.Value);
+                            }
+                            else
+                            {
+                                rowIndex += 2;
+                            } 
                         }
 
                         WriteTimesheetColName(col.Key);
@@ -315,12 +322,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             rowIndex += 5;
         }
 
-        private void WriteTimesheetTitle()
-        {
-            CellInsertValue(worksheetIndex, 1, rowIndex, "CLASSIC", ExcelInsertTypeEnum.Content);
-            rowIndex += 2;
-        }
-
         private void WriteTimesheetColName(Col col)
         {
             RangeUnion(worksheetIndex, 1, rowIndex, 5, rowIndex);
@@ -328,6 +329,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             CellInsertValue(worksheetIndex, 1, rowIndex, col.CognomeNome_Col, ExcelInsertTypeEnum.Content);
 
             rowIndex++;
+        }
+
+        private void WriteTimesheetColMountMinutes(Dictionary<string, List<TimesheetModuleItem>> cartellini)
+        {
+            RangeUnion(worksheetIndex, 1, rowIndex, 5, rowIndex);
+            RangeSetFontBold(worksheetIndex, 1, rowIndex, 5, rowIndex);
+            CellInsertValue(worksheetIndex, 1, rowIndex, "Monte Ore Residuo: " + cartellini["justification"].First(c => c.Justification == "Delta").LastMonthlyHours, ExcelInsertTypeEnum.Content);
+            rowIndex += 2;
         }
 
         private void WriteTimesheetColHeader()
@@ -514,7 +523,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         string valueToPrint = "";
                         if (baseDuration < 0 && baseDuration > -1)
                         {
-                            valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                            valueToPrint = "" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
                         }
                         else
                         {
@@ -532,7 +541,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             valueToPrint = "";
                             if (baseDuration < 0 && baseDuration > -1)
                             {
-                                valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                                valueToPrint = "" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
                             }
                             else
                             {

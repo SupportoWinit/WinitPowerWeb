@@ -1145,7 +1145,7 @@ namespace Business.RegFileCreators
                             {
                                 attivitaFinale = "";
                             }
-                            if (fluReg.Verso == "U") 
+                            if (fluReg.Verso == "U" && attivitaFinale == "") 
                             {
                                 Fru fru_id = RepoManager.FruRepo.FirstOrDefault(f => f.Codice_Fru == fluReg.CodicePru);
 
@@ -1216,9 +1216,9 @@ namespace Business.RegFileCreators
                                                 if (cantNote.Count > 0)
                                                 {
                                                     Cant_Note cnt = getLastAtt(cantNote, oggi);
-                                                    if (cnt != default(Cant_Note)) 
+                                                    if (cnt != null) 
                                                     {
-                                                        Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note);
+                                                        Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note && can.DisAbilitazione_Can);
                                                         List<Fru_Cant> fru_Atts = RepoManager.Fru_CantRepo.GetAllQueryable(fr => fr.Cant_Id == att.Cant_Id).OrderBy(fr => fr.Abilitazione_Data_Inizio_Fru_Can).ToList();
                                                         attivitaFinale = fru_Atts.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault().Codice_Fru;
                                                     }
@@ -1236,9 +1236,12 @@ namespace Business.RegFileCreators
                                                 if (cantNote.Count > 0)
                                                 {
                                                     Cant_Note cnt = getLastAtt(cantNote,oggi);
-                                                    Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note);
-                                                    List<Fru_Cant> fru_Atts = RepoManager.Fru_CantRepo.GetAllQueryable(fr => fr.Cant_Id == att.Cant_Id).OrderBy(fr => fr.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                                                    attivitaFinale = fru_Atts.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault().Codice_Fru;
+                                                    if (cnt != null) 
+                                                    {
+                                                        Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note);
+                                                        List<Fru_Cant> fru_Atts = RepoManager.Fru_CantRepo.GetAllQueryable(fr => fr.Cant_Id == att.Cant_Id).OrderBy(fr => fr.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                                        attivitaFinale = fru_Atts.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault().Codice_Fru;
+                                                    }
                                                 }
                                             }
                                         }  
@@ -1323,6 +1326,10 @@ namespace Business.RegFileCreators
                             returnValue = lastCnt;
                         }
                     }
+                }
+                else 
+                {
+                    returnValue = lastCnt;
                 }
             }
 

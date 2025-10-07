@@ -577,7 +577,7 @@ namespace PowerWeb.Modules
 
                                                     regVsToAdd.Add(newRegV);
                                                 }
-                                                else if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
+                                                else
                                                 {
                                                     var newRegV = RepoManager.Reg_VRepo.Init();
                                                     newRegV.RegE = ++lastId;

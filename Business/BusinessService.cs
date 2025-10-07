@@ -1496,6 +1496,7 @@ namespace Business
         public static DateTime GetExpirationDate(Domain.Param paramsRow)
         //Decripta la data Scadenza
         {
+            _log.InfoFormat("Inizio recupero data scadenza");
             long expTicks = 0;
 
             //viene inizializzata la data di scadenza
@@ -1506,6 +1507,7 @@ namespace Business
             {
                 if (RSACSP != null)
                 {
+                    _log.InfoFormat("Inizio a decodificare la data");
                     //si va decriptare usando la chiave pubblica la data di attivazione
                     byte[] descrActivation = RSACSP.Decrypt(Convert.FromBase64String(paramsRow.ActivationDate), false);
 

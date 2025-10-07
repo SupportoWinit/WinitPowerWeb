@@ -7,6 +7,7 @@ using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraRichEdit.Layout;
 using Domain;
 using log4net;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -4094,12 +4095,25 @@ namespace Business.Repository.Custom
                 foreach (Cant cantiere in cantieriDaChiudere)
                 {
                     DateTime now = DateTime.Now;
-                    DateTime startOfDay = new DateTime(now.Year,now.Month,now.Day - 1,0,15,0);
                     DateTime fromArrot = new DateTime(now.Year,now.Month,now.Day,cantiere.Turno8_Can.Value.Hours,cantiere.Turno8_Can.Value.Minutes,cantiere.Turno8_Can.Value.Seconds);
                     DateTime toArrot = new DateTime(now.Year, now.Month, now.Day, cantiere.Turno9_Can.Value.Hours, cantiere.Turno9_Can.Value.Minutes, cantiere.Turno9_Can.Value.Seconds);
-                    if (now > toArrot) 
+                    DateTime yesterday = DateTime.Now.AddDays(-1);
+                    if (now > toArrot)
                     {
                         regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
+                    }
+                    else 
+                    {
+                        DateTime today = new DateTime(now.Year, now.Month, now.Day);
+                        DateTime toConf = new DateTime(to.Year, to.Month,to.Day);
+                        if (toConf < today)
+                        {
+                            regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
+                        }
+                        else
+                        {
+                            regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < yesterday)).ToList());
+                        }
                     }    
                 }
 

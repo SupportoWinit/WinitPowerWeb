@@ -219,7 +219,8 @@ namespace Common
         CountEccedenza,
         ShowActivityInModifyRegs,
         LimitDurationRounding,
-        CoupleOutOfOrderRegs
+        CoupleOutOfOrderRegs,
+        UseAutoActivity
     }
 
     public enum ClockAppsOperationEnum
@@ -1402,7 +1403,12 @@ namespace Common
         /// <summary>
         /// Ricerca di tutte le registrazioni di tipo ONL (ore non lavorate)
         /// </summary>
-        OnlRegs
+        OnlRegs,
+
+        /// <summary>
+        /// Ricerca di tutte le registrazioni lavorate compresi arrotondamenti per durata e viaggi
+        /// </summary>
+        Komplett
     }
 
     /// <summary>
