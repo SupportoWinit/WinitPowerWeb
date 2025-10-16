@@ -242,7 +242,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             RangeSetTextVerticalAlignment(worksheetIndex, columnIndex + 1, rowIndex, day.Day + 1, rowIndex, ExcelVerticalAlignment.Center);
                         }
 
-                        string totalHours = FromTotalMinutesToFormattedType(cartRow.TotalMinutes);
                         if (justificationDec == "MALATTIA")
                         {
                             RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -261,8 +260,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         }
                         else
                         {
+                            //Viene considerato il range per la somma della riga, dalla colonna 1 alla colonna del numero dei giorni
+                            //come riga viene considerata quella attuale
+                            string rangeFormula = $"{ColumnIndexToNameConversion(1)}{rowIndex}:" +
+                                $"{ColumnIndexToNameConversion(cartRow.DaysHours.Count + 1)}{rowIndex}";
+
+                            //Formula automatica per la somma dei valori della riga
+                            string formula = $"=SUM({rangeFormula})";
+
                             RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                            CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, totalHours, Common.ExcelInsertTypeEnum.Content);
+                            CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
 
                             RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                             CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.TotalDays, Common.ExcelInsertTypeEnum.Content);
@@ -294,26 +301,38 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             ILookup<int, Tuple<double, TimeSpan?, TimeSpan?>> lookupCartellini = cartTotale.Where(cart => cart.Justification != "Totale").SelectMany(cart => cart.DaysHours).ToLookup(c => c.Key, x => x.Value); //Crea una lookup ( uguale ad un dictionary <int,list<...>> che quindi permette du raggruppare valori secondo la stessa chiave)
 
+            //Variabili per la formula e il range da usare
+            string formula;
+            string rangeFormula;
+
             foreach (var dayHourList in lookupCartellini)
             {
+                //Come rang viene scelta la colonna attuale dalla riga iniziale dei valori alla riga attuale -1
+                rangeFormula = $"{ColumnIndexToNameConversion(dayHourList.Key + 1)}{rowIndex - cartTotale.Count()}:" +
+                $"{ColumnIndexToNameConversion(dayHourList.Key + 1)}{rowIndex - 1}";
 
-                double sommaGiornaliera = dayHourList.Sum(y => y.Item1);
+                //Formula automatica da inserire in Excel
+                formula = $"=SUM({rangeFormula})";
+
                 RangeSetBorders(worksheetIndex, dayHourList.Key + 1, rowIndex, dayHourList.Key + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-
-                string valueToPrint = FromTotalMinutesToFormattedType((int)sommaGiornaliera);
-                CellInsertValue(worksheetIndex, dayHourList.Key + 1, rowIndex, valueToPrint, Common.ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, dayHourList.Key + 1, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
 
                 RangeSetTextHorizontalAlignment(worksheetIndex, dayHourList.Key + 1, rowIndex, dayHourList.Key + 1, rowIndex, ExcelHorizontalAlignment.Center);
                 RangeSetTextVerticalAlignment(worksheetIndex, dayHourList.Key + 1, rowIndex, dayHourList.Key + 1, rowIndex, ExcelVerticalAlignment.Center);
 
             }
 
-            int totalHours = cartTotale.Where(cart => cart.Justification != "Totale").Select(cart => cart.TotalMinutes).Sum();
+            
+            //Il range viene considerato nella colonna attuale e dala riga attuale -numero cantieri fino alla riga attuale -1
+            rangeFormula = $"{ColumnIndexToNameConversion(lookupCartellini.Count + 2)}{rowIndex - cartTotale.Count()} :" +
+                $"{ColumnIndexToNameConversion(lookupCartellini.Count + 2)}{rowIndex - 1}";
 
-            string formattedTotal = FromTotalMinutesToFormattedType((int)totalHours);
+            string finalFormula = $"=SUM({rangeFormula})";
+             
+
             RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 30);
             RangeSetBorders(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            CellInsertValue(worksheetIndex, lookupCartellini.Count + 2, rowIndex, formattedTotal, Common.ExcelInsertTypeEnum.Content);
+            CellInsertValue(worksheetIndex, lookupCartellini.Count + 2, rowIndex, finalFormula, Common.ExcelInsertTypeEnum.Formula);
             RangeSetTextHorizontalAlignment(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, ExcelHorizontalAlignment.Center);
             RangeSetTextVerticalAlignment(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, ExcelVerticalAlignment.Center);
             rowIndex++;
