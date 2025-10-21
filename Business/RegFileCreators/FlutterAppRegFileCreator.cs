@@ -1165,7 +1165,7 @@ namespace Business.RegFileCreators
                                             Fru_Cant lastFru = default(Fru_Cant);
                                             foreach (Fru_Cant assoc in fru_Cants)
                                             {
-                                                if (oggi > assoc.Abilitazione_Data_Inizio_Fru_Can) 
+                                                if (oggi >= assoc.Abilitazione_Data_Inizio_Fru_Can) 
                                                 {
                                                     //se la data di oggi è maggiore della data di associazione controllo se l'ultima data è default
                                                     if (lastDate == default(DateTime))
@@ -1185,7 +1185,7 @@ namespace Business.RegFileCreators
                                                     else 
                                                     {
                                                         //se non è default vuol dire che la data di oggi è più grande dell'associazione precedente
-                                                        if (oggi > assoc.Abilitazione_Data_Inizio_Fru_Can)
+                                                        if (oggi >= assoc.Abilitazione_Data_Inizio_Fru_Can)
                                                         {
                                                             //se la data di oggi è maggiore a quella d'associazione controllo se è l'ultimo della lista
                                                             if (assoc == fru_Cants.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault())
@@ -1218,7 +1218,7 @@ namespace Business.RegFileCreators
                                                     Cant_Note cnt = getLastAtt(cantNote, oggi);
                                                     if (cnt != null) 
                                                     {
-                                                        Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note && can.DisAbilitazione_Can);
+                                                        Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note && !can.DisAbilitazione_Can);
                                                         List<Fru_Cant> fru_Atts = RepoManager.Fru_CantRepo.GetAllQueryable(fr => fr.Cant_Id == att.Cant_Id).OrderBy(fr => fr.Abilitazione_Data_Inizio_Fru_Can).ToList();
                                                         attivitaFinale = fru_Atts.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault().Codice_Fru;
                                                     }
