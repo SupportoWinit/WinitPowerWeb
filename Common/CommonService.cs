@@ -1545,7 +1545,7 @@ namespace Common
                 }
 
                 //Password dell'account dell'indirizzo del mittente
-                const string fromPassword = "Power25!!";
+                const string fromPassword = "Power2025!";
 
                 //Prepara il client SMTP
                 var smtp = new SmtpClient
@@ -1555,7 +1555,7 @@ namespace Common
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("dtezzon@winitsrl.it", fromPassword)
+                    Credentials = new NetworkCredential("servizi@winitsrl.it", fromPassword)
                 };
 
                 //Imposta il timout al massimo, per evitare che blocchi l'operazione quando ci sono molti allegati

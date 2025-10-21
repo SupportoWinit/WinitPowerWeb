@@ -220,7 +220,8 @@ namespace Common
         ShowActivityInModifyRegs,
         LimitDurationRounding,
         CoupleOutOfOrderRegs,
-        UseAutoActivity
+        UseAutoActivity,
+        CalcoloRiposi
     }
 
     public enum ClockAppsOperationEnum

@@ -61,8 +61,10 @@ namespace PowerWeb.Api
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
                     pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
-                    pruCol = RepoManager.Pru_ColRepo.Single(pr => pr.Pru_Id == pru.Pru_Id);
-                    fruCant = RepoManager.Fru_CantRepo.Single(fc => fc.Fru_Id == fru.Fru_Id);
+                    List<Pru_Col> prus = RepoManager.Pru_ColRepo.GetAllQueryable(p => p.Codice_Pru == "     " + ColId).OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                    pruCol = RepoManager.Pru_ColRepo.Single(pr => pr.Pru_Id == prus.First().Pru_Id);
+                    List<Fru_Cant> frus = RepoManager.Fru_CantRepo.GetAllQueryable(f => f.Codice_Fru == "MOTIV00001").OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                    fruCant = RepoManager.Fru_CantRepo.Single(fc => fc.Fru_Id == frus.First().Fru_Id);
                     col = RepoManager.ColRepo.Single(c => c.Col_Id == pruCol.Col_Id);
                     can = RepoManager.CantRepo.Single(c => c.Cant_Id == fruCant.Cant_Id);
                     motivazione = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == Justification && td.Nome_Tab == "MOTIVAZIONI");
@@ -146,8 +148,10 @@ namespace PowerWeb.Api
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
                     pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
-                    pruCol = RepoManager.Pru_ColRepo.Single(pr => pr.Pru_Id == pru.Pru_Id);
-                    fruCant = RepoManager.Fru_CantRepo.Single(fc => fc.Fru_Id == fru.Fru_Id);
+                    List<Pru_Col> prus = RepoManager.Pru_ColRepo.GetAllQueryable(p => p.Codice_Pru == "     " + ColId).OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                    pruCol = RepoManager.Pru_ColRepo.Single(pr => pr.Pru_Id == prus.First().Pru_Id);
+                    List<Fru_Cant> frus = RepoManager.Fru_CantRepo.GetAllQueryable(f => f.Codice_Fru == "MOTIV00001").OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                    fruCant = RepoManager.Fru_CantRepo.Single(fc => fc.Fru_Id == frus.First().Fru_Id);
                     col = RepoManager.ColRepo.Single(c => c.Col_Id == pruCol.Col_Id);
                     can = RepoManager.CantRepo.Single(c => c.Cant_Id == fruCant.Cant_Id);
                     motivazione = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == Justification && td.Nome_Tab == "MOTIVAZIONI");

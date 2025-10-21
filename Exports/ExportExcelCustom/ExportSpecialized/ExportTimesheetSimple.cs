@@ -1,6 +1,7 @@
 ﻿using Business.BusinessExtension;
 using Business.Repository;
 using Common;
+using DevExpress.XtraSpreadsheet.Model;
 using Domain;
 using log4net;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
@@ -11,6 +12,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms.VisualStyles;
+using System.Xml.Linq;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -40,6 +42,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private DateTime endMonth;
 
         private bool _multiPagedExport = Convert.ToBoolean(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheetMultiPagedExport));
+
+        /// <summary>
+        /// Il default per la tabella Col_Monte_Minuti a DB
+        /// </summary>
+        public const int DEFAULT_MONTEMINUTI = -999999999;
 
         #endregion
 
@@ -232,7 +239,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                         WriteTimesheetColHeaderSettimanale(col.Value);
 
-                        WriteColTimesheetSettimanale(col.Value);
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
+                        {
+                            WriteColTimesheetSettimanaleRiposi(col.Value);
+                        }
+                        else 
+                        {
+                            WriteColTimesheetSettimanale(col.Value);
+                        }
 
                         rowIndex += 2;
 
@@ -473,7 +487,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         {
             foreach (var justification in cartellini["justification"])
             {
-                int tmp = columnIndex;
+                    int tmp = columnIndex;
                 var justificationDec = justification.Justification;
                 DateTime tmpStart = startMonth;
                 int days = 1;
@@ -511,7 +525,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
                         }
-                    
                         RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                         negativeDays++;
@@ -570,6 +583,192 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 rowIndex++;
                 columnIndex = tmp;
                 startMonth = tmpStart;
+            }
+
+        }
+
+        private void WriteColTimesheetSettimanaleRiposi(Dictionary<string, List<TimesheetModuleItem>> cartellini)
+        {
+            foreach (var justification in cartellini["justification"])
+            {
+                int lastRiposo = 0;
+                bool isRiposo = false;
+                bool riposoAdded = false;
+                Col_Monte_Minuti riposi = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == justification.ColId && cmm.Anno_Col_Monte_Minuti == ExportDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
+                if (riposi != default(Col_Monte_Minuti))
+                {
+                    int lastMonth = ExportDate.Month - 1;
+                    int retrievedMm = (int)CommonService.GetPropertyValue(riposi, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
+                    lastRiposo = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
+                }
+                else
+                {
+                    int lastMonth = ExportDate.Month - 1;
+                    //Vado a creare il monte minuti dei riposi con il valore che recupererò dalle personalizzazioni
+                    lastRiposo = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CalcoloRiposi, "InizioRiposi"));
+                    Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
+                    current_mm_row.Monte_Minuti_Justification = "RIPOSI";
+                    current_mm_row.Anno_Col_Monte_Minuti = ExportDate.Year;
+                    current_mm_row.Col_Id = justification.ColId;
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        string prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
+                        CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
+                    }
+                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")), lastRiposo);
+                    RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row,true);
+                }
+
+                int tmp = columnIndex;
+                var justificationDec = justification.Justification;
+                DateTime tmpStart = startMonth;
+                int days = 1;
+
+                int settimana = 1;
+                double totale = 0;
+
+                if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
+                    justificationDec = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDec).Decodifica_Tab;
+
+                justificationDec = justificationDec.ToUpper();
+
+                CellInsertValue(worksheetIndex, 1, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);
+
+                int negativeDays = 0;
+
+                if (justification.DaysHours.First().Key < 0)
+                {
+                    startMonth = startMonth.AddDays(justification.DaysHours.First().Key);
+                    negativeDays = negativeDays + justification.DaysHours.First().Key;
+                }
+
+                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                {
+                    if (negativeDays < 0)
+                    {
+                        var cartRow = justification.DaysHours.Where(d => d.Key == negativeDays);
+                        var baseDuration = (double)cartRow.First().Value.Item1;
+                        var timeDuration = TimeSpan.FromMinutes(baseDuration);
+                        string valueToPrint = "";
+                        if (baseDuration < 0 && baseDuration > -1)
+                        {
+                            valueToPrint = "-" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        }
+                        else
+                        {
+                            valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        }
+                        RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                        if (baseDuration == 0 && !isRiposo)
+                        {
+                            isRiposo = true;
+                        }
+                        else if (baseDuration == 0 && isRiposo && justification.Justification == "OL")
+                        {
+                            RangeSetBorders(worksheetIndex, columnIndex + 1, rowIndex, columnIndex + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex + 1, rowIndex, "MM" + lastRiposo, ExcelInsertTypeEnum.Content);
+                            RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex, rowIndex, "MM" + lastRiposo, ExcelInsertTypeEnum.Content);
+                            lastRiposo++;
+                            isRiposo = false;
+                        }
+                        else
+                        {
+                            isRiposo = false;
+                        }
+
+                        negativeDays++;
+                        columnIndex++;
+                    }
+                    else
+                    {
+                        var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
+                        var timeDuration = TimeSpan.FromHours(baseDuration);
+                        string valueToPrint = "";
+                        if (baseDuration < 0 && baseDuration > -1)
+                        {
+                            valueToPrint = "" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        }
+                        else
+                        {
+                            valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                        }
+
+                        RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                        if (baseDuration == 0 && !isRiposo)
+                        {
+                            isRiposo = true;
+                        }
+                        else if (baseDuration == 0 && isRiposo && justification.Justification == "OL")
+                        {
+                            if (day.DayOfWeek == DayOfWeek.Monday)
+                            {
+                                RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, "MM" + lastRiposo, ExcelInsertTypeEnum.Content);
+                                RangeSetBorders(worksheetIndex, columnIndex + day.Day - 2, rowIndex, columnIndex + day.Day - 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, columnIndex + day.Day - 2, rowIndex, "MM" + lastRiposo, ExcelInsertTypeEnum.Content);
+                            }
+                            else
+                            {
+                                RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, "MM" + lastRiposo, ExcelInsertTypeEnum.Content);
+                                RangeSetBorders(worksheetIndex, columnIndex + day.Day - 1, rowIndex, columnIndex + day.Day - 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, columnIndex + day.Day - 1, rowIndex, "MM" + lastRiposo, ExcelInsertTypeEnum.Content);
+                            }
+                            lastRiposo++;
+                            isRiposo = false;
+                        }
+                        else
+                        {
+                            isRiposo = false;
+                        }
+                        totale += timeDuration.TotalMinutes;
+                        if (day.DayOfWeek == DayOfWeek.Sunday)
+                        {
+
+                            baseDuration = (double)justification["TotalWeek" + settimana.ToString("0")];
+                            timeDuration = TimeSpan.FromHours(baseDuration);
+                            valueToPrint = "";
+                            if (baseDuration < 0 && baseDuration > -1)
+                            {
+                                valueToPrint = "" + FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                            }
+                            else
+                            {
+                                valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
+                            }
+
+                            columnIndex++;
+
+                            RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+
+                            settimana++;
+                        }
+                    }
+                }
+
+                string totalHours = FromTotalMinutesToFormattedType((int)totale);
+
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1 + settimana, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1 + settimana, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1 + settimana, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+
+                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2 + settimana, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2 + settimana, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2 + settimana, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
+
+
+                rowIndex++;
+                columnIndex = tmp;
+                startMonth = tmpStart;
+
+                if (justification.Justification == "OL" && lastRiposo > 0) 
+                { 
+                    Col_Monte_Minuti monte = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == justification.ColId && cmm.Anno_Col_Monte_Minuti == ExportDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
+                    CommonService.SetPropertyValue(monte, string.Format("M{0}_Col_Monte_Minuti", ExportDate.Month.ToString("00")), lastRiposo);
+                    RepoManager.Col_Monte_MinutiRepo.Update(monte, true);
+                }
             }
 
         }

@@ -649,7 +649,7 @@ namespace Business.Repository.Custom
                         List<KeyValuePair<string, string>> overlapErrors = RepoManager.Reg_VRepo.CheckOverlaps(regVs);
 
                         // se sono state trovate delle registrazioni in sovrapposizione
-                        if (overlapErrors.Any() && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
+                        if (overlapErrors.Any() && (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CoupleOutOfOrderRegs) == 0))
                         {
                             HashSet<int> regColIds = new HashSet<int>();
 
@@ -1490,245 +1490,177 @@ namespace Business.Repository.Custom
                                     // se il notturno risulta abilitato e correttamente configurato (cioè non riporta la mezzanotte)
                                     if (((nocturneType != NocturneTypeEnum.None) && ((nocturneType != NocturneTypeEnum.Disabled))) && (nocturneThreshold.Ticks > 0 || nocturneDuration.Ticks > 0))
                                     {
-
-                                        #region Abbinamento delle registrazioni in caso di notturno abilitato con NUOVA MEZZANOTTE
-
-                                        // nel caso il notturno sia configurato come x ore dopo mezzanotte (per ora viene gestitio solo questo tipo di notturno,
-                                        // ma in futuro potranno essere distinti)
-                                        if (nocturneType == NocturneTypeEnum.OverMidnight)
+                                        bool toAdd = true;
+                                        bool coupled = false;
+                                        foreach (Reg reg in lastRegs.OrderByDescending(r => r.Registrazione_Data_Ora_Fis_Reg)) 
                                         {
-                                            // in caso di notturno le registrazioni risultano abbinabili se:
-                                            // - la registrazione marcata come uscita è nello stesso o successivo giorno rispetto all'entrata,
-                                            //   ha lo stesso cantiere dell'entrata ed è identificata come uscita o senza direzione;
-                                            // altrimenti, se la registrazione non risulta abbinabile:
-                                            // - se l'ultima registrazione risulta essere una potenziale entrata (senza direzione o con direzione E) allora la si tratta come tale
-                                            // - altrimenti si riparte scartando l'intero tenativo di abbinamento
-
-                                            if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1) || currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date)
-                                                && currentReg.Cant_Id == lastOpen.Cant_Id && (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                            if (!coupled) 
                                             {
+                                                #region Abbinamento delle registrazioni in caso di notturno abilitato con NUOVA MEZZANOTTE
 
-                                                // se le registrazioni sono nello stesso giorno allora si verifca la coerenza della possibile uscita con il threshold del notturno:
-                                                // - se l'uscita è successiva al threshold allora si verifica che anche lentrata lo sia (caso di registrazione diurna in notturnO) e,
-                                                //   in caso di stessa motivazione si procede al tentativo di abbinamento, azzerando il gruppo per ripartire
-                                                //   da una nuova entrata (in caso le motivazioni non siano coerenti tra le due timbrature si passa ad elaborare il 
-                                                //   gurppo successivo eventualmente mantenendo la presente registrazione in elaborazione come entrata).
-                                                // - se invece l'uscita è successiva al threshold e l'entrata anche (caso di timbratura a cavallo del limite di notturno) 
-                                                //   si procede al loro tentativo di abbinamento (con attenzione alle motivazioni come di cui sopra solamente se sono entrata e uscita.
-                                                // - in caso l'uscita sia inferiore o uguale al threshold e lo sia anche l'entrata (caso di timbratura dopo mezzanotte ma inferiore
-                                                //   al limite di notturno) allora si procede al tentativo di abbinamento delle timbrature) con l'attezione alla motivazione
-                                                //   di cui sopra.
-                                                // - altrimenti ci si ritrova nel caso in cui la registrazione è a in giornata ma sicuramente antecedente al threshold, in questo
-                                                //   si tenta l'abbinamento con la solita attenzione alle motivazioni
-                                                // se le registrazioni invece sono di giorni diversi (l'uscita nel giorno successivo all'entrata) si verifica la conformità dell'uscita
-                                                // al threshold:
-                                                // - se l'uscita risulta inferiore al threshold allora, coerentemente con le motivazioni, si procede al tentativo di abbinamento;
-                                                // - se le timbrature sono a cavallo del notturno ma la precedente è un'entrata e la successiva un'uscita allora si procede al loro abbinamento (di modo
-                                                //   da riuscire a gestire con la direzione turni consecutivi di lavoro)
-                                                // - altrimenti si riprate con un nuovo gruppo
-
-                                                // se le due regitrazioni si trovano nella stessa data
-                                                if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date)
+                                                // nel caso il notturno sia configurato come x ore dopo mezzanotte (per ora viene gestitio solo questo tipo di notturno,
+                                                // ma in futuro potranno essere distinti)
+                                                if (nocturneType == NocturneTypeEnum.OverMidnight)
                                                 {
-                                                    // se l'ora d'uscita è superiore al limite di notturno
-                                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > nocturneThreshold)
+                                                    // in caso di notturno le registrazioni risultano abbinabili se:
+                                                    // - la registrazione marcata come uscita è nello stesso o successivo giorno rispetto all'entrata,
+                                                    //   ha lo stesso cantiere dell'entrata ed è identificata come uscita o senza direzione;
+                                                    // altrimenti, se la registrazione non risulta abbinabile:
+                                                    // - se l'ultima registrazione risulta essere una potenziale entrata (senza direzione o con direzione E) allora la si tratta come tale
+                                                    // - altrimenti si riparte scartando l'intero tenativo di abbinamento
+
+                                                    if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == reg.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1) || currentReg.Registrazione_Data_Ora_Fis_Reg.Date == reg.Registrazione_Data_Ora_Fis_Reg.Date)
+                                                        && currentReg.Cant_Id == reg.Cant_Id && (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
                                                     {
-                                                        // se l'ora d'entrata è superiore al limite di notturno (timbrature nello stesso giorno sopra il limite di notturno)
-                                                        if (lastOpen.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > nocturneThreshold)
-                                                        {
-                                                            // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                            if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                            {
-                                                                // tentativo di abbinamento delle registrazioni
-                                                                processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
 
-                                                                // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                                lastOpen = null;
-                                                            }
-                                                            else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                                lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                        }
-                                                        else // se l'ora d'entrata è maggiore del limite notturno ma l'entrata non lo è (timbratura a cavallo dell'ora di notturno nella stessa giornata)
+                                                        // se le registrazioni sono nello stesso giorno allora si verifca la coerenza della possibile uscita con il threshold del notturno:
+                                                        // - se l'uscita è successiva al threshold allora si verifica che anche lentrata lo sia (caso di registrazione diurna in notturnO) e,
+                                                        //   in caso di stessa motivazione si procede al tentativo di abbinamento, azzerando il gruppo per ripartire
+                                                        //   da una nuova entrata (in caso le motivazioni non siano coerenti tra le due timbrature si passa ad elaborare il 
+                                                        //   gurppo successivo eventualmente mantenendo la presente registrazione in elaborazione come entrata).
+                                                        // - se invece l'uscita è successiva al threshold e l'entrata anche (caso di timbratura a cavallo del limite di notturno) 
+                                                        //   si procede al loro tentativo di abbinamento (con attenzione alle motivazioni come di cui sopra solamente se sono entrata e uscita.
+                                                        // - in caso l'uscita sia inferiore o uguale al threshold e lo sia anche l'entrata (caso di timbratura dopo mezzanotte ma inferiore
+                                                        //   al limite di notturno) allora si procede al tentativo di abbinamento delle timbrature) con l'attezione alla motivazione
+                                                        //   di cui sopra.
+                                                        // - altrimenti ci si ritrova nel caso in cui la registrazione è a in giornata ma sicuramente antecedente al threshold, in questo
+                                                        //   si tenta l'abbinamento con la solita attenzione alle motivazioni
+                                                        // se le registrazioni invece sono di giorni diversi (l'uscita nel giorno successivo all'entrata) si verifica la conformità dell'uscita
+                                                        // al threshold:
+                                                        // - se l'uscita risulta inferiore al threshold allora, coerentemente con le motivazioni, si procede al tentativo di abbinamento;
+                                                        // - se le timbrature sono a cavallo del notturno ma la precedente è un'entrata e la successiva un'uscita allora si procede al loro abbinamento (di modo
+                                                        //   da riuscire a gestire con la direzione turni consecutivi di lavoro)
+                                                        // - altrimenti si riprate con un nuovo gruppo
+
+                                                        // se le due regitrazioni si trovano nella stessa data
+                                                        if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == reg.Registrazione_Data_Ora_Fis_Reg.Date)
                                                         {
-                                                            // se l'entrata ha il flag di entrata e l'uscita ha il flag di uscita
-                                                            if (lastOpen.FlagEURegTypeEnum == FlagEURegTypeEnum.E && currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U)
+                                                            // se l'ora d'uscita è superiore al limite di notturno
+                                                            if (currentReg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > nocturneThreshold)
                                                             {
-                                                                // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                                if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                // se l'ora d'entrata è superiore al limite di notturno (timbrature nello stesso giorno sopra il limite di notturno)
+                                                                if (reg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > nocturneThreshold)
                                                                 {
-                                                                    // in caso non ci sia concordanza di threshold, siamo comunque nello stesso giorno e, se si sta trattando un'entrata e un'uscita
-                                                                    // allora si procede all'abbinamento
-                                                                    processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+                                                                    // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                                    if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                    {
+                                                                        // tentativo di abbinamento delle registrazioni
+                                                                        processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
 
-                                                                    // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                                    lastOpen = null;
+                                                                        toAdd = false;
+                                                                        coupled = true;
+                                                                        // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                        lastOpen = reg;
+                                                                    }
+                                                                    else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
                                                                 }
-                                                                else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                else // se l'ora d'entrata è maggiore del limite notturno ma l'entrata non lo è (timbratura a cavallo dell'ora di notturno nella stessa giornata)
+                                                                {
+                                                                    // se l'entrata ha il flag di entrata e l'uscita ha il flag di uscita
+                                                                    if (reg.FlagEURegTypeEnum == FlagEURegTypeEnum.E && currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U)
+                                                                    {
+                                                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                                        if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                        {
+                                                                            // in caso non ci sia concordanza di threshold, siamo comunque nello stesso giorno e, se si sta trattando un'entrata e un'uscita
+                                                                            // allora si procede all'abbinamento
+                                                                            processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                            toAdd = false;
+                                                                            coupled = true;
+                                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                            lastOpen = reg;
+                                                                        }
+                                                                        else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                                    }
+                                                                    else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                        lastOpen = currentReg.FlagEURegTypeEnum != FlagEURegTypeEnum.U ? currentReg : null;
+                                                                }
+                                                            }
+                                                            else if ((currentReg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= nocturneThreshold) && (reg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= nocturneThreshold))
+                                                            {
+                                                                // se l'entrata e l'uscita sono nello stesso giorno ed entrambe sono minori o uguali al limite del notturno allora devo tentare di abbinarle
+
+                                                                // se esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                                if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                {
+                                                                    // tentativo di abbinamento delle registrazioni
+                                                                    processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                    toAdd = false;
+                                                                    coupled = true;
+                                                                    // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                    lastOpen = reg;
+                                                                }
+                                                                else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
                                                                     lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
                                                             }
-                                                            else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                                lastOpen = currentReg.FlagEURegTypeEnum != FlagEURegTypeEnum.U ? currentReg : null;
-                                                        }
-                                                    }
-                                                    else if ((currentReg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= nocturneThreshold) && (lastOpen.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= nocturneThreshold))
-                                                    {
-                                                        // se l'entrata e l'uscita sono nello stesso giorno ed entrambe sono minori o uguali al limite del notturno allora devo tentare di abbinarle
+                                                            else if (reg.FlagEURegTypeEnum == FlagEURegTypeEnum.E && currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U)
+                                                            {
+                                                                // se l'entrata e l'uscita sono nello stesso giorno ma a cavallo del threshold allora si tenta l'abbinamento solamente se 
+                                                                // l'entrata è marcata come direzione entrata e l'uscita è marcata come direzione uscita
 
-                                                        // se esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                // se esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                                if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                {
+                                                                    // tentativo di abbinamento delle registrazioni
+                                                                    processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                    toAdd = false;
+                                                                    coupled = true;
+                                                                    // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                    lastOpen = reg;
+                                                                }
+                                                                else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                    lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                            }
+                                                        }
+                                                        else if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == reg.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1))
                                                         {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
+                                                            // altrimeni se la registrazione d'uscita risulta essere il giorno successivo all'entrata
 
-                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                            lastOpen = null;
+                                                            // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
+                                                            if (currentReg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= nocturneThreshold)
+                                                            {
+                                                                // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                                if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                {
+                                                                    // tentativo di abbinamento delle registrazioni
+                                                                    processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                    toAdd = false;
+                                                                    coupled = true;
+                                                                    // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                    lastOpen = reg;
+                                                                }
+                                                                else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                    lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                            }
+                                                            else if (reg.FlagEURegTypeEnum == FlagEURegTypeEnum.E && currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U)
+                                                            {
+                                                                // se l'entrata e l'uscita sono in giorni diversi ma a cavallo del threshold allora si tenta l'abbinamento solamente se 
+                                                                // l'entrata è marcata come direzione entrata e l'uscita è marcata come direzione uscita
+
+                                                                // se esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                                if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                                {
+                                                                    // tentativo di abbinamento delle registrazioni
+                                                                    processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                    toAdd = false;
+                                                                    coupled = true;
+                                                                    // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                    lastOpen = reg;
+                                                                }
+                                                                else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                    lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                            }
+
+                                                            else // altrimenti si riparte con una nuova coppia di entrata e uscita
+                                                                lastOpen = currentReg;
                                                         }
-                                                        else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                    else if (lastOpen.FlagEURegTypeEnum == FlagEURegTypeEnum.E && currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U)
-                                                    {
-                                                        // se l'entrata e l'uscita sono nello stesso giorno ma a cavallo del threshold allora si tenta l'abbinamento solamente se 
-                                                        // l'entrata è marcata come direzione entrata e l'uscita è marcata come direzione uscita
-
-                                                        // se esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                            lastOpen = null;
-                                                        }
-                                                        else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                }
-                                                else if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1))
-                                                {
-                                                    // altrimeni se la registrazione d'uscita risulta essere il giorno successivo all'entrata
-
-                                                    // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
-                                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg.TimeOfDay <= nocturneThreshold)
-                                                    {
-                                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                            lastOpen = null;
-                                                        }
-                                                        else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                    else if (lastOpen.FlagEURegTypeEnum == FlagEURegTypeEnum.E && currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U)
-                                                    {
-                                                        // se l'entrata e l'uscita sono in giorni diversi ma a cavallo del threshold allora si tenta l'abbinamento solamente se 
-                                                        // l'entrata è marcata come direzione entrata e l'uscita è marcata come direzione uscita
-
-                                                        // se esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                            lastOpen = null;
-                                                        }
-                                                        else // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-
-                                                    else // altrimenti si riparte con una nuova coppia di entrata e uscita
-                                                        lastOpen = currentReg;
-                                                }
-                                            }
-                                            else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
-                                            {
-                                                // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
-                                                // e la registrzione corrente è marcata con direzione entrata o senza direzione
-                                                // allora si procede a impostare la registrazione corrente come nuova entrata
-                                                lastOpen = currentReg;
-                                            }
-                                            else // altrimenti si riparte con una nuova coppia di entrata e uscita
-                                                lastOpen = null;
-                                        }
-
-                                        #endregion
-
-                                        #region Abbinamento delle registrazioni in caso di notturno abilitato per DURATA
-
-                                        // nel caso il notturno sia configurato il calcolo del notturno per durata
-                                        else if (nocturneType == NocturneTypeEnum.Duration)
-                                        {
-                                            // in caso di notturno per durata le registrazioni risultano abbinabili se:
-                                            // - la registrazione marcata come uscita è nello stesso o successivo giorno rispetto all'entrata e ,
-                                            //   ha lo stesso cantiere dell'entrata ed è identificata come uscita o senza direzione;
-                                            // altrimenti, se la registrazione non risulta abbinabile:
-                                            // - se l'ultima registrazione risulta essere una potenziale entrata (senza direzione o con direzione E) allora la si tratta come tale
-                                            // - altrimenti si riparte scartando l'intero tenativo di abbinamento
-
-                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CloseDifferentCant) == 0)
-                                            {
-                                                //viene controllato se la registrazione che si sta processando è nel giorno successivo all'ultima reg processata e l'ultima reg processata sia diversa da un'uscita
-                                                if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1))
-                                                    && currentReg.Cant_Id == lastOpen.Cant_Id)
-                                                {
-
-                                                    //Viene per prima cosa controlalta che la registrazione di uscita sia nell'intervallo che scatta dall'entrata fino alla durata massima del notturno
-                                                    //se così non è si passa alla registrazione successiva
-
-                                                    DateTime nocturnBoundMax = new DateTime();
-
-                                                    //viene sommata all'ultima registrazione la durata massima del notturno per verificare che la registrazione successiva ricada nel range
-                                                    nocturnBoundMax = lastOpen.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
-
-                                                    // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
-                                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg <= nocturnBoundMax)
-                                                    {
-                                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                            lastOpen = null;
-                                                        }
-                                                        else
-                                                            // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                    //se le registrazione cadono furoi dalla durata massima del nottunro non vengono abbinate
-                                                    else
-                                                    {
-                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                }
-
-                                                //se le registrazioni contigue non apparetnego a giorni diversi  ma apprtengono allo stesso giorno
-                                                else
-                                                {
-                                                    // le registrazioni in porcesso risultano abbinabili solamente se:
-                                                    // - le due registrazioni sono nella stessa data
-                                                    // - le due registrazioni hanno lo stesso cantiere
-                                                    // - la registrazione di uscita è marcata come uscita o senza direzione
-                                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date && currentReg.Cant_Id == lastOpen.Cant_Id &&
-                                                    (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
-                                                    {
-                                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
-                                                            lastOpen = null;
-                                                        }
-                                                        else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
                                                     }
                                                     else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
                                                     {
@@ -1739,90 +1671,125 @@ namespace Business.Repository.Custom
                                                     }
                                                     else // altrimenti si riparte con una nuova coppia di entrata e uscita
                                                         lastOpen = null;
-
                                                 }
+
+                                                #endregion
+
+                                                #region Abbinamento delle registrazioni in caso di notturno abilitato per DURATA
+
+                                                // nel caso il notturno sia configurato il calcolo del notturno per durata
+                                                else if (nocturneType == NocturneTypeEnum.Duration)
+                                                {
+                                                    // in caso di notturno per durata le registrazioni risultano abbinabili se:
+                                                    // - la registrazione marcata come uscita è nello stesso o successivo giorno rispetto all'entrata e ,
+                                                    //   ha lo stesso cantiere dell'entrata ed è identificata come uscita o senza direzione;
+                                                    // altrimenti, se la registrazione non risulta abbinabile:
+                                                    // - se l'ultima registrazione risulta essere una potenziale entrata (senza direzione o con direzione E) allora la si tratta come tale
+                                                    // - altrimenti si riparte scartando l'intero tenativo di abbinamento
+                                                    //viene controllato se la registrazione che si sta processando è nel giorno successivo all'ultima reg processata e l'ultima reg processata sia diversa da un'uscita
+                                                    if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == reg.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1)) && currentReg.Cant_Id == reg.Cant_Id)
+                                                    {
+                                                        //Viene per prima cosa controlalta che la registrazione di uscita sia nell'intervallo che scatta dall'entrata fino alla durata massima del notturno
+                                                        //se così non è si passa alla registrazione successiva
+
+                                                        DateTime nocturnBoundMax = new DateTime();
+
+                                                        //viene sommata all'ultima registrazione la durata massima del notturno per verificare che la registrazione successiva ricada nel range
+                                                        nocturnBoundMax = reg.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
+
+                                                        // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
+                                                        if (currentReg.Registrazione_Data_Ora_Fis_Reg <= nocturnBoundMax)
+                                                        {
+                                                            // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                            if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                            {
+                                                                // tentativo di abbinamento delle registrazioni
+                                                                processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                coupled = true;
+                                                                toAdd = false;
+                                                                // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
+                                                                lastOpen = reg;
+                                                            }
+                                                            else
+                                                                // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
+                                                                lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                        }
+                                                        //se le registrazione cadono furoi dalla durata massima del nottunro non vengono abbinate
+                                                        else
+                                                        {
+                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                        }
+                                                    }
+
+                                                    //se le registrazioni contigue non apparetnego a giorni diversi  ma apprtengono allo stesso giorno
+                                                    else
+                                                    {
+                                                        // le registrazioni in porcesso risultano abbinabili solamente se:
+                                                        // - le due registrazioni sono nella stessa data
+                                                        // - le due registrazioni hanno lo stesso cantiere
+                                                        // - la registrazione di uscita è marcata come uscita o senza direzione
+                                                        if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == reg.Registrazione_Data_Ora_Fis_Reg.Date && currentReg.Cant_Id == reg.Cant_Id &&
+                                                        (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
+                                                        {
+                                                            // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
+                                                            if (reg.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
+                                                            {
+                                                                // tentativo di abbinamento delle registrazioni
+                                                                processErrors.AddRange(AssociateReg(reg, currentReg, maxElapsed, minElapsed, nocturneType));
+
+                                                                toAdd = false;
+                                                                coupled = true;
+                                                                //lastRegs.Remove(reg);
+                                                                // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
+                                                                lastOpen = reg;
+                                                            }
+                                                            else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
+                                                                lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
+                                                        }
+                                                        else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
+                                                        {
+                                                            // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
+                                                            // e la registrzione corrente è marcata con direzione entrata o senza direzione
+                                                            // allora si procede a impostare la registrazione corrente come nuova entrata
+                                                            lastOpen = currentReg;
+                                                        }
+                                                        else // altrimenti si riparte con una nuova coppia di entrata e uscita
+                                                            lastOpen = null;
+                                                    }
+                                                }
+
+                                                #endregion
+                                            }
+
+                                        }
+
+                                        #region Aggiungo o rimuovo gli elementi dalla lista
+                                        if (toAdd)
+                                        {
+                                            Cant currentCant1 = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == currentReg.Cant_Id);
+                                            if (currentCant1.Raggruppamento2_Can == "1")
+                                            {
+                                                lastRegs.Add(currentReg);
                                             }
                                             else
                                             {
-                                                //viene controllato se la registrazione che si sta processando è nel giorno successivo all'ultima reg processata e l'ultima reg processata sia diversa da un'uscita
-                                                if ((currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date.AddDays(1)))
-                                                {
-                                                    //Viene per prima cosa controlalta che la registrazione di uscita sia nell'intervallo che scatta dall'entrata fino alla durata massima del notturno
-                                                    //se così non è si passa alla registrazione successiva
-
-                                                    DateTime nocturnBoundMax = new DateTime();
-
-                                                    //viene sommata all'ultima registrazione la durata massima del notturno per verificare che la registrazione successiva ricada nel range
-                                                    nocturnBoundMax = lastOpen.Registrazione_Data_Ora_Fis_Reg.AddMinutes(nocturneDuration.TotalMinutes);
-
-                                                    // si procede all'abbinamento delle reg solamente se l'uscita è compresa prima del threshold
-                                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg <= nocturnBoundMax)
-                                                    {
-                                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // dopo l'abbinamento, comunque, si riprende il ciclo con una nuova entrata
-                                                            lastOpen = null;
-                                                        }
-                                                        else
-                                                            // altrimenti la registrazione non è abbinabile e quidni si procede alla coppia di reg successiva (indicando eventualmente la presente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                    //se le registrazione cadono furoi dalla durata massima del nottunro non vengono abbinate
-                                                    else
-                                                    {
-                                                        lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                }
-
-                                                //se le registrazioni contigue non apparetnego a giorni diversi  ma apprtengono allo stesso giorno
-                                                else
-                                                {
-                                                    // le registrazioni in porcesso risultano abbinabili solamente se:
-                                                    // - le due registrazioni sono nella stessa data
-                                                    // - le due registrazioni hanno lo stesso cantiere
-                                                    // - la registrazione di uscita è marcata come uscita o senza direzione
-                                                    if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date == lastOpen.Registrazione_Data_Ora_Fis_Reg.Date &&
-                                                    (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.U))
-                                                    {
-                                                        // si esegue l'abbinamento solamente se le registrazioni hanno la stessa motivazione
-                                                        if (lastOpen.Motivazione_Reg_Id == currentReg.Motivazione_Reg_Id)
-                                                        {
-                                                            // tentativo di abbinamento delle registrazioni
-                                                            processErrors.AddRange(AssociateReg(lastOpen, currentReg, maxElapsed, minElapsed, nocturneType));
-
-                                                            // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
-                                                            lastOpen = null;
-                                                        }
-                                                        else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
-                                                            lastOpen = currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E ? currentReg : null;
-                                                    }
-                                                    else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
-                                                    {
-                                                        // se le registrazioni non sono abbinabili secondo i parametri del notturno impsotati
-                                                        // e la registrzione corrente è marcata con direzione entrata o senza direzione
-                                                        // allora si procede a impostare la registrazione corrente come nuova entrata
-                                                        lastOpen = currentReg;
-                                                    }
-                                                    else // altrimenti si riparte con una nuova coppia di entrata e uscita
-                                                        lastOpen = null;
-
-                                                }
+                                                lastRegs = new List<Reg>();
+                                                lastRegs.Add(currentReg);
                                             }
                                         }
-
+                                        if (coupled)
+                                        {
+                                            lastRegs.Remove(lastOpen);
+                                        }
                                         #endregion
-
                                     }
                                     else
                                     {
 
                                         #region Abbinamento delle registrazioni in caso di notturno disabilitato
-                                        bool toAdd = false;
-                                        foreach (Reg reg in lastRegs.OrderByDescending(r => r.Registrazione_Data_Ora_Fis_Reg)) 
+                                        bool toAdd = true;
+                                        foreach (Reg reg in lastRegs.OrderByDescending(r => r.Registrazione_Data_Ora_Fis_Reg))
                                         {
                                             // le registrazioni in processo risultano abbinabili solamente se:
                                             // - le due registrazioni sono nella stessa data
@@ -1840,9 +1807,8 @@ namespace Business.Repository.Custom
                                                     // una volta effettuato il tentativo di abbinamento si riparte da una nuova coppia di entrata/uscita
                                                     lastRegs.Remove(reg);
                                                     lastOpen = null;
+                                                    toAdd = false;
                                                 }
-                                                else // se le motivazioni non sono le stesse si procede alla coppia di reg successiva (eventualmente mantenendo la corrente come entrata)
-                                                    lastRegs.Add(reg);
                                             }
                                             else if (currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.None || currentReg.FlagEURegTypeEnum == FlagEURegTypeEnum.E)
                                             {
@@ -1850,16 +1816,34 @@ namespace Business.Repository.Custom
                                                 // e la registrzione corrente è marcata con direzione entrata o senza direzione
                                                 // allora si procede a impostare la registrazione corrente come nuova entrata
                                                 lastOpen = currentReg;
-                                                lastRegs.Add(reg);
                                             }
-                                            else if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date > reg.Registrazione_Data_Ora_Fis_Reg.Date) 
+                                            else if (currentReg.Registrazione_Data_Ora_Fis_Reg.Date > reg.Registrazione_Data_Ora_Fis_Reg.Date)
                                             {
                                                 lastRegs = new List<Reg>();
-                                                lastRegs.Add(reg);
                                             }
                                         }
                                         #endregion
+                                        #region Controllo se aggiungere i record alla lista
+                                        if (toAdd)
+                                        {
+                                            Cant currentCant1 = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == currentReg.Cant_Id);
+                                            if (currentCant1.Raggruppamento2_Can == "1")
+                                            {
+                                                lastRegs.Add(currentReg);
+                                            }
+                                            else
+                                            {
+                                                lastRegs = new List<Reg>();
+                                                lastRegs.Add(currentReg);
+                                            }
+
+                                        }
+                                        #endregion
                                     }
+                                }
+                                else 
+                                {
+                                    lastRegs.Add(currentReg);
                                 }
                             }
                             else // registrazione non coerente con flag entrata e/o processo; la si tratta come una nuova entrata
@@ -2507,70 +2491,137 @@ namespace Business.Repository.Custom
                 // che hanno almeno o la Pru o la Fru)
                 foreach (Reg reg in regs.Where(rg => rg.Fru_Id != null || rg.Pru_Id != null || rg.Cant_Id != null).ToList())
                 {
-                    // se la registrazione da processare ha collegata un'unità portatile
-                    if (reg.Pru_Id != null)
-                    {
-                        #region Associazione del collaboratore
-                        // in ogni caso si reinizializza sulla registrazione il collaboratore
-                        reg.Col_Id = null;
-
-                        // inizializzazione della variaibile di appoggio dell'associazione pru_col da impostare
-                        Pru_Col currentPruCol = null;
-
-                        // se nel dizionario con l'elenco delle unità portatili è presente l'unità portatile della registrazione
-                        // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
-                        if (pruColDic.ContainsKey(reg.Pru_Id.Value))
-                            currentPruCol = pruColDic[reg.Pru_Id.Value].FirstOrDefault(pruCol => pruCol.Abilitazione_Data_Inizio_Pru_Col <= reg.Registrazione_Data_Ora_Fis_Reg);
-
-                        // se è stata trovata l'associazione a un'unità portatile allora si imposta il collaboratore sulla registrazione;
-                        // altrimenti si scrive l'errore
-                        if (currentPruCol != null)
-                            reg.Col_Id = currentPruCol.Col_Id;
-                        else
+                    try {
+                        // se la registrazione da processare ha collegata un'unità portatile
+                        if (reg.Pru_Id != null)
                         {
-                            string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Pru == null
-                                ? Convert.ToInt32(reg.Pru_Id).ToString()
-                                : reg.Pru.Codice_Pru);
-                            errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
+                            #region Associazione del collaboratore
+                            // in ogni caso si reinizializza sulla registrazione il collaboratore
+                            reg.Col_Id = null;
+
+                            // inizializzazione della variaibile di appoggio dell'associazione pru_col da impostare
+                            Pru_Col currentPruCol = null;
+
+                            // se nel dizionario con l'elenco delle unità portatili è presente l'unità portatile della registrazione
+                            // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
+                            if (pruColDic.ContainsKey(reg.Pru_Id.Value))
+                                currentPruCol = pruColDic[reg.Pru_Id.Value].FirstOrDefault(pruCol => pruCol.Abilitazione_Data_Inizio_Pru_Col <= reg.Registrazione_Data_Ora_Fis_Reg);
+
+                            // se è stata trovata l'associazione a un'unità portatile allora si imposta il collaboratore sulla registrazione;
+                            // altrimenti si scrive l'errore
+                            if (currentPruCol != null)
+                                reg.Col_Id = currentPruCol.Col_Id;
+                            else
+                            {
+                                string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Pru == null
+                                    ? Convert.ToInt32(reg.Pru_Id).ToString()
+                                    : reg.Pru.Codice_Pru);
+                                errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
+                            }
+                            #endregion
+
                         }
-                        #endregion
 
-                    }
-
-                    // se la registrazione da processare ha collegata un'unità fissa
-                    if (reg.Fru_Id != null)
-                    {
-
-                        #region Associazione del cantiere
-
-                        // in ogni caso si reinizializza sulla registrazione il cantiere
-                        reg.Cant_Id = null;
-
-                        // inizializzazione della variabile di appoggio dell'associazione cant_fru da impostare
-                        Fru_Cant currentFruCant = null;
-
-                        // se nel dizionario con l'elenco delle unità fisse è presente l'unità fissa della registrazione
-                        // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
-                        if (fruCantDic.ContainsKey(reg.Fru_Id.Value))
-                            currentFruCant = fruCantDic[reg.Fru_Id.Value].FirstOrDefault(fruCant => fruCant.Abilitazione_Data_Inizio_Fru_Can <= reg.Registrazione_Data_Ora_Fis_Reg);
-
-                        // se è stata trovata l'associazione a un'unità fissa allora si imposta il cantiere sulla registrazione;
-                        // altrimenti si scrive l'errore
-                        if (currentFruCant != null)
+                        // se la registrazione da processare ha collegata un'unità fissa
+                        if (reg.Fru_Id != null)
                         {
-                            reg.Cant_Id = currentFruCant.Cant_Id;
+
+                            #region Associazione del cantiere
+
+                            // in ogni caso si reinizializza sulla registrazione il cantiere
+                            reg.Cant_Id = null;
+
+                            // inizializzazione della variabile di appoggio dell'associazione cant_fru da impostare
+                            Fru_Cant currentFruCant = null;
+
+                            // se nel dizionario con l'elenco delle unità fisse è presente l'unità fissa della registrazione
+                            // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
+                            if (fruCantDic.ContainsKey(reg.Fru_Id.Value))
+                                currentFruCant = fruCantDic[reg.Fru_Id.Value].FirstOrDefault(fruCant => fruCant.Abilitazione_Data_Inizio_Fru_Can <= reg.Registrazione_Data_Ora_Fis_Reg);
+
+                            // se è stata trovata l'associazione a un'unità fissa allora si imposta il cantiere sulla registrazione;
+                            // altrimenti si scrive l'errore
+                            if (currentFruCant != null)
+                            {
+                                reg.Cant_Id = currentFruCant.Cant_Id;
+                                var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
+                                if (allCdc.Count() > 0)
+                                {
+                                    bool centro = false;
+                                    int cid = 0;
+                                    foreach (var tmp in allCdc)
+                                    {
+                                        if (centro == false)
+                                        {
+                                            var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == currentFruCant.Cant_Id);
+                                            foreach (var test1 in test)
+                                            {
+                                                if (test1.Cant_Id == currentFruCant.Cant_Id)
+                                                {
+                                                    centro = true;
+                                                    cid = test1.CentroDiCosto_Id;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    var temp = allCdc.First().Cant_CentroDiCosto;
+                                    var cdc = temp.Where(c => c.Cant_Id == currentFruCant.Cant_Id);
+                                    if (centro)
+                                    {
+                                        reg.CentroDiCosto_Id = cid;
+                                    }
+                                    else
+                                    {
+                                        reg.CentroDiCosto_Id = null;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Fru == null
+                                    ? Convert.ToInt32(reg.Pru_Id).ToString()
+                                    : reg.Fru.Codice_Fru);
+                                errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
+                            }
+
+                            #endregion
+
+                        }
+
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 0)
+                        {
+                            //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
+                            if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
+                            {
+
+                                #region Associazione del cantiere
+                                int cantId = 0;
+                                cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
+                                //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
+                                if (cantId != 0 && cantId != reg.Cant_Id.Value)
+                                {
+                                    reg.Cant_Id = cantId;
+                                }
+                                #endregion
+
+                            }
+                        }
+
+                        if (reg.Cant_Id != null)
+                        {
                             var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
-                            if (allCdc.Count() > 0) {
+                            if (allCdc.Count() > 0)
+                            {
                                 bool centro = false;
                                 int cid = 0;
                                 foreach (var tmp in allCdc)
                                 {
                                     if (centro == false)
                                     {
-                                        var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == currentFruCant.Cant_Id);
+                                        var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == reg.Cant_Id);
                                         foreach (var test1 in test)
                                         {
-                                            if (test1.Cant_Id == currentFruCant.Cant_Id)
+                                            if (test1.Cant_Id == reg.Cant_Id)
                                             {
                                                 centro = true;
                                                 cid = test1.CentroDiCosto_Id;
@@ -2579,77 +2630,20 @@ namespace Business.Repository.Custom
                                     }
                                 }
                                 var temp = allCdc.First().Cant_CentroDiCosto;
-                                var cdc = temp.Where(c => c.Cant_Id == currentFruCant.Cant_Id);
+                                var cdc = temp.Where(c => c.Cant_Id == reg.Cant_Id);
                                 if (centro)
                                 {
                                     reg.CentroDiCosto_Id = cid;
                                 }
-                                else {
+                                else
+                                {
                                     reg.CentroDiCosto_Id = null;
                                 }
                             }
                         }
-                        else
-                        {
-                            string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Fru == null
-                                ? Convert.ToInt32(reg.Pru_Id).ToString()
-                                : reg.Fru.Codice_Fru);
-                            errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
-                        }
-
-                        #endregion
-
                     }
-
-                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 0) {
-                        //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
-                        if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
-                        {
-
-                            #region Associazione del cantiere
-                            int cantId = 0;
-                            cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
-                            //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
-                            if (cantId != 0 && cantId != reg.Cant_Id.Value)
-                            {
-                                reg.Cant_Id = cantId;
-                            }
-                            #endregion
-
-                        }
-                    }
-
-                    if (reg.Cant_Id != null) {
-                        var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
-                        if (allCdc.Count() > 0)
-                        {
-                            bool centro = false;
-                            int cid = 0;
-                            foreach (var tmp in allCdc)
-                            {
-                                if (centro == false)
-                                {
-                                    var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == reg.Cant_Id);
-                                    foreach (var test1 in test)
-                                    {
-                                        if (test1.Cant_Id == reg.Cant_Id)
-                                        {
-                                            centro = true;
-                                            cid = test1.CentroDiCosto_Id;
-                                        }
-                                    }
-                                }
-                            }
-                            var temp = allCdc.First().Cant_CentroDiCosto;
-                            var cdc = temp.Where(c => c.Cant_Id == reg.Cant_Id);
-                            if (centro)
-                            {
-                                reg.CentroDiCosto_Id = cid;
-                            }
-                            else {
-                              reg.CentroDiCosto_Id = null;
-                            }
-                        }
+                    catch(Exception){
+                        _log.ErrorFormat("Rilevato errore con fru_Id {0} e pru_Id {1}", reg.Fru_Id,reg.Pru_Id);
                     }
                 }
             }
@@ -4002,7 +3996,7 @@ namespace Business.Repository.Custom
                                                     newReg.Data_Registrazione_Reg = DateTime.Now;
                                                     newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                                     newReg.Custom_Data_Reg = autoGeneratedDataStart;
-                                                    newReg.Flag_EU_Reg = "";
+                                                    newReg.Flag_EU_Reg = "U";
                                                     newReg.Cant = currentReg.Cant;
                                                     //imposto una stringa per capire in fase di eliminazione quali timbrature sono autochiusure
                                                     newReg.Custom_Data_Reg = "ActivityAutoClosure";
@@ -4051,7 +4045,7 @@ namespace Business.Repository.Custom
                                                     newReg.Data_Registrazione_Reg = DateTime.Now;
                                                     newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                                     newReg.Custom_Data_Reg = autoGeneratedDataStart;
-                                                    newReg.Flag_EU_Reg = "";
+                                                    newReg.Flag_EU_Reg = "U";
                                                     newReg.Cant = currentReg.Cant;
                                                     newReg.Custom_Data_Reg = "ActivityAutoClosure";
                                                     newReg.ParentReg = currentReg;
@@ -4194,7 +4188,7 @@ namespace Business.Repository.Custom
                                                 currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentRegCant.Turno10_Can.Value.Hours, currentRegCant.Turno10_Can.Value.Minutes, currentRegCant.Turno10_Can.Value.Seconds + 1);
                                             newReg.Data_Registrazione_Reg = DateTime.Now;
                                             newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
-                                            newReg.Flag_EU_Reg = "";
+                                            newReg.Flag_EU_Reg = "U";
                                             newReg.Cant = currentReg.Cant;
                                             //imposto una stringa per capire in fase di eliminazione quali timbrature sono autochiusure
                                             newReg.Custom_Data_Reg = "ActivityAutoClosure";
@@ -4239,7 +4233,7 @@ namespace Business.Repository.Custom
                                                 currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentRegCant.Turno10_Can.Value.Hours, currentRegCant.Turno10_Can.Value.Minutes, currentRegCant.Turno10_Can.Value.Seconds + 1);
                                             newReg.Data_Registrazione_Reg = DateTime.Now;
                                             newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
-                                            newReg.Flag_EU_Reg = "";
+                                            newReg.Flag_EU_Reg = "U";
                                             newReg.Cant = currentReg.Cant;
                                             newReg.Custom_Data_Reg = "ActivityAutoClosure";
                                             newReg.ParentReg = currentReg;
@@ -6864,7 +6858,7 @@ namespace Business.Repository.Custom
                     //viene generato un HashSet dalla lista che verrà usato per la ricerca dei duplicati)
 
 
-                    existingRegsDic = new HashSet<Reg>(DbSet.AsNoTracking().Where(reg => reg.Registrazione_Data_Ora_Orig_Reg >= limit.Key && reg.Registrazione_Data_Ora_Orig_Reg < limit.Value && (reg.Pru_Id.HasValue || reg.Fru_Id.HasValue)).ToList());
+                    existingRegsDic = new HashSet<Reg>(DbSet.AsNoTracking().Where(reg => (reg.Registrazione_Data_Ora_Orig_Reg >= limit.Key && reg.Registrazione_Data_Ora_Orig_Reg < limit.Value && (reg.Pru_Id.HasValue || reg.Fru_Id.HasValue))).ToList());
 
                     _log.Info(String.Format("Inizializzato il dizionario delle registrazioni già esistenti con {0} reg.", existingRegsDic.Count));
 
@@ -6882,6 +6876,7 @@ namespace Business.Repository.Custom
                     else
                     {
                         #region PARTIZIONAMENTO REGISTRAZIONI TOTALI
+                        AssociatePruFru(newRegs);
                         //Viene creato un HashSet direttamente dalla lista delle registrazioni da inserire (durante la creazione della nuova struttura vengono automaticamente eliminati i duplicati)
                         toAddRegs = new HashSet<Reg>(newRegs.Where(reg => reg.Registrazione_Data_Ora_Fis_Reg >= limit.Key && reg.Registrazione_Data_Ora_Fis_Reg <= limit.Value).ToList());
 

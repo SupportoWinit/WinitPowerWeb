@@ -881,25 +881,31 @@ namespace PowerWeb.Modules
             }
             else currQueryable = emptyQueryable;
 
-            var regsByCol = currQueryable.ToList().GroupBy(c => c.Col_Id).Select(r => new { colId = r.Key.Value, Oggetti = r.ToList()}).ToList();
-            List<Reg_V> returnRegs = new List<Reg_V>();
-            foreach (var reg in regsByCol) 
-            {
-                if (reg.colId != null) 
+            try {
+                var regsByCol = currQueryable.ToList().GroupBy(c => c.Col_Id).Select(r => new { colId = r.Key.Value, Oggetti = r.ToList() }).ToList();
+                List<Reg_V> returnRegs = new List<Reg_V>();
+                foreach (var reg in regsByCol)
                 {
-                    Col currentCol = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == reg.colId);
-                    if (currentCol.Data_Disponibilita_Fine_Col != null)
+                    if (reg.colId != null)
                     {
-                        var regs = reg.Oggetti.Where(r => r.Data_Reg < currentCol.Data_Disponibilita_Fine_Col.Value).ToList();
-                        returnRegs.AddRange(regs);
-                    }
-                    else 
-                    {
-                        returnRegs.AddRange(reg.Oggetti); 
+                        Col currentCol = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == reg.colId);
+                        if (currentCol.Data_Disponibilita_Fine_Col != null)
+                        {
+                            var regs = reg.Oggetti.Where(r => r.Data_Reg < currentCol.Data_Disponibilita_Fine_Col.Value).ToList();
+                            returnRegs.AddRange(regs);
+                        }
+                        else
+                        {
+                            returnRegs.AddRange(reg.Oggetti);
+                        }
                     }
                 }
+                e.QueryableSource = returnRegs.AsQueryable();
             }
-            e.QueryableSource = returnRegs.AsQueryable();
+            catch (Exception) {
+                e.QueryableSource = currQueryable;
+            }
+            
             //e.QueryableSource = currQueryable;
 
 
@@ -1558,7 +1564,7 @@ namespace PowerWeb.Modules
                                 dateToSearch = BusinessService.dateToSearchWithNocturn(currentReg);
 
                                 //vengono aggiorante le date con le nuove date estratte
-                                from = dateToSearch.Item1;
+                                from = new DateTime(dateToSearch.Item1.Year,dateToSearch.Item1.Month,dateToSearch.Item1.Day, dateToSearch.Item1.Hour, dateToSearch.Item1.Minute,0);
                                 to = dateToSearch.Item2;
 
                             }
