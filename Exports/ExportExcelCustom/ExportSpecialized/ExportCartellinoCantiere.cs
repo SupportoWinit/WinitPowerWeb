@@ -262,17 +262,20 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             //Viene considerato il range per la somma della riga, dalla colonna 1 alla colonna del numero dei giorni
                             //come riga viene considerata quella attuale
-                            string rangeFormula = $"{ColumnIndexToNameConversion(1)}{rowIndex}:" +
+                            string rangeFormula = $"{ColumnIndexToNameConversion(2)}{rowIndex}:" +
                                 $"{ColumnIndexToNameConversion(cartRow.DaysHours.Count + 1)}{rowIndex}";
 
                             //Formula automatica per la somma dei valori della riga
                             string formula = $"=SUM({rangeFormula})";
 
+                            //Conta solamente i numeri della riga, quindi i giorni diversi da "M" o "F" o "---"
+                            string contaFormula = $"=COUNT({rangeFormula})";
+
                             RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                             CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
 
                             RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                            CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.TotalDays, Common.ExcelInsertTypeEnum.Content);
+                            CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, contaFormula, Common.ExcelInsertTypeEnum.Formula);
                         }
                         RangeSetTextHorizontalAlignment(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, ExcelHorizontalAlignment.Center);
                         RangeSetTextVerticalAlignment(worksheetIndex, cartRow.DaysHours.Count + 2, rowIndex, cartRow.DaysHours.Count + 2, rowIndex, ExcelVerticalAlignment.Center);
@@ -328,7 +331,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 $"{ColumnIndexToNameConversion(lookupCartellini.Count + 2)}{rowIndex - 1}";
 
             string finalFormula = $"=SUM({rangeFormula})";
-             
+
 
             RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 30);
             RangeSetBorders(worksheetIndex, lookupCartellini.Count + 2, rowIndex, lookupCartellini.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
