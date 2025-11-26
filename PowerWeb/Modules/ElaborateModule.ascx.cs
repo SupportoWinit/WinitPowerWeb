@@ -26,6 +26,11 @@ namespace PowerWeb.Modules
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(ElaborateModule));
 
+        /// <summary>
+        /// Il nome del file utilizzato per effettuare i controlli di esecuzione esclusiva della web api
+        /// </summary>
+        private const string ExclusiveAccessFileName = "apiLock.tmp";
+
 
 
         /// <summary>
@@ -58,7 +63,15 @@ namespace PowerWeb.Modules
             bridge.Host = "mobile.clockapp.it";
             int index = RepoManager.ParamRepo.ParametersRow.Indice_Timbrature_FlutterApp;
             IEnumerable<Business.DataClasses.FlutterAppDTOs.CountReg> count = bridge.Get<List<Business.DataClasses.FlutterAppDTOs.CountReg>>(CreateStandardPayload(index),connection);
-            return count.First();
+            if (count != null)
+            {
+                return count.First();
+            }
+            else 
+            {
+                return default;
+            }
+            
         }
 
         private JObject CreateStandardPayload(int index)
@@ -349,12 +362,31 @@ namespace PowerWeb.Modules
         {
             errorMessage = string.Empty;
 
-            if (!RepoManager.ParamRepo.LockElaboration() || !RepoManager.ParamRepo.IsElaborationReady())
+            var semaphore = RepoManager.ParamRepo.IsElaborationReady();
+
+            if (!semaphore)
             {
-                errorMessage = "Elaborazione già avviata da un'altra istanza!";
+                errorMessage = "Elaborazione già avviata da un'altra instanza!";
                 _log.Warn($"Funzione di import bloccata per l'utente {PowerWebContext.Current.User.Codice_Utente}. Import già avviato.");
                 return false;
             }
+
+            // calcolo del percorso di files input
+            string filesInputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Path.Replace("~", "").Replace("\\", ""));
+
+            // calcolo del nome del file utilizzato per l'esecuzione esclusiva delle operazioni
+            string exclusiveAccessFilePath = Path.Combine(filesInputPath, ExclusiveAccessFileName);
+
+            // si procede all'elaborazione solamente se il file non esiete
+            if (File.Exists(exclusiveAccessFilePath))
+            {
+                errorMessage = "Attività schedulata in funzione, riprovare più tardi!";
+                _log.Warn($"Funzione di import bloccata per l'utente {PowerWebContext.Current.User.Codice_Utente}. API in esecuzione.");
+                return false;
+            }
+
+            RepoManager.ParamRepo.LockElaboration();
+
             return true;
         }
 
@@ -498,12 +530,28 @@ namespace PowerWeb.Modules
         {
             var semaphore = RepoManager.ParamRepo.IsElaborationReady();
 
-            if (!semaphore && RepoManager.ParamRepo.LockElaboration())
+            if (!semaphore)
             {
                 e.Result = "Elaborazione già avviata da un'altra instanza!";
                 _log.Warn(String.Format("Funzione di elaborazione bloccata per l'utente {0}. Import/elaborazione già avviati da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
                 return;
             }
+
+            // calcolo del percorso di files input
+            string filesInputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Path.Replace("~", "").Replace("\\", ""));
+
+            // calcolo del nome del file utilizzato per l'esecuzione esclusiva delle operazioni
+            string exclusiveAccessFilePath = Path.Combine(filesInputPath, ExclusiveAccessFileName);
+
+            // si procede all'elaborazione solamente se il file non esiete
+            if (File.Exists(exclusiveAccessFilePath))
+            {
+                e.Result = "Attività schedulata in funzione, riprovare più tardi!";
+                _log.Warn(String.Format("Funzione di elaborazione bloccata per l'utente {0}. API in esecuzione.", PowerWebContext.Current.User.Codice_Utente));
+                return;
+            }
+
+            RepoManager.ParamRepo.LockElaboration();
 
             DateTime from = deFrom.Date;
             DateTime to = deTo.Date.AddDays(1);

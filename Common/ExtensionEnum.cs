@@ -221,7 +221,9 @@ namespace Common
         LimitDurationRounding,
         CoupleOutOfOrderRegs,
         UseAutoActivity,
-        CalcoloRiposi
+        CalcoloRiposi,
+        MailTo,
+        RoundingOnSchedule
     }
 
     public enum ClockAppsOperationEnum

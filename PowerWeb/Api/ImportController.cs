@@ -37,7 +37,7 @@ namespace PowerWeb.Api
             if (!RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo)
             {
                 //RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = true;
-                RepoManager.ParamRepo.SaveChanges();
+                //RepoManager.ParamRepo.SaveChanges();
 
                 // calcolo del percorso di files input
                 string filesInputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Path.Replace("~", "").Replace("\\", ""));
@@ -135,7 +135,7 @@ namespace PowerWeb.Api
                         File.Delete(exclusiveAccessFilePath);
                         try {
                             //RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
-                            RepoManager.ParamRepo.SaveChanges();
+                            //RepoManager.ParamRepo.SaveChanges();
                         } 
                         catch (Exception e) {
                             _log.Error(String.Format("Errore import schedulato con exception {0} ", e.Message));
@@ -149,7 +149,7 @@ namespace PowerWeb.Api
 
                 try {
                     //RepoManager.ParamRepo.GetAll().First().Elaborate_Semaforo = false;
-                    RepoManager.ParamRepo.SaveChanges();
+                    //RepoManager.ParamRepo.SaveChanges();
                 }
                 catch (Exception e)
                 {
@@ -159,6 +159,7 @@ namespace PowerWeb.Api
             }else
             {
                 _log.Warn(String.Format("Import schedulato bloccato a causa del semaforo"));
+                Errors.Add(new KeyValuePair<string, string>("Import", "Importazione bloccata causa semaforo attivo"));
             }
         }
 

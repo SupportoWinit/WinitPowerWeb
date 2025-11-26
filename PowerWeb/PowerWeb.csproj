@@ -1771,6 +1771,7 @@
     <Compile Include="Api\ChangeWinitPasswordController.cs" />
     <Compile Include="Api\CheckPasswordExpirationController.cs" />
     <Compile Include="Api\DamageController.cs" />
+    <Compile Include="Api\CheckNoTimbs.cs" />
     <Compile Include="Api\DeelayController.cs" />
     <Compile Include="Api\ExportCsvController.cs" />
     <Compile Include="Api\ExportHourController.cs" />

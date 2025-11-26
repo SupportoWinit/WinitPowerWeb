@@ -410,8 +410,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 if (totalHours != "") {
                     stampaTotale = double.Parse(totalHours, CultureInfo.InvariantCulture);
                 }
+
+                string rangeFormula = $"{ColumnIndexToNameConversion(2)}{rowIndex}:" +
+                                $"{ColumnIndexToNameConversion(CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1)}{rowIndex}";
+
+                //Formula automatica per la somma dei valori della riga
+                string formula = $"=SUM({rangeFormula})";
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, stampaTotale, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, formula, ExcelInsertTypeEnum.Formula);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
 
                 rowIndex = rowIndex + 1;
@@ -467,9 +474,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         stampa = double.Parse(valueToPrint, CultureInfo.InvariantCulture);
                     }
 
+                    string rangeFormula1 = $"{ColumnIndexToNameConversion(day.Day + 1)}{rowIndex - (cartellini["justification"].Count)}:" +
+                                $"{ColumnIndexToNameConversion(day.Day + 1)}{rowIndex - 1}";
+
+                    //Formula automatica per la somma dei valori della riga
+                    string formula1 = $"=SUM({rangeFormula1})";
+
                     RangeSetBorders(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     RangeSetFontSize(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, 8);
                     CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, stampa, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(worksheetIndex, day.Day + 1, rowIndex, formula1, ExcelInsertTypeEnum.Formula);
                     RangeSetBackgroundColor(worksheetIndex, day.Day + 1, rowIndex, day.Day + 1, rowIndex, Color.SkyBlue, fillStyle);
                 }
                 string totalHours = FromTotalMinutesToFormattedTypeKomplett(justification.TotalMinutes);
@@ -479,8 +493,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     stampaTotale = double.Parse(totalHours, CultureInfo.InvariantCulture);
                 }
 
+                string rangeFormula = $"{ColumnIndexToNameConversion(2)}{rowIndex}:" +
+                                $"{ColumnIndexToNameConversion(CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 1)}{rowIndex}";
+
+                //Formula automatica per la somma dei valori della riga
+                string formula = $"=SUM({rangeFormula})";
+
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, stampaTotale, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, formula, ExcelInsertTypeEnum.Formula);
                 RangeSetFontSize(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, 8);
                 RangeSetBackgroundColor(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, Color.SkyBlue, fillStyle);
                 ColumnsSetWidth(worksheetIndex, rowIndex, rowIndex, 6);

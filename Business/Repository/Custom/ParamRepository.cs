@@ -619,11 +619,11 @@ namespace Business.Repository.Custom
                 //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
                     DetachAllEntities();
-                else
-                {
-                    //DbSet.First().Elaborate_Semaforo = true;
-                    SaveChanges();
-                }                    
+                
+                _log.InfoFormat("Impostazione a true del semaforo");
+                DbSet.First().Elaborate_Semaforo = true;
+                SaveChanges();
+                                  
 
             }
             catch (Exception ex)
@@ -642,10 +642,11 @@ namespace Business.Repository.Custom
                 //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
                 if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
                     DetachAllEntities();
-                else {
-                    //DbSet.First().Elaborate_Semaforo = false;
-                    SaveChanges();
-                }
+
+                _log.InfoFormat("Impostazione a false del semaforo");
+                DbSet.First().Elaborate_Semaforo = false;
+                SaveChanges();
+                
 
                 
             }

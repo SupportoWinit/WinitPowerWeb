@@ -31,7 +31,7 @@ namespace PowerWeb.Api
         protected override HttpStatusCode ExecuteOperation()
         {
             //inizializzo la variaible per tornare indietro di esattamente sette giorni
-            DateTime from = DateTime.Now.AddDays(-7);
+            DateTime from = DateTime.Now.AddDays(-15);
             // calcolo del nome file di destinazione 
             string Name = "DATI.csv";
             string tmpName = "tmpDATI.csv";

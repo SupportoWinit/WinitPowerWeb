@@ -398,8 +398,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             valueToPrint = "-- --";
                         }
                         else {
-                            double tmp = (double)last["Day" + day.Day.ToString("00")];
-                            tmp = (tmp - (double)justification["Day" + day.Day.ToString("00")]) * 60;
+                            double tmp = (double)last["Day" + day.Day.ToString("00")] * 60;
+                            //tmp = (tmp - (double)justification["Day" + day.Day.ToString("00")]) * 60;
                             if (tmp <= 0) {
                                 valueToPrint = "-- --";
                             }

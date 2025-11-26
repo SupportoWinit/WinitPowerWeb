@@ -3,7 +3,9 @@ using Business.MDBSchema;
 using Common;
 using Common.Properties;
 using Data;
+using DevExpress.Data.WcfLinq;
 using DevExpress.XtraPrinting.Native;
+using DevExpress.XtraRichEdit.Fields.Expression;
 using DevExpress.XtraRichEdit.Layout;
 using Domain;
 using log4net;
@@ -377,15 +379,7 @@ namespace Business.Repository.Custom
 
                 #endregion
 
-                #region 6. Inserimento delle chiusure automatiche a chiusura causali
-
-                _log.Info("Inserimento delle chiusure automatiche a chiusura causali");
-
-                ManageActivitiesAutoClosures(ref regs, currentApplication, fromDate, toDate);
-
-                #endregion
-
-                #region 7. Disaccoppiamento registrazioni e definizione tipi di base
+                #region 6. Disaccoppiamento registrazioni e definizione tipi di base
 
                 // sono disaccoppiate le registrazioni da processare e sulle stesse è impostato il tipo base (attività/ore)
                 _log.Info("Inizio disaccoppiamento registrazioni e definizione tipi di base.");
@@ -397,7 +391,7 @@ namespace Business.Repository.Custom
 
                 #endregion          
 
-                #region 8. Abbinamento delle registrazioni di tipo e definizione dei passaggi
+                #region 7. Abbinamento delle registrazioni di tipo e definizione dei passaggi
 
                 // sono accoppiate tra di loro tutte le registrazioni ora da processare; inoltre sono gestiti
                 // e preparati gli eventuli passaggi presenti
@@ -408,6 +402,20 @@ namespace Business.Repository.Custom
                 _log.Info("Accoppiamento registrazioni terminato.");
 
                 #endregion
+
+                #region 8. Inserimento delle chiusure automatiche a chiusura causali
+
+                _log.Info("Inserimento delle chiusure automatiche a chiusura causali");
+
+                ManageActivitiesAutoClosures(ref regs, currentApplication, fromDate, toDate);
+
+                #endregion
+
+                _log.Info("Associo le timbrature un altra volta dopo aver fatto le autochiusure");
+
+                CoupleHourRegsAndManagePassages(regs, errors);
+
+                _log.Info("Timbrature associate.");
 
                 #region 9. Salvataggio dei dati modificati a database e cancellazione viaggi
 
@@ -764,10 +772,9 @@ namespace Business.Repository.Custom
                                                     regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
 
                                 //roundingRegVs.AddRange(tripsRegvs);
-
                                 // applicazione degli arrotondamenti per durata
                                 _log.Info(String.Format("starting rounding duration regVs at {0}", regVs.Count()));
-                                errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs, roundingParamEnum));
+                                //errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs, roundingParamEnum));
                                 _log.Info(String.Format("finished rounding duration regVs at {0}", regVs.Count()));
                             }
                         }
@@ -824,16 +831,10 @@ namespace Business.Repository.Custom
                             // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                             RepoManager.Reg_VRepo.DeleteNewPausaPranzo(tmpRegs);
                             RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
-                            regVs = GetRegVsForRounding(tmpRegs);
-                            regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+                            tmpRegs = regs;
+                            regVs = GetRegVsForRounding(regs);
                             var roundingRegVs1 = regVs.ToList();
-                            // Recupera i viaggi appena creati  
-                            var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
-                                                regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
-                            var pausaReg = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate && regv.Registrazione_Tipo_Reg == 1).ToList();
-                            
-                            roundingRegVs1.AddRange(tripsRegvs1);
-                            errors.AddRange(RepoManager.Reg_VRepo.NewPausaPranzo(roundingRegVs1));
+                            errors.AddRange(NewPausaPranzo(roundingRegVs1, ref regs));
                         }
                         #endregion
 
@@ -1492,9 +1493,9 @@ namespace Business.Repository.Custom
                                     {
                                         bool toAdd = true;
                                         bool coupled = false;
-                                        foreach (Reg reg in lastRegs.OrderByDescending(r => r.Registrazione_Data_Ora_Fis_Reg)) 
+                                        foreach (Reg reg in lastRegs.OrderByDescending(r => r.Registrazione_Data_Ora_Fis_Reg))
                                         {
-                                            if (!coupled) 
+                                            if (!coupled)
                                             {
                                                 #region Abbinamento delle registrazioni in caso di notturno abilitato con NUOVA MEZZANOTTE
 
@@ -1841,13 +1842,13 @@ namespace Business.Repository.Custom
                                         #endregion
                                     }
                                 }
-                                else 
+                                else
                                 {
                                     lastRegs.Add(currentReg);
                                 }
                             }
                             else // registrazione non coerente con flag entrata e/o processo; la si tratta come una nuova entrata
-                                lastOpen = currentReg;
+                                lastRegs.Add(currentReg);
                         }
                         else 
                         {
@@ -2906,13 +2907,20 @@ namespace Business.Repository.Custom
                         IEnumerable<Reg> regsToDelete = regs.Where(reg => reg.Custom_Data_Reg == Common.Properties.Settings.Default.ActivityAutoClosureCustomData).ToList();
                         var regsToUpdate = new List<Reg>();
                         regsToDelete.ForEach(reg => regsToUpdate.AddRange(Find(dbReg => dbReg.Reg_Id == reg.RiferimentoRRN_Reg || dbReg.RiferimentoRRN_Att == reg.Reg_Id || dbReg.RiferimentoRRN_Reg == reg.Reg_Id)));
+                        var listaTmp = regsToUpdate;
                         regsToUpdate.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
-                        //Context.BulkUpdate(regsToUpdate);
+                        Context.BulkUpdate(regsToUpdate);
 
                         regsToDelete.ForEach(reg => { reg.RiferimentoRRN_Reg = null; reg.RiferimentoRRN_Att = null; reg.Registrazione_Stato_Reg = 0; });
 
                         // si elminano da database tutte le registraizoni provenienti da causali presenti nell'elenco passato come parametro
                         Context.BulkDelete(regsToDelete);
+
+                        var regsTemp = regs.ToList();
+                        regsTemp.RemoveAll(a => listaTmp.Any(b => b.Reg_Id == a.Reg_Id));
+                        regs = regsTemp;
+
+                        regs.AddRange(regsToUpdate);
 
                         // inoltre alla lista passata come parametro si procede a togliere 
                         // le registrazioni cancellate dal database
@@ -3889,7 +3897,7 @@ namespace Business.Repository.Custom
                 closures = new List<Reg>();
 
                 //vengono recuperate solo le registrazioni no passaggi, viaggi, attività...
-                IEnumerable<Reg> regsToClose = RepoManager.RegRepo.Find(reg => reg.Registrazione_Tipo_Reg == 0 && reg.Registrazione_Stato_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
+                IEnumerable<Reg> regsToClose = regs.Where(reg => reg.Registrazione_Tipo_Reg == 0 && reg.Registrazione_Stato_Reg == 0 && (reg.Registrazione_Data_Ora_Fis_Reg > from && reg.Registrazione_Data_Ora_Fis_Reg < to)).OrderBy(reg => reg.Registrazione_Data_Ora_Fis_Reg).ToList();
 
                 tmpCoupleCode = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "TmpCoupleCode");
                 string autoGeneratedDataStart = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CustomElaborateRegs, "AutoGeneratedRegCustomData");
@@ -4094,20 +4102,20 @@ namespace Business.Repository.Custom
                     DateTime yesterday = DateTime.Now.AddDays(-1);
                     if (now > toArrot)
                     {
-                        regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
+                        regToClose.AddRange(regs.Where(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
                     }
                     else 
                     {
                         DateTime today = new DateTime(now.Year, now.Month, now.Day);
                         DateTime toConf = new DateTime(to.Year, to.Month,to.Day);
-                        if (toConf < today)
-                        {
-                            regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
-                        }
-                        else
-                        {
-                            regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < yesterday)).ToList());
-                        }
+                        //if (toConf < today)
+                        //{
+                            regToClose.AddRange(regs.Where(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < to)).ToList());
+                        //}
+                        //else
+                        //{
+                        //    regToClose.AddRange(RepoManager.RegRepo.Find(r => r.Registrazione_Tipo_Reg == 0 && r.Registrazione_Stato_Reg == 0 && r.Cant_Id == cantiere.Cant_Id && (r.Registrazione_Data_Ora_Fis_Reg > from && r.Registrazione_Data_Ora_Fis_Reg < yesterday)).ToList());
+                        //}
                     }    
                 }
 
@@ -4182,14 +4190,15 @@ namespace Business.Repository.Custom
                                             //duplicazione delle reg passate come parametro
                                             CommonService.DuplicateEntity(currentReg, newReg);
                                             newReg.Reg_Id = 0;
-                                            newReg.Cant_Id = currentReg.Cant_Id.Value;
-                                            newReg.Col_Id = currentReg.Col_Id.Value;
+                                            newReg.Cant_Id = currentReg.Cant_Id;
+                                            newReg.Col_Id = currentReg.Col_Id;
                                             newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
                                                 currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentRegCant.Turno10_Can.Value.Hours, currentRegCant.Turno10_Can.Value.Minutes, currentRegCant.Turno10_Can.Value.Seconds + 1);
                                             newReg.Data_Registrazione_Reg = DateTime.Now;
                                             newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                             newReg.Flag_EU_Reg = "U";
                                             newReg.Cant = currentReg.Cant;
+                                            newReg.Col = currentReg.Col;
                                             //imposto una stringa per capire in fase di eliminazione quali timbrature sono autochiusure
                                             newReg.Custom_Data_Reg = "ActivityAutoClosure";
                                             newReg.Note_Reg = "ActivityAutoClosure";
@@ -4227,15 +4236,17 @@ namespace Business.Repository.Custom
                                             //duplicazione delle reg passate come parametro
                                             CommonService.DuplicateEntity(currentReg, newReg);
                                             newReg.Reg_Id = 0;
-                                            newReg.Cant_Id = currentReg.Cant_Id.Value;
-                                            newReg.Col_Id = currentReg.Col_Id.Value;
+                                            newReg.Cant_Id = currentReg.Cant_Id;
+                                            newReg.Col_Id = currentReg.Col_Id;
                                             newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
                                                 currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentRegCant.Turno10_Can.Value.Hours, currentRegCant.Turno10_Can.Value.Minutes, currentRegCant.Turno10_Can.Value.Seconds + 1);
                                             newReg.Data_Registrazione_Reg = DateTime.Now;
                                             newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                             newReg.Flag_EU_Reg = "U";
                                             newReg.Cant = currentReg.Cant;
+                                            newReg.Col = currentReg.Col;
                                             newReg.Custom_Data_Reg = "ActivityAutoClosure";
+                                            newReg.Note_Reg = "ActivityAutoClosure";
                                             newReg.ParentReg = currentReg;
 
                                             // aggiunta della registrazione generata all'elenco
@@ -4258,9 +4269,191 @@ namespace Business.Repository.Custom
                     //vengonoa aggiunte le registrazioni di chiusura nella lista delle registrazioni da processare.
                     regs.AddRange(closures);
                 }
+                //AssociatePruFru(regs);
             }
             #endregion
 
+        }
+
+        public List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs, ref ICollection<Reg> regs)
+        {
+            // Lista che conterrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà le timbrature da aggiornare a db
+            List<Reg> regsToUpdate = new List<Reg>();
+
+            List<Reg_V> filteredRegVs = new List<Reg_V>();
+            List<Tab_Decod> pausa = RepoManager.Tab_DecodRepo.GetAllQueryable(p => p.Decodifica_Tab == "Pausa").ToList();
+            // Filtra le regv selezionando solo quelle 'lavorative' (ore e viaggi)
+            filteredRegVs = regVs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None) && reg.Registrazione_Stato_Reg != 0).ToList();
+            // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
+            if (filteredRegVs.Count() > 0)
+            {
+                // Raggruppa le registrazioni per collaboratore
+                var regsByCol = filteredRegVs.GroupBy(reg => reg.Col_Id).ToList();
+
+                double totalCol = regsByCol.Count();
+
+                foreach (var colGroup in regsByCol)
+                {
+                    var currColId = colGroup.Key.HasValue ? colGroup.Key : -1;
+
+                    if (currColId != -1)
+                    {
+                        Col currentCol = RepoManager.ColRepo.SingleOrDefault(col => col.Col_Id == currColId);
+
+                        if (currentCol != default(Col))
+                        {
+                            // Raggruppa le registrazioni per data (giorno)
+                            var regsByColDate = colGroup.GroupBy(reg => reg.Data_Reg).ToList();
+
+                            foreach (var colDateGroup in regsByColDate)
+                            {
+                                if (colDateGroup.Count() == 1)
+                                {
+                                    foreach (Reg_V reg in colDateGroup)
+                                    {
+                                        Reg attreg = RepoManager.RegRepo.SingleOrDefault(r => r.RiferimentoRRN_Att == reg.RegE);
+                                        Cant att = default;
+                                        if (attreg != default)
+                                        {
+                                            att = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == attreg.Cant_Id && c.Tipologia_Can == "ATT");
+                                        }
+                                        Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == reg.Cant_Id);
+                                        if (cantiere.Importo1 != null && cantiere.Importo10 != null)
+                                        {
+                                            if (reg.Durata_Fis.Value > cantiere.Importo10.Value)
+                                            {
+                                                try
+                                                {
+                                                    Reg regE = regs.Single(r => r.Reg_Id == reg.RegE);//RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                    regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                    regsToUpdate.Add(regE);
+                                                }
+                                                catch (Exception) { }
+                                            }
+                                        }
+                                        else if (cantiere.Importo1 != null)
+                                        {
+                                            if (att != default)
+                                            {
+                                                if (att.Descrizione_Can == "Pausa")
+                                                {
+                                                    Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    var tmpList = regs.ToList();
+                                                    tmpList.Remove(regE);
+                                                    regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                    regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                    tmpList.Add(regE);
+                                                    //regs = tmpList.ToList();
+                                                    try
+                                                    {
+                                                        //RepoManager.RegRepo.Update(regE, true);
+                                                    }
+                                                    catch (Exception e)
+                                                    {
+                                                        Reg regU = RepoManager.RegRepo.SingleOrDefault(r => r.Reg_Id == reg.RegU.Value);
+                                                        if (regU != default(Reg))
+                                                        {
+                                                            tmpList = regs.ToList();
+                                                            tmpList.Remove(regU);
+                                                            regU.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                            regU.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                            tmpList.Add(regU);
+                                                            regs = tmpList.ToList();
+                                                            try
+                                                            {
+                                                                //RepoManager.RegRepo.Update(regU, true);
+                                                            }
+                                                            catch (Exception ex)
+                                                            { }
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    int lastRegEId = 0;
+                                    int lastDurata = 0;
+                                    int lastArrot = 0;
+                                    foreach (Reg_V reg in colDateGroup)
+                                    {
+                                        Reg attreg = RepoManager.RegRepo.SingleOrDefault(r => r.RiferimentoRRN_Att == reg.RegE);
+                                        Cant att = default;
+                                        if (attreg != default)
+                                        {
+                                            att = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == attreg.Cant_Id && c.Tipologia_Can == "ATT");
+                                        }
+                                        Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == reg.Cant_Id);
+                                        if (cantiere.Importo1 != null && cantiere.Importo10 != null)
+                                        {
+                                            if (reg.Durata_Fis.Value > cantiere.Importo10.Value)
+                                            {
+                                                if (reg.Durata_Fis.Value > lastDurata)
+                                                {
+                                                    lastDurata = reg.Durata_Fis.Value;
+                                                    lastRegEId = reg.RegE;
+                                                    lastArrot = (int)cantiere.Importo1.Value;
+                                                }
+                                            }
+                                        }
+                                        else if (cantiere.Importo1 != null)
+                                        {
+                                            if (att != default)
+                                            {
+                                                if (att.Descrizione_Can == "Pausa")
+                                                {
+                                                    Reg regE = RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    var tmpList = regs.ToList();
+                                                    tmpList.Remove(regE);
+                                                    regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
+                                                    regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                    tmpList.Add(regE);
+                                                    regs = tmpList.ToList();
+                                                    //RepoManager.RegRepo.Update(regE, true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (lastRegEId != 0)
+                                    {
+                                        Reg regE = regs.Single(r => r.Reg_Id == lastRegEId);// RepoManager.RegRepo.Single(r => r.Reg_Id == lastRegEId);
+                                        regE.Rettifica_Durata = lastArrot;
+                                        regE.Note_Reg = "Pausa Di " + lastArrot + " minuti";
+                                        regsToUpdate.Add(regE);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // se al termine del ciclo sono state generate delle rettifiche allora si procede alla loro scrittura nel database
+                if (regsToUpdate.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    foreach (var regsToUpd in regsToUpdate.GroupBy(r => r.Col_Id )) 
+                    {
+                        try 
+                        {
+                            BulkUpdate(regsToUpd.ToList());
+                        }catch(Exception)
+                        {
+                            _log.ErrorFormat("Rilevato errore con update regs col {0}", regsToUpd.Key);
+                        }
+                        //regs.Remove(reg);
+                        //regs.Add(reg);
+                    }   
+                }
+
+                //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+                //BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+            }
+            return errors;
         }
 
         /// <summary>

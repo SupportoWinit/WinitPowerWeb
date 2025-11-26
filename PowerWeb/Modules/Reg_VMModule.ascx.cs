@@ -18,11 +18,14 @@ using Reports;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using UnityEngine;
 
 
 namespace PowerWeb.Modules
@@ -880,6 +883,33 @@ namespace PowerWeb.Modules
                     currQueryable = emptyQueryable;
             }
             else currQueryable = emptyQueryable;
+
+            if (PowerWebService.GenerateWhereQuery(EntityType, GridView, generateWhereClause()).Contains("Turno Completo")) 
+            {
+                var input = PowerWebService.GenerateWhereQuery(EntityType, GridView, generateWhereClause());
+                // Regex: cattura 8 cifre dentro Cast('YYYYMMDD' as datetime), tollera spazi e maiuscole/minuscole
+                var rx = new Regex(@"Cast\(\s*'(?<date>\d{8})'\s*as\s*datetime\s*\)",
+                                   RegexOptions.IgnoreCase);
+
+                var dates = rx.Matches(input)
+                              .Cast<Match>()
+                              .Select(m => DateTime.ParseExact(
+                                  m.Groups["date"].Value, "yyyyMMdd", CultureInfo.InvariantCulture))
+                              .ToList();
+
+                if (dates.Count >= 2)
+                {
+                    DateTime startDate = dates[0];
+                    DateTime endDate = dates[1];
+
+                    Console.WriteLine($"Inizio: {startDate:yyyy-MM-dd}");
+                    Console.WriteLine($"Fine:   {endDate:yyyy-MM-dd}");
+                }
+                else
+                {
+                    Console.WriteLine("Non sono state trovate due date nel formato atteso.");
+                }
+            }
 
             try {
                 var regsByCol = currQueryable.ToList().GroupBy(c => c.Col_Id).Select(r => new { colId = r.Key.Value, Oggetti = r.ToList() }).ToList();

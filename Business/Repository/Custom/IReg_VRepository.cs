@@ -23,7 +23,7 @@ namespace Business.Repository.Custom
 
         List<KeyValuePair<String, String>> PausaPranzo(IEnumerable<Reg_V> regVs);
 
-        List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs);
+        List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs, ICollection<Reg> regs);
 
         List<KeyValuePair<String, String>> PausaPranzoKomplett(IEnumerable<Reg_V> regVs);
 

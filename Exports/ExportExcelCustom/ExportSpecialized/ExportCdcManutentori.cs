@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using static Business.MDBSchema.PowerMDBDataSet;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -628,16 +629,32 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                     RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex + day.Day + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day + 2, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    if (justificationDec == "TOTALE") 
+                    {
+                        string rangeFormula1 = $"{ColumnIndexToNameConversion(columnIndex + day.Day + 2)}{rowIndex - (cartellini["justification"].Count - 1)}:" +
+                                $"{ColumnIndexToNameConversion(columnIndex + day.Day + 2)}{rowIndex - 1}";
+
+                        //Formula automatica per la somma dei valori della riga
+                        string formula1 = $"=SUM({rangeFormula1})";
+                        CellInsertValue(worksheetIndex, columnIndex + day.Day + 2, rowIndex, formula1, ExcelInsertTypeEnum.Formula);
+                    }
                 }
 
                 string totalHours = "0";
                 var timeDurationTotale = TimeSpan.FromHours(justification.TotalHours);
                 if (totaleMensile > 0) {
                     totalHours = FromTotalMinutesToFormattedTypeVirgola((int)(totaleMensile * 60));
-                } 
+                }
+
+                string rangeFormula = $"{ColumnIndexToNameConversion(4)}{rowIndex}:" +
+                                $"{ColumnIndexToNameConversion(CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3)}{rowIndex}";
+
+                //Formula automatica per la somma dei valori della riga
+                string formula = $"=SUM({rangeFormula})";
 
                 RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 4, rowIndex, formula, ExcelInsertTypeEnum.Formula);
 
                 //RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 //CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 5, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);

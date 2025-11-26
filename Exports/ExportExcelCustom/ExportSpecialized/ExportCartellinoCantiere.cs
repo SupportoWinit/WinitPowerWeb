@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using OfficeOpenXml;
 using System.IO;
 using static Business.MDBSchema.PowerMDBDataSet;
+using Westwind.Utilities.Extensions;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -42,6 +43,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             startMonth = CommonService.GetFirstMonthDay(ExportDate);
             endMonth = CommonService.GetLastMonthDay(ExportDate);
+            endMonth = new DateTime(endMonth.Year,endMonth.Month,endMonth.Day,23,59,59);
+           
 
             foreach (Col col in collaboratori)
             {

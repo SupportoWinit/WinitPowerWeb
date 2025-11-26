@@ -373,7 +373,8 @@ namespace PowerWeb.Modules
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
-                    Location geocode = BusinessService.GetGeocode(initCant.GeocodeAddress);
+                    string indirizzo = initCant.Indirizzo_Can + "," + initCant.Luogo_Can + "," + initCant.Cap_Can;
+                    Location geocode = BusinessService.GetGeocode(indirizzo);
                     if (geocode != null)
                     {
                         initCant.LatitudineGps_Can = geocode.Latitudine;
@@ -543,10 +544,13 @@ namespace PowerWeb.Modules
                 //CANCELLA TUUTI gli eventuali Record esistenti con quel Cantiere con Chiave = G + Chiave Partenza e/o Chiave Arrivo = Cap/Comune/Indirizzo
                 {
                     var cantAddress = "";
-                    cantAddress = string.Format("{0} | {1} | {2}", currentCant.Luogo_Can, currentCant.Indirizzo_Can, currentCant.Cap_Can);
-                    var tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
-                    var toBeDeletedDistances = RepoManager.Tab_DistRepo.Find(td => td.Tab_Decod_Id == tabDecod.Tab_Decod_Id && (td.Arrivo_Tab_Dist == cantAddress || td.Partenza_Tab_Dist == cantAddress));
-                    RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
+                    if (currentCant.Luogo_Can != null && currentCant.Indirizzo_Can != null && currentCant.Cap_Can != null) 
+                    {
+                        cantAddress = string.Format("{0} | {1} | {2}", currentCant.Luogo_Can, currentCant.Indirizzo_Can, currentCant.Cap_Can);
+                        var tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
+                        var toBeDeletedDistances = RepoManager.Tab_DistRepo.Find(td => td.Tab_Decod_Id == tabDecod.Tab_Decod_Id && (td.Arrivo_Tab_Dist == cantAddress || td.Partenza_Tab_Dist == cantAddress));
+                        RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
+                    }
                 }
             }
 
@@ -598,6 +602,7 @@ namespace PowerWeb.Modules
 
             if (e.NewValues.Contains(tipoIntervento))
             {
+                _log.Info("Imposto l'attività automatica sul cantiere");
                 string TipoInterventoCantOld = (string)e.OldValues[tipoIntervento];
                 string TipoInterventoCantNew = (string)e.NewValues[tipoIntervento];
                 Tab_Decod newTd = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == TipoInterventoCantNew);
