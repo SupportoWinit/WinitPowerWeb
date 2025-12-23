@@ -4235,8 +4235,8 @@ namespace Business.BusinessExtension
                     returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                 }
                 else {
-                  //aggiungo il timesheet specifico del cantiere alla list di ritorno
-                  returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                //aggiungo il timesheet specifico del cantiere alla list di ritorno
+                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                 }
 
 
@@ -4473,12 +4473,11 @@ namespace Business.BusinessExtension
             var returnList = new List<TimesheetModuleItem>();
 
             // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
-            //var cantIdList = regVsToSplit.Select(regv => regv.Cant_Id).Distinct().ToList();
-            List<int> cantIdList = new List<int>();
-            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
-            {
-                cantIdList = cantList.Cast<int>().ToList();
-            }
+            var cantIdList = regVsToSplit.Select(regv => regv.Cant_Id).Distinct().ToList();
+            //if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            //{
+            //    cantIdList = cantList.Cast<int>().ToList();
+            //}
             foreach (var piano in minutes)
             {
                 if (!cantIdList.Contains(piano.Key))
@@ -4501,7 +4500,7 @@ namespace Business.BusinessExtension
                     TimesheetModuleItem colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartellini.Where(c => c.CantId == currentCantId).ToList(), BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), firstMonthDate, lastMonthDate, ++timesheetOrder, 0, requestedForWeeklyTotals);
                     // aggiungo il timesheet specifico del cantiere alla list di ritorno
                     //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                    returnList.Add(subtractTimesheetsExport(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), firstMonthDate, lastMonthDate, ++timesheetOrder, currentCantId, requestedForWeeklyTotals));
+                    returnList.Add(subtractTimesheetsExport(col.Col_Id, isDecimalHours, colTotal, colPlan, colRigth, BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA), firstMonthDate, lastMonthDate, ++timesheetOrder, currentCantId.Value, requestedForWeeklyTotals));
                 }
                 catch (Exception e) { 
                 }
@@ -7367,12 +7366,21 @@ namespace Business.BusinessExtension
             // si aggiunge un giorno nella verifica del fine mese in quanto alla mezzanotte di fine mese mancano ancora 24 ore di timbrature:
             // in pratica se cerco tutte le timbrature con data minore di 30/06 00:00 mi perdo tutte le timbrature dal 30/06 00:00 al 30/06 23:29
             DateTime newLastMonthDate = validSearchDates.Item2;
-            
-            // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
-            return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
-                && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
-                && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
 
+            if (centroId == -999)
+            {
+                // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
+                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == null
+                    && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
+                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+            }
+            else 
+            {
+                // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
+                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
+                    && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
+                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+            }
         }
 
         /// <summary>
@@ -8707,11 +8715,11 @@ namespace Business.BusinessExtension
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
             if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
             {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Arrotondamento per durata").ToList();
             }
             else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
             {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa" || c.Justification == "Arrotondamento per durata").ToList();
             }
             else if(customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
@@ -10301,6 +10309,10 @@ namespace Business.BusinessExtension
                     justificationCartellini.Add(colPlan);
                 }
             }
+            else 
+            {
+                //justificationCartellini.Add(colPlan);
+            }
 
             #endregion
 
@@ -10466,98 +10478,98 @@ namespace Business.BusinessExtension
 
             #region MOTIVAZIONI
 
-            //if (calculateJustifications)
-            //{
-            //    //Recupera le registrazioni di tipo motivazione
-            //    var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
-            //
-            //    //Se sono presenti motivazioni, genera i relativi cartellini
-            //    if (justificationRegVs.Any())
-            //    {
-            //        //Cicla per ogni singola motivazione e ne crea il cartellino
-            //        foreach (string justification in justificationRegVs.Select(regv => regv.Motivazione_Reg_Cod).Distinct().ToList())
-            //        {
-            //
-            //            // con il codice della motivazione si ricercano i dati nell'apposita tabella per il recupero della descrizione se richiesto da apposita personalizzazione
-            //            string displayJustfification = justification;
-            //            ShowDescriptionJustTimesheet showDescriptionJust = (ShowDescriptionJustTimesheet)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDescriptionJustTimesheet);
-            //            if (showDescriptionJust == ShowDescriptionJustTimesheet.Show) // se la personalizzazione risulta attiva
-            //            {
-            //                Tab_Decod justConf = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "MOTIVAZIONI" && td.Chiave_Tab == justification);
-            //                if (justConf != default(Tab_Decod))
-            //                    displayJustfification = justConf.Decodifica_Tab;
-            //            }
-            //
-            //            if (isByOtherEntity)
-            //            {
-            //                // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-            //                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
-            //                    col,
-            //                    isDecimalHours,
-            //                    justification,
-            //                    minDate,
-            //                    maxDate,
-            //                    ++tsOrder,
-            //                    showWeeklyTotal,
-            //                    usaFisiche: false));
-            //            }
-            //            else
-            //            {
-            //                justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
-            //                    isDecimalHours,
-            //                    justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
-            //                    displayJustfification,
-            //                    minDate,
-            //                    maxDate,
-            //                    ++tsOrder,
-            //                    0,
-            //                    requestedForWeeklyTotals: showWeeklyTotal,
-            //                    usaFisiche: false));
-            //            }
-            //
-            //        }
-            //    }
-            //    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DetailsMalattiaCartellino) == 1)
-            //    {
-            //        justificationRegVs = GetRegVToProcessMalattia(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
-            //
-            //        //Se sono presenti motivazioni, genera i relativi cartellini
-            //        if (justificationRegVs.Any())
-            //        {
-            //            //Cicla per ogni singola motivazione e ne crea il cartellino
-            //            foreach (string justification in justificationRegVs.Select(regv => regv.Note_Reg).Distinct().ToList())
-            //            {
-            //                if (isByOtherEntity)
-            //                {
-            //                    // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-            //                    justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
-            //                        col,
-            //                        isDecimalHours,
-            //                        "malattia:" + justification,
-            //                        minDate,
-            //                        maxDate,
-            //                        ++tsOrder,
-            //                        showWeeklyTotal,
-            //                        usaFisiche: false));
-            //                }
-            //                else
-            //                {
-            //                    justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
-            //                        isDecimalHours,
-            //                        justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
-            //                        "malattia:" + justification,
-            //                        minDate,
-            //                        maxDate,
-            //                        ++tsOrder,
-            //                        0,
-            //                        requestedForWeeklyTotals: showWeeklyTotal,
-            //                        usaFisiche: false));
-            //                }
-            //
-            //            }
-            //        }
-            //    }
-            //}
+            if (calculateJustifications)
+            {
+                //Recupera le registrazioni di tipo motivazione
+                var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+            
+                //Se sono presenti motivazioni, genera i relativi cartellini
+                if (justificationRegVs.Any())
+                {
+                    //Cicla per ogni singola motivazione e ne crea il cartellino
+                    foreach (string justification in justificationRegVs.Select(regv => regv.Motivazione_Reg_Cod).Distinct().ToList())
+                    {
+            
+                        // con il codice della motivazione si ricercano i dati nell'apposita tabella per il recupero della descrizione se richiesto da apposita personalizzazione
+                        string displayJustfification = justification;
+                        ShowDescriptionJustTimesheet showDescriptionJust = (ShowDescriptionJustTimesheet)RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDescriptionJustTimesheet);
+                        if (showDescriptionJust == ShowDescriptionJustTimesheet.Show) // se la personalizzazione risulta attiva
+                        {
+                            Tab_Decod justConf = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "MOTIVAZIONI" && td.Chiave_Tab == justification);
+                            if (justConf != default(Tab_Decod))
+                                displayJustfification = justConf.Decodifica_Tab;
+                        }
+            
+                        if (isByOtherEntity)
+                        {
+                            // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
+                                col,
+                                isDecimalHours,
+                                justification,
+                                minDate,
+                                maxDate,
+                                ++tsOrder,
+                                showWeeklyTotal,
+                                usaFisiche: false));
+                        }
+                        else
+                        {
+                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
+                                isDecimalHours,
+                                justificationRegVs.Where(regv => regv.Motivazione_Reg_Cod == justification).ToList(),
+                                displayJustfification,
+                                minDate,
+                                maxDate,
+                                ++tsOrder,
+                                0,
+                                requestedForWeeklyTotals: showWeeklyTotal,
+                                usaFisiche: false));
+                        }
+            
+                    }
+                }
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DetailsMalattiaCartellino) == 1)
+                {
+                    justificationRegVs = GetRegVToProcessMalattia(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+            
+                    //Se sono presenti motivazioni, genera i relativi cartellini
+                    if (justificationRegVs.Any())
+                    {
+                        //Cicla per ogni singola motivazione e ne crea il cartellino
+                        foreach (string justification in justificationRegVs.Select(regv => regv.Note_Reg).Distinct().ToList())
+                        {
+                            if (isByOtherEntity)
+                            {
+                                // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
+                                    col,
+                                    isDecimalHours,
+                                    "malattia:" + justification,
+                                    minDate,
+                                    maxDate,
+                                    ++tsOrder,
+                                    showWeeklyTotal,
+                                    usaFisiche: false));
+                            }
+                            else
+                            {
+                                justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
+                                    isDecimalHours,
+                                    justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
+                                    "malattia:" + justification,
+                                    minDate,
+                                    maxDate,
+                                    ++tsOrder,
+                                    0,
+                                    requestedForWeeklyTotals: showWeeklyTotal,
+                                    usaFisiche: false));
+                            }
+            
+                        }
+                    }
+                }
+            }
             #endregion
 
             #region TEMPO CORRETTO

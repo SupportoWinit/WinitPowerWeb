@@ -93,6 +93,16 @@ namespace PowerWeb.Api
                             {
                                 importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray()));
 
+                                // effettuazione del backup di tutti i file della lista
+                                string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));
+
+                                // backup dei files processati
+                                BusinessService.BackupProcessedFiles(filesToImportList, backupFolder);
+
+                                // se si sono verificati degli errori allora si creano le registrazioni sospese
+                                if (importErrors.Count > 0)
+                                    BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
+
                                 int _elaborateUserId = PowerWebContext.Current.User.Utenti_Id;
                                 DateTime _elaborateDateTime = DateTime.Now;
                                 List<KeyValuePair<string, string>> elabErrors = new List<KeyValuePair<string, string>>();
@@ -111,15 +121,6 @@ namespace PowerWeb.Api
                             else // altrimenti si segnala l'informazione
                                 Errors.Add(new KeyValuePair<string, string>("Import", "Nessuna timbratura da importare"));
 
-                            // effettuazione del backup di tutti i file della lista
-                            string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));
-
-                            // backup dei files processati
-                            BusinessService.BackupProcessedFiles(filesToImportList, backupFolder);
-
-                            // se si sono verificati degli errori allora si creano le registrazioni sospese
-                            if (importErrors.Count > 0)
-                                BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
                         }
                         else // altrimenti si segnala l'informazione
                             Errors.Add(new KeyValuePair<string, string>("Import", String.Format("Nessun file da importare nella cartella {0}", filesInputPath)));

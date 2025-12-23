@@ -112,7 +112,7 @@ namespace PowerWeb.Api
 
             mailBody += "</div>";
             //Invia le mail
-            errorMessage = CommonService.sendMail("dTezzon@winitsrl.it"/*mailTo*/, "PowerWeb - Comunicazione assenze " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione assenze", new string[] { });
+            errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Comunicazione assenze " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione assenze", new string[] { });
         
             return errorMessage;
         }

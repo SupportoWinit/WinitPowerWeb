@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Common;
+using Data;
+using DevExpress.XtraPrinting.Native;
+using Domain;
+using log4net;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.EntityClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using DevExpress.XtraPrinting.Native;
-using Domain;
-using Data;
-using Common;
 using System.Linq.Expressions;
 using System.Xml.Linq;
-using log4net;
 
 namespace Business.Repository.Custom
 {
@@ -617,14 +618,22 @@ namespace Business.Repository.Custom
             try
             {
                 //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
-                    DetachAllEntities();
-                
-                _log.InfoFormat("Impostazione a true del semaforo");
-                DbSet.First().Elaborate_Semaforo = true;
-                SaveChanges();
-                                  
+                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
+                //DetachAllEntities();
 
+                var ecsbuilder = new EntityConnectionStringBuilder
+                {
+                    Provider = "System.Data.SqlClient",
+                    ProviderConnectionString = PowerWebConfig.ConnectionString,
+                    Metadata = string.Format(@"res://*/{0}.csdl|res://*/{0}.ssdl|res://*/{0}.msl", "PowerWebModel")
+                };
+
+                using (var context = new PowerWebEntities(ecsbuilder.ToString()))
+                {
+                    _log.InfoFormat("Impostazione a true del semaforo");
+                    context.Param.First().Elaborate_Semaforo = true;
+                    context. SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -640,12 +649,26 @@ namespace Business.Repository.Custom
             try
             {
                 //se attivo la customization di autochiusura pulisco le entità prima di salvare per evitare valori NULL nelle reg
-                if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
-                    DetachAllEntities();
+                //if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresEnum) == (int)AutoClosuresEnum.Sede || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresFirstLast) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosures) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresXMinuteEnum) == 1 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoClosuresAfterXEnum) == 1)
+                //DetachAllEntities();
 
-                _log.InfoFormat("Impostazione a false del semaforo");
-                DbSet.First().Elaborate_Semaforo = false;
-                SaveChanges();
+                var ecsbuilder = new EntityConnectionStringBuilder
+                {
+                    Provider = "System.Data.SqlClient",
+                    ProviderConnectionString = PowerWebConfig.ConnectionString,
+                    Metadata = string.Format(@"res://*/{0}.csdl|res://*/{0}.ssdl|res://*/{0}.msl", "PowerWebModel")
+                };
+
+                using (var context = new PowerWebEntities(ecsbuilder.ToString()))
+                {
+                    _log.InfoFormat("Impostazione a true del semaforo");
+                    context.Param.First().Elaborate_Semaforo = false;
+                    context.SaveChanges();
+                }
+
+                //_log.InfoFormat("Impostazione a false del semaforo");
+                //DbSet.First().Elaborate_Semaforo = false;
+                //SaveChanges();
                 
 
                 

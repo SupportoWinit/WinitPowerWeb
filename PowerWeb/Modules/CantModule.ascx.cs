@@ -405,6 +405,32 @@ namespace PowerWeb.Modules
             }
 
             RepoManager.CantRepo.Add(initCant, true);
+            #region Gestione attività automatica
+
+            var tipoIntervento = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);
+
+            if (e.NewValues.Contains(tipoIntervento))
+            {
+                _log.Info("Imposto l'attività automatica sul cantiere");
+                string TipoInterventoCantNew = (string)e.NewValues[tipoIntervento];
+                Tab_Decod newTd = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == TipoInterventoCantNew);
+                if (newTd != null)
+                {
+                    Utenti winit = RepoManager.UtentiRepo.FirstOrDefault(ut => ut.Codice_Utente == "WINIT");
+                    Cant_Note newAssoc = new Cant_Note();
+                    newAssoc.Cant_Id = initCant.Cant_Id;
+                    DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00);
+                    newAssoc.Data_Nota_Can_Note = ConvertToSmallDateTime(today);
+                    newAssoc.Data_Registrazione_Can_Note = ConvertToSmallDateTime(today);
+                    newAssoc.DataOraUltimaModifica_Can_Note = ConvertToSmallDateTime(today);
+                    newAssoc.Nota_Can_Note = newTd.Decodifica_Tab;
+                    newAssoc.Utenti_Id = winit.Utenti_Id;
+                    newAssoc.Tipo_Nota_Can_Note = "INFO";
+                    RepoManager.Cant_NoteRepo.Add(newAssoc);
+                    RepoManager.Cant_NoteRepo.SaveChanges();
+                }
+            }
+            #endregion
             e.Cancel = true;
             gvCant.CancelEdit();
 
@@ -419,6 +445,9 @@ namespace PowerWeb.Modules
 
             Cant currentCant = RepoManager.CantRepo.Single(u => u.Cant_Id == currentId);
 
+            PowerWebService.FillEntityProperties(currentCant, e.NewValues);
+            RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(currentCant);
+
             if (RepoManager.ParamRepo.ParametersRow.File_Cant_Var)
             //Se in Tab PARAM è stato attivato il Flag di Gestione della Scrittura dei Record Variati in CantAR
             {
@@ -428,8 +457,7 @@ namespace PowerWeb.Modules
                 RepoManager.Cant_VarRepo.Add(cantVar);
             }
 
-            PowerWebService.FillEntityProperties(currentCant, e.NewValues);
-            RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(currentCant);
+            
 
 
             #region Gestione GPS
@@ -629,13 +657,32 @@ namespace PowerWeb.Modules
             }
             #endregion
 
-            try
+            var codiceCommessaPropertyName = CommonService.GetPropertyName(() => _cantStub.Codice_Commessa_Can);
+            if (e.NewValues.Contains(codiceCommessaPropertyName) && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1) 
             {
-                RepoManager.CantRepo.SaveChanges();
+                if (e.NewValues[codiceCommessaPropertyName] != null) 
+                {
+                    try
+                    {
+                        RepoManager.CantRepo.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
+                    }
+                }
             }
-            catch (Exception ex)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 0) 
             {
-                _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
+                try
+                {
+                    RepoManager.CantRepo.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
+                }
             }
 
             e.Cancel = true;

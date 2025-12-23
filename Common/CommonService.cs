@@ -1550,7 +1550,7 @@ namespace Common
                 //Prepara il client SMTP
                 var smtp = new SmtpClient
                 {
-                    Host = "mx9.zimbra-ilger.com",
+                    Host = "mail.winitsrl.it",
                     Port = 587,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,

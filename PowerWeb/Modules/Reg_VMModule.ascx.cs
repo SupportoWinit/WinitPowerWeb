@@ -553,6 +553,16 @@ namespace PowerWeb.Modules
             else
                 cant_Id = null;
 
+            if (cant_Id == 0 || cant_Id >= null) 
+            {
+                if (oldRegV.Cant_Id.HasValue) 
+                {
+                    cant_Id = oldRegV.Cant_Id.Value;
+                }
+            }
+
+            _log.InfoFormat("Inserito cant_Id nel metodo initReg_V, cantId = {0}, oldRegV.cantId = {1}", cantId,oldRegV.Cant_Id.Value);
+
             string sotto_cantiere = null;
             bool exists_sottocantiere = false;
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SubCant) == 1) {
@@ -614,11 +624,11 @@ namespace PowerWeb.Modules
                 newRegV.Data_Ora_Fis_E = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_E.Hour, data_Ora_Fis_E.Minute, data_Ora_Fis_E.Second);
             }
 
-            currTimeOfDay = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, 0);
+            currTimeOfDay = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, data_Ora_Fis_U.Second);
 
             if (RepoManager.ParamRepo.First().Abilita_Notturno == true && valueU != "")
             {
-                DateTime middleNightU = new DateTime(currTimeOfDay.Year, currTimeOfDay.Month, currTimeOfDay.Day, currTimeOfDay.Hour, currTimeOfDay.Minute, 01);
+                DateTime middleNightU = new DateTime(currTimeOfDay.Year, currTimeOfDay.Month, currTimeOfDay.Day, currTimeOfDay.Hour, currTimeOfDay.Minute, currTimeOfDay.Second);
                 newRegV.Data_Ora_Fis_U = middleNightU;
                 currTimeOfDay = middleNightU;
             }
@@ -1004,6 +1014,7 @@ namespace PowerWeb.Modules
 
         protected void gvRegVM_RowInserting(object sender, ASPxDataInsertingEventArgs e)
         {
+            _log.Info(String.Format("Reg-Row Inserting by Prova"));
             _log.Info(String.Format("Reg-Row Inserting by {0}", PowerWebContext.Current.User.Codice_Utente));
 
             List<Reg> toAddRegsNew = new List<Reg>();

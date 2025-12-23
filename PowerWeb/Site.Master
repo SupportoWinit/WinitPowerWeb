@@ -184,13 +184,12 @@
                         }
                         else
                         {%>
-                         [<span><% =Domain.PowerWebContext.Current.User.Codice_Utente %></span>]
+                        [<span><% =Domain.PowerWebContext.Current.User.Codice_Utente %></span>]
                          <br/>
                          [ <asp:LinkButton  runat="server" onclick="OnLoggingOut">Disconnetti</asp:LinkButton> ]
                         <% 
                         }
                     %>
-
                     <br/>
                     <dx:ASPxLabel ID="DeployVersionLabel" runat="server" Text="" EncodeHtml="false" />
                 </div>

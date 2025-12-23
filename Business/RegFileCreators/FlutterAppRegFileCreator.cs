@@ -1135,7 +1135,7 @@ namespace Business.RegFileCreators
                             if (fluReg.Attivita.Contains(','))
                             {
                                 String[] att = fluReg.Attivita.Split(',');
-                                attivitaFinale = att[0];
+                                attivitaFinale = att[1];
                             }
                             else
                             {

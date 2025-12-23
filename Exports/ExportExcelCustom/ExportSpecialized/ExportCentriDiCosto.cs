@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
 
@@ -101,6 +102,45 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 centri.Add(centro.Descrizione, cartellini);
             }
+
+            var regVsAltro = RepoManager.Reg_VRepo.Find(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.CentroDiCosto_Id == null && r.Registrazione_Tipo_Reg == 0 && (r.Codice_Commessa_Can == "Pulizie Civile" || r.Codice_Commessa_Can == "PULIZIE CIVILE")).GroupBy(r => r.Col_Id).ToList();
+            cartellini = new Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>();
+            foreach (var reg in regVsAltro)
+            {
+                if (SelectedIds.Contains(reg.Key.Value))
+                {
+                    List<Col> collaboratori = RepoManager.ColRepo.GetAll().Where(c => c.Col_Id == reg.Key && c.DisAbilitazione_Col == false).OrderBy(c => c.Cognome_Col).ToList();
+                    foreach (Col col in collaboratori)
+                    {
+                        if (col.Qualifica_Col != "0")
+                        {
+                            var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
+                            && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
+                            && regv.Registrazione_Tipo_Reg == 0 && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                            if (regs.Count() > 0)
+                            {
+                                cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
+                                                                col,
+                                                                -999,
+                                                                true,
+                                                                false,
+                                                                true,
+                                                                true,
+                                                                parameters.Cartellino_Visualizza_Ore,
+                                                                parameters.Cartellino_Visualizza_Motivazioni,
+                                                                parameters.Cartellino_Visualizza_Viaggi,
+                                                                parameters.Cartellino_Visualizza_Delta,
+                                                                parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                                false,
+                                                                parameters.Cartellino_Visualizza_Piano));
+                            }
+                        }
+
+                    }
+                }
+            }
+            centri.Add("ALTRO", cartellini);
+
 
             cartellini = cartellini.OrderBy(c => c.Key.CognomeNome_Col).ToDictionary(c => c.Key, d => d.Value);
 

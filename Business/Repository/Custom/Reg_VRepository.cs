@@ -1471,7 +1471,7 @@ namespace Business.Repository.Custom
                                                 
                                         if (roundingEnum == RoundingMethodEnum.Duration)
                                         {
-                                            DeleteDurationRounding(regs);
+                                            //DeleteDurationRounding(regs);
                                             DurationRounding(currentRegVs, roundingEnum);
                                         }
 
@@ -2170,10 +2170,10 @@ namespace Business.Repository.Custom
                                                 {
                                                     //recupero il cantiere della timbratura
                                                     List<Cant> currentCantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regv.Cant_Id).ToList();
-                                                    if (currentCantiere.Count > 0) 
+                                                    if (currentCantiere.Count > 0)
                                                     {
                                                         //recupero l'orario del cantiere per controllare se la timbratura supera il piano orario
-                                                        if (currentCantiere.First().Tab_Orari_Tipo_Id.HasValue) 
+                                                        if (currentCantiere.First().Tab_Orari_Tipo_Id.HasValue)
                                                         {
                                                             int tipoOrarioId = currentCantiere.First().Tab_Orari_Tipo_Id.Value;
                                                             List<Tab_Orari_Tipo> tipoOrario = RepoManager.Tab_OrariTipoRepo.GetAllQueryable(or => or.Tab_Orari_Tipo_Id == tipoOrarioId).ToList();
@@ -2250,10 +2250,94 @@ namespace Business.Repository.Custom
                                                                         TimeSpan roundingTime = new TimeSpan(0, diff, 0);
                                                                         roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
                                                                     }
+                                                                    else
+                                                                    {
+                                                                        //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                                        if (moduleMinutes != 0)
+                                                                        {
+                                                                            //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                                            if (moduleMinutes > thresholdDuration)
+                                                                            {
+                                                                                // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                                                TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                                            }
+                                                                            //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                                            else
+                                                                            {
+                                                                                // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                                                TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else 
+                                                                {
+                                                                    //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                                    if (moduleMinutes != 0)
+                                                                    {
+                                                                        //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                                        if (moduleMinutes > thresholdDuration)
+                                                                        {
+                                                                            // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                                            TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                                            roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                                        }
+                                                                        //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                                        else
+                                                                        {
+                                                                            // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                                            TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                                            roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
                                                         }
-                                                        
+                                                        else 
+                                                        {
+                                                            //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                            if (moduleMinutes != 0)
+                                                            {
+                                                                //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                                if (moduleMinutes > thresholdDuration)
+                                                                {
+                                                                    // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                                    TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                                    roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                                }
+                                                                //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                                else
+                                                                {
+                                                                    // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                                    TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                                    roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+                                                    else 
+                                                    {
+                                                        //Se ci sono minuti in esubero rispetto al parametro, genero la regv di arrotondamento
+                                                        if (moduleMinutes != 0)
+                                                        {
+                                                            //Se sono sopra alla soglia, genero una regv di arrotondamento positiva
+                                                            if (moduleMinutes > thresholdDuration)
+                                                            {
+                                                                // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro superiore specificato
+                                                                TimeSpan roundingTime = new TimeSpan(0, minutesDuration - moduleMinutes, 0);
+                                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingPlus, roundingTime));
+                                                            }
+                                                            //Se sono sotto alla soglia, genero una regv di arrotondamento negativa
+                                                            else
+                                                            {
+                                                                // La reg di arrotondamento avrà durata tale da portare la durata totale di giornata al parametro inferiore specificato
+                                                                TimeSpan roundingTime = new TimeSpan(0, moduleMinutes, 0);
+                                                                roundingsToAdd.Add(RepoManager.RegRepo.GenerateRoundingRegCan(currColId.GetValueOrDefault(), regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime));
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }

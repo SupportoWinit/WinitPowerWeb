@@ -40,7 +40,8 @@ namespace PowerWeb.Api
             string tmpFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Output_Csv_Path.Replace("~", "").Replace("\\", "").Replace("--", "\\"));
             string fileName = Path.Combine(tmpFilePath, tmpName);
             string currentFileName = Path.Combine(filePath,Name);
-            if (File.Exists(currentFileName)) {
+            if (File.Exists(currentFileName)) 
+            {
                 File.Delete(currentFileName);
             }
             // calcolo del nome del file utilizzato per l'esecuzione esclusiva delle operazioni

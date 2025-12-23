@@ -223,7 +223,8 @@ namespace Common
         UseAutoActivity,
         CalcoloRiposi,
         MailTo,
-        RoundingOnSchedule
+        RoundingOnSchedule,
+        CodiceCommessaObbligatorio
     }
 
     public enum ClockAppsOperationEnum

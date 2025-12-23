@@ -1036,7 +1036,7 @@ namespace PowerWeb
 
             if (PowerWebContext.Current.User.Codice_Utente != "WINIT") 
             {
-                btnDeleteLayout.Visible = false;
+                //btnDeleteLayout.Visible = false;
                 btnDeletePrintLayout.Visible = false;
                 btnSavePrintLayout.Visible = false;
             }       

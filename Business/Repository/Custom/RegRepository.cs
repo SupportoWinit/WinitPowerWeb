@@ -772,6 +772,8 @@ namespace Business.Repository.Custom
                                                     regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
 
                                 //roundingRegVs.AddRange(tripsRegvs);
+                                // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
+                                //RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
                                 // applicazione degli arrotondamenti per durata
                                 _log.Info(String.Format("starting rounding duration regVs at {0}", regVs.Count()));
                                 //errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs, roundingParamEnum));
@@ -2530,7 +2532,7 @@ namespace Business.Repository.Custom
                             #region Associazione del cantiere
 
                             // in ogni caso si reinizializza sulla registrazione il cantiere
-                            reg.Cant_Id = null;
+                            //reg.Cant_Id = null;
 
                             // inizializzazione della variabile di appoggio dell'associazione cant_fru da impostare
                             Fru_Cant currentFruCant = null;
@@ -6699,7 +6701,7 @@ namespace Business.Repository.Custom
 
             var cantIdToInsert = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Cant_Id)]);
             if (cantIdToInsert == 0)
-                currentRegE.Cant_Id = null;
+                currentRegE.Cant_Id = oldRegE.Cant_Id.Value;
             else
                 currentRegE.Cant_Id = cantIdToInsert;
 

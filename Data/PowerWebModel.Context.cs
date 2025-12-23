@@ -15,7 +15,8 @@ namespace Data
     using Domain;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+    using System.Threading;
+
     public partial class PowerWebEntities : DbContext
     {
         public PowerWebEntities(string connectionString)
@@ -110,6 +111,19 @@ namespace Data
                 new ObjectParameter("XML", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Reg_Delete", xMLParameter);
+        }
+
+        public override int SaveChanges()
+        {
+            var regs = ChangeTracker.Entries().Where(e => e.Entity is Reg)
+                .Where(e => e.State == EntityState.Modified && e.OriginalValues[nameof(Domain.Reg.Cant_Id)] != e.CurrentValues[nameof(Domain.Reg.Cant_Id)] && e.CurrentValues[nameof(Domain.Reg.Cant_Id)] == null).ToList();
+
+            if (regs.Any())
+            {
+
+            }
+
+            return base.SaveChanges();
         }
     
         public virtual int Reg_Insert(string xML)
