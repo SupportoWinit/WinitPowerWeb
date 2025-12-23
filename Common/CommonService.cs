@@ -1531,47 +1531,51 @@ namespace Common
         {
             try
             {
-                //Crea l'oggetto indirizzo mail dal quale inviare la mail
-                MailAddress fromAddressObject = new MailAddress(fromAddress, fromAddressName);
-
-                // Salva in un array gli indirizzi dei destinatari divisi da ';')
-                string[] mailAddresses = toAddress.Split(';');
-                MailAddress[] toAddresses = new MailAddress[mailAddresses.Length];
-
-                // Converto le stringhe in MailAddresses
-                for (int i = 0; i < mailAddresses.Length; i++)
+                //Prepara il client SMTP tramite Gmail
+                var smtp = new SmtpClient("smtp.gmail.com", 587)
                 {
-                    toAddresses[i] = new MailAddress(mailAddresses[i]);
-                }
-
-                //Password dell'account dell'indirizzo del mittente
-                const string fromPassword = "Power2025!";
-
-                //Prepara il client SMTP
-                var smtp = new SmtpClient
-                {
-                    Host = "mail.winitsrl.it",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("servizi@winitsrl.it", fromPassword)
+                    Credentials = new NetworkCredential(
+                        "servizi.winit@gmail.com",
+                        "iksb ulfo onkc oywj"   //chiave generata da account google
+                        ),
+                    EnableSsl = true
                 };
 
                 //Imposta il timout al massimo, per evitare che blocchi l'operazione quando ci sono molti allegati
                 smtp.Timeout = 600000;
-                //Prepara l'email per l'invio
-                var mail = new MailMessage();
-                mail.From = fromAddressObject;
-                //Aggiunge tutti gli indirizzi di destinazione
-                foreach (MailAddress email in toAddresses)
+
+                //Creazione dell'oggetto del messaggio da inviare
+                var message = new MailMessage
                 {
-                    mail.To.Add(email);
+                    //Creazione del mittente
+                    From = new MailAddress(fromAddress, fromAddressName),
+
+                    //Soggetto della mail
+                    Subject = mailSubject,
+
+                    //Contenuto del messaggio
+                    Body = mailBody,
+
+                    //Il messaggio è in HTML
+                    IsBodyHtml = true
+                };
+
+                // Salva in un array gli indirizzi dei destinatari divisi da ';')
+                string[] mailAddresses = toAddress.Split(';');
+
+                //Il primo destinatario sarà quello principale
+                message.To.Add(mailAddresses[0]);
+
+                //Gli indirizzi successivi, se presenti, vengono inseriti in copia
+                if (mailAddresses.Length > 1)
+                {
+                    for (int i = 1; i < mailAddresses.Length; i++)
+                    {
+                        message.CC.Add(mailAddresses[i]);
+                    }
                 }
-                //Imposta oggetto e testo della mail
-                mail.IsBodyHtml = true;
-                mail.Body = mailBody;
-                mail.Subject = mailSubject;
+
+                
 
                 //Allega gli allegati richiesti
                 foreach (string attachmentPath in attachments)
@@ -1580,12 +1584,12 @@ namespace Common
                     if (File.Exists(attachmentPath))
                     {
                         Attachment attachment = new Attachment(attachmentPath);
-                        mail.Attachments.Add(attachment);
+                        message.Attachments.Add(attachment);
                     }
                 }
 
                 //Invia l'email
-                smtp.Send(mail);
+                smtp.Send(message);
             }
 
             catch (Exception ex)
