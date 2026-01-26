@@ -8269,8 +8269,10 @@ namespace Business.Repository.Custom
 
             string returnFileName = String.Empty;
 
+            List<Reg_V> tripToExp = regVsToProcess.Where(reg => reg.Registrazione_Tipo_Reg == 4).ToList();
+
             //controllo di avere delle reg da inserire nell'Xml
-            if (regVsToProcess.Any())
+            if (regVsToProcess.Any() && tripToExp.Count > 0)
             {
                 // viene recuperato il parametro della personalizzazione di export xml che indica sotto quale soglia kilometrica trattare i viaggi come ore lavorate
                 string kmParam = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RegExportToXmlEnum, "TreatTripAsWorkedUnderKM");

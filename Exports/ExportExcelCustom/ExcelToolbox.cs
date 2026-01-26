@@ -820,12 +820,28 @@ namespace Exports.ExportExcelCustom
 
             #endregion
 
+            string stringValue = Convert.ToString(valueToInsert);
+            if (stringValue.Contains(',')) stringValue = stringValue.Replace(',', '.');
+
             // inserimento nel worksheet del valore da inserire in base al tipo di inserimento
             if (insertType == ExcelInsertTypeEnum.Formula) // si sta inserendo una formula
-                ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Formula = Convert.ToString(valueToInsert);
+                ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Formula = stringValue;
             else // si sta inserendo un valore
             {
-                ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Value = valueToInsert; // inserimento del valore
+                //Se il valore è convertibile a intero alla cella viene assegnato il valore intero
+                if (int.TryParse(stringValue, out int intValue))
+                    ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Value = intValue;
+
+                //Viene altrimenti controllato se è convertibile a double
+                else if (double.TryParse(stringValue, NumberStyles.Any, CultureInfo.InvariantCulture, out double doubleValue))
+                {
+                    ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Value = doubleValue;
+                    ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Style.Numberformat.Format = "0.00";
+                }
+                //In alternativa viene assegnato il valore a stringa
+                else
+                    ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Value = stringValue;
+
                 if (insertType == ExcelInsertTypeEnum.HhmmTime) // se è richiesto un formato particolare
                 {
                     ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Style.Numberformat.Format = "[h]:mm"; // applicazione del formato hh:mm

@@ -1285,9 +1285,9 @@ namespace Business.Repository.Custom
             if (validTimesheet.Any())
             {
                 var lastTimesheetDate = validTimesheet.Max(tor => tor.Data_Inizio);
-                //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) {
-                //    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
-                //}
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) {
+                    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
+                }
                 // per ognuno degli orari recuperati viene verificato se si tratta di un orario valido per la data
                 // (cioè se rispetta giorno/ripetizione, non si tratta di un giorno festivo (solo per i collaboratori) e sia flaggato il giorno corretto); se si tratta di un orario
                 // valido allora lo si aggiunge all'elenco

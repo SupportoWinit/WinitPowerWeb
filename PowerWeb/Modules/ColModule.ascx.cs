@@ -526,6 +526,12 @@ namespace PowerWeb.Modules
                     currentCol.LongitudineGps_Col = geocode.Longitudine;
                 }
             }
+
+            //if (oldCol.Qualifica_Col != currentCol.Qualifica_Col) 
+            //{
+            //    currentCol.Straniero_Scadenza_Permesso_Col = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,0,0,0);
+            //}
+
             RepoManager.ColRepo.SaveChanges();
             e.Cancel = true;
             gvCol.CancelEdit();

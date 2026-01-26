@@ -89,8 +89,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 WorksheetCreateNew();
                 worksheetIndex++;
 
-                WriteTimesheetHeader();
-
                 //rowIndex += 2;
             }
 
@@ -106,8 +104,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                         ExcelWorkbook.Workbook.Worksheets.Add(col.Key.CognomeNome_Col);
                         worksheetIndex++;
-
-                        WriteTimesheetHeader();
 
                         //rowIndex += 2;
                     }
@@ -195,32 +191,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         #endregion
 
         #region Private Methods
-
-        private void WriteTimesheetHeader()
-        {   //
-            //RangeUnion(worksheetIndex, 1, rowIndex, 34, rowIndex + 4);
-            //CellInsertValue(worksheetIndex, 1, 1, ExportDate.ToString("MMMM yyyy").ToUpper(), ExcelInsertTypeEnum.Content);
-            //RangeSetFontBold(worksheetIndex, 1, rowIndex, 34, rowIndex + 4);
-            //RangeSetTextVerticalAlignment(worksheetIndex, 1, rowIndex, 34, rowIndex + 4, ExcelVerticalAlignment.Center);
-            //RangeSetTextHorizontalAlignment(worksheetIndex, 1, rowIndex, 34, rowIndex + 4, ExcelHorizontalAlignment.Center);
-            //
-            //rowIndex += 5;
-        }
-
-        private void WriteTimesheetTitle()
-        {
-            CellInsertValue(worksheetIndex, 1, rowIndex, "CLASSIC", ExcelInsertTypeEnum.Content);
-            rowIndex += 2;
-        }
-
-        private void WriteTimesheetColName(Col col)
-        {
-            RangeUnion(worksheetIndex, 1, rowIndex, 5, rowIndex);
-            RangeSetFontBold(worksheetIndex, 1, rowIndex, 5, rowIndex);
-            CellInsertValue(worksheetIndex, 1, rowIndex, col.CognomeNome_Col, ExcelInsertTypeEnum.Content);
-
-            rowIndex++;
-        }
 
         private void WriteTimesheetColHeader()
         {
@@ -381,21 +351,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     if ((motivazione && (int)baseDuration > 0)) {
                         if ((double)justification["Day" + day.Day.ToString("00")] == (double)last["Day" + day.Day.ToString("00")])
                         {
-                            //if (justification.Justification.Equals("M"))
-                            //{
-                            //    valueToPrint = "-- --";
-                            //}
-                            //else
                             if (justification.Justification.Equals("OFF"))
                             {
                                 valueToPrint = "-- --";
                             }
-                            //else if (justification.Justification.Equals("F"))
-                            //{
-                            //    valueToPrint = "-- --";
-                            //}
-                            print = (double)last["Day" + day.Day.ToString("00")];
-                            valueToPrint = "-- --";
+                            else 
+                            {
+                                print = (double)last["Day" + day.Day.ToString("00")] * 60;
+                                valueToPrint = FromTotalMinutesToFormattedType((int)print);
+                            }
+                            //valueToPrint = "-- --";
                         }
                         else {
                             double tmp = (double)last["Day" + day.Day.ToString("00")] * 60;
@@ -403,18 +368,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             if (tmp <= 0) {
                                 valueToPrint = "-- --";
                             }
-                            //else if (justification.Justification.Equals("M"))
-                            //{
-                            //    valueToPrint = "-- --";
-                            //}
                             else if (justification.Justification.Equals("OFF"))
                             {
                                 valueToPrint = "-- --";
                             }
-                            //else if (justification.Justification.Equals("F"))
-                            //{
-                            //    valueToPrint = "-- --";
-                            //}
                             else
                             {
                                 valueToPrint = FromTotalMinutesToFormattedType((int)tmp);

@@ -615,6 +615,7 @@ namespace PowerWeb
                     DateTime meseCorrenteUltimoGgpiu1 = meseCorrenteUltimoGg.AddDays(1);
                     DateTime meseCorrentePrimoGg = CommonService.GetFirstMonthDay(currDate);
                     DateTime yesterday = CommonService.Yestarday(currDate);
+                    DateTime tomorrow = currDate.AddDays(1);
                     DateTime startOfYear = new DateTime(currDate.Year,1,1);
                     DateTime startOfLastYear = new DateTime(currDate.Year - 1,1,1);
                     DateTime endOfLastYear = new DateTime(currDate.Year - 1,12,31);
@@ -628,6 +629,7 @@ namespace PowerWeb
                     var mesePrevUltimoGgString = mesePrevUltimoGg.ToString("yyyy-MM-dd");
                     var now = currDate.ToString("yyyy-MM-dd");
                     var ieri = yesterday.ToString("yyyy-MM-dd");
+                    var domani = tomorrow.ToString("yyyy-MM-dd");
                     var current = currDate.ToString("yyyy-MM-dd");
                     var startYear = startOfYear.ToString("yyyy-MM-dd");
                     var startLastYear = startOfLastYear.ToString("yyyy-MM-dd");
@@ -809,7 +811,14 @@ namespace PowerWeb
                                 }
                                 else if (nomeLayout.Contains("IERI"))
                                 {
-                                    currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ieri);
+                                    if (nomeLayout.Contains("TURNO-COMPLETO"))
+                                    {
+                                        currentGridLayout = currentGridLayout.Insert(dateIndex + 1, now);
+                                    }
+                                    else 
+                                    {
+                                        currentGridLayout = currentGridLayout.Insert(dateIndex + 1, ieri);
+                                    }   
                                 }
                                 else
                                 {
@@ -2314,7 +2323,7 @@ namespace PowerWeb
             // i Dati mostrati NON superino i 1000 Records
             if (GridModule != null && GridModule.GridView != null)
             {
-                if (GridModule.GridView.VisibleRowCount > 2000)
+                if (GridModule.GridView.VisibleRowCount > 3000)
                 {
                     btnPrintXlsx.ClientEnabled = false;
                     btnPrintXlsx.Enabled = false;
@@ -2676,7 +2685,7 @@ namespace PowerWeb
                         for (int i = 0; i < printGridView.VisibleRowCount; i++)
                         {
                             //controllo in caso di ragruppamneto se sono una child rows o una detail rows
-                            //mi ritorna le righe figlie di un specifico ragguppamento
+                            //mi ritorna le righe figlie di un specifico agguppamento
                             //ritorno true se la riga i è una riga di raggruppamento, false se non ho ragruppamenti o sono in una riga di dettaglio
                             var groupedRow = printGridView.GetChildRow(i, 0) != null;
 

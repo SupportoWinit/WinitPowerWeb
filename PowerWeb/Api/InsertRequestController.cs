@@ -40,6 +40,7 @@ namespace PowerWeb.Api
         /// </summary>
         protected override void ExecuteOperation()
         {
+            _log.Info("Inizio ad inserire la richiesta di ferie o permesso");
             bool result = true;
             ReturnValues values = new ReturnValues();
             if (Start != new TimeSpan(0, 1, 0))
@@ -61,10 +62,23 @@ namespace PowerWeb.Api
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
                     pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
-                    List<Pru_Col> prus = RepoManager.Pru_ColRepo.GetAllQueryable(p => p.Codice_Pru == "     " + ColId).OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col).ToList();
-                    pruCol = RepoManager.Pru_ColRepo.Single(pr => pr.Pru_Id == prus.First().Pru_Id);
-                    List<Fru_Cant> frus = RepoManager.Fru_CantRepo.GetAllQueryable(f => f.Codice_Fru == "MOTIV00001").OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                    fruCant = RepoManager.Fru_CantRepo.Single(fc => fc.Fru_Id == frus.First().Fru_Id);
+                    var codicePru = "     " + ColId.ToString(); // o la proprietà giusta
+
+                    var pruId = RepoManager.Pru_ColRepo
+                        .GetAllQueryable(p => p.Pru_Id == pru.Pru_Id)
+                        .OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col)
+                        .Select(p => p.Pru_Id)
+                        .FirstOrDefault();
+
+                    pruCol = RepoManager.Pru_ColRepo.GetAllQueryable(pr => pr.Pru_Id == pruId).OrderByDescending(pr => pr.Abilitazione_Data_Inizio_Pru_Col).FirstOrDefault();
+
+                    var fruId = RepoManager.Fru_CantRepo
+                        .GetAllQueryable(p => p.Fru_Id == fru.Fru_Id)
+                        .OrderByDescending(p => p.Abilitazione_Data_Inizio_Fru_Can)
+                        .Select(p => p.Fru_Id)
+                        .FirstOrDefault();
+
+                    fruCant = RepoManager.Fru_CantRepo.GetAllQueryable(fc => fc.Fru_Id == fruId).OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault();
                     col = RepoManager.ColRepo.Single(c => c.Col_Id == pruCol.Col_Id);
                     can = RepoManager.CantRepo.Single(c => c.Cant_Id == fruCant.Cant_Id);
                     motivazione = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == Justification && td.Nome_Tab == "MOTIVAZIONI");
@@ -74,6 +88,7 @@ namespace PowerWeb.Api
                     values.Message = "Dati forniti come parametri non corretti";
                     JsonData = JsonConvert.SerializeObject(values);
                     result = false;
+                    _log.ErrorFormat("Errore nella convalida dei dati forniti {0}", e.InnerException);
                 }
                 
                 DateTime dataE = new DateTime(From.Year,From.Month,From.Day,Start.Hours,Start.Minutes,Start.Seconds);
@@ -120,8 +135,10 @@ namespace PowerWeb.Api
                         RepoManager.RegRepo.Add(regU, true);
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
+                        _log.Info("Inizio ad inserire la richiesta di ferie o permesso");
                     }
                     else {
+                        _log.Info("Rchiesta gia presente a sistema");
                         values.Status = false;
                         values.Message = "Richiesta già presente a sistema";
                     }
@@ -148,10 +165,23 @@ namespace PowerWeb.Api
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
                     pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
-                    List<Pru_Col> prus = RepoManager.Pru_ColRepo.GetAllQueryable(p => p.Codice_Pru == "     " + ColId).OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col).ToList();
-                    pruCol = RepoManager.Pru_ColRepo.Single(pr => pr.Pru_Id == prus.First().Pru_Id);
-                    List<Fru_Cant> frus = RepoManager.Fru_CantRepo.GetAllQueryable(f => f.Codice_Fru == "MOTIV00001").OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                    fruCant = RepoManager.Fru_CantRepo.Single(fc => fc.Fru_Id == frus.First().Fru_Id);
+                    var codicePru = "     " + ColId.ToString(); // o la proprietà giusta
+
+                    var pruId = RepoManager.Pru_ColRepo
+                        .GetAllQueryable(p => p.Pru_Id == pru.Pru_Id)
+                        .OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col)
+                        .Select(p => p.Pru_Id)
+                        .FirstOrDefault();
+
+                    pruCol = RepoManager.Pru_ColRepo.GetAllQueryable(pr => pr.Pru_Id == pruId).OrderByDescending(pr => pr.Abilitazione_Data_Inizio_Pru_Col).FirstOrDefault();
+
+                    var fruId = RepoManager.Fru_CantRepo
+                        .GetAllQueryable(p => p.Fru_Id == fru.Fru_Id)
+                        .OrderByDescending(p => p.Abilitazione_Data_Inizio_Fru_Can)
+                        .Select(p => p.Fru_Id)
+                        .FirstOrDefault();
+
+                    fruCant = RepoManager.Fru_CantRepo.GetAllQueryable(fc => fc.Fru_Id == fruId).OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault();
                     col = RepoManager.ColRepo.Single(c => c.Col_Id == pruCol.Col_Id);
                     can = RepoManager.CantRepo.Single(c => c.Cant_Id == fruCant.Cant_Id);
                     motivazione = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == Justification && td.Nome_Tab == "MOTIVAZIONI");
@@ -161,6 +191,7 @@ namespace PowerWeb.Api
                     values.Message = "Dati forniti come parametri non corretti";
                     JsonData = JsonConvert.SerializeObject(values);
                     result = false;
+                    _log.ErrorFormat("Errore nella convalida dei dati forniti {0}",e.InnerException);
                 }
                 if (result) {
                     DateTime from = From;
@@ -209,11 +240,13 @@ namespace PowerWeb.Api
                     }
                     if (inserted)
                     {
+                        _log.Info("Richiesta inserita correttamente a sistema");
                         RepoManager.RegRepo.Add(regsToAdd, true);
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
                     }
                     else {
+                        _log.Info("Rchiesta gia presente a sistema");
                         values.Status = false;
                         values.Message = "Richiesta già presente a sistema";
                     }                    

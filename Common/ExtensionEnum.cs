@@ -224,7 +224,8 @@ namespace Common
         CalcoloRiposi,
         MailTo,
         RoundingOnSchedule,
-        CodiceCommessaObbligatorio
+        CodiceCommessaObbligatorio,
+        DivisioneNotturnoExport
     }
 
     public enum ClockAppsOperationEnum

@@ -1,27 +1,28 @@
 ﻿
-using Common;
-using Domain;
-using Business.DataClasses;
-using Business.Repository;
 using Business.BusinessExtension;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using System.IO;
-using System.Web;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using System.Drawing;
+using Business.DataClasses;
+using Business.DataClasses.SupportClasses;
+using Business.Repository;
+using Common;
+using DevExpress.XtraSpreadsheet.Model;
+using Domain;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using DevExpress.XtraSpreadsheet.Model;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using OfficeOpenXml.Style;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using Spire.Additions.Xps.Schema;
-using Business.DataClasses.SupportClasses;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using Westwind.Utilities.Extensions;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -73,6 +74,45 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
             Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
+            var collaboratori = new List<Col>();
+            List<Reg_V> exportRegs = new List<Reg_V>();
+            List<Col> manutentori = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col == "0").ToList();
+
+            foreach (Col collaboratore in manutentori)
+            {
+                if (collaboratore.Scadenza_Patente_Col != null)
+                {
+                    if (collaboratore.Scadenza_Patente_Col.Value.Between(minDate, maxDate))
+                    {
+                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= collaboratore.Scadenza_Patente_Col.Value && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                        collaboratori.Add(collaboratore);
+                    }
+                    else
+                    {
+                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                        collaboratori.Add(collaboratore);
+                    }
+                }
+                else
+                {
+                    exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                    collaboratori.Add(collaboratore);
+                }
+            }
+
+            List<Col> colCambiati = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col != "0" && c.Scadenza_Patente_Col.Value != null).ToList();
+
+            foreach (Col collaboratore in colCambiati)
+            {
+                if (collaboratore.Scadenza_Patente_Col != null)
+                { 
+                    if (collaboratore.Scadenza_Patente_Col.Value.Between(minDate, maxDate))
+                    {
+                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= minDate && r.Data_Reg <= collaboratore.Scadenza_Patente_Col.Value && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                        collaboratori.Add(collaboratore);
+                    }
+                }
+            }
             List<Reg_V> regVs = reg_Vs.Where(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);

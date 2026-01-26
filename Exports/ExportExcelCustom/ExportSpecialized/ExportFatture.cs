@@ -275,6 +275,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             {
                 // dalle reg_v da processare sono estratte tutte le registrazioni raggruppate per entitià di riferimento (collaboratore/cantiere)
                 // in un dizionario
+                entitiesToExport = entitiesToExport.OrderBy(reg => reg.Cant_Desc);
                 Dictionary<int, List<Reg_V>> groupedRegVs = GetRegVsGroupedByEntity(entitiesToExport);
 
                 // se il dizionario ha dei dati presenti allora si procede alla generazione del folgio excel
@@ -297,7 +298,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                         List<Cant> cant = RepoManager.CantRepo.GetAllQueryable(can => can.Cant_Id == groupedRegV.Key).ToList();
 
-                        if (cant.First().Flag_NON_Esportare_Can == 0) 
+                        if (cant.First().Flag_NON_Esportare_Can != 1 && !cant.First().DisAbilitazione_Can) 
                         {
                             // si elabora il raggruppamento solamente se sono presenti registrazioni
                             if (groupedRegV.Value.Any())
@@ -358,10 +359,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 TimeSpan totalDuration = TimeSpan.FromMinutes(totaleMensile);
 
-                                string valueToPrint = String.Format("{0}{1}.{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
+                                string valueToPrint = String.Format("{0}{1},{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
                                 string colonnaFatturato = $"{ColumnIndexToNameConversion(3)}{rowIndex}";
-                                string formulaFatt = $"={colonnaFatturato}/4";
-                                string formulaDiff = $"={ColumnIndexToNameConversion(3)}{rowIndex} - {ColumnIndexToNameConversion(5)}{rowIndex}";
+                                string formulaFatt = $"={colonnaFatturato}/25";
+                                string formulaDiff = $"={ColumnIndexToNameConversion(4)}{rowIndex} - {ColumnIndexToNameConversion(5)}{rowIndex}";
                                 //Inserisco l'ultimo giorno del mese
                                 CellInsertValue(1, 1, rowIndex, lastMonthDate.ToString("dd/MM/yyyy"), ExcelInsertTypeEnum.Content);
                                 //Inserisco la descrizione del cantiere

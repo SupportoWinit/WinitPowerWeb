@@ -7,6 +7,7 @@ using DevExpress.Data.Linq;
 using DevExpress.Web.ASPxEditors;
 using DevExpress.Web.ASPxGridView;
 using DevExpress.Web.Data;
+using DevExpress.XtraRichEdit.Import.Html;
 using Domain;
 using Domain.Extensions;
 using Exports.ExportExcelCustom.ExportSpecialized;
@@ -21,11 +22,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using UnityEngine;
+using static log4net.Appender.RollingFileAppender;
 
 
 namespace PowerWeb.Modules
@@ -637,7 +640,7 @@ namespace PowerWeb.Modules
             if (currTimeOfDay.TimeOfDay != DateTime.MinValue.TimeOfDay)
             {
                 //nel caso sia notturno vado a mettere il giorno corretto
-                if (newRegV.Data_Ora_Fis_U != null && newRegV.Data_Ora_Fis_U.Value.Hour < newRegV.Data_Ora_Fis_E.Hour && newRegV.Data_Ora_Fis_E.Hour < 6)
+                if (newRegV.Data_Ora_Fis_U != null && newRegV.Data_Ora_Fis_U.Value.Hour < newRegV.Data_Ora_Fis_E.Hour/* && newRegV.Data_Ora_Fis_E.Hour < 6*/)
                 {
                     data_Reg = data_Reg.AddDays(1);
                     newRegV.Data_Ora_Fis_U = new DateTime(data_Reg.Year, data_Reg.Month, data_Reg.Day, data_Ora_Fis_U.Hour, data_Ora_Fis_U.Minute, currTimeOfDay.Second);
@@ -894,40 +897,31 @@ namespace PowerWeb.Modules
             }
             else currQueryable = emptyQueryable;
 
-            if (PowerWebService.GenerateWhereQuery(EntityType, GridView, generateWhereClause()).Contains("Turno Completo")) 
+            var currentDataGrid = RepoManager.Tab_DataGridRepo.GetAllQueryable().ToList().GroupBy(r => r.Nome_Layout);
+            if (GridView.FilterExpression != "") 
+            { 
+                currentDataGrid = RepoManager.Tab_DataGridRepo.GetAllQueryable(grid => grid.Layout_DataGrid.Contains(GridView.FilterExpression)).ToList().GroupBy(r => r.Nome_Layout);
+            } 
+
+            var listReg = currQueryable.ToList().OrderBy(r => r.Data_Reg);
+            DateTime firstDate = DateTime.MinValue;
+            DateTime lastReg = DateTime.MaxValue;
+            if (listReg.Count() > 0) 
             {
-                var input = PowerWebService.GenerateWhereQuery(EntityType, GridView, generateWhereClause());
-                // Regex: cattura 8 cifre dentro Cast('YYYYMMDD' as datetime), tollera spazi e maiuscole/minuscole
-                var rx = new Regex(@"Cast\(\s*'(?<date>\d{8})'\s*as\s*datetime\s*\)",
-                                   RegexOptions.IgnoreCase);
-
-                var dates = rx.Matches(input)
-                              .Cast<Match>()
-                              .Select(m => DateTime.ParseExact(
-                                  m.Groups["date"].Value, "yyyyMMdd", CultureInfo.InvariantCulture))
-                              .ToList();
-
-                if (dates.Count >= 2)
-                {
-                    DateTime startDate = dates[0];
-                    DateTime endDate = dates[1];
-
-                    Console.WriteLine($"Inizio: {startDate:yyyy-MM-dd}");
-                    Console.WriteLine($"Fine:   {endDate:yyyy-MM-dd}");
-                }
-                else
-                {
-                    Console.WriteLine("Non sono state trovate due date nel formato atteso.");
-                }
+                firstDate = listReg.First().Data_Reg.Value;
+                lastReg = listReg.Last().Data_Reg.Value;
             }
 
             try {
                 var regsByCol = currQueryable.ToList().GroupBy(c => c.Col_Id).Select(r => new { colId = r.Key.Value, Oggetti = r.ToList() }).ToList();
                 List<Reg_V> returnRegs = new List<Reg_V>();
+                List<Reg_V> regsTurnoCompleto = new List<Reg_V>();
                 foreach (var reg in regsByCol)
                 {
                     if (reg.colId != null)
                     {
+                        DateTime nextDay = firstDate.AddDays(1);
+                        
                         Col currentCol = RepoManager.ColRepo.SingleOrDefault(c => c.Col_Id == reg.colId);
                         if (currentCol.Data_Disponibilita_Fine_Col != null)
                         {
@@ -938,8 +932,21 @@ namespace PowerWeb.Modules
                         {
                             returnRegs.AddRange(reg.Oggetti);
                         }
+                        if (currentDataGrid.Count() == 1)
+                        {
+                            Tab_DataGrid currentGrid = currentDataGrid.First().First();
+                            if (currentGrid.Nome_Layout.Contains("TURNO-COMPLETO"))
+                            {
+                                regsTurnoCompleto.AddRange(returnRegs.Where(r => r.Data_Ora_Fis_ETime > new TimeSpan(4, 0, 0) && r.Col_Id == reg.colId && r.Data_Reg == firstDate).ToList());
+                                var toAddRegs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == reg.colId && r.Data_Reg == nextDay && r.Data_Ora_Fis_UTime.Value <= new TimeSpan(4, 0, 0)).ToList();
+                                returnRegs.AddRange(toAddRegs);
+                            }
+                        }
                     }
                 }
+                if (regsTurnoCompleto.Count > 0)
+                    returnRegs = regsTurnoCompleto;    
+
                 e.QueryableSource = returnRegs.AsQueryable();
             }
             catch (Exception) {
@@ -947,8 +954,6 @@ namespace PowerWeb.Modules
             }
             
             //e.QueryableSource = currQueryable;
-
-
         }
 
         private Type _entityType = typeof(Reg_V);
@@ -1380,6 +1385,18 @@ namespace PowerWeb.Modules
                 //Se l'Ora di Uscita è Minore dell'Entrata (Aggiungo 1 GG alla Data)
                 if (dateTimeUFisOld.TimeOfDay < dateTimeEFisOld.TimeOfDay)
                     dateTimeUFisOld = dateTimeUFisOld.AddDays(1);
+            }
+
+            List<Reg> regAssociate = RepoManager.RegRepo.GetAllQueryable(r => r.RiferimentoRRN_Reg == currentRegEId || r.RiferimentoRRN_Att == currentRegEId).ToList();
+            if (regAssociate.Count > 1) 
+            {
+                foreach (Reg reg in regAssociate) 
+                {
+                    if (reg.Registrazione_Tipo_Reg == 2) 
+                    {
+                        toDeleteRegsOld.Add(reg);
+                    }
+                }
             }
 
             RepoManager.RegRepo.Delete(toDeleteRegsOld, true);
@@ -2662,6 +2679,11 @@ namespace PowerWeb.Modules
                     ExportExcelEngine.Export(currentSpecialized, list, model, out path);
                 }
 
+            }
+            else 
+            {
+                ExportConfrontoOreBudget exp = new ExportConfrontoOreBudget();
+                exp.LaunchExport(regs.AsQueryable());
             }
         }
 

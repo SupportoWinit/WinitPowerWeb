@@ -1,25 +1,26 @@
 ﻿
-using Common;
-using Domain;
-using Business.Repository;
 using Business.BusinessExtension;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using System.IO;
-using System.Web;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using System.Drawing;
+using Business.Repository;
+using Common;
+using DevExpress.XtraSpreadsheet.Model;
+using Domain;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using DevExpress.XtraSpreadsheet.Model;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using OfficeOpenXml.Style;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using Spire.Additions.Xps.Schema;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using Westwind.Utilities.Extensions;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -70,9 +71,48 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
             Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
+            var collaboratori = new List<Col>();
+            List<Reg_V> exportRegs = new List<Reg_V>();
+            List<Col> manutentori = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col == "0").ToList();
+
+            foreach (Col collaboratore in manutentori)
+            {
+                if (collaboratore.Scadenza_Patente_Col != null)
+                {
+                    if (collaboratore.Scadenza_Patente_Col.Value.Between(minDate, maxDate))
+                    {
+                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= collaboratore.Scadenza_Patente_Col.Value && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                        collaboratori.Add(collaboratore);
+                    }
+                    else
+                    {
+                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                        collaboratori.Add(collaboratore);
+                    }
+                }
+                else
+                {
+                    exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                    collaboratori.Add(collaboratore);
+                }
+            }
+
+            List<Col> colCambiati = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col != "0" && c.Scadenza_Patente_Col.Value != null).ToList();
+
+            foreach (Col collaboratore in colCambiati)
+            {
+                if (collaboratore.Scadenza_Patente_Col != null)
+                {
+                    if (collaboratore.Scadenza_Patente_Col.Value.Between(minDate, maxDate))
+                    {
+                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= minDate && r.Data_Reg <= collaboratore.Scadenza_Patente_Col.Value && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+                        collaboratori.Add(collaboratore);
+                    }
+                }
+            }
             List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
-            var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
+            var exportRegVs = exportRegs.GroupBy(c => c.Cant_Id);// regVs.GroupBy(c => c.Cant_Id);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod)); 
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
             rowIndex = 2;
@@ -86,7 +126,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             int lastDurata = 0;
             int totaleReg = 0;
             //vado a fare un foreach per ogni cantiere
-            foreach (var reg in regVs.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
+            foreach (var reg in exportRegs.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
             { 
                 List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
                 //controllo se la timbratura è un attività
@@ -376,117 +416,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             ExcelWorkbookDispose();
         }
 
-        private void WriteTimesheetColHeader()
-        {
-            List<DateTime> days = CommonService.GetDatesFromPeriod(ExportPeriod, ExportPeriod.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
-
-            RangeSetFontBold(1, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
-
-            days.ForEach(day =>
-            {
-                //WriteHeaderDayCell(day);
-
-                WriteHeaderDayCellDay(day);
-
-                rowIndex++;
-            });
-
-            WriteHeaderTotalCell();
-
-            rowIndex++;
-
-            WriteHeaderTotalDaysCell();
-
-            rowIndex++;
-
-            //WriteHeaderTotalFest();
-
-            //columnIndex++;
-
-            //WriteHeaderTotalFer();
-
-            columnIndex = 2;
-
-            rowIndex++;
-        }
-
-        private void WriteHeaderDayCellDay(DateTime date)
-        {
-            String giorno = "";
-            switch (date.DayOfWeek)
-            {
-                case DayOfWeek.Monday:
-                    giorno = "L " + date.Day;
-                    break;
-                case DayOfWeek.Tuesday:
-                    giorno = "MA " + date.Day;
-                    break;
-                case DayOfWeek.Wednesday:
-                    giorno = "ME " + date.Day;
-                    break;
-                case DayOfWeek.Thursday:
-                    giorno = "G " + date.Day;
-                    break;
-                case DayOfWeek.Friday:
-                    giorno = "V " + date.Day;
-                    break;
-                case DayOfWeek.Saturday:
-                    giorno = "S " + date.Day;
-                    break;
-                case DayOfWeek.Sunday:
-                    giorno = "D " + date.Day;
-                    break;
-            }
-
-            CellInsertValue(1, rowIndex + 1, columnIndex, giorno, ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetValueFormat(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1, "0");
-            //RangeSetBackgroundColor(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day, Color.LightGray, fillStyle);
-            RangeSetFontSize(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1, 12);
-            RangeSetWrapText(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1, true);
-            ColumnsSetWidth(1, rowIndex + 1, rowIndex + 1, 8);
-
-            RangeSetFontBold(1, rowIndex + 1, columnIndex, rowIndex + 1, date.Day + 1);
-            if (date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                //Se giorno festivo
-                RangeSetFontColor(1, rowIndex + 1, columnIndex, rowIndex + 1, columnIndex, Color.Red);
-            }
-        }
-
-        private void WriteHeaderTotalCell()
-        {
-
-            CellInsertValue(1, rowIndex + 1, columnIndex, "Tot", ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, rowIndex + 1, columnIndex, rowIndex + 1, columnIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetFontBold(1, rowIndex + 1, columnIndex, rowIndex + 1, columnIndex);
-
-        }
-
-
-        private void WriteHeaderDayCell(DateTime date)
-        {
-            CellInsertValue(1, rowIndex, columnIndex, date.Day, ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, rowIndex, columnIndex, rowIndex, date.Day, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetValueFormat(1, rowIndex, columnIndex, rowIndex, date.Day, "0");
-            RangeSetBackgroundColor(1, rowIndex, columnIndex, rowIndex, date.Day, Color.LightGray, fillStyle);
-            RangeSetWrapText(1, rowIndex, columnIndex, rowIndex, date.Day, true);
-            ColumnsSetWidth(1, rowIndex, rowIndex, 6);
-            RangeSetFontBold(1, rowIndex, columnIndex, rowIndex, date.Day);
-
-            if (date.DayOfWeek == DayOfWeek.Sunday)
-            {
-                //Se giorno festivo
-                RangeSetFontColor(1, rowIndex, columnIndex, rowIndex, columnIndex, Color.Red);
-            }
-        }
-
-        private void WriteHeaderTotalDaysCell()
-        {
-            CellInsertValue(1, rowIndex + 1, columnIndex, "Tot.G", ExcelInsertTypeEnum.Content);
-            RangeSetBorders(1, rowIndex + 1, columnIndex, rowIndex + 1, columnIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-
-        }
         /// <summary>
         /// Metodo utilizzato dalle classi figlie come porta d'ingresso principale per il lancio dell'export.
         /// </summary>

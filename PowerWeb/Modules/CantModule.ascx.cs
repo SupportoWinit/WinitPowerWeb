@@ -404,7 +404,27 @@ namespace PowerWeb.Modules
                 initCant.Codice_Cantiere = CommonService.AggiungiSpaziASinistraSeStringaNumerica(codCantMaxNum.ToString(), 20);
             }
 
-            RepoManager.CantRepo.Add(initCant, true);
+            var codiceCommessaPropertyName = CommonService.GetPropertyName(() => _cantStub.Codice_Commessa_Can);
+            if (initCant.Codice_Commessa_Can != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1)
+            {
+                if (initCant.Codice_Commessa_Can != null)
+                {
+                    try
+                    {
+                        RepoManager.CantRepo.Add(initCant, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
+                    }
+                }
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 0) 
+            {
+                RepoManager.CantRepo.Add(initCant, true);
+            }
+
             #region Gestione attività automatica
 
             var tipoIntervento = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);

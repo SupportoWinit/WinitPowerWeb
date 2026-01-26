@@ -1194,6 +1194,18 @@ namespace PowerWeb
             CriteriaOperator op = CriteriaOperator.Parse(grid.FilterExpression);
             var where = DevExpress.Data.Filtering.CriteriaToWhereClauseHelper.GetMsSqlWhere(op);
 
+            // Trasforma il confronto su time in confronto su "secondi dal giorno"
+            //where = where.Replace(
+            //    "\"Data_Ora_Fis_UTime\"",
+            //    "DATEDIFF(SECOND, CAST('00:00:00' AS time), \"Data_Ora_Fis_UTime\")"
+            //);
+            //
+            //int cutIndex = where.IndexOf("18000.0", StringComparison.Ordinal);
+            //if (cutIndex >= 0)
+            //{
+            //    where = where.Substring(0, cutIndex + "18000.0".Length) + ")))";
+            //}
+
             var whereExpression = "";
 
             if (where != String.Empty && grid.FilterEnabled)

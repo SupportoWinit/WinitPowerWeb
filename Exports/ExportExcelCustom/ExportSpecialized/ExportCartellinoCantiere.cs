@@ -196,14 +196,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         }
         private void WriteColTimesheet(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
-
-            foreach (var cantCartellino in cartellini["justification"].OrderByDescending(c => c.CantMnemonic).GroupBy(c => c.CantMnemonic + " " + c.CantDesc).ToList())
+            foreach (var cartRow in cartellini["justification"].OrderByDescending(c => c.CantMnemonic)/*.GroupBy(c => c.CantMnemonic + " " + c.CantDesc)*/.ToList())
             {
-                //RangeSetFontBold(1, 1, rowIndex, 1, rowIndex);
-                //CellInsertValue(1, 1, rowIndex++, cantCartellino.Key, Common.ExcelInsertTypeEnum.Content);
-
-                foreach (var cartRow in cantCartellino)
-                {
+                //foreach (var cartRow in cantCartellino)
+                //{
                     var justificationDec = cartRow.Justification;
 
                     if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
@@ -291,7 +287,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         rowIndex--;
                     }
                     //rowIndex++;
-                }
+                //}
                 rowIndex++;
             }
 

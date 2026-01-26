@@ -5,10 +5,12 @@ using Domain;
 using log4net;
 using Microsoft.Practices.ObjectBuilder2;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace Business.BusinessExtension
 {
@@ -1765,124 +1767,204 @@ namespace Business.BusinessExtension
             Col currentCol = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == colId);
             DateTime startMonth = CommonService.GetFirstMonthDay(month);
 
-            Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year && m.Monte_Minuti_Justification != "RIPOSI");
-            int lastMonth = month.Month - 1;
-            if (current_mm_row != default(Col_Monte_Minuti))
+            if (month.Month != 1)
             {
-                int retrievedMm = (int)CommonService.GetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
-                currentMm = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
-            }
-
-            //Il monteminuti da salvare per il mese corrente
-            int mm = minutes;
-            //Calcola il delta tra il monteminuti appena calcolato (mm) e quello vecchio (currentMm)
-            if (startMonth == month)
-            {
-                if (mm > currentMm)
+                Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year && m.Monte_Minuti_Justification != "RIPOSI");
+                int lastMonth = month.Month - 1;
+                if (current_mm_row != default(Col_Monte_Minuti))
                 {
-                    mm_delta = mm + currentMm;
-                }
-                else
-                {
-                    mm_delta = currentMm + mm;
-                }
-            }
-            else 
-            {
-                mm_delta = mm;
-            }
-
-            bool isNew = false;
-
-            //Crea un anno nuovo se non esiste già
-            if (current_mm_row == default(Col_Monte_Minuti))
-            {
-                current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
-                string prName = "";
-                for (int i = 1; i <= 12; i++)
-                {
-                    prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
-                    CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
+                    int retrievedMm = (int)CommonService.GetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
+                    currentMm = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
                 }
 
-                current_mm_row.Anno_Col_Monte_Minuti = month.Year;
-                current_mm_row.Col_Id = colId;
-                isNew = true;
-            }
-            int mesePrec = month.Month - 1;
-            
-            if (currentCol != default(Col) && CommonService.GetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", mesePrec.ToString("00"))).Equals(DEFAULT_MONTEMINUTI))
-            {
-                if (currentCol.Monte_Minuti > 0)
+                //Il monteminuti da salvare per il mese corrente
+                int mm = minutes;
+                //Calcola il delta tra il monteminuti appena calcolato (mm) e quello vecchio (currentMm)
+                if (startMonth == month)
                 {
-                    int newMonte = minutes;
-                    //Imposta il monteminuti del mese precedente col valore
-                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", mesePrec.ToString("00")), currentCol.Monte_Minuti);
-                    //Imposta il monteminuti del mese corrente
-                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), newMonte);
-                }
-                else
-                {
-                    //Imposta il monteminuti del mese corrente
-                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), mm);
-                }
-            }
-            else 
-            {
-                //Imposta il monteminuti del mese corrente
-                CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00")), mm);
-            }
-
-            //Salva/aggiorna il repository
-            if (isNew)
-            {
-                RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row, true);
-            }
-            else
-            {
-                RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
-            }
-
-            DateTime processingMonth = month.AddMonths(1);
-            string propertyName = "";
-            if (!isNew) 
-            {
-                //TODO TOGLIERE STO TRUE, CAMBIARE CONDIZIONE DI USCITA
-                while (true)
-                {
-                    if (current_mm_row.Anno_Col_Monte_Minuti != processingMonth.Year)
+                    if (mm > currentMm)
                     {
-                        current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == processingMonth.Year);
+                        mm_delta = mm + currentMm;
+                    }
+                    else
+                    {
+                        mm_delta = currentMm + mm;
+                    }
+                }
+                else
+                {
+                    mm_delta = mm;
+                }
+
+                bool isNew = false;
+
+                //Crea un anno nuovo se non esiste già
+                if (current_mm_row == default(Col_Monte_Minuti))
+                {
+                    current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
+                    string prName = "";
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
+                        CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
                     }
 
-                    propertyName = string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00"));
+                    current_mm_row.Anno_Col_Monte_Minuti = month.Year;
+                    current_mm_row.Col_Id = colId;
+                    isNew = true;
+                }
 
-                    //Se il prossimo mese non è ancora stato elaborato, mi fermo ed esco dal triciclo
-                    if (current_mm_row == default(Col_Monte_Minuti))
+                //Salva/aggiorna il repository
+                if (isNew)
+                {
+                    RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row, true);
+                }
+                else
+                {
+                    RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                }
+
+                DateTime processingMonth = month.AddMonths(1);
+                string propertyName = "";
+                if (!isNew)
+                {
+                    //TODO TOGLIERE STO TRUE, CAMBIARE CONDIZIONE DI USCITA
+                    while (true)
                     {
+                        if (current_mm_row.Anno_Col_Monte_Minuti != processingMonth.Year)
+                        {
+                            current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year);
+                        }
+
+                        propertyName = string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00"));
+
+                        //Se il prossimo mese non è ancora stato elaborato, mi fermo ed esco dal triciclo
+                        //if (current_mm_row == default(Col_Monte_Minuti))
+                        //{
+                        //    break;
+                        //}
+
+                        //Imposta il nuovo monteminuti aggiungendo il delta del monteminuti appena calcolto con quello vecchio
+                        CommonService.SetPropertyValue(current_mm_row, propertyName, mm_delta);
+
+                        //Se siamo a dicembre, salva l'anno
+                        if (processingMonth.Month == 12)
+                        {
+                            RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                            RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+                        }
+
+                        processingMonth = processingMonth.AddMonths(1);
+
                         break;
                     }
+                }
+                if (current_mm_row != default(Col_Monte_Minuti))
+                {
+                    RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                    RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+                }
+            }
+            else 
+            {
+                Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year && m.Monte_Minuti_Justification != "RIPOSI");
+                Col_Monte_Minuti last_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == month.Year - 1 && m.Monte_Minuti_Justification != "RIPOSI");
+                int lastMonth = 12;
+                if (last_mm_row != default(Col_Monte_Minuti))
+                {
+                    int retrievedMm = (int)CommonService.GetPropertyValue(last_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
+                    currentMm = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
+                }
 
-                    //Imposta il nuovo monteminuti aggiungendo il delta del monteminuti appena calcolto con quello vecchio
-                    CommonService.SetPropertyValue(current_mm_row, propertyName, mm_delta);
-
-                    //Se siamo a dicembre, salva l'anno
-                    if (processingMonth.Month == 12)
+                //Il monteminuti da salvare per il mese corrente
+                int mm = minutes;
+                //Calcola il delta tra il monteminuti appena calcolato (mm) e quello vecchio (currentMm)
+                if (startMonth == month)
+                {
+                    if (mm > currentMm)
                     {
-                        RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
-                        RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+                        mm_delta = mm + currentMm;
+                    }
+                    else
+                    {
+                        mm_delta = currentMm + mm;
+                    }
+                }
+                else
+                {
+                    mm_delta = mm;
+                }
+
+                bool isNew = false;
+
+                //Crea un anno nuovo se non esiste già
+                if (current_mm_row == default(Col_Monte_Minuti))
+                {
+                    current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
+                    string prName = "";
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
+                        CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
                     }
 
-                    processingMonth = processingMonth.AddMonths(1);
-
-                    break;
+                    current_mm_row.Anno_Col_Monte_Minuti = month.Year;
+                    current_mm_row.Col_Id = colId;
+                    isNew = true;
                 }
-            }   
-            if (current_mm_row != default(Col_Monte_Minuti))
-            {
-                RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
-                RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+
+                //Salva/aggiorna il repository
+                if (isNew)
+                {
+                    RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row, true);
+                }
+                else
+                {
+                    RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                }
+
+                DateTime processingMonth = month.AddMonths(1);
+                string propertyName = "";
+                if (!isNew)
+                {
+                    //TODO TOGLIERE STO TRUE, CAMBIARE CONDIZIONE DI USCITA
+                    while (true)
+                    {
+                        if (current_mm_row.Anno_Col_Monte_Minuti != processingMonth.Year)
+                        {
+                            current_mm_row = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(m => m.Col_Id == colId && m.Anno_Col_Monte_Minuti == processingMonth.Year);
+                        }
+
+                        propertyName = string.Format("M{0}_Col_Monte_Minuti", month.Month.ToString("00"));
+
+                        //Se il prossimo mese non è ancora stato elaborato, mi fermo ed esco dal triciclo
+                        if (current_mm_row == default(Col_Monte_Minuti))
+                        {
+                            break;
+                        }
+
+                        //Imposta il nuovo monteminuti aggiungendo il delta del monteminuti appena calcolto con quello vecchio
+                        CommonService.SetPropertyValue(current_mm_row, propertyName, mm_delta);
+
+                        //Se siamo a dicembre, salva l'anno
+                        if (processingMonth.Month == 12)
+                        {
+                            RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                            RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+                        }
+
+                        processingMonth = processingMonth.AddMonths(1);
+
+                        break;
+                    }
+                }
+                if (current_mm_row != default(Col_Monte_Minuti))
+                {
+                    RepoManager.Col_Monte_MinutiRepo.Update(current_mm_row, true);
+                    RepoManager.Col_Monte_MinutiRepo.SaveChanges();
+                }
             }
+            
         }
 
         /// <summary>
@@ -4231,15 +4313,143 @@ namespace Business.BusinessExtension
 
                 if (cantiere.Count() > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
                 {
-                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DivisioneNotturnoExport) == 1)
+                    {
+                        //se la personalizzazione è attiva recupero i relativi parametri
+                        TimeSpan startNott = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.DivisioneNotturnoExport, "StartNott"));
+                        TimeSpan endNott = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.DivisioneNotturnoExport, "EndNott"));
+                        List<Reg_V> dayRegs = new List<Reg_V>();
+                        List<Reg_V> nightRegs = new List<Reg_V>();
+                        foreach (Reg_V reg in regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 0).ToList()) 
+                        {
+                            //mi faccio le date con cui confrontare i dati
+                            DateTime tomorrow = reg.Data_Reg.Value.AddDays(1);
+                            DateTime start = new DateTime(reg.Data_Reg.Value.Year, reg.Data_Reg.Value.Month, reg.Data_Reg.Value.Day,startNott.Hours, startNott.Minutes, startNott.Seconds);
+                            DateTime end = new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, endNott.Hours, endNott.Minutes, endNott.Seconds);
+                            if (reg.Data_Ora_Fis_E > start)
+                            {
+                                int nightDuration = 0;
+                                //creo una lista con gli arrotondamenti del giorno
+                                List<Reg_V> totalArrot = new List<Reg_V>();
+                                if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                {
+                                    totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).ToList());
+                                }
+                                if (reg.Durata_Fis.HasValue)
+                                {
+                                    nightDuration = reg.Durata_Fis.Value;
+                                    //se la durata necessita di arrotondamento controllo quanti ce ne sono nel giorno
+                                    if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                    {
+                                        //se ci sono più arrotondamenti prendo l'ultimo, altrimenti uso l'unico presente
+                                        if (totalArrot.Count > 1)
+                                            nightDuration = nightDuration - totalArrot.Last().Durata_Fis.Value;
+                                        else
+                                            nightDuration = nightDuration - totalArrot.First().Durata_Fis.Value;
+                                    }
+                                    var nightReg = new Reg_V();
+                                    nightReg.Col_Id = reg.Col_Id.Value;
+                                    nightReg.Cant_Id = reg.Cant_Id.Value;
+                                    nightReg.Durata_Fig = nightDuration;
+                                    nightReg.Durata_Fis = nightDuration;
+                                    nightReg.Data_Reg = reg.Data_Reg;
+                                    nightRegs.Add(nightReg);
+                                }
+                            }
+                            else if ((reg.Data_Ora_Fis_U > start && reg.Data_Ora_Fis_U < end) && reg.Data_Ora_Fis_E < start)
+                            {
+                                int dayDuration = 0;
+                                int nightDuration = 0;
+                                List<Reg_V> totalArrot = new List<Reg_V>();
+                                if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                {
+                                    totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).ToList());
+                                }
+                                //recupero sia la durata diurna che notturna
+                                dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
+                                nightDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(start).TotalMinutes;
+                                //nel caso i dati necessitino di arrotondamenti vedo se ne sono presenti
+                                if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0) 
+                                {
+                                    if (totalArrot.Count > 1)
+                                        nightDuration = nightDuration - totalArrot.Last().Durata_Fis.Value;
+                                    else 
+                                        nightDuration = nightDuration - totalArrot.First().Durata_Fis.Value;
+                                }
+
+                                if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                {
+                                    if (totalArrot.Count > 1)
+                                        dayDuration = dayDuration - totalArrot.First().Durata_Fis.Value;
+                                    else 
+                                        dayDuration = dayDuration - totalArrot.First().Durata_Fis.Value;
+                                    
+                                }
+                                var dayReg = new Reg_V();
+                                dayReg.Col_Id = reg.Col_Id.Value;
+                                dayReg.Cant_Id = reg.Cant_Id.Value;
+                                dayReg.Durata_Fig = dayDuration;
+                                dayReg.Durata_Fis = dayDuration;
+                                dayReg.Data_Reg = reg.Data_Reg;
+                                dayRegs.Add(dayReg);
+                                var nightReg = new Reg_V();
+                                nightReg.Col_Id = reg.Col_Id.Value;
+                                nightReg.Cant_Id = reg.Cant_Id.Value;
+                                nightReg.Durata_Fig = nightDuration;
+                                nightReg.Durata_Fis = nightDuration;
+                                nightReg.Data_Reg = reg.Data_Reg;
+                                nightRegs.Add(nightReg);
+                            }
+                            else
+                            {
+                                int dayDuration = 0;
+                                List<Reg_V> totalArrot = new List<Reg_V>();
+                                //recupero tutti gli arrotondamenti del giorno
+                                if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                    totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).ToList());
+
+                                if (reg.Durata_Fis.HasValue) 
+                                {
+                                    dayDuration = reg.Durata_Fis.Value;
+                                    //nel caso serva l'arrotondamento controllo quanti ce ne sono nel giorno
+                                    if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                    {
+                                        //anche se ci sono più arrotondamenti uso sempre il primo
+                                        dayDuration = dayDuration - totalArrot.First().Durata_Fis.Value;
+
+                                    }
+                                    var dayReg = new Reg_V();
+                                    dayReg.Col_Id = reg.Col_Id.Value;
+                                    dayReg.Cant_Id = reg.Cant_Id.Value;
+                                    dayReg.Durata_Fig = dayDuration;
+                                    dayReg.Durata_Fis = dayDuration;
+                                    dayReg.Data_Reg = reg.Data_Reg;
+                                    dayRegs.Add(dayReg);
+                                }
+                            }
+                            
+                        }
+                        if (dayRegs.Count > 0) 
+                        {
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, dayRegs, cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                        }
+                        if (nightRegs.Count > 0) 
+                        {
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, nightRegs, cantiere.First().Descrizione_Can + " - NOTTURNO", firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                        }
+                    }
+                    else 
+                    {
+                        // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                        returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                    }           
                 }
                 else {
                 //aggiungo il timesheet specifico del cantiere alla list di ritorno
                     returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                 }
-
-
             }
 
             // ritorno del valore calcolato dal metodo
@@ -4655,11 +4865,28 @@ namespace Business.BusinessExtension
             List<int> idRiposi = new List<int>();
             bool calcoloRiposi = false;
             int lastRiposo = 0;
-            Col_Monte_Minuti riposi = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
+            Col_Monte_Minuti riposi = new Col_Monte_Minuti();
+            if (firstMonthDate.Month == 1)
+            {
+                RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year - 1 && cmm.Monte_Minuti_Justification == "RIPOSI");
+            }
+            else 
+            {
+                RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
+            }
+
             int lastMonth = firstMonthDate.Month - 1;
             if (riposi != default(Col_Monte_Minuti))
             {
-                int retrievedMm = (int)CommonService.GetPropertyValue(riposi, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
+                int retrievedMm = 0;
+                if (lastMonth == 0)
+                {
+                    retrievedMm = (int)CommonService.GetPropertyValue(riposi, string.Format("M{0}_Col_Monte_Minuti", 12.ToString("00")));
+                }
+                else 
+                {
+                    retrievedMm = (int)CommonService.GetPropertyValue(riposi, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")));
+                } 
                 lastRiposo = retrievedMm == DEFAULT_MONTEMINUTI ? 0 : retrievedMm;
             }
             else
@@ -4672,18 +4899,36 @@ namespace Business.BusinessExtension
                 catch (Exception) 
                 {
                     lastRiposo = 0;
-                }     
-                Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
-                current_mm_row.Monte_Minuti_Justification = "RIPOSI";
-                current_mm_row.Anno_Col_Monte_Minuti = firstMonthDate.Year;
-                current_mm_row.Col_Id = colId;
-                for (int i = 1; i <= 12; i++)
-                {
-                    string prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
-                    CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
                 }
-                CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")), lastRiposo);
-                RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row, true);
+                if (firstMonthDate.Month == 1)
+                {
+                    Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
+                    current_mm_row.Monte_Minuti_Justification = "RIPOSI";
+                    current_mm_row.Anno_Col_Monte_Minuti = firstMonthDate.Year - 1;
+                    current_mm_row.Col_Id = colId;
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        string prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
+                        CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
+                    }
+                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", 12.ToString("00")), lastRiposo);
+                    RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row, true);
+                }
+                else 
+                {
+                    Col_Monte_Minuti current_mm_row = RepoManager.Col_Monte_MinutiRepo.Init();
+                    current_mm_row.Monte_Minuti_Justification = "RIPOSI";
+                    current_mm_row.Anno_Col_Monte_Minuti = firstMonthDate.Year;
+                    current_mm_row.Col_Id = colId;
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        string prName = string.Format("M{0}_Col_Monte_Minuti", i.ToString("00"));
+                        CommonService.SetPropertyValue(current_mm_row, prName, DEFAULT_MONTEMINUTI);
+                    }
+                    CommonService.SetPropertyValue(current_mm_row, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")), lastRiposo);
+                    RepoManager.Col_Monte_MinutiRepo.Add(current_mm_row, true);
+                }
+                    
             }
             Col currentCol = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == colId);
             if (currentCol != null)
@@ -4794,8 +5039,17 @@ namespace Business.BusinessExtension
                         }
                     }
                 }
-                Col_Monte_Minuti monte = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
-                CommonService.SetPropertyValue(monte, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")), lastRiposo);
+                Col_Monte_Minuti monte = new Col_Monte_Minuti();
+                if (lastMonth == 0)
+                {
+                    monte = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year - 1 && cmm.Monte_Minuti_Justification == "RIPOSI");
+                    CommonService.SetPropertyValue(monte, string.Format("M{0}_Col_Monte_Minuti", 12.ToString("00")), lastRiposo);
+                }
+                else 
+                {
+                    monte = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
+                    CommonService.SetPropertyValue(monte, string.Format("M{0}_Col_Monte_Minuti", lastMonth.ToString("00")), lastRiposo);
+                } 
                 periodDates = CommonService.GetDatesFromPeriod(currentCol.Data_Sorv_San_Col.Value, daysMinutes.Last().Key);
                 lastRiposo = tmpRiposi;
                 countRiposo = 1;
@@ -4835,6 +5089,7 @@ namespace Business.BusinessExtension
                         }
                     }
                 }
+                monte = RepoManager.Col_Monte_MinutiRepo.FirstOrDefault(cmm => cmm.Col_Id == colId && cmm.Anno_Col_Monte_Minuti == firstMonthDate.Year && cmm.Monte_Minuti_Justification == "RIPOSI");
                 CommonService.SetPropertyValue(monte, string.Format("M{0}_Col_Monte_Minuti", lastMonthDate.Month.ToString("00")), lastRiposo);
                 RepoManager.Col_Monte_MinutiRepo.Update(monte, true);
             }
@@ -10742,19 +10997,19 @@ namespace Business.BusinessExtension
             #endregion
 
             #region ARROTONDAMENTI per DURATA
-            //List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
-            //if (rounding.Any())
+            //List<Reg_V> rounding1 = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
+            //if (rounding1.Any())
             //{
             //    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
             //    {
             //        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
             //        if (isByOtherEntity)
             //        {
-            //            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+            //            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding1, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
             //        }
             //        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
             //        {
-            //            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+            //            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding1, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
             //        }
             //    }
             //    else
@@ -10762,11 +11017,11 @@ namespace Business.BusinessExtension
             //        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
             //        if (isByOtherEntity)
             //        {
-            //            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+            //            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding1, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
             //        }
             //        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
             //        {
-            //            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+            //            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding1, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
             //        }
             //    }
             //    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
@@ -11430,38 +11685,6 @@ namespace Business.BusinessExtension
             }
             #endregion
 
-            #region ARROTONDAMENTI per DURATA
-            //List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
-            //if (rounding.Any())
-            //{
-            //    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
-            //    {
-            //        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-            //        if (isByOtherEntity)
-            //        {
-            //            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
-            //        }
-            //        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-            //        {
-            //            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-            //        if (isByOtherEntity)
-            //        {
-            //            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
-            //        }
-            //        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-            //        {
-            //            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
-            //        }
-            //    }
-            //    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-            //}
-            #endregion
-
             #region RETTIFICHE
             //Se sono abilitate le rettifiche, vengono estrapolate e aggiunte al cartellino
             if (RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Auto || RepoManager.ParamRepo.ParametersRow.Cartellino_Usa_Rettifiche_Manuali)
@@ -11594,6 +11817,7 @@ namespace Business.BusinessExtension
 
             }
             #endregion
+
             cartellini.Add("justification", justificationCartellini);
 
             #endregion

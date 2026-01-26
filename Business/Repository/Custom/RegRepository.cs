@@ -775,9 +775,12 @@ namespace Business.Repository.Custom
                                 // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                                 //RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
                                 // applicazione degli arrotondamenti per durata
-                                _log.Info(String.Format("starting rounding duration regVs at {0}", regVs.Count()));
-                                //errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs, roundingParamEnum));
-                                _log.Info(String.Format("finished rounding duration regVs at {0}", regVs.Count()));
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 0) 
+                                {
+                                    _log.Info(String.Format("starting rounding duration regVs at {0}", regVs.Count()));
+                                    errors.AddRange(RepoManager.Reg_VRepo.DurationRounding(roundingRegVs, roundingParamEnum));
+                                    _log.Info(String.Format("finished rounding duration regVs at {0}", regVs.Count()));
+                                }
                             }
                         }
                         #endregion
@@ -837,6 +840,7 @@ namespace Business.Repository.Custom
                             regVs = GetRegVsForRounding(regs);
                             var roundingRegVs1 = regVs.ToList();
                             errors.AddRange(NewPausaPranzo(roundingRegVs1, ref regs));
+                            UpdateData(regs);
                         }
                         #endregion
 
@@ -4329,8 +4333,12 @@ namespace Business.Repository.Custom
                                                 try
                                                 {
                                                     Reg regE = regs.Single(r => r.Reg_Id == reg.RegE);//RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    var tmpList = regs.ToList();
+                                                    tmpList.Remove(regE);
                                                     regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
                                                     regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
+                                                    tmpList.Add(regE);
+                                                    regs = tmpList.ToList();
                                                     regsToUpdate.Add(regE);
                                                 }
                                                 catch (Exception) { }
@@ -4348,7 +4356,7 @@ namespace Business.Repository.Custom
                                                     regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
                                                     regE.Note_Reg = "Pausa Di " + (int)cantiere.Importo1.Value + " minuti";
                                                     tmpList.Add(regE);
-                                                    //regs = tmpList.ToList();
+                                                    regs = tmpList.ToList();
                                                     try
                                                     {
                                                         //RepoManager.RegRepo.Update(regE, true);
@@ -4425,8 +4433,12 @@ namespace Business.Repository.Custom
                                     if (lastRegEId != 0)
                                     {
                                         Reg regE = regs.Single(r => r.Reg_Id == lastRegEId);// RepoManager.RegRepo.Single(r => r.Reg_Id == lastRegEId);
+                                        var tmpList = regs.ToList();
+                                        tmpList.Remove(regE);
                                         regE.Rettifica_Durata = lastArrot;
                                         regE.Note_Reg = "Pausa Di " + lastArrot + " minuti";
+                                        tmpList.Add(regE);
+                                        regs = tmpList.ToList();
                                         regsToUpdate.Add(regE);
                                     }
                                 }

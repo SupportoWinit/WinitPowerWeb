@@ -118,12 +118,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 bool diverso = false;
                                 foreach (Reg_V regv in dailyRegs) {
                                     if (!diverso && !interventiCheck) {
-                                        if (regv.Data_Ora_Fig_ETime.Value < midDay && reg.Data_Ora_Fig_ETime > midDay) {
-                                            interventiCheck = true;
-                                            mezziInterventiCheck = false;
-                                        }
-                                        else if (regv.Data_Ora_Fig_ETime.Value > midDay && reg.Data_Ora_Fig_ETime < midDay)
-                                        {
+                                        if ((regv.Data_Ora_Fig_ETime.Value < midDay && reg.Data_Ora_Fig_ETime > midDay) || (regv.Data_Ora_Fig_ETime.Value > midDay && reg.Data_Ora_Fig_ETime < midDay)) {
                                             interventiCheck = true;
                                             mezziInterventiCheck = false;
                                         }
