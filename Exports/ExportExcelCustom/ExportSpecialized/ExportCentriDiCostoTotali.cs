@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
 using System.Windows.Forms.VisualStyles;
+using Westwind.Utilities.Extensions;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -93,6 +94,58 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                                     parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
                                                                     false,
                                                                     parameters.Cartellino_Visualizza_Piano));
+                                }
+                            }
+                            else 
+                            {
+                                if (col.Scadenza_Patente_Col != null)
+                                {
+                                    if (col.Scadenza_Patente_Col.Value.Between(startMonth, endMonth))
+                                    {
+                                        var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
+                                        && (regv.Data_Reg >= startMonth && regv.Data_Reg <= col.Scadenza_Patente_Col.Value)
+                                        && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                        if (regs.Count() > 0)
+                                        {
+                                            cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
+                                                                            col,
+                                                                            centro.CentroDiCosto_Id,
+                                                                            true,
+                                                                            false,
+                                                                            true,
+                                                                            true,
+                                                                            parameters.Cartellino_Visualizza_Ore,
+                                                                            parameters.Cartellino_Visualizza_Motivazioni,
+                                                                            parameters.Cartellino_Visualizza_Viaggi,
+                                                                            parameters.Cartellino_Visualizza_Delta,
+                                                                            parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                                            false,
+                                                                            parameters.Cartellino_Visualizza_Piano));
+                                        }
+                                    }
+                                    else if (col.Scadenza_Patente_Col.Value > endMonth)
+                                    {
+                                        var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
+                                        && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
+                                        && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                        if (regs.Count() > 0)
+                                        {
+                                            cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
+                                                                            col,
+                                                                            centro.CentroDiCosto_Id,
+                                                                            true,
+                                                                            false,
+                                                                            true,
+                                                                            true,
+                                                                            parameters.Cartellino_Visualizza_Ore,
+                                                                            parameters.Cartellino_Visualizza_Motivazioni,
+                                                                            parameters.Cartellino_Visualizza_Viaggi,
+                                                                            parameters.Cartellino_Visualizza_Delta,
+                                                                            parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                                            false,
+                                                                            parameters.Cartellino_Visualizza_Piano));
+                                        }
+                                    }
                                 }
                             }      
                         }

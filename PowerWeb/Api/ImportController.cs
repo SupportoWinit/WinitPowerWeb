@@ -91,7 +91,7 @@ namespace PowerWeb.Api
                             var importErrors = new List<KeyValuePair<string, string>>();
                             if (regNoGpsToImport.Any() || regGpsToImport.Any())
                             {
-                                importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray()));
+                                importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray(), filesToImportList));
 
                                 // effettuazione del backup di tutti i file della lista
                                 string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));

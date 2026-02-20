@@ -233,7 +233,7 @@
           <Property Name="Data_Registrazione_Can" Type="smalldatetime" Nullable="false" />
           <Property Name="DataOraUltimaModifica_Can" Type="smalldatetime" Nullable="false" />
           <Property Name="DataVarGps_Can" Type="smalldatetime" />
-          <Property Name="Descrizione_Can" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descrizione_Can" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DisAbilitazione_Can" Type="bit" Nullable="false" />
           <Property Name="Durata_Max_Gruppo_Notte_Ril_Can" Type="time" Precision="0" />
           <Property Name="Durata_Max_Gruppo_Ril_Can" Type="time" Precision="0" />
@@ -1519,8 +1519,8 @@
           <Property Name="DisAbilitazione_Versioni" Type="bit" Nullable="false" />
           <Property Name="Nome_Versioni" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Cant_Fil_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerKomplett.dbo.Cant_Fil_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Cant_Fil_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1529,8 +1529,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Cant_Id" Type="int" Nullable="false" />
           <Property Name="Fil_Id" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Cant_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerKomplett.dbo.Cant_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Cant_V">
           <Key>
             <PropertyRef Name="Cant_Id" />
@@ -1674,8 +1674,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Abilitazione_Data_Inizio_Fru_Can" Type="date" Nullable="false" />
           <Property Name="N_Serie_Fru" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Col_Resp_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerKomplett.dbo.Col_Resp_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Col_Resp_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1684,8 +1684,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Col_Id" Type="int" Nullable="false" />
           <Property Name="Resp_Id" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Col_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerKomplett.dbo.Col_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Col_V">
           <Key>
             <PropertyRef Name="Col_Id" />
@@ -1831,8 +1831,8 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Raggruppamento2_Col" Type="nvarchar" MaxLength="50" />
           <Property Name="Residenza_Provincia_GEN_Col" Type="nvarchar" MaxLength="4" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'PowerSanBartolo.dbo.Reg_V'. La chiave è stata dedotta e la definizione è stata creata come tabella/visualizzazione di sola lettura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerKomplett.dbo.Reg_V' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Reg_V">
           <Key>
             <PropertyRef Name="RegE" />
@@ -3488,7 +3488,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
           <Property Name="Data_Registrazione_Can" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DataOraUltimaModifica_Can" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DataVarGps_Can" Type="DateTime" Precision="0" />
-          <Property Name="Descrizione_Can" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descrizione_Can" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DisAbilitazione_Can" Type="Boolean" Nullable="false" />
           <Property Name="Durata_Max_Gruppo_Notte_Ril_Can" Type="Time" Precision="0" />
           <Property Name="Durata_Max_Gruppo_Ril_Can" Type="Time" Precision="0" />
@@ -8585,7 +8585,7 @@ avviso 6002: Nessuna chiave primaria definita per la tabella/visualizzazione 'Po
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

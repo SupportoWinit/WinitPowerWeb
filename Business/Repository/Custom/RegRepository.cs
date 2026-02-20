@@ -1,4 +1,5 @@
 ﻿using Business.DataClasses.SupportClasses;
+using Business.HttpHub.HttpHubs;
 using Business.MDBSchema;
 using Common;
 using Common.Properties;
@@ -17,9 +18,12 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Contexts;
+using System.Web;
+using System.Web.UI;
 using System.Xml.Linq;
 using Westwind.Utilities.Extensions;
 using Z.EntityFramework.Extensions;
@@ -4332,7 +4336,7 @@ namespace Business.Repository.Custom
                                             {
                                                 try
                                                 {
-                                                    Reg regE = regs.Single(r => r.Reg_Id == reg.RegE);//RepoManager.RegRepo.Single(r => r.Reg_Id == reg.RegE);
+                                                    Reg regE = regs.Single(r => r.Reg_Id == reg.RegE);
                                                     var tmpList = regs.ToList();
                                                     tmpList.Remove(regE);
                                                     regE.Rettifica_Durata = (int)cantiere.Importo1.Value;
@@ -6931,7 +6935,7 @@ namespace Business.Repository.Custom
         /// <returns>
         /// Una lista contenente gli eventuali errori riscontrati durante l'importazione.
         /// </returns>
-        public List<KeyValuePair<string, string>> Import(string[] regsNoGpsToImport, string[] regsGpsToImport)
+        public List<KeyValuePair<string, string>> Import(string[] regsNoGpsToImport, string[] regsGpsToImport, List<string> filesToImport)
         {
             _log.Info("INIZIO FASE DI IMPORT.\n");
             //RepoManager.Reg_VRepo.InviaRitardi();
@@ -7272,6 +7276,19 @@ namespace Business.Repository.Custom
 
                 #endregion
 
+                // effettuazione del backup di tutti i file della lista
+                string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));
+                BusinessService.BackupProcessedFiles(filesToImport, backupFolder);
+
+
+                if (errors.Count > 0)
+                {
+                    string regSuspendedFile = HttpContext.Current.Server.MapPath(Path.Combine(
+                        Common.Properties.Settings.Default.Files_Input_Path,
+                        $"{Common.Properties.Settings.Default.SuspendedRegsFile}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.txt"));
+
+                    BusinessService.CreateSuspendedRegFile(regSuspendedFile, errors);
+                }
                 _log.Info(String.Format("INIZIO FASE DI ELABORAZIONE TRA {0} E {1}.\n", from, to));
 
                 List<KeyValuePair<string, string>> elabErrors = new List<KeyValuePair<string, string>>();

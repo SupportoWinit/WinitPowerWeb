@@ -919,7 +919,7 @@ namespace Business.RegFileCreators
                                 fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                             );
                             regsToWrite.Add(regRow);
-                            var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
+                            var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.Chiave, "", fluReg.Data, fluReg.Note);
                             if (noteLine != "")
                             {
                                 regsToWrite.Add(noteLine);

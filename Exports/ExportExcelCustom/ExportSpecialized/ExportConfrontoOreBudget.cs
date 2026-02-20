@@ -374,6 +374,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         elaborateDay = dayRegVs.Any() || detailPlan.Any();
                                         break;
                                 }
+                                if (!(monthDay.Month != DateTime.Now.Month || (monthDay.Month == DateTime.Now.Month && monthDay.Day < DateTime.Now.Day))) 
+                                {
+                                    elaborateDay = false;
+                                }
 
                                 // se è richiesta l'elaborazione del giorno
                                 if (elaborateDay)
@@ -1086,7 +1090,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             // scrittura dei dati degli oggetti di confronto con attenzione alla posizione delle colonne che non si vedono
                             CellInsertValue(worksheetName, 2, rowIndex, cObject.ExecutionEntityDes, ExcelInsertTypeEnum.Content);
-                            CellInsertValue(worksheetName, 3, rowIndex, cObject.Date, ExcelInsertTypeEnum.Content);
+                            CellInsertValue(worksheetName, 3, rowIndex, cObject.Date.ToShortDateString(), ExcelInsertTypeEnum.Content);
                             CellSetNumberFormat(worksheetName, 3, rowIndex, DateNumberFormat);
 
                             if (executionEColumn != null)
@@ -1246,7 +1250,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (HourType == ExportRegVHourTypeEnum.OnlyDuration || HourType == ExportRegVHourTypeEnum.Both)
                         {
                             CellInsertValue(worksheetName, 2, rowIndex, BusinessService.GetLocalizedString(PowerWebResources.STR_TOTALE).ToUpper(), ExcelInsertTypeEnum.Content);
-                            CellInsertValue(worksheetName, 3, rowIndex, dateToElaborate, ExcelInsertTypeEnum.Content);
+                            CellInsertValue(worksheetName, 3, rowIndex, dateToElaborate.ToShortDateString(), ExcelInsertTypeEnum.Content);
                             CellSetNumberFormat(worksheetName, 3, rowIndex, DateNumberFormat);
                             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ScSExportBudget) == 1)
                             {

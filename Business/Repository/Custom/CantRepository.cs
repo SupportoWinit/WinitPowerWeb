@@ -1828,6 +1828,7 @@ namespace Business.Repository.Custom
 
                 List<Cant> cantToInsert = new List<Cant>();    //Lista contente i records che hanno passato la verifica
 
+                List<Cli> cliToInsert = new List<Cli>();    //Lista contente i codici cliente da inserire (solo per controllo esistenza cliente)
 
                 // per ogni riga del csv passato come parametro
                 foreach (String stringVar in inputCants)
@@ -1875,6 +1876,7 @@ namespace Business.Repository.Custom
                             columnsNumber.Add("PROVINCIA", Array.IndexOf(splittedRow, "PROVINCIA"));
                             columnsNumber.Add("CAP", Array.IndexOf(splittedRow, "CAP"));
                             columnsNumber.Add("RAGGIO", Array.IndexOf(splittedRow, "RAGGIO"));
+                            columnsNumber.Add("TIPO INTERVENTO", Array.IndexOf(splittedRow, "TIPO INTERVENTO"));
 
 
                             if (columnsNumber.ContainsValue(-1))
@@ -1918,6 +1920,7 @@ namespace Business.Repository.Custom
                             string provincia = splittedLine[columnsNumber["PROVINCIA"]].Trim();
                             string cap = splittedLine[columnsNumber["CAP"]].Trim();
                             string raggio = splittedLine[columnsNumber["RAGGIO"]].Trim();
+                            string tipoIntervento = splittedLine[columnsNumber["TIPO INTERVENTO"]].Trim();
 
                             #endregion
 
@@ -1965,10 +1968,19 @@ namespace Business.Repository.Custom
                                         var exCli = RepoManager.CliRepo.FirstOrDefault(c => c.Codice_Cliente.Trim() == cod_Cliente.Trim());
                                         if (exCli == null)
                                         {
-                                            Cli cliente = RepoManager.CliRepo.Init();
-                                            cliente.Codice_Cliente = CommonService.AggiungiSpaziASinistraSeStringaNumerica(cod_Cliente, 10);
-                                            cliente.Cognome_Cli = descrizione_Cli;
-                                            cantiere.Cli = cliente;
+                                            exCli = cliToInsert.FirstOrDefault(c => c.Codice_Cliente.Trim() == cod_Cliente.Trim());
+                                            if (exCli == null)
+                                            {
+                                                Cli cliente = RepoManager.CliRepo.Init();
+                                                cliente.Codice_Cliente = CommonService.AggiungiSpaziASinistraSeStringaNumerica(cod_Cliente, 10);
+                                                cliente.Cognome_Cli = descrizione_Cli;
+                                                cantiere.Cli = cliente;
+                                                cliToInsert.Add(cliente);
+                                            }
+                                            else 
+                                            {
+                                                cantiere.Cli = exCli;
+                                            }
                                         }
                                         else
                                         {
@@ -2026,12 +2038,20 @@ namespace Business.Repository.Custom
                                     cantiere.RaggioGps_Can = s;
                                 }
 
+                                if (tipoIntervento != "") 
+                                {
+                                    Tab_Decod intervento = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Decodifica_Tab == tipoIntervento && td.Nome_Tab == "TIPO_INTERVENTO");    
+                                    if (intervento != null) 
+                                    {
+                                        cantiere.Tipo_Interv_Can = intervento.Chiave_Tab;
+                                    }
+                                }
                                 #endregion
 
                             }
 
-                            if (cantiere != null)
-                                cantToInsert.Add(cantiere);
+                            if (cantiere != null) 
+                                  cantToInsert.Add(cantiere);
 
                         }
                     }

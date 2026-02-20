@@ -199,7 +199,7 @@ namespace PowerWeb.Modules
             List<string> regGpsToImport = BusinessService.GetRegsGpsFromFiles(new List<string>() { regNewFile });
 
 
-            List<KeyValuePair<String, String>> importErrors = RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray());
+            List<KeyValuePair<String, String>> importErrors = RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray(), new List<string>() { regNewFile });
 
             string message = "Import elaborato con successo";
 
@@ -343,7 +343,7 @@ namespace PowerWeb.Modules
                 var filesToImport = CalculateFilesToImport();
                 var importErrors = ProcessImport(filesToImport);
 
-                BackupFiles(filesToImport);
+                //BackupFiles(filesToImport);
 
                 e.Result = GenerateResultMessage(importErrors, filesToImport);
             }
@@ -417,7 +417,7 @@ namespace PowerWeb.Modules
                 var regNoGps = BusinessService.GetRegsNoGpsFromFiles(filesToImport);
                 var regGps = BusinessService.GetRegsGpsFromFiles(filesToImport);
 
-                importErrors = RepoManager.RegRepo.Import(regNoGps.ToArray(), regGps.ToArray());
+                importErrors = RepoManager.RegRepo.Import(regNoGps.ToArray(), regGps.ToArray(),filesToImport);
             }
             catch (Exception ex)
             {

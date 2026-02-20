@@ -70,7 +70,7 @@ namespace PowerWeb.Api
                         var importErrors = new List<KeyValuePair<string, string>>();
                         if (regNoGpsToImport.Any())
                         {
-                            importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray()));
+                            importErrors.AddRange(RepoManager.RegRepo.Import(regNoGpsToImport.ToArray(), regGpsToImport.ToArray(),filesToImportList));
                         }
                         else // altrimenti si segnala l'informazione
                         {

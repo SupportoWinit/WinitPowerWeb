@@ -121,6 +121,14 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
             if (String.IsNullOrEmpty(note))
                 return "";
 
+            if (note.Contains(",")) 
+            {
+                string[] noteParts = note.Split(',');
+                if (noteParts.Length == 4) 
+                    note = string.Format("{0} {1}-{2}", noteParts[1], noteParts[0], noteParts[3]);
+                
+            }
+
             string activityLines = "";
             // costruzione della stringa da processare
             string line = string.Format(EXTRA_INFO_STRING_FORMAT

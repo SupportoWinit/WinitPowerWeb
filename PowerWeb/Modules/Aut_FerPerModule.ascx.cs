@@ -2459,7 +2459,7 @@ namespace PowerWeb.Modules
                 mailTo = cols.Email_Col;
             }
 
-            errorMessage = CommonService.sendMail("dTezzon@winitsrl.it"/*mailTo*/, titoloMail, mailBody, "newsletter@winit.it", titoloMail, new string[] { });
+            errorMessage = CommonService.sendMail(mailTo, titoloMail, mailBody, "newsletter@winit.it", titoloMail, new string[] { });
 
             DateTime today = DateTime.Today;
 

@@ -19,7 +19,7 @@ namespace Business.Repository.Custom
         /// <param name="regsNoGpsToImport">L'elenco delle registrazioni non gps da importare.</param>
         /// <param name="regsGpsToImport">L'elenco delle registrazioni gps da importare.</param>
         /// <returns>Una lista contenente gli eventuali errori riscontrati durante l'importazione.</returns>
-        List<KeyValuePair<String, String>> Import(string[] regsNoGpsToImport, string[] regsGpsToImport);
+        List<KeyValuePair<String, String>> Import(string[] regsNoGpsToImport, string[] regsGpsToImport, List<string> filesToImport);
 
         List<KeyValuePair<String, String>> Elaborate(ICollection<Reg> regs, DateTime fromDate, DateTime toDate, Boolean isToSaveChanges = true,
             Boolean isToAssociatePruFru = false, int? elaborateUserId = null, DateTime? elaborateDateTime = null, ApplicationMessageEnum? application = null);

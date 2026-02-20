@@ -8176,8 +8176,19 @@ namespace Business.Repository.Custom
             }
 
             mailBody += "</div>";
+
+            string mailTo = RepoManager.ParamRepo.ParametersRow.CompanyEmail;
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MailTo) == 1)
+            {
+                var mailList = Enumerable.Range(1, 5)
+                        .Select(i => RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.MailTo, $"Mail{i}"))
+                        .Where(m => !string.IsNullOrWhiteSpace(m));
+
+                mailTo = string.Join(";", mailList);
+            }
             //Invia le mail
-            errorMessage = CommonService.sendMail(RepoManager.ParamRepo.ParametersRow.CompanyEmail, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
+            errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
 
             //Se la mail è stata inviata correttamente, segnala che è stata inviata
             if (errorMessage == "Mail inviata!")

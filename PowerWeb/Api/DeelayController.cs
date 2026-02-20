@@ -110,7 +110,7 @@ namespace PowerWeb.Api
                     }
                 }
                 
-                if (valido)
+                if (valido && orarioFinale.Ora_E.HasValue)
                 {
                     _log.InfoFormat("Il cantiere {0} prevede timbrature oggi", cantiere.Descrizione_Can);
                     //se valido diventa true vuol dire che oggi sono previste timbrature per il cantiere corrente 
@@ -206,11 +206,20 @@ namespace PowerWeb.Api
                 }
                 else 
                 {
-                    //se valido rimane a false vuol dire che l'orario non prevede timbrature per il giorno corrente
-                    _log.InfoFormat("L'orario del cantiere {0} non prevede timbrature per {1}", cantiere.Descrizione_Can, today.DayOfWeek.ToString());
+                    if (valido)
+                    {
+                        //se valido rimane a false vuol dire che l'orario non prevede timbrature per il giorno corrente
+                        _log.InfoFormat("L'orario del cantiere {0} non prevede timbrature per {1}", cantiere.Descrizione_Can, today.DayOfWeek.ToString());
+                    }
+                    else 
+                    {
+                        //se valido rimane a false vuol dire che l'orario non prevede timbrature per il giorno corrente
+                        _log.InfoFormat("L'orario del cantiere {0} non contiene un ora di entrata", cantiere.Descrizione_Can);
+                    }
                 }
             }
-            if (cantieriRitardo.Count() > 0) {
+            if (cantieriRitardo.Count() > 0)
+            {
                 _log.InfoFormat("Trovati {0} cantieri per cui mandare la mail", cantieriRitardo.Count());
                 string invioMail = InviaResoconto(cantieriRitardo);
                 if (invioMail != "Mail inviata!")
@@ -219,17 +228,23 @@ namespace PowerWeb.Api
                     _log.InfoFormat("Errore rilevato nell'invio della mail");
                     ritorno = HttpStatusCode.InternalServerError;
                 }
-                else 
+                else
                 {
                     //se la mail è inviata correttamente aggiorno la data ultimo invio
                     _log.InfoFormat("Invio mail effettuato correttamente, procedo ad aggiornare la data di ultimo invio così da inviare una sola mail");
-                    foreach (Cant cantiere in cantieriRitardo) {
+                    foreach (Cant cantiere in cantieriRitardo)
+                    {
                         cantiere.Data_Rapporto_Inizio_5_Can = compareToday;
                         RepoManager.CantRepo.SaveChanges();
                     }
                 }
             }
-            if (inviaMailRitardi) 
+            else 
+            {
+                _log.InfoFormat("Trovati 0 cantieri per cui mandare la mail", cantieriRitardo.Count());
+            }
+
+            if (inviaMailRitardi)
             {
                 RepoManager.Reg_VRepo.InviaRitardi();
             }
@@ -247,9 +262,20 @@ namespace PowerWeb.Api
                 mailBody += "<p>Il giorno " + today.ToString("dddd d MMMM yyyy") + " alle ore " + today.ToString("HH:mm") + " non sono state registrate timbrature sul cantiere " + cantiere.Descrizione_Can + "</p>";
             }
 
+            string mailTo = RepoManager.ParamRepo.ParametersRow.CompanyEmail;
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MailTo) == 1)
+            {
+                var mailList = Enumerable.Range(1, 5)
+                        .Select(i => RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.MailTo, $"Mail{i}"))
+                        .Where(m => !string.IsNullOrWhiteSpace(m));
+
+                mailTo = string.Join(";", mailList);
+            }
+
             mailBody += "</div>";
             //Invia le mail
-            errorMessage = CommonService.sendMail(RepoManager.ParamRepo.ParametersRow.CompanyEmail, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
+            errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
         
             return errorMessage;
         }
