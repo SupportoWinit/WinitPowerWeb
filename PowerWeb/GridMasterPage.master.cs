@@ -34,6 +34,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.WebPages;
 using ImageSizeMode = DevExpress.XtraPrinting.ImageSizeMode;
 
 namespace PowerWeb
@@ -1051,7 +1052,8 @@ namespace PowerWeb
             }       
             List<Tab_Aut> livelli = RepoManager.Tab_AutRepo.GetAll().Where(user => user.Utenti_Id == PowerWebContext.Current.User.Utenti_Id).ToList();
 
-            if (livelli.First().Del_Aut < 10) {
+            if (livelli.First().Del_Aut < 10)
+            {
                 btnSaveLayout.Visible = false;
                 btnCustomizeColumns.Visible = false;
                 btnPrint.Visible = false;
@@ -1059,6 +1061,18 @@ namespace PowerWeb
                 btnExportXLSX.Visible = false;
                 btnHelp.Visible = false;
                 btnPrintXlsx.Visible = false;
+            }
+            if (!PowerWebContext.Current.User.Note_Utente.IsEmpty()) 
+            {
+                if (livelli.First().Del_Aut < 10 && PowerWebContext.Current.User.Note_Utente.Contains("EXCEL"))
+                {
+                    btnExportXLSX.Visible = true;
+                }
+                if (livelli.First().Del_Aut < 10 && PowerWebContext.Current.User.Note_Utente.Contains("PDF"))
+                {
+                    btnPrint.Visible = true;
+                    btnPrintPdf.Visible = true;
+                }
             }
         }
 

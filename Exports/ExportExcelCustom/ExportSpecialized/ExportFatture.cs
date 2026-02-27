@@ -359,21 +359,37 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 TimeSpan totalDuration = TimeSpan.FromMinutes(totaleMensile);
 
+                                double importo = 25;
+                                double costoOrario = 0;
+                                if (cantiere.Importo2.HasValue) 
+                                {
+                                    costoOrario = cantiere.Importo2.Value;
+                                    if (cantiere.Importo2.Value < 29) 
+                                    { 
+                                        importo = cantiere.Importo2.Value;
+                                    }
+                                }
+
                                 string valueToPrint = String.Format("{0}{1},{2}", (totalDuration < TimeSpan.Zero ? "-" : ""), Math.Abs((totalDuration.Days * 24) + totalDuration.Hours), FromMinutesToCent(Math.Abs(totalDuration.Minutes)));
                                 string colonnaFatturato = $"{ColumnIndexToNameConversion(3)}{rowIndex}";
-                                string formulaFatt = $"={colonnaFatturato}/25";
-                                string formulaDiff = $"={ColumnIndexToNameConversion(4)}{rowIndex} - {ColumnIndexToNameConversion(5)}{rowIndex}";
+                                string colonnaImporto = $"{ColumnIndexToNameConversion(5)}{rowIndex}";
+                                string formulaFatt = $"={colonnaFatturato}/{colonnaImporto}";
+                                string formulaDiff = $"={ColumnIndexToNameConversion(4)}{rowIndex} - {ColumnIndexToNameConversion(7)}{rowIndex}";
                                 //Inserisco l'ultimo giorno del mese
                                 CellInsertValue(1, 1, rowIndex, lastMonthDate.ToString("dd/MM/yyyy"), ExcelInsertTypeEnum.Content);
                                 //Inserisco la descrizione del cantiere
                                 CellInsertValue(1, 2, rowIndex, cantiere.Descrizione_Can, ExcelInsertTypeEnum.Content);
-                                //Inserisco la formula per calcolare il totale fatturato/25
+                                //Inserisco la formula per calcolare il totale fatturato/importo
                                 CellInsertValue(1, 4, rowIndex, formulaFatt, ExcelInsertTypeEnum.Formula);
+                                //Inserisco il valore secondo il quale si calcola il totale fatturato/importo
+                                CellInsertValue(1, 5, rowIndex, importo, ExcelInsertTypeEnum.Content);
+                                //Inserisco il valore effettivo
+                                CellInsertValue(1, 6, rowIndex, costoOrario, ExcelInsertTypeEnum.Content);
                                 //Inserisco il totale delle ore sul cantiere
-                                CellInsertValue(1, 5, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                                CellInsertValue(1, 7, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
                                 //Inserisco la formula per calcolare la differenza
-                                CellInsertValue(1, 6, rowIndex, formulaDiff, ExcelInsertTypeEnum.Formula);
-                                RangeSetBorders(1, 1, rowIndex, 6, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(1, 8, rowIndex, formulaDiff, ExcelInsertTypeEnum.Formula);
+                                RangeSetBorders(1, 1, rowIndex, 8, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 rowIndex++;
                             }
                         }
