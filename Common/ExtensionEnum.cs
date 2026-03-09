@@ -225,7 +225,10 @@ namespace Common
         MailTo,
         RoundingOnSchedule,
         CodiceCommessaObbligatorio,
-        DivisioneNotturnoExport
+        DivisioneNotturnoExport,
+        ConfermaInserimentoCantiere,
+        TipoInterventoObbligatorio,
+        LimitiSoloHotel
     }
 
     public enum ClockAppsOperationEnum

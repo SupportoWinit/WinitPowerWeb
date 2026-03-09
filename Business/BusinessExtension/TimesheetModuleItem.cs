@@ -4549,16 +4549,16 @@ namespace Business.BusinessExtension
                                     var dayReg = new Reg_V();
                                     dayReg.Col_Id = reg.Col_Id.Value;
                                     dayReg.Cant_Id = reg.Cant_Id.Value;
-                                    dayReg.Durata_Fig = nightDuration;
-                                    dayReg.Durata_Fis = nightDuration;
+                                    dayReg.Durata_Fig = dayDuration;
+                                    dayReg.Durata_Fis = dayDuration;
                                     dayReg.Data_Reg = reg.Data_Reg;
                                     dayRegs.Add(dayReg);
                                     //creo la registrazione notturna e la aggiungo alla relativa lista
                                     var nightReg = new Reg_V();
                                     nightReg.Col_Id = reg.Col_Id.Value;
                                     nightReg.Cant_Id = reg.Cant_Id.Value;
-                                    nightReg.Durata_Fig = dayDuration;
-                                    nightReg.Durata_Fis = dayDuration;
+                                    nightReg.Durata_Fig = nightDuration;
+                                    nightReg.Durata_Fis = nightDuration;
                                     nightReg.Data_Reg = reg.Data_Reg;
                                     nightRegs.Add(nightReg);
                                     indice++;

@@ -244,25 +244,53 @@ namespace PowerWeb.Modules
                         //controllo se la reg è l'ultima della lista
                         if (reg.Equals(cols.Last()))
                         {
-                            //controllo se la data è uguale alla variabile 'primoGiorno', in quel caso non è un periodo e si può lasciare la reg base
-                            if (reg.Data_Reg.Value != primoGiorno)
+                            if (periodo == 1)
                             {
-                                Reg_V newRegV = tmpRegV;
-                                string noteReg = "";
-                                var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
-                                var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
-                                noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
-                                newRegV.Note_Reg = noteReg;
-                                groupReg.Add(newRegV);
+                                //controllo se la data è uguale alla variabile 'primoGiorno', in quel caso non è un periodo e si può lasciare la reg base
+                                if (reg.Data_Reg.Value != primoGiorno)
+                                {
+                                    //se non sono consecutive faccio un ulteriore controllo, ovvero se il giorno precedente è un venerdì o sabato
+                                    if ((lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday || lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday) && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday)
+                                    {
+                                        Reg_V newRegV = tmpRegV;
+                                        string noteReg = "";
+                                        var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                        var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                        noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                        newRegV.Note_Reg = noteReg;
+                                        groupReg.Add(newRegV);
+                                    }
+                                    else 
+                                    {
+                                        string noteReg = "";
+                                        Reg_V newRegV = reg;
+                                        var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                        noteReg = dataReg[0];
+                                        newRegV.Note_Reg = noteReg;
+                                        groupReg.Add(newRegV);
+                                        noteReg = "";
+                                        newRegV = lastRegV;
+                                        dataReg = lastRegV.Data_Reg.Value.ToString().Split(' ');
+                                        noteReg = dataReg[0];
+                                        newRegV.Note_Reg = noteReg;
+                                        groupReg.Add(newRegV);
+                                    }
+                                }
+                                else
+                                {
+                                    string noteReg = "";
+                                    Reg_V newRegV = tmpRegV;
+                                    var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                    noteReg = dataReg[0];
+                                    newRegV.Note_Reg = noteReg;
+                                    groupReg.Add(newRegV);
+                                }
                             }
-                            else {
-                                string noteReg = "";
-                                Reg_V newRegV = tmpRegV;
-                                var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
-                                noteReg = dataReg[0];
-                                newRegV.Note_Reg = noteReg;
-                                groupReg.Add(newRegV);
+                            else 
+                            {
+                            
                             }
+                           
                         }
                         //controllo che la data non sia uguale perchè in quel caso è la prima
                         else if(!primoGiorno.Equals(reg.Data_Reg.Value)){
@@ -1943,6 +1971,7 @@ namespace PowerWeb.Modules
                     DateTime to = DateTime.Parse(dates[1] + " 23:59:59");
                     List<Reg_V> tmpRegvs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Motivazione_Reg_Id == tmpReg_V.Motivazione_Reg_Id && r.Col_Id == tmpReg_V.Col_Id && (r.Data_Reg.Value >= from && r.Data_Reg.Value <= to)).ToList();
                     regVsToCheck.AddRange(tmpRegvs);
+                    int conferma = 0;
 
                     foreach (var regv in regVsToCheck)
                     {
@@ -2182,6 +2211,9 @@ namespace PowerWeb.Modules
                             }
 
                         }
+                        if (!codNuovaRichiesta.Contains("Ferie"))
+                            conferma = 1;
+
                         Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == codNuovaRichiesta);
 
                         newRegE.Motivazione_Reg_Id = mot.Tab_Decod_Id;
@@ -2206,7 +2238,7 @@ namespace PowerWeb.Modules
                         #endregion
                     }
                     Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
-                    InviaConferma(0, col, from, to);
+                    InviaConferma(conferma, col, from, to);
                 }
 
                 #region Elaborate all modified regs
@@ -2456,7 +2488,7 @@ namespace PowerWeb.Modules
             mailBody += "</div>";
 
             if (cols.Email_Col != "" && cols.Email_Col != null) {
-                mailTo = cols.Email_Col;
+                mailTo = mailTo + ";" + cols.Email_Col;
             }
 
             errorMessage = CommonService.sendMail(mailTo, titoloMail, mailBody, "newsletter@winit.it", titoloMail, new string[] { });

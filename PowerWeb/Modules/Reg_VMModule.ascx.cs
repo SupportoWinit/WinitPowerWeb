@@ -1019,7 +1019,6 @@ namespace PowerWeb.Modules
 
         protected void gvRegVM_RowInserting(object sender, ASPxDataInsertingEventArgs e)
         {
-            _log.Info(String.Format("Reg-Row Inserting by Prova"));
             _log.Info(String.Format("Reg-Row Inserting by {0}", PowerWebContext.Current.User.Codice_Utente));
 
             List<Reg> toAddRegsNew = new List<Reg>();

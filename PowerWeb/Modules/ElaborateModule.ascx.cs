@@ -445,7 +445,7 @@ namespace PowerWeb.Modules
                     Common.Properties.Settings.Default.Files_Input_Path,
                     $"{Common.Properties.Settings.Default.SuspendedRegsFile}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.txt"));
 
-                BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
+                //BusinessService.CreateSuspendedRegFile(regSuspendedFile, importErrors);
                 return "Import terminato con segnalazioni!";
             }
 

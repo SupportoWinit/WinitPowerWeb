@@ -136,11 +136,13 @@ namespace PowerWeb.Api
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
                         _log.Info("Inizio ad inserire la richiesta di ferie o permesso");
+                        InviaConferma(1, col, From, To);
                     }
                     else {
                         _log.Info("Rchiesta gia presente a sistema");
                         values.Status = false;
                         values.Message = "Richiesta già presente a sistema";
+                        InviaConferma(3, col, From, To);
                     }
                     
                     JsonData = JsonConvert.SerializeObject(values);
@@ -244,11 +246,13 @@ namespace PowerWeb.Api
                         RepoManager.RegRepo.Add(regsToAdd, true);
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
+                        InviaConferma(0, col, From, To);
                     }
                     else {
                         _log.Info("Rchiesta gia presente a sistema");
                         values.Status = false;
                         values.Message = "Richiesta già presente a sistema";
+                        InviaConferma(2, col, From, To);
                     }                    
                     JsonData = JsonConvert.SerializeObject(values);
                 }
@@ -268,6 +272,50 @@ namespace PowerWeb.Api
         protected string FromMinutesToCent(int minutes)
         {
             return ((minutes / 60.0) * 100).ToString("00");
+        }
+
+        public string InviaConferma(int esito, Col cols, DateTime from, DateTime to)
+        {
+            string titoloMail = "";
+            string mailTo = RepoManager.ParamRepo.ParametersRow.CompanyEmail;
+
+            //Prepara il body della mail caricando il css
+            string mailBody = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; \">",
+                   errorMessage = "";
+            switch (esito)
+            {
+                case 0:
+                    titoloMail = "PowerWeb - Richiesta di ferie insserita correttamente";
+                    mailBody += "<p>La richiesta di ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono state inserite</p>";
+                    break;
+                case 1:
+                    titoloMail = "PowerWeb - Richiesta di permesso inserita correttamente";
+                    mailBody += "<p>la richiesta di permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato inserito </p>";
+                    break;
+                case 2:
+                    titoloMail = "PowerWeb - Richiesta di ferie già presente";
+                    mailBody += "<p>La richiesta di ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono già presenti a sistema</p>";
+                    break;
+                case 3:
+                    titoloMail = "PowerWeb - Richiesta di permesso già presente";
+                    mailBody += "<p>La richiesta di permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è già inserito a sistema </p>";
+                    break;
+                default:
+                    break;
+            }
+
+            mailBody += "</div>";
+
+            if (cols.Email_Col != "" && cols.Email_Col != null)
+            {
+                mailTo = mailTo + ";" + cols.Email_Col;
+            }
+
+            errorMessage = CommonService.sendMail(mailTo, titoloMail, mailBody, "newsletter@winit.it", titoloMail, new string[] { });
+
+            DateTime today = DateTime.Today;
+
+            return errorMessage;
         }
     }
 

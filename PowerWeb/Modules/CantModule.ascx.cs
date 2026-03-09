@@ -359,6 +359,7 @@ namespace PowerWeb.Modules
         {
             _log.Info(String.Format("CANT-Row Inserting by {0}", PowerWebContext.Current.User.Codice_Utente));
             Cant initCant = new Cant();
+            bool insert = true;
 
             PowerWebService.FillEntityProperties(initCant, e.NewValues);
             RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(initCant);
@@ -404,59 +405,136 @@ namespace PowerWeb.Modules
                 initCant.Codice_Cantiere = CommonService.AggiungiSpaziASinistraSeStringaNumerica(codCantMaxNum.ToString(), 20);
             }
 
+            #region Codice Commessa Obbligatorio
             var codiceCommessaPropertyName = CommonService.GetPropertyName(() => _cantStub.Codice_Commessa_Can);
-            if (initCant.Codice_Commessa_Can != null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1)
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1)
             {
-                if (initCant.Codice_Commessa_Can != null)
+                if (initCant.Codice_Commessa_Can == null)
                 {
-                    try
-                    {
-                        RepoManager.CantRepo.Add(initCant, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
-                    }
-                }
-            }
-
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 0) 
-            {
-                RepoManager.CantRepo.Add(initCant, true);
-            }
-
-            #region Gestione attività automatica
-
-            var tipoIntervento = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);
-
-            if (e.NewValues.Contains(tipoIntervento))
-            {
-                _log.Info("Imposto l'attività automatica sul cantiere");
-                string TipoInterventoCantNew = (string)e.NewValues[tipoIntervento];
-                Tab_Decod newTd = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == TipoInterventoCantNew);
-                if (newTd != null)
-                {
-                    Utenti winit = RepoManager.UtentiRepo.FirstOrDefault(ut => ut.Codice_Utente == "WINIT");
-                    Cant_Note newAssoc = new Cant_Note();
-                    newAssoc.Cant_Id = initCant.Cant_Id;
-                    DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00);
-                    newAssoc.Data_Nota_Can_Note = ConvertToSmallDateTime(today);
-                    newAssoc.Data_Registrazione_Can_Note = ConvertToSmallDateTime(today);
-                    newAssoc.DataOraUltimaModifica_Can_Note = ConvertToSmallDateTime(today);
-                    newAssoc.Nota_Can_Note = newTd.Decodifica_Tab;
-                    newAssoc.Utenti_Id = winit.Utenti_Id;
-                    newAssoc.Tipo_Nota_Can_Note = "INFO";
-                    RepoManager.Cant_NoteRepo.Add(newAssoc);
-                    RepoManager.Cant_NoteRepo.SaveChanges();
+                    insert = false;
+                    gvCant.JSProperties["cpErrorMessage"] = "Rilevato cantiere senza codice commessa";
                 }
             }
             #endregion
+
+            #region Tipo Intervento Obbligatorio
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TipoInterventoObbligatorio) == 1 && insert) 
+            {
+                _log.Info("Controllo il tipo intervento");
+                if (initCant.Codice_Commessa_Can != null) 
+                {
+                    if (initCant.Codice_Commessa_Can != "Hotel") 
+                    {
+                        if (initCant.Tipo_Interv_Can == null) 
+                        { 
+                            insert = false;
+                            gvCant.JSProperties["cpErrorMessage"] = "Rilevato cantiere non hotel senza Tipo Intervento";
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            if (insert)
+            {
+                RepoManager.CantRepo.Add(initCant, true);
+                #region Invio mail per notifica inserimento cantiere
+
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ConfermaInserimentoCantiere) == 1)
+                {
+                    string confronto = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ConfermaInserimentoCantiere, "controllo");
+                    bool sendMail = false;
+                    if (confronto != null)
+                    {
+                        if (confronto.Contains(';'))
+                        {
+                            var confrontoSplit = confronto.Split(';');
+                            foreach (var item in confrontoSplit)
+                            {
+                                Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == initCant.Tipo_Interv_Can && td.Nome_Tab == "TIPO_INTERVENTO");
+                                if (tIntervento != null)
+                                {
+                                    if (item == tIntervento.Decodifica_Tab)
+                                    {
+                                        sendMail = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else 
+                        {
+                            if (initCant.Tipo_Interv_Can != null)
+                            {
+                                string interventoValue = initCant.Tipo_Interv_Can;
+                                Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == interventoValue && td.Nome_Tab == "TIPO_INTERVENTO");
+                                if (tIntervento != null) 
+                                {
+                                    if (confronto == tIntervento.Decodifica_Tab) 
+                                    {
+                                        sendMail = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (sendMail)
+                    {
+                        inviaMailConferma(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ConfermaInserimentoCantiere, "email"), initCant);
+                    }
+                }
+                #endregion
+
+                #region Gestione attività automatica
+
+                var tipoIntervento = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);
+
+                if (e.NewValues.Contains(tipoIntervento))
+                {
+                    _log.Info("Imposto l'attività automatica sul cantiere");
+                    string TipoInterventoCantNew = (string)e.NewValues[tipoIntervento];
+                    Tab_Decod newTd = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == TipoInterventoCantNew);
+                    if (newTd != null)
+                    {
+                        Utenti winit = RepoManager.UtentiRepo.FirstOrDefault(ut => ut.Codice_Utente == "WINIT");
+                        Cant_Note newAssoc = new Cant_Note();
+                        newAssoc.Cant_Id = initCant.Cant_Id;
+                        DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00);
+                        newAssoc.Data_Nota_Can_Note = ConvertToSmallDateTime(today);
+                        newAssoc.Data_Registrazione_Can_Note = ConvertToSmallDateTime(today);
+                        newAssoc.DataOraUltimaModifica_Can_Note = ConvertToSmallDateTime(today);
+                        newAssoc.Nota_Can_Note = newTd.Decodifica_Tab;
+                        newAssoc.Utenti_Id = winit.Utenti_Id;
+                        newAssoc.Tipo_Nota_Can_Note = "INFO";
+                        RepoManager.Cant_NoteRepo.Add(newAssoc);
+                        RepoManager.Cant_NoteRepo.SaveChanges();
+                    }
+                }
+                #endregion
+            }
+            else 
+            {
+                gvCant.JSProperties["cpError"] = true;
+            }
             e.Cancel = true;
             gvCant.CancelEdit();
-
         }
 
+        protected string inviaMailConferma(string mailTo,Cant cantiere) 
+        {
+            //Prepara il body della mail caricando il css
+            string mailBody = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; \">",
+                   errorMessage = "";
 
+            DateTime today = DateTime.Now;
+            mailBody += "<p>Il giorno <b>" + today.ToString("dddd d MMMM yyyy") + "</b> è stato inserito il seguente cantiere " + cantiere.Codice_Cantiere + " "+ cantiere.Descrizione_Can + "</p>";
+
+            mailBody += "</div>";
+            //Invia le mail
+            errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Inserimento cantiere " + cantiere.Codice_Cantiere, mailBody, "newsletter@winit.it", "PowerWeb - Inserimento cantiere", new string[] { });
+
+            return errorMessage;
+        }
 
         protected void gvCant_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
         {
