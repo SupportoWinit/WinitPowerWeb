@@ -228,7 +228,8 @@ namespace Common
         DivisioneNotturnoExport,
         ConfermaInserimentoCantiere,
         TipoInterventoObbligatorio,
-        LimitiSoloHotel
+        LimitiSoloHotel,
+        AutoCodiceCantiere
     }
 
     public enum ClockAppsOperationEnum

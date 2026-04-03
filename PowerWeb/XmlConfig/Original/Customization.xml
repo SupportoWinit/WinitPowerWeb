@@ -8,7 +8,7 @@
       = 0 Personalizzazione NON attivata
             <>0 N° della versione attivata fra quelle previste per quella Personalizzazione -->
   <!-- *******************************************************************************************************************************************-->
-  <c Value="0" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
+  <c Value="1" Des="Export del cartellino paginato per collaboratore" ID="CustomizationEnum.TimesheetMultiPagedExport"/>
   <!-- *****************************************VISUALIZZAZIONE GRIGLIA IN CANT PAGE**************************************************************-->
   <c ID="CustomizationEnum.DefaultGroupViewInCantPage" Des="Raggruppamento iniziale pagina cantiere resu vista default(no raggruppamenti)" Value="0" />
   <!--DefaultGroupeViewInCatPageEnum=1 corrisponde ad un raggruppamento per tipologia cantiere-->
@@ -250,7 +250,7 @@
 		NoCreateTripOnSameMunicipalityUnderKmEnum=1 Indica di generare i viaggi che cominciano e terminano nello stesso comune solo se superiori a i km come parametro  -->
 
   <!-- ********************************************************ESPORTAZIONE XML DELLE TIMBRATURE*********************************************************-->
-  <c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="3" />
+  <c ID="CustomizationEnum.RegExportToXmlEnum" Des="Indica se è attiva (e di quale tipo) è l'estrazione delle registrazioni su file xml" Value="0" />
   <!-- RegExportToXmlEnum=0 Indica che l'esportazione xml delle timbrature non è attiva
 		RegExportToXmlEnum=1 Indica che l'esportazione xml delle timbrature è attiva ed è attivita nel formato letto dal gestionale Perfetto -->
 
@@ -330,7 +330,7 @@
 		CustomExportsBackgroundColorEnum=1 Non Visualizza i colori previsti dal codice nel export custom -->
 
   <!-- *******************************************MOTIVAZIONI COME ONL*********************************************************-->
-  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="0" />
+  <c ID="CustomizationEnum.JustificationHourIsWorkedHoursEnum" Des="Indica se utilizzare o meno le ore con motivazione come se fossero ore lavorate" Value="1" />
   <!--JustificationHourIsWorkedHoursEnum=0 Non saranno utilizzate le ore con motivazione all'interno delle ore lavorate
 		JustificationHourIsWorkedHoursEnum=1 Saranno utilizzate le ore con motivazione all'interno delle ore lavorate -->
 
@@ -365,7 +365,7 @@
 		ExcludeAwayHoursInExport=1 Esclude le ore TRA dall'export-->
 
   <!-- *******************************************ORE TRASFERTA NOT IN EXP ORE/BUDGET CANT'*********************************************************-->
-  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="0" />
+  <c ID="CustomizationEnum.ScSExportBudget" Des="Indica se usare l export ore/budget per scs in cent" Value="1" />
   <!--ScSExportBudget=0 disattiva l'export
 		ScSExportBudget=1 attiva l'export-->
 
@@ -647,20 +647,39 @@
   <c ID="CustomizationEnum.NotCalcolatePausaTrip" Des="Indica se mostrare il colore della timbratura diverso in caso di modifica" Value="1"/>
   <!--  ShowActivitiesInRegV=0 Indica di mostrare il coloro
         ShowActivitiesInRegV=1 Indica di non mostrare il colore-->
+		
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.CodiceCommessaObbligatorio" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
+  <!--  CodiceCommessaObbligatorio=0 Indica di non calcolare i kilometri
+        CodiceCommessaObbligatorio=1 Indica di calcolare i kilometri-->
 
-  <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
-  <c ID="CustomizationEnum.UseEUDurationRounding" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
-  <!--  AutoClosuresXMinuteEnum=0 Indica di non chiudere le timbrature in modo automatico
-        AutoClosuresXMinuteEnum=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.ConfermaInserimentoCantiere" Des="Indica se inviare una mail nel caso il cantiere sia Pulizie Continuative" Value="1">
+          <param Name="email" Value ="dTezzon@winitsrl.it"/>
+          <param Name="controllo" Value ="CONTINUATIVE"/>
+  </c>
+  <!--  ConfermaInserimentoCantiere=0 Indica di non inviare la mail
+        ConfermaInserimentoCantiere=1 Indica di inviare la mail-->
 
-  <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
-  <c ID="CustomizationEnum.LimitiDaTurni" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
-  <!--  LimitiDaTurni=0 Indica di non chiudere le timbrature in modo automatico
-        LimitiDaTurni=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.TipoInterventoObbligatorio" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
+  <!--  TipoInterventoObbligatorio=0 Indica di non calcolare i kilometri
+        TipoInterventoObbligatorio=1 Indica di calcolare i kilometri-->
+  
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.LimitiSoloHotel" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="0"/>
+  <!--  LimitiSoloHotel=0 Indica di non calcolare i kilometri
+        LimitiSoloHotel=1 Indica di calcolare i kilometri-->
+		
+			  <!-- ********************************************************CASP******************************************************************************-->
+  <c ID="CustomizationEnum.DivisioneNotturnoExport" Des="Imposta la divisione delle ore fra notturno e diurno nel cartellino" Value="1" >
+    <param Name="StartNott" Value="22:00:00" />
+    <param Name="EndNott" Value="06:00:00" />
+  </c>
 
-  <!-- ********************************************************AUTOCHIUSURA PRIMA E ULTIMA TIMBRATURA*********************************************************-->
-  <c ID="CustomizationEnum.ShowDurationRoundingTimesheet" Des="Indica se chiudere la prima e l'ultima timbratura in modo automatico" Value="1"/>
-  <!--  ShowDurationRoundingTimesheet=0 Indica di non chiudere le timbrature in modo automatico
-        ShowDurationRoundingTimesheet=1 Indica di chiudere le timbrature in modo automatico sul cantire sede-->
+  <!-- *******************************************************DOPPIO PUSH PIN *********************************************************-->
+  <c ID="CustomizationEnum.AutoCodiceCantiere" Des="Indica se mostrare se due reg hanno luoghi diversi, modifica nell'import tag/GPS" Value="1"/>
+  <!--  AutoCodiceCantiere=0 Indica di non calcolare i kilometri
+        AutoCodiceCantiere=1 Indica di calcolare i kilometri-->
   
 </Customizations>

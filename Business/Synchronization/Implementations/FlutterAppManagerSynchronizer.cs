@@ -69,6 +69,7 @@ namespace Business.Synchronization.Implementations
             if (modifiedEntities.Any())
             {
                 modified = Strategies.ExecuteModifyStrategy(modifiedEntities, this.connectionConfig);
+
                 foreach (JObject json in modified)
                 { 
                     externalBridge.Post(json, apiPaths["modify"]);

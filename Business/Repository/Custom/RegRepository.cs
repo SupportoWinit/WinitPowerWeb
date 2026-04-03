@@ -7004,6 +7004,20 @@ namespace Business.Repository.Custom
 
             #endregion
 
+            // effettuazione del backup di tutti i file della lista
+            string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));
+            BusinessService.BackupProcessedFiles(filesToImport, backupFolder);
+
+
+            if (errors.Count > 0)
+            {
+                string regSuspendedFile = HttpContext.Current.Server.MapPath(Path.Combine(
+                    Common.Properties.Settings.Default.Files_Input_Path,
+                    $"{Common.Properties.Settings.Default.SuspendedRegsFile}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.txt"));
+
+                BusinessService.CreateSuspendedRegFile(regSuspendedFile, errors);
+            }
+
             // se ci sono delle registrazioni da inserire a database
             if (newRegs.Any())
             {
@@ -7275,20 +7289,6 @@ namespace Business.Repository.Custom
                 }
 
                 #endregion
-
-                // effettuazione del backup di tutti i file della lista
-                string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Common.Properties.Settings.Default.Files_Input_Backup_Path.Replace("~", "").ReplaceFirst("\\", ""));
-                BusinessService.BackupProcessedFiles(filesToImport, backupFolder);
-
-
-                if (errors.Count > 0)
-                {
-                    string regSuspendedFile = HttpContext.Current.Server.MapPath(Path.Combine(
-                        Common.Properties.Settings.Default.Files_Input_Path,
-                        $"{Common.Properties.Settings.Default.SuspendedRegsFile}_{DateTime.UtcNow:yyyy-MM-dd_HH-mm-ss}.txt"));
-
-                    BusinessService.CreateSuspendedRegFile(regSuspendedFile, errors);
-                }
                 _log.Info(String.Format("INIZIO FASE DI ELABORAZIONE TRA {0} E {1}.\n", from, to));
 
                 List<KeyValuePair<string, string>> elabErrors = new List<KeyValuePair<string, string>>();

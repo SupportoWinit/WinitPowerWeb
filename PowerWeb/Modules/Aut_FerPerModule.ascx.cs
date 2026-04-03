@@ -288,7 +288,16 @@ namespace PowerWeb.Modules
                             }
                             else 
                             {
-                            
+                                Reg_V newRegV = tmpRegV;
+                                string noteReg = "";
+                                var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                var dataReg = primoGiorno.AddDays(periodo) .ToString().Split(' ');
+                                noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                newRegV.Note_Reg = noteReg;
+                                groupReg.Add(newRegV);
+                                periodo = 1;
+                                primoGiorno = reg.Data_Reg.Value;
+                                tmpRegV = reg;
                             }
                            
                         }

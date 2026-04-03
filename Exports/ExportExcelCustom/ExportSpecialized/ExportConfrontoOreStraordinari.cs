@@ -307,8 +307,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (motivazione && (double)last["Day" + day.Day.ToString("00")] > 0)
                         {
                             print = (double)last["Day" + day.Day.ToString("00")];
-                        } else if (motivazione) { 
-                            print = baseDuration - (double)tmpstr["Day" + day.Day.ToString("00")];
                         }
                     }
                     catch (Exception e) { 
@@ -463,8 +461,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     giorno += CommonService.GetDatesFromPeriod(startMonth, endMonth).Count;
                 }
+
+                if (!motivazione) 
+                {
+                    last = justification;
+                }
                 motivazione = false;
-                last = justification;
+                
             }
 
         }

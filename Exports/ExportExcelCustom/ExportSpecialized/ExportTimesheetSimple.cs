@@ -14,6 +14,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
+using Westwind.Utilities.Extensions;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -75,6 +76,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             startMonth = CommonService.GetFirstMonthDay(ExportDate);
             endMonth = CommonService.GetLastMonthDay(ExportDate);
+
+            DateTime maxDate = endMonth;
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
+            {
+                if (ExportDate.Month == DateTime.Now.Month)
+                {
+                    endMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                }
+            }
 
             foreach (Col col in collaboratori) {
                 IEnumerable<int> lis = new List<int>();
@@ -356,7 +367,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         private void WriteTimesheetColHeader()
         {
-            List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)); //Calcolo i giorni per l'header
+            int giorniRimanenti = 1;
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
+            {
+                if (ExportDate.Month == DateTime.Now.Month)
+                {
+                    DateTime last = ExportDate.EndOfMonth();
+                    giorniRimanenti = (last.Day - DateTime.Now.Day) + 1;
+                }
+            }
+
+            List<DateTime> days = CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-giorniRimanenti)); //Calcolo i giorni per l'header
 
             RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, days.Count + 3, rowIndex);
 
@@ -452,18 +473,20 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 CellInsertValue(worksheetIndex, 1, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);
 
-                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                DateTime maxDate = endMonth;
+
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
                 {
-                    var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
-                    var timeDuration = TimeSpan.FromHours(baseDuration);
-                    string valueToPrint = "";
-                    //if (baseDuration < 0 && baseDuration > -0.01)
-                    //{
-                    //    valueToPrint = "-"+FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
-                    //}
-                    //else {
-                        valueToPrint = FromTotalMinutesToFormattedType((int)timeDuration.TotalMinutes);
-                    //}
+                    if (ExportDate.Month == DateTime.Now.Month)
+                    {
+                        maxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                    }
+                }
+
+                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, maxDate))
+                {
+                    var minuti = justification.DaysHours[day.Day];
+                    string valueToPrint = FromTotalMinutesToFormattedType((int)minuti.Item1);
                     
                     RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
@@ -510,7 +533,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     negativeDays = negativeDays + justification.DaysHours.First().Key;
                 }
 
-                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                DateTime maxDate = endMonth;
+
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
+                {
+                    if (ExportDate.Month == DateTime.Now.Month)
+                    {
+                        maxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                    }
+                }
+
+                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, maxDate))
                 {
                     if (negativeDays < 0)
                     {
@@ -615,9 +648,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     negativeDays = negativeDays + justification.DaysHours.First().Key;
                 }
 
+                DateTime maxDate = endMonth;
+
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
+                {
+                    if (ExportDate.Month == DateTime.Now.Month)
+                    {
+                        maxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                    }
+                }
+
                 if (justification.Justification == "RIPOSI")
                 {
-                    foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                    foreach (var day in CommonService.GetDatesFromPeriod(startMonth, maxDate))
                     {
                         if (negativeDays < 0)
                         {
@@ -684,7 +727,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 else if (justification.Justification == "Totale")
                 {
-                    foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                    foreach (var day in CommonService.GetDatesFromPeriod(startMonth, maxDate))
                     {
                         if (negativeDays < 0)
                         {
@@ -748,7 +791,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 else
                 {
-                    foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                    foreach (var day in CommonService.GetDatesFromPeriod(startMonth, maxDate))
                     {
                         if (negativeDays < 0)
                         {
@@ -841,7 +884,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                 CellInsertValue(worksheetIndex, 1, rowIndex, justificationDesc, ExcelInsertTypeEnum.Content);
 
-                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, endMonth))
+                DateTime maxDate = endMonth;
+
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PartialTimesheet) == 1)
+                {
+                    if (ExportDate.Month == DateTime.Now.Month)
+                    {
+                        maxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+                    }
+                }
+
+                foreach (var day in CommonService.GetDatesFromPeriod(startMonth, maxDate))
                 {
                     var baseDuration = (double)justification["Day" + day.Day.ToString("00")];
                     var timeDuration = TimeSpan.FromHours(baseDuration);
