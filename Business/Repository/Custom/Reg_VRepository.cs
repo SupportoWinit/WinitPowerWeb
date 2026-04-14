@@ -1089,7 +1089,7 @@ namespace Business.Repository.Custom
                                                                         // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
                                                                         if (delayMorningTollerance != null && currentCant.Importo4 == null && currentCol.Trattenuta_Vitto_Col == null)
                                                                         {
-                                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
+                                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
                                                                                 currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
                                                                                     currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
                                                                                     currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
@@ -6779,7 +6779,7 @@ namespace Business.Repository.Custom
                                                     int minuti = 0;
                                                     if (cantiereU.First().Note_Can == "1.5" || cantiereE.First().Note_Can == "1.5")
                                                     {
-                                                        minuti = (int)routeResult.TravelDistance;
+                                                        minuti = (int)result.DurataMinuti;
                                                         minuti = (int)(minuti * 1.5);
                                                         distRow = new Tab_Dist()
                                                         {
@@ -6787,12 +6787,12 @@ namespace Business.Repository.Custom
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
                                                             KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
+                                                            Minuti_Tab_Dist = minuti,
                                                         };
                                                     }
                                                     else if (cantiereU.First().Note_Can == "2" || cantiereE.First().Note_Can == "2")
                                                     {
-                                                        minuti = (int)routeResult.TravelDistance;
+                                                        minuti = (int)result.DurataMinuti;
                                                         minuti = (int)(minuti * 2);
                                                         distRow = new Tab_Dist()
                                                         {
@@ -6800,18 +6800,18 @@ namespace Business.Repository.Custom
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
                                                             KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
+                                                            Minuti_Tab_Dist = minuti,
                                                         };
                                                     }
                                                     else {
-                                                        minuti = (int)routeResult.TravelDistance;
+                                                        minuti = (int)result.DurataMinuti;
                                                         distRow = new Tab_Dist()
                                                         {
                                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
                                                             KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
+                                                            Minuti_Tab_Dist = minuti,
                                                         };
                                                     }
                                                 }
@@ -8476,14 +8476,16 @@ namespace Business.Repository.Custom
         */
         public Boolean CheckAlreadyPresent(Reg_V entity)
         {
-            // cerca nel db una Reg_V con Col_Id, Cant_ID e Data_Ora_Fis_E uguali alla Reg_V in questione
-            Reg_V isPresent = Find(regV => regV.Col_Id == entity.Col_Id && regV.Cant_Id == entity.Cant_Id && regV.Data_Ora_Fis_E == entity.Data_Ora_Fis_E).ElementAtOrDefault(0);
-
-            if (isPresent != null)
+            if (entity.Registrazione_Tipo_Reg == 0) 
             {
-                return true;
-            }
+                // cerca nel db una Reg_V con Col_Id, Cant_ID e Data_Ora_Fis_E uguali alla Reg_V in questione
+                Reg_V isPresent = Find(regV => regV.Col_Id == entity.Col_Id && regV.Cant_Id == entity.Cant_Id && regV.Data_Ora_Fis_E == entity.Data_Ora_Fis_E).ElementAtOrDefault(0);
 
+                if (isPresent != null)
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -9760,7 +9762,6 @@ namespace Business.Repository.Custom
                                                                 tmpOre = tmpOre - 1;
                                                             }
                                                         }
-
                                                     }
                                                     // inizializzazione della riga rapportino
                                                     Business.XmlExportsData.Scs.Movimento newRow = new Business.XmlExportsData.Scs.Movimento();

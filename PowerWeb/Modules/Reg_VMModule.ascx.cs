@@ -944,8 +944,17 @@ namespace PowerWeb.Modules
                         }
                     }
                 }
+                int idRichiestaFerie = RepoManager.Tab_DecodRepo.GetAllQueryable(d => d.Nome_Tab == "MOTIVAZIONI" && d.Decodifica_Tab == "Richiesta Ferie").Select(d => d.Tab_Decod_Id).FirstOrDefault();
+                int idRichiestaPermesso = RepoManager.Tab_DecodRepo.GetAllQueryable(d => d.Nome_Tab == "MOTIVAZIONI" && d.Decodifica_Tab == "Richiesta Permesso").Select(d => d.Tab_Decod_Id).FirstOrDefault();
+
                 if (regsTurnoCompleto.Count > 0)
-                    returnRegs = regsTurnoCompleto;    
+                    returnRegs = regsTurnoCompleto;
+
+                if (idRichiestaFerie != default)
+                    returnRegs = returnRegs.Where(r => r.Motivazione_Reg_Id != idRichiestaFerie).ToList();
+
+                if (idRichiestaPermesso != default)
+                    returnRegs = returnRegs.Where(r => r.Motivazione_Reg_Id != idRichiestaPermesso).ToList();
 
                 e.QueryableSource = returnRegs.AsQueryable();
             }
@@ -1631,10 +1640,10 @@ namespace PowerWeb.Modules
                         //se il notturno è abilitato
                         if (nocturneEnabled)
                             // al momento non si visualizzano nella griglia di edit multiplo le registrazioni rettifica, di tipo durata e di arrotondamento per durata
-                            EditRegVs = RepoManager.Reg_VRepo.Find(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration && regv.Col_Id == currentReg.Col_Id && (regv.Data_Ora_Fis_E >= from && regv.Data_Ora_Fis_E < to) && (regv.Data_Ora_Fis_U == null || regv.Data_Ora_Fis_U < to), true).ToList();
+                            EditRegVs = RepoManager.Reg_VRepo.Find(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet && /*regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration && */regv.Col_Id == currentReg.Col_Id && (regv.Data_Ora_Fis_E >= from && regv.Data_Ora_Fis_E < to) && (regv.Data_Ora_Fis_U == null || regv.Data_Ora_Fis_U < to), true).ToList();
                         else
                             // al momento non si visualizzano nella griglia di edit multiplo le registrazioni rettifica, di tipo durata e di arrotondamento per durata
-                            EditRegVs = RepoManager.Reg_VRepo.Find(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration && regv.Col_Id == currentReg.Col_Id && regv.Data_Reg >= from && regv.Data_Reg < to, true).ToList();
+                            EditRegVs = RepoManager.Reg_VRepo.Find(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.RettTimesheet && /*regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Duration && */regv.Col_Id == currentReg.Col_Id && regv.Data_Reg >= from && regv.Data_Reg < to, true).ToList();
 
                         //Escludo le attività dalle timbrature mostrate premendo la matita con la M
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowActivityInModifyRegs) == 1) 

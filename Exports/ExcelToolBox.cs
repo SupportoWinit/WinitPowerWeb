@@ -2438,6 +2438,11 @@ namespace Exports
         {
             return ((minutes / 60.0) * 100).ToString("00");
         }
+
+        protected bool GetCentHours() 
+        {
+            return CentHours;
+        }
         #endregion
 
         #endregion

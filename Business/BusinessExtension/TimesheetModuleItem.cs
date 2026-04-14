@@ -4466,7 +4466,11 @@ namespace Business.BusinessExtension
                                     nightReg.Durata_Fis = nightDuration;
                                     nightReg.Data_Reg = reg.Data_Reg;
                                     nightRegs.Add(nightReg);
-                                    indice++;
+
+                                    if (reg.Durata_Fis % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                    {
+                                        indice++;
+                                    }  
                                 }
                                 else if (reg.Data_Ora_Fis_E < morning && reg.Data_Ora_Fis_U.Value > morning)
                                 {
@@ -8079,7 +8083,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
                                     col,
                                     isDecimalHours,
-                                    justification,
+                                    "malattia: " + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -8091,7 +8095,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
                                     isDecimalHours,
                                     justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
-                                    justification,
+                                    "malattia: " + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -8372,41 +8376,47 @@ namespace Business.BusinessExtension
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use)
+            {
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                {
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
+            }
+            else 
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
             }
-            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
-            {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
-            }
-            else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
-            {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
-                }
-                else
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-                }
 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
             }
-
-            TimesheetModuleItem colTotal = null;
 
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
             }
+
+            TimesheetModuleItem colTotal = null;
 
             if (colTotal == null)
             {
@@ -8773,7 +8783,7 @@ namespace Business.BusinessExtension
                 {
                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) == 1)
                     {
-                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null).ToList(), just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                        justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, baseColRegVs.Where(reg => reg.Motivazione_Reg_Id == null && reg.Registrazione_Tipo_Reg != 4).ToList(), just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
                     }
                     else 
                     {
@@ -8869,7 +8879,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
                                     col,
                                     isDecimalHours,
-                                    justification,
+                                    "malattia: " + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -8881,7 +8891,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
                                     isDecimalHours,
                                     justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
-                                    justification,
+                                    "malattia: " + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -9078,38 +9088,38 @@ namespace Business.BusinessExtension
             #endregion
 
             #region ARROTONDAMENTI per DURATA
-            //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) != 1)
-            //{
-            //    List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
-            //    if (rounding.Any())
-            //    {
-            //        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
-            //        {
-            //            // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-            //            if (isByOtherEntity)
-            //            {
-            //                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
-            //            }
-            //            else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-            //            {
-            //                justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-            //            if (isByOtherEntity)
-            //            {
-            //                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
-            //            }
-            //            else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
-            //            {
-            //                justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
-            //            }
-            //        }
-            //        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
-            //    }
-            //}
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ShowDurationRoundingTimesheet) != 1)
+            {
+                List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
+                if (rounding.Any())
+                {
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 0)
+                    {
+                        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                        if (isByOtherEntity)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                        }
+                        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                        {
+                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_ARROT_DURATA), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                        }
+                    }
+                    else
+                    {
+                        // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                        if (isByOtherEntity)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(rounding, col, isDecimalHours, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, showWeeklyTotal, usaFisiche: false));
+                        }
+                        else // se è richiesta la divisione per cantiere allora si provvede a creare un timesheet per ogni cantiere previsto
+                        {
+                            justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, rounding, BusinessService.GetLocalizedString(PowerWebResources.LBL_PAUSA_PRANZO), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal, usaFisiche: false));
+                        }
+                    }
+                    // se è prevista la divisione per cantiere, allora si procede a separare per questo dato ulteriormente le ore, altrimenti tutto finisce in unico calderone
+                }
+            }
             #endregion
 
             #region RETTIFICHE
@@ -9152,38 +9162,48 @@ namespace Business.BusinessExtension
             #region TOTALE
             //Filtra i cartellini su cui calcolare il totale
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
-
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use) 
+            { 
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                { 
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
+            }
+            else
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Arrotondamento per durata").ToList();
             }
-            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
-            {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa" || c.Justification == "Arrotondamento per durata").ToList();
-            }
-            else if(customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) {
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0) 
+            { 
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
-            }else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) {
-                if(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
-                }
-                else
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-                }
-                
-            }else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0) {
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0) 
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+            {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
             }
 
-            TimesheetModuleItem colTotal = null;
-
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1) 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
             }
+
+            TimesheetModuleItem colTotal = null;
 
             if (colTotal == null) {
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CountEccedenza) != 1)
@@ -9852,33 +9872,43 @@ namespace Business.BusinessExtension
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use)
+            {
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                {
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
+            }
+            else
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
             }
-            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
-            {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
-            }
-            else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
-            {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
-                }
-                else
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-                }
 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
             }
 
             TimesheetModuleItem colTotal = null;
@@ -10474,25 +10504,44 @@ namespace Business.BusinessExtension
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use)
             {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                {
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
             }
-            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
+            else
             {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
             }
-            else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
             }
 
             TimesheetModuleItem colTotal = null;
@@ -12334,7 +12383,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
                                     col,
                                     isDecimalHours,
-                                    justification,
+                                    "malattia" + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -12346,7 +12395,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
                                     isDecimalHours,
                                     justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
-                                    justification,
+                                    "malattia" + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -12627,33 +12676,43 @@ namespace Business.BusinessExtension
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use)
+            {
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                {
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
+            }
+            else
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
             }
-            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
-            {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
-            }
-            else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
-            {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
-                }
-                else
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-                }
 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
             }
 
             TimesheetModuleItem colTotal = null;
@@ -13057,7 +13116,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
                                     col,
                                     isDecimalHours,
-                                    justification,
+                                    "malattia" + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -13069,7 +13128,7 @@ namespace Business.BusinessExtension
                                 justificationCartellini.Add(GenerateNewRegTimesheet(col.Col_Id,
                                     isDecimalHours,
                                     justificationRegVs.Where(regv => regv.Note_Reg == justification).ToList(),
-                                    justification,
+                                    "malattia" + justification,
                                     minDate,
                                     maxDate,
                                     ++tsOrder,
@@ -13330,33 +13389,43 @@ namespace Business.BusinessExtension
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
             int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use)
+            {
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                {
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
+            }
+            else
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
             }
-            else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
-            {
-                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
-            }
-            else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
-            {
-                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa" && c.Justification != "Ore Viaggi").ToList();
-                }
-                else
-                {
-                    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-                }
 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
             }
-            else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
             {
                 cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
             }
 
             TimesheetModuleItem colTotal = null;

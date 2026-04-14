@@ -683,9 +683,22 @@ namespace Business.Repository.Custom
         {
             try
             {
+                var ecsbuilder = new EntityConnectionStringBuilder
+                {
+                    Provider = "System.Data.SqlClient",
+                    ProviderConnectionString = PowerWebConfig.ConnectionString,
+                    Metadata = string.Format(@"res://*/{0}.csdl|res://*/{0}.ssdl|res://*/{0}.msl", "PowerWebModel")
+                };
+
+                using (var context = new PowerWebEntities(ecsbuilder.ToString()))
+                {
+                    _log.InfoFormat("Impostazione a true del semaforo");
+                    context.Param.First().Indice_Timbrature_GeoBadge = ParametersRow.Indice_Timbrature_GeoBadge = index;
+                    context.SaveChanges();
+                }
                 var paramRow = DbSet.First();
                 paramRow.Indice_Timbrature_GeoBadge = ParametersRow.Indice_Timbrature_GeoBadge = index;
-                SaveChanges();
+                //SaveChanges();
             }
             catch (Exception ex)
             {
@@ -697,9 +710,22 @@ namespace Business.Repository.Custom
         {
             try
             {
+                var ecsbuilder = new EntityConnectionStringBuilder
+                {
+                    Provider = "System.Data.SqlClient",
+                    ProviderConnectionString = PowerWebConfig.ConnectionString,
+                    Metadata = string.Format(@"res://*/{0}.csdl|res://*/{0}.ssdl|res://*/{0}.msl", "PowerWebModel")
+                };
+
+                using (var context = new PowerWebEntities(ecsbuilder.ToString()))
+                {
+                    _log.InfoFormat("Impostazione a true del semaforo");
+                    context.Param.First().Indice_Timbrature_FlutterApp = ParametersRow.Indice_Timbrature_FlutterApp = index;
+                    context.SaveChanges();
+                }
                 var paramRow = DbSet.First();
                 paramRow.Indice_Timbrature_FlutterApp = ParametersRow.Indice_Timbrature_FlutterApp = index;
-                SaveChanges();
+                //SaveChanges();
             }
             catch (Exception ex)
             {

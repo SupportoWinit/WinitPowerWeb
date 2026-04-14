@@ -6,6 +6,7 @@ using Common;
 using Data;
 using Domain;
 using log4net;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -263,6 +264,7 @@ namespace Business.Repository.Custom
         {
 
             Dictionary<string, string> result = new Dictionary<string, string>();
+            bool codiceCommessaInserted = true;
             //Serve x Rileggere i Dati ATTUALI dal DB per fare i controlli allineati alle ultima Modifiche fatte sul DB
             if (isResetSession)
                 ResetSession();
@@ -291,10 +293,49 @@ namespace Business.Repository.Custom
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Cantiere),
                           BusinessService.GetLocalizedString(PowerWebResources.ERR_ULTIMO_CANTIERE_NON_NUMERICO, PowerWebResources.FLD_CODICE_CANTIERE));
                 }
+                //Faccio tra i primi controlli quello del codice commessa così da non aver problemi con la generazione automatica del codice cantiere
+                #region Codice Commessa Obbligatorio
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1)
+                {
+                    if (entity.Codice_Commessa_Can == null)
+                    {
+                        result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Interv_Can),
+                            "Codice Commessa Obbligatorio");
+                        codiceCommessaInserted = false;
+                    }
+                }
+                #endregion
                 // viene controllata l'obbligatorietà del codice cantiere solamente se non è richiesta la numerazione automatica
                 if (String.IsNullOrEmpty(entity.Codice_Cantiere) && !RepoManager.ParamRepo.ParametersRow.Attiva_Num_Aut_Can)
-                    result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Cantiere),
-                      BusinessService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_E_OBBLIGATORIO, PowerWebResources.FLD_CODICE_CANTIERE));
+                {
+                    #region Codice Cantiere Automatico
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) == 1)
+                    {
+                        //Nel caso bisogni autogenerare il codice cantiere controllo che siano inseriti i dati necessari e che non sia un Hotel
+                        if (entity.Tipo_Interv_Can != null && entity.Cli_Id != null && codiceCommessaInserted)
+                        {
+                            //Recupero l'attività e la sotto attività per creare il codice automatico
+                            Tab_Decod sottoAtt = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == entity.Tipo_Interv_Can);
+                            Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "ATTIVITA" && t.Decodifica_Tab == sottoAtt.Campo1_Tab);
+                            if (sottoAtt == null)
+                            {
+                                result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Cantiere),
+                                    "Impossibile generare il codice cantiere in maniera automatica. Controllare che l'attività sia codificata correttamente");
+                            }
+                        }
+                        else
+                        {
+                            result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Cantiere), 
+                                "Per generare il codice cantiere in maniera automatica è necessario inserire cliente e tipo intervento");
+                        }
+                    }
+                    #endregion
+                    else
+                    {
+                        result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Cantiere),
+                            BusinessService.GetLocalizedString(PowerWebResources.ERR_CAMPO_X_E_OBBLIGATORIO, PowerWebResources.FLD_CODICE_CANTIERE));
+                    }
+                }
                 else
                 {
                     entity.Codice_Cantiere = CommonService.AggiungiSpaziASinistraSeStringaNumerica(entity.Codice_Cantiere, 20);
@@ -837,12 +878,15 @@ namespace Business.Repository.Custom
                         result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Cantiere_Can),
                           BusinessService.GetLocalizedString(PowerWebResources.ERR_VALORE_CAMPO_X_NON_PRESENTE_IN_TABELLA_DECODIFICHE,
                           PowerWebResources.FLD_TIPO_CANTIERE_CAN));
-                if (CommonService.Nz(entity.Tipo_Interv_Can, "") != "")
-                    if (Tab_Decods.SingleOrDefault(x => x.Gruppo_Tab == TabDecodGroupTypeEnum.DECOD_TAB.ToString()
-                    && x.Nome_Tab == TabDecodNameEnum.TIPO_INTERVENTO.ToString() && x.Chiave_Tab == entity.Tipo_Interv_Can) == null)
-                        result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Interv_Can),
-                          BusinessService.GetLocalizedString(PowerWebResources.ERR_VALORE_CAMPO_X_NON_PRESENTE_IN_TABELLA_DECODIFICHE,
-                          PowerWebResources.FLD_TIPO_INTERV_CAN));
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) != 1) 
+                {
+                    if (CommonService.Nz(entity.Tipo_Interv_Can, "") != "")
+                        if (Tab_Decods.SingleOrDefault(x => x.Gruppo_Tab == TabDecodGroupTypeEnum.DECOD_TAB.ToString()
+                        && x.Nome_Tab == TabDecodNameEnum.TIPO_INTERVENTO.ToString() && x.Chiave_Tab == entity.Tipo_Interv_Can) == null)
+                            result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Interv_Can),
+                              BusinessService.GetLocalizedString(PowerWebResources.ERR_VALORE_CAMPO_X_NON_PRESENTE_IN_TABELLA_DECODIFICHE,
+                              PowerWebResources.FLD_TIPO_INTERV_CAN));
+                }
                 if (CommonService.Nz(entity.TipoNotturno_Can, 0) != 0)
                     if (Tab_Decods.SingleOrDefault(x => x.Gruppo_Tab == TabDecodGroupTypeEnum.DECOD_SYS.ToString()
                     && x.Nome_Tab == TabDecodNameEnum.TIPO_NOTTURNO.ToString() && x.Chiave_Tab == entity.TipoNotturno_Can.ToString()) == null)
@@ -917,6 +961,25 @@ namespace Business.Repository.Custom
                 //
                 //6) Scrittura del Record di LOG
                 //
+
+                #region Tipo Intervento Obbligatorio
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TipoInterventoObbligatorio) == 1)
+                {
+                    _log.Info("Controllo il tipo intervento");
+                    if (entity.Codice_Commessa_Can != null)
+                    {
+                        if (entity.Codice_Commessa_Can != "Hotel")
+                        {
+                            if (entity.Tipo_Interv_Can == null)
+                            {
+                                result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Interv_Can),
+                                "Tipo Intervento obbligatorio per i cantieri non Hotel");
+                            }
+                        }
+                    }
+                }
+                #endregion
+
                 WriteCheckLog(entity, result, Log);
             }
             catch (Exception ex)

@@ -21,6 +21,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace PowerWeb.Modules
 {
@@ -396,6 +397,46 @@ namespace PowerWeb.Modules
             }
             #endregion
 
+            #region Codice Cantiere Automatico
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) == 1)
+            {
+                if (initCant.Tipo_Interv_Can != null && initCant.Cli_Id != null)
+                {
+                    string[] split = initCant.Descrizione_Can.Split('-');
+                    Tab_Decod sottoAtt = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == initCant.Tipo_Interv_Can);
+                    Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "ATTIVITA" && t.Decodifica_Tab == sottoAtt.Campo1_Tab);
+                    if (sottoAtt != null)
+                    {
+                        string[] codiceSottoAtt = sottoAtt.Chiave_Tab.Split('-');
+                        Cli cliente = RepoManager.CliRepo.FirstOrDefault(c => c.Cli_Id == initCant.Cli_Id);
+                        string codiceCantiere = cliente.Codice_Cliente + "-" + att.Chiave_Tab + "-" + codiceSottoAtt[1];
+                        string tmpCos = codiceCantiere.Replace(" ", "");
+                        codiceCantiere = CommonService.CompletaASinistra(codiceCantiere.Replace(" ", ""), 20) + "_001";
+                        List<Cant> exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                        if (exist.Count > 0) 
+                        { 
+                            bool newCant = false;
+                            int endCod = 2;
+                            while (!newCant)
+                            {
+                                codiceCantiere = CommonService.CompletaASinistra(tmpCos.Replace(" ", ""), 20) + "_00" + endCod;
+                                exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                                if (exist.Count == 0)
+                                {
+                                    newCant = true;
+                                }
+                                else
+                                {
+                                    endCod++;
+                                }
+                            }
+                        }
+                        initCant.Codice_Cantiere = codiceCantiere;
+                    }
+                }
+            }
+            #endregion
+
             if (RepoManager.ParamRepo.ParametersRow.Attiva_Num_Aut_Can)
             {
                 var codCantMax = RepoManager.CantRepo.DbSet.Any() ? RepoManager.CantRepo.Max(c => c.Codice_Cantiere, true) : "0";
@@ -404,36 +445,6 @@ namespace PowerWeb.Modules
                 codCantMaxNum = codCantMaxNum + 1;
                 initCant.Codice_Cantiere = CommonService.AggiungiSpaziASinistraSeStringaNumerica(codCantMaxNum.ToString(), 20);
             }
-
-            #region Codice Commessa Obbligatorio
-            var codiceCommessaPropertyName = CommonService.GetPropertyName(() => _cantStub.Codice_Commessa_Can);
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1)
-            {
-                if (initCant.Codice_Commessa_Can == null)
-                {
-                    insert = false;
-                    gvCant.JSProperties["cpErrorMessage"] = "Rilevato cantiere senza codice commessa";
-                }
-            }
-            #endregion
-
-            #region Tipo Intervento Obbligatorio
-            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TipoInterventoObbligatorio) == 1 && insert) 
-            {
-                _log.Info("Controllo il tipo intervento");
-                if (initCant.Codice_Commessa_Can != null) 
-                {
-                    if (initCant.Codice_Commessa_Can != "Hotel") 
-                    {
-                        if (initCant.Tipo_Interv_Can == null) 
-                        { 
-                            insert = false;
-                            gvCant.JSProperties["cpErrorMessage"] = "Rilevato cantiere non hotel senza Tipo Intervento";
-                        }
-                    }
-                }
-            }
-            #endregion
 
             if (insert)
             {
@@ -444,40 +455,16 @@ namespace PowerWeb.Modules
                 {
                     string confronto = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ConfermaInserimentoCantiere, "controllo");
                     bool sendMail = false;
-                    if (confronto != null)
+                    if (initCant.Tipo_Interv_Can != null)
                     {
-                        if (confronto.Contains(';'))
+                        string interventoValue = initCant.Tipo_Interv_Can;
+                        Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == interventoValue && td.Nome_Tab == "TIPO_INTERVENTO");
+                        if (tIntervento != null) 
                         {
-                            var confrontoSplit = confronto.Split(';');
-                            foreach (var item in confrontoSplit)
-                            {
-                                Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == initCant.Tipo_Interv_Can && td.Nome_Tab == "TIPO_INTERVENTO");
-                                if (tIntervento != null)
-                                {
-                                    if (item == tIntervento.Decodifica_Tab)
-                                    {
-                                        sendMail = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        else 
-                        {
-                            if (initCant.Tipo_Interv_Can != null)
-                            {
-                                string interventoValue = initCant.Tipo_Interv_Can;
-                                Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == interventoValue && td.Nome_Tab == "TIPO_INTERVENTO");
-                                if (tIntervento != null) 
-                                {
-                                    if (confronto == tIntervento.Decodifica_Tab) 
-                                    {
-                                        sendMail = true;
-                                    }
-                                }
-                            }
+                           sendMail = true;
                         }
                     }
+                    
                     if (sendMail)
                     {
                         inviaMailConferma(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ConfermaInserimentoCantiere, "email"), initCant);
@@ -526,9 +513,16 @@ namespace PowerWeb.Modules
             string mailBody = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; \">",
                    errorMessage = "";
 
-            DateTime today = DateTime.Now;
-            mailBody += "<p>Il giorno <b>" + today.ToString("dddd d MMMM yyyy") + "</b> è stato inserito il seguente cantiere " + cantiere.Codice_Cantiere + " "+ cantiere.Descrizione_Can + "</p>";
+            string interventoValue = cantiere.Tipo_Interv_Can;
+            Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == interventoValue && td.Nome_Tab == "TIPO_INTERVENTO");
 
+            DateTime today = DateTime.Now;
+            mailBody += "<p>Il giorno <b>" + today.ToString("dddd d MMMM yyyy") + "</b> è stato inserito il seguente cantiere :</p>";
+            mailBody += "<p>";
+            mailBody += "<b>Cantiere:</b> " + cantiere.Codice_Cantiere + " " + cantiere.Descrizione_Can + "<br/>";
+            mailBody += "<b>Attività:</b> " + tIntervento.Campo1_Tab + "<br/>";
+            mailBody += "<b>Sotto Attività:</b> " + tIntervento.Decodifica_Tab;
+            mailBody += "</p>";
             mailBody += "</div>";
             //Invia le mail
             errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Inserimento cantiere " + cantiere.Codice_Cantiere, mailBody, "newsletter@winit.it", "PowerWeb - Inserimento cantiere", new string[] { });
