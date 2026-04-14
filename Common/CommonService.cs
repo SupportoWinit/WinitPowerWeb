@@ -560,6 +560,70 @@ namespace Common
 
         #region DateTime Utility
 
+        /// <summary>
+        /// Metodo per calcolare se, dato un giorno fornito, è festività nazionale secondo standard Italiano, ritorna un bool con il risultato
+        /// </summary>
+        /// <param name="referenceDay">Giorno da analizzare per stabilire se festività o meno</param>
+        /// <returns>Bool con true= giorno festivo, false= non festivo</returns>
+        public static bool IsFestivitaNazionale(DateTime referenceDay)
+        {
+            referenceDay = referenceDay.Date;
+
+            //Viene prelevato il giorno di Pasqua e Pasquetta
+            var easterSunday = GetDomenicaPasquaByYear(referenceDay.Year);
+            var easterMonday = easterSunday.AddDays(1);
+
+            //Se il giorno fornito è pasqua o pasquetta viene ritornato già true
+            if (referenceDay == easterSunday || referenceDay == easterMonday)
+                return true;
+
+            //controllo se festività fisse
+            switch (referenceDay.ToString("MM-dd"))
+            {
+                case "01-01":   //Capodanno
+                case "01-06":   //Eppifania
+                case "04-25":   //Festa della Liberazione (Comunisti bastardi)
+                case "05-01":   //Festa dei Lavoratori
+                case "06-02":   //Festa della Repubblica
+                case "08-15":   //Ferragosto
+                case "11-01":   //Tutti i Santi
+                case "12-08":   //Immacolata Concezione
+                case "12-25":   //Natale
+                case "12-26":   //Santo Stefano
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Metodo per ottenere la Domenica di Pasqua in base all'anno fornito secondo il calcolo Gregoriano
+        /// </summary>
+        /// <param name="anno">Anno di cui calcolare la domenica di pasqua</param>
+        /// <returns>Data contenente la domenica di Pasqua</returns>
+
+        public static DateTime GetDomenicaPasquaByYear(int anno)
+        {
+            //calcolo Pasqua da calendario Gregoriano
+            int a = anno % 19;
+            int b = anno / 100;
+            int c = anno % 100;
+            int d = b / 4;
+            int e = b % 4;
+            int f = (b + 8) / 25;
+            int g = (b - f + 1) / 3;
+            int h = (19 * a + b - d - g + 15) % 30;
+            int i = c / 4;
+            int k = c % 4;
+            int l = (32 + 2 * e + 2 * i - h - k) % 7;
+            int m = (a + 11 * h + 22 * l) / 451;
+            int month = (h + l - 7 * m + 114) / 31;
+            int day = ((h + l - 7 * m + 114) % 31) + 1;
+
+            return new DateTime(anno, month, day);
+        }
+
         public static double GetDoubleFromMinutes(int elapsedMinutes, bool isCents = false)
         //restituisce Ore/Minuti in Sessantesimi/Centesimi dal Numero dei Minuti Ricevuti
         //es: 130 IsDecimal=treu --> 2,16    Resituisce il valore Numerico in Centesimi  

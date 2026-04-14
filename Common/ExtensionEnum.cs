@@ -100,6 +100,7 @@ namespace Common
         TimesheetExportZeroValueFormatEnum,
         NoCreateTripOnSameMunicipalityUnderKmEnum,
         RegExportToXmlEnum,
+        CodiceAziendaEnum,
         DoNotCoupleIfDayOddsRegsEnum,
         ReportTitleUsingSavedNameEnum,
         CantEditFormTemplateEnum,
@@ -660,7 +661,8 @@ namespace Common
         None = 0,
         Perfetto = 1,
         Scs = 2,
-        Orlando = 3
+        Orlando = 3,
+        Manalu = 4
     }
 
     /// <summary>
@@ -669,7 +671,8 @@ namespace Common
     public enum ComapanyNameEnum
     {
         Sogedi = 0,
-        Tiseco = 1
+        Tiseco = 1,
+        Manalu = 2
     }
 
 

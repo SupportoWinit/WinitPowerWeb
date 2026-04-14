@@ -210,7 +210,7 @@
         </div>
         <div class="footer">
             Winit S.r.l. - Via Oss Mazzurana, 8 - 38122 Trento (TN)
-        | Tel. (+39)0461260470 Fax. (+39) 0461223035 | E-Mail: <a href="mailto:supporto@win-it.it">supporto@win-it.it</a> | WebSite: <a href="http://www.winit.it"  onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">www.winit.it</a> | <a href="http://winitreservedarea.powerwebcloud.it" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Area Riservata</a> | <a href="http://www.winit.it/wp-content/uploads/2016/09/assistenzaremota.exe" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Scarica Assistenza Remota</a>
+        | Tel. (+39)0461260470 Fax. (+39) 0461223035 | E-Mail: <a href="mailto:supporto@winitsrl.eu">supporto@winitsrl.eu</a> | WebSite: <a href="http://www.winit.it"  onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">www.winit.it</a> | <a href="http://winitreservedarea.powerwebcloud.it" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;">Area Riservata</a> | <a href="https://www.nanosystems.it/public/download/Supremo.exe">Scarica Supremo</a>
         </div>
         <%-- POPUP DI GESTIONE SCHEDULAZIONE --%>
         <dx:ASPxPopupControl ID="pcScheduleJob" runat="server" PopupElementID="btnScheduleJob" AllowDragging="True" ShowCloseButton="True"

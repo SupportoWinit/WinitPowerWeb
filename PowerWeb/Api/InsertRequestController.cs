@@ -285,7 +285,7 @@ namespace PowerWeb.Api
             switch (esito)
             {
                 case 0:
-                    titoloMail = "PowerWeb - Richiesta di ferie insserita correttamente";
+                    titoloMail = "PowerWeb - Richiesta di ferie inserita correttamente";
                     mailBody += "<p>La richiesta di ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono state inserite</p>";
                     break;
                 case 1:

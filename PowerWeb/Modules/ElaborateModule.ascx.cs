@@ -1,4 +1,4 @@
-Ôªøusing Business;
+using Business;
 using Business.ExternalImport;
 using Business.HttpHub.HttpHubs;
 using Business.Repository;
@@ -109,7 +109,7 @@ namespace PowerWeb.Modules
             BtnDeleteTrips.Text = BusinessService.GetLocalizedString(PowerWebResources.LBL_LANCIO_DELETE_VIAGGI);
             BtnDeleteTrips.ClientVisible = RepoManager.ParamRepo.ParametersRow.Abilita_Viaggi;
 
-            // verifico la presenza di file da importare ed aggiorno di conseguenza le propriet√†
+            // verifico la presenza di file da importare ed aggiorno di conseguenza le propriet‡
             CalcolaFilesRegDaImportare();
             // Se ci sono files sospesi, abilita i flag per labels&buttons
             CalcolaFilesSospesi();
@@ -121,12 +121,12 @@ namespace PowerWeb.Modules
             //INizializza le Label della Pagina Video in Lingua  
             LocalizeFormElements();
 
-            //Inizializza la Data Inizio Elaborazione con la Data del 1¬∞ del Mese Precedente
+            //Inizializza la Data Inizio Elaborazione con la Data del 1∞ del Mese Precedente
             deFrom.Date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(-1);
             //Se l'utente connesso NON ha livello WINIT allora NON Mostro i Campi per l'Import TXT da PC LOcale.
             if (PowerWebContext.Current.UserLevel.Funz_Aut < Common.Properties.Settings.Default.Winit_Level)
             {
-                //Se l'Utente NON √® un Utente Winit
+                //Se l'Utente NON Ë un Utente Winit
                 //Nasconde la parte che eprmette l'Import DIRETTO dal PC LOCALE delle Reg da TXT 
                 lblFileDaImportare.Visible = false;
                 uploader.Visible = false;
@@ -160,7 +160,7 @@ namespace PowerWeb.Modules
             }
 
 
-            // se nei parametri √® disabilitato il flag di calcolo viaggi (null o 0)
+            // se nei parametri Ë disabilitato il flag di calcolo viaggi (null o 0)
             // allora si procedella disabilitazione del pulsante
             btnTrips.ClientEnabled = RepoManager.ParamRepo.ParametersRow.Abilita_Viaggi && RepoManager.ParamRepo.ParametersRow.Flag_Ore_Viaggi != null && RepoManager.ParamRepo.ParametersRow.Flag_Ore_Viaggi != (int)FlagTripHoursParamEnum.None;
 
@@ -179,7 +179,7 @@ namespace PowerWeb.Modules
 
         protected void upldImport_FileUploadComplete(object sender, FileUploadCompleteEventArgs e)
         {
-            // NB: Attenzione! Con l'upload de file dell'utente Winit √® importato solamente il file uploadato (no altri file reg, no files di sospese)
+            // NB: Attenzione! Con l'upload de file dell'utente Winit Ë importato solamente il file uploadato (no altri file reg, no files di sospese)
 
             String regSuspendedFile = Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path + Common.Properties.Settings.Default.SuspendedRegsFile);
             String regNewFile = Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path + String.Format(Common.Properties.Settings.Default.RegsBCKFile, DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss")));
@@ -253,8 +253,8 @@ namespace PowerWeb.Modules
         //
         //    if (!RepoManager.ParamRepo.LockElaboration() || !semaphore)
         //    {
-        //        e.Result = "Elaborazione gi√† avviata da un'altra instanza!";
-        //        _log.Warn(String.Format("Funzione di import bloccata per l'utente {0}. Import gi√† avviato da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
+        //        e.Result = "Elaborazione gi‡ avviata da un'altra instanza!";
+        //        _log.Warn(String.Format("Funzione di import bloccata per l'utente {0}. Import gi‡ avviato da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
         //        return;
         //    }
         //
@@ -270,10 +270,10 @@ namespace PowerWeb.Modules
         //    }
         //
         //
-        //    // Inizializzaizone del file che conterr√† le reg sospese
+        //    // Inizializzaizone del file che conterr‡ le reg sospese
         //    string regSuspendedFile = Server.MapPath(Path.Combine(Common.Properties.Settings.Default.Files_Input_Path, String.Format("{0}_{1}.txt", Common.Properties.Settings.Default.SuspendedRegsFile, DateTime.UtcNow.ToString("yyyy-MM-dd_HH-mm-ss"))));
         //
-        //    // per sicurezza √® ricalcolato l'elenco dei file da elaborare e la presenza dei file
+        //    // per sicurezza Ë ricalcolato l'elenco dei file da elaborare e la presenza dei file
         //    CalcolaFilesRegDaImportare();
         //
         //    List<KeyValuePair<String, String>> importErrors = new List<KeyValuePair<string, string>>();
@@ -315,7 +315,7 @@ namespace PowerWeb.Modules
         //    // se si sono verificati degli errori
         //    if (importErrors.First().Key == "Eccezione rilevata") 
         //    {
-        //        e.Result = "Si √® verificato un problema durante il caricamento dei dati.\n Ti invitiamo a riprovare tra qualche minuto,\n Se il problema persiste, contatta il supporto tecnico";
+        //        e.Result = "Si Ë verificato un problema durante il caricamento dei dati.\n Ti invitiamo a riprovare tra qualche minuto,\n Se il problema persiste, contatta il supporto tecnico";
         //    }
         //    else if (importErrors.Count > 0)
         //    {
@@ -350,7 +350,7 @@ namespace PowerWeb.Modules
             catch (Exception ex)
             {
                 _log.ErrorFormat("Errore generale durante l'importazione: {0}", ex.Message);
-                e.Result = "Si √® verificato un problema durante il caricamento dei dati.\n Ti invitiamo a riprovare tra qualche minuto,\n Se il problema persiste, contatta il supporto tecnico";
+                e.Result = "Si Ë verificato un problema durante il caricamento dei dati.\n Ti invitiamo a riprovare tra qualche minuto,\n Se il problema persiste, contatta il supporto tecnico";
             }
             finally
             {
@@ -366,8 +366,8 @@ namespace PowerWeb.Modules
 
             if (!semaphore)
             {
-                errorMessage = "Elaborazione gi√† avviata da un'altra instanza!";
-                _log.Warn($"Funzione di import bloccata per l'utente {PowerWebContext.Current.User.Codice_Utente}. Import gi√† avviato.");
+                errorMessage = "Elaborazione gi‡ avviata da un'altra instanza!";
+                _log.Warn($"Funzione di import bloccata per l'utente {PowerWebContext.Current.User.Codice_Utente}. Import gi‡ avviato.");
                 return false;
             }
 
@@ -380,7 +380,7 @@ namespace PowerWeb.Modules
             // si procede all'elaborazione solamente se il file non esiete
             if (File.Exists(exclusiveAccessFilePath))
             {
-                errorMessage = "Attivit√† schedulata in funzione, riprovare pi√π tardi!";
+                errorMessage = "Attivit‡ schedulata in funzione, riprovare pi˘ tardi!";
                 _log.Warn($"Funzione di import bloccata per l'utente {PowerWebContext.Current.User.Codice_Utente}. API in esecuzione.");
                 return false;
             }
@@ -478,7 +478,7 @@ namespace PowerWeb.Modules
             // Recupero i file con registrazioni sospese
             FileInfo[] files = fileDirectory.GetFiles(suspendedFile);
 
-            // Crea la directory di backup se non esiste gi√†
+            // Crea la directory di backup se non esiste gi‡
             if (!Directory.Exists(targetDir))
             {
                 Directory.CreateDirectory(targetDir);
@@ -487,7 +487,7 @@ namespace PowerWeb.Modules
             // Sposta i file nella directory di backup
             foreach (FileInfo file in files)
             {
-                // Se il file non esiste gi√†, lo sposta; altrimenti lo elimina
+                // Se il file non esiste gi‡, lo sposta; altrimenti lo elimina
                 if (!File.Exists(targetDir + "\\" + file.Name))
                 {
                     file.MoveTo(targetDir + "\\" + file.Name);
@@ -532,8 +532,8 @@ namespace PowerWeb.Modules
 
             if (!semaphore)
             {
-                e.Result = "Elaborazione gi√† avviata da un'altra instanza!";
-                _log.Warn(String.Format("Funzione di elaborazione bloccata per l'utente {0}. Import/elaborazione gi√† avviati da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
+                e.Result = "Elaborazione gi‡ avviata da un'altra instanza!";
+                _log.Warn(String.Format("Funzione di elaborazione bloccata per l'utente {0}. Import/elaborazione gi‡ avviati da un'altra instanza.", PowerWebContext.Current.User.Codice_Utente));
                 return;
             }
 
@@ -546,7 +546,7 @@ namespace PowerWeb.Modules
             // si procede all'elaborazione solamente se il file non esiete
             if (File.Exists(exclusiveAccessFilePath))
             {
-                e.Result = "Attivit√† schedulata in funzione, riprovare pi√π tardi!";
+                e.Result = "Attivit‡ schedulata in funzione, riprovare pi˘ tardi!";
                 _log.Warn(String.Format("Funzione di elaborazione bloccata per l'utente {0}. API in esecuzione.", PowerWebContext.Current.User.Codice_Utente));
                 return;
             }
@@ -599,7 +599,7 @@ namespace PowerWeb.Modules
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Elaborazione registrazioni √® terminata a causa di un eccezione : {0}", ex.Message);
+                _log.ErrorFormat("Elaborazione registrazioni Ë terminata a causa di un eccezione : {0}", ex.Message);
             }
             finally
             {
@@ -632,7 +632,7 @@ namespace PowerWeb.Modules
                     DateTime from = deFrom.Date;
                     if (deTo.Date == DateTime.MinValue)
                         deTo.Date = deFrom.Date;
-                    // la data di destinazione √® il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
+                    // la data di destinazione Ë il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
                     DateTime to = new DateTime(deTo.Date.Year, deTo.Date.Month, deTo.Date.Day, 23, 59, 0);
 
                     if (from != DateTime.MinValue && to != DateTime.MinValue)
@@ -682,7 +682,7 @@ namespace PowerWeb.Modules
                     DateTime from = deFrom.Date;
                     if (deTo.Date == DateTime.MinValue)
                         deTo.Date = deFrom.Date;
-                    // la data di destinazione √® il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
+                    // la data di destinazione Ë il finale (le 23:59 della data indicata), altrimenti nella ricerca si perde un giorno
                     DateTime to = new DateTime(deTo.Date.Year, deTo.Date.Month, deTo.Date.Day, 23, 59, 0);
 
                     if (from != DateTime.MinValue && to != DateTime.MinValue)
@@ -693,8 +693,8 @@ namespace PowerWeb.Modules
                         // aggiornamento delle date con i parmetri del notturno
                         BusinessService.ManageNocturneStartEndDate(ref from, ref to);
 
-                        // l'unit√† minima di elaborazione √® un giorno e quindi se le date/ore in elaborazione sono uguali
-                        // allora l'ora to viene spostato al giorno successivo (a inizio giornata cos√¨ da comprendere solo il giorno
+                        // l'unit‡ minima di elaborazione Ë un giorno e quindi se le date/ore in elaborazione sono uguali
+                        // allora l'ora to viene spostato al giorno successivo (a inizio giornata cosÏ da comprendere solo il giorno
                         // in elaborazione)
                         if (from == to)
                         {
@@ -751,7 +751,7 @@ namespace PowerWeb.Modules
         {
             //  Restituisce quanto caricato nell'ImportDataStatusDictionary dalla Routine di CALCULATE 
             //  StatusKey : Contiene il Nome della Tabella che si sta importando in quel momento                               
-            //  Valore    : Contiene la Percentuale (calcolata in base al N¬∞ di Tabelle da caricare) di Caricamento rispetto al Totale
+            //  Valore    : Contiene la Percentuale (calcolata in base al N∞ di Tabelle da caricare) di Caricamento rispetto al Totale
             if (BusinessService.ElaborateStatusDictionary.ContainsKey(PowerWebContext.Current.User))
             //Se ci sono dati nel DictionaryStatus allora li carica nel Risultato da mostrare a Video
             {
@@ -763,7 +763,7 @@ namespace PowerWeb.Modules
         protected void cPingImportTxt_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
         //  Restituisce quanto caricato nell'ImportDataStatusDictionary dalla Routine di CALCULATE 
         //  StatusKey : Contiene il Nome della Tabella che si sta importando in quel momento                               
-        //  Valore    : Contiene la Percentuale (calcolata in base al N¬∞ di Tabelle da caricare) di Caricamento rispetto al Totale
+        //  Valore    : Contiene la Percentuale (calcolata in base al N∞ di Tabelle da caricare) di Caricamento rispetto al Totale
         {
             if (BusinessService.ImportDataStatusDictionary.ContainsKey(PowerWebContext.Current.User))
             //Se ci sono dati nel DictionaryStatus allora li carica nel Risultato da mostrare a Video
@@ -785,13 +785,13 @@ namespace PowerWeb.Modules
             // inizializzazione della cartella contenene le eventuali registrazioni da importare
             string filesInputFolderName = Server.MapPath(Common.Properties.Settings.Default.Files_Input_Path);
 
-            // Flag passato come riferimento al metodo successivo per valorizzare la propriet√† HasFileToImport
+            // Flag passato come riferimento al metodo successivo per valorizzare la propriet‡ HasFileToImport
             bool hasFileToImport;
             // iniziaizzazione della lista dei file nella cartella di input
             List<string> filesInputNames = BusinessService.CalcolaFilesRegDaImportare(filesInputFolderName, out hasFileToImport);
             HasFilesToImport = hasFileToImport;
 
-            // aggiorno le propriet√† in base a quanto recuperato dalla cartella
+            // aggiorno le propriet‡ in base a quanto recuperato dalla cartella
             if (filesInputNames.Count > 0)
             {
                 HasFilesToImportAndSuspended = true;
@@ -814,7 +814,7 @@ namespace PowerWeb.Modules
             // iniziaizzazione della lista dei file nella cartella di input
             List<string> filesSuspendedNames = BusinessService.CalcolaFilesRegSospese(filesInputFolderName);
 
-            // aggiorno le propriet√† in base a quanto recuperato dalla cartella
+            // aggiorno le propriet‡ in base a quanto recuperato dalla cartella
             if (filesSuspendedNames.Count > 0)
             {
                 HasSuspended = true;
@@ -913,14 +913,44 @@ namespace PowerWeb.Modules
             // calcolo il valore della personalizzazione relativa all'export xml delle registrazioni
             int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RegExportToXmlEnum);
 
-            // se la personalizzazione √® attiva allora si procede con l'elaborazione
+            // se la personalizzazione Ë attiva allora si procede con l'elaborazione
             if (customizationVersion != (int)RegExportToXmlEnum.None)
             {
                 // recupero del periodo di ricerca
                 DateTime from = deFrom.Date;
                 DateTime to = new DateTime(deTo.Date.Year, deTo.Date.Month, deTo.Date.Day, 23, 59, 0);
 
-                // se √® stato correttamente valorizzato il periodo di elaborazione
+                Dictionary<int, int> durataExtraByCol = new Dictionary<int, int>();
+
+                //se Ë Export Xml Manal˘ viene prelevato il periodo fino al lunedÏ antecedente alla data selezionata
+                if (((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Manalu) && from.DayOfWeek != DayOfWeek.Monday)
+                {
+                    //Viene calcolato tutto il periodo prima della data di inizio relativo alla settimana
+                    int diff = (7 + (from.DayOfWeek - DayOfWeek.Monday)) % 7;
+                    DateTime fromExtra = from.AddDays(-diff).Date;
+                    DateTime toExtra = from.AddDays(-1).Date;
+
+                    // Prelioevo delle reg del periodo
+                    var regVsExtraToProcess = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Data_Reg >= fromExtra && regv.Data_Reg <= toExtra & regv.Registrazione_Stato_Reg == (int)RegStateEnum.Ass
+                        && (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Att || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual) && regv.Col_Id != 0);
+                
+                    //Esclusione di tutte le reg senza collaboratore, data o cantiere
+                    List<Reg_V> regExtra = regVsExtraToProcess
+                                            .Where(regv => regv.Col_Id.HasValue && regv.Data_Reg.HasValue && regv.Cant_Id.HasValue)
+                                            .ToList();
+
+                    //Raggruppamento secondo il collaboratore e calcolo del totale per tutto il periodo designato
+                    var groupedRow = regExtra.GroupBy(regv => regv.Col_Id);
+                    foreach(var regColExtra in groupedRow)
+                    {
+                        if (!regColExtra.Any()) continue;
+                        int totalExtra = regColExtra.Sum(regv => regv.Durata_Fig ?? 0);
+                        if (totalExtra > 0) durataExtraByCol.Add(regColExtra.Key.Value, totalExtra);    //popolazione del dictionary secondo idCol, durata
+                    }
+
+                }
+
+                // se Ë stato correttamente valorizzato il periodo di elaborazione
                 if (deFrom.Date != DateTime.MinValue && deTo.Date != DateTime.MinValue && deTo.Date >= deFrom.Date)
                 {
                     // calcolo delle reg_v nel periodo richiesto
@@ -947,6 +977,9 @@ namespace PowerWeb.Modules
                                 break;
                             case RegExportToXmlEnum.Orlando:
                                 outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToOrlando(regVsToProcess, outputPath, to);
+                                break;
+                            case RegExportToXmlEnum.Manalu:
+                                outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToManalu(regVsToProcess, durataExtraByCol,outputPath, to);
                                 break;
 
                         }
@@ -975,6 +1008,10 @@ namespace PowerWeb.Modules
                                     }else if ((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Orlando)
                                     {
                                         response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Orlando", Path.GetFileName(outputFilePath)));
+                                    }
+                                    else if((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Manalu)
+                                    {
+                                        response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Manalu", Path.GetFileName(outputFilePath)));
                                     }
                                     else
                                     {
@@ -1005,7 +1042,7 @@ namespace PowerWeb.Modules
 
                                     Directory.Delete(Path.GetDirectoryName(outputFilePath));
 
-                                    // si segnala la necessit√† della chiusura del pannello di caricamento
+                                    // si segnala la necessit‡ della chiusura del pannello di caricamento
                                     BusinessService.IsToCloseLoadingPanel[PowerWebContext.Current.User] = true;
                                 }
                             }
@@ -1038,13 +1075,13 @@ namespace PowerWeb.Modules
             // calcolo il valore della personalizzazione relativa all'export xml delle registrazioni
             int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RegExportToXmlEnum);
 
-            // se la personalizzazione non √® attiva allora si nascondono gli elementi dell'esportazione xml
+            // se la personalizzazione non Ë attiva allora si nascondono gli elementi dell'esportazione xml
             if (customizationVersion == (int)RegExportToXmlEnum.None)
             {
                 // nascondimento dell'elemento di esportazione xml
                 btnLaunchXmlExport.Visible = false;
             }
-            else // se la personalizzazione √® invece attiva allora si visualizzano gli elementi dell'esportazione xml
+            else // se la personalizzazione Ë invece attiva allora si visualizzano gli elementi dell'esportazione xml
             {
                 btnLaunchXmlExport.Visible = true;
             }
