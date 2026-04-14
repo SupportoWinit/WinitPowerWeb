@@ -2113,6 +2113,173 @@ namespace Business.Repository.Custom
 
                             }
 
+                            if (cantiere == null && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) == 1)     //Obbligatorio cod,desc e che non esista cantiere con lo stesso codice
+                            {
+                                cantiere = RepoManager.CantRepo.Init();
+                                cantiere.Codice_Cantiere = CommonService.AggiungiSpaziASinistraSeStringaNumerica(codice_Can, 20);
+                                cantiere.Descrizione_Can = descrizione_Can;
+
+                                if (filiale != "")
+                                {
+                                    var existFil = RepoManager.FilRepo.FirstOrDefault(f => f.Descrizione_Fil == filiale);
+
+                                    cantiere.Fil = existFil ?? null;
+
+                                }
+
+                                if (comune != "")
+                                {
+                                    var exist = RepoManager.Tab_ComuniRepo.FirstOrDefault(x => x.Luogo_Tab_Comuni == comune);
+                                    cantiere.Luogo_Can = (exist != null) ? splittedLine[columnsNumber["COMUNE"]].Trim() : "";
+                                    cantiere.Cap_Can = (exist != null) ? exist.Cap_Tab_Comuni : "";
+                                    cantiere.Provincia_Can = (exist != null) ? exist.Codice_Prov_Tab_Comuni : "";
+                                }
+
+                                via = splittedLine[columnsNumber["VIA"]].Trim();
+                                cantiere.Tipologia_Can = "CAN";
+                                cantiere.Indirizzo_Can = (via.Length < 50) ? via : via.Substring(0, 49);
+                                cantiere.LatitudineGps_Can = (latit != "") ? Double.Parse(latit) : 0;
+                                cantiere.LongitudineGps_Can = (longi != "") ? Double.Parse(longi) : 0;
+                                cantiere.Note_Can = note;
+
+
+
+                                if (cod_Cliente != "" && descrizione_Cli != "")
+                                {
+                                    try
+                                    {
+                                        var exCli = RepoManager.CliRepo.FirstOrDefault(c => c.Codice_Cliente.Trim() == cod_Cliente.Trim());
+                                        if (exCli == null)
+                                        {
+                                            exCli = cliToInsert.FirstOrDefault(c => c.Codice_Cliente.Trim() == cod_Cliente.Trim());
+                                            if (exCli == null)
+                                            {
+                                                Cli cliente = RepoManager.CliRepo.Init();
+                                                cliente.Codice_Cliente = CommonService.AggiungiSpaziASinistraSeStringaNumerica(cod_Cliente, 10);
+                                                cliente.Cognome_Cli = descrizione_Cli;
+                                                cantiere.Cli = cliente;
+                                                cliToInsert.Add(cliente);
+                                            }
+                                            else
+                                            {
+                                                cantiere.Cli = exCli;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            cantiere.Cli = exCli;
+                                        }
+                                    }
+                                    catch (Exception) { }
+                                }
+
+                                if (fru_matr != "" && (fru_matr.Length == 10 || fru_matr.Length == 5) && data_associazione != null)
+                                {
+                                    Fru currentFru = RepoManager.FruRepo.FirstOrDefault(f => f.Codice_Fru.Trim() == fru_matr);
+                                    Fru_Cant fru_cant = RepoManager.Fru_CantRepo.Init();
+
+                                    if (currentFru != default(Fru))
+                                    {
+                                        //se la fru è valorizzata viene estratto l'Id
+                                        fru_cant.Fru = currentFru;
+                                        fru_cant.Abilitazione_Data_Inizio_Fru_Can = (DateTime)data_associazione;
+                                    }
+                                    else
+                                    {
+                                        Fru newFru = RepoManager.FruRepo.Init();
+
+                                        newFru.DataOraUltimaModifica_Fru = DateTime.Now;
+                                        newFru.N_Serie_Fru = fru_matr;
+                                        newFru.Codice_Fru = CommonService.AggiungiSpaziASinistraSeStringaNumerica(fru_matr, 5);
+                                        fru_cant.Abilitazione_Data_Inizio_Fru_Can = (DateTime)data_associazione;
+
+                                        fru_cant.Fru = newFru;
+                                    }
+
+                                    cantiere.Fru_Cant.Add(fru_cant);
+                                }
+                                if (comune != "" && via != "" && provincia != "" && cap.Length == 5)
+                                {
+                                    string indirizzo = String.Format("{0} {1} {2} {3}", via, cap, comune, provincia);
+                                    Location geocode = BusinessService.GetGeocode(indirizzo);
+                                    if (geocode != null)
+                                    {
+                                        cantiere.LatitudineGps_Can = geocode.Latitudine;
+                                        cantiere.LongitudineGps_Can = geocode.Longitudine;
+                                    }
+                                }
+
+                                if (raggio != "")
+                                {
+                                    if (raggio.Contains(","))
+                                    {
+                                        var tmp = raggio.Split(',');
+                                        raggio = tmp[0];
+                                    }
+                                    short s;
+                                    if (!short.TryParse(raggio, out s))
+                                    {
+                                        s = 0;
+                                    }
+                                    cantiere.RaggioGps_Can = s;
+                                }
+
+                                if (tipoIntervento != "")
+                                {
+                                    Tab_Decod intervento = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Decodifica_Tab == tipoIntervento && td.Nome_Tab == "TIPO_INTERVENTO");
+                                    if (intervento != null)
+                                    {
+                                        cantiere.Tipo_Interv_Can = intervento.Chiave_Tab;
+                                    }
+                                }
+
+                                #region Codice Cantiere Automatico
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) == 1)
+                                {
+                                    if (cantiere.Tipo_Interv_Can != null && cantiere.Cli_Id != null)
+                                    {
+                                        string[] split = cantiere.Descrizione_Can.Split('-');
+                                        Tab_Decod sottoAtt = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can);
+                                        Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "ATTIVITA" && t.Decodifica_Tab == sottoAtt.Campo1_Tab);
+                                        if (sottoAtt != null)
+                                        {
+                                            string[] codiceSottoAtt = sottoAtt.Chiave_Tab.Split('-');
+                                            Cli cliente = RepoManager.CliRepo.FirstOrDefault(c => c.Cli_Id == cantiere.Cli_Id);
+                                            string codiceCantiere = cliente.Codice_Cliente + "-" + att.Chiave_Tab + "-" + codiceSottoAtt[1];
+                                            string tmpCos = codiceCantiere.Replace(" ", "");
+                                            codiceCantiere = tmpCos + "_001";
+                                            codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
+                                            List<Cant> exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                                            if (exist.Count > 0)
+                                            {
+                                                bool newCant = false;
+                                                int endCod = 2;
+                                                while (!newCant)
+                                                {
+                                                    tmpCos = codiceCantiere.Replace(" ", "");
+                                                    string[] cod = tmpCos.Split('_');
+                                                    codiceCantiere = cod[0] + "_00" + endCod;
+                                                    codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
+                                                    exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                                                    if (exist.Count == 0)
+                                                    {
+                                                        newCant = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        endCod++;
+                                                    }
+                                                }
+                                            }
+                                            cantiere.Codice_Cantiere = codiceCantiere;
+                                        }
+                                    }
+                                }
+                                #endregion
+                            }
+
+
+
                             if (cantiere != null) 
                                   cantToInsert.Add(cantiere);
 

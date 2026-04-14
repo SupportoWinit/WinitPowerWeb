@@ -411,15 +411,19 @@ namespace PowerWeb.Modules
                         Cli cliente = RepoManager.CliRepo.FirstOrDefault(c => c.Cli_Id == initCant.Cli_Id);
                         string codiceCantiere = cliente.Codice_Cliente + "-" + att.Chiave_Tab + "-" + codiceSottoAtt[1];
                         string tmpCos = codiceCantiere.Replace(" ", "");
-                        codiceCantiere = CommonService.CompletaASinistra(codiceCantiere.Replace(" ", ""), 20) + "_001";
-                        List<Cant> exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                        codiceCantiere = tmpCos + "_001";
+                        codiceCantiere = CommonService.CompletaASinistra(codiceCantiere,20);
+                        List <Cant> exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
                         if (exist.Count > 0) 
                         { 
                             bool newCant = false;
                             int endCod = 2;
                             while (!newCant)
                             {
-                                codiceCantiere = CommonService.CompletaASinistra(tmpCos.Replace(" ", ""), 20) + "_00" + endCod;
+                                tmpCos = codiceCantiere.Replace(" ", "");
+                                string[] cod = tmpCos.Split('_');
+                                codiceCantiere = cod[0] + "_00" + endCod;
+                                codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
                                 exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
                                 if (exist.Count == 0)
                                 {

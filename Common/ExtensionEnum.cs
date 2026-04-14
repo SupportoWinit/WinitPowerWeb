@@ -229,7 +229,8 @@ namespace Common
         ConfermaInserimentoCantiere,
         TipoInterventoObbligatorio,
         LimitiSoloHotel,
-        AutoCodiceCantiere
+        AutoCodiceCantiere,
+        CalculateIndennità
     }
 
     public enum ClockAppsOperationEnum

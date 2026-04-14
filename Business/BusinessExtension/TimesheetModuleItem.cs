@@ -4631,14 +4631,59 @@ namespace Business.BusinessExtension
                     }
                     else 
                     {
-                        // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                        returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalculateIndennità) == 1) 
+                        {
+                            int indId = RepoManager.Tab_DecodRepo.GetAll().Where(td => td.Chiave_Tab == "IND").Select(td => td.Tab_Decod_Id).FirstOrDefault();
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Motivazione_Reg_Id == indId).ToList(), cantiere.First().Descrizione_Can + " - INDENNITÀ", firstMonthDate, lastMonthDate, timesheetOrder + 1, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                        }
+                        else 
+                        {
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                        }
                     }           
                 }
                 else 
                 {
                     //aggiungo il timesheet specifico del cantiere alla list di ritorno
                     returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                }
+            }
+
+            // ritorno del valore calcolato dal metodo
+            return returnList;
+        }
+
+        private static List<TimesheetModuleItem> GenerateNewRegVTimesheetsByOtherEntity(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, bool usaFisiche = false, List<int> cantList = null)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnList = new List<TimesheetModuleItem>();
+
+            // recupero tutti gli id cliente presenti all'interno della lista passata come parametro
+            var cliIdList = regVsToSplit.Select(regv => regv.Cli_Id).Distinct().ToList();
+            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            {
+                cliIdList = cantList.Cast<int?>().ToList();
+            }
+            // per ogni id cantiere presente nella lista
+            foreach (var listCliId in cliIdList)
+            {
+                // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                var currentCantId = listCliId ?? 0;
+
+                List<Cli> cliente = RepoManager.CliRepo.GetAll().Where(c => c.Cli_Id == currentCantId /*&& c.Tipologia_Can == "ATT"*/).ToList();
+
+                if (cliente.Count() > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
+                {
+                    // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cli_Id == listCliId).ToList(), cliente.First().Cognome_Cli, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche)); 
+                }
+                else
+                {
+                    //aggiungo il timesheet specifico del cantiere alla list di ritorno
+                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cli_Id == listCliId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                 }
             }
 
@@ -10194,7 +10239,15 @@ namespace Business.BusinessExtension
                     }
                     else
                     {
-                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        DateTime exportDate = new DateTime(2026,04,01);
+                        if (minDate < exportDate)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        }
+                        else 
+                        {
+                            justificationCartellini.AddRange(GenerateNewRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        }
                     }
 
                 }
@@ -10842,15 +10895,23 @@ namespace Business.BusinessExtension
                     }
                     else
                     {
-                        List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
-                        if (rounding.Count() > 0)
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalculateIndennità) == 1)
                         {
                             justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
                         }
                         else 
                         {
-                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, workedJust, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                            List<Reg_V> rounding = GetRegVToProcess(RegSearchTypeForTimesheetEnum.DurationRoundingRegs, baseColRegVs);
+                            if (rounding.Count() > 0)
+                            {
+                                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                            }
+                            else
+                            {
+                                justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, workedJust, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                            }
                         }
+                            
                         
                     }
 

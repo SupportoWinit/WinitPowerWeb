@@ -1529,6 +1529,7 @@ namespace Common
         /// <returns></returns>
         public static string sendMail(string toAddress, string mailSubject, string mailBody, string fromAddress, string fromAddressName, string[] attachments)
         {
+            _log.Info("Inizio invio mail");
             try
             {
                 //Prepara il client SMTP tramite Gmail

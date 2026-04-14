@@ -18,6 +18,7 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
             private static readonly string TURNO = "TURNO";
             private static readonly string INFOAGG = "INFOAGG";
             private static readonly string NOTE = "NOTE";
+            private static readonly string MOTIVAZIONE = "MOTIVAZIONE";
 
             private static readonly int MARKER_LATITUDINE = 0;
             private static readonly int MARKER_LONGITUDINE = 1;
@@ -170,6 +171,32 @@ namespace Business.BusinessServices.RegTranslatorService.Helpers
                 , INFOAGG
                 , NOTE
                 , note
+                );
+            // aggiunta della stringa alla lista di scrittura
+            activityLines = line;
+            return activityLines;
+        }
+
+        internal static string CreateMotivazioneGpsLines(string deviceCode, string badgeCode, DateTime regDateTime, string codiceMotivazione)
+        {
+            if (String.IsNullOrEmpty(codiceMotivazione))
+                return "";
+
+            string activityLines = "";
+            // costruzione della stringa da processare
+            string line = string.Format(EXTRA_INFO_STRING_FORMAT
+                , SEPARATOR
+                , deviceCode
+                , "MOTIVAZIONE"
+                , regDateTime.Year
+                , regDateTime.Month.ToString("00")
+                , regDateTime.Day.ToString("00")
+                , regDateTime.Hour.ToString("00")
+                , regDateTime.Minute.ToString("00")
+                , " " //Reg direction per ora vuota
+                , INFOAGG
+                , MOTIVAZIONE
+                , codiceMotivazione
                 );
             // aggiunta della stringa alla lista di scrittura
             activityLines = line;

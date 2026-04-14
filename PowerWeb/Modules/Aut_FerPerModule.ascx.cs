@@ -312,7 +312,25 @@ namespace PowerWeb.Modules
                                 //se non sono consecutive faccio un ulteriore controllo, ovvero se il giorno precedente è un venerdì o sabato
                                 if ((lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday || lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday) && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday)
                                 {
-                                    periodo = periodo + (reg.Data_Reg.Value.DayOfYear - lastRegV.Data_Reg.Value.DayOfYear);
+                                    DateTime dateConf = lastRegV.Data_Reg.Value.AddDays(2);
+                                    if (reg.Data_Reg.Value == dateConf)
+                                    {
+                                        periodo = periodo + (reg.Data_Reg.Value.DayOfYear - lastRegV.Data_Reg.Value.DayOfYear);
+                                    }
+                                    else 
+                                    {
+                                        Reg_V newRegV = tmpRegV;
+                                        string noteReg = "";
+                                        var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                        var dataReg = lastRegV.Data_Reg.Value.ToString().Split(' ');
+                                        noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                        newRegV.Note_Reg = noteReg;
+                                        groupReg.Add(newRegV);
+                                        periodo = 1;
+                                        primoGiorno = reg.Data_Reg.Value;
+                                        tmpRegV = reg;
+                                    }
+                                   
                                 }
                                 else {
                                     Reg_V newRegV = tmpRegV;

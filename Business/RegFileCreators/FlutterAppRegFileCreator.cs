@@ -1117,6 +1117,15 @@ namespace Business.RegFileCreators
                                 );
                             }
                             regsToWrite.Add(regRow);
+                            var motivazioneLine = "";
+                            if (!(fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru)))
+                            {
+                                motivazioneLine = FlutterAppStringFormatter.CreateMotivazioneGpsLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Motivazione);
+                                if (motivazioneLine != "")
+                                {
+                                    regsToWrite.Add(motivazioneLine);
+                                }
+                            }
                             var noteLine = "";
                             if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
                             {

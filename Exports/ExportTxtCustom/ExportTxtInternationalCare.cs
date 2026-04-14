@@ -100,12 +100,13 @@ namespace Exports.ExportTxtCustom
 
 
             foreach (var col in allowedColls)
-            {                
+            {
+                string[] codici = col.Matricola_Col.Split('/');
                 string exportData = "";
-                string codiceAzienda = "028";
+                string codiceAzienda = codici[0];
                 string codiceFiliale = "01";
-                string codLibMatricola = "1";
-                string codiceMatricola = "0003";
+                string codLibMatricola = codici[1];
+                string codiceMatricola = codici[2];
                 string oreOrdinarie = "";
                 string giustificativo1 = "";
                 string oreGiustificativo1 = "";
@@ -266,7 +267,7 @@ namespace Exports.ExportTxtCustom
                                 {
                                     differenza1 = endOfMonth.Day + differenza1;
                                 }
-                                for (int i = 1; i < differenza1; i++)
+                                for (int i = 1; i <= differenza1; i++)
                                 {
                                     oreOrdinarie = oreOrdinarie + "0000;";
                                 }
@@ -310,7 +311,7 @@ namespace Exports.ExportTxtCustom
                         if (dayDictionarys.Last().Key.Value != endOfMonth)
                         {
                             int differenza1 = endOfMonth.Day - dayDictionarys.Last().Key.Value.Day;
-                            for (int i = 0; i <= differenza1; i++)
+                            for (int i = 1; i <= differenza1; i++)
                             {
                                 oreOrdinarie = oreOrdinarie + "0000;";
                             }

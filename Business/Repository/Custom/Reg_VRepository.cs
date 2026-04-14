@@ -6348,9 +6348,9 @@ namespace Business.Repository.Custom
                                         DateTime partenza = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fig_U.Value : lastRegV.Data_Ora_Fis_E;
                                         TimeSpan tripDuration = new TimeSpan(0, 0, 0);
                                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1)
-                                            currentRegV.Data_Ora_Fig_E.Value.Subtract(partenza);
+                                            tripDuration = currentRegV.Data_Ora_Fig_E.Value.Subtract(partenza);
                                         else
-                                            currentRegV.Data_Ora_Fis_E.Subtract(partenza);
+                                            tripDuration = currentRegV.Data_Ora_Fis_E.Subtract(partenza);
 
                                         //se la durata rientra nel range tra durata minima e massima allora vengono create le registrazioni di viaggio
                                         if (tripDuration >= paramMinTripTime && (tripDuration <= paramMaxTripTime || paramMaxTripTime == TimeSpan.Zero))
@@ -6374,9 +6374,9 @@ namespace Business.Repository.Custom
                                     DateTime partenza = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fig_U.Value : lastRegV.Data_Ora_Fis_E;
                                     TimeSpan tripDuration = new TimeSpan(0,0,0);
                                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1)
-                                        currentRegV.Data_Ora_Fig_E.Value.Subtract(partenza);
+                                        tripDuration = currentRegV.Data_Ora_Fig_E.Value.Subtract(partenza);
                                     else
-                                        currentRegV.Data_Ora_Fis_E.Subtract(partenza);
+                                        tripDuration = currentRegV.Data_Ora_Fis_E.Subtract(partenza);
 
                                     //se la durata del viaggio è minore della durata massimo
                                     if (tripDuration <= paramMaxTripTime)

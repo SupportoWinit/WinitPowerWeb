@@ -1,21 +1,22 @@
 ﻿using Business.BusinessExtension;
 using Business.Repository;
 using Common;
+using DevExpress.XtraSpreadsheet.Model;
 using Domain;
+using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using OfficeOpenXml.Style;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OfficeOpenXml;
-using System.IO;
-using static Business.MDBSchema.PowerMDBDataSet;
 using Westwind.Utilities.Extensions;
+using static Business.MDBSchema.PowerMDBDataSet;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -92,11 +93,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     WriteColName(col.Key);
 
-                    WriteColHeader();
-
-                    WriteColTimesheet(col.Value);
-
-                    WriteGrandTotal(col.Value);
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalculateIndennità) == 1)
+                    {
+                        WriteColHeaderIndennita();
+                        WriteColTimesheetIndennita(col.Value);
+                        WriteGrandTotalIndennita(col.Value);
+                    }
+                    else 
+                    {
+                        WriteColHeader();
+                        WriteColTimesheet(col.Value);
+                        WriteGrandTotal(col.Value);
+                    } 
 
                     rowIndex += 2;
 
@@ -291,6 +299,229 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 rowIndex++;
             }
 
+        }
+
+        private void WriteColHeaderIndennita()
+        {
+            var days = Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1));
+
+            RangeSetFontBold(worksheetIndex, columnIndex + 1, rowIndex, days.Count + 4, rowIndex);
+
+            days.ForEach(day =>
+            {
+                string giorno = "";
+                switch (day.DayOfWeek)
+                {
+                    case DayOfWeek.Monday:
+                        giorno = "Lun";
+                        break;
+                    case DayOfWeek.Tuesday:
+                        giorno = "Mar";
+                        break;
+                    case DayOfWeek.Wednesday:
+                        giorno = "Mer";
+                        break;
+                    case DayOfWeek.Thursday:
+                        giorno = "Gio";
+                        break;
+                    case DayOfWeek.Friday:
+                        giorno = "Ven";
+                        break;
+                    case DayOfWeek.Saturday:
+                        giorno = "Sab";
+                        break;
+                    case DayOfWeek.Sunday:
+                        giorno = "Dom";
+                        break;
+                }
+
+                CellInsertValue(worksheetIndex, columnIndex + 2, rowIndex - 1, day.Day, Common.ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, columnIndex + 2, rowIndex - 1, day.Day + 2, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetValueFormat(worksheetIndex, columnIndex + 2, rowIndex - 1, day.Day + 2, rowIndex - 1, "0");
+                RangeSetBackgroundColor(worksheetIndex, columnIndex + 2, rowIndex - 1, day.Day + 2, rowIndex - 1, Color.LightGray, fillStyle);
+
+                CellInsertValue(worksheetIndex, columnIndex + 2, rowIndex, giorno, Common.ExcelInsertTypeEnum.Content);
+                RangeSetBorders(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetValueFormat(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, "0");
+                RangeSetBackgroundColor(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, Color.LightGray, fillStyle);
+                ColumnsSetWidth(worksheetIndex, columnIndex + 2, day.Day + 2, 6.7);
+
+                if (day.DayOfWeek == DayOfWeek.Sunday)
+                    RangeSetFontColor(worksheetIndex, columnIndex + 2, rowIndex, columnIndex + 2, rowIndex, Color.Red);
+
+                columnIndex++;
+            });
+
+            CellInsertValue(worksheetIndex, 2, 6, "CODICE CANTIERE", Common.ExcelInsertTypeEnum.Content);
+            RangeSetWrapText(worksheetIndex, 2, 6, 2, 7, true);
+            RangeSetBorders(worksheetIndex, 2, 6, 2, 7, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, 2, 6, 2, 7, Color.LightGray, fillStyle);
+            ColumnsSetWidth(worksheetIndex, 2, 2, 10);
+            RangeSetTextHorizontalAlignment(worksheetIndex, 2, 6, 2, 6, ExcelHorizontalAlignment.Center);
+            RangeSetTextVerticalAlignment(worksheetIndex, 2, 6, 2, 6, ExcelVerticalAlignment.Center);
+            RowsSetHeight(worksheetIndex, 6, 6, 40);
+
+            CellInsertValue(worksheetIndex, columnIndex + 2, 6, "IND. GUIDA", Common.ExcelInsertTypeEnum.Content);
+            RangeSetWrapText(worksheetIndex, columnIndex + 2, 6, columnIndex + 2, 7, true);
+            RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex + 2, 6, columnIndex + 2, 6, ExcelHorizontalAlignment.Center);
+            RangeSetTextVerticalAlignment(worksheetIndex, columnIndex + 2, 6, columnIndex + 2, 6, ExcelVerticalAlignment.Center);
+            RangeSetBorders(worksheetIndex, columnIndex + 2, 6, columnIndex + 2, 7, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 2, 6, columnIndex + 2, 7, Color.LightGray, fillStyle);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 2, columnIndex + 2, 8);
+
+
+            CellInsertValue(worksheetIndex, columnIndex + 3, rowIndex, "Totale", Common.ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 3, rowIndex, columnIndex + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 3, rowIndex, columnIndex + 3, rowIndex, Color.LightGray, fillStyle);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 3, columnIndex + 3, 8);
+
+
+            CellInsertValue(worksheetIndex, columnIndex + 4, rowIndex, "Tot. Giorni", Common.ExcelInsertTypeEnum.Content);
+            RangeSetBorders(worksheetIndex, columnIndex + 4, rowIndex, columnIndex + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBackgroundColor(worksheetIndex, columnIndex + 4, rowIndex, columnIndex + 4, rowIndex, Color.LightGray, fillStyle);
+            ColumnsSetWidth(worksheetIndex, columnIndex + 4, columnIndex + 4, 10.46);
+            RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 20);
+
+            columnIndex = 1;
+
+            rowIndex++;
+        }
+
+        private void WriteColTimesheetIndennita(Dictionary<string, List<TimesheetModuleItem>> cartellini)
+        {
+            foreach (var cartRow in cartellini["justification"].OrderByDescending(c => c.CantMnemonic)/*.GroupBy(c => c.CantMnemonic + " " + c.CantDesc)*/.ToList())
+            {
+                if (cartRow.Justification.Contains("INDENNITÀ"))
+                {
+                    rowIndex--;
+                    int giorni = 0;
+                    foreach (var day in Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)))
+                    {
+                        var dayNumber = day.Day;
+                        string valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)cartRow.DaysHours[dayNumber].Item1);
+                        if ((int)cartRow.DaysHours[dayNumber].Item1 > 0)
+                        {
+                            giorni++;
+                        }
+                    }
+                    RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, giorni, Common.ExcelInsertTypeEnum.Formula);
+                }
+                else 
+                {
+                    var justificationDec = cartRow.Justification;
+
+                    if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
+                        justificationDec = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDec).Decodifica_Tab;
+
+                    justificationDec = justificationDec.ToUpper();
+
+                    if (justificationDec != "TOTALE")
+                    {
+                        Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == cartRow.CantId);
+                        RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 30);
+                        ColumnsSetWidth(worksheetIndex, 1, 1, 43);
+                        CellInsertValue(worksheetIndex, 1, rowIndex, justificationDec, Common.ExcelInsertTypeEnum.Content);
+                        CellInsertValue(worksheetIndex, 2, rowIndex, cantiere.Codice_Gestionale_Can, Common.ExcelInsertTypeEnum.Content);
+
+                        foreach (var day in Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)))
+                        {
+                            var dayNumber = day.Day;
+                            string valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)cartRow.DaysHours[dayNumber].Item1);
+                            if ((int)cartRow.DaysHours[dayNumber].Item1 > 0)
+                            {
+                                RangeSetBorders(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, day.Day + 2, rowIndex, valueToPrint, Common.ExcelInsertTypeEnum.Content);
+                            }
+                            else
+                            {
+                                RangeSetBorders(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                CellInsertValue(worksheetIndex, day.Day + 2, rowIndex, "-", Common.ExcelInsertTypeEnum.Content);
+                            }
+                            RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, ExcelHorizontalAlignment.Center);
+                            RangeSetTextVerticalAlignment(worksheetIndex, columnIndex + 2, rowIndex, day.Day + 2, rowIndex, ExcelVerticalAlignment.Center);
+                        }
+                        //Viene considerato il range per la somma della riga, dalla colonna 1 alla colonna del numero dei giorni
+                        //come riga viene considerata quella attuale
+                        string rangeFormula = $"{ColumnIndexToNameConversion(3)}{rowIndex}:" +
+                            $"{ColumnIndexToNameConversion(cartRow.DaysHours.Count + 2)}{rowIndex}";
+
+                        //Formula automatica per la somma dei valori della riga
+                        string formula = $"=SUM({rangeFormula})";
+
+                        //Conta solamente i numeri della riga, quindi i giorni diversi da "M" o "F" o "---"
+                        string contaFormula = $"=COUNT({rangeFormula})";
+
+                        RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 4, rowIndex, cartRow.DaysHours.Count + 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 4, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
+
+                        RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 5, rowIndex, cartRow.DaysHours.Count + 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 5, rowIndex, contaFormula, Common.ExcelInsertTypeEnum.Formula);
+                        
+                        RangeSetTextHorizontalAlignment(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, ExcelHorizontalAlignment.Center);
+                        RangeSetTextVerticalAlignment(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, ExcelVerticalAlignment.Center);
+
+                        RangeSetTextHorizontalAlignment(worksheetIndex, cartRow.DaysHours.Count + 4, rowIndex, cartRow.DaysHours.Count + 4, rowIndex, ExcelHorizontalAlignment.Center);
+                        RangeSetTextVerticalAlignment(worksheetIndex, cartRow.DaysHours.Count + 4, rowIndex, cartRow.DaysHours.Count + 4, rowIndex, ExcelVerticalAlignment.Center);
+                    }
+                    else
+                    {
+                        rowIndex--;
+                    }
+                }
+                rowIndex++;
+            }
+
+        }
+
+        private void WriteGrandTotalIndennita(Dictionary<string, List<TimesheetModuleItem>> cartellini)
+        {
+
+            RangeSetFontBold(worksheetIndex, 1, rowIndex, 1, rowIndex);
+            CellInsertValue(worksheetIndex, 1, rowIndex, "Totale", Common.ExcelInsertTypeEnum.Content);
+
+            var cartTotale = cartellini["justification"].Where(cart => cart.Justification != "Ferie").ToList();
+            cartTotale = cartTotale.Where(cart => cart.Justification != "Malattia").ToList();
+            cartTotale = cartTotale.Where(cart => !cart.Justification.Contains("INDENNITÀ")).ToList();
+            cartTotale = cartTotale.Where(cart => cart.Justification != "Totale").ToList();
+
+            ILookup<int, Tuple<double, TimeSpan?, TimeSpan?>> lookupCartellini = cartTotale.Where(cart => cart.Justification != "Totale").SelectMany(cart => cart.DaysHours).ToLookup(c => c.Key, x => x.Value); //Crea una lookup ( uguale ad un dictionary <int,list<...>> che quindi permette du raggruppare valori secondo la stessa chiave)
+
+            //Variabili per la formula e il range da usare
+            string formula;
+            string rangeFormula;
+
+            foreach (var dayHourList in lookupCartellini)
+            {
+                //Come rang viene scelta la colonna attuale dalla riga iniziale dei valori alla riga attuale -1
+                rangeFormula = $"{ColumnIndexToNameConversion(dayHourList.Key + 2)}{rowIndex - cartTotale.Count()}:" +
+                $"{ColumnIndexToNameConversion(dayHourList.Key + 2)}{rowIndex - 1}";
+
+                //Formula automatica da inserire in Excel
+                formula = $"=SUM({rangeFormula})";
+
+                RangeSetBorders(worksheetIndex, dayHourList.Key + 2, rowIndex, dayHourList.Key + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, dayHourList.Key + 2, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
+
+                RangeSetTextHorizontalAlignment(worksheetIndex, dayHourList.Key + 2, rowIndex, dayHourList.Key + 2, rowIndex, ExcelHorizontalAlignment.Center);
+                RangeSetTextVerticalAlignment(worksheetIndex, dayHourList.Key + 2, rowIndex, dayHourList.Key + 2, rowIndex, ExcelVerticalAlignment.Center);
+
+            }
+
+
+            //Il range viene considerato nella colonna attuale e dala riga attuale -numero cantieri fino alla riga attuale -1
+            rangeFormula = $"{ColumnIndexToNameConversion(lookupCartellini.Count + 2)}{rowIndex - cartTotale.Count()} :" +
+                $"{ColumnIndexToNameConversion(lookupCartellini.Count + 2)}{rowIndex - 1}";
+
+            string finalFormula = $"=SUM({rangeFormula})";
+
+
+            RowsSetHeight(worksheetIndex, rowIndex, rowIndex, 30);
+            RangeSetBorders(worksheetIndex, lookupCartellini.Count + 3, rowIndex, lookupCartellini.Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+            CellInsertValue(worksheetIndex, lookupCartellini.Count + 3, rowIndex, finalFormula, Common.ExcelInsertTypeEnum.Formula);
+            RangeSetTextHorizontalAlignment(worksheetIndex, lookupCartellini.Count + 3, rowIndex, lookupCartellini.Count + 3, rowIndex, ExcelHorizontalAlignment.Center);
+            RangeSetTextVerticalAlignment(worksheetIndex, lookupCartellini.Count + 3, rowIndex, lookupCartellini.Count + 3, rowIndex, ExcelVerticalAlignment.Center);
+            rowIndex++;
         }
         private void WriteGrandTotal(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {

@@ -3855,7 +3855,7 @@ namespace Business
             if (splittedRegLine.Count() > 9)
             {
                 string codiceAdditional = splittedRegLine[1];
-                if (codiceAdditional != "NOTE000002") {
+                if (codiceAdditional != "NOTE000002" && codiceAdditional != "MOTIVAZIONE") {
                     infoAgg = splittedRegLine[8];
                     returnValue = infoAgg == "INFOAGG";
                 }
