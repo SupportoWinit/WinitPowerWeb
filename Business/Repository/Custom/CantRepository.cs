@@ -4,6 +4,7 @@ using Business.MDBSchema;
 using Business.Synchronization.SynchronizatioManager.Implementations;
 using Common;
 using Data;
+using DevExpress.Web.ASPxTitleIndex.Internal;
 using Domain;
 using log4net;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
@@ -2236,7 +2237,7 @@ namespace Business.Repository.Custom
                                 #region Codice Cantiere Automatico
                                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) == 1)
                                 {
-                                    if (cantiere.Tipo_Interv_Can != null && cantiere.Cli_Id != null)
+                                    if (cantiere.Tipo_Interv_Can != null && cantiere.Cli != null)
                                     {
                                         string[] split = cantiere.Descrizione_Can.Split('-');
                                         Tab_Decod sottoAtt = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can);
@@ -2244,8 +2245,7 @@ namespace Business.Repository.Custom
                                         if (sottoAtt != null)
                                         {
                                             string[] codiceSottoAtt = sottoAtt.Chiave_Tab.Split('-');
-                                            Cli cliente = RepoManager.CliRepo.FirstOrDefault(c => c.Cli_Id == cantiere.Cli_Id);
-                                            string codiceCantiere = cliente.Codice_Cliente + "-" + att.Chiave_Tab + "-" + codiceSottoAtt[1];
+                                            string codiceCantiere = cantiere.Cli.Codice_Cliente + "-" + att.Chiave_Tab + "-" + codiceSottoAtt[1];
                                             string tmpCos = codiceCantiere.Replace(" ", "");
                                             codiceCantiere = tmpCos + "_001";
                                             codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
@@ -2271,8 +2271,46 @@ namespace Business.Repository.Custom
                                                     }
                                                 }
                                             }
-                                            cantiere.Codice_Cantiere = codiceCantiere;
+                                            exist = cantToInsert.Where(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                                            if (exist.Count > 0)
+                                            {
+                                                bool newCant = false;
+                                                int endCod = 2;
+                                                while (!newCant)
+                                                {
+                                                    tmpCos = codiceCantiere.Replace(" ", "");
+                                                    string[] cod = tmpCos.Split('_');
+                                                    codiceCantiere = cod[0] + "_00" + endCod;
+                                                    codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
+                                                    exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                                                    if (exist.Count == 0)
+                                                    {
+                                                        newCant = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        endCod++;
+                                                    }
+                                                }
+                                            }
+                                            List<Cant> exiCant = RepoManager.CantRepo.Find(c => c.Descrizione_Can == cantiere.Descrizione_Can).ToList();
+                                            if (exiCant.Count == 0)
+                                            {
+                                                cantiere.Codice_Cantiere = codiceCantiere;
+                                            }
+                                            else 
+                                            {
+                                                cantiere = null;
+                                            }
                                         }
+                                        else
+                                        {
+                                            cantiere = null;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        cantiere = null;
                                     }
                                 }
                                 #endregion
@@ -3026,8 +3064,31 @@ namespace Business.Repository.Custom
                 // inserimento del codice del cantiere; se esiste la numerazione automatica del cantiere alla si procede con la stessa
                 // (naturalmente solo se tutti i cantieri sono numerici); altrimenti si procede alla generazione
                 var codCanMax = RepoManager.CantRepo.DbSet.Any() ? RepoManager.CantRepo.Max(c => c.Codice_Cantiere, true) : "0";
+                List<Cant> gpsCant = RepoManager.CantRepo.GetAllQueryable(c => c.Codice_Cantiere.StartsWith("GPS")).ToList();
+                string tmpCod = "GPS00000";
+                foreach (var cant in gpsCant)
+                {
+                    if (cant.Codice_Cantiere.Length < 8)
+                    {
+                        string newCod = cant.Codice_Cantiere.Remove(0, 3);
+                        newCod = CommonService.AggiungiZeriASinistra(newCod, 5);
+                        newCod = "GPS" + newCod;
+                        if (string.Compare(newCod, tmpCod, StringComparison.Ordinal) > 0)
+                        {
+                            tmpCod = newCod;
+                        }
+                    }
+                    else 
+                    {
+                        if (string.Compare(cant.Codice_Cantiere,tmpCod, StringComparison.Ordinal) > 0)
+                        {
+                            tmpCod = cant.Codice_Cantiere;
+                        }
+                    }
+                    
+                }
                 int codCanMaxNum = 0;
-                if (RepoManager.ParamRepo.ParametersRow.Attiva_Num_Aut_Can && int.TryParse(codCanMax, out codCanMaxNum))
+                if (RepoManager.ParamRepo.ParametersRow.Attiva_Num_Aut_Can && int.TryParse(tmpCod, out codCanMaxNum))
                 {
                     // numerazione automatica attiva e dati pregressi corretti:
                     // si procede con la numerazione automatica
@@ -3037,7 +3098,7 @@ namespace Business.Repository.Custom
                 {
                     // si recupera l'ultimo cantiere il cui codice parte con il prefisso configurato;
                     // se non presente si parte da 1, altrimenti si incrementa l'esistente
-                    Cant lastGpsCant = Find(cant => cant.Codice_Cantiere.StartsWith(Common.Properties.Settings.Default.GpsCantCodePrefix)).OrderByDescending(cant => cant.Codice_Cantiere).FirstOrDefault();
+                    Cant lastGpsCant = RepoManager.CantRepo.FirstOrDefault(c => c.Codice_Cantiere == tmpCod);
 
                     if (lastGpsCant == default(Cant))
                         newCant.Codice_Cantiere = String.Format("{0}{1}", Common.Properties.Settings.Default.GpsCantCodePrefix, 1.ToString(Common.Properties.Settings.Default.GpsCantNumberStringFormat));

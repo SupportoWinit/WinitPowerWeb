@@ -113,7 +113,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                 }
             }
-            List<Reg_V> regVs = reg_Vs.Where(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
+            List<Reg_V> regVs = reg_Vs.Where(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id && r.Registrazione_Stato_Reg != 0).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
@@ -129,312 +129,424 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             int totaleReg = 0;
             List<ExportColCantInt> numeroInterventFinale = new List<ExportColCantInt>();
             //vado a fare un foreach per ogni cantiere
-            foreach (var regs in regVs.GroupBy(c => c.Col_Id))//.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
-            {
-                //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
-                List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
-                List<ExportColCantInt> numeroInterventi = new List<ExportColCantInt>();
-                List<Dictionary<string, Dictionary<string, int>>> tmpAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
-                foreach (var reg in regs.OrderBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
-                {
-                    List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                    //controllo se la timbratura è un attività
-                    if (reg.Registrazione_Tipo_Reg == 2)
-                    {
-                        //recupero la lista delle attività
-                        List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id && c.Tipologia_Can == "ATT").ToList();
-                        //controllo se la timbratura è associata o meno
-                        if (reg.Registrazione_Stato_Reg == 1)
-                        {
-                            //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
-                            bool aggiornato = false;
-                            //ciclo tutte le attività che ho recuperato in precedenza
-                            if (numeroInterventi.Count() > 0)
-                            {
-                                bool esiste = false;
-                                Dictionary<string, int> tmpDic = new Dictionary<string, int>();
-                                ExportColCantInt tmpInt = new ExportColCantInt("","","",0,0);
-                                foreach (var att in numeroInterventi)
-                                {
-                                    if (att.descrizioneCant == lastCant)
-                                    {
-                                        if (!esiste)
-                                        {
-                                            //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
-                                            if (att.descrizioneAtt == attivita.First().Descrizione_Can)
-                                            {
-                                                esiste = true;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (esiste)
-                                {
-                                    //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                    ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                    int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                    int interventi = tmp.interventi + 1;
-                                    numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant,tmp.descrizioneCol,tmp.descrizioneAtt,tmp.durata + lastDurata,interventi);
-                                    //azzero tute le variabili
-                                    lastAtt = "";
-                                    lastAttId = 0;
-                                    lastDurata = 0;
-                                    aggiornato = true;
-                                }
-                                else
-                                {
-                                    if (lastDurata > 0)
-                                    {
-                                        ExportColCantInt newOgg = new ExportColCantInt(lastCant,reg.Col_Desc, attivita.First().Descrizione_Can,lastDurata,1);
-                                        numeroInterventi.Add(newOgg);
-                                    }
-                                    aggiornato = true;
-                                    lastAtt = "";
-                                    lastAttId = 0;
-                                    lastDurata = 0;
-                                }
-                                if (!aggiornato)
-                                {
-                                    if (lastDurata > 0)
-                                    {
-                                        ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                        int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                        int interventi = tmp.interventi + 1;
-                                        numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant, tmp.descrizioneCol, tmp.descrizioneAtt, tmp.durata + lastDurata, interventi);
-                                    }
-                                    lastAtt = "";
-                                    lastAttId = 0;
-                                }
-                            }
-                            else
-                            {
-                                if (lastDurata > 0)
-                                {
-                                    ExportColCantInt newOgg = new ExportColCantInt(lastCant,reg.Col_Desc, attivita.First().Descrizione_Can,lastDurata,1);
-                                    numeroInterventi.Add(newOgg);
-                                }
-                                lastDurata = 0;
-                                lastAtt = "";
-                                lastAttId = 0;
-                            }
+            //foreach (var regs in regVs.GroupBy(c => c.Col_Id))//.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
+            //{
+            //    //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
+            //    List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
+            //    List<ExportColCantInt> numeroInterventi = new List<ExportColCantInt>();
+            //    List<Dictionary<string, Dictionary<string, int>>> tmpAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
+            //    foreach (var reg in regs.OrderBy(r => r.Data_Ora_Fis_E.ToString("yyyy-MM-dd HH:mm")).ThenBy(r => r.Data_Ora_Fis_U))
+            //    {
+            //        List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+            //        //controllo se la timbratura è un attività
+            //        if (reg.Registrazione_Tipo_Reg == 2)
+            //        {
+            //            //recupero la lista delle attività
+            //            List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id && c.Tipologia_Can == "ATT").ToList();
+            //            //controllo se la timbratura è associata o meno
+            //            if (reg.Registrazione_Stato_Reg == 1)
+            //            {
+            //                //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+            //                bool aggiornato = false;
+            //                //ciclo tutte le attività che ho recuperato in precedenza
+            //                if (numeroInterventi.Count() > 0)
+            //                {
+            //                    bool esiste = false;
+            //                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+            //                    ExportColCantInt tmpInt = new ExportColCantInt("","","",0,0);
+            //                    foreach (var att in numeroInterventi)
+            //                    {
+            //                        if (att.descrizioneCant == lastCant)
+            //                        {
+            //                            if (!esiste)
+            //                            {
+            //                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+            //                                if (att.descrizioneAtt == attivita.First().Descrizione_Can)
+            //                                {
+            //                                    esiste = true;
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    if (esiste)
+            //                    {
+            //                        //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+            //                        ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                        int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                        int interventi = tmp.interventi + 1;
+            //                        numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant,tmp.descrizioneCol,tmp.descrizioneAtt,tmp.durata + lastDurata,interventi);
+            //                        //azzero tute le variabili
+            //                        lastAtt = "";
+            //                        lastAttId = 0;
+            //                        lastDurata = 0;
+            //                        aggiornato = true;
+            //                    }
+            //                    else
+            //                    {
+            //                        if (lastDurata > 0)
+            //                        {
+            //                            ExportColCantInt newOgg = new ExportColCantInt(lastCant,reg.Col_Desc, attivita.First().Descrizione_Can,lastDurata,1);
+            //                            numeroInterventi.Add(newOgg);
+            //                        }
+            //                        aggiornato = true;
+            //                        lastAtt = "";
+            //                        lastAttId = 0;
+            //                        lastDurata = 0;
+            //                    }
+            //                    if (!aggiornato)
+            //                    {
+            //                        if (lastDurata > 0)
+            //                        {
+            //                            ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                            int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                            int interventi = tmp.interventi + 1;
+            //                            numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant, tmp.descrizioneCol, tmp.descrizioneAtt, tmp.durata + lastDurata, interventi);
+            //                        }
+            //                        lastAtt = "";
+            //                        lastAttId = 0;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    if (lastDurata > 0)
+            //                    {
+            //                        ExportColCantInt newOgg = new ExportColCantInt(lastCant,reg.Col_Desc, attivita.First().Descrizione_Can,lastDurata,1);
+            //                        numeroInterventi.Add(newOgg);
+            //                    }
+            //                    lastDurata = 0;
+            //                    lastAtt = "";
+            //                    lastAttId = 0;
+            //                }
+            //
+            //            }
+            //            else
+            //            {
+            //                if (lastAtt != "")
+            //                {
+            //                    attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId && c.Tipologia_Can == "ATT").ToList();
+            //                    //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+            //                    bool aggiornato = false;
+            //                    bool esiste = false;
+            //                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+            //                    foreach (var att in listaAttivita)
+            //                    {
+            //                        if (att.First().Key == lastCant)
+            //                        {
+            //                            if (!esiste)
+            //                            {
+            //                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+            //                                tmpDic = att.First().Value;
+            //                                foreach (var lista in tmpDic)
+            //                                {
+            //                                    if (lista.Key == attivita.First().Descrizione_Can)
+            //                                    {
+            //                                        esiste = true;
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    if (esiste)
+            //                    {
+            //                        //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+            //                        int tmp = tmpDic[attivita.First().Descrizione_Can];
+            //                        //incremento il totale delle ore mensili
+            //                        tmpDic[attivita.First().Descrizione_Can] = tmp + lastDurata;
+            //                        //azzero tute le variabili
+            //                        lastAtt = "";
+            //                        lastAttId = 0;
+            //                        lastDurata = 0;
+            //                        aggiornato = true;
+            //                    }
+            //                    else
+            //                    {
+            //                        if (lastDurata > 0)
+            //                        {
+            //                            Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+            //                            tmpDi[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
+            //                            tmpAttivita.Add(tmpDi);
+            //                        }
+            //                        aggiornato = true;
+            //                        lastAtt = "";
+            //                        lastAttId = 0;
+            //                        lastDurata = 0;
+            //                    }
+            //                    if (!aggiornato)
+            //                    {
+            //                        if (lastDurata > 0)
+            //                        {
+            //                            Dictionary<string, Dictionary<string, int>> tmpdic = new Dictionary<string, Dictionary<string, int>>();
+            //                            tmpdic[currentCant.First().Descrizione_Can] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
+            //                            tmpAttivita.Add(tmpdic);
+            //                        }
+            //                        lastAtt = "";
+            //                        lastAttId = 0;
+            //                        lastDurata = 0;
+            //                    }
+            //                }
+            //                attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+            //                lastAtt = attivita.First().Descrizione_Can;
+            //                lastAttId = attivita.First().Cant_Id;
+            //            }
+            //        }
+            //        else if (reg.Registrazione_Tipo_Reg == 0)
+            //        {
+            //            if (lastAtt != "" && lastCant != reg.Cant_Desc)
+            //            {
+            //                //recupero la lista delle attività
+            //                List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId).ToList();
+            //                //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+            //                bool aggiornato = false;
+            //                //ciclo tutte le attività che ho recuperato in precedenza
+            //                if (numeroInterventi.Count() > 0)
+            //                {
+            //                    bool esiste = false;
+            //                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+            //                    ExportColCantInt tmpInt = new ExportColCantInt("", "", "", 0, 0);
+            //                    foreach (var att in numeroInterventi)
+            //                    {
+            //                        if (att.descrizioneCant == lastCant)
+            //                        {
+            //                            if (!esiste)
+            //                            {
+            //                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+            //                                if (att.descrizioneAtt == attivita.First().Descrizione_Can)
+            //                                {
+            //                                    esiste = true;
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    if (esiste)
+            //                    {
+            //                        ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                        int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                        int interventi = tmp.interventi + 1;
+            //                        numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant, tmp.descrizioneCol, tmp.descrizioneAtt, tmp.durata + lastDurata, interventi);
+            //                        //azzero tute le variabili
+            //                        lastAtt = attivita.First().Descrizione_Can;
+            //                        lastAttId = attivita.First().Cant_Id;
+            //                        lastDurata = 0;
+            //                        aggiornato = true;
+            //                    }
+            //                    else
+            //                    {
+            //                        if (lastDurata > 0)
+            //                        {
+            //                            ExportColCantInt newOgg = new ExportColCantInt(lastCant, reg.Col_Desc, attivita.First().Descrizione_Can, lastDurata, 1);
+            //                            numeroInterventi.Add(newOgg);
+            //                        }
+            //                        aggiornato = true;
+            //                        lastAtt = attivita.First().Descrizione_Can;
+            //                        lastAttId = attivita.First().Cant_Id;
+            //                        lastDurata = 0;
+            //                    }
+            //                    if (!aggiornato)
+            //                    {
+            //                        if (lastDurata > 0)
+            //                        {
+            //                            ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                            int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
+            //                            int interventi = tmp.interventi + 1;
+            //                            numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant, tmp.descrizioneCol, tmp.descrizioneAtt, tmp.durata + lastDurata, interventi);
+            //                        }
+            //                        lastAtt = attivita.First().Descrizione_Can;
+            //                        lastAttId = attivita.First().Cant_Id;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    if (lastDurata > 0)
+            //                    {
+            //                        ExportColCantInt newOgg = new ExportColCantInt(lastCant, reg.Col_Desc, attivita.First().Descrizione_Can, lastDurata, 1);
+            //                        numeroInterventi.Add(newOgg);
+            //                    }
+            //                    lastDurata = 0;
+            //                    lastAtt = attivita.First().Descrizione_Can;
+            //                    lastAttId = attivita.First().Cant_Id;
+            //                }
+            //
+            //            }
+            //            if (reg.Durata_Fig != null)
+            //            {
+            //                lastDurata += reg.Durata_Fig.Value;
+            //                lastCant = reg.Cant_Desc;
+            //            }
+            //        }
+            //        else if (reg.Registrazione_Tipo_Reg == 4)
+            //        {
+            //            if (reg.Durata_Fig != null)
+            //            {
+            //                lastDurata += reg.Durata_Fig.Value;
+            //                lastCant = reg.Cant_Desc;
+            //            }
+            //        }
+            //        listaAttivita = tmpAttivita;
+            //    }
+            //  foreach (var attivita in listaAttivita.OrderBy(p => p.First().Key))
+            //  {
+            //      List<Col> cols = RepoManager.ColRepo.GetAllQueryable(c => c.Col_Id == regs.Key).ToList();
+            //      string descCant = attivita.First().Key;
+            //      string descCol = cols.First().Codice_Collaboratore;
+            //      string descAtt = "";
+            //      string descSottoAtt = "";
+            //      TimeSpan durataFinale = new TimeSpan();
+            //
+            //      foreach (var inner in attivita.First().Value)
+            //      {
+            //          List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == inner.Key && c.Tipologia_Can == "ATT").ToList();
+            //
+            //          descAtt = inner.Key;
+            //          descSottoAtt = inner.Key;
+            //
+            //          TimeSpan durata = TimeSpan.FromMinutes(inner.Value);
+            //          int minuti = 00;
+            //          switch (durata.Minutes)
+            //          {
+            //              case 15:
+            //                  minuti = 25;
+            //                  break;
+            //              case 30:
+            //                  minuti = 50;
+            //                  break;
+            //              case 45:
+            //                  minuti = 75;
+            //                  break;
+            //          }
+            //
+            //          durataFinale = durata;
+            //      }
+            //      ExportColCant exportColCant = new ExportColCant(descCant,descCol,descAtt,durataFinale);
+            //      provaLista.Add(exportColCant);
+            //  }
+            //    numeroInterventFinale.AddRange(numeroInterventi);
+            //}
 
+            foreach (var prova in regVs.GroupBy(c => c.Col_Id)) 
+            {
+                Col collaboratore = RepoManager.ColRepo.GetAllQueryable(c => c.Col_Id == prova.Key).FirstOrDefault();
+                string initCant = "";
+                int totalMinute = 0;
+                int totalInt = 0;
+                foreach (var regV in prova) 
+                {
+                    if (regV != prova.Last())
+                    {
+                        if (initCant == "")
+                        {
+                            initCant = regV.Cant_Desc;
+                            totalInt++;
+                            totalMinute = regV.Durata_Fig != null ? regV.Durata_Fig.Value : 0;
+                        }
+                        else if (initCant != regV.Cant_Desc)
+                        {
+                            Cant cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == initCant).FirstOrDefault();
+                            if (cantiere != default(Cant))
+                            {
+                                Tab_Decod tipoInt = RepoManager.Tab_DecodRepo.GetAllQueryable(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can).FirstOrDefault();
+                                if (tipoInt != default(Tab_Decod)) 
+                                {
+                                    ExportColCantInt newOgg = new ExportColCantInt(initCant, collaboratore.CognomeNome_Col, tipoInt.Decodifica_Tab, totalMinute, totalInt);
+                                    numeroInterventFinale.Add(newOgg);
+                                }       
+                            }
+                            initCant = regV.Cant_Desc;
+                            totalInt = 1;
+                            totalMinute = regV.Durata_Fig != null ? regV.Durata_Fig.Value : 0;
                         }
                         else
                         {
-                            if (lastAtt != "")
-                            {
-                                attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId && c.Tipologia_Can == "ATT").ToList();
-                                //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
-                                bool aggiornato = false;
-                                bool esiste = false;
-                                Dictionary<string, int> tmpDic = new Dictionary<string, int>();
-                                foreach (var att in listaAttivita)
-                                {
-                                    if (att.First().Key == lastCant)
-                                    {
-                                        if (!esiste)
-                                        {
-                                            //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
-                                            tmpDic = att.First().Value;
-                                            foreach (var lista in tmpDic)
-                                            {
-                                                if (lista.Key == attivita.First().Descrizione_Can)
-                                                {
-                                                    esiste = true;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (esiste)
-                                {
-                                    //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                    int tmp = tmpDic[attivita.First().Descrizione_Can];
-                                    //incremento il totale delle ore mensili
-                                    tmpDic[attivita.First().Descrizione_Can] = tmp + lastDurata;
-                                    //azzero tute le variabili
-                                    lastAtt = "";
-                                    lastAttId = 0;
-                                    lastDurata = 0;
-                                    aggiornato = true;
-                                }
-                                else
-                                {
-                                    if (lastDurata > 0)
-                                    {
-                                        Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
-                                        tmpDi[lastCant] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
-                                        tmpAttivita.Add(tmpDi);
-                                    }
-                                    aggiornato = true;
-                                    lastAtt = "";
-                                    lastAttId = 0;
-                                    lastDurata = 0;
-                                }
-                                if (!aggiornato)
-                                {
-                                    if (lastDurata > 0)
-                                    {
-                                        Dictionary<string, Dictionary<string, int>> tmpdic = new Dictionary<string, Dictionary<string, int>>();
-                                        tmpdic[currentCant.First().Descrizione_Can] = new Dictionary<string, int>() { { attivita.First().Descrizione_Can, lastDurata } };
-                                        tmpAttivita.Add(tmpdic);
-                                    }
-                                    lastAtt = "";
-                                    lastAttId = 0;
-                                    lastDurata = 0;
-                                }
-                            }
-                            attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                            lastAtt = attivita.First().Descrizione_Can;
-                            lastAttId = attivita.First().Cant_Id;
+                            totalInt++;
+                            totalMinute += regV.Durata_Fig != null ? regV.Durata_Fig.Value : 0;
                         }
                     }
-                    else if (reg.Registrazione_Tipo_Reg == 0)
+                    else 
                     {
-                        if (lastAtt != "" && lastCant != reg.Cant_Desc)
+                        if (initCant != "")
                         {
-                            //recupero la lista delle attività
-                            List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId).ToList();
-                            //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
-                            bool aggiornato = false;
-                            //ciclo tutte le attività che ho recuperato in precedenza
-                            if (numeroInterventi.Count() > 0)
+                            if (initCant != regV.Cant_Desc)
                             {
-                                bool esiste = false;
-                                Dictionary<string, int> tmpDic = new Dictionary<string, int>();
-                                ExportColCantInt tmpInt = new ExportColCantInt("", "", "", 0, 0);
-                                foreach (var att in numeroInterventi)
+                                Cant cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == initCant).FirstOrDefault();
+                                if (cantiere != default(Cant))
                                 {
-                                    if (att.descrizioneCant == lastCant)
+                                    Tab_Decod tipoInt = RepoManager.Tab_DecodRepo.GetAllQueryable(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can).FirstOrDefault();
+                                    if (tipoInt != default(Tab_Decod))
                                     {
-                                        if (!esiste)
-                                        {
-                                            //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
-                                            if (att.descrizioneAtt == attivita.First().Descrizione_Can)
-                                            {
-                                                esiste = true;
-                                            }
-                                        }
+                                        ExportColCantInt newOgg = new ExportColCantInt(initCant, collaboratore.CognomeNome_Col, tipoInt.Decodifica_Tab, totalMinute, totalInt);
+                                        numeroInterventFinale.Add(newOgg);
                                     }
+                                        
                                 }
-                                if (esiste)
+                                cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == regV.Cant_Desc).FirstOrDefault();
+                                if (cantiere != default(Cant))
                                 {
-                                    ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                    int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                    int interventi = tmp.interventi + 1;
-                                    numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant, tmp.descrizioneCol, tmp.descrizioneAtt, tmp.durata + lastDurata, interventi);
-                                    //azzero tute le variabili
-                                    lastAtt = attivita.First().Descrizione_Can;
-                                    lastAttId = attivita.First().Cant_Id;
-                                    lastDurata = 0;
-                                    aggiornato = true;
-                                }
-                                else
-                                {
-                                    if (lastDurata > 0)
+                                    Tab_Decod tipoInt = RepoManager.Tab_DecodRepo.GetAllQueryable(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can).FirstOrDefault();
+                                    if (tipoInt != default(Tab_Decod))
                                     {
-                                        ExportColCantInt newOgg = new ExportColCantInt(lastCant, reg.Col_Desc, attivita.First().Descrizione_Can, lastDurata, 1);
-                                        numeroInterventi.Add(newOgg);
-                                    }
-                                    aggiornato = true;
-                                    lastAtt = attivita.First().Descrizione_Can;
-                                    lastAttId = attivita.First().Cant_Id;
-                                    lastDurata = 0;
-                                }
-                                if (!aggiornato)
-                                {
-                                    if (lastDurata > 0)
-                                    {
-                                        ExportColCantInt tmp = numeroInterventi.Single(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                        int index = numeroInterventi.FindIndex(test => test.descrizioneCant == lastCant && test.descrizioneAtt == attivita.First().Descrizione_Can);
-                                        int interventi = tmp.interventi + 1;
-                                        numeroInterventi[index] = new ExportColCantInt(tmp.descrizioneCant, tmp.descrizioneCol, tmp.descrizioneAtt, tmp.durata + lastDurata, interventi);
-                                    }
-                                    lastAtt = attivita.First().Descrizione_Can;
-                                    lastAttId = attivita.First().Cant_Id;
+                                        ExportColCantInt newOgg = new ExportColCantInt(regV.Cant_Desc, collaboratore.CognomeNome_Col, "", regV.Durata_Fig.Value, 1);
+                                        numeroInterventFinale.Add(newOgg);
+                                    } 
                                 }
                             }
-                            else
+                            else 
                             {
-                                if (lastDurata > 0)
+                                totalInt++;
+                                totalMinute += regV.Durata_Fig != null ? regV.Durata_Fig.Value : 0;
+                                Cant cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == initCant).FirstOrDefault();
+                                if (cantiere != default(Cant))
                                 {
-                                    ExportColCantInt newOgg = new ExportColCantInt(lastCant, reg.Col_Desc, attivita.First().Descrizione_Can, lastDurata, 1);
-                                    numeroInterventi.Add(newOgg);
+                                    Tab_Decod tipoInt = RepoManager.Tab_DecodRepo.GetAllQueryable(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can).FirstOrDefault();
+                                    if (tipoInt != default(Tab_Decod))
+                                    {
+                                        ExportColCantInt newOgg = new ExportColCantInt(initCant, collaboratore.CognomeNome_Col, "", totalMinute, totalInt);
+                                        numeroInterventFinale.Add(newOgg);
+                                    }
                                 }
-                                lastDurata = 0;
-                                lastAtt = attivita.First().Descrizione_Can;
-                                lastAttId = attivita.First().Cant_Id;
                             }
-
                         }
-                        if (reg.Durata_Fig != null)
+                        else 
                         {
-                            lastDurata += reg.Durata_Fig.Value;
-                            lastCant = reg.Cant_Desc;
+                            Cant cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == regV.Cant_Desc).FirstOrDefault();
+                            if (cantiere != default(Cant))
+                            {
+                                Tab_Decod tipoInt = RepoManager.Tab_DecodRepo.GetAllQueryable(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == cantiere.Tipo_Interv_Can).FirstOrDefault();
+                                if (tipoInt != default(Tab_Decod))
+                                {
+                                    ExportColCantInt newOgg = new ExportColCantInt(regV.Cant_Desc, collaboratore.CognomeNome_Col, "", regV.Durata_Fig.Value, 1);
+                                    numeroInterventFinale.Add(newOgg);
+                                }
+                            }
                         }
                     }
-                    else if (reg.Registrazione_Tipo_Reg == 4)
-                    {
-                        if (reg.Durata_Fig != null)
-                        {
-                            lastDurata += reg.Durata_Fig.Value;
-                            lastCant = reg.Cant_Desc;
-                        }
-                    }
-                    listaAttivita = tmpAttivita;
                 }
-                foreach (var attivita in listaAttivita.OrderBy(p => p.First().Key))
-                {
-                    List<Col> cols = RepoManager.ColRepo.GetAllQueryable(c => c.Col_Id == regs.Key).ToList();
-                    string descCant = attivita.First().Key;
-                    string descCol = cols.First().Codice_Collaboratore;
-                    string descAtt = "";
-                    string descSottoAtt = "";
-                    TimeSpan durataFinale = new TimeSpan();
-
-                    foreach (var inner in attivita.First().Value)
-                    {
-                        List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == inner.Key && c.Tipologia_Can == "ATT").ToList();
-
-                        descAtt = inner.Key;
-                        descSottoAtt = inner.Key;
-
-                        TimeSpan durata = TimeSpan.FromMinutes(inner.Value);
-                        int minuti = 00;
-                        switch (durata.Minutes)
-                        {
-                            case 15:
-                                minuti = 25;
-                                break;
-                            case 30:
-                                minuti = 50;
-                                break;
-                            case 45:
-                                minuti = 75;
-                                break;
-                        }
-
-                        durataFinale = durata;
-                    }
-                    ExportColCant exportColCant = new ExportColCant(descCant,descCol,descAtt,durataFinale);
-                    provaLista.Add(exportColCant);
-                }
-                numeroInterventFinale.AddRange(numeroInterventi);
             }
+
 
             foreach (var prova in numeroInterventFinale.OrderBy(p => p.descrizioneCant))
             {
                 List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == prova.descrizioneAtt && c.Tipologia_Can == "ATT").ToList();
+                Tab_Decod att = RepoManager.Tab_DecodRepo.GetAllQueryable(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Decodifica_Tab == prova.descrizioneAtt).FirstOrDefault();
 
                 CellInsertValue(1, 1, rowIndex, prova.descrizioneCant + " ", ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
                 RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
 
-                CellInsertValue(1, 2, rowIndex, cants.Last().Note_Can + " ", ExcelInsertTypeEnum.Content);
-                RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
-                RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
+                if (att != default(Tab_Decod))
+                {
+                    CellInsertValue(1, 2, rowIndex, att.Campo1_Tab + " ", ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
+                    RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
+                }
+                else 
+                {
+                    CellInsertValue(1, 2, rowIndex, " ", ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
+                    RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
+                }
+
 
                 CellInsertValue(1, 3, rowIndex, prova.descrizioneAtt + " ", ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);

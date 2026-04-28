@@ -2306,8 +2306,14 @@ namespace PowerWeb
                 #region BOTTONI DI EDIT VELOCE SINGOLA RIGA O MULTIRIGA
                 if (e.ButtonID == "editMultiRow" || e.ButtonID == "editSingleRow")
                 {
-
-
+                    // calcolo della posizione attuale in elaborazione
+                    var checkIndex = e.VisibleIndex - GridView.VisibleStartIndex;
+                    var listaTipiReg = GridView.GetCurrentPageRowValues(CommonService.GetPropertyName(() => _regvStub.Registrazione_Tipo_Reg));
+                    int registrazioneTipoReg = (int)RegTypeEnum.None;
+                    if (listaTipiReg.Count > 0 && checkIndex >= 0 && checkIndex <= listaTipiReg.Count)
+                    {
+                        registrazioneTipoReg = Convert.ToInt32(listaTipiReg[checkIndex]);
+                    }
                     bool isToEdit = PowerWebContext.Current.User.IsUserAutorized(Utenti.OperationTypeEnum.Edit, CurrentPageTabAut, RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DefaultFunzAuthLevelEnum));
 
                     if (RepoManager.ParamRepo.ParametersRow.DomainFilter != (int)DomainFilterEnum.None && isToEdit)
@@ -2322,6 +2328,11 @@ namespace PowerWeb
                     {
                         e.Enabled = true;
                         e.Visible = DevExpress.Utils.DefaultBoolean.True;
+                    }
+
+                    if (registrazioneTipoReg == (int)RegTypeEnum.Duration) 
+                    {
+                        e.Visible = DevExpress.Utils.DefaultBoolean.False;
                     }
 
                 }

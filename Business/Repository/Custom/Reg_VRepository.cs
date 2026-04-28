@@ -1848,7 +1848,7 @@ namespace Business.Repository.Custom
                                                                             fistMorningLimit = exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value;
 
                                                                         // se l'ora figurativa dell'uscita è maggiore del limite d'uscita allora viene spostata al limite d'uscita;
-                                                                        if (currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value
+                                                                        if (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value
                                                                             && (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay.Subtract(exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value) <= exitLimitMorningTollerance.Duration()))
                                                                             currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
                                                                                 currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
@@ -1857,15 +1857,15 @@ namespace Business.Repository.Custom
                                                                                 exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Minutes,
                                                                                 0);
 
-                                                                        if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Subtract(exitLimitMorningTollerance.Duration()))
-                                                                        {
-                                                                            currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Hours,
-                                                                                exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Minutes,
-                                                                                0);
-                                                                        }
+                                                                        //if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Subtract(exitLimitMorningTollerance.Duration()))
+                                                                        //{
+                                                                        //    currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                        //        currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        //        currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        //        exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Hours,
+                                                                        //        exitLimitConfig[ExitLimitTypeEnum.Morning].ExitLimitTime.Value.Minutes,
+                                                                        //        0);
+                                                                        //}
                                                                     }
                                                                     else if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay >= midDay && exitLimitConfig[ExitLimitTypeEnum.Afternoon].IsConfigured)
                                                                     {
@@ -1884,15 +1884,15 @@ namespace Business.Repository.Custom
                                                                                 exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Minutes,
                                                                                 0);
                                                                         }
-                                                                        if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Subtract(exitLimitAfternoonTollerance))
-                                                                        {
-                                                                            currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Hours,
-                                                                                exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Minutes,
-                                                                                0);
-                                                                        }
+                                                                        //if (currentRegV.Data_Ora_Fis_U.Value.TimeOfDay > exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Subtract(exitLimitAfternoonTollerance))
+                                                                        //{
+                                                                        //    currentRegU.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                        //        currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                        //        currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                        //        exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Hours,
+                                                                        //        exitLimitConfig[ExitLimitTypeEnum.Afternoon].ExitLimitTime.Value.Minutes,
+                                                                        //        0);
+                                                                        //}
 
                                                                         //se si è in presenza di una registrazione notturna
                                                                         if (currentRegV.Data_Ora_Fis_U.Value.Date > currentRegV.Data_Ora_Fis_E.Date)
@@ -4615,9 +4615,11 @@ namespace Business.Repository.Custom
                         // selezione delle ore d'uscita e loro ordinamento
                         var sortedEntryTimes = dayColPlanDetail.Select(dayDetail => dayDetail.Item3).OrderBy(exitTime => exitTime).ToList();
 
-                        // il limite d'uscita mattutino, se presente, è il primo valore nella prima metà della giornata
-                        morningExitLimit = sortedEntryTimes.FirstOrDefault(exitTime => exitTime < midDay);
-
+                        if (sortedEntryTimes.Where(exitTime => exitTime < midDay).Count() > 0) 
+                        {
+                            // il limite d'uscita mattutino, se presente, è il primo valore nella prima metà della giornata
+                            morningExitLimit = sortedEntryTimes.FirstOrDefault(exitTime => exitTime < midDay);
+                        }
 
                         //nel caso in cui vi siano più orari
                         if (sortedEntryTimes.Count >= 1)

@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
 using Westwind.Utilities.Extensions;
+using static Business.MDBSchema.PowerMDBDataSet;
 
 namespace Exports.ExportExcelCustom.ExportSpecialized
 {
@@ -292,7 +293,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             WriteTimesheetHeader();
 
-                            rowIndex += 2;
+                            if (parameters.Flag_Monte_Ore != 0)
+                            {
+                                WriteTimesheetColMountMinutes(col.Value);
+                            }
+                            else
+                            {
+                                rowIndex += 2;
+                            }
                         }
 
                         WriteTimesheetColName(col.Key);
@@ -487,18 +495,45 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     var minuti = justification.DaysHours[day.Day];
                     string valueToPrint = FromTotalMinutesToFormattedType((int)minuti.Item1);
-                    
-                    RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+
+                    if (minuti.Item1 > 0)
+                    {
+                        RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, valueToPrint, ExcelInsertTypeEnum.Content);
+                    }
+                    else 
+                    {
+                        RangeSetBorders(worksheetIndex, columnIndex + day.Day, rowIndex, columnIndex + day.Day, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        CellInsertValue(worksheetIndex, columnIndex + day.Day, rowIndex, "-", ExcelInsertTypeEnum.Content);
+                    }
+
+                        
                 }
 
                 string totalHours = FromTotalMinutesToFormattedType(justification.TotalMinutes);
 
-                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+                //Viene considerato il range per la somma della riga, dalla colonna 1 alla colonna del numero dei giorni
+                //come riga viene considerata quella attuale
+                string rangeFormula = $"{ColumnIndexToNameConversion(columnIndex + 1)}{rowIndex}:" +
+                    $"{ColumnIndexToNameConversion(columnIndex + justification.DaysHours.Count)}{rowIndex}";
 
-                RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
+                //Formula automatica per la somma dei valori della riga
+                string formula = $"=SUM({rangeFormula})";
+
+                //Conta solamente i numeri della riga, quindi i giorni diversi da "M" o "F" o "---"
+                string contaFormula = $"=COUNT({rangeFormula})";
+
+                RangeSetBorders(worksheetIndex, columnIndex + justification.DaysHours.Count + 1, rowIndex, columnIndex + justification.DaysHours.Count + 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, columnIndex + justification.DaysHours.Count + 1, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
+
+                RangeSetBorders(worksheetIndex, columnIndex + justification.DaysHours.Count + 2, rowIndex, columnIndex + justification.DaysHours.Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                CellInsertValue(worksheetIndex, columnIndex + justification.DaysHours.Count + 2, rowIndex, contaFormula, Common.ExcelInsertTypeEnum.Formula);
+
+                //RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                //CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 2, rowIndex, totalHours, ExcelInsertTypeEnum.Content);
+
+                //RangeSetBorders(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                //CellInsertValue(worksheetIndex, CommonService.GetDatesFromPeriod(startMonth, endMonth).Count + 3, rowIndex, justification.TotalDays, ExcelInsertTypeEnum.Content);
 
 
                 rowIndex++;

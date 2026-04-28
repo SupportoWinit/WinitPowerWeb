@@ -1,5 +1,7 @@
 ﻿using Business.Repository;
+using Common;
 using Domain;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,6 +23,8 @@ namespace Business.ImportModules.CdcImportModule
         private const string FLATTR = "FLATTR";
         private const string DTSTARTVL = "DTSTARTVL";
         private const string DTENDVL = "DTENDVL";
+        private const string COD_CANT = "COD_CANT";
+        private const string DESC_CANT = "DESC_CANT";
 
         private string _idCompany = "";
         private string _codCdc = "";
@@ -38,6 +42,7 @@ namespace Business.ImportModules.CdcImportModule
         private IDictionary<string, CentroDiCosto> _centriDiCostoNuovi;
         private IDictionary<string, CentroDiCosto> _centriDiCostoEsistenti;
         private IDictionary<string, Cant> _bambiniEsistenti;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(CentroDiCostoImport));
 
         private string _currentKey;
 
@@ -54,6 +59,7 @@ namespace Business.ImportModules.CdcImportModule
             _centriDiCostoEsistenti = RepoManager.CentroDiCostoRepo.DbSet.Include("Cant_CentroDiCosto.CentroDiCosto").ToDictionary(b => $"{b.Codice}_{b.Descrizione}");
 
             ReadHeader();
+            bool importCant = Header.ContainsKey(COD_CANT) && Header.ContainsKey(DESC_CANT);
 
             //Salto la riga di header
             var groupedByCdc = base.Rows.Skip(1).GroupBy(row =>
@@ -63,75 +69,135 @@ namespace Business.ImportModules.CdcImportModule
                 return $"{splittedRow[Header[COD_CDC]]}_{splittedRow[Header[DESC_CDC]]}";
             }).ToList();
 
-            foreach (var group in groupedByCdc)
+            List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Codice_Cantiere.StartsWith("034_")).ToList();
+            foreach (Cant cant in cantieri) 
             {
-                var centroDiCostoKey = group.Key;
-
-                var centroDiCosto = (CentroDiCosto)null;
-
-                if (!_centriDiCostoEsistenti.TryGetValue(centroDiCostoKey, out centroDiCosto))
+                Cant_CentroDiCosto cdcCant = new Cant_CentroDiCosto
                 {
-                    var detail = centroDiCostoKey.Split('_');
+                    Cant_Id = cant.Cant_Id,
+                    CentroDiCosto_Id = 1
+                };
+                RepoManager.CentroDiCostoRepo.CantCentroDiCostoDbSet.Add(cdcCant);
+                RepoManager.CentroDiCostoRepo.Context.SaveChanges();
+            }
+                          
 
-                    centroDiCosto = new CentroDiCosto
-                    {
-                        Codice = detail[0],
-                        Descrizione = detail[1],
-                    };
-
-                    _centriDiCostoEsistenti.Add(centroDiCostoKey, centroDiCosto);
-                }
-
-                centroDiCosto.Inizio = DateTime.Parse(group.First().Split(';')[3]);
-                centroDiCosto.Fine = DateTime.Parse(group.First().Split(';')[4]);
-
-                foreach (var row in group)
+            if (importCant)
+            {
+                //Salto la riga di header
+                groupedByCdc = base.Rows.Skip(1).GroupBy(row =>
                 {
                     var splittedRow = row.Split(';');
-
-                    var bambinoKey = $"{splittedRow[Header[COD_DETT]]}_{splittedRow[Header[DESC_DETT]]}";
-
-                    var bambino = (Cant)null;
-
-                    if (!_bambiniEsistenti.TryGetValue(bambinoKey, out bambino))
+            
+                    return $"{splittedRow[Header[COD_CDC]]};{splittedRow[Header[DESC_CDC]]};{splittedRow[Header[COD_CANT]]};{splittedRow[Header[DESC_CANT]]}";
+                }).ToList();
+            
+                foreach (var cantCdc in groupedByCdc) 
+                {
+                    var chiave = cantCdc.Key;
+                    string[] details = chiave.Split(';');
+                    string codiceCdc = details[0];
+                    string descCdc = details[1];
+                    CentroDiCosto cdc = RepoManager.CentroDiCostoRepo.FirstOrDefault(c => c.Codice == codiceCdc && c.Descrizione == descCdc);
+                    if (cdc != default(CentroDiCosto))
                     {
+                        string codiceCant = CommonService.AggiungiSpaziASinistra(details[2],20);
+                        string descCant = details[3];
+                        Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Codice_Cantiere == codiceCant && c.Descrizione_Can == descCant);
+                        if (cantiere != default(Cant))
+                        {
+                            Cant_CentroDiCosto cdcCant = new Cant_CentroDiCosto
+                            {
+                                Cant_Id = cantiere.Cant_Id,
+                                CentroDiCosto_Id = cdc.CentroDiCosto_Id
+                            };
+                            RepoManager.CentroDiCostoRepo.CantCentroDiCostoDbSet.Add(cdcCant);
+            
+                            RepoManager.CentroDiCostoRepo.Context.SaveChanges();
+                        }
+                        else 
+                        {
+                            _log.Warn($"Il cantiere {details[2]} - {details[3]} non è presente nel database, impossibile importare il cantiere {details[2]} - {details[3]}");
+                        }
+                    }
+                    else 
+                    {
+                        _log.Warn($"Il centro di costo {details[0]} - {details[1]} non è presente nel database, impossibile importare il cantiere {details[2]} - {details[3]}");
+                    }
+                }
+            }
+            else 
+            {
+                foreach (var group in groupedByCdc)
+                {
+                    var centroDiCostoKey = group.Key;
+            
+                    var centroDiCosto = (CentroDiCosto)null;
+            
+                    if (!_centriDiCostoEsistenti.TryGetValue(centroDiCostoKey, out centroDiCosto))
+                    {
+                        var detail = centroDiCostoKey.Split('_');
+            
+                        centroDiCosto = new CentroDiCosto
+                        {
+                            Codice = detail[0],
+                            Descrizione = detail[1],
+                        };
+            
+                        _centriDiCostoEsistenti.Add(centroDiCostoKey, centroDiCosto);
+                    }
+            
+                    centroDiCosto.Inizio = DateTime.Parse(group.First().Split(';')[3]);
+                    centroDiCosto.Fine = DateTime.Parse(group.First().Split(';')[4]);
+            
+                    foreach (var row in group)
+                    {
+                        var splittedRow = row.Split(';');
+            
+                        var bambinoKey = $"{splittedRow[Header[COD_DETT]]}_{splittedRow[Header[DESC_DETT]]}";
+            
+                        var bambino = (Cant)null;
+            
+                        if (!_bambiniEsistenti.TryGetValue(bambinoKey, out bambino))
+                        {
+                            if (!String.IsNullOrEmpty(splittedRow[Header[COD_DETT]]))
+                            {
+                                bambino = new Cant
+                                {
+                                    Data_Registrazione_Can = DateTime.Now,
+                                    DataOraUltimaModifica_Can = DateTime.Now,
+                                    Codice_Cantiere = splittedRow[Header[COD_DETT]],
+                                    Descrizione_Can = splittedRow[Header[DESC_DETT]]
+                                };
+            
+                                _bambiniEsistenti.Add($"{splittedRow[Header[COD_DETT]]}_{splittedRow[Header[DESC_DETT]]}", bambino);
+            
+                                RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(bambino);
+            
+                                RepoManager.CantRepo.DbSet.Add(bambino);
+                            }
+                        }
+            
                         if (!String.IsNullOrEmpty(splittedRow[Header[COD_DETT]]))
                         {
-                            bambino = new Cant
+                            if (!centroDiCosto.Cant_CentroDiCosto.Any(c => c.Cant != null && $"{c.Cant.Codice_Cantiere}_{c.Cant.Descrizione_Can}" == bambinoKey))
                             {
-                                Data_Registrazione_Can = DateTime.Now,
-                                DataOraUltimaModifica_Can = DateTime.Now,
-                                Codice_Cantiere = splittedRow[Header[COD_DETT]],
-                                Descrizione_Can = splittedRow[Header[DESC_DETT]]
-                            };
-
-                            _bambiniEsistenti.Add($"{splittedRow[Header[COD_DETT]]}_{splittedRow[Header[DESC_DETT]]}", bambino);
-
-                            RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(bambino);
-
-                            RepoManager.CantRepo.DbSet.Add(bambino);
+                                centroDiCosto.Cant_CentroDiCosto.Add(new Cant_CentroDiCosto
+                                {
+                                    Cant = bambino,
+                                    CentroDiCosto = centroDiCosto
+                                });
+                            }
                         }
+            
                     }
-
-                    if (!String.IsNullOrEmpty(splittedRow[Header[COD_DETT]]))
-                    {
-                        if (!centroDiCosto.Cant_CentroDiCosto.Any(c => c.Cant != null && $"{c.Cant.Codice_Cantiere}_{c.Cant.Descrizione_Can}" == bambinoKey))
-                        {
-                            centroDiCosto.Cant_CentroDiCosto.Add(new Cant_CentroDiCosto
-                            {
-                                Cant = bambino,
-                                CentroDiCosto = centroDiCosto
-                            });
-                        }
-                    }
-
+            
+                    if (centroDiCosto.CentroDiCosto_Id == default)
+                        RepoManager.CentroDiCostoRepo.DbSet.Add(centroDiCosto);
                 }
-
-                if (centroDiCosto.CentroDiCosto_Id == default)
-                    RepoManager.CentroDiCostoRepo.DbSet.Add(centroDiCosto);
+            
+                RepoManager.CentroDiCostoRepo.Context.SaveChanges();
             }
-
-            RepoManager.CentroDiCostoRepo.Context.SaveChanges();
 
             return new Dictionary<string, string>();
         }

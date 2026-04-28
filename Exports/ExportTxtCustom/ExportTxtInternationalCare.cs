@@ -257,7 +257,7 @@ namespace Exports.ExportTxtCustom
                     else
                     {
                         #region Ore ordinarie
-                        DateTime lastDate = startOfMonth;
+                        DateTime lastDate = startOfMonth.AddDays(-1);
                         foreach (var dayRegs in dayDictionarys)
                         {
                             int differenza1 = dayRegs.Key.Value.Day - lastDate.Day;
@@ -267,7 +267,7 @@ namespace Exports.ExportTxtCustom
                                 {
                                     differenza1 = endOfMonth.Day + differenza1;
                                 }
-                                for (int i = 1; i <= differenza1; i++)
+                                for (int i = 1; i < differenza1; i++)
                                 {
                                     oreOrdinarie = oreOrdinarie + "0000;";
                                 }
@@ -327,6 +327,7 @@ namespace Exports.ExportTxtCustom
                 }
 
                 #region Giustificativo 1-2
+
                 if (giustificativo1 == "" && oreGiustificativo1 == "")
                 {
                     for (int i = 0; i < endOfMonth.Day; i++)

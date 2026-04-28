@@ -1556,7 +1556,11 @@ namespace Business.BusinessExtension
 
                 // con il cantiere recuperato dal repository allora provvedo all'inserimento dei dati di cantiere
                 CantDesc = currentCant != null ? currentCant.Descrizione_Can : String.Empty;
-                CantMnemonic = currentCant != null ? currentCant.Codice_Cantiere : String.Empty;
+                CantMnemonic = currentCant != null ? currentCant.Codice_Cantiere : String.Empty;    
+                
+                var currentCli = RepoManager.CliRepo.FirstOrDefault(cli => cli.Cli_Id == cantIdToInsert);
+                CantDesc = currentCli != null ? currentCli.Cognome_Cli : CantDesc;
+                CantMnemonic = currentCli != null ? currentCli.Cognome_Cli : CantMnemonic;
             }
         }
 
@@ -3383,6 +3387,8 @@ namespace Business.BusinessExtension
                     else
                         nocturnStartHourModify = nocturnStartHour;
 
+                    List<Reg_V> toAddNoct = new List<Reg_V>();
+
                     // per calcolare correttamente il numero di ore diurne devo aggiustare l'entrata o l'uscita di quanto selezionato ai parametri di inzio/fine notturno
                     dayRegVs.ForEach(regv =>
                     {
@@ -3469,11 +3475,11 @@ namespace Business.BusinessExtension
                                 newRegV.TmpDataOraFigE = newRegV.Data_Ora_Fig_E;
                                 newRegV.TmpDurataFigU = newRegV.Durata_Fig;
 
-                                newRegV.Data_Ora_Fig_E = new DateTime(newRegV.Data_Ora_Fig_U.Value.Year,
-                                    newRegV.Data_Ora_Fig_U.Value.Month, newRegV.Data_Ora_Fig_U.Value.Day,
-                                    nocturnEndHour.Value.Hours,
-                                    nocturnEndHour.Value.Minutes,
-                                    nocturnEndHour.Value.Seconds);
+                                newRegV.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                    regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    1);
 
                                 regVEdited = true;
                             }
@@ -4655,6 +4661,30 @@ namespace Business.BusinessExtension
             return returnList;
         }
 
+        private static List<TimesheetModuleItem> GenerateNewCdcRegVTimesheetsByOtherEntity(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
+            DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, bool usaFisiche = false, List<int> cantList = null)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnList = new List<TimesheetModuleItem>();
+
+            // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
+            var cantIdList = regVsToSplit.Select(regv => regv.Cant_Id).Distinct().ToList();
+            var attDescList = regVsToSplit.Select(regv => regv.Note_Reg).Distinct().ToList();
+            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            {
+                cantIdList = cantList.Cast<int?>().ToList();
+            }
+            // per ogni id cantiere presente nella lista
+            foreach (var attDesc in attDescList)
+            {
+                // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Note_Reg == attDesc).ToList(), attDesc, firstMonthDate, lastMonthDate, timesheetOrder, 0, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+            }
+
+            // ritorno del valore calcolato dal metodo
+            return returnList;
+        }
+
         private static List<TimesheetModuleItem> GenerateNewRegVTimesheetsByOtherEntity(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
             DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, bool usaFisiche = false, List<int> cantList = null)
         {
@@ -4871,6 +4901,38 @@ namespace Business.BusinessExtension
             return returnList;
         }
 
+        private static List<TimesheetModuleItem> GenerateNewRegVTimesheetsModify(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
+           DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> plan, bool usaFisiche = false, List<int> cantList = null)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnList = new List<TimesheetModuleItem>();
+            //
+            var cliIdList = regVsToSplit.Select(regv => regv.Cli_Id).Distinct().ToList();
+            //if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            //{
+            //    cantIdList = cantList.Cast<int?>().ToList();
+            //}
+            //List<int> cantIdList = new List<int>();
+            var prova = plan.Select(regv => regv.Key).Distinct().ToList();
+
+            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            {
+                cliIdList = cliIdList.Cast<int?>().ToList();
+            }
+            // per ogni id cantiere presente nella lista
+            foreach (var listCliId in cliIdList)
+            {
+                // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                var currentCantId = listCliId ?? 0;
+
+                // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                returnList.Add(GenerateNewModifyTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cli_Id == listCliId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+            }
+
+            // ritorno del valore calcolato dal metodo
+            return returnList;
+        }
+
         private static List<TimesheetModuleItem> GenerateRegVTimesheetsSingle(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
            DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> plan, bool usaFisiche = false, List<int> cantList = null)
         {
@@ -4905,6 +4967,38 @@ namespace Business.BusinessExtension
 
                 // aggiungo il timesheet specifico del cantiere alla list di ritorno
                 returnList.Add(GenerateNewSingleTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+            }
+
+            // ritorno del valore calcolato dal metodo
+            return returnList;
+        }
+
+        private static List<TimesheetModuleItem> GenerateNewRegVTimesheetsSingle(List<Reg_V> regVsToSplit, Col col, bool isDecimalHours, string timesheetJustification, DateTime firstMonthDate,
+           DateTime lastMonthDate, int timesheetOrder, bool requestedForWeeklyTotals, Dictionary<int, Dictionary<DateTime, Tuple<double, TimeSpan?, TimeSpan?>>> plan, bool usaFisiche = false, List<int> cantList = null)
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnList = new List<TimesheetModuleItem>();
+            //
+            var cliIdList = regVsToSplit.Select(regv => regv.Cli_Id).Distinct().ToList();
+            //if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            //{
+            //    cantIdList = cantList.Cast<int?>().ToList();
+            //}
+            //List<int> cantIdList = new List<int>();
+            var prova = plan.Select(regv => regv.Key).Distinct().ToList();
+
+            if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
+            {
+                cliIdList = cliIdList.Cast<int?>().ToList();
+            }
+            // per ogni id cantiere presente nella lista
+            foreach (var listCliId in cliIdList)
+            {
+                // calcolo l'id cantiere facendo si di convertire in 0 i valori null
+                var currentCantId = listCliId ?? 0;
+
+                // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                returnList.Add(GenerateNewSingleTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cli_Id == listCliId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
             }
 
             // ritorno del valore calcolato dal metodo
@@ -10615,25 +10709,39 @@ namespace Business.BusinessExtension
                 string workedJust = BusinessService.GetLocalizedString(PowerWebResources.LBL_ORE_LAVORATE);
                 Tab_Decod td = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Decodifica_Tab == workedJust);
                 just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
-                //if (isByOtherEntity)
-                //{
-                    cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
-                //}
-                //cartelliniToInitializeExport = cartelliniToInitializeExport.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
+                cartelliniToInitializeExport.AddRange(GenerateRegVTimesheetsByOtherEntity(workedRegVs, col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
                 colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
                 List<TimesheetModuleItem> TotaleCartellini = new List<TimesheetModuleItem>();
                 TotaleCartellini.Add(colTotal);
                 cartellini.Add("totale", TotaleCartellini);
                 List<TimesheetModuleItem> colModified = null;
-                colModified = GenerateRegVTimesheetsModify(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
-                List<TimesheetModuleItem> ModificheCartellini = new List<TimesheetModuleItem>();
-                ModificheCartellini.AddRange(colModified);
-                cartellini.Add("Modifiche", ModificheCartellini);
                 List<TimesheetModuleItem> colSingle = null;
-                colSingle = GenerateRegVTimesheetsSingle(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
-                List<TimesheetModuleItem> SingoleCartellini = new List<TimesheetModuleItem>();
-                SingoleCartellini.AddRange(colSingle);
-                cartellini.Add("Singole", SingoleCartellini);
+                DateTime exportDate = new DateTime(2026, 04, 01);
+                if (minDate < exportDate)
+                {
+                    colModified = GenerateRegVTimesheetsModify(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
+                    List<TimesheetModuleItem> ModificheCartellini = new List<TimesheetModuleItem>();
+                    ModificheCartellini.AddRange(colModified);
+                    cartellini.Add("Modifiche", ModificheCartellini);
+
+                    colSingle = GenerateRegVTimesheetsSingle(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
+                    List<TimesheetModuleItem> SingoleCartellini = new List<TimesheetModuleItem>();
+                    SingoleCartellini.AddRange(colSingle);
+                    cartellini.Add("Singole", SingoleCartellini);
+                }
+                else
+                {
+                    colModified = GenerateNewRegVTimesheetsModify(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
+                    List<TimesheetModuleItem> ModificheCartellini = new List<TimesheetModuleItem>();
+                    ModificheCartellini.AddRange(colModified);
+                    cartellini.Add("Modifiche", ModificheCartellini);
+
+                    colSingle = GenerateNewRegVTimesheetsSingle(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes);
+                    List<TimesheetModuleItem> SingoleCartellini = new List<TimesheetModuleItem>();
+                    SingoleCartellini.AddRange(colSingle);
+                    cartellini.Add("Singole", SingoleCartellini);
+                }
+                
             }
 
             #endregion
@@ -11364,42 +11472,16 @@ namespace Business.BusinessExtension
             #region TOTALE
             //Filtra i cartellini su cui calcolare il totale
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
-
-           //int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
-           //if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
-           //{
-               //cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi").ToList();
-           //}
-           //else if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 1)
-           //{
-           //    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Viaggi" || c.Justification == "Pausa").ToList();
-           //}
-           //else if (customizationVersionJustification == 1 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
-           //{
-           //    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
-           //}
-           //else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
-           //{
-           //    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
-           //}
-           //else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
-           //{
-           //    cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
-           //}
-
             //TimesheetModuleItem colTotal = null;
 
             if (colTotal == null)
             {
                 colTotal = GenerateNewTotalTimesheet(col.Col_Id, isDecimalHours, cartelliniToTotalize, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
             }
-            //if (!isByOtherEntity)
-            //{
-            //    justificationCartellini.Add(colTotal);
-            //}
+
             colTotal.CantDesc = BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE);
             justificationCartellini.Add(colTotal);
-           //
+
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportHotelKomplett) == 1)
             {
                 var cartelliniToInitializeExport = new List<TimesheetModuleItem>();
@@ -11670,15 +11752,22 @@ namespace Business.BusinessExtension
                 just = td != default(Tab_Decod) ? td.Chiave_Tab : workedJust;
                 if (isByOtherEntity)
                 {
-                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+                    DateTime exportDate = new DateTime(2026, 04, 01);
+                    if (minDate < exportDate)
                     {
-                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntityExportStr(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes));
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 1)
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntityExportStr(baseColRegVs.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal, planMinutes));
+                        }
+                        else
+                        {
+                            justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(registrazioni.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        }
                     }
-                    else
+                    else 
                     {
-                        justificationCartellini.AddRange(GenerateRegVTimesheetsByOtherEntity(registrazioni.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal));
+                        justificationCartellini.AddRange(GenerateNewCdcRegVTimesheetsByOtherEntity(registrazioni.ToList(), col, isDecimalHours, just, minDate, maxDate, ++tsOrder, showWeeklyTotal)); 
                     }
-
                 }
                 else
                 {
@@ -11761,7 +11850,7 @@ namespace Business.BusinessExtension
             if (calculateJustifications)
             {
                 //Recupera le registrazioni di tipo motivazione
-                var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
+                var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, registrazioni);
 
                 //Se sono presenti motivazioni, genera i relativi cartellini
                 if (justificationRegVs.Any())

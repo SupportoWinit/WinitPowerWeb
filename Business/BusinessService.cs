@@ -966,7 +966,7 @@ namespace Business
                 geocodeRequest.Query = address;
 
                 // Make the geocode request
-                var response = Task.Run(() => ServiceManager.GetResponseAsync(geocodeRequest)).Result;
+                //var response = Task.Run(() => ServiceManager.GetResponseAsync(geocodeRequest)).Result;
 
                 //if (response.StatusCode == 200)
                 //{

@@ -139,8 +139,8 @@ namespace PowerWeb.Api
                         InviaConferma(1, col, From, To);
                     }
                     else {
-                        _log.Info("Rchiesta gia presente a sistema");
-                        values.Status = false;
+                        _log.Info("Richiesta gia presente a sistema");
+                        values.Status = true;
                         values.Message = "Richiesta già presente a sistema";
                         InviaConferma(3, col, From, To);
                     }
@@ -249,8 +249,8 @@ namespace PowerWeb.Api
                         InviaConferma(0, col, From, To);
                     }
                     else {
-                        _log.Info("Rchiesta gia presente a sistema");
-                        values.Status = false;
+                        _log.Info("Richiesta gia presente a sistema");
+                        values.Status = true;
                         values.Message = "Richiesta già presente a sistema";
                         InviaConferma(2, col, From, To);
                     }                    

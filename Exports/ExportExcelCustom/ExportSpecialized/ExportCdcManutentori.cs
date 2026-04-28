@@ -71,183 +71,135 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<Reg_V> exportRegs = new List<Reg_V>();
             List<Col> manutentori = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col == "0").ToList();
 
-            foreach (Col collaboratore in manutentori) 
-            {
-                if (collaboratore.Scadenza_Patente_Col != null)
-                {
-                    if (collaboratore.Scadenza_Patente_Col.Value.Between(startMonth, endMonth))
-                    {
-                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= collaboratore.Scadenza_Patente_Col.Value && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
-                        collaboratori.Add(collaboratore);
-                    }
-                    else
-                    {
-                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
-                        collaboratori.Add(collaboratore);
-                    }
-                }
-                else 
-                {
-                    exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
-                    collaboratori.Add(collaboratore);
-                }                
-            }
+            //foreach (Col collaboratore in manutentori) 
+            //{
+            //    if (collaboratore.Scadenza_Patente_Col != null)
+            //    {
+            //        if (collaboratore.Scadenza_Patente_Col.Value.Between(startMonth, endMonth))
+            //        {
+            //            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= collaboratore.Scadenza_Patente_Col.Value && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            //            collaboratori.Add(collaboratore);
+            //        }
+            //        else
+            //        {
+            //            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            //            collaboratori.Add(collaboratore);
+            //        }
+            //    }
+            //    else 
+            //    {
+            //        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            //        collaboratori.Add(collaboratore);
+            //    }                
+            //}
 
             List<Col> colCambiati = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col != "0" && c.Scadenza_Patente_Col.Value != null).ToList();
 
-            foreach (Col collaboratore in colCambiati)
-            {
-                if (collaboratore.Scadenza_Patente_Col != null)
-                {
-                    if (collaboratore.Scadenza_Patente_Col.Value.Between(startMonth, endMonth))
-                    {
-                        exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= startMonth && r.Data_Reg <= collaboratore.Scadenza_Patente_Col.Value && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
-                        collaboratori.Add(collaboratore);
-                    }
-                }
-            }
+            //foreach (Col collaboratore in colCambiati)
+            //{
+            //    if (collaboratore.Scadenza_Patente_Col != null)
+            //    {
+            //        if (collaboratore.Scadenza_Patente_Col.Value.Between(startMonth, endMonth))
+            //        {
+            //            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == collaboratore.Col_Id && r.Data_Reg >= startMonth && r.Data_Reg <= collaboratore.Scadenza_Patente_Col.Value && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            //            collaboratori.Add(collaboratore);
+            //        }
+            //    }
+            //}
 
             List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
-            //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();           
-            var exportRegVs = exportRegs.GroupBy(c => c.Col_Id);// regVs2.GroupBy(c => c.Col_Id);
-            foreach (var exportReg in exportRegVs)
+            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            var exportRegVs = exportRegs.GroupBy(c => c.Col_Id);
+            collaboratori = new List<Col>();
+            DateTime exportDate = new DateTime(2026, 04, 01);
+            if (startMonth < exportDate)
             {
-                for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1)) {
-                    //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
-                    List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
-                    string lastAtt = "";
-                    int lastAttId = 0;
-                    string lastCant = "";
-                    int lastDurata = 1;
-                    //vado a fare un foreac
-                    var list = exportReg.Where(r => r.Data_Reg.Value == cond);
-                    int totaleReg = 0;
-                    foreach (var reg in list.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E))
+                foreach (var exportReg in exportRegVs)
+                {
+                    for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1))
                     {
-                        List<Dictionary<string, Dictionary<string, int>>> tmpAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
-                        List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                        //controllo se la timbratura è un attività
-                        if (reg.Registrazione_Tipo_Reg == 2)
+                        //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
+                        List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
+                        string lastAtt = "";
+                        int lastAttId = 0;
+                        string lastCant = "";
+                        int lastDurata = 1;
+                        //vado a fare un foreac
+                        var list = exportReg.Where(r => r.Data_Reg.Value == cond);
+                        int totaleReg = 0;
+                        foreach (var reg in list.OrderBy(r => r.Col_Id).ThenBy(r => r.Data_Ora_Fis_E))
                         {
-                            //recupero la lista delle attività
-                            List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                            //controllo se la timbratura è associata o meno
-                            if (reg.Registrazione_Stato_Reg == 1)
+                            List<Dictionary<string, Dictionary<string, int>>> tmpAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
+                            List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                            //controllo se la timbratura è un attività
+                            if (reg.Registrazione_Tipo_Reg == 2)
                             {
-                                //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
-                                bool aggiornato = false;
-                                //ciclo tutte le attività che ho recuperato in precedenza
-                                if (listaAttivita.Count() > 0)
+                                //recupero la lista delle attività
+                                List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                //controllo se la timbratura è associata o meno
+                                if (reg.Registrazione_Stato_Reg == 1)
                                 {
-                                    bool esiste = false;
-                                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
-                                    foreach (var att in listaAttivita)
-                                    {
-                                        if (att.First().Key == lastCant)
-                                        {
-                                            if (!esiste)
-                                            {
-                                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
-                                                tmpDic = att.First().Value;
-                                                foreach (var lista in tmpDic)
-                                                {
-                                                    if (lista.Key == attivita.First().Note_Can)
-                                                    {
-                                                        esiste = true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (esiste)
-                                    {
-                                        //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                        int tmp = tmpDic[attivita.First().Note_Can];
-                                        //incremento il totale delle ore mensili
-                                        tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
-                                        //azzero tute le variabili
-                                        lastAtt = attivita.First().Note_Can;
-                                        lastAttId = attivita.First().Cant_Id;
-                                        lastDurata = 0;
-                                        aggiornato = true;
-                                    }
-                                    else
-                                    {
-                                        if (lastDurata > 0)
-                                        {
-                                            Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                            tmpAttivita.Add(tmpDi);
-                                        } 
-                                        aggiornato = true;
-                                        lastAtt = attivita.First().Note_Can;
-                                        lastAttId = attivita.First().Cant_Id;
-                                        lastDurata = 0;
-                                    }
-                                    if (!aggiornato)
-                                    {
-                                        if (lastDurata > 0)
-                                        {
-                                            var tmpdic = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpdic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                            tmpAttivita.Add(tmpdic);
-                                        }
-                                        lastAtt = attivita.First().Note_Can;
-                                        lastAttId = attivita.First().Cant_Id;
-                                    }
-                                }
-                                else
-                                {
-                                    if (lastDurata > 0)
-                                    {
-                                        Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
-                                        tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                        tmpAttivita.Add(tmpDi);
-                                    }
-                                    lastDurata = 0;
-                                    lastAtt = attivita.First().Note_Can;
-                                    lastAttId = attivita.First().Cant_Id;
-                                }
-
-                            }
-                            else
-                            {
-                                if (lastAtt != "" && lastDurata > 0)
-                                {
-                                    attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Note_Can == lastAtt).ToList();
                                     //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
                                     bool aggiornato = false;
-                                    bool esiste = false;
-                                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
-                                    foreach (var att in listaAttivita)
+                                    //ciclo tutte le attività che ho recuperato in precedenza
+                                    if (listaAttivita.Count() > 0)
                                     {
-                                        if (att.First().Key == lastCant)
+                                        bool esiste = false;
+                                        Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+                                        foreach (var att in listaAttivita)
                                         {
-                                            if (!esiste)
+                                            if (att.First().Key == lastCant)
                                             {
-                                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
-                                                tmpDic = att.First().Value;
-                                                foreach (var lista in tmpDic)
+                                                if (!esiste)
                                                 {
-                                                    if (lista.Key == attivita.First().Note_Can)
+                                                    //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+                                                    tmpDic = att.First().Value;
+                                                    foreach (var lista in tmpDic)
                                                     {
-                                                        esiste = true;
+                                                        if (lista.Key == attivita.First().Note_Can)
+                                                        {
+                                                            esiste = true;
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                    if (esiste)
-                                    {
-                                        //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                        int tmp = tmpDic[attivita.First().Note_Can];
-                                        //incremento il totale delle ore mensili
-                                        tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
-                                        //azzero tute le variabili
-                                        lastAtt = "";
-                                        lastAttId = 0;
-                                        lastDurata = 0;
-                                        aggiornato = true;
+                                        if (esiste)
+                                        {
+                                            //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+                                            int tmp = tmpDic[attivita.First().Note_Can];
+                                            //incremento il totale delle ore mensili
+                                            tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
+                                            //azzero tute le variabili
+                                            lastAtt = attivita.First().Note_Can;
+                                            lastAttId = attivita.First().Cant_Id;
+                                            lastDurata = 0;
+                                            aggiornato = true;
+                                        }
+                                        else
+                                        {
+                                            if (lastDurata > 0)
+                                            {
+                                                Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+                                                tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                                tmpAttivita.Add(tmpDi);
+                                            }
+                                            aggiornato = true;
+                                            lastAtt = attivita.First().Note_Can;
+                                            lastAttId = attivita.First().Cant_Id;
+                                            lastDurata = 0;
+                                        }
+                                        if (!aggiornato)
+                                        {
+                                            if (lastDurata > 0)
+                                            {
+                                                var tmpdic = new Dictionary<string, Dictionary<string, int>>();
+                                                tmpdic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                                tmpAttivita.Add(tmpdic);
+                                            }
+                                            lastAtt = attivita.First().Note_Can;
+                                            lastAttId = attivita.First().Cant_Id;
+                                        }
                                     }
                                     else
                                     {
@@ -257,148 +209,241 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                             tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
                                             tmpAttivita.Add(tmpDi);
                                         }
-                                        aggiornato = true;
-                                        lastAtt = "";
-                                        lastAttId = 0;
                                         lastDurata = 0;
-                                    }
-                                    if (!aggiornato)
-                                    {
-                                        if (lastDurata > 0)
-                                        {
-                                            Dictionary<string, Dictionary<string, int>> tmpdic = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpdic[currentCant.First().Note_Can] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                            tmpAttivita.Add(tmpdic);
-                                        }
-                                        lastAtt = "";
-                                        lastAttId = 0;
-                                        lastDurata = 0;
-                                    }
-                                }
-                                attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
-                                lastAtt = attivita.First().Note_Can;
-                                lastAttId = attivita.First().Cant_Id;
-                            }
-                        }
-                        else if (reg.Registrazione_Tipo_Reg == 0)
-                        {
-                            if (reg.Durata_Fig != null)
-                            {
-                                //Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == reg.Cant_Id);
-                                lastDurata += reg.Durata_Fig.Value;
-                                lastCant = reg.Cant_Desc;
-                                //lastAtt = cantiere.Note_Can;
-                            }
-                            if (totaleReg + 1 == list.Count() && lastAtt != "") {
-                                //recupero la lista delle attività
-                                List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId).ToList();
-                                //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
-                                bool aggiornato = false;
-                                //ciclo tutte le attività che ho recuperato in precedenza
-                                if (listaAttivita.Count() > 0)
-                                {
-                                    bool esiste = false;
-                                    Dictionary<string, int> tmpDic = new Dictionary<string, int>();
-                                    foreach (var att in listaAttivita)
-                                    {
-                                        if (att.First().Key == lastCant)
-                                        {
-                                            if (!esiste)
-                                            {
-                                                //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
-                                                tmpDic = att.First().Value;
-                                                foreach (var lista in tmpDic)
-                                                {
-                                                    if (lista.Key == attivita.First().Note_Can)
-                                                    {
-                                                        esiste = true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (esiste)
-                                    {
-                                        //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
-                                        int tmp = tmpDic[attivita.First().Note_Can];
-                                        //incremento il totale delle ore mensili
-                                        tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
-                                        //azzero tute le variabili
-                                        lastAtt = attivita.First().Note_Can;
-                                        lastAttId = attivita.First().Cant_Id;
-                                        lastDurata = 0;
-                                        aggiornato = true;
-                                    }
-                                    else
-                                    {
-                                        if (lastDurata > 0)
-                                        {
-                                            Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                            tmpAttivita.Add(tmpDi);
-                                        }
-                                        aggiornato = true;
-                                        lastAtt = attivita.First().Note_Can;
-                                        lastAttId = attivita.First().Cant_Id;
-                                        lastDurata = 0;
-                                    }
-                                    if (!aggiornato)
-                                    {
-                                        if (lastDurata > 0)
-                                        {
-                                            var tmpdic = new Dictionary<string, Dictionary<string, int>>();
-                                            tmpdic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                            tmpAttivita.Add(tmpdic);
-                                        }
                                         lastAtt = attivita.First().Note_Can;
                                         lastAttId = attivita.First().Cant_Id;
                                     }
+
                                 }
                                 else
                                 {
-                                    if (lastDurata > 0)
+                                    if (lastAtt != "" && lastDurata > 0)
                                     {
-                                        Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
-                                        tmpDic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
-                                        tmpAttivita.Add(tmpDic);
+                                        attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Note_Can == lastAtt).ToList();
+                                        //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+                                        bool aggiornato = false;
+                                        bool esiste = false;
+                                        Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+                                        foreach (var att in listaAttivita)
+                                        {
+                                            if (att.First().Key == lastCant)
+                                            {
+                                                if (!esiste)
+                                                {
+                                                    //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+                                                    tmpDic = att.First().Value;
+                                                    foreach (var lista in tmpDic)
+                                                    {
+                                                        if (lista.Key == attivita.First().Note_Can)
+                                                        {
+                                                            esiste = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (esiste)
+                                        {
+                                            //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+                                            int tmp = tmpDic[attivita.First().Note_Can];
+                                            //incremento il totale delle ore mensili
+                                            tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
+                                            //azzero tute le variabili
+                                            lastAtt = "";
+                                            lastAttId = 0;
+                                            lastDurata = 0;
+                                            aggiornato = true;
+                                        }
+                                        else
+                                        {
+                                            if (lastDurata > 0)
+                                            {
+                                                Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+                                                tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                                tmpAttivita.Add(tmpDi);
+                                            }
+                                            aggiornato = true;
+                                            lastAtt = "";
+                                            lastAttId = 0;
+                                            lastDurata = 0;
+                                        }
+                                        if (!aggiornato)
+                                        {
+                                            if (lastDurata > 0)
+                                            {
+                                                Dictionary<string, Dictionary<string, int>> tmpdic = new Dictionary<string, Dictionary<string, int>>();
+                                                tmpdic[currentCant.First().Note_Can] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                                tmpAttivita.Add(tmpdic);
+                                            }
+                                            lastAtt = "";
+                                            lastAttId = 0;
+                                            lastDurata = 0;
+                                        }
                                     }
-                                    lastDurata = 0;
+                                    attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
                                     lastAtt = attivita.First().Note_Can;
                                     lastAttId = attivita.First().Cant_Id;
                                 }
                             }
-                        } 
-                        else if (reg.Registrazione_Tipo_Reg == 4) {
-                            if (reg.Durata_Fig != null)
+                            else if (reg.Registrazione_Tipo_Reg == 0)
                             {
-                                lastDurata += reg.Durata_Fig.Value;
-                                lastCant = reg.Cant_Desc;
+                                if (reg.Durata_Fig != null)
+                                {
+                                    //Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == reg.Cant_Id);
+                                    lastDurata += reg.Durata_Fig.Value;
+                                    lastCant = reg.Cant_Desc;
+                                    //lastAtt = cantiere.Note_Can;
+                                }
+                                if (totaleReg + 1 == list.Count() && lastAtt != "")
+                                {
+                                    //recupero la lista delle attività
+                                    List<Cant> attivita = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == lastAttId).ToList();
+                                    //inizializzo la variabile per controllare se ho aggiornato la lista oppure devo creare una nuova tupla
+                                    bool aggiornato = false;
+                                    //ciclo tutte le attività che ho recuperato in precedenza
+                                    if (listaAttivita.Count() > 0)
+                                    {
+                                        bool esiste = false;
+                                        Dictionary<string, int> tmpDic = new Dictionary<string, int>();
+                                        foreach (var att in listaAttivita)
+                                        {
+                                            if (att.First().Key == lastCant)
+                                            {
+                                                if (!esiste)
+                                                {
+                                                    //inizializzo un dictionary temporaneo contenente come chiave attivita e valore le ore
+                                                    tmpDic = att.First().Value;
+                                                    foreach (var lista in tmpDic)
+                                                    {
+                                                        if (lista.Key == attivita.First().Note_Can)
+                                                        {
+                                                            esiste = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (esiste)
+                                        {
+                                            //recupero il totale delle ore lavorate su quel cantiere facendo una determinata attivita
+                                            int tmp = tmpDic[attivita.First().Note_Can];
+                                            //incremento il totale delle ore mensili
+                                            tmpDic[attivita.First().Note_Can] = tmp + lastDurata;
+                                            //azzero tute le variabili
+                                            lastAtt = attivita.First().Note_Can;
+                                            lastAttId = attivita.First().Cant_Id;
+                                            lastDurata = 0;
+                                            aggiornato = true;
+                                        }
+                                        else
+                                        {
+                                            if (lastDurata > 0)
+                                            {
+                                                Dictionary<string, Dictionary<string, int>> tmpDi = new Dictionary<string, Dictionary<string, int>>();
+                                                tmpDi[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                                tmpAttivita.Add(tmpDi);
+                                            }
+                                            aggiornato = true;
+                                            lastAtt = attivita.First().Note_Can;
+                                            lastAttId = attivita.First().Cant_Id;
+                                            lastDurata = 0;
+                                        }
+                                        if (!aggiornato)
+                                        {
+                                            if (lastDurata > 0)
+                                            {
+                                                var tmpdic = new Dictionary<string, Dictionary<string, int>>();
+                                                tmpdic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                                tmpAttivita.Add(tmpdic);
+                                            }
+                                            lastAtt = attivita.First().Note_Can;
+                                            lastAttId = attivita.First().Cant_Id;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (lastDurata > 0)
+                                        {
+                                            Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
+                                            tmpDic[lastAtt] = new Dictionary<string, int>() { { attivita.First().Note_Can, lastDurata } };
+                                            tmpAttivita.Add(tmpDic);
+                                        }
+                                        lastDurata = 0;
+                                        lastAtt = attivita.First().Note_Can;
+                                        lastAttId = attivita.First().Cant_Id;
+                                    }
+                                }
                             }
+                            else if (reg.Registrazione_Tipo_Reg == 4)
+                            {
+                                if (reg.Durata_Fig != null)
+                                {
+                                    lastDurata += reg.Durata_Fig.Value;
+                                    lastCant = reg.Cant_Desc;
+                                }
+                            }
+                            listaAttivita.AddRange(tmpAttivita);
+                            totaleReg++;
                         }
-                        listaAttivita.AddRange(tmpAttivita);
-                        totaleReg++;
-                    }
-                    if (listaAttivita.Count() > 0)
-                    {
-                        foreach (var cant in listaAttivita)
+                        if (listaAttivita.Count() > 0)
                         {
-                            foreach (var att in cant.First().Value)
+                            foreach (var cant in listaAttivita)
                             {
-                                List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Note_Can == att.Key).ToList();
-                                var newRounding = new Reg_V();
-                                newRounding.Col_Id = exportReg.Key;
-                                newRounding.Cant_Id = cants.First().Cant_Id;
-                                newRounding.Durata_Fig = att.Value;
-                                newRounding.Durata_Fis = att.Value;
-                                newRounding.Data_Reg = cond;
-                                regVs.Add(newRounding);
+                                foreach (var att in cant.First().Value)
+                                {
+                                    List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Note_Can == att.Key).ToList();
+                                    var newRounding = new Reg_V();
+                                    newRounding.Col_Id = exportReg.Key;
+                                    newRounding.Cant_Id = cants.First().Cant_Id;
+                                    newRounding.Durata_Fig = att.Value;
+                                    newRounding.Durata_Fis = att.Value;
+                                    newRounding.Data_Reg = cond;
+                                    regVs.Add(newRounding);
+                                }
                             }
                         }
+
                     }
-                    
                 }
             }
-
+            else
+            {
+                foreach (var exportReg in exportRegVs)
+                {
+                    Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);
+                    collaboratori.Add(collaboratore);
+                    for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1))
+                    {
+                        //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
+                        List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
+                        //vado a fare un foreach
+                        var list = exportReg.Where(r => r.Data_Reg.Value == cond);
+                        foreach (var reg in list)
+                        {
+                            if (reg.Cant_Id != null) 
+                            {
+                                List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                if (cants.First().Tipo_Interv_Can != null)
+                                {
+                                    string tipoInt = cants.First().Tipo_Interv_Can;
+                                    Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                    if (att != default(Tab_Decod))
+                                    {
+                                        var newRounding = new Reg_V();
+                                        newRounding.Col_Id = exportReg.Key;
+                                        newRounding.Cant_Id = reg.Cant_Id;
+                                        newRounding.Durata_Fig = reg.Durata_Fig;
+                                        newRounding.Durata_Fis = reg.Durata_Fis;
+                                        newRounding.Data_Reg = cond;
+                                        newRounding.Note_Reg = att.Campo1_Tab;
+                                        regVs.Add(newRounding);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             foreach (Col col in collaboratori)
             {

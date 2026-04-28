@@ -3422,8 +3422,8 @@ namespace Business.Repository.Custom
                                                                 newReg.Reg_Id = 0;
                                                                 newReg.Pru_Id = currentReg.Pru_Id;
                                                                 newReg.Fru_Id = currentReg.Fru_Id;
-                                                                newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
-                                                                    currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
+                                                                DateTime newDate = currentReg.Registrazione_Data_Ora_Fis_Reg.AddSeconds(1);
+                                                                newReg.Registrazione_Data_Ora_Fis_Reg = newDate;
                                                                 newReg.Data_Registrazione_Reg = DateTime.Now;
                                                                 newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                                                 newReg.Custom_Data_Reg = tmpCoupleCode;
@@ -3476,8 +3476,8 @@ namespace Business.Repository.Custom
                                                         CommonService.DuplicateEntity(currentReg, newReg);
                                                         newReg.Reg_Id = 0;
                                                         //data ore uguali alla reg precedente +59 secondi
-                                                        newReg.Registrazione_Data_Ora_Fis_Reg = new DateTime(currentReg.Registrazione_Data_Ora_Fis_Reg.Year, currentReg.Registrazione_Data_Ora_Fis_Reg.Month,
-                                                            currentReg.Registrazione_Data_Ora_Fis_Reg.Day, currentReg.Registrazione_Data_Ora_Fis_Reg.Hour, currentReg.Registrazione_Data_Ora_Fis_Reg.Minute, currentReg.Registrazione_Data_Ora_Fis_Reg.Second + 1);
+                                                        DateTime newDate = currentReg.Registrazione_Data_Ora_Fis_Reg.AddSeconds(1);
+                                                        newReg.Registrazione_Data_Ora_Fis_Reg = newDate;
                                                         newReg.Data_Registrazione_Reg = DateTime.Now;
                                                         newReg.Codice_Accoppiamento = tmpCoupleCode; // inserisco nella registrazione un codice accoppiamento fittizio per poi recuperarle dopo l'inserimento a db
                                                         newReg.Custom_Data_Reg = tmpCoupleCode;
@@ -8116,13 +8116,16 @@ namespace Business.Repository.Custom
 
                                                     // si imposta il cantiere gps solamente se è stato correttamente trovato;
                                                     // in caso contrario si procede a segnalare il gruppo come errore
-                                                    if (cantId != 0)
+                                                    if (cantId != 0 && cantId != -2)
                                                     {
                                                         newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
 
                                                         // aggiunta della registrazione all'elenco
                                                         regsToAdd.Add(newReg);
                                                     }
+                                                    else if (cantId == -2)
+                                                        gpsRegGroup.ForEach(preReg =>
+                                                            processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_RECORD_CON_VALORI_DUPLICATI), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
                                                     else
                                                         gpsRegGroup.ForEach(preReg =>
                                                             processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
@@ -8555,17 +8558,19 @@ namespace Business.Repository.Custom
 
                                                     // si imposta il cantiere gps solamente se è stato correttamente trovato;
                                                     // in caso contrario si procede a segnalare il gruppo come errore
-                                                    if (cantId != 0)
+                                                    if (cantId != 0 && cantId != -2)
                                                     {
                                                         newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
 
                                                         // aggiunta della registrazione all'elenco
                                                         regsToAdd.Add(newReg);
                                                     }
+                                                    else if (cantId == -2)
+                                                        gpsRegGroup.ForEach(preReg =>
+                                                            processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_RECORD_CON_VALORI_DUPLICATI), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
                                                     else
                                                         gpsRegGroup.ForEach(preReg =>
                                                             processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
-
 
                                                 }
                                             }
@@ -8752,17 +8757,20 @@ namespace Business.Repository.Custom
 
                                     // si imposta il cantiere gps solamente se è stato correttamente trovato;
                                     // in caso contrario si procede a segnalare il gruppo come errore
-                                    if (cantId != 0)
+                                    if (cantId != 0 && cantId != -2)
                                     {
                                         newReg.Cant_Id = cantId == -1 ? (int?)null : cantId;
 
                                         // aggiunta della registrazione all'elenco
                                         regsToAdd.Add(newReg);
                                     }
+                                    else if (cantId == -2)
+                                        gpsRegGroup.ForEach(preReg =>
+                                            processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_RECORD_CON_VALORI_DUPLICATI), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
                                     else
                                         gpsRegGroup.ForEach(preReg =>
                                             processErrors.Add(new KeyValuePair<string, string>(String.Format("*{0} | {1}", BusinessService.GetLocalizedString(PowerWebResources.ERR_CANT_GPS_NON_CALCOLABILE), preReg.OriginalGpsLine), preReg.OriginalGpsLine)));
-                                }
+                            }
                             }
                             //Se la timbratura non è nel raggio di lavoro, non la importo
                             else
@@ -8848,6 +8856,13 @@ namespace Business.Repository.Custom
                     }
                     else
                     {
+                        foreach (var err in errors)
+                        {
+                            if (err.Value.Contains("Record con Valori duplicati")) 
+                            {
+                                gpsCantId = -2;
+                            }
+                        }
                         _log.Error(String.Format("Errori rilevati dalla procedura check durante la verifica di un cantiere GPS, guardare tabella messaggi"));
                     }
                 }
