@@ -11898,8 +11898,8 @@ namespace Business.Repository.Custom
                             CodGiustificativoRilPres = "LS",
                             CodGiustificativoUfficiale = "LS",
                             Data = groupedRow.Key.Data.ToString("yyyy-MM-dd"),
-                            NumOre = (excessUnder40 / 60).ToString(),
-                            NumMinuti = (excessUnder40 % 60).ToString(),
+                            NumOre = ((int)(excessUnder40 / 60)).ToString(),
+                            NumMinuti = ((int)(excessUnder40 % 60)).ToString(),
                             NumMinutiInCentesimi = "0",
                             GiornoDiRiposo = "N",
                             GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
@@ -11915,8 +11915,8 @@ namespace Business.Repository.Custom
                             CodGiustificativoRilPres = "ST",
                             CodGiustificativoUfficiale = "ST",
                             Data = groupedRow.Key.Data.ToString("yyyy-MM-dd"),
-                            NumOre = (excessOver40 / 60).ToString(),
-                            NumMinuti = (excessOver40 % 60).ToString(),
+                            NumOre = ((int)(excessOver40 / 60)).ToString(),
+                            NumMinuti = ((int)(excessOver40 % 60)).ToString(),
                             NumMinutiInCentesimi = "0",
                             GiornoDiRiposo = "N",
                             GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
