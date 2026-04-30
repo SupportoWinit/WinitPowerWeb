@@ -115,8 +115,8 @@ namespace Business.XmlExportsData.Manalu
         {
             Movimento movimento = new Movimento()
             {
-                CodGiustificativoRilPres = "",
-                CodGiustificativoUfficiale = "",
+                CodGiustificativoRilPres = String.Empty,
+                CodGiustificativoUfficiale = String.Empty,
                 Data = date.ToString("yyyy-MM-dd"),
                 NumOre = "0",
                 NumMinuti = "0",

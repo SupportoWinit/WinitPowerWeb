@@ -3322,6 +3322,8 @@ namespace Business.BusinessExtension
                 TimeSpan oraIn_Nott = nocturnStartHour.Value;
                 TimeSpan oraOut_Nott = nocturnEndHour.Value > nocturnStartHour.Value ? nocturnEndHour.Value : nocturnEndHour.Value.Add(new TimeSpan(1, 0, 0, 0));
 
+                List<Reg_V> toAddNoct = new List<Reg_V>();
+
                 // se il collaboratore ha delle reg_v nel periodo specificato
                 if (baseColRegVs.Any())
                 {
@@ -3387,8 +3389,6 @@ namespace Business.BusinessExtension
                     else
                         nocturnStartHourModify = nocturnStartHour;
 
-                    List<Reg_V> toAddNoct = new List<Reg_V>();
-
                     // per calcolare correttamente il numero di ore diurne devo aggiustare l'entrata o l'uscita di quanto selezionato ai parametri di inzio/fine notturno
                     dayRegVs.ForEach(regv =>
                     {
@@ -3429,11 +3429,24 @@ namespace Business.BusinessExtension
                                 regv.TmpDataOraFigU = regv.Data_Ora_Fig_U;
                                 regv.TmpDurataFigU = regv.Durata_Fig;
 
-                                regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
-                                    regv.Data_Ora_Fig_U.Value.Month, regv.Data_Ora_Fig_U.Value.Day,
-                                    nocturnStartHour.Value.Hours,
-                                    nocturnStartHour.Value.Minutes,
-                                    nocturnStartHour.Value.Seconds);
+                                Reg regE = RepoManager.RegRepo.FirstOrDefault(r => r.Reg_Id == regv.RegE);
+                                if (regE.Rettifica_Durata != null)
+                                {
+                                    TimeSpan newU = nocturnStartHour.Value.Add(new TimeSpan(0, -regE.Rettifica_Durata.Value, 0));
+                                    regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
+                                      regv.Data_Ora_Fig_U.Value.Month, regv.Data_Ora_Fig_U.Value.Day,
+                                      newU.Hours,
+                                      newU.Minutes,
+                                      newU.Seconds);
+                                }
+                                else
+                                {
+                                    regv.Data_Ora_Fig_U = new DateTime(regv.Data_Ora_Fig_U.Value.Year,
+                                        regv.Data_Ora_Fig_U.Value.Month, regv.Data_Ora_Fig_U.Value.Day,
+                                        nocturnStartHour.Value.Hours,
+                                        nocturnStartHour.Value.Minutes,
+                                        nocturnStartHour.Value.Seconds);
+                                }
 
                                 if ((regv.Data_Ora_Fig_E.Value.Date < regv.TmpDataOraFigU.Value.Date) && nocturnStartHour != TimeSpan.Zero)
                                     regv.Data_Ora_Fig_U = regv.Data_Ora_Fig_U.Value.AddDays(-1);
@@ -3447,6 +3460,7 @@ namespace Business.BusinessExtension
                             if (regv.Data_Ora_Fig_E.Value.Date != regv.Data_Ora_Fig_U.Value.Date && regv.Data_Ora_Fig_E.Value.TimeOfDay < nocturnStartHourModify && regv.Data_Ora_Fig_U.Value.TimeOfDay > nocturnEndHour)
                             {
                                 newRegV = RepoManager.Reg_VRepo.Init();
+                                Reg_V newRegVnott = RepoManager.Reg_VRepo.Init();
 
                                 // procedo alla modifica dell'entrata (salvando l'attuale data figurativa in una extension, così da poterla poi recuperare
                                 // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali
@@ -3475,11 +3489,48 @@ namespace Business.BusinessExtension
                                 newRegV.TmpDataOraFigE = newRegV.Data_Ora_Fig_E;
                                 newRegV.TmpDurataFigU = newRegV.Durata_Fig;
 
-                                newRegV.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                newRegV.Data_Ora_Fig_E = new DateTime(newRegV.Data_Ora_Fig_U.Value.Year,
+                                    newRegV.Data_Ora_Fig_U.Value.Month, newRegV.Data_Ora_Fig_U.Value.Day,
+                                    nocturnEndHour.Value.Hours,
+                                    nocturnEndHour.Value.Minutes,
+                                    nocturnEndHour.Value.Seconds);
+
+                                // genero la nuova registrazione del giorno che parte dalla fine del notturno e arriva alla chiusura della stessa
+                                CommonService.DuplicateEntity(regv, newRegVnott);
+
+                                newRegVnott.RegE = 0;
+                                newRegVnott.Data_Ora_Fig_U = newRegV.TmpDataOraFigU;
+                                newRegVnott.Durata_Fig = newRegV.TmpDurataFigU;
+
+                                newRegVnott.TmpDataOraFigE = newRegV.Data_Ora_Fig_E;
+                                newRegVnott.TmpDurataFigU = newRegV.Durata_Fig;
+
+                                newRegVnott.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
                                     regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day,
                                     nocturnStartHour.Value.Hours,
                                     nocturnStartHour.Value.Minutes,
-                                    1);
+                                    nocturnStartHour.Value.Seconds);
+
+                                Reg regE = RepoManager.RegRepo.FirstOrDefault(r => r.Reg_Id == regv.RegE);
+                                if (regE.Rettifica_Durata != null)
+                                {
+                                    TimeSpan newU = nocturnEndHour.Value.Add(new TimeSpan(0, -regE.Rettifica_Durata.Value, 0));
+                                    newRegVnott.Data_Ora_Fig_U = new DateTime(newRegV.Data_Ora_Fig_U.Value.Year,
+                                      newRegV.Data_Ora_Fig_U.Value.Month, newRegV.Data_Ora_Fig_U.Value.Day,
+                                      newU.Hours,
+                                      newU.Minutes,
+                                      newU.Seconds);
+                                }
+                                else 
+                                {
+                                    newRegVnott.Data_Ora_Fig_U = new DateTime(newRegV.Data_Ora_Fig_U.Value.Year,
+                                       newRegV.Data_Ora_Fig_U.Value.Month, newRegV.Data_Ora_Fig_U.Value.Day,
+                                       nocturnEndHour.Value.Hours,
+                                       nocturnEndHour.Value.Minutes,
+                                       nocturnEndHour.Value.Seconds);
+                                }
+
+                                toAddNoct.Add(newRegVnott);
 
                                 regVEdited = true;
                             }
@@ -3600,6 +3651,12 @@ namespace Business.BusinessExtension
 
 
                 #region Aggiustamento delle reg a cavallo dell'orario notturno
+
+                //se si hanno nel giorno registrazioni di sola durata vengono aggiunte alla lista totale dell ore lavorate giornaliere
+                if (toAddNoct.Any())
+                {
+                    nocturnRegVs.AddRange(toAddNoct);
+                }
 
                 // per calcolare correttamente il numero di ore notturne devo aggiustare l'entrata o l'uscita di quanto selezionato ai parametri di inzio/fine notturno
                 nocturnRegVs.ForEach(regv =>

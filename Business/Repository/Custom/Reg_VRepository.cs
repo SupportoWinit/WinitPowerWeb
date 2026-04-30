@@ -11970,8 +11970,8 @@ namespace Business.Repository.Custom
             {
                 writer.Formatting = Formatting.Indented;
                 serializer.Serialize(writer, document, xsn);
-                writer.Close();
-                textWriter.Close();
+                //writer.Close();
+                //textWriter.Close();
             }
 
             reportsFileName.Add(currentFilePath);
