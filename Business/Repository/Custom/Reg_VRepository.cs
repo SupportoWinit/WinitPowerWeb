@@ -11718,8 +11718,6 @@ namespace Business.Repository.Custom
             //Vengono scorse le reg raggruppate tramite collaboratore
             foreach (var regvRowsByCol in regVs.GroupBy(regv => regv.Col_Id.Value).ToList())
             {
-                double workedWeekly = 0;  //Totale lavorato durante la settimana
-                int daysWithoutRiposo = 0; //contatore per i giorni trascorsi nel caso in cui non sia stato fatto il riposo domenicale
 
                 var colDoc = new Business.XmlExportsData.Manalu.XmlDocuments();
 
@@ -11771,13 +11769,16 @@ namespace Business.Repository.Custom
                     .ThenBy(group => group.Key.Motivazione)
                     .ToList();
 
+                double workedWeekly = 0;  //Totale lavorato durante la settimana
 
                 //viene verificato se il collaboratore ha lavorato extra settimanale da periodo precedente
                 bool hasExtra = durataByCol.TryGetValue(regvRowsByCol.Key, out int workedExtra);
                 if (hasExtra && workedExtra > 0) workedWeekly = workedExtra;
 
-                bool giornoDiRiposoToDo = false;
-
+                int riposoFinestra = 2;     //Giorni di riposo da fare all'interno della finestra prestabilita
+                int finestraGiorni = 14;    //Finestra di riferimento per il controllo del riposo
+                int finestraAttuale = 0;    //contatore dell'arco intercorso
+                int daysRiposoAttuale = 0;  //giorni di riposo effettuati
 
                 DateTime? previousDate = null;
 
@@ -11810,20 +11811,27 @@ namespace Business.Repository.Custom
                                 String flagRiposo = "N";
 
                                 if (d.DayOfWeek == DayOfWeek.Monday) workedWeekly = 0;    //se lunedì viene resettato il contatore settimanale
-                                
-                                if (d.DayOfWeek == DayOfWeek.Sunday && !CommonService.IsFestivitaNazionale(d)) flagRiposo = "S";                  //se domenica assegnare il giorno di riposo
-                                else if (giornoDiRiposoToDo && !CommonService.IsFestivitaNazionale(d))    //se non è domenica verificare che il giorno di riposo fosse da fare
+
+                                //se sono stati fatti meno di due giorni di riposo, si è ancora dentro la finestra desiderata e non è festività nazionale viene assegnato il riposo
+                                if (daysRiposoAttuale < riposoFinestra && !CommonService.IsFestivitaNazionale(d) && finestraAttuale <= finestraGiorni)
                                 {
-                                    giornoDiRiposoToDo = false;
+                                    daysRiposoAttuale++;
                                     flagRiposo = "S";
-                                    daysWithoutRiposo = 0;
                                 }
 
                                 //creazione del nodo di fill
                                 var fillNode = Business.XmlExportsData.Manalu.Movimento.getFillNode(flagRiposo, d);
                                 colDoc.Masters.Master.Add(fillNode);
 
+                                //viene incrementato il contatore della finestra del riposo, se supera la soglia vengono resettati
+                                finestraAttuale++;
+                                if (finestraAttuale > finestraGiorni)
+                                {
+                                    finestraAttuale = 0;
+                                    daysRiposoAttuale = 0;
+                                }
                             }
+
                         }
                     }
 
@@ -11839,19 +11847,10 @@ namespace Business.Repository.Custom
                         //Se domenica è da fare il giorno di riposo successivamente e la motivazione è SF
                         if(groupedRow.Key.Data.DayOfWeek == DayOfWeek.Sunday || CommonService.IsFestivitaNazionale(groupedRow.Key.Data))
                         {
-                            giornoDiRiposoToDo = true;
                             motivazione = "SF";
                         }
                         else
                         {
-                            //se il giorno di riposo è da fare viene incrementato il contatore fino a massimo 
-                            if (giornoDiRiposoToDo) daysWithoutRiposo++;
-                            if (daysWithoutRiposo > 7)
-                            {
-                                daysWithoutRiposo = 0;
-                                giornoDiRiposoToDo = false;
-                            }
-
                             double olLeft = Math.Max(0, totSettimMinutes - workedWeekly);
                             //Quantitativo ore ordinarie
                             olNormali = Math.Min(totalMinutes, olLeft
@@ -11925,6 +11924,14 @@ namespace Business.Repository.Custom
                         };
 
                         colDoc.Masters.Master.Add(movimento);
+                    }
+
+                    //viene incrementato il contatore della finestra del riposo, se supera la soglia vengono resettati
+                    finestraAttuale++;
+                    if (finestraAttuale > finestraGiorni)
+                    {
+                        finestraAttuale = 0;
+                        daysRiposoAttuale = 0;
                     }
                 }
 
