@@ -229,7 +229,7 @@ namespace Common
         DivisioneNotturnoExport,
         ConfermaInserimentoCantiere,
         TipoInterventoObbligatorio,
-        LimitiSoloHotel,
+        LimitiSuTipologie,
         AutoCodiceCantiere,
         CalculateIndennità
     }

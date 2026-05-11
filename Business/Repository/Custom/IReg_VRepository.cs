@@ -21,6 +21,8 @@ namespace Business.Repository.Custom
 
         List<KeyValuePair<String, String>> DurationRounding(IEnumerable<Reg_V> regVs,RoundingMethodEnum metodo);
 
+        List<Reg> DurationRoundingExport(IEnumerable<Reg_V> regVs, RoundingMethodEnum metodo);
+
         List<KeyValuePair<String, String>> PausaPranzo(IEnumerable<Reg_V> regVs);
 
         List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs, ICollection<Reg> regs);

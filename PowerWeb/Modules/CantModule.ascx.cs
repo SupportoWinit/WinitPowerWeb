@@ -439,6 +439,24 @@ namespace PowerWeb.Modules
                     }
                 }
             }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1)
+            {
+                if (initCant.Codice_Commessa_Can == null && initCant.Tipo_Cantiere_Can != null)
+                {
+                    string tipoCantiere = initCant.Tipo_Cantiere_Can;
+                    Tab_Decod tipoCantiereTd = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_CAN" && t.Chiave_Tab == tipoCantiere);
+                    if (tipoCantiereTd != null)
+                    {
+                        string tipoCantiereDesc = tipoCantiereTd.Decodifica_Tab;
+                        initCant.Codice_Commessa_Can = tipoCantiereDesc;
+                    }
+                }
+                else if (initCant.Codice_Commessa_Can == null && initCant.Tipo_Cantiere_Can == null)
+                {
+                    initCant = null;
+                }
+            }
             #endregion
 
             if (RepoManager.ParamRepo.ParametersRow.Attiva_Num_Aut_Can)

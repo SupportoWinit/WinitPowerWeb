@@ -1,9 +1,11 @@
 ﻿using Business.Repository;
+using Business.Repository.Custom;
 using Common;
 using DevExpress.Utils.Taskbar;
 using Domain;
 using log4net;
 using Microsoft.Practices.ObjectBuilder2;
+using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using System;
@@ -4974,7 +4976,7 @@ namespace Business.BusinessExtension
 
             if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
             {
-                cliIdList = cliIdList.Cast<int?>().ToList();
+                //cliIdList = cliIdList.Cast<int?>().ToList();
             }
             // per ogni id cantiere presente nella lista
             foreach (var listCliId in cliIdList)
@@ -7983,6 +7985,8 @@ namespace Business.BusinessExtension
             * l'inizio e la fine del mese; in questo caso, se necessario si aggiornano le date per comprendere l'inizio e la fine della settimana
             * del mese precedente e successivo */
 
+            CentroDiCosto cdc = RepoManager.CentroDiCostoRepo.FirstOrDefault(cd => cd.Descrizione.ToUpper() == "COMUNE DI LIMONE");
+
             // se è richiesto il piano per la gestione di orari settimanali, la data di inizio è l'inizio del mese e la data di inizio non è un lunedì
             // allora si modifica la data di inizio periodo l'ultimo lunedì del mese precedente
             if (requestedForWeeklyTotals && startPeriod.Date == CommonService.GetFirstMonthDay(startPeriod) && startPeriod.DayOfWeek != DayOfWeek.Monday)
@@ -8015,7 +8019,131 @@ namespace Business.BusinessExtension
                     && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
                     && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
             }
-            else 
+            else if (centroId == cdc.CentroDiCosto_Id) 
+            {
+                //Recupero le timbrature del comune di limone
+                var colregs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
+                    && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate && regv.Registrazione_Stato_Reg == 1)
+                    && regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None, true).ToList().GroupBy(c => c.Data_Reg);
+            
+                List<Reg_V> returnRegs = new List<Reg_V>();
+                List<Reg_V> arrotRegs = new List<Reg_V>();
+                List<Reg> arrotReg = new List<Reg>();
+                foreach (var dayRegs in colregs) 
+                {
+                    if (dayRegs.Key != null) 
+                    {
+                        //Per ogni giorno creo una variabile temporanea e mezzogiorno
+                        DateTime midDay = new DateTime(dayRegs.Key.Value.Year, dayRegs.Key.Value.Month, dayRegs.Key.Value.Day, 12, 0, 0);
+                        Reg_V start = new Reg_V();
+                        DateTime lastDate = new DateTime();
+                        foreach (var reg in dayRegs.OrderBy(reg => reg.Data_Ora_Fis_E)) 
+                        {
+                            //Se la reg è la prima ma non l'ultima (non è 1) provedo a valorizzare la variabile temporanea
+                            if (reg == dayRegs.First() && reg != dayRegs.Last())
+                            {
+                                start = reg;
+                            }
+                            //Se la reg è la prima ed è l'ultima vuol dire che è solo una e popolo la lista di ritorno
+                            else if (reg == dayRegs.First() && reg == dayRegs.Last())
+                            {
+                                arrotRegs.Add(reg);
+                                arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                foreach (Reg regV in arrotReg)
+                                {
+                                    reg.Durata_Fig += regV.Rettifica_Durata;
+                                }
+                                returnRegs.Add(reg);
+                                start = null;
+                                arrotRegs = new List<Reg_V>();
+                            }
+                            //Se la reg non è la prima ma siamo all'ultimo controllo se la variabile temporanea è valorizzata, altrimenti metto la reg singola
+                            else if (reg != dayRegs.First() && reg == dayRegs.Last())
+                            {
+                                if (start != null)
+                                {
+                                    if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay)
+                                    {
+                                        Reg_V returnReg = reg;
+                                        returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                        returnReg.Data_Ora_Fis_U = lastDate;
+                                        returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                        returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                        arrotRegs.Add(returnReg);
+                                        arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                        foreach (Reg regV in arrotReg)
+                                        {
+                                            returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                        }
+                                        returnRegs.Add(returnReg);
+                                        start = null;
+                                        arrotRegs = new List<Reg_V>();
+                                    }
+                                    else 
+                                    {
+                                        Reg_V returnReg = reg;
+                                        returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                        returnReg.Data_Ora_Fis_U = reg.Data_Ora_Fis_U;
+                                        returnReg.Durata_Fig = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                        returnReg.Durata_Fis = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                        arrotRegs.Add(returnReg);
+                                        arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                        foreach (Reg regV in arrotReg)
+                                        {
+                                            returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                        }
+                                        returnRegs.Add(returnReg);
+                                        start = null;
+                                        arrotRegs = new List<Reg_V>();
+                                    }   
+                                }
+                                else
+                                {
+                                    arrotRegs.Add(reg);
+                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                    foreach (Reg regV in arrotReg)
+                                    {
+                                        reg.Durata_Fig += regV.Rettifica_Durata;
+                                    }
+                                    returnRegs.Add(reg);
+                                    start = null;
+                                    arrotRegs = new List<Reg_V>();
+                                }
+                            }
+                            else if(reg != dayRegs.First() && reg != dayRegs.Last())
+                            {
+                                if (start == null)
+                                {
+                                    start = reg;
+                                }
+                                else 
+                                {
+                                    if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay) 
+                                    {
+                                        Reg_V returnReg = reg;
+                                        returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                        returnReg.Data_Ora_Fis_U = lastDate;
+                                        returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                        returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                        arrotRegs.Add(returnReg);
+                                        arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                        foreach (Reg regV in arrotReg) 
+                                        {
+                                            returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                        }
+                                        returnRegs.Add(returnReg);
+                                        start = null;
+                                        arrotRegs = new List<Reg_V>();
+                                    }
+                                }
+                            }
+                            lastDate = reg.Data_Ora_Fis_U.Value;
+                        }
+                    }
+                }
+                return returnRegs.AsQueryable();
+            } 
+            else
             {
                 // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
                 return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
@@ -10319,8 +10447,6 @@ namespace Business.BusinessExtension
             List<Reg_V> workedRegVs = new List<Reg_V>();
             List<Reg_V> test = new List<Reg_V>();
             string just = "";
-
-
 
             //Dictionary da ritornare
             Dictionary<string, List<TimesheetModuleItem>> cartellini = new Dictionary<string, List<TimesheetModuleItem>>();

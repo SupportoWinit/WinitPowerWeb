@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IdentityModel.Metadata;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -300,9 +301,41 @@ namespace Business.Repository.Custom
                 {
                     if (entity.Codice_Commessa_Can == null)
                     {
-                        result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Interv_Can),
-                            "Codice Commessa Obbligatorio");
-                        codiceCommessaInserted = false;
+                        if (CommonService.Nz(entity.Tipo_Cantiere_Can, "") == "")
+                        {
+                            result.AddOrAppend(CommonService.GetPropertyName(() => entity.Tipo_Cantiere_Can),
+                            "Codice Commessa Obbligatorio, Inserire Tipo Cantiere per generarlo automaticamente");
+                            codiceCommessaInserted = false;
+                        }
+                        else 
+                        {
+                            string tipoCantiere = entity.Tipo_Cantiere_Can;
+                            Tab_Decod tipoCantiereTd = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_CAN" && t.Chiave_Tab == tipoCantiere);
+                            if (tipoCantiereTd != null) 
+                            {
+                                string tipoCantiereDesc = tipoCantiereTd.Decodifica_Tab;
+                                entity.Codice_Commessa_Can = tipoCantiereDesc;
+                            }
+                        }                        
+                    }
+                    else 
+                    {
+                        bool codiceCorretto = false;
+                        string codiceCommessa = entity.Codice_Commessa_Can;
+                        string[] codici = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CodiceCommessaObbligatorio,"Valori").ToString().Split(',');
+                        for (int i = 0; i < codici.Length; i ++) 
+                        {
+                            if (codiceCommessa == codici[i]) 
+                            {
+                                codiceCorretto = true;
+                            }
+                        }
+                        if (!codiceCorretto) 
+                        {
+                            result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Commessa_Can),
+                            "Codice Commessa Erratto, Inserire Hotel o Pulizie Civile");
+                            codiceCommessaInserted = false;
+                        }
                     }
                 }
                 #endregion
@@ -327,7 +360,7 @@ namespace Business.Repository.Custom
                         else
                         {
                             result.AddOrAppend(CommonService.GetPropertyName(() => entity.Codice_Cantiere), 
-                                "Per generare il codice cantiere in maniera automatica è necessario inserire cliente e tipo intervento");
+                                "Per generare il codice cantiere in maniera automatica è necessario inserire cliente,tipo intervento e codice commessa");
                         }
                     }
                     #endregion
@@ -2314,6 +2347,25 @@ namespace Business.Repository.Custom
                                     }
                                 }
                                 #endregion
+
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CodiceCommessaObbligatorio) == 1) 
+                                {
+                                    if (cantiere.Codice_Commessa_Can == null && cantiere.Tipo_Cantiere_Can != null)
+                                    {
+                                        string tipoCantiere = cantiere.Tipo_Cantiere_Can;
+                                        Tab_Decod tipoCantiereTd = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_CAN" && t.Chiave_Tab == tipoCantiere);
+                                        if (tipoCantiereTd != null)
+                                        {
+                                            string tipoCantiereDesc = tipoCantiereTd.Decodifica_Tab;
+                                            cantiere.Codice_Commessa_Can = tipoCantiereDesc;
+                                        }
+                                    }
+                                    else if(cantiere.Codice_Commessa_Can == null && cantiere.Tipo_Cantiere_Can == null) 
+                                    {
+                                        cantiere = null;
+                                    }
+                                }
+
                             }
 
 

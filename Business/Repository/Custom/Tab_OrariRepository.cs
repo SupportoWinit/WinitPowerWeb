@@ -1260,6 +1260,91 @@ namespace Business.Repository.Custom
             return returnTimesheet;
         }
 
+        private IEnumerable<Tab_Orari> GetDatePlanDetailCants(DateTime dateToSearch, int tabOrariTipoId, int colId, int cantId, string entityType = "Col")
+        {
+            // inizializzazione del valore di ritorno del metodo
+            var returnTimesheet = new List<Tab_Orari>();
+            bool mensaHotel = true;
+
+            var completeTimesheet = tabOrariTipoId != 0
+                ? Find(tor => tor.Tab_Orari_Tipo_Id == tabOrariTipoId && dateToSearch >= tor.Data_Inizio).ToList()
+                : GetStandardTimeTable(dateToSearch, colId);
+
+            if (completeTimesheet.Count() == 2) 
+            {
+                List<Cant> cantieri = new List<Cant>();
+                foreach (var timesheet in completeTimesheet) 
+                { 
+                    Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == timesheet.Cant_Id);
+                    if (cantiere != null)
+                    {
+                        cantieri.Add(cantiere);
+                    }
+                    else 
+                    {
+                        mensaHotel = false;
+                    }
+                }
+                if (mensaHotel && cantieri.Count() == 2)
+                {
+                    switch (cantieri.First().Codice_Commessa_Can) 
+                    {
+                        case "Hotel":
+                            if (cantieri.Last().Codice_Commessa_Can != "Pulizie Civile") 
+                            {
+                                mensaHotel = false;
+                            }
+                            break;
+                        case "Pulizie Civile":
+                            if (cantieri.Last().Codice_Commessa_Can != "Hotel")
+                            {
+                                mensaHotel = false;
+                            }
+                            break;
+                        case "":
+                            mensaHotel = false;
+                            break;
+                    }
+                }
+            }
+
+            // se sono presenti degli orari per l'id passato come parametro validi per la data passata come parametro (si recupera sempre l'ultima versione valida)
+            var validTimesheet = tabOrariTipoId != 0
+                ? Find(tor => tor.Tab_Orari_Tipo_Id == tabOrariTipoId && dateToSearch >= tor.Data_Inizio && (tor.Cant_Id == cantId || tor.Cant_Id == null)).ToList()
+                : GetStandardTimeTable(dateToSearch, colId);
+
+            if (validTimesheet.Any())
+            {
+                var lastTimesheetDate = validTimesheet.Max(tor => tor.Data_Inizio);
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
+                {
+                    validTimesheet = validTimesheet.Where(tor => tor.Data_Inizio == lastTimesheetDate).ToList();
+                }
+                // per ognuno degli orari recuperati viene verificato se si tratta di un orario valido per la data
+                // (cioè se rispetta giorno/ripetizione, non si tratta di un giorno festivo (solo per i collaboratori) e sia flaggato il giorno corretto); se si tratta di un orario
+                // valido allora lo si aggiunge all'elenco
+                validTimesheet.ForEach(ts =>
+                {
+                    if (IsToApplyTimesheet(ts, dateToSearch) && (!RepoManager.Tab_FestiviRepo.DbSet.Any(hol => hol.Giorno_Tab_Festivi == dateToSearch.Date) || entityType == CantEntityName))
+                    {
+                        bool toAddTimeSheet = (dateToSearch.DayOfWeek == DayOfWeek.Monday && ts.G1) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Tuesday && ts.G2) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Wednesday && ts.G3) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Thursday && ts.G4) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Friday && ts.G5) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Saturday && ts.G6) ||
+                            (dateToSearch.DayOfWeek == DayOfWeek.Sunday && ts.G7);
+
+                        if (toAddTimeSheet)
+                            returnTimesheet.Add(ts);
+                    }
+                });
+            }
+
+            // ritorno del valore calcolato nel metodo
+            return returnTimesheet;
+        }
+
         /// <summary>
         /// A partire dalla data passata come parametro e dall'id del tipo orario passato come parametro,
         /// si occupa di ricercare e restituire gli orari validi per tali dati; in caso di non presenza di dati

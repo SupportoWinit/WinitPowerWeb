@@ -87,7 +87,7 @@ namespace Exports.ExportTxtCustom
 
             string formattedDate = ExportDate.ToString("yyyy/MM");
 
-            var allowedColls = RepoManager.ColRepo.DbSet.Where(c => SelectedIds.Contains(c.Col_Id) /*&& (c.Matricola_Col != null && c.Matricola_Col != "")*/).Select(c => new { c.Col_Id, c.Codice_Collaboratore, c.Matricola_Col, c.Tab_Orari_Tipo_Id, c.Data_Disponibilita_Inizio_Col, c.Data_Disponibilita_Fine_Col }).ToList();
+            var allowedColls = RepoManager.ColRepo.DbSet.Where(c => SelectedIds.Contains(c.Col_Id) && (c.Matricola_Col != null && c.Matricola_Col != "")).Select(c => new { c.Col_Id, c.Codice_Collaboratore, c.Matricola_Col, c.Tab_Orari_Tipo_Id, c.Data_Disponibilita_Inizio_Col, c.Data_Disponibilita_Fine_Col }).ToList();
 
             List<string> notAllowedColls = RepoManager.ColRepo.DbSet.Where(c => SelectedIds.Contains(c.Col_Id) && (c.Matricola_Col == null || c.Matricola_Col == "")).Select(c => c.Codice_Collaboratore).ToList();
 
@@ -137,10 +137,11 @@ namespace Exports.ExportTxtCustom
                     {
                         #region Calcolo ore con motivazione
                         Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == regs.Key.Value);
-                        DateTime lastDate = startOfMonth;
+                        DateTime lastDate = startOfMonth.AddDays(-1);
                         foreach (var dayRegs in dayDictionarys)
                         {
-                            int differenza1 = dayRegs.Key.Value.Day - lastDate.Day;
+                            var dif = dayRegs.Key.Value - lastDate;
+                            int differenza1 = dif.Days;
                             if (dayRegs.Key > lastDate.AddDays(1))
                             {
                                 if (differenza1 < 0)
@@ -229,7 +230,7 @@ namespace Exports.ExportTxtCustom
                         if (dayDictionarys.Last().Key.Value != endOfMonth)
                         {
                             int differenza1 = endOfMonth.Day - dayDictionarys.Last().Key.Value.Day;
-                            for (int i = 0; i <= differenza1; i++)
+                            for (int i = 1; i <= differenza1; i++)
                             {
                                 switch (j)
                                 {
@@ -252,6 +253,7 @@ namespace Exports.ExportTxtCustom
                                 }
                             }
                         }
+                        j++;
                         #endregion
                     }
                     else
@@ -260,7 +262,8 @@ namespace Exports.ExportTxtCustom
                         DateTime lastDate = startOfMonth.AddDays(-1);
                         foreach (var dayRegs in dayDictionarys)
                         {
-                            int differenza1 = dayRegs.Key.Value.Day - lastDate.Day;
+                            var dif = dayRegs.Key.Value - lastDate;
+                            int differenza1 = dif.Days;
                             if (dayRegs.Key > lastDate.AddDays(1))
                             {
                                 if (differenza1 < 0)
@@ -348,6 +351,10 @@ namespace Exports.ExportTxtCustom
                         giustificativo2 = giustificativo2 + "  ;";
                         oreGiustificativo2 = oreGiustificativo2 + "0000;";
                     }
+                    exportData = exportData + giustificativo2 + oreGiustificativo2;
+                }
+                else 
+                {
                     exportData = exportData + giustificativo2 + oreGiustificativo2;
                 }
                 #endregion
@@ -506,6 +513,10 @@ namespace Exports.ExportTxtCustom
                     }
                     exportData = exportData + giustificativo3 + oreGiustificativo3;
                 }
+                else 
+                {
+                    exportData = exportData + giustificativo3 + oreGiustificativo3;
+                }
                 if (giustificativo4 == "" && oreGiustificativo4 == "")
                 {
                     for (int i = 0; i < endOfMonth.Day; i++)
@@ -513,6 +524,10 @@ namespace Exports.ExportTxtCustom
                         giustificativo4 = giustificativo4 + "  ;";
                         oreGiustificativo4 = oreGiustificativo4 + "0000;";
                     }
+                    exportData = exportData + giustificativo4 + oreGiustificativo4;
+                }
+                else
+                {
                     exportData = exportData + giustificativo4 + oreGiustificativo4;
                 }
                 #endregion

@@ -115,7 +115,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = exportRegs.GroupBy(c => c.Cant_Id);// regVs.GroupBy(c => c.Cant_Id);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
-            List<Reg_V> newRegVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
+            List<Reg_V> newRegVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
             rowIndex = 2;
             List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Tipologia_Can == "ATT").ToList();
@@ -378,10 +378,18 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 if (cantiere != default(Cant)) 
                 {
                     int durata = 0;
-                    foreach (var reg in regs) 
+                    foreach (var reg in regs)
                     {
-                        if (reg.Durata_Fis != null) 
-                            durata += reg.Durata_Fis.Value;
+                        if (cantiere.Metodo_Arrotondamento_Can == 0 || cantiere.Metodo_Arrotondamento_Can == 2)
+                        {
+                            if (reg.Durata_Fig != null)
+                                durata += reg.Durata_Fig.Value;
+                        }
+                        else 
+                        {
+                            if (reg.Durata_Fis != null)
+                                durata += reg.Durata_Fis.Value;
+                        }
                     }
                     Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
                     Cli cliente = RepoManager.CliRepo.GetAllQueryable(c => c.Cli_Id == cantiere.Cli_Id).FirstOrDefault();
@@ -391,11 +399,34 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
                         if (att != null) 
                         {
-                            ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, 0);
-                            numeroInterventFinale.Add(newOgg);
+                            if (cliente != default(Cli))
+                            {
+                                ExportColCantInt exOgg = numeroInterventFinale.FirstOrDefault(ex => ex.descrizioneCant == cliente.Cognome_Cli && ex.descrizioneCol == att.Campo1_Tab);
+                                if (exOgg != null)
+                                {
+                                    exOgg.durata += durata;
+                                }
+                                else 
+                                {
+                                    ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, 0);
+                                    numeroInterventFinale.Add(newOgg);
+                                }  
+                            }
+                            else 
+                            {
+                                ExportColCantInt exOgg = numeroInterventFinale.FirstOrDefault(ex => ex.descrizioneCant == cantiere.Descrizione_Can && ex.descrizioneCol == att.Campo1_Tab);
+                                if (exOgg != null)
+                                {
+                                    exOgg.durata += durata;
+                                }
+                                else 
+                                {
+                                    ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, 0);
+                                    numeroInterventFinale.Add(newOgg);
+                                }
+                            }
                         }
                     }
-                    
                 }
             }
 
@@ -442,22 +473,39 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 rowIndex++;
             }
 
-            foreach (var prova in numeroInterventFinale)
+            foreach (var prova in numeroInterventFinale.OrderBy(ni => ni.descrizioneCant))
             {
-                CellInsertValue(1, 1, rowIndex, prova.descrizioneCant, ExcelInsertTypeEnum.Content);
+                List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Descrizione_Can == prova.descrizioneCant).ToList();
+                string descrizioneCliente = "";
+                if (cants.First().Cli_Id != null) 
+                { 
+                    int cliId = cants.First().Cli_Id.Value;
+                    Cli cliente = RepoManager.CliRepo.GetAllQueryable(c => c.Cli_Id == cliId).FirstOrDefault();
+                    if (cliente != default(Cli))
+                    {
+                        descrizioneCliente = cliente.Cognome_Cli;
+                    }
+                }
+
+                CellInsertValue(1, 1, rowIndex, descrizioneCliente, ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
                 RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
 
-                CellInsertValue(1, 2, rowIndex, prova.descrizioneCol, ExcelInsertTypeEnum.Content);
+                CellInsertValue(1, 2, rowIndex, prova.descrizioneCant, ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
                 RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
 
-                CellInsertValue(1, 3, rowIndex, prova.descrizioneAtt, ExcelInsertTypeEnum.Content);
+                CellInsertValue(1, 3, rowIndex, prova.descrizioneCol, ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
                 RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+
+                CellInsertValue(1, 4, rowIndex, prova.descrizioneAtt, ExcelInsertTypeEnum.Content);
+                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
 
                 TimeSpan durata = TimeSpan.FromMinutes(prova.durata);
                 int minuti = 00;
@@ -474,17 +522,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         break;
                 }
                 string totale = String.Format("{0},{1}", (durata.Days * 24) + durata.Hours, minuti.ToString("00"));
-                CellInsertValue(1, 4, rowIndex, totale + " ", ExcelInsertTypeEnum.Content);
-                RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
-                RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                CellInsertValue(1, 5, rowIndex, totale + " ", ExcelInsertTypeEnum.Content);
+                RangeSetBorders(1, 5, rowIndex, 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetFontSize(1, 5, rowIndex, 5, rowIndex, 11);
+                RangeSetWrapText(1, 5, rowIndex, 5, rowIndex, true);
                 
 
 
                 rowIndex++;
             }
-
-
 
             ExcelWorkbookSaveToResponse(HttpContext.Current.Response, System.IO.Path.GetFileName(ExcelModelFilePath), true);
 

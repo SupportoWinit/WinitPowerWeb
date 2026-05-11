@@ -955,29 +955,32 @@ namespace Business
         {
             Location location = null;
 
-            try
+            if (address != "  ") 
             {
-                GeocodeRequest geocodeRequest = new GeocodeRequest();
+                try
+                {
+                    GeocodeRequest geocodeRequest = new GeocodeRequest();
 
-                // Set the credentials using a valid Bing Maps key
-                geocodeRequest.BingMapsKey = RepoManager.ParamRepo.ParametersRow.BingKey;
+                    // Set the credentials using a valid Bing Maps key
+                    geocodeRequest.BingMapsKey = RepoManager.ParamRepo.ParametersRow.BingKey;
 
-                // Set the full address query
-                geocodeRequest.Query = address;
+                    // Set the full address query
+                    geocodeRequest.Query = address;
 
-                // Make the geocode request
-                //var response = Task.Run(() => ServiceManager.GetResponseAsync(geocodeRequest)).Result;
+                    // Make the geocode request
+                    //var response = Task.Run(() => ServiceManager.GetResponseAsync(geocodeRequest)).Result;
 
-                //if (response.StatusCode == 200)
-                //{
+                    //if (response.StatusCode == 200)
+                    //{
                     var geo = new ReverseGeocodeService("a442f14174a945dd9aff62023727b914");
                     location = Task.Run(() => geo.OttieniLocationDaIndirizzoAsync(address)).Result;
 
-                //}
-            }
-            catch (Exception ex)
-            {
-                _log.Error(String.Format("Errore durante la decodifica di un indirizzo tramite GPS con query {0} ed exception {1}", address, ex.Message));
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    _log.Error(String.Format("Errore durante la decodifica di un indirizzo tramite GPS con query {0} ed exception {1}", address, ex.Message));
+                }
             }
 
             return location;

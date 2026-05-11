@@ -65,6 +65,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             foreach (CentroDiCosto centro in cdc)
             {
+
                 var regVs = RepoManager.Reg_VRepo.Find(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.CentroDiCosto_Id == centro.CentroDiCosto_Id && r.Col_Id != null).GroupBy(r => r.Col_Id).ToList();
 
                 cartellini = new Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>();
