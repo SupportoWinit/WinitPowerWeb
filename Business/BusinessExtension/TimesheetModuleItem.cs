@@ -10437,7 +10437,6 @@ namespace Business.BusinessExtension
             return cartellini;
         }
 
-
         public static Dictionary<string, List<TimesheetModuleItem>> GenerateCartellinoCentroDiCosto(DateTime selectedDate, Col col, int centroId, bool isByOtherEntity, bool showWeeklyTotal, bool calculateOrdStrTimesheet, bool isDecimalHours = false, bool calculateWorkedHours = true, bool calculateJustifications = true, bool calculateTrips = true, bool calculateDelta = true, bool devidePlanByDayNight = false, bool insertCorrectionRow = false, bool showPiano = true)
         {
             // calcolo, a partire dalla data passata come parametro, l'inzio e la fine del mese in elaborazione

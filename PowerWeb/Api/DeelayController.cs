@@ -35,7 +35,7 @@ namespace PowerWeb.Api
         protected override HttpStatusCode ExecuteOperation()
         {
             DateTime today = DateTime.Now;
-            DateTime compareToday = new DateTime(today.Year, today.Month, today.Day);
+            DateTime compareToday = new DateTime(today.Year, today.Month, 17);
             _log.InfoFormat("Inizio controllo ritardi delle {0}", today.DayOfWeek.ToString());
             HttpStatusCode ritorno = HttpStatusCode.OK;
             List<Cant> cantieriRitardo = new List<Cant>();
@@ -272,7 +272,7 @@ namespace PowerWeb.Api
 
                 mailTo = string.Join(";", mailList);
             }
-
+            mailTo = "dtezzon@winitsrl.it";
             mailBody += "</div>";
             //Invia le mail
             errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });

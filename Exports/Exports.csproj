@@ -140,6 +140,8 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetItieffe.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetLampo.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleAmb.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleNoRegs.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimple.cs" />
     <Compile Include="ExportExcelCustom\IExportExcelCustom.cs" />
     <Compile Include="ExportExcelCustom\ExportExcelGeneric\ExportExcelGenericCant.cs" />
@@ -165,6 +167,7 @@
     <Compile Include="ExportTxtCustom\ExportPagheLombarda.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2Annuale.cs" />
+    <Compile Include="ExportTxtCustom\ExportTxtRilple.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtInternationalCare.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtSCS.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtVecomp.cs" />

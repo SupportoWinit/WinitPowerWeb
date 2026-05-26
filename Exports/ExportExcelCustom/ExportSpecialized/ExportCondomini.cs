@@ -82,8 +82,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             DateTime monthLastDate = CommonService.GetLastMonthDay(ExportPeriod);
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
+            List<string> codCond = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Campo1_Tab == "CONDOMINIO").Select(td => td.Chiave_Tab).ToList();
+            List<int> cantIds = RepoManager.CantRepo.GetAllQueryable(c => c.DisAbilitazione_Can == false && codCond.Contains(c.Tipo_Interv_Can)).Select(c => c.Cant_Id).ToList();
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 2 && r.Qualifica_Col != "0" && r.Data_Ora_Fis_E >= minDate && r.Data_Ora_Fis_E <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) ).OrderBy(reg => reg.Cant_Desc).ToList();
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => cantIds.Contains(r.Cant_Id.Value) && r.Qualifica_Col != "0" && r.Data_Ora_Fis_E >= minDate && r.Data_Ora_Fis_E <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) ).OrderBy(reg => reg.Cant_Desc).ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             var exportCliRegVs = regVs.GroupBy(c => c.Cli_Id);
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
@@ -112,6 +114,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                         columnIndex = 1;
 
+                        int cliIds = currentCant.First().Cli_Id.Value;
+                        Cli clienteId = RepoManager.CliRepo.GetAllQueryable(c => c.Cli_Id == cliIds).FirstOrDefault();
+
+                        CellInsertValue(1, columnIndex, rowIndex, clienteId.Cognome_Cli + " ", ExcelInsertTypeEnum.Content);
+                        RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
+                        RangeSetWrapText(1, columnIndex, rowIndex, columnIndex, rowIndex, true);
+                        ColumnsSetWidth(1, columnIndex, columnIndex, 30);
+
+                        columnIndex++;
+
                         CellInsertValue(1, columnIndex, rowIndex, currentCant.First().Descrizione_Can + " ", ExcelInsertTypeEnum.Content);
                         RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
@@ -121,6 +134,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         columnIndex++;
 
                         CellInsertValue(1, columnIndex, rowIndex, "CONDOMINI", ExcelInsertTypeEnum.Content);
+                        RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
+                        RangeSetWrapText(1, columnIndex, rowIndex, columnIndex, rowIndex, true);
+
+                        columnIndex++;
+
+                        string tipoInt = currentCant.First().Tipo_Interv_Can;
+                        Tab_Decod tInt = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt).FirstOrDefault();
+                        CellInsertValue(1, columnIndex, rowIndex, "" + tInt.Decodifica_Tab, ExcelInsertTypeEnum.Content);
                         RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                         RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
                         RangeSetWrapText(1, columnIndex, rowIndex, columnIndex, rowIndex, true);
@@ -188,7 +210,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             RangeSetFontBold(1, columnIndex, 1, columnIndex + 1, 2);
                             ColumnsSetWidth(1, columnIndex, columnIndex, 18);
 
-                            CellInsertValue(1, columnIndex + 1, 2, "ORE", ExcelInsertTypeEnum.Content);
+                            CellInsertValue(1, columnIndex + 1, 2, "N°ORE", ExcelInsertTypeEnum.Content);
                             RangeSetBorders(1, columnIndex + 1, 2, columnIndex + 1, 2, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                             RangeSetFontSize(1, columnIndex + 1, 2, columnIndex + 1, 2, 11);
                             ColumnsSetWidth(1, columnIndex + 1, columnIndex + 1, 12);
@@ -237,13 +259,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 string tot = "-- --";
                                 foreach (Reg_V reg in dayReg)
                                 {
-                                    if (reg.Durata_Fig != null)
+                                    if (reg.Durata_Fis != null)
                                     {
-                                        daySum += reg.Durata_Fig.Value;
+                                        daySum += reg.Durata_Fis.Value;
                                     }
                                 }
                                 if (daySum > 0)
                                 {
+                                    daySum = CommonService.ConvertDaySum((int)daySum);
                                     interventi++;
                                     TimeSpan totalDuration = TimeSpan.FromMinutes((int)daySum);
                                     totaleMensile = totaleMensile + totalDuration;
@@ -251,7 +274,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                                 if (CommonService.GetLastMonthDay(minDate) == day)
                                 {
-                                    tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
+                                    //tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
+                                    tot = String.Format("{0}.{1:00}",
+                                        (totaleMensile.Days * 24) + totaleMensile.Hours,
+                                        (int)(Math.Round(Math.Abs(totaleMensile.Minutes) * 100D / 60D))
+                                    );
                                     RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                     RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
 
@@ -288,19 +315,50 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 RangeSetFontSize(1, columnIndex + 1, 2, columnIndex + 1, 2, 11);
                                 ColumnsSetWidth(1, columnIndex + 1, columnIndex + 1, 12);
                                 string totale = String.Format("{0}.{1}", (totaliMensili.Days * 24) + totaliMensili.Hours, Math.Abs(totaliMensili.Minutes).ToString("00"));
+                                totale = String.Format("{0}.{1:00}",
+                                        (totaliMensili.Days * 24) + totaliMensili.Hours,
+                                        (int)(Math.Round(Math.Abs(totaliMensili.Minutes) * 100D / 60D))
+                                    );
+
+                                if (ExportPeriod.Month >= 4)
+                                {
+                                    nMesi = 4;
+                                }
+                                else
+                                {
+                                    nMesi = ExportPeriod.Month;
+                                }
+
+                                int j = 2;
+
+                                string rangeFormulaInt = $"{ColumnIndexToNameConversion(columnIndex - 2)}{rowIndex}";
+                                string rangeFormula = $"{ColumnIndexToNameConversion(columnIndex - 2)}{rowIndex}";
+
+                                while (j <= nMesi)
+                                {
+                                    rangeFormulaInt += $",{ColumnIndexToNameConversion(columnIndex - (j * 2))}{rowIndex}";
+                                    rangeFormula += $",{ColumnIndexToNameConversion(columnIndex - (j * 2))}{rowIndex}";
+                                    j++;
+                                }
+
+                                //Formula automatica per la somma dei valori della riga
+                                string formulaInt = $"=SUM({rangeFormulaInt})";
                                 RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
 
                                 RangeSetWrapText(1, columnIndex, rowIndex, columnIndex, rowIndex, true);
-                                CellInsertValue(1, columnIndex, rowIndex, totaleInterventi, ExcelInsertTypeEnum.Content);
+                                CellInsertValue(1, columnIndex, rowIndex, formulaInt, ExcelInsertTypeEnum.Formula);
 
-                                columnIndex++;
+                                columnIndex++;    
+
+                                //Formula automatica per la somma dei valori della riga
+                                string formula = $"=SUM({rangeFormula})";
 
                                 RangeSetBorders(1, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 RangeSetFontSize(1, columnIndex, rowIndex, columnIndex, rowIndex, 11);
-
+                                
                                 RangeSetWrapText(1, columnIndex, rowIndex, columnIndex, rowIndex, true);
-                                CellInsertValue(1, columnIndex, rowIndex, totale, ExcelInsertTypeEnum.Content);
+                                CellInsertValue(1, columnIndex, rowIndex, formula, ExcelInsertTypeEnum.Formula);
 
                                 columnIndex++;
 

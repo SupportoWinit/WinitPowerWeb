@@ -64,6 +64,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
             JArray result = new JArray();
 
             int IdCliente = Int32.Parse(connectionConfig["IdCliente"]);
+            int disabilitato = 0;
 
             JObject obj = new JObject();
 
@@ -89,6 +90,11 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 else {
                     entity.Add("Raggio", raggio);
                 }
+                if (cant.DisAbilitazione_Can) 
+                {
+                    disabilitato = 1;
+                }
+                entity.Add("Disabilitato", disabilitato);
                 toShipEntities.Add(entity);
             }
 

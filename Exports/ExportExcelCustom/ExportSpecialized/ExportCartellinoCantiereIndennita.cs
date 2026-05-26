@@ -26,6 +26,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private int rowIndex = 1;
         private int columnIndex = 1;
         private int worksheetIndex = 0;
+        private int colore = 0;
 
         private OfficeOpenXml.Style.ExcelBorderStyle borderStyle = OfficeOpenXml.Style.ExcelBorderStyle.Thin;
         private OfficeOpenXml.Style.ExcelFillStyle fillStyle = OfficeOpenXml.Style.ExcelFillStyle.Solid;
@@ -84,7 +85,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     columnIndex = 1;
                     WriteColTimesheetIndennita(col.Value, col.Key.CognomeNome_Col);
-                    WriteGrandTotalIndennita(col.Value);
+                    //WriteGrandTotalIndennita(col.Value);
+                    if (colore == 0)
+                    {
+                        colore = 1;
+                    }
+                    else 
+                    {
+                        colore = 0;
+                    }
                 }
                 ExcelWorkbook.Workbook.FullCalcOnLoad = true;
             }
@@ -179,89 +188,137 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             columnIndex++;
             foreach (var cartRow in cartellini["justification"].OrderByDescending(c => c.CantMnemonic)/*.GroupBy(c => c.CantMnemonic + " " + c.CantDesc)*/.ToList())
             {
-                columnIndex = 2;
-                if (cartRow.Justification.Contains("INDENNITÀ"))
+                if (cartRow.CantDesc != null) 
                 {
-                    rowIndex--;
-                    int giorni = 0;
-                    foreach (var day in Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)))
+                    columnIndex = 2;
+                    if (cartRow.Justification.Contains("INDENNITÀ"))
                     {
-                        var dayNumber = day.Day;
-                        string valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)cartRow.DaysHours[dayNumber].Item1);
-                        if ((int)cartRow.DaysHours[dayNumber].Item1 > 0)
-                        {
-                            giorni++;
-                        }
-                    }
-                    RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, cartRow.DaysHours.Count + 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 3, rowIndex, giorni, Common.ExcelInsertTypeEnum.Formula);
-                }
-                else 
-                {
-                    var justificationDec = cartRow.Justification;
-
-                    if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
-                        justificationDec = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDec).Decodifica_Tab;
-
-                    justificationDec = justificationDec.ToUpper();
-
-                    if (justificationDec != "TOTALE")
-                    {
-                        Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == cartRow.CantId);
-                        CellInsertValue(worksheetIndex, columnIndex, rowIndex, justificationDec, Common.ExcelInsertTypeEnum.Content);
-                        ColumnsSetAutoWidth(worksheetIndex, columnIndex, columnIndex);
-                        columnIndex++;
-                        CellInsertValue(worksheetIndex, columnIndex, rowIndex, cantiere.Codice_Gestionale_Can, Common.ExcelInsertTypeEnum.Content);
-                        columnIndex++;
-
+                        rowIndex--;
+                        int giorni = 0;
                         foreach (var day in Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)))
                         {
                             var dayNumber = day.Day;
                             string valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)cartRow.DaysHours[dayNumber].Item1);
                             if ((int)cartRow.DaysHours[dayNumber].Item1 > 0)
                             {
-                                RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                                CellInsertValue(worksheetIndex, columnIndex, rowIndex, valueToPrint, Common.ExcelInsertTypeEnum.Content);
+                                giorni++;
                             }
-                            else
-                            {
-                                RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                                CellInsertValue(worksheetIndex, columnIndex, rowIndex, "-", Common.ExcelInsertTypeEnum.Content);
-                            }
-                            RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelHorizontalAlignment.Center);
-                            RangeSetTextVerticalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelVerticalAlignment.Center);
-                            columnIndex++;
                         }
-                        //Viene considerato il range per la somma della riga, dalla colonna 1 alla colonna del numero dei giorni
-                        //come riga viene considerata quella attuale
-                        string rangeFormula = $"{ColumnIndexToNameConversion(3)}{rowIndex}:" +
-                            $"{ColumnIndexToNameConversion(cartRow.DaysHours.Count + 2)}{rowIndex}";
-
-                        //Formula automatica per la somma dei valori della riga
-                        string formula = $"=SUM({rangeFormula})";
-
-                        //Conta solamente i numeri della riga, quindi i giorni diversi da "M" o "F" o "---"
-                        string contaFormula = $"=COUNT({rangeFormula})";
-
-                        RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                        CellInsertValue(worksheetIndex, columnIndex, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
-                        columnIndex++;
-                        RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                        CellInsertValue(worksheetIndex, columnIndex, rowIndex, contaFormula, Common.ExcelInsertTypeEnum.Formula);
-
-                        RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex - 2, rowIndex, columnIndex - 2, rowIndex, ExcelHorizontalAlignment.Center);
-                        RangeSetTextVerticalAlignment(worksheetIndex, columnIndex - 2, rowIndex, columnIndex - 2, rowIndex, ExcelVerticalAlignment.Center);
-
-                        RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelHorizontalAlignment.Center);
-                        RangeSetTextVerticalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex    , rowIndex, ExcelVerticalAlignment.Center);
+                        if (giorni > 0) 
+                        {
+                            CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 6, rowIndex, giorni, Common.ExcelInsertTypeEnum.Content);
+                        }
+                        RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 6, rowIndex, cartRow.DaysHours.Count + 6, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        if (colore == 1)
+                        {
+                            RangeSetBackgroundColor(worksheetIndex, cartRow.DaysHours.Count + 6, rowIndex, cartRow.DaysHours.Count + 6, rowIndex, Color.FromArgb(204, 192, 218), fillStyle);
+                        }
                     }
                     else
                     {
-                        if (cartellini["justification"].Count > 1) 
-                            rowIndex--;
+                        List<Reg_V> tripsCant = RepoManager.Reg_VRepo.GetAllQueryable(reg => reg.Col_Id == cartRow.ColId && reg.Cant_Id == cartRow.CantId && reg.Registrazione_Tipo_Reg == 4 && reg.Data_Ora_Fis_E > startMonth && reg.Data_Ora_Fis_E < endMonth).ToList();
+                        string trasf = "";
+                        DateTime lastDate = DateTime.MinValue;
+                        int km = 0;
+                        int gg = 0;
+                        foreach (Reg_V regv in tripsCant)
+                        {
+                            km = (int)regv.KM_Reg;
+                        }
+                        if (km > 0)
+                        {
+                            if (km > 17 && km < 35)
+                            {
+                                trasf = "14,5%";
+                            }
+                            else if (km > 35)
+                            {
+                                trasf = "22%";
+                            }
+                            RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 5, rowIndex, cartRow.DaysHours.Count + 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, cartRow.DaysHours.Count + 5, rowIndex, trasf, Common.ExcelInsertTypeEnum.Content);
+                        }
+                        else
+                        {
+                            RangeSetBorders(worksheetIndex, cartRow.DaysHours.Count + 5, rowIndex, cartRow.DaysHours.Count + 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                        }
+                        var justificationDec = cartRow.Justification;
+
+                        if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
+                            justificationDec = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDec).Decodifica_Tab;
+
+                        justificationDec = justificationDec.ToUpper();
+
+                        if (justificationDec != "TOTALE")
+                        {
+                            Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == cartRow.CantId);
+                            CellInsertValue(worksheetIndex, columnIndex, rowIndex, justificationDec, Common.ExcelInsertTypeEnum.Content);
+                            ColumnsSetAutoWidth(worksheetIndex, columnIndex, columnIndex);
+                            if (colore == 1)
+                            {
+                                RangeSetBackgroundColor(worksheetIndex, 1, rowIndex, columnIndex, rowIndex, Color.FromArgb(204, 192, 218), fillStyle);
+                            }
+                            columnIndex++;
+                            CellInsertValue(worksheetIndex, columnIndex, rowIndex, cantiere.Codice_Gestionale_Can, Common.ExcelInsertTypeEnum.Content);
+                            RangeSetBackgroundColor(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, Color.FromArgb(92, 208, 80), fillStyle);
+                            columnIndex++;
+
+                            foreach (var day in Common.CommonService.GetDatesFromPeriod(ExportDate, ExportDate.AddMonths(1).AddDays(-1)))
+                            {
+                                var dayNumber = day.Day;
+                                string valueToPrint = FromTotalMinutesToFormattedTypeVirgola((int)cartRow.DaysHours[dayNumber].Item1);
+                                if ((int)cartRow.DaysHours[dayNumber].Item1 > 0)
+                                {
+                                    RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                    CellInsertValue(worksheetIndex, columnIndex, rowIndex, valueToPrint, Common.ExcelInsertTypeEnum.Content);
+                                }
+                                else
+                                {
+                                    RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                                    CellInsertValue(worksheetIndex, columnIndex, rowIndex, "-", Common.ExcelInsertTypeEnum.Content);
+                                }
+                                RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelHorizontalAlignment.Center);
+                                RangeSetTextVerticalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelVerticalAlignment.Center);
+                                if (colore == 1)
+                                {
+                                    RangeSetBackgroundColor(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, Color.FromArgb(204, 192, 218), fillStyle);
+                                }
+                                columnIndex++;
+                            }
+                            //Viene considerato il range per la somma della riga, dalla colonna 1 alla colonna del numero dei giorni
+                            //come riga viene considerata quella attuale
+                            string rangeFormula = $"{ColumnIndexToNameConversion(3)}{rowIndex}:" +
+                                $"{ColumnIndexToNameConversion(cartRow.DaysHours.Count + 2)}{rowIndex}";
+
+                            //Formula automatica per la somma dei valori della riga
+                            string formula = $"=SUM({rangeFormula})";
+
+                            //Conta solamente i numeri della riga, quindi i giorni diversi da "M" o "F" o "---"
+                            string contaFormula = $"=COUNT({rangeFormula})";
+
+                            RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            CellInsertValue(worksheetIndex, columnIndex, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
+                            columnIndex++;
+                            //RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            //CellInsertValue(worksheetIndex, columnIndex, rowIndex, contaFormula, Common.ExcelInsertTypeEnum.Formula);
+                            if (colore == 1)
+                            {
+                                RangeSetBackgroundColor(worksheetIndex, columnIndex - 1, rowIndex, columnIndex, rowIndex, Color.FromArgb(204, 192, 218), fillStyle);
+                            }
+                            RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex - 2, rowIndex, columnIndex - 2, rowIndex, ExcelHorizontalAlignment.Center);
+                            RangeSetTextVerticalAlignment(worksheetIndex, columnIndex - 2, rowIndex, columnIndex - 2, rowIndex, ExcelVerticalAlignment.Center);
+
+                            RangeSetTextHorizontalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelHorizontalAlignment.Center);
+                            RangeSetTextVerticalAlignment(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, ExcelVerticalAlignment.Center);
+                        }
+                        else
+                        {
+                            if (cartellini["justification"].Count > 1)
+                                rowIndex--;
+                        }
                     }
+                    rowIndex++;
                 }
-                rowIndex++;
             }
             columnIndex = 4;
         }

@@ -821,13 +821,14 @@ namespace Exports.ExportExcelCustom
             #endregion
 
             string stringValue = Convert.ToString(valueToInsert);
-            if (stringValue.Contains(',')) stringValue = stringValue.Replace(',', '.');
+            
 
             // inserimento nel worksheet del valore da inserire in base al tipo di inserimento
             if (insertType == ExcelInsertTypeEnum.Formula) // si sta inserendo una formula
                 ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Formula = stringValue;
             else // si sta inserendo un valore
             {
+                if (stringValue.Contains(',')) stringValue = stringValue.Replace(',', '.');
                 //Se il valore è convertibile a intero alla cella viene assegnato il valore intero
                 if (int.TryParse(stringValue, out int intValue))
                     ExcelWorkbook.Workbook.Worksheets[worksheetPosition].Cells[row, column].Value = intValue;

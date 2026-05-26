@@ -231,9 +231,14 @@ namespace Common
         TipoInterventoObbligatorio,
         LimitiSuTipologie,
         AutoCodiceCantiere,
-        CalculateIndennità
+        CalculateIndennità,
+        CalcTripOnCantType,
+        RouteOnRegTrip,
+        NoCalculateTripOverX,
+        RimozionePausaOnce,
+        TripFromSameCant
     }
-
+    
     public enum ClockAppsOperationEnum
     {
         Add,

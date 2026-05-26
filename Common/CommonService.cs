@@ -1413,6 +1413,35 @@ namespace Common
             return (Math.Abs(doubleToCheck - 0.00) <= 0.00001);
         }
 
+        public static int ConvertDaySum(int minuti)
+        {
+            int totaleRisultato = 0;
+            int mins = minuti % 60;
+            totaleRisultato = minuti - mins;
+            if (mins == 0) 
+            {
+                mins = 0;
+            }
+            else if (mins < 15)
+            {
+                mins = 15;
+            }
+            else if (mins < 30)
+            {
+                mins = 30;
+            }
+            else if (mins < 45)
+            {
+                mins = 45;
+            }
+            else
+            {
+                mins = 60;
+            }
+            totaleRisultato += mins;
+            return totaleRisultato;
+        }
+
         #endregion
 
         #region Excel utilities

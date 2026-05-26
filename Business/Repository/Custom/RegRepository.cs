@@ -809,7 +809,29 @@ namespace Business.Repository.Custom
                         }
                         #endregion
 
-                        #region 11.7 Creazione pausa per Cantiere
+                        #region 11.7 Creazione pausa per Hotel
+
+                        //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaOnce) == 1 && currentApplication == ApplicationMessageEnum.Elaborate)
+                        {
+                            //regs.AddRange(tmpRegs.Where(r => r.Registrazione_Tipo_Reg != 0));
+                            //regs = DeleteCopertureSerali(regs, isToSaveChanges);
+
+                            // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
+                            //RepoManager.Reg_VRepo.DeletePausaPranzo(tmpRegs);
+                            //regs = regs.Where(reg => reg.Registrazione_Tipo_Reg != (int)RegTypeEnum.ArrotDur).ToList();
+                            var roundingRegVs1 = regVs.ToList();
+                            // Recupera i viaggi appena creati  
+                            var tripsRegvs1 = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
+                                                regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
+
+                            //roundingRegVs1.AddRange(tripsRegvs1);
+                            errors.AddRange(PausaPranzoOnce(roundingRegVs1, ref regs));
+                            UpdateData(regs);
+                        }
+                        #endregion
+
+                        #region 11.8 Creazione pausa per Cantiere
 
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaPranzo) == 1)
@@ -830,7 +852,7 @@ namespace Business.Repository.Custom
                         }
                         #endregion
 
-                        #region 11.8 Nuova metodologia per creazione pausa
+                        #region 11.9 Nuova metodologia per creazione pausa
 
                         //in caso sia abilitata la personalizzazione vado a creare per i cantieri con il parametro inserito una timbratura di durata negativa
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NewPausaPranzo) == 1)
@@ -848,7 +870,7 @@ namespace Business.Repository.Custom
                         }
                         #endregion
 
-                        #region 11.9 Rigenerazione viaggi in caso di modifica komplett
+                        #region 12 Rigenerazione viaggi in caso di modifica komplett
 
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaHotel) == 1 && currentApplication == ApplicationMessageEnum.Elaborate)
                         {
@@ -4474,6 +4496,116 @@ namespace Business.Repository.Custom
             return errors;
         }
 
+        public List<KeyValuePair<String, String>> PausaPranzoOnce(IEnumerable<Reg_V> regVs, ref ICollection<Reg> regs)
+        {
+            // Lista che conterrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà le timbrature da aggiungere a db
+            List<Reg> regsToAdd = new List<Reg>();
+            List<Reg> regsToUpdate = new List<Reg>();
+            int arrot = 0;
+            int limite = 240;
+            string[] param = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RimozionePausaOnce, "Arrotondamento").Split(',');
+            arrot = Int32.Parse(param[0]);
+            limite = Int32.Parse(param[1]);
+
+            List<Reg_V> filteredRegVs = new List<Reg_V>();
+            List<Tab_Decod> pausa = RepoManager.Tab_DecodRepo.GetAllQueryable(p => p.Decodifica_Tab == "Pausa").ToList();
+            // Filtra le regv selezionando solo quelle 'lavorative' (ore e viaggi)
+            filteredRegVs = regVs.Where(reg => (reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || reg.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip)).ToList();
+            // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
+            if (filteredRegVs.Count() > 0)
+            {
+                // Raggruppa le registrazioni per collaboratore
+                var regsByCol = filteredRegVs.GroupBy(reg => reg.Col_Id).ToList();
+
+                double totalCol = regsByCol.Count();
+
+                foreach (var colGroup in regsByCol)
+                {
+                    var currColId = colGroup.Key.HasValue ? colGroup.Key : -1;
+
+                    if (currColId != -1)
+                    {
+                        Col currentCol = RepoManager.ColRepo.SingleOrDefault(col => col.Col_Id == currColId);
+
+                        if (currentCol != default(Col))
+                        {
+                            // Raggruppa le registrazioni per data (giorno)
+                            var regsByColDate = colGroup.GroupBy(reg => reg.Data_Reg).ToList();
+
+                            foreach (var colDateGroup in regsByColDate)
+                            {
+                                int durata = 0;
+                                string tmpTurno = "";
+                                DateTime tmpDate = new DateTime(1999, 12, 31);
+                                if (colDateGroup.Count() == 1)
+                                {
+                                    if (colDateGroup.First().Cant_Id != null)
+                                    {
+                                        int cantId = colDateGroup.First().Cant_Id.Value;
+                                        Cant cantiere = RepoManager.CantRepo.Single(c => c.Cant_Id == cantId);
+                                        durata = colDateGroup.First().Durata_Fig.Value;
+                                        if (durata >= limite)
+                                        {
+                                            int regEId = colDateGroup.First().RegE;
+                                            Reg regE = regs.Single(r => r.Reg_Id == regEId);
+                                            if (regE != default(Reg))
+                                            {
+                                                // creo la registrazione con durata negativa in base al parametro presente nel cantiere
+                                                TimeSpan roundingTime = new TimeSpan(0, 0, 0);
+                                                Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), cantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                                string confronto = "Pausa Di " + arrot + " minuti";
+                                                if (regE.Note_Reg != confronto)
+                                                {
+                                                    if (tmp.Col_Id != null)
+                                                    {
+                                                        regsToAdd.Add(tmp);
+                                                    }
+                                                    var tmpList = regs.ToList();
+                                                    tmpList.Remove(regE);
+                                                    regE.Note_Reg = "Pausa Di " + arrot + " minuti";
+                                                    tmpList.Add(regE);
+                                                    regs = tmpList.ToList();
+                                                    regsToUpdate.Add(regE);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (regsToAdd.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    RepoManager.RegRepo.Add(regsToAdd, true);
+                }
+                if (regsToUpdate.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    foreach (var regsToUpd in regsToUpdate.GroupBy(r => r.Col_Id))
+                    {
+                        try
+                        {
+                            BulkUpdate(regsToUpd.ToList());
+                        }
+                        catch (Exception)
+                        {
+                            _log.ErrorFormat("Rilevato errore con update regs col {0}", regsToUpd.Key);
+                        }
+                        //regs.Remove(reg);
+                        //regs.Add(reg);
+                    }
+                }
+
+                //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+                //BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+            }
+            return errors;
+        }
+
         /// <summary>
         /// Effettua la cancellazione delle regitrazioni attività tappo marcate per la cancellazione dalle precedenti funzion di gestione.
         /// </summary>
@@ -6608,6 +6740,11 @@ namespace Business.Repository.Custom
                 }
             }
             List<Tab_Decod> motivazioni = RepoManager.Tab_DecodRepo.GetAllQueryable(m => m.Decodifica_Tab == "Pausa").ToList();
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RimozionePausaOnce) == 1) 
+            {
+                string[] param = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RimozionePausaOnce, "Arrotondamento").Split(',');
+                arrot = Int32.Parse(param[0]);
+            }
             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitPausaPranzo) == 0)
             {
                 if (arrot > 0)

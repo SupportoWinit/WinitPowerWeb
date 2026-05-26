@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using DevExpress.XtraRichEdit.Fields.Expression;
 using UnityEngine;
+using log4net;
 
 namespace PowerWeb.Api
 {
@@ -25,13 +26,17 @@ namespace PowerWeb.Api
         /// </summary>
         private const string ExclusiveAccessFileName = "apiLock.tmp";
 
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Domain.Reg));
+
         /// <summary>
         /// Esegue l'operazione di import oggetto della API.
         /// </summary>
         protected override HttpStatusCode ExecuteOperation()
         {
+            int giorni = RepoManager.ParamRepo.ParametersRow.Indice_Timbrature_GeoBadge;
+            _log.InfoFormat("Esecuzione API di esportazione csv: vengono recuperate le timbrature degli ultimi {0} giorni", giorni);
             //inizializzo la variaible per tornare indietro di esattamente sette giorni
-            DateTime from = DateTime.Now.AddDays(-15);
+            DateTime from = DateTime.Now.AddDays(-giorni);
             // calcolo del nome file di destinazione 
             string Name = "DATI.csv";
             string tmpName = "tmpDATI.csv";

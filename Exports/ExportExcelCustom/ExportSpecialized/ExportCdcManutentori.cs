@@ -106,9 +106,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             //        }
             //    }
             //}
-
             List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
-            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
             var exportRegVs = exportRegs.GroupBy(c => c.Col_Id);
             collaboratori = new List<Col>();
             DateTime exportDate = new DateTime(2026, 04, 01);

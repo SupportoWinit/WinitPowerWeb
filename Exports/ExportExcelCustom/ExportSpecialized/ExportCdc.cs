@@ -64,15 +64,83 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         public override void LaunchExport(IQueryable<Reg_V> entitiesToExport)
         {
             //List<CentroDiCosto> centro = RepoManager.CentroDiCostoRepo.GetAllQueryable(c => c.Descrizione == "PULIZIE CIVILI").ToList();
-            List<Reg_V> regVsPregis = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 4 && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10)).ToList();
+            List<Reg_V> regVsPregis = new List<Reg_V>(); //RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 4 && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10)).ToList();
             var exportRegVsPregis = regVsPregis.GroupBy(c => c.Cant_Id);
-
+            List<int> cdcIds = RepoManager.CentroDiCostoRepo.GetAllQueryable(c => c.Descrizione != "PULIZIE CIVILI" && c.Descrizione != "CONDOMINIO").Select(c => c.CentroDiCosto_Id).ToList();
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => cdcIds.Contains(r.CentroDiCosto_Id.Value) && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10)).OrderBy(cdc => cdc.CentroDiCosto_Id).ToList();
+            var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             DateTime minDate = CommonService.GetFirstMonthDay(ExportPeriod);
             DateTime monthLastDate = CommonService.GetLastMonthDay(minDate);
             DateTime maxDate = new DateTime(monthLastDate.Year, monthLastDate.Month, monthLastDate.Day, 23, 59, 59);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
             rowIndex = 2;
+            foreach (var regs in exportRegVs)
+            {
+                if (regs.Key != null) 
+                {
+                    List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regs.Key).ToList();
+
+                    CellInsertValue(1, 1, rowIndex, currentCant.First().Descrizione_Can + " ", ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetFontSize(1, 1, rowIndex, 1, rowIndex, 11);
+                    RangeSetWrapText(1, 1, rowIndex, 1, rowIndex, true);
+
+                    int cdcId = regs.First().CentroDiCosto_Id.Value;
+                    List<CentroDiCosto> centroDiCostos = RepoManager.CentroDiCostoRepo.GetAllQueryable(c => c.CentroDiCosto_Id == cdcId).ToList();
+                    CellInsertValue(1, 2, rowIndex, "" + centroDiCostos.First().Descrizione, ExcelInsertTypeEnum.Content);
+                    RangeSetBorders(1, 2, rowIndex, 2, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetFontSize(1, 2, rowIndex, 2, rowIndex, 11);
+                    RangeSetWrapText(1, 2, rowIndex, 2, rowIndex, true);
+                    int interventi = 0;
+                    TimeSpan totaleMensile = new TimeSpan();
+                    foreach (DateTime day in monthDays)
+                    {
+                        //vado a fare il ciclo per ogni giorno e recupero le timbrature solo della giornata corrente
+                        DateTime tomorrow = day.AddDays(1);
+                        var dayReg = regs.Where(r => r.Data_Reg.Value.Year == day.Year && r.Data_Reg.Value.Month == day.Month && r.Data_Reg.Value.Day == day.Day).ToList();
+                        int daySum = 0;
+                        string tot = "-- --";
+                        foreach (Reg_V reg in dayReg)
+                        {
+                            if (reg.Durata_Fis != null)
+                            {
+                                daySum += reg.Durata_Fis.Value;
+                            }
+                        }
+                        if (daySum > 0)
+                        {
+                            interventi++;
+                            TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
+                            totaleMensile = totaleMensile + totalDuration;
+                            tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
+                        }
+                        if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                        {
+                            int minuti = (int)totaleMensile.TotalMinutes;
+                            minuti = CommonService.ConvertDaySum(minuti);
+                            totaleMensile = TimeSpan.FromMinutes(minuti);
+                            //tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
+                            tot = String.Format("{0}.{1:00}",
+                                (totaleMensile.Days * 24) + totaleMensile.Hours,
+                                (int)(Math.Round(Math.Abs(totaleMensile.Minutes) * 100D / 60D))
+                            );
+                            RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            RangeSetFontSize(1, 3, rowIndex, 3, rowIndex, 11);
+
+                            RangeSetWrapText(1, 3, rowIndex, 3, rowIndex, true);
+                            CellInsertValue(1, 3, rowIndex, interventi, ExcelInsertTypeEnum.Content);
+
+                            RangeSetBorders(1, 4, rowIndex, 4, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                            RangeSetFontSize(1, 4, rowIndex, 4, rowIndex, 11);
+
+                            RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
+                            CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                        }
+                    }
+                    rowIndex++;
+                }
+            }
             foreach (var regs in exportRegVsPregis)
             {
                 List<Cant> currentCant = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regs.Key).ToList();
@@ -127,7 +195,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 rowIndex++;
             }
-            List<Reg_V> regVsGardascuole = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 3 && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10)).ToList();
+            List<Reg_V> regVsGardascuole = new List<Reg_V>(); //RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 3 && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10)).ToList();
             var exportRegVsGardascuole = regVsGardascuole.GroupBy(c => c.Cant_Id);
             foreach (var regs in exportRegVsGardascuole)
             {

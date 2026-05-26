@@ -114,8 +114,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = exportRegs.GroupBy(c => c.Cant_Id);// regVs.GroupBy(c => c.Cant_Id);
+            List<int> cantToExclude = CalculateCantToInclude();
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
-            List<Reg_V> newRegVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
+            List<Reg_V> newRegVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && cantToExclude.Contains(r.Cant_Id.Value) && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
+            //List<Reg_V> newRegVs = new List<Reg_V>();
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
             rowIndex = 2;
             List<Cant> cantieri = RepoManager.CantRepo.GetAllQueryable(c => c.Tipologia_Can == "ATT").ToList();
@@ -372,24 +374,25 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 listaAttivita = tmpAttivita;
             }
 
+            int interventi = 0;
             foreach (var regs in newRegVs.GroupBy(c => c.Cant_Id)) 
             { 
                 Cant cantiere = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == regs.Key).FirstOrDefault();
                 if (cantiere != default(Cant)) 
                 {
                     int durata = 0;
-                    foreach (var reg in regs)
+                    var byDayRegs = regs.GroupBy(r => r.Data_Reg);
+                    foreach (var dayRegs in byDayRegs)
                     {
-                        if (cantiere.Metodo_Arrotondamento_Can == 0 || cantiere.Metodo_Arrotondamento_Can == 2)
+                        foreach (var reg in dayRegs) 
                         {
-                            if (reg.Durata_Fig != null)
-                                durata += reg.Durata_Fig.Value;
-                        }
-                        else 
-                        {
-                            if (reg.Durata_Fis != null)
+                            if (reg.Durata_Fis != null) 
+                            {
+                                interventi++;
                                 durata += reg.Durata_Fis.Value;
+                            }
                         }
+                        durata = CommonService.ConvertDaySum(durata);
                     }
                     Dictionary<string, Dictionary<string, int>> tmpDic = new Dictionary<string, Dictionary<string, int>>();
                     Cli cliente = RepoManager.CliRepo.GetAllQueryable(c => c.Cli_Id == cantiere.Cli_Id).FirstOrDefault();
@@ -405,11 +408,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 if (exOgg != null)
                                 {
                                     exOgg.durata += durata;
+                                    exOgg.interventi += interventi;
+                                    interventi = 0;
                                 }
                                 else 
                                 {
-                                    ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, 0);
+                                    ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, interventi);
                                     numeroInterventFinale.Add(newOgg);
+                                    interventi = 0;
                                 }  
                             }
                             else 
@@ -418,10 +424,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 if (exOgg != null)
                                 {
                                     exOgg.durata += durata;
+                                    exOgg.interventi += interventi;
+                                    interventi = 0;
                                 }
                                 else 
                                 {
-                                    ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, 0);
+                                    ExportColCantInt newOgg = new ExportColCantInt(cantiere.Descrizione_Can, att.Campo1_Tab, att.Decodifica_Tab, durata, interventi);
+                                    interventi = 0;
                                     numeroInterventFinale.Add(newOgg);
                                 }
                             }
@@ -508,6 +517,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
 
                 TimeSpan durata = TimeSpan.FromMinutes(prova.durata);
+                int tmpMins = CommonService.ConvertDaySum(prova.durata);
+                durata = TimeSpan.FromMinutes(tmpMins);
                 int minuti = 00;
                 switch (durata.Minutes)
                 {
@@ -521,13 +532,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         minuti = 75;
                         break;
                 }
-                string totale = String.Format("{0},{1}", (durata.Days * 24) + durata.Hours, minuti.ToString("00"));
-                CellInsertValue(1, 5, rowIndex, totale + " ", ExcelInsertTypeEnum.Content);
+
+                CellInsertValue(1, 5, rowIndex, prova.interventi, ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 5, rowIndex, 5, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetFontSize(1, 5, rowIndex, 5, rowIndex, 11);
                 RangeSetWrapText(1, 5, rowIndex, 5, rowIndex, true);
-                
 
+                string totale = String.Format("{0},{1}", (durata.Days * 24) + durata.Hours, minuti.ToString("00"));
+                CellInsertValue(1, 6, rowIndex, totale + " ", ExcelInsertTypeEnum.Content);
+                RangeSetBorders(1, 6, rowIndex, 6, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetFontSize(1, 6, rowIndex, 6, rowIndex, 11);
+                RangeSetWrapText(1, 6, rowIndex, 6, rowIndex, true);
 
                 rowIndex++;
             }
@@ -585,6 +600,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             return RepoManager.Reg_VRepo.Find(regv => regv.Col_Id == colId && regv.Data_Reg >= startPeriod && regv.Data_Reg <= endPeriod);
         }
 
+        private List<int> CalculateCantToInclude() 
+        {
+            List<int> cantToInclude = new List<int>();
+            List<string> motivToExclude = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Campo1_Tab == "DISINFESTAZIONI" || td.Campo1_Tab == "MANUTENZIONI").Select(td => td.Chiave_Tab).ToList();
+            cantToInclude = RepoManager.CantRepo.GetAllQueryable(c => motivToExclude.Contains(c.Tipo_Interv_Can)).Select(c => c.Cant_Id).ToList();
+            return cantToInclude;
+        }
         #endregion
     }
 }
