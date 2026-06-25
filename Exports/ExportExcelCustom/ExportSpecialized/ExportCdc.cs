@@ -115,7 +115,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             totaleMensile = totaleMensile + totalDuration;
                             tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
                         }
-                        if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                        if (CommonService.GetLastMonthDay(ExportPeriod) == day && interventi > 0)
                         {
                             int minuti = (int)totaleMensile.TotalMinutes;
                             minuti = CommonService.ConvertDaySum(minuti);
@@ -136,6 +136,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
                             CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                        }
+                        else 
+                        {
+                            rowIndex--;
                         }
                     }
                     rowIndex++;
@@ -177,7 +181,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         totaleMensile = totaleMensile + totalDuration;
                         tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
                     }
-                    if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                    if (CommonService.GetLastMonthDay(ExportPeriod) == day && interventi > 0)
                     {
                         tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
                         RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -191,6 +195,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                         RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
                         CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                    }
+                    else
+                    {
+                        rowIndex--;
                     }
                 }
                 rowIndex++;
@@ -235,7 +243,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             totaleMensile = totaleMensile + totalDuration;
                             tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
                         }
-                        if (CommonService.GetLastMonthDay(ExportPeriod) == day)
+                        if (CommonService.GetLastMonthDay(ExportPeriod) == day && interventi > 0)
                         {
                             tot = String.Format("{0}.{1}", (totaleMensile.Days * 24) + totaleMensile.Hours, Math.Abs(totaleMensile.Minutes).ToString("00"));
                             RangeSetBorders(1, 3, rowIndex, 3, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
@@ -249,6 +257,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                             RangeSetWrapText(1, 4, rowIndex, 4, rowIndex, true);
                             CellInsertValue(1, 4, rowIndex, tot, ExcelInsertTypeEnum.Content);
+                        }
+                        else
+                        {
+                            rowIndex--;
                         }
                     }
                     rowIndex++;

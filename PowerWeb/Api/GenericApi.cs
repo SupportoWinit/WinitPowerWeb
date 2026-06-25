@@ -123,6 +123,14 @@ namespace PowerWeb.Api
         /// </value>
         protected TimeSpan End { get; set; }
 
+        /// <summary>
+        /// Recupera o imposta la stringa contenente la motivazione delle richieste.
+        /// </summary>
+        /// <value>
+        /// La stringa con la motivazione.
+        /// </value>
+        public double Durata { get; set; }
+
         #endregion
 
         #region Public Methods
@@ -222,7 +230,8 @@ namespace PowerWeb.Api
         /// L'operazione per questo overload di get richiede un from e un to.
         /// </summary>
         /// <param name="from">La data di inizio elaborazione.</param>
-        /// <param name="to">La data di fine elaborazione.</param>
+        /// <param name="start">La data di inizio elaborazione.</param>
+        /// <param name="end">La data di fine elaborazione.</param>
         /// <param name="matricola">La matricola del collaboratore.</param>
         /// <param name="justification">La motivazione inserita.</param>
         /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
@@ -237,6 +246,36 @@ namespace PowerWeb.Api
                 Justification = justification;
                 Start = start;
                 End = end;
+                ExecuteOperation();
+            }
+            else
+                AddUserError();
+
+            // ritorno degli errori eventualmente recuperati nell'elaborazione
+            return ParseJsonrForReturnValue();
+        }
+
+        /// <summary>
+        /// Funzione di get della api corrente; utilizza il template pattern per l'operazione da eseguire.
+        /// L'operazione per questo overload di get richiede un from e un to.
+        /// </summary>
+        /// <param name="from">La data di inizio elaborazione.</param>
+        /// <param name="start">La data di inizio elaborazione.</param>
+        /// <param name="end">La data di fine elaborazione.</param>
+        /// <param name="matricola">La matricola del collaboratore.</param>
+        /// <param name="justification">La motivazione inserita.</param>
+        /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
+        public string Get(DateTime from, int matricola, string justification, double durata)
+        {
+            // si procede con l'elaborazione solamente se l'utente è stato trovato
+            if (InitializeApiUser())
+            {
+                // inserimento dei parametri nell'oggetto
+                From = from;
+                ColId = matricola;
+                Justification = justification;
+                Durata = durata;
+                Start = new TimeSpan(0, 1, 0);
                 ExecuteOperation();
             }
             else

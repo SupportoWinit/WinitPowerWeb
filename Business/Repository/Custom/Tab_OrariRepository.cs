@@ -1240,7 +1240,7 @@ namespace Business.Repository.Custom
                 // valido allora lo si aggiunge all'elenco
                 validTimesheet.ForEach(ts =>
                 {
-                    if (IsToApplyTimesheet(ts, dateToSearch) && (!RepoManager.Tab_FestiviRepo.DbSet.Any(hol => hol.Giorno_Tab_Festivi == dateToSearch.Date) || entityType == CantEntityName))
+                    if (IsToApplyTimesheet(ts, dateToSearch) || /*(!RepoManager.Tab_FestiviRepo.DbSet.Any(hol => hol.Giorno_Tab_Festivi == dateToSearch.Date) || */ entityType == CantEntityName)
                     {
                         bool toAddTimeSheet = (dateToSearch.DayOfWeek == DayOfWeek.Monday && ts.G1) ||
                             (dateToSearch.DayOfWeek == DayOfWeek.Tuesday && ts.G2) ||

@@ -395,6 +395,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 catch (Exception e) { }
                 lastCant = justification.CantDesc;
+                if (lastCant == null)
+                {
+                    lastCant = "";
+                }
 
                 var justificationDec = justification.Justification;
 

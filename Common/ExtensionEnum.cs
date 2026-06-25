@@ -236,7 +236,8 @@ namespace Common
         RouteOnRegTrip,
         NoCalculateTripOverX,
         RimozionePausaOnce,
-        TripFromSameCant
+        TripFromSameCant,
+        ArrotondamentoSuOrario
     }
     
     public enum ClockAppsOperationEnum

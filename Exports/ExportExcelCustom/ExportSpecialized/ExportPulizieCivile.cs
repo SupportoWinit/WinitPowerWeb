@@ -462,11 +462,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 if (reg.Durata_Fis != null)
                                 {
                                     daySum += reg.Durata_Fis.Value;
+                                    if(reg.Registrazione_Tipo_Reg == 0)
+                                        interventi++;
                                 }
                             }
                             if (daySum > 0)
                             {
-                                interventi++;
                                 daySum = CommonService.ConvertDaySum(daySum);
                                 TimeSpan totalDuration = TimeSpan.FromMinutes(daySum);
                                 totaleMensile = totaleMensile + totalDuration;

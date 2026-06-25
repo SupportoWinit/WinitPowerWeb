@@ -249,7 +249,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                             var cliRegs = exportCliRegVs.Where(c => c.Key == cliId).FirstOrDefault();
                                             if (cliRegs != null)
                                             {
-                                                dayReg = cliRegs.Where(r => (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_U <= tomorrow) || (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_E < tomorrow && r.Registrazione_Tipo_Reg == 10)).ToList();
+                                                dayReg = regs.Where(r => (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_U <= tomorrow) || (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_E < tomorrow && r.Registrazione_Tipo_Reg == 10)).ToList();
+                                                //dayReg = cliRegs.Where(r => (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_U <= tomorrow) || (r.Data_Ora_Fis_E >= day && r.Data_Ora_Fis_E < tomorrow && r.Registrazione_Tipo_Reg == 10)).ToList();
                                             }
                                         }
                                     }
@@ -262,12 +263,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     if (reg.Durata_Fis != null)
                                     {
                                         daySum += reg.Durata_Fis.Value;
+                                        if (reg.Registrazione_Tipo_Reg == 0) 
+                                            interventi++;
                                     }
                                 }
                                 if (daySum > 0)
                                 {
                                     daySum = CommonService.ConvertDaySum((int)daySum);
-                                    interventi++;
                                     TimeSpan totalDuration = TimeSpan.FromMinutes((int)daySum);
                                     totaleMensile = totaleMensile + totalDuration;
                                     tot = String.Format("{0}.{1}", (totalDuration.Days * 24) + totalDuration.Hours, Math.Abs(totalDuration.Minutes).ToString("00"));
@@ -332,12 +334,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 int j = 2;
 
                                 string rangeFormulaInt = $"{ColumnIndexToNameConversion(columnIndex - 2)}{rowIndex}";
-                                string rangeFormula = $"{ColumnIndexToNameConversion(columnIndex - 2)}{rowIndex}";
+                                string rangeFormula = $"{ColumnIndexToNameConversion(columnIndex - 1)}{rowIndex}";
 
                                 while (j <= nMesi)
                                 {
                                     rangeFormulaInt += $",{ColumnIndexToNameConversion(columnIndex - (j * 2))}{rowIndex}";
-                                    rangeFormula += $",{ColumnIndexToNameConversion(columnIndex - (j * 2))}{rowIndex}";
+                                    rangeFormula += $",{ColumnIndexToNameConversion(columnIndex - (j * 2) + 1)}{rowIndex}";
                                     j++;
                                 }
 

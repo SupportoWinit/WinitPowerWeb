@@ -2137,7 +2137,7 @@ namespace PowerWeb.Pages
                     }
                     if (mostra)
                     {
-                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true,false,true,true)["justification"]);
+                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, false, false, true,false,true,true)["justification"]);
                     }
                 }
                 else if (userRespIds.Any() && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Resp) && PowerWebContext.Current.User.Liv_Utente < 10)
@@ -2153,7 +2153,7 @@ namespace PowerWeb.Pages
                     }
                     if (mostra)
                     {
-                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true, false, true, true)["justification"]);
+                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, false, false, true, false, true, true)["justification"]);
                     }
                 }
                 else if ((userRespIds.Any() || userFilIds.Any()) && (RepoManager.ParamRepo.ParametersRow.DomainFilterEnum == DomainFilterEnum.Both) && PowerWebContext.Current.User.Liv_Utente < 10)
@@ -2180,14 +2180,14 @@ namespace PowerWeb.Pages
                     }
                     if (mostra)
                     {
-                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, true, false, true, true)["justification"]);
+                        cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, false, false, true, false, true, true)["justification"]);
                     }
                 }
                 else
                 {
                     //if (regs.Count() > 0)
                     //{
-                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, true, false, false, false, true, true)["justification"]);
+                    cartellini.AddRange(TimesheetModuleItem.GenerateCartellinoReport(selectedDate, col, false, false, false, false, true, true)["justification"]);
                     //} 
                 }
             }

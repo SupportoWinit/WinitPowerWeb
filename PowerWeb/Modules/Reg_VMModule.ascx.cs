@@ -262,7 +262,7 @@ namespace PowerWeb.Modules
         {
             bool isChanged = false;
 
-            var prevRegV = EditRegVs.Single(regv => regv.RegE == editedRegv.RegE);
+            var prevRegV = RepoManager.Reg_VRepo.Single(regv => regv.RegE == editedRegv.RegE);//EditRegVs.Single(regv => regv.RegE == editedRegv.RegE);
 
             isChanged = prevRegV.Cant_Id != editedRegv.Cant_Id || prevRegV.Motivazione_Reg_Id != editedRegv.Motivazione_Reg_Id
                 || prevRegV.Data_Ora_Fis_E != editedRegv.Data_Ora_Fis_E || prevRegV.Data_Ora_Fis_U != editedRegv.Data_Ora_Fis_U
@@ -1066,6 +1066,7 @@ namespace PowerWeb.Modules
             if (cantRegE != default(Cant) && cantRegE.Tipologia_Can != "ATT")
                 currentRegENew.Activity_Evaluation = null;
 
+            currentRegENew.Stato_Attivita = 1;
             //Aggiungo la REGE fra le REg da Trattare
             toAddRegsNew.Add(currentRegENew);
 
@@ -1097,6 +1098,8 @@ namespace PowerWeb.Modules
 
                 //aggiungo la REGU nelle Reg da Trattare
                 toAddRegsNew.Add(currentRegUNew);
+
+                currentRegUNew.Stato_Attivita = 1;
             }
 
             currentRegENew.CentroDiCosto_Id = (int?)e.NewValues[nameof(Reg.CentroDiCosto_Id)];
@@ -1263,6 +1266,7 @@ namespace PowerWeb.Modules
             if (cantRegE != default(Cant) && cantRegE.Tipologia_Can != "ATT")
                 currentRegENew.Activity_Evaluation = null;
 
+            currentRegENew.Stato_Attivita = 1;
             //Aggiungo la REGE fra le REg da Trattare
             toAddRegsNew.Add(currentRegENew);
 
@@ -1298,6 +1302,7 @@ namespace PowerWeb.Modules
                 if (cantRegU != default(Cant) && cantRegU.Tipologia_Can != "ATT")
                     currentRegUNew.Activity_Evaluation = null;
 
+                currentRegUNew.Stato_Attivita = 1;
                 //aggiungo la REGU nelle Reg da Trattare
                 toAddRegsNew.Add(currentRegUNew);
             }
@@ -1816,6 +1821,7 @@ namespace PowerWeb.Modules
                         if (validationErrors.Count > 0)
                             break;
 
+                        newRegE.Stato_Attivita = 1;
                         toAddRegs.Add(newRegE);
 
                         Reg newRegU = null;
@@ -1841,7 +1847,7 @@ namespace PowerWeb.Modules
 
                             newRegU.DisAbilitazione_Reg = false;
                             newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                            newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fig_Reg;
+                            newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
 
                             newRegU.Flag_EU_Reg = regv.UscitaEU;
 
@@ -1850,6 +1856,7 @@ namespace PowerWeb.Modules
                             if (validationErrors.Count > 0)
                                 break;
 
+                            newRegU.Stato_Attivita = 1;
                             toAddRegs.Add(newRegU);
                         }
 
@@ -1934,6 +1941,7 @@ namespace PowerWeb.Modules
                             newRegE.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
                             newRegE.Registrazione_Data_Ora_Fig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
                             dataOrigE = oldRegE != null ? oldRegE.Registrazione_Data_Ora_Orig_Reg : newRegE.Registrazione_Data_Ora_Orig_Reg;
+                            newRegE.Registrazione_Data_Ora_Orig_Reg = oldRegE.Registrazione_Data_Ora_Orig_Reg;
                             newRegE.Fru_Id = regv.Fru_Id;
                             newRegE.Pru_Id = regv.Pru_Id;
                             newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
@@ -1971,6 +1979,43 @@ namespace PowerWeb.Modules
                             if (validationErrors.Count > 0)
                                 break;
 
+                            if (newRegE.Registrazione_Data_Ora_Orig_Reg == DateTime.MinValue)
+                            {
+                                newRegE.Stato_Attivita = 1;
+                            }
+                            else 
+                            {
+                                // calcolo del codice cantiere e del codice collaboratore in base ai parametri passati al metodo
+                                int cantIdToCheck = 0;
+                                int colIdToCheck = 0;
+                                bool hourModified = false;
+                                DateTime hourE = DateTime.MinValue;
+                                if (oldRegE != null)
+                                {
+                                    cantIdToCheck = Convert.ToInt32(oldRegE.Cant_Id);
+                                    colIdToCheck = Convert.ToInt32(oldRegE.Col_Id);
+                                    hourE = oldRegE.Registrazione_Data_Ora_Fis_Reg;
+                                }
+                                else
+                                {
+                                    // viene recuperata l'attuale reg dal database
+                                    Reg currentReg = RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == newRegE.Reg_Id);
+
+                                    cantIdToCheck = Convert.ToInt32(currentReg.Cant_Id);
+                                    colIdToCheck = Convert.ToInt32(currentReg.Col_Id);
+                                    hourE = currentReg.Registrazione_Data_Ora_Fis_Reg;
+                                }
+                                if (hourE != newRegE.Registrazione_Data_Ora_Fis_Reg)
+                                {
+                                    hourModified = true;
+                                }
+                                // se nella reg da processare è cambiato il cant_id allora si procede all'annullamento del valore di fru_id
+                                if (cantIdToCheck != newRegE.Cant_Id || colIdToCheck != newRegE.Col_Id || hourModified)
+                                    newRegE.Stato_Attivita = 2;
+                                else
+                                    newRegE.Stato_Attivita = oldRegE.Stato_Attivita;
+
+                            }
                             //viene aggiornata la nuova reg ed eliminata quella vecchia
                             toUpdateRegs.Add(newRegE);
                             toDeleteRegs.Add(oldRegE);
@@ -2031,6 +2076,7 @@ namespace PowerWeb.Modules
                                 newRegU.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
                                 dataOrigU = oldRegU != null ? oldRegU.Registrazione_Data_Ora_Orig_Reg : newRegU.Registrazione_Data_Ora_Orig_Reg;
                                 newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                newRegU.Registrazione_Data_Ora_Orig_Reg = oldRegU != null ? oldRegU.Registrazione_Data_Ora_Orig_Reg : newRegU.Registrazione_Data_Ora_Orig_Reg;
 
                                 newRegU.Flag_EU_Reg = regv.UscitaEU;
                                 //newRegU.RiferimentoRRN_Reg = newRegE.Reg_Id;
@@ -2073,6 +2119,45 @@ namespace PowerWeb.Modules
                                 if (validationErrors.Count > 0)
                                     break;
 
+                                if (newRegU.Registrazione_Data_Ora_Orig_Reg == DateTime.MinValue)
+                                {
+                                    newRegU.Stato_Attivita = 1;
+                                }
+                                else
+                                {
+                                    // calcolo del codice cantiere e del codice collaboratore in base ai parametri passati al metodo
+                                    int cantIdToCheck = 0;
+                                    int colIdToCheck = 0;
+                                    bool hourModified = false;
+                                    DateTime hourU = DateTime.MinValue;
+                                    if (oldRegU != null)
+                                    {
+                                        cantIdToCheck = Convert.ToInt32(oldRegU.Cant_Id);
+                                        colIdToCheck = Convert.ToInt32(oldRegU.Col_Id);
+                                        hourU = oldRegU.Registrazione_Data_Ora_Fis_Reg;
+                                    }
+                                    else
+                                    {
+                                        // viene recuperata l'attuale reg dal database
+                                        Reg currentReg = RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == newRegU.Reg_Id);
+
+                                        cantIdToCheck = Convert.ToInt32(currentReg.Cant_Id);
+                                        colIdToCheck = Convert.ToInt32(currentReg.Col_Id);
+                                        hourU = currentReg.Registrazione_Data_Ora_Fis_Reg;
+                                    }
+                                    if (hourU != newRegU.Registrazione_Data_Ora_Fis_Reg) 
+                                    {
+                                        hourModified = true;
+                                    }
+
+                                    // se nella reg da processare è cambiato il cant_id allora si procede all'annullamento del valore di fru_id
+                                    if (cantIdToCheck != newRegU.Cant_Id || colIdToCheck != newRegU.Col_Id || hourModified)
+                                        newRegU.Stato_Attivita = 2;
+                                    else
+                                        newRegU.Stato_Attivita = oldRegU != null ? oldRegU.Stato_Attivita : 1;
+
+
+                                }
                                 toUpdateRegs.Add(newRegU);
                                 if (oldRegU != null)
                                     toDeleteRegs.Add(oldRegU);

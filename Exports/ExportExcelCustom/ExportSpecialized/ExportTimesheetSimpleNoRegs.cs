@@ -97,54 +97,71 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     List<Reg_V> newRegs = new List<Reg_V>();
                     var colRegs = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Data_Ora_Fis_E > startMonth && r.Data_Ora_Fis_E < endMonth).ToList().GroupBy(r => r.Data_Reg);
                     foreach (var regGroup in colRegs)
-                    {
+                    { 
                         if (regGroup.ToList().Count == 1)
                         { 
                             newRegs.AddRange(regGroup.ToList());
                         }
                         else 
                         {
-                            int lastDuration = 0;
-                            int totaleGiornaliero = 0;
-                            int lastCantId = 0;
-                            DateTime lastU = new DateTime();
-                            foreach (Reg_V regv in regGroup)
+                            Tab_Decod motPau = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Chiave_Tab == "Pausa");
+                            DateTime lastE = new DateTime();
+                            foreach (Reg_V regv in regGroup.OrderBy(r => r.Data_Ora_Fis_E))
                             {
-                                if (regv.Durata_Fig.Value != 0)
-                                {
-                                    if (lastCantId != 0 && lastCantId != regv.Cant_Id.Value)
-                                    {
-                                        var diff = regv.Data_Ora_Fig_E.Value - lastU;
-                                        totaleGiornaliero = totaleGiornaliero + (int)diff.TotalMinutes;
-                                    }
-                                    totaleGiornaliero += regv.Durata_Fig.Value;
-                                    lastCantId = regv.Cant_Id.Value;
-                                    if (regv.Data_Ora_Fig_U.HasValue)
-                                    {
-                                        lastU = regv.Data_Ora_Fig_U.Value;
-                                    }
-                                    lastDuration = regv.Durata_Fig.Value;
+                                if (regv.Durata_Fis > 1 && regv.Motivazione_Reg_Id == null)
+                                { 
+                                    newRegs.Add(regv);
+                                    lastE = new DateTime(regv.Data_Ora_Fig_U.Value.Year, regv.Data_Ora_Fig_U.Value.Month, regv.Data_Ora_Fig_U.Value.Day, regv.Data_Ora_Fig_U.Value.Hour, regv.Data_Ora_Fig_U.Value.Minute,0);
+                                    //lastE = regv.Data_Ora_Fig_U.Value;
                                 }
                                 else 
                                 {
-                                    if (lastCantId != 0 && lastCantId != regv.Cant_Id.Value)
+                                    if (lastE == default(DateTime))
                                     {
-                                        var diff = regv.Data_Ora_Fig_E.Value - lastU;
-                                        totaleGiornaliero = totaleGiornaliero + (int)diff.TotalMinutes;
+                                        lastE = new DateTime(regv.Data_Ora_Fig_E.Value.Year, regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day, regv.Data_Ora_Fig_E.Value.Hour, regv.Data_Ora_Fig_E.Value.Minute, 0);
+                                        //lastE = regv.Data_Ora_Fig_E.Value;
                                     }
-                                    totaleGiornaliero += regv.Durata_Fig.Value;
-                                    lastCantId = regv.Cant_Id.Value;
-                                    if (regv.Data_Ora_Fig_U.HasValue)
+                                    else if (regv == regGroup.OrderBy(r => r.Data_Ora_Fis_E).Last())
                                     {
-                                        lastU = regv.Data_Ora_Fig_U.Value;
+                                        Reg_V returnReg = regv;
+                                        DateTime start = new DateTime(regv.Data_Ora_Fig_E.Value.Year, regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day, regv.Data_Ora_Fig_E.Value.Hour, regv.Data_Ora_Fig_E.Value.Minute, 0);
+                                        returnReg.Durata_Fig = (int)(start - lastE).TotalMinutes;
+                                        returnReg.Durata_Fis = (int)(start - lastE).TotalMinutes;
+                                        newRegs.Add(returnReg);
                                     }
-                                    lastDuration = regv.Durata_Fig.Value;
+                                    else
+                                    {
+                                        if (regv.Motivazione_Reg_Id != null)
+                                        {
+                                            if (regv.Motivazione_Reg_Id == motPau.Tab_Decod_Id)
+                                            {
+                                                DateTime start = new DateTime(regv.Data_Ora_Fig_E.Value.Year, regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day, regv.Data_Ora_Fig_E.Value.Hour, regv.Data_Ora_Fig_E.Value.Minute, 0);
+                                                Reg_V returnReg = regv;
+                                                returnReg.Durata_Fig = (int)(start - lastE).TotalMinutes;
+                                                returnReg.Durata_Fis = (int)(start - lastE).TotalMinutes;
+                                                returnReg.Motivazione_Reg_Id = null;
+                                                returnReg.Motivazione_Reg_Cod = "";
+                                                newRegs.Add(returnReg);
+                                                lastE = regv.Data_Ora_Fig_U.Value;
+                                            }
+                                        }
+                                        else 
+                                        {
+                                            DateTime start = new DateTime(regv.Data_Ora_Fig_E.Value.Year, regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day, regv.Data_Ora_Fig_E.Value.Hour, regv.Data_Ora_Fig_E.Value.Minute, 0);
+                                            Reg_V returnReg = regv;
+                                            returnReg.Durata_Fig = (int)(start - lastE).TotalMinutes;
+                                            returnReg.Durata_Fis = (int)(start - lastE).TotalMinutes;
+                                            newRegs.Add(returnReg);
+                                            lastE = new DateTime();
+                                        }
+                                    }
                                 }
                             } 
                         } 
                     }
-                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
+                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCartellinoCentri(ExportDate,
                                                 col,
+                                                newRegs,
                                                 false,
                                                 settimanali,
                                                 true,

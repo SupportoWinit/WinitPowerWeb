@@ -45,7 +45,7 @@ namespace PowerWeb.Api
             ReturnValues values = new ReturnValues();
             if (Start != new TimeSpan(0, 1, 0))
             {
-                //Url tipo: http://localhost:55513//api/InsertRequest//?from=2025-02-27T00:00:00.00000000&start=08%3A00%3A00&end=12%3A00%3A00&matricola=49972&justification=RIchiesta Permesso
+                //Url tipo: http://localhost:55513//api/InsertRequest//?from=2025-02-27T00:00:00.00000000&start=08%3A00%3A00&end=12%3A00%3A00&matricola=49972&justification=Richiesta Permesso
                 //se sono qui vuol dire che è una richiesta oraria
                 List<Reg> regsToAdd = new List<Reg>();
                 List<Reg> regsToElaborate = new List<Reg>();
@@ -57,7 +57,7 @@ namespace PowerWeb.Api
                 Cant can = null;
                 Tab_Decod motivazione = null;
                 List<Reg> checkRegs = new List<Reg>();
-                try 
+                try
                 {
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
                     pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
@@ -90,8 +90,8 @@ namespace PowerWeb.Api
                     result = false;
                     _log.ErrorFormat("Errore nella convalida dei dati forniti {0}", e.InnerException);
                 }
-                
-                DateTime dataE = new DateTime(From.Year,From.Month,From.Day,Start.Hours,Start.Minutes,Start.Seconds);
+
+                DateTime dataE = new DateTime(From.Year, From.Month, From.Day, Start.Hours, Start.Minutes, Start.Seconds);
                 var dataPrimoGiorno = From.ToString().Split(' ');
                 string noteReg = "" + dataPrimoGiorno[0];
                 if (result) {
@@ -144,13 +144,13 @@ namespace PowerWeb.Api
                         values.Message = "Richiesta già presente a sistema";
                         InviaConferma(3, col, From, To);
                     }
-                    
+
                     JsonData = JsonConvert.SerializeObject(values);
                 }
             }
-            else 
+            else if (Durata > 0) 
             {
-                //url tipo http://localhost:55513//api/InsertRequest//?from=2025-02-24T00:00:00.00000000&to=2025-02-27T00:00:00.00000000&matricola=50044&justification=RIchiesta Ferie
+                //Url tipo: http://localhost:55513//api/InsertRequest//?from=2025-02-27T00:00:00.00000000&durata=&matricola=49972&justification=Richiesta Permesso
                 //se sono qui è una richiesta di una giornata intera
                 List<Reg> regsToAdd = new List<Reg>();
                 List<Reg> regsToElaborate = new List<Reg>();
@@ -163,7 +163,8 @@ namespace PowerWeb.Api
                 Tab_Decod motivazione = null;
                 List<Reg> checkRegs = new List<Reg>();
                 bool inserted = true;
-                try {
+                try
+                {
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
                     pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
@@ -187,15 +188,118 @@ namespace PowerWeb.Api
                     col = RepoManager.ColRepo.Single(c => c.Col_Id == pruCol.Col_Id);
                     can = RepoManager.CantRepo.Single(c => c.Cant_Id == fruCant.Cant_Id);
                     motivazione = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == Justification && td.Nome_Tab == "MOTIVAZIONI");
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     //nel caso in cui ci sia un eccezione lo notifico nella response e non faccio inserire i dati
                     values.Status = false;
                     values.Message = "Dati forniti come parametri non corretti";
                     JsonData = JsonConvert.SerializeObject(values);
                     result = false;
-                    _log.ErrorFormat("Errore nella convalida dei dati forniti {0}",e.InnerException);
+                    _log.ErrorFormat("Errore nella convalida dei dati forniti {0}", e.InnerException);
                 }
-                if (result) {
+                DateTime dataE = new DateTime(From.Year, From.Month, From.Day, 0, 0, 0);
+                var dataPrimoGiorno = From.ToString().Split(' ');
+                string noteReg = "" + dataPrimoGiorno[0];
+                if (result)
+                {
+                    Reg regE = new Reg
+                    {
+                        Fru_Id = fru.Fru_Id,
+                        Pru_Id = pru.Pru_Id,
+                        Cant_Id = can.Cant_Id,
+                        Col_Id = col.Col_Id,
+                        Registrazione_Data_Ora_Fis_Reg = dataE,
+                        Registrazione_Data_Ora_Fig_Reg = dataE,
+                        Registrazione_Data_Ora_Orig_Reg = dataE,
+                        Data_Registrazione_Reg = DateTime.UtcNow,
+                        DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                        Motivazione_Reg_Id = motivazione.Tab_Decod_Id,
+                        Registrazione_Stato_Reg = (int)RegStateEnum.Ass,
+                        Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration,
+                        Rettifica_Durata = Convert.ToInt32(Durata),
+                        Note_Reg = noteReg
+                    };
+                    checkRegs = RepoManager.RegRepo.GetAllQueryable(r => r.Fru_Id == fru.Fru_Id && r.Pru_Id == pru.Pru_Id && r.Registrazione_Data_Ora_Fis_Reg == dataE).ToList();
+                    if (checkRegs.Count() == 0)
+                    {
+                        regsToAdd.Add(regE);
+                    }
+                    else
+                    {
+                        inserted = false;
+                    }
+                    if (inserted)
+                    {
+                        RepoManager.RegRepo.Add(regsToAdd, true);
+                        values.Status = true;
+                        values.Message = "Richiesta inserita correttamente";
+                        _log.Info("Inizio ad inserire la richiesta di ferie o permesso");
+                        InviaConferma(1, col, From, To);
+                    }
+                    else
+                    {
+                        _log.Info("Richiesta gia presente a sistema");
+                        values.Status = true;
+                        values.Message = "Richiesta già presente a sistema";
+                        InviaConferma(3, col, From, To);
+                    }
+
+                    JsonData = JsonConvert.SerializeObject(values);
+                }
+            }
+            else
+            {
+                //url tipo http://localhost:55513//api/InsertRequest//?from=2025-02-24T00:00:00.00000000&to=2025-02-27T00:00:00.00000000&matricola=50044&justification=RIchiesta Ferie
+                //se sono qui è una richiesta di una giornata intera
+                List<Reg> regsToAdd = new List<Reg>();
+                List<Reg> regsToElaborate = new List<Reg>();
+                Pru pru = null;
+                Fru fru = null;
+                Pru_Col pruCol = null;
+                Fru_Cant fruCant = null;
+                Col col = null;
+                Cant can = null;
+                Tab_Decod motivazione = null;
+                List<Reg> checkRegs = new List<Reg>();
+                bool inserted = true;
+                try
+                {
+                    //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
+                    pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
+                    var codicePru = "     " + ColId.ToString(); // o la proprietà giusta
+
+                    var pruId = RepoManager.Pru_ColRepo
+                        .GetAllQueryable(p => p.Pru_Id == pru.Pru_Id)
+                        .OrderByDescending(p => p.Abilitazione_Data_Inizio_Pru_Col)
+                        .Select(p => p.Pru_Id)
+                        .FirstOrDefault();
+
+                    pruCol = RepoManager.Pru_ColRepo.GetAllQueryable(pr => pr.Pru_Id == pruId).OrderByDescending(pr => pr.Abilitazione_Data_Inizio_Pru_Col).FirstOrDefault();
+
+                    var fruId = RepoManager.Fru_CantRepo
+                        .GetAllQueryable(p => p.Fru_Id == fru.Fru_Id)
+                        .OrderByDescending(p => p.Abilitazione_Data_Inizio_Fru_Can)
+                        .Select(p => p.Fru_Id)
+                        .FirstOrDefault();
+
+                    fruCant = RepoManager.Fru_CantRepo.GetAllQueryable(fc => fc.Fru_Id == fruId).OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault();
+                    col = RepoManager.ColRepo.Single(c => c.Col_Id == pruCol.Col_Id);
+                    can = RepoManager.CantRepo.Single(c => c.Cant_Id == fruCant.Cant_Id);
+                    motivazione = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == Justification && td.Nome_Tab == "MOTIVAZIONI");
+                }
+                catch (Exception e)
+                {
+                    //nel caso in cui ci sia un eccezione lo notifico nella response e non faccio inserire i dati
+                    values.Status = false;
+                    values.Message = "Dati forniti come parametri non corretti";
+                    JsonData = JsonConvert.SerializeObject(values);
+                    result = false;
+                    _log.ErrorFormat("Errore nella convalida dei dati forniti {0}", e.InnerException);
+                }
+                if (result)
+                {
                     DateTime from = From;
                     int regs = 1;
                     string noteReg = "";
@@ -211,32 +315,122 @@ namespace PowerWeb.Api
                             }
 
                             DateTime dataE = new DateTime(from.Year, from.Month, from.Day, from.Hour, from.Minute, from.Second);
-                            Reg regE = new Reg
+                            if (col.Tab_Orari_Tipo_Id != null)
                             {
-                                Fru_Id = fru.Fru_Id,
-                                Pru_Id = pru.Pru_Id,
-                                Cant_Id = can.Cant_Id,
-                                Col_Id = col.Col_Id,
-                                Registrazione_Data_Ora_Fis_Reg = dataE,
-                                Registrazione_Data_Ora_Fig_Reg = dataE,
-                                Registrazione_Data_Ora_Orig_Reg = dataE,
-                                Data_Registrazione_Reg = DateTime.UtcNow,
-                                DataOraUltimaModifica_Reg = DateTime.UtcNow,
-                                Motivazione_Reg_Id = motivazione.Tab_Decod_Id,
-                                Registrazione_Stato_Reg = (int)RegStateEnum.Ass,
-                                Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration,
-                                Rettifica_Durata = Convert.ToInt32(480),
-                                Note_Reg = noteReg
-                            };
-                            checkRegs = RepoManager.RegRepo.GetAllQueryable(r => r.Fru_Id == fru.Fru_Id && r.Pru_Id == pru.Pru_Id && r.Registrazione_Data_Ora_Fis_Reg == dataE).ToList();
-                            if (checkRegs.Count() == 0)
+                                Tab_Orari orarioFinale = new Tab_Orari();
+                                Tab_Orari_Tipo tipoOr = RepoManager.Tab_OrariTipoRepo.FirstOrDefault(td => td.Tab_Orari_Tipo_Id == col.Tab_Orari_Tipo_Id);
+                                var orari = RepoManager.Tab_OrariRepo.GetAllQueryable(o => o.Tab_Orari_Tipo_Id == tipoOr.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).ToList();
+                                int durata = 0;
+                                if (orari.Count > 0)
+                                {
+                                    foreach (var singoloOrario in orari.Last())
+                                    {
+                                        switch (dataE.DayOfWeek)
+                                        {
+                                            case DayOfWeek.Monday:
+                                                if (singoloOrario.G1)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                            case DayOfWeek.Tuesday:
+                                                if (singoloOrario.G2)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                            case DayOfWeek.Wednesday:
+                                                if (singoloOrario.G3)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                            case DayOfWeek.Thursday:
+                                                if (singoloOrario.G4)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                            case DayOfWeek.Friday:
+                                                if (singoloOrario.G5)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                            case DayOfWeek.Saturday:
+                                                if (singoloOrario.G6)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                            case DayOfWeek.Sunday:
+                                                if (singoloOrario.G7)
+                                                {
+                                                    durata = singoloOrario.Durata_Minuti;
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    if (durata > 0)
+                                    {
+                                        Reg regE = new Reg
+                                        {
+                                            Fru_Id = fru.Fru_Id,
+                                            Pru_Id = pru.Pru_Id,
+                                            Cant_Id = can.Cant_Id,
+                                            Col_Id = col.Col_Id,
+                                            Registrazione_Data_Ora_Fis_Reg = dataE,
+                                            Registrazione_Data_Ora_Fig_Reg = dataE,
+                                            Registrazione_Data_Ora_Orig_Reg = dataE,
+                                            Data_Registrazione_Reg = DateTime.UtcNow,
+                                            DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                            Motivazione_Reg_Id = motivazione.Tab_Decod_Id,
+                                            Registrazione_Stato_Reg = (int)RegStateEnum.Ass,
+                                            Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration,
+                                            Rettifica_Durata = Convert.ToInt32(durata),
+                                            Note_Reg = noteReg
+                                        };
+                                        checkRegs = RepoManager.RegRepo.GetAllQueryable(r => r.Fru_Id == fru.Fru_Id && r.Pru_Id == pru.Pru_Id && r.Registrazione_Data_Ora_Fis_Reg == dataE).ToList();
+                                        if (checkRegs.Count() == 0)
+                                        {
+                                            regsToAdd.Add(regE);
+                                        }
+                                        else
+                                        {
+                                            inserted = false;
+                                        }
+                                    }
+                                }
+                            }
+                            else 
                             {
-                                regsToAdd.Add(regE);
+                                Reg regE = new Reg
+                                {
+                                    Fru_Id = fru.Fru_Id,
+                                    Pru_Id = pru.Pru_Id,
+                                    Cant_Id = can.Cant_Id,
+                                    Col_Id = col.Col_Id,
+                                    Registrazione_Data_Ora_Fis_Reg = dataE,
+                                    Registrazione_Data_Ora_Fig_Reg = dataE,
+                                    Registrazione_Data_Ora_Orig_Reg = dataE,
+                                    Data_Registrazione_Reg = DateTime.UtcNow,
+                                    DataOraUltimaModifica_Reg = DateTime.UtcNow,
+                                    Motivazione_Reg_Id = motivazione.Tab_Decod_Id,
+                                    Registrazione_Stato_Reg = (int)RegStateEnum.Ass,
+                                    Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration,
+                                    Rettifica_Durata = Convert.ToInt32(480),
+                                    Note_Reg = noteReg
+                                };
+                                checkRegs = RepoManager.RegRepo.GetAllQueryable(r => r.Fru_Id == fru.Fru_Id && r.Pru_Id == pru.Pru_Id && r.Registrazione_Data_Ora_Fis_Reg == dataE).ToList();
+                                if (checkRegs.Count() == 0)
+                                {
+                                    regsToAdd.Add(regE);
+                                }
+                                else
+                                {
+                                    inserted = false;
+                                }
                             }
-                            else {
-                                inserted = false;
-                            }
-                            
                         }
                         from = from.AddDays(1);
                     }
@@ -248,15 +442,16 @@ namespace PowerWeb.Api
                         values.Message = "Richiesta inserita correttamente";
                         InviaConferma(0, col, From, To);
                     }
-                    else {
+                    else
+                    {
                         _log.Info("Richiesta gia presente a sistema");
                         values.Status = true;
                         values.Message = "Richiesta già presente a sistema";
                         InviaConferma(2, col, From, To);
-                    }                    
+                    }
                     JsonData = JsonConvert.SerializeObject(values);
                 }
-               
+
             }
         }
 

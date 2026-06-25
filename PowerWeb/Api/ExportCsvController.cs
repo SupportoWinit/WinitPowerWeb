@@ -166,7 +166,8 @@ namespace PowerWeb.Api
                         }
                     }
                     File.WriteAllLines(fileName, returnList);
-                    File.Move(tmpFilePath + "\\"+tmpName, filePath + "\\"+Name);
+                    File.Delete(filePath + "\\CSV_TIMBRATURE\\" + Name);
+                    File.Move(tmpFilePath + "\\"+tmpName, filePath + "\\CSV_TIMBRATURE\\"+Name);
                 }
                 catch (Exception e) {
                     return HttpStatusCode.ServiceUnavailable;

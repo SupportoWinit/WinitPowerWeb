@@ -121,6 +121,10 @@
                 s.cpCallBackParameter = undefined;
             }
         }
+        if (s.cpErrorString != null && s.cpErrorString != '') {
+            DisplayDialogError("Power", s.cpErrorString);
+            s.cpErrorString = null;
+        }
     }
 
     function filterPanel_OnEndCallback(s, e) {

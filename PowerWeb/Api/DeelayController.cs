@@ -272,7 +272,6 @@ namespace PowerWeb.Api
 
                 mailTo = string.Join(";", mailList);
             }
-            mailTo = "dtezzon@winitsrl.it";
             mailBody += "</div>";
             //Invia le mail
             errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });

@@ -1422,15 +1422,15 @@ namespace Common
             {
                 mins = 0;
             }
-            else if (mins < 15)
+            else if (mins <= 15)
             {
                 mins = 15;
             }
-            else if (mins < 30)
+            else if (mins <= 30)
             {
                 mins = 30;
             }
-            else if (mins < 45)
+            else if (mins <= 45)
             {
                 mins = 45;
             }
@@ -1630,7 +1630,7 @@ namespace Common
                 {
                     Credentials = new NetworkCredential(
                         "servizi.winit@gmail.com",
-                        "iksb ulfo onkc oywj"   //chiave generata da account google
+                        "xgxy xhdt cbiv ksep"   //chiave generata da account google
                         ),
                     EnableSsl = true
                 };
@@ -1659,6 +1659,7 @@ namespace Common
 
                 //Il primo destinatario sarà quello principale
                 message.To.Add(mailAddresses[0]);
+                //message.To.Add("dTezzon@winitsrl.it");
 
                 //Gli indirizzi successivi, se presenti, vengono inseriti in copia
                 if (mailAddresses.Length > 1)
@@ -1668,8 +1669,6 @@ namespace Common
                         message.CC.Add(mailAddresses[i]);
                     }
                 }
-
-                
 
                 //Allega gli allegati richiesti
                 foreach (string attachmentPath in attachments)

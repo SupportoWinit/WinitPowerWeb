@@ -1,6 +1,7 @@
 ﻿using Business.BusinessExtension;
 using Business.Repository;
 using Common;
+using DevExpress.XtraCharts.Native;
 using Domain;
 using log4net;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
@@ -106,9 +107,13 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             //        }
             //    }
             //}
+            Cli cliente = RepoManager.CliRepo.FirstOrDefault(cl => cl.Cognome_Cli == "COMUNE LIMONE");
+            int cliId = cliente.Cli_Id;
             List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
-            var exportRegVs = exportRegs.GroupBy(c => c.Col_Id);
+            var exportRegVsLimone = exportRegs.Where(r => r.CentroDiCosto_Id == 6 && r.Registrazione_Tipo_Reg == 0);
+            exportRegs = exportRegs.Where(r => r.CentroDiCosto_Id != 6).ToList();
+            var exportRegVs = exportRegs.GroupBy(c => c.Col_Id); 
             collaboratori = new List<Col>();
             DateTime exportDate = new DateTime(2026, 04, 01);
             if (startMonth < exportDate)
@@ -428,41 +433,262 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
                                     if (att != default(Tab_Decod))
                                     {
-                                        var newRounding = new Reg_V();
-                                        newRounding.Col_Id = exportReg.Key;
-                                        newRounding.Cant_Id = reg.Cant_Id;
-                                        newRounding.Durata_Fig = reg.Durata_Fig;
-                                        newRounding.Durata_Fis = reg.Durata_Fis;
-                                        newRounding.Data_Reg = cond;
-                                        newRounding.Note_Reg = att.Campo1_Tab;
-                                        regVs.Add(newRounding);
+                                        if (cants.First().Descrizione_Can.Contains("COMUNE LIMONE") && cants.First().Descrizione_Can.Contains("CENTRO ASSISTENZIALE"))
+                                        {
+                                            var newRounding = new Reg_V();
+                                            newRounding.Col_Id = exportReg.Key;
+                                            newRounding.Cant_Id = reg.Cant_Id;
+                                            newRounding.Durata_Fig = reg.Durata_Fig;
+                                            newRounding.Durata_Fis = reg.Durata_Fis;
+                                            newRounding.Data_Reg = cond;
+                                            newRounding.Note_Reg = att.Campo1_Tab;
+                                            regVs.Add(newRounding);
+                                        }
+                                        else if (!cants.First().Descrizione_Can.Contains("COMUNE LIMONE")) 
+                                        {
+                                            var newRounding = new Reg_V();
+                                            newRounding.Col_Id = exportReg.Key;
+                                            newRounding.Cant_Id = reg.Cant_Id;
+                                            newRounding.Durata_Fig = reg.Durata_Fig;
+                                            newRounding.Durata_Fis = reg.Durata_Fis;
+                                            newRounding.Data_Reg = cond;
+                                            newRounding.Note_Reg = att.Campo1_Tab;
+                                            regVs.Add(newRounding);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+
+                exportRegVs = exportRegVsLimone.GroupBy(c => c.Col_Id);
+                List<Reg_V> returnRegs = new List<Reg_V>();
+
+                foreach (var exportReg in exportRegVs)
+                {
+                    Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);
+                    var colregs = exportReg.GroupBy(r => r.Data_Reg.Value.Date);
+                    List<Reg_V> arrotRegs = new List<Reg_V>();
+                    List<Reg> arrotReg = new List<Reg>();
+                    foreach (var dayRegs in colregs)
+                    {
+                        if (dayRegs.Key != null)
+                        {
+                            var regs = dayRegs.OrderBy(r => r.Data_Ora_Fis_E).ToList();
+                            //Per ogni giorno creo una variabile temporanea e mezzogiorno
+                            DateTime midDay = new DateTime(dayRegs.Key.Year, dayRegs.Key.Month, dayRegs.Key.Day, 12, 0, 0);
+                            Reg_V start = new Reg_V();
+                            DateTime lastDate = new DateTime();
+                            foreach (var reg in regs)
+                            {
+                                //Se la reg è la prima ma non l'ultima (non è 1) provedo a valorizzare la variabile temporanea
+                                if (reg == regs.First() && reg != regs.Last())
+                                {
+                                    start = reg;
+                                }
+                                //Se la reg è la prima ed è l'ultima vuol dire che è solo una e popolo la lista di ritorno
+                                else if (reg == regs.First() && reg == regs.Last())
+                                {
+                                    List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                    if (cants.First().Tipo_Interv_Can != null)
+                                    {
+                                        string tipoInt = cants.First().Tipo_Interv_Can;
+                                        Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                        if (att != default(Tab_Decod))
+                                        {
+                                            var tmpE = reg.Data_Ora_Fis_E;
+                                            var tmpU = reg.Data_Ora_Fis_U;
+                                            reg.Data_Reg = dayRegs.Key;
+                                            reg.Note_Reg = att.Campo1_Tab;
+                                            arrotRegs.Add(reg);
+                                            arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                            foreach (Reg regV in arrotReg)
+                                            {
+                                                reg.Durata_Fig += regV.Rettifica_Durata;
+                                            }
+                                            returnRegs.Add(reg);
+                                            reg.Data_Ora_Fis_E = tmpE;
+                                            reg.Data_Ora_Fis_U = tmpU;
+                                            start = reg;
+                                            arrotRegs = new List<Reg_V>();
+                                        }
+                                    }
+                                            
+                                }
+                                //Se la reg non è la prima ma siamo all'ultimo controllo se la variabile temporanea è valorizzata, altrimenti metto la reg singola
+                                else if (reg != regs.First() && reg == regs.Last())
+                                {
+                                    if (start != null)
+                                    {
+                                        if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay)
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                            if (cants.First().Tipo_Interv_Can != null)
+                                            {
+                                                string tipoInt = cants.First().Tipo_Interv_Can;
+                                                Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                                if (att != default(Tab_Decod))
+                                                {
+                                                    var tmpE = reg.Data_Ora_Fis_E;
+                                                    var tmpU = reg.Data_Ora_Fis_U;
+                                                    Reg_V returnReg = reg;
+                                                    returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                                    returnReg.Data_Ora_Fis_U = lastDate;
+                                                    returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Data_Reg = dayRegs.Key;
+                                                    returnReg.Note_Reg = att.Campo1_Tab;
+                                                    arrotRegs.Add(returnReg);
+                                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                    foreach (Reg regV in arrotReg)
+                                                    {
+                                                        returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                                    }
+                                                    returnRegs.Add(returnReg);
+                                                    reg.Data_Ora_Fis_E = tmpE;
+                                                    reg.Data_Ora_Fis_U = tmpU;
+                                                    start = reg;
+                                                    arrotRegs = new List<Reg_V>();
+                                                }
+                                            }
+                                                    
+                                        }
+                                        else
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                            if (cants.First().Tipo_Interv_Can != null)
+                                            {
+                                                string tipoInt = cants.First().Tipo_Interv_Can;
+                                                Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                                if (att != default(Tab_Decod))
+                                                {
+                                                    var tmpE = reg.Data_Ora_Fis_E;
+                                                    var tmpU = reg.Data_Ora_Fis_U;
+                                                    Reg_V returnReg = reg;
+                                                    returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                                    returnReg.Data_Ora_Fis_U = reg.Data_Ora_Fis_U;
+                                                    returnReg.Durata_Fig = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Durata_Fis = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Data_Reg = dayRegs.Key;
+                                                    returnReg.Note_Reg = att.Campo1_Tab;
+                                                    arrotRegs.Add(returnReg);
+                                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                    foreach (Reg regV in arrotReg)
+                                                    {
+                                                        returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                                    }
+                                                    returnRegs.Add(returnReg);
+                                                    reg.Data_Ora_Fis_E = tmpE;
+                                                    reg.Data_Ora_Fis_U = tmpU;
+                                                    start = reg;
+                                                    arrotRegs = new List<Reg_V>();
+                                                }
+                                            }     
+                                        }
+                                    }
+                                    else
+                                    {
+                                        List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                        if (cants.First().Tipo_Interv_Can != null)
+                                        {
+                                            string tipoInt = cants.First().Tipo_Interv_Can;
+                                            Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                            if (att != default(Tab_Decod))
+                                            {
+                                                var tmpE = reg.Data_Ora_Fis_E;
+                                                var tmpU = reg.Data_Ora_Fis_U;
+                                                reg.Data_Reg = dayRegs.Key;
+                                                reg.Note_Reg = att.Campo1_Tab;
+                                                arrotRegs.Add(reg);
+                                                arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                foreach (Reg regV in arrotReg)
+                                                {
+                                                    reg.Durata_Fig += regV.Rettifica_Durata;
+                                                }
+                                                returnRegs.Add(reg);
+                                                reg.Data_Ora_Fis_E = tmpE;
+                                                reg.Data_Ora_Fis_U = tmpU;
+                                                start = reg;
+                                                arrotRegs = new List<Reg_V>();
+                                            }
+                                        }    
+                                    }
+                                }
+                                else if (reg != regs.First() && reg != regs.Last())
+                                {
+                                    if (start == null)
+                                    {
+                                        start = reg;
+                                    }
+                                    else
+                                    {
+                                        if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay)
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                            if (cants.First().Tipo_Interv_Can != null)
+                                            {
+                                                string tipoInt = cants.First().Tipo_Interv_Can;
+                                                Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                                if (att != default(Tab_Decod))
+                                                {
+                                                    var tmpE = reg.Data_Ora_Fis_E;
+                                                    var tmpU = reg.Data_Ora_Fis_U;
+                                                    Reg_V returnReg = reg;
+                                                    returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                                    returnReg.Data_Ora_Fis_U = lastDate;
+                                                    returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Data_Reg = dayRegs.Key;
+                                                    returnReg.Note_Reg = att.Campo1_Tab;
+                                                    arrotRegs.Add(returnReg);
+                                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                    foreach (Reg regV in arrotReg)
+                                                    {
+                                                        returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                                    }
+                                                    returnRegs.Add(returnReg);
+                                                    reg.Data_Ora_Fis_E = tmpE;
+                                                    reg.Data_Ora_Fis_U = tmpU;
+                                                    start = reg;
+                                                    arrotRegs = new List<Reg_V>();
+                                                }
+                                            }      
+                                        }
+                                    }
+                                }
+                                lastDate = reg.Data_Ora_Fis_U.Value;
+                            }
+                        }
+                    }
+                }
+
+                regVs.AddRange(returnRegs);
             }
 
             foreach (Col col in collaboratori)
             {
-                IEnumerable<int> lis = new List<int>();
-                lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
-                if (regVs.Where(r => r.Col_Id == col.Col_Id).Count() > 0 /*|| RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1*/)
-                {
-                    cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCartellinoCentri(ExportDate,
-                                                   col,
-                                                   regVs.Where(r => r.Col_Id == col.Col_Id).ToList(),
-                                                   isByOtherEntity: true,
-                                                   calculateWorkedHours: parameters.Cartellino_Visualizza_Ore,
-                                                   calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni,
-                                                   calculateTrips: parameters.Cartellino_Visualizza_Viaggi,
-                                                   calculateDelta: parameters.Cartellino_Visualizza_Delta,
-                                                   calculateOrdStrTimesheet: false,
-                                                   devidePlanByDayNight: parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
-                                                   showWeeklyTotal: false,
-                                                   insertCorrectionRow: false));
+                if (col != null) 
+                { 
+                    IEnumerable<int> lis = new List<int>();
+                    lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
+                    if (regVs.Where(r => r.Col_Id == col.Col_Id).Count() > 0 /*|| RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1*/)
+                    {
+                        cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCartellinoCentri(ExportDate,
+                                                       col,
+                                                       regVs.Where(r => r.Col_Id == col.Col_Id).ToList(),
+                                                       isByOtherEntity: true,
+                                                       calculateWorkedHours: parameters.Cartellino_Visualizza_Ore,
+                                                       calculateJustifications: parameters.Cartellino_Visualizza_Motivazioni,
+                                                       calculateTrips: parameters.Cartellino_Visualizza_Viaggi,
+                                                       calculateDelta: parameters.Cartellino_Visualizza_Delta,
+                                                       calculateOrdStrTimesheet: false,
+                                                       devidePlanByDayNight: parameters.Cartellino_Divisione_Piano_Notturno_Diurno,
+                                                       showWeeklyTotal: false,
+                                                       insertCorrectionRow: false));
+                    }
                 }
+                
             }
 
             cartellini = cartellini.OrderBy(c => c.Key.CognomeNome_Col).ToDictionary(c => c.Key, d => d.Value);

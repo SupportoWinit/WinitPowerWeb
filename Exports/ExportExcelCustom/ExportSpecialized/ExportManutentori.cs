@@ -388,7 +388,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             if (reg.Durata_Fis != null) 
                             {
-                                interventi++;
+                                if (reg.Registrazione_Tipo_Reg == 0) 
+                                { 
+                                    interventi++;
+                                }
                                 durata += reg.Durata_Fis.Value;
                             }
                         }

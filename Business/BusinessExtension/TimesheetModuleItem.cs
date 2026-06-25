@@ -4380,298 +4380,144 @@ namespace Business.BusinessExtension
                 {
                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DivisioneNotturnoExport) == 1 && cantiere.First().Flag_NON_Esportare_Can != 1)
                     {
-                         //se la personalizzazione è attiva recupero i relativi parametri
-                         TimeSpan startNott = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.DivisioneNotturnoExport, "StartNott"));
-                         TimeSpan endNott = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.DivisioneNotturnoExport, "EndNott"));
-                         List<Reg_V> dayRegs = new List<Reg_V>();
-                         List<Reg_V> nightRegs = new List<Reg_V>();
-                         int indice = 0;
-                         DateTime lastDate = DateTime.MinValue;
-                         foreach (Reg_V reg in regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 0).ToList()) 
-                         {
-                            if (reg.Data_Reg > lastDate) 
+                        if (timesheetJustification != BusinessService.GetLocalizedString(PowerWebResources.LBL_VIAGGI))
+                        {
+                            //se la personalizzazione è attiva recupero i relativi parametri
+                            TimeSpan startNott = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.DivisioneNotturnoExport, "StartNott"));
+                            TimeSpan endNott = TimeSpan.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.DivisioneNotturnoExport, "EndNott"));
+                            List<Reg_V> dayRegs = new List<Reg_V>();
+                            List<Reg_V> nightRegs = new List<Reg_V>();
+                            int indice = 0;
+                            DateTime lastDate = DateTime.MinValue;
+                            foreach (Reg_V reg in regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 0).ToList())
                             {
-                                indice = 0;
-                                lastDate = reg.Data_Reg.Value;
-                            }
-                            //mi faccio le date con cui confrontare i dati
-                            DateTime tomorrow = reg.Data_Reg.Value.AddDays(1);
-                            DateTime start = new DateTime(reg.Data_Reg.Value.Year, reg.Data_Reg.Value.Month, reg.Data_Reg.Value.Day,startNott.Hours, startNott.Minutes, startNott.Seconds);
-                            DateTime end = new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, endNott.Hours, endNott.Minutes, endNott.Seconds);
-                            DateTime morning = new DateTime(reg.Data_Reg.Value.Year, reg.Data_Reg.Value.Month, reg.Data_Reg.Value.Day, endNott.Hours, endNott.Minutes, endNott.Seconds);
-                            if (reg.Durata_Fis != null) 
-                            {
-                                if (reg.Data_Ora_Fis_E > start)
+                                if (reg.Data_Reg > lastDate)
                                 {
-                                    int nightDuration = 0;
-                                    //creo una lista con gli arrotondamenti del giorno
-                                    List<Reg_V> totalArrot = new List<Reg_V>();
-                                    if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
-                                    {
-                                        totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
-                                    }
-                                    if (reg.Durata_Fis.HasValue)
-                                    {
-                                        nightDuration = reg.Durata_Fis.Value;
-                                        //se la durata necessita di arrotondamento controllo quanti ce ne sono nel giorno
-                                        if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                        {
-                                            int arrot = 0;
-                                            if (totalArrot.Count > 0)
-                                                arrot = totalArrot[indice].Durata_Fis.Value;
-
-                                            if (arrot != 0)
-                                            {
-                                                nightDuration = nightDuration + arrot;
-                                                indice++;
-                                            }
-                                        }
-                                        var nightReg = new Reg_V();
-                                        nightReg.Col_Id = reg.Col_Id.Value;
-                                        nightReg.Cant_Id = reg.Cant_Id.Value;
-                                        nightReg.Durata_Fig = nightDuration;
-                                        nightReg.Durata_Fis = nightDuration;
-                                        nightReg.Data_Reg = reg.Data_Reg;
-                                        nightRegs.Add(nightReg);
-                                    }
+                                    indice = 0;
+                                    lastDate = reg.Data_Reg.Value;
                                 }
-                                else if ((reg.Data_Ora_Fis_U > start && reg.Data_Ora_Fis_U < end) && reg.Data_Ora_Fis_E < start)
+                                //mi faccio le date con cui confrontare i dati
+                                DateTime tomorrow = reg.Data_Reg.Value.AddDays(1);
+                                DateTime start = new DateTime(reg.Data_Reg.Value.Year, reg.Data_Reg.Value.Month, reg.Data_Reg.Value.Day, startNott.Hours, startNott.Minutes, startNott.Seconds);
+                                DateTime end = new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, endNott.Hours, endNott.Minutes, endNott.Seconds);
+                                DateTime morning = new DateTime(reg.Data_Reg.Value.Year, reg.Data_Reg.Value.Month, reg.Data_Reg.Value.Day, endNott.Hours, endNott.Minutes, endNott.Seconds);
+                                if (reg.Durata_Fis != null)
                                 {
-                                    int dayDuration = 0;
-                                    int nightDuration = 0;
-                                    List<Reg_V> totalArrot = new List<Reg_V>();
-                                    int nightArrot = 0;
-                                    if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                    if (reg.Data_Ora_Fis_E > start)
                                     {
-                                        totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
-                                    }
-                                    //recupero l'arrotondamento relativo alla timbratura da dividere
-                                    if (totalArrot.Count > 1 && nightArrot == 0)
-                                        nightArrot = totalArrot.Last().Durata_Fis.Value;
-                                    else if (totalArrot.Count > 0 && nightArrot == 0)
-                                        nightArrot = totalArrot.First().Durata_Fis.Value;
-
-                                    bool arrotondato = false;
-                                    int durata = reg.Durata_Fis.Value;
-                                    int arrot = 0;
-                                    foreach (Reg_V regArrot in totalArrot)
-                                    {
-                                        arrot = regArrot.Durata_Fis.Value;
-                                        if (!arrotondato)
+                                        int nightDuration = 0;
+                                        //creo una lista con gli arrotondamenti del giorno
+                                        List<Reg_V> totalArrot = new List<Reg_V>();
+                                        if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
                                         {
-                                            int tmpDuration = durata;
-                                            durata = durata + arrot;
-                                            if (durata % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value == 0)
-                                                arrotondato = true;
-                                            else
-                                                durata = tmpDuration;
+                                            totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
                                         }
-                                    }
-
-                                    if (nightArrot < 0)
-                                    {
-                                        //recupero sia la durata diurna che notturna
-                                        dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
-                                        nightDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(start).TotalMinutes;
-                                        //nel caso i dati necessitino di arrotondamenti procedo a tirare indietro entrambe le timbrature
-                                        if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                        if (reg.Durata_Fis.HasValue)
                                         {
-                                            nightDuration = nightDuration - (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                        }
-                                        dayDuration = durata - nightDuration;
-                                        //if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                        //{
-                                        //    dayDuration = dayDuration - (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                        //}
-                                    }
-                                    else
-                                    {
-                                        //recupero sia la durata diurna che notturna
-                                        dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
-                                        nightDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(start).TotalMinutes;
-                                        //controllo se entrambe le timbrature vanno arrotondate
-                                        if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0 && dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                        {
-                                            //nel caso entrambe siano da arrotondare procedo a tirare avanti la più grande e indietro quella più piccola per rispettare la durata dell'intervento
-                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value < dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value)
-                                            {
-                                                nightDuration -= nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
-                                                dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                            }
-                                            else
-                                            {
-                                                dayDuration -= dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
-                                                nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //nel caso solo una da arrotondare trovo quale è e la porto avanti
+                                            nightDuration = reg.Durata_Fis.Value;
+                                            //se la durata necessita di arrotondamento controllo quanti ce ne sono nel giorno
                                             if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                                nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-
-                                            if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                                dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                        }
-                                    }
-
-                                    //creo la registrazione diurna e la aggiungo alla relativa lista
-                                    var dayReg = new Reg_V();
-                                    dayReg.Col_Id = reg.Col_Id.Value;
-                                    dayReg.Cant_Id = reg.Cant_Id.Value;
-                                    dayReg.Durata_Fig = dayDuration;
-                                    dayReg.Durata_Fis = dayDuration;
-                                    dayReg.Data_Reg = reg.Data_Reg;
-                                    dayRegs.Add(dayReg);
-                                    //creo la registrazione notturna e la aggiungo alla relativa lista
-                                    var nightReg = new Reg_V();
-                                    nightReg.Col_Id = reg.Col_Id.Value;
-                                    nightReg.Cant_Id = reg.Cant_Id.Value;
-                                    nightReg.Durata_Fig = nightDuration;
-                                    nightReg.Durata_Fis = nightDuration;
-                                    nightReg.Data_Reg = reg.Data_Reg;
-                                    nightRegs.Add(nightReg);
-
-                                    if (reg.Durata_Fis % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                    {
-                                        indice++;
-                                    }  
-                                }
-                                else if (reg.Data_Ora_Fis_E < morning && reg.Data_Ora_Fis_U.Value > morning)
-                                {
-                                    int dayDuration = 0;
-                                    int nightDuration = 0;
-                                    List<Reg_V> totalArrot = new List<Reg_V>();
-                                    int nightArrot = 0;
-                                    if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
-                                    {
-                                        totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
-                                    }
-                                    //recupero l'arrotondamento relativo alla timbratura da dividere
-                                    if (totalArrot.Count > 1 && nightArrot == 0)
-                                        nightArrot = totalArrot.Last().Durata_Fis.Value;
-                                    else if (totalArrot.Count > 0 && nightArrot == 0)
-                                        nightArrot = totalArrot.First().Durata_Fis.Value;
-
-                                    bool arrotondato = false;
-                                    int durata = reg.Durata_Fis.Value;
-                                    int arrot = 0;
-                                    foreach (Reg_V regArrot in totalArrot)
-                                    {
-                                        arrot = regArrot.Durata_Fis.Value;
-                                        if (!arrotondato)
-                                        {
-                                            int tmpDuration = durata;
-                                            durata = durata + arrot;
-                                            if (durata % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value == 0)
-                                                arrotondato = true;
-                                            else
-                                                durata = tmpDuration;
-                                        }
-                                    }
-
-                                    if (nightArrot < 0)
-                                    {
-                                        //recupero sia la durata diurna che notturna
-                                        //dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
-                                        dayDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(morning).TotalMinutes;
-                                        nightDuration = (int)morning.Subtract(reg.Data_Ora_Fis_E).TotalMinutes; 
-                                        //nel caso i dati necessitino di arrotondamenti procedo a tirare indietro entrambe le timbrature
-                                        if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                        {
-                                            nightDuration = nightDuration - (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                        }
-                                        dayDuration = durata - nightDuration;
-                                    }
-                                    else
-                                    {
-                                        //recupero sia la durata diurna che notturna
-                                        dayDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(morning).TotalMinutes;
-                                        nightDuration = (int)morning.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
-                                        //controllo se entrambe le timbrature vanno arrotondate
-                                        if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0 && dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                        {
-                                            //nel caso entrambe siano da arrotondare procedo a tirare avanti la più grande e indietro quella più piccola per rispettare la durata dell'intervento
-                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value < dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value)
                                             {
-                                                nightDuration -= nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
-                                                dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                            }
-                                            else
-                                            {
-                                                dayDuration -= dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
-                                                nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //nel caso solo una da arrotondare trovo quale è e la porto avanti
-                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                                nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                                int arrot = 0;
+                                                if (totalArrot.Count > 0)
+                                                    arrot = totalArrot[indice].Durata_Fis.Value;
 
-                                            if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                                dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
-                                        }
-                                    }
-
-                                    //creo la registrazione diurna e la aggiungo alla relativa lista
-                                    var dayReg = new Reg_V();
-                                    dayReg.Col_Id = reg.Col_Id.Value;
-                                    dayReg.Cant_Id = reg.Cant_Id.Value;
-                                    dayReg.Durata_Fig = dayDuration;
-                                    dayReg.Durata_Fis = dayDuration;
-                                    dayReg.Data_Reg = reg.Data_Reg;
-                                    dayRegs.Add(dayReg);
-                                    //creo la registrazione notturna e la aggiungo alla relativa lista
-                                    var nightReg = new Reg_V();
-                                    nightReg.Col_Id = reg.Col_Id.Value;
-                                    nightReg.Cant_Id = reg.Cant_Id.Value;
-                                    nightReg.Durata_Fig = nightDuration;
-                                    nightReg.Durata_Fis = nightDuration;
-                                    nightReg.Data_Reg = reg.Data_Reg;
-                                    nightRegs.Add(nightReg);
-                                    indice++;
-                                }
-                                else
-                                {
-                                    int dayDuration = 0;
-                                    List<Reg_V> totalArrot = new List<Reg_V>();
-                                    //recupero tutti gli arrotondamenti del giorno
-                                    if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
-                                        totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
-
-                                    if (reg.Durata_Fis.HasValue)
-                                    {
-                                        int arrot = 0;
-                                        dayDuration = reg.Durata_Fis.Value;
-                                        //nel caso serva l'arrotondamento controllo quanti ce ne sono nel giorno
-                                        if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
-                                        {
-                                            bool arrotondato = false;
-                                            foreach (Reg_V regArrot in totalArrot)
-                                            {
-                                                arrot = regArrot.Durata_Fis.Value;
-                                                if (!arrotondato)
+                                                if (arrot != 0)
                                                 {
-                                                    int tmpDuration = dayDuration;
-                                                    dayDuration = dayDuration + arrot;
-                                                    if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value == 0)
-                                                        arrotondato = true;
-                                                    else
-                                                        dayDuration = tmpDuration;
+                                                    nightDuration = nightDuration + arrot;
+                                                    indice++;
                                                 }
                                             }
-                                            /*
-                                            if (totalArrot.Count > 0)
-                                                arrot = totalArrot[indice].Durata_Fis.Value;
-
-                                            //anche se ci sono più arrotondamenti uso sempre il primo
-                                            if (arrot != 0) 
-                                            {
-                                                dayDuration = dayDuration + arrot;
-                                                indice++;
-                                            }*/
+                                            var nightReg = new Reg_V();
+                                            nightReg.Col_Id = reg.Col_Id.Value;
+                                            nightReg.Cant_Id = reg.Cant_Id.Value;
+                                            nightReg.Durata_Fig = nightDuration;
+                                            nightReg.Durata_Fis = nightDuration;
+                                            nightReg.Data_Reg = reg.Data_Reg;
+                                            nightRegs.Add(nightReg);
                                         }
+                                    }
+                                    else if ((reg.Data_Ora_Fis_U > start && reg.Data_Ora_Fis_U < end) && reg.Data_Ora_Fis_E < start)
+                                    {
+                                        int dayDuration = 0;
+                                        int nightDuration = 0;
+                                        List<Reg_V> totalArrot = new List<Reg_V>();
+                                        int nightArrot = 0;
+                                        if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                        {
+                                            totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
+                                        }
+                                        //recupero l'arrotondamento relativo alla timbratura da dividere
+                                        if (totalArrot.Count > 1 && nightArrot == 0)
+                                            nightArrot = totalArrot.Last().Durata_Fis.Value;
+                                        else if (totalArrot.Count > 0 && nightArrot == 0)
+                                            nightArrot = totalArrot.First().Durata_Fis.Value;
+
+                                        bool arrotondato = false;
+                                        int durata = reg.Durata_Fis.Value;
+                                        int arrot = 0;
+                                        foreach (Reg_V regArrot in totalArrot)
+                                        {
+                                            arrot = regArrot.Durata_Fis.Value;
+                                            if (!arrotondato)
+                                            {
+                                                int tmpDuration = durata;
+                                                durata = durata + arrot;
+                                                if (durata % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value == 0)
+                                                    arrotondato = true;
+                                                else
+                                                    durata = tmpDuration;
+                                            }
+                                        }
+
+                                        if (nightArrot < 0)
+                                        {
+                                            //recupero sia la durata diurna che notturna
+                                            dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
+                                            nightDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(start).TotalMinutes;
+                                            //nel caso i dati necessitino di arrotondamenti procedo a tirare indietro entrambe le timbrature
+                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                            {
+                                                nightDuration = nightDuration - (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                            }
+                                            dayDuration = durata - nightDuration;
+                                            //if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                            //{
+                                            //    dayDuration = dayDuration - (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                            //}
+                                        }
+                                        else
+                                        {
+                                            //recupero sia la durata diurna che notturna
+                                            dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
+                                            nightDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(start).TotalMinutes;
+                                            //controllo se entrambe le timbrature vanno arrotondate
+                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0 && dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                            {
+                                                //nel caso entrambe siano da arrotondare procedo a tirare avanti la più grande e indietro quella più piccola per rispettare la durata dell'intervento
+                                                if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value < dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value)
+                                                {
+                                                    nightDuration -= nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
+                                                    dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                                }
+                                                else
+                                                {
+                                                    dayDuration -= dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
+                                                    nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //nel caso solo una da arrotondare trovo quale è e la porto avanti
+                                                if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                                    nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+
+                                                if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                                    dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                            }
+                                        }
+
+                                        //creo la registrazione diurna e la aggiungo alla relativa lista
                                         var dayReg = new Reg_V();
                                         dayReg.Col_Id = reg.Col_Id.Value;
                                         dayReg.Cant_Id = reg.Cant_Id.Value;
@@ -4679,20 +4525,182 @@ namespace Business.BusinessExtension
                                         dayReg.Durata_Fis = dayDuration;
                                         dayReg.Data_Reg = reg.Data_Reg;
                                         dayRegs.Add(dayReg);
+                                        //creo la registrazione notturna e la aggiungo alla relativa lista
+                                        var nightReg = new Reg_V();
+                                        nightReg.Col_Id = reg.Col_Id.Value;
+                                        nightReg.Cant_Id = reg.Cant_Id.Value;
+                                        nightReg.Durata_Fig = nightDuration;
+                                        nightReg.Durata_Fis = nightDuration;
+                                        nightReg.Data_Reg = reg.Data_Reg;
+                                        nightRegs.Add(nightReg);
+
+                                        if (reg.Durata_Fis % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                        {
+                                            indice++;
+                                        }
+                                    }
+                                    else if (reg.Data_Ora_Fis_E < morning && reg.Data_Ora_Fis_U.Value > morning)
+                                    {
+                                        int dayDuration = 0;
+                                        int nightDuration = 0;
+                                        List<Reg_V> totalArrot = new List<Reg_V>();
+                                        int nightArrot = 0;
+                                        if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                        {
+                                            totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
+                                        }
+                                        //recupero l'arrotondamento relativo alla timbratura da dividere
+                                        if (totalArrot.Count > 1 && nightArrot == 0)
+                                            nightArrot = totalArrot.Last().Durata_Fis.Value;
+                                        else if (totalArrot.Count > 0 && nightArrot == 0)
+                                            nightArrot = totalArrot.First().Durata_Fis.Value;
+
+                                        bool arrotondato = false;
+                                        int durata = reg.Durata_Fis.Value;
+                                        int arrot = 0;
+                                        foreach (Reg_V regArrot in totalArrot)
+                                        {
+                                            arrot = regArrot.Durata_Fis.Value;
+                                            if (!arrotondato)
+                                            {
+                                                int tmpDuration = durata;
+                                                durata = durata + arrot;
+                                                if (durata % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value == 0)
+                                                    arrotondato = true;
+                                                else
+                                                    durata = tmpDuration;
+                                            }
+                                        }
+
+                                        if (nightArrot < 0)
+                                        {
+                                            //recupero sia la durata diurna che notturna
+                                            //dayDuration = (int)start.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
+                                            dayDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(morning).TotalMinutes;
+                                            nightDuration = (int)morning.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
+                                            //nel caso i dati necessitino di arrotondamenti procedo a tirare indietro entrambe le timbrature
+                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                            {
+                                                nightDuration = nightDuration - (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                            }
+                                            dayDuration = durata - nightDuration;
+                                        }
+                                        else
+                                        {
+                                            //recupero sia la durata diurna che notturna
+                                            dayDuration = (int)reg.Data_Ora_Fis_U.Value.Subtract(morning).TotalMinutes;
+                                            nightDuration = (int)morning.Subtract(reg.Data_Ora_Fis_E).TotalMinutes;
+                                            //controllo se entrambe le timbrature vanno arrotondate
+                                            if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0 && dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                            {
+                                                //nel caso entrambe siano da arrotondare procedo a tirare avanti la più grande e indietro quella più piccola per rispettare la durata dell'intervento
+                                                if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value < dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value)
+                                                {
+                                                    nightDuration -= nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
+                                                    dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                                }
+                                                else
+                                                {
+                                                    dayDuration -= dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value;
+                                                    nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //nel caso solo una da arrotondare trovo quale è e la porto avanti
+                                                if (nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                                    nightDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - nightDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+
+                                                if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                                    dayDuration += (RepoManager.ParamRepo.First().Default_Minuti_Durata.Value - dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value);
+                                            }
+                                        }
+
+                                        //creo la registrazione diurna e la aggiungo alla relativa lista
+                                        var dayReg = new Reg_V();
+                                        dayReg.Col_Id = reg.Col_Id.Value;
+                                        dayReg.Cant_Id = reg.Cant_Id.Value;
+                                        dayReg.Durata_Fig = dayDuration;
+                                        dayReg.Durata_Fis = dayDuration;
+                                        dayReg.Data_Reg = reg.Data_Reg;
+                                        dayRegs.Add(dayReg);
+                                        //creo la registrazione notturna e la aggiungo alla relativa lista
+                                        var nightReg = new Reg_V();
+                                        nightReg.Col_Id = reg.Col_Id.Value;
+                                        nightReg.Cant_Id = reg.Cant_Id.Value;
+                                        nightReg.Durata_Fig = nightDuration;
+                                        nightReg.Durata_Fis = nightDuration;
+                                        nightReg.Data_Reg = reg.Data_Reg;
+                                        nightRegs.Add(nightReg);
+                                        indice++;
+                                    }
+                                    else
+                                    {
+                                        int dayDuration = 0;
+                                        List<Reg_V> totalArrot = new List<Reg_V>();
+                                        //recupero tutti gli arrotondamenti del giorno
+                                        if (regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10).Count() > 0)
+                                            totalArrot.AddRange(regVsToSplit.Where(regv => regv.Cant_Id == listCantId && regv.Registrazione_Tipo_Reg == 10 && regv.Data_Reg == reg.Data_Reg).ToList());
+
+                                        if (reg.Durata_Fis.HasValue)
+                                        {
+                                            int arrot = 0;
+                                            dayDuration = reg.Durata_Fis.Value;
+                                            //nel caso serva l'arrotondamento controllo quanti ce ne sono nel giorno
+                                            if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value != 0)
+                                            {
+                                                bool arrotondato = false;
+                                                foreach (Reg_V regArrot in totalArrot)
+                                                {
+                                                    arrot = regArrot.Durata_Fis.Value;
+                                                    if (!arrotondato)
+                                                    {
+                                                        int tmpDuration = dayDuration;
+                                                        dayDuration = dayDuration + arrot;
+                                                        if (dayDuration % RepoManager.ParamRepo.First().Default_Minuti_Durata.Value == 0)
+                                                            arrotondato = true;
+                                                        else
+                                                            dayDuration = tmpDuration;
+                                                    }
+                                                }
+                                                /*
+                                                if (totalArrot.Count > 0)
+                                                    arrot = totalArrot[indice].Durata_Fis.Value;
+
+                                                //anche se ci sono più arrotondamenti uso sempre il primo
+                                                if (arrot != 0) 
+                                                {
+                                                    dayDuration = dayDuration + arrot;
+                                                    indice++;
+                                                }*/
+                                            }
+                                            var dayReg = new Reg_V();
+                                            dayReg.Col_Id = reg.Col_Id.Value;
+                                            dayReg.Cant_Id = reg.Cant_Id.Value;
+                                            dayReg.Durata_Fig = dayDuration;
+                                            dayReg.Durata_Fis = dayDuration;
+                                            dayReg.Data_Reg = reg.Data_Reg;
+                                            dayRegs.Add(dayReg);
+                                        }
                                     }
                                 }
                             }
-                         }
-                         if (dayRegs.Count > 0) 
-                         {
-                             // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                             returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, dayRegs, cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                         }
-                         if (nightRegs.Count > 0) 
-                         {
-                             // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                             returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, nightRegs, cantiere.First().Descrizione_Can + " - NOTTURNO", firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
-                         }
+                            if (dayRegs.Count > 0)
+                            {
+                                // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, dayRegs, cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            }
+                            if (nightRegs.Count > 0)
+                            {
+                                // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                                returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, nightRegs, cantiere.First().Descrizione_Can + " - NOTTURNO", firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            }
+                        }
+                        else
+                        {
+                            // aggiungo il timesheet specifico del cantiere alla list di ritorno
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                        }
                     }
                     else 
                     {
@@ -4767,7 +4775,7 @@ namespace Business.BusinessExtension
                 if (cliente.Count() > 0 && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0)
                 {
                     // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cli_Id == listCliId).ToList(), cliente.First().Cognome_Cli, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche)); 
+                    returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cli_Id == listCliId).ToList(), cliente.First().Cognome_Cli, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                 }
                 else
                 {
@@ -5172,6 +5180,8 @@ namespace Business.BusinessExtension
             // per ogni giorno delle reg_v passate da processare si compila il piano inizializzato
             foreach (var dataReg in timesheetRegVs.Select(regv => regv.Data_Reg).Distinct().ToList())
             {
+                var dayRegs = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).ToList();
+                var controllo = timesheetRegVs.Where(regv => regv.Data_Reg == dataReg.Value).ToList();
                 int totalDayMinutes;
                 int totalPausaPranzo;
                 // Se viene richiesto di calcolare il cartellino con le ore fisiche, si calcola la somma totale delle durate fisiche
@@ -8021,123 +8031,207 @@ namespace Business.BusinessExtension
             }
             else if (centroId == cdc.CentroDiCosto_Id) 
             {
+                List<Reg_V> exportRegs = new List<Reg_V>();
+                exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Col_Id == colToSearch.Col_Id &&  r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= startPeriod && r.Data_Reg <= endPeriod && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10)).ToList());
+                var exportRegVsLimone = exportRegs.Where(r => r.CentroDiCosto_Id == 6 && r.Registrazione_Tipo_Reg == 0);
                 //Recupero le timbrature del comune di limone
-                var colregs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
-                    && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate && regv.Registrazione_Stato_Reg == 1)
-                    && regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None, true).ToList().GroupBy(c => c.Data_Reg);
+                var colregss = exportRegVsLimone.GroupBy(c => c.Col_Id);
             
                 List<Reg_V> returnRegs = new List<Reg_V>();
-                List<Reg_V> arrotRegs = new List<Reg_V>();
-                List<Reg> arrotReg = new List<Reg>();
-                foreach (var dayRegs in colregs) 
+                foreach (var exportReg in colregss)
                 {
-                    if (dayRegs.Key != null) 
+                    Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);
+                    var colregs = exportReg.GroupBy(r => r.Data_Reg.Value.Date);
+                    List<Reg_V> arrotRegs = new List<Reg_V>();
+                    List<Reg> arrotReg = new List<Reg>();
+                    foreach (var dayRegs in colregs)
                     {
-                        //Per ogni giorno creo una variabile temporanea e mezzogiorno
-                        DateTime midDay = new DateTime(dayRegs.Key.Value.Year, dayRegs.Key.Value.Month, dayRegs.Key.Value.Day, 12, 0, 0);
-                        Reg_V start = new Reg_V();
-                        DateTime lastDate = new DateTime();
-                        foreach (var reg in dayRegs.OrderBy(reg => reg.Data_Ora_Fis_E)) 
+                        if (dayRegs.Key != null)
                         {
-                            //Se la reg è la prima ma non l'ultima (non è 1) provedo a valorizzare la variabile temporanea
-                            if (reg == dayRegs.First() && reg != dayRegs.Last())
+                            var regs = dayRegs.OrderBy(r => r.Data_Ora_Fis_E).ToList();
+                            //Per ogni giorno creo una variabile temporanea e mezzogiorno
+                            DateTime midDay = new DateTime(dayRegs.Key.Year, dayRegs.Key.Month, dayRegs.Key.Day, 12, 0, 0);
+                            Reg_V start = new Reg_V();
+                            DateTime lastDate = new DateTime();
+                            foreach (var reg in regs)
                             {
-                                start = reg;
-                            }
-                            //Se la reg è la prima ed è l'ultima vuol dire che è solo una e popolo la lista di ritorno
-                            else if (reg == dayRegs.First() && reg == dayRegs.Last())
-                            {
-                                arrotRegs.Add(reg);
-                                arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
-                                foreach (Reg regV in arrotReg)
-                                {
-                                    reg.Durata_Fig += regV.Rettifica_Durata;
-                                }
-                                returnRegs.Add(reg);
-                                start = null;
-                                arrotRegs = new List<Reg_V>();
-                            }
-                            //Se la reg non è la prima ma siamo all'ultimo controllo se la variabile temporanea è valorizzata, altrimenti metto la reg singola
-                            else if (reg != dayRegs.First() && reg == dayRegs.Last())
-                            {
-                                if (start != null)
-                                {
-                                    if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay)
-                                    {
-                                        Reg_V returnReg = reg;
-                                        returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
-                                        returnReg.Data_Ora_Fis_U = lastDate;
-                                        returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
-                                        returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
-                                        arrotRegs.Add(returnReg);
-                                        arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
-                                        foreach (Reg regV in arrotReg)
-                                        {
-                                            returnReg.Durata_Fig += regV.Rettifica_Durata;
-                                        }
-                                        returnRegs.Add(returnReg);
-                                        start = null;
-                                        arrotRegs = new List<Reg_V>();
-                                    }
-                                    else 
-                                    {
-                                        Reg_V returnReg = reg;
-                                        returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
-                                        returnReg.Data_Ora_Fis_U = reg.Data_Ora_Fis_U;
-                                        returnReg.Durata_Fig = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
-                                        returnReg.Durata_Fis = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
-                                        arrotRegs.Add(returnReg);
-                                        arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
-                                        foreach (Reg regV in arrotReg)
-                                        {
-                                            returnReg.Durata_Fig += regV.Rettifica_Durata;
-                                        }
-                                        returnRegs.Add(returnReg);
-                                        start = null;
-                                        arrotRegs = new List<Reg_V>();
-                                    }   
-                                }
-                                else
-                                {
-                                    arrotRegs.Add(reg);
-                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
-                                    foreach (Reg regV in arrotReg)
-                                    {
-                                        reg.Durata_Fig += regV.Rettifica_Durata;
-                                    }
-                                    returnRegs.Add(reg);
-                                    start = null;
-                                    arrotRegs = new List<Reg_V>();
-                                }
-                            }
-                            else if(reg != dayRegs.First() && reg != dayRegs.Last())
-                            {
-                                if (start == null)
+                                //Se la reg è la prima ma non l'ultima (non è 1) provedo a valorizzare la variabile temporanea
+                                if (reg == regs.First() && reg != regs.Last())
                                 {
                                     start = reg;
                                 }
-                                else 
+                                //Se la reg è la prima ed è l'ultima vuol dire che è solo una e popolo la lista di ritorno
+                                else if (reg == regs.First() && reg == regs.Last())
                                 {
-                                    if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay) 
+                                    List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                    if (cants.First().Tipo_Interv_Can != null)
                                     {
-                                        Reg_V returnReg = reg;
-                                        returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
-                                        returnReg.Data_Ora_Fis_U = lastDate;
-                                        returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
-                                        returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
-                                        arrotRegs.Add(returnReg);
-                                        arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
-                                        foreach (Reg regV in arrotReg) 
+                                        string tipoInt = cants.First().Tipo_Interv_Can;
+                                        Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                        if (att != default(Tab_Decod))
                                         {
-                                            returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                            var tmpE = reg.Data_Ora_Fis_E;
+                                            var tmpU = reg.Data_Ora_Fis_U;
+                                            reg.Data_Reg = dayRegs.Key;
+                                            reg.Note_Reg = att.Campo1_Tab;
+                                            arrotRegs.Add(reg);
+                                            arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                            foreach (Reg regV in arrotReg)
+                                            {
+                                                reg.Durata_Fig += regV.Rettifica_Durata;
+                                            }
+                                            returnRegs.Add(reg);
+                                            reg.Data_Ora_Fis_E = tmpE;
+                                            reg.Data_Ora_Fis_U = tmpU;
+                                            start = reg;
+                                            arrotRegs = new List<Reg_V>();
                                         }
-                                        returnRegs.Add(returnReg);
-                                        start = null;
-                                        arrotRegs = new List<Reg_V>();
+                                    }
+
+                                }
+                                //Se la reg non è la prima ma siamo all'ultimo controllo se la variabile temporanea è valorizzata, altrimenti metto la reg singola
+                                else if (reg != regs.First() && reg == regs.Last())
+                                {
+                                    if (start != null)
+                                    {
+                                        if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay)
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                            if (cants.First().Tipo_Interv_Can != null)
+                                            {
+                                                string tipoInt = cants.First().Tipo_Interv_Can;
+                                                Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                                if (att != default(Tab_Decod))
+                                                {
+                                                    var tmpE = reg.Data_Ora_Fis_E;
+                                                    var tmpU = reg.Data_Ora_Fis_U;
+                                                    Reg_V returnReg = reg;
+                                                    returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                                    returnReg.Data_Ora_Fis_U = lastDate;
+                                                    returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Data_Reg = dayRegs.Key;
+                                                    returnReg.Note_Reg = att.Campo1_Tab;
+                                                    arrotRegs.Add(returnReg);
+                                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                    foreach (Reg regV in arrotReg)
+                                                    {
+                                                        returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                                    }
+                                                    returnRegs.Add(returnReg);
+                                                    reg.Data_Ora_Fis_E = tmpE;
+                                                    reg.Data_Ora_Fis_U = tmpU;
+                                                    start = reg;
+                                                    arrotRegs = new List<Reg_V>();
+                                                }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                            if (cants.First().Tipo_Interv_Can != null)
+                                            {
+                                                string tipoInt = cants.First().Tipo_Interv_Can;
+                                                Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                                if (att != default(Tab_Decod))
+                                                {
+                                                    var tmpE = reg.Data_Ora_Fis_E;
+                                                    var tmpU = reg.Data_Ora_Fis_U;
+                                                    Reg_V returnReg = reg;
+                                                    returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                                    returnReg.Data_Ora_Fis_U = reg.Data_Ora_Fis_U;
+                                                    returnReg.Durata_Fig = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Durata_Fis = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Data_Reg = dayRegs.Key;
+                                                    returnReg.Note_Reg = att.Campo1_Tab;
+                                                    arrotRegs.Add(returnReg);
+                                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                    foreach (Reg regV in arrotReg)
+                                                    {
+                                                        returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                                    }
+                                                    returnRegs.Add(returnReg);
+                                                    reg.Data_Ora_Fis_E = tmpE;
+                                                    reg.Data_Ora_Fis_U = tmpU;
+                                                    start = reg;
+                                                    arrotRegs = new List<Reg_V>();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                        if (cants.First().Tipo_Interv_Can != null)
+                                        {
+                                            string tipoInt = cants.First().Tipo_Interv_Can;
+                                            Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                            if (att != default(Tab_Decod))
+                                            {
+                                                var tmpE = reg.Data_Ora_Fis_E;
+                                                var tmpU = reg.Data_Ora_Fis_U;
+                                                reg.Data_Reg = dayRegs.Key;
+                                                reg.Note_Reg = att.Campo1_Tab;
+                                                arrotRegs.Add(reg);
+                                                arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                foreach (Reg regV in arrotReg)
+                                                {
+                                                    reg.Durata_Fig += regV.Rettifica_Durata;
+                                                }
+                                                returnRegs.Add(reg);
+                                                reg.Data_Ora_Fis_E = tmpE;
+                                                reg.Data_Ora_Fis_U = tmpU;
+                                                start = reg;
+                                                arrotRegs = new List<Reg_V>();
+                                            }
+                                        }
                                     }
                                 }
+                                else if (reg != regs.First() && reg != regs.Last())
+                                {
+                                    if (start == null)
+                                    {
+                                        start = reg;
+                                    }
+                                    else
+                                    {
+                                        if (start.Data_Ora_Fis_E < midDay && reg.Data_Ora_Fis_E > midDay)
+                                        {
+                                            List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                            if (cants.First().Tipo_Interv_Can != null)
+                                            {
+                                                string tipoInt = cants.First().Tipo_Interv_Can;
+                                                Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Nome_Tab == "TIPO_INTERVENTO" && td.Chiave_Tab == tipoInt);
+                                                if (att != default(Tab_Decod))
+                                                {
+                                                    var tmpE = reg.Data_Ora_Fis_E;
+                                                    var tmpU = reg.Data_Ora_Fis_U;
+                                                    Reg_V returnReg = reg;
+                                                    returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
+                                                    returnReg.Data_Ora_Fis_U = lastDate;
+                                                    returnReg.Durata_Fig = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Durata_Fis = (int)((lastDate - start.Data_Ora_Fis_E).TotalMinutes);
+                                                    returnReg.Data_Reg = dayRegs.Key;
+                                                    returnReg.Note_Reg = att.Campo1_Tab;
+                                                    arrotRegs.Add(returnReg);
+                                                    arrotReg = RepoManager.Reg_VRepo.DurationRoundingExport(arrotRegs, RoundingMethodEnum.Duration);
+                                                    foreach (Reg regV in arrotReg)
+                                                    {
+                                                        returnReg.Durata_Fig += regV.Rettifica_Durata;
+                                                    }
+                                                    returnRegs.Add(returnReg);
+                                                    reg.Data_Ora_Fis_E = tmpE;
+                                                    reg.Data_Ora_Fis_U = tmpU;
+                                                    start = reg;
+                                                    arrotRegs = new List<Reg_V>();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                lastDate = reg.Data_Ora_Fis_U.Value;
                             }
-                            lastDate = reg.Data_Ora_Fis_U.Value;
                         }
                     }
                 }
@@ -10541,6 +10635,8 @@ namespace Business.BusinessExtension
                 //Recupera le registrazioni di tipo motivazione
                 var justificationRegVs = GetRegVToProcess(RegSearchTypeForTimesheetEnum.JustificationRegs, baseColRegVs);
 
+                justificationRegVs = justificationRegVs.Where(c => c.Motivazione_Reg_Cod != "Pausa").ToList();
+
                 //Se sono presenti motivazioni, genera i relativi cartellini
                 if (justificationRegVs.Any())
                 {
@@ -11955,7 +12051,7 @@ namespace Business.BusinessExtension
                 {
                     //riga di codice per Idri
                     //colTotal = GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, BusinessService.GetLocalizedString(PowerWebResources.LBL_TOTALE), minDate, maxDate, ++tsOrder, 0, showWeeklyTotal);
-                    justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, workedRegVs, just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
+                    justificationCartellini.Add(GenerateNewRegTimesheetTotal(col.Col_Id, isDecimalHours, registrazioni.ToList(), just, minDate, maxDate, ++tsOrder, 0, showWeeklyTotal));
                 }
             }
             #endregion
@@ -12293,6 +12389,45 @@ namespace Business.BusinessExtension
             //Filtra i cartellini su cui calcolare il totale
             var cartelliniToTotalize = justificationCartellini.Where(ts => ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_DAY) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_PLAN_NIGHT) && ts.Justification != BusinessService.GetLocalizedString(PowerWebResources.LBL_DELTA)).ToList();
 
+            int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
+            if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.Use)
+            {
+                foreach (TimesheetModuleItem item in cartelliniToTotalize)
+                {
+                    Tab_Decod justi = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "MOTIVAZIONI" && t.Chiave_Tab == item.Justification);
+                    if (justi != default && justi.Campo1_Tab != null)
+                    {
+                        if (justi.Campo1_Tab.Trim(' ') == "ONL")
+                        {
+                            cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != item.Justification).ToList();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification == "OL" || c.Justification == "Ore Lavorate" || c.Justification == "Ore Viaggi").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripHourIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Ore Viaggi").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "Pausa").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ReperibilitaTotale) == 0)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "REP").ToList();
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalcoloRiposi) == 1)
+            {
+                cartelliniToTotalize = cartelliniToTotalize.Where(c => c.Justification != "RIPOSI").ToList();
+            }
             //int customizationVersionJustification = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.JustificationHourIsWorkedHoursEnum);
             //if (customizationVersionJustification == (int)JustificationHourIsWorkedHoursEnum.DoNotUse && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.PausaPranzoIsWorkedHoursEnum) == 0)
             //{
