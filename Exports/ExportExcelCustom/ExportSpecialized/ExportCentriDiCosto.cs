@@ -80,7 +80,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                             {
                                 var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                 && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                                && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel"), true);
                                 if (regs.Count() > 0)
                                 {
                                     cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
@@ -107,7 +107,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     {
                                         var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                         && (regv.Data_Reg >= startMonth && regv.Data_Reg <= col.Scadenza_Patente_Col.Value)
-                                        && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                        && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel"), true);
                                         if (regs.Count() > 0)
                                         {
                                             cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
@@ -129,7 +129,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     {
                                         var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                         && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                                        && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                        && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel"), true);
                                         if (regs.Count() > 0)
                                         {
                                             cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
@@ -157,7 +157,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 centri.Add(centro.Descrizione, cartellini);
             }
 
-            var regVsAltro = RepoManager.Reg_VRepo.Find(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.CentroDiCosto_Id == null && r.Registrazione_Tipo_Reg == 0 && (r.Codice_Commessa_Can == "Pulizie Civile" || r.Codice_Commessa_Can == "PULIZIE CIVILE")).GroupBy(r => r.Col_Id).ToList();
+            var regVsAltro = RepoManager.Reg_VRepo.Find(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.CentroDiCosto_Id == null && r.Registrazione_Tipo_Reg == 0 && (r.Codice_Commessa_Can != "Hotel")).GroupBy(r => r.Col_Id).ToList();
             cartellini = new Dictionary<Col, Dictionary<string, List<TimesheetModuleItem>>>();
             foreach (var reg in regVsAltro)
             {
@@ -170,7 +170,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                             && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                            && regv.Registrazione_Tipo_Reg == 0 && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                            && regv.Registrazione_Tipo_Reg == 0 && (regv.Codice_Commessa_Can != "Hotel"), true);
                             if (regs.Count() > 0)
                             {
                                 cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
@@ -197,7 +197,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 {
                                     var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                     && (regv.Data_Reg >= startMonth && regv.Data_Reg <= col.Scadenza_Patente_Col.Value)
-                                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel"), true);
                                     if (regs.Count() > 0)
                                     {
                                         cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
@@ -220,7 +220,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 {
                                     var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                                     && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel"), true);
                                     if (regs.Count() > 0)
                                     {
                                         cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,

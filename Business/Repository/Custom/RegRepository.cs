@@ -417,6 +417,8 @@ namespace Business.Repository.Custom
 
                 _log.Info("Associo le timbrature un altra volta dopo aver fatto le autochiusure");
 
+                DecoupleRegsAndSetType(regs, fromDate, toDate);
+
                 CoupleHourRegsAndManagePassages(regs, errors);
 
                 _log.Info("Timbrature associate.");
@@ -6853,7 +6855,7 @@ namespace Business.Repository.Custom
                 currentRegE.Col_Id = colIdToInsert;
 
             var cantIdToInsert = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Cant_Id)]);
-            if (cantIdToInsert == 0)
+            if (cantIdToInsert == 0 && currentRegE.Fru_Id != null)
                 currentRegE.Cant_Id = oldRegE.Cant_Id.Value;
             else
                 currentRegE.Cant_Id = cantIdToInsert;
@@ -6922,6 +6924,29 @@ namespace Business.Repository.Custom
                         currentRegE.Pru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Pru_Id)]);
                     if (newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)] != null)
                         currentRegE.Fru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)]);
+                }
+            }
+            else 
+            {
+                if (newValues[CommonService.GetPropertyName(() => regVStub.Pru_Id)] != null)
+                    currentRegE.Pru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Pru_Id)]);
+                if (newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)] != null)
+                    currentRegE.Fru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)]);
+
+                if (currentRegE.Pru_Id != null && currentRegE.Col_Id == null) 
+                {
+                    int pruId = currentRegE.Pru_Id.Value;
+                    var pruCol = RepoManager.Pru_ColRepo.GetAllQueryable(pc => pc.Pru_Id == pruId).OrderBy(pc => pc.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                    int colId = pruCol.Last().Col_Id;
+                    currentRegE.Col_Id = colId;
+                }
+
+                if (currentRegE.Fru_Id != null && currentRegE.Cant_Id.Value == 0)
+                {
+                    int fruId = currentRegE.Fru_Id.Value;
+                    var fruCant = RepoManager.Fru_CantRepo.GetAllQueryable(pc => pc.Fru_Id == fruId).OrderBy(pc => pc.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                    int cantId = fruCant.Last().Cant_Id;
+                    currentRegE.Cant_Id = cantId;
                 }
             }
 
@@ -7736,7 +7761,8 @@ namespace Business.Repository.Custom
                                     Data_Registrazione_Reg = DateTime.UtcNow,
                                     DataOraUltimaModifica_Reg = DateTime.UtcNow,
                                     Flag_EU_Reg = currentPreReg.RegistrationDirection,
-                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode
+                                    Registrazione_Badge_Originale = currentPreReg.BadgeCode,
+                                    Stato_Attivita = 0
                                 });
                             }
                             else
@@ -7747,14 +7773,15 @@ namespace Business.Repository.Custom
                                     {
                                         Fru_Id = regFru.Fru_Id,
                                         Pru_Id = regPru.Pru_Id,
-                                        Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(-1),
+                                        Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
                                         Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
                                         Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
                                         Data_Registrazione_Reg = DateTime.UtcNow,
                                         DataOraUltimaModifica_Reg = DateTime.UtcNow,
                                         Flag_EU_Reg = currentPreReg.RegistrationDirection,
                                         Registrazione_Badge_Originale = currentPreReg.BadgeCode,
-                                        Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                        Motivazione_Reg_Id = motivation.Tab_Decod_Id,
+                                        Stato_Attivita = 0
                                     });
                                 }
                                 else
@@ -7763,14 +7790,15 @@ namespace Business.Repository.Custom
                                     {
                                         Fru_Id = regFru.Fru_Id,
                                         Pru_Id = regPru.Pru_Id,
-                                        Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime.AddSeconds(1),
+                                        Registrazione_Data_Ora_Fis_Reg = currentPreReg.RegistrationDateTime,
                                         Registrazione_Data_Ora_Fig_Reg = currentPreReg.RegistrationDateTime,
                                         Registrazione_Data_Ora_Orig_Reg = currentPreReg.RegistrationDateTime,
                                         Data_Registrazione_Reg = DateTime.UtcNow,
                                         DataOraUltimaModifica_Reg = DateTime.UtcNow,
                                         Flag_EU_Reg = currentPreReg.RegistrationDirection,
                                         Registrazione_Badge_Originale = currentPreReg.BadgeCode,
-                                        Motivazione_Reg_Id = motivation.Tab_Decod_Id
+                                        Motivazione_Reg_Id = motivation.Tab_Decod_Id,
+                                        Stato_Attivita = 0
                                     });
                                 }
 
@@ -7821,7 +7849,8 @@ namespace Business.Repository.Custom
                                                 Registrazione_Badge_Originale = currentLastReg.Registrazione_Badge_Originale,
                                                 Turno = currentLastReg.Turno,
                                                 Sotto_Cantiere = currentLastReg.Sotto_Cantiere,
-                                                Tipo_Attivita = currentLastReg.Tipo_Attivita
+                                                Tipo_Attivita = currentLastReg.Tipo_Attivita,
+                                                Stato_Attivita = 0
                                             });
                                             currentLastReg.Cant_Id = presidiumCantId;
                                             currentLastReg.Fru_Id = null;
@@ -7875,7 +7904,8 @@ namespace Business.Repository.Custom
                                                     Registrazione_Badge_Originale = previousReg.Registrazione_Badge_Originale,
                                                     Turno = previousReg.Turno,
                                                     Sotto_Cantiere = previousReg.Sotto_Cantiere,
-                                                    Tipo_Attivita = previousReg.Tipo_Attivita
+                                                    Tipo_Attivita = previousReg.Tipo_Attivita,
+                                                    Stato_Attivita = 0
                                                 });
                                             }
                                         }
@@ -8095,6 +8125,7 @@ namespace Business.Repository.Custom
                                         newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
                                         newReg.Data_Registrazione_Reg = DateTime.UtcNow;
                                         newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
+                                        newReg.Stato_Attivita = 0;
 
 
                                         // nelle registrazioni da gps la fru id è sempre a null
@@ -8533,7 +8564,7 @@ namespace Business.Repository.Custom
                                         newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
                                         newReg.Data_Registrazione_Reg = DateTime.UtcNow;
                                         newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
-
+                                        newReg.Stato_Attivita = 0;
 
                                         // nelle registrazioni da gps la fru id è sempre a null
                                         newReg.Fru_Id = null;
@@ -8760,6 +8791,7 @@ namespace Business.Repository.Custom
                         newReg.Registrazione_Data_Ora_Orig_Reg = gpsRegGroup.First().RegistrationDateTime;
                         newReg.Data_Registrazione_Reg = DateTime.UtcNow;
                         newReg.DataOraUltimaModifica_Reg = DateTime.UtcNow;
+                        newReg.Stato_Attivita = 0;
 
 
                         // nelle registrazioni da gps la fru id è sempre a null

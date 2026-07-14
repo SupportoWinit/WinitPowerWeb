@@ -110,7 +110,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             Cli cliente = RepoManager.CliRepo.FirstOrDefault(cl => cl.Cognome_Cli == "COMUNE LIMONE");
             int cliId = cliente.Cli_Id;
             List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
-            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can != "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
             var exportRegVsLimone = exportRegs.Where(r => r.CentroDiCosto_Id == 6 && r.Registrazione_Tipo_Reg == 0);
             exportRegs = exportRegs.Where(r => r.CentroDiCosto_Id != 6).ToList();
             var exportRegVs = exportRegs.GroupBy(c => c.Col_Id); 
@@ -565,11 +565,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 {
                                                     var tmpE = reg.Data_Ora_Fis_E;
                                                     var tmpU = reg.Data_Ora_Fis_U;
+                                                    DateTime? end = reg.Data_Ora_Fis_U;
+                                                    if (end == null)
+                                                    {
+                                                        end = reg.Data_Ora_Fis_E;
+                                                    }
                                                     Reg_V returnReg = reg;
                                                     returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
                                                     returnReg.Data_Ora_Fis_U = reg.Data_Ora_Fis_U;
-                                                    returnReg.Durata_Fig = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
-                                                    returnReg.Durata_Fis = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Durata_Fig = (int)(end - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Durata_Fis = (int)(end - start.Data_Ora_Fis_E).Value.TotalMinutes;
                                                     returnReg.Data_Reg = dayRegs.Key;
                                                     returnReg.Note_Reg = att.Campo1_Tab;
                                                     arrotRegs.Add(returnReg);
@@ -657,7 +662,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         }
                                     }
                                 }
-                                lastDate = reg.Data_Ora_Fis_U.Value;
+                                if (reg.Data_Ora_Fis_U != null)
+                                {
+                                    lastDate = reg.Data_Ora_Fis_U.Value;
+                                }
+                                else
+                                {
+                                    lastDate = reg.Data_Ora_Fis_E;
+                                }
                             }
                         }
                     }

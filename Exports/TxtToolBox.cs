@@ -74,8 +74,14 @@ namespace Exports
 
             TextWriter tw = new StreamWriter(filePath);
 
-            foreach (String s in TxtLines)
-                tw.WriteLine(s);
+            foreach (String s in TxtLines) 
+            {
+                if (ModelFilePath.Contains("RilPre"))
+                    tw.Write(s);
+                else
+                    tw.WriteLine(s);
+            }
+                
 
             tw.Close();
 

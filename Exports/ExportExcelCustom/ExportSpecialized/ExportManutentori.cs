@@ -116,7 +116,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             var exportRegVs = exportRegs.GroupBy(c => c.Cant_Id);// regVs.GroupBy(c => c.Cant_Id);
             List<int> cantToExclude = CalculateCantToInclude();
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
-            List<Reg_V> newRegVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Pulizie Civile" && cantToExclude.Contains(r.Cant_Id.Value) && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
+            List<Reg_V> newRegVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can != "Hotel" && cantToExclude.Contains(r.Cant_Id.Value) && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             //List<Reg_V> newRegVs = new List<Reg_V>();
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri
             rowIndex = 2;

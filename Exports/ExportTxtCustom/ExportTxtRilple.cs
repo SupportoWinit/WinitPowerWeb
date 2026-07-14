@@ -107,8 +107,8 @@ namespace Exports.ExportTxtCustom
                 string codiceAzienda = CommonService.AggiungiZeriASinistra(codici[0],4);
                 string codiceFiliale = CommonService.AggiungiZeriASinistra(codici[1],2);
                 string codiceMatricola = CommonService.AggiungiZeriASinistra(codici[2],9);
-                string cognomeCol = CommonService.AggiungiSpaziASinistra(col.Cognome_Col, 34);
-                string nomeCol = CommonService.AggiungiSpaziASinistra(col.Nome_Col, 34);
+                string cognomeCol = CommonService.AggiungiSpaziiADestra(col.Cognome_Col, 34);
+                string nomeCol = CommonService.AggiungiSpaziiADestra(col.Nome_Col, 34);
                 string oreOrdinarie = "";
                 string giustificativo1 = "";
                 string oreGiustificativo1 = "";
@@ -135,25 +135,121 @@ namespace Exports.ExportTxtCustom
 
                 var justificationRegs = RepoManager.Reg_VRepo.GetAllQueryable().Where(r => r.Col_Id == col.Col_Id && r.Cant_Id != null && r.Data_Reg_AAAA_MM == formattedDate && (r.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual) && r.Registrazione_Stato_Reg == (int)RegStateEnum.Ass).OrderBy(c => c.Data_Reg).GroupBy(r => r.Motivazione_Reg_Id);
                 int j = 1;
-                foreach (var regs in justificationRegs)
+                if (justificationRegs.Count() > 0) 
                 {
-                    ILookup<DateTime?, Reg_V> dayDictionarys = regs.Where(r => r.Col_Id == col.Col_Id && r.Cant_Id != null && r.Data_Reg_AAAA_MM == formattedDate && (r.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual) && r.Registrazione_Stato_Reg == (int)RegStateEnum.Ass).OrderBy(c => c.Data_Reg).ToLookup(c => c.Data_Reg);
-                    if (regs.Key != null)
+                    foreach (var regs in justificationRegs)
                     {
-                        #region Calcolo ore con motivazione
-                        Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == regs.Key.Value);
-                        DateTime lastDate = startOfMonth.AddDays(-1);
-                        foreach (var dayRegs in dayDictionarys)
+                        ILookup<DateTime?, Reg_V> dayDictionarys = regs.Where(r => r.Col_Id == col.Col_Id && r.Cant_Id != null && r.Data_Reg_AAAA_MM == formattedDate && (r.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.Duration || r.Registrazione_Tipo_Reg == (int)RegTypeEnum.RettTimeSheetManual) && r.Registrazione_Stato_Reg == (int)RegStateEnum.Ass).OrderBy(c => c.Data_Reg).ToLookup(c => c.Data_Reg);
+                        if (regs.Key != null)
                         {
-                            var dif = dayRegs.Key.Value - lastDate;
-                            int differenza1 = dif.Days;
-                            if (dayRegs.Key > lastDate.AddDays(1))
+                            #region Calcolo ore con motivazione
+                            Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == regs.Key.Value);
+                            DateTime lastDate = startOfMonth.AddDays(-1);
+                            foreach (var dayRegs in dayDictionarys)
                             {
-                                if (differenza1 < 0)
+                                var dif = dayRegs.Key.Value - lastDate;
+                                int differenza1 = dif.Days;
+                                if (dayRegs.Key > lastDate.AddDays(1))
                                 {
-                                    differenza1 = endOfMonth.Day + differenza1;
+                                    if (differenza1 < 0)
+                                    {
+                                        differenza1 = endOfMonth.Day + differenza1;
+                                    }
+                                    for (int i = 1; i < differenza1; i++)
+                                    {
+                                        switch (j)
+                                        {
+                                            case 1:
+                                                oreGiustificativo1 = oreGiustificativo1 + "0000;";
+                                                giustificativo1 = giustificativo1 + "    ;";
+                                                break;
+                                            case 2:
+                                                oreGiustificativo2 = oreGiustificativo2 + "0000;";
+                                                giustificativo2 = giustificativo2 + "    ;";
+                                                break;
+                                            case 3:
+                                                oreGiustificativo3 = oreGiustificativo3 + "0000;";
+                                                giustificativo3 = giustificativo3 + "    ;";
+                                                break;
+                                            case 4:
+                                                oreGiustificativo4 = oreGiustificativo4 + "0000;";
+                                                giustificativo4 = giustificativo4 + "    ;";
+                                                break;
+                                            case 5:
+                                                oreGiustificativo5 = oreGiustificativo5 + "0000;";
+                                                giustificativo5 = giustificativo5 + "    ;";
+                                                break;
+                                            case 6:
+                                                oreGiustificativo6 = oreGiustificativo6 + "0000;";
+                                                giustificativo6 = giustificativo6 + "    ;";
+                                                break;
+                                        }
+                                    }
                                 }
-                                for (int i = 1; i < differenza1; i++)
+                                int totaleGiornaliero = 0;
+                                foreach (Reg_V reg in dayRegs)
+                                {
+                                    if (reg.Durata_Fig != null)
+                                    {
+                                        totaleGiornaliero = totaleGiornaliero + reg.Durata_Fig.Value;
+                                    }
+                                    else
+                                    {
+                                        totaleGiornaliero = totaleGiornaliero + reg.Durata_Fis.Value;
+                                    }
+                                }
+                                string stringaFinale = "";
+                                if (totaleGiornaliero / 60 < 10)
+                                {
+                                    stringaFinale = stringaFinale + "0" + totaleGiornaliero / 60;
+                                }
+                                else
+                                {
+                                    stringaFinale = stringaFinale + totaleGiornaliero / 60;
+                                }
+                                if (ToCent(totaleGiornaliero % 60) < 10)
+                                {
+                                    stringaFinale = stringaFinale + "0" + ToCent(totaleGiornaliero % 60).ToString();
+                                }
+                                else
+                                {
+                                    stringaFinale = stringaFinale + "" + ToCent(totaleGiornaliero % 60).ToString();
+                                }
+                                string motFinale = mot.Chiave_Tab;
+                                motFinale = CommonService.AggiungiSpaziiADestra(mot.Chiave_Tab, 4);
+                                switch (j)
+                                {
+                                    case 1:
+                                        oreGiustificativo1 = oreGiustificativo1 + stringaFinale + ";";
+                                        giustificativo1 = giustificativo1 + motFinale + ";";
+                                        break;
+                                    case 2:
+                                        oreGiustificativo2 = oreGiustificativo2 + stringaFinale + ";";
+                                        giustificativo2 = giustificativo2 + motFinale + ";"; ;
+                                        break;
+                                    case 3:
+                                        oreGiustificativo3 = oreGiustificativo3 + stringaFinale + ";";
+                                        giustificativo3 = giustificativo3 + motFinale + ";"; ;
+                                        break;
+                                    case 4:
+                                        oreGiustificativo4 = oreGiustificativo4 + stringaFinale + ";";
+                                        giustificativo4 = giustificativo4 + motFinale + ";"; ;
+                                        break;
+                                    case 5:
+                                        oreGiustificativo5 = oreGiustificativo5 + stringaFinale + ";";
+                                        giustificativo5 = giustificativo5 + motFinale + ";"; ;
+                                        break;
+                                    case 6:
+                                        oreGiustificativo6 = oreGiustificativo6 + stringaFinale + ";";
+                                        giustificativo6 = giustificativo6 + motFinale + ";"; ;
+                                        break;
+                                }
+                                lastDate = dayRegs.Key.Value;
+                            }
+                            if (dayDictionarys.Last().Key.Value != endOfMonth)
+                            {
+                                int differenza1 = endOfMonth.Day - dayDictionarys.Last().Key.Value.Day;
+                                for (int i = 1; i <= differenza1; i++)
                                 {
                                     switch (j)
                                     {
@@ -176,7 +272,7 @@ namespace Exports.ExportTxtCustom
                                         case 5:
                                             oreGiustificativo5 = oreGiustificativo5 + "0000;";
                                             giustificativo5 = giustificativo5 + "    ;";
-                                            break; 
+                                            break;
                                         case 6:
                                             oreGiustificativo6 = oreGiustificativo6 + "0000;";
                                             giustificativo6 = giustificativo6 + "    ;";
@@ -184,253 +280,160 @@ namespace Exports.ExportTxtCustom
                                     }
                                 }
                             }
-                            int totaleGiornaliero = 0;
-                            foreach (Reg_V reg in dayRegs)
+                            j++;
+                            #endregion
+                        }
+                        else
+                        {
+                            #region Ore ordinarie
+                            DateTime lastDate = startOfMonth.AddDays(-1);
+                            foreach (var dayRegs in dayDictionarys)
                             {
-                                if (reg.Durata_Fig != null)
+                                var dif = dayRegs.Key.Value - lastDate;
+                                int differenza1 = dif.Days;
+                                if (dayRegs.Key > lastDate.AddDays(1))
                                 {
-                                    totaleGiornaliero = totaleGiornaliero + reg.Durata_Fig.Value;
+                                    if (differenza1 < 0)
+                                    {
+                                        differenza1 = endOfMonth.Day + differenza1;
+                                    }
+                                    for (int i = 1; i < differenza1; i++)
+                                    {
+                                        oreOrdinarie = oreOrdinarie + "0000;";
+                                    }
+                                }
+                                int totaleGiornaliero = 0;
+                                foreach (Reg_V reg in dayRegs)
+                                {
+                                    if (reg.Durata_Fig != null)
+                                    {
+                                        totaleGiornaliero = totaleGiornaliero + reg.Durata_Fig.Value;
+                                    }
+                                    else
+                                    {
+                                        totaleGiornaliero = totaleGiornaliero + reg.Durata_Fis.Value;
+                                    }
+                                }
+                                string stringaFinale = "";
+                                if (totaleGiornaliero / 60 < 10)
+                                {
+                                    stringaFinale = stringaFinale + "0" + totaleGiornaliero / 60;
                                 }
                                 else
                                 {
-                                    totaleGiornaliero = totaleGiornaliero + reg.Durata_Fis.Value;
+                                    stringaFinale = stringaFinale + totaleGiornaliero / 60;
                                 }
-                            }
-                            string stringaFinale = "";
-                            if (totaleGiornaliero / 60 < 10)
-                            {
-                                stringaFinale = stringaFinale + "0" + totaleGiornaliero / 60;
-                            }
-                            else
-                            {
-                                stringaFinale = stringaFinale + totaleGiornaliero / 60;
-                            }
-                            if (ToCent(totaleGiornaliero % 60) < 10)
-                            {
-                                stringaFinale = stringaFinale + "0" + ToCent(totaleGiornaliero % 60).ToString();
-                            }
-                            else
-                            {
-                                stringaFinale = stringaFinale + "" + ToCent(totaleGiornaliero % 60).ToString();
-                            }
-                            string motFinale = mot.Chiave_Tab;
-                            motFinale = CommonService.AggiungiSpaziASinistra(mot.Chiave_Tab,4);
-                            switch (j)
-                            {
-                                case 1:
-                                    oreGiustificativo1 = oreGiustificativo1 + stringaFinale + ";";
-                                    giustificativo1 = giustificativo1 + motFinale + ";";
-                                    break;
-                                case 2:
-                                    oreGiustificativo2 = oreGiustificativo2 + stringaFinale + ";";
-                                    giustificativo2 = giustificativo2 + motFinale + ";"; ;
-                                    break;
-                                case 3:
-                                    oreGiustificativo3 = oreGiustificativo3 + stringaFinale + ";";
-                                    giustificativo3 = giustificativo3 + motFinale + ";"; ;
-                                    break;
-                                case 4:
-                                    oreGiustificativo4 = oreGiustificativo4 + stringaFinale + ";";
-                                    giustificativo4 = giustificativo4 + motFinale + ";"; ;
-                                    break;
-                                case 5:
-                                    oreGiustificativo5 = oreGiustificativo5 + stringaFinale + ";";
-                                    giustificativo5 = giustificativo5 + motFinale + ";"; ;
-                                    break;
-                                case 6:
-                                    oreGiustificativo6 = oreGiustificativo6 + stringaFinale + ";";
-                                    giustificativo6 = giustificativo6 + motFinale + ";"; ;
-                                    break;
-                            }
-                            lastDate = dayRegs.Key.Value;
-                        }
-                        if (dayDictionarys.Last().Key.Value != endOfMonth)
-                        {
-                            int differenza1 = endOfMonth.Day - dayDictionarys.Last().Key.Value.Day;
-                            for (int i = 1; i <= differenza1; i++)
-                            {
-                                switch (j)
+                                if (ToCent(totaleGiornaliero % 60) < 10)
                                 {
-                                    case 1:
-                                        oreGiustificativo1 = oreGiustificativo1 + "0000;";
-                                        giustificativo1 = giustificativo1 + "    ;";
-                                        break;
-                                    case 2:
-                                        oreGiustificativo2 = oreGiustificativo2 + "0000;";
-                                        giustificativo2 = giustificativo2 + "    ;";
-                                        break;
-                                    case 3:
-                                        oreGiustificativo3 = oreGiustificativo3 + "0000;";
-                                        giustificativo3 = giustificativo3 + "    ;";
-                                        break;
-                                    case 4:
-                                        oreGiustificativo4 = oreGiustificativo4 + "0000;";
-                                        giustificativo4 = giustificativo4 + "    ;";
-                                        break;
-                                    case 5:
-                                        oreGiustificativo5 = oreGiustificativo5 + "0000;";
-                                        giustificativo5 = giustificativo5 + "    ;";
-                                        break;
-                                    case 6:
-                                        oreGiustificativo6 = oreGiustificativo6 + "0000;";
-                                        giustificativo6 = giustificativo6 + "    ;";
-                                        break;
+                                    stringaFinale = stringaFinale + "0" + ToCent(totaleGiornaliero % 60).ToString();
                                 }
-                            }
-                        }
-                        j++;
-                        #endregion
-                    }
-                    else
-                    {
-                        #region Ore ordinarie
-                        DateTime lastDate = startOfMonth.AddDays(-1);
-                        foreach (var dayRegs in dayDictionarys)
-                        {
-                            var dif = dayRegs.Key.Value - lastDate;
-                            int differenza1 = dif.Days;
-                            if (dayRegs.Key > lastDate.AddDays(1))
-                            {
-                                if (differenza1 < 0)
+                                else
                                 {
-                                    differenza1 = endOfMonth.Day + differenza1;
+                                    stringaFinale = stringaFinale + "" + ToCent(totaleGiornaliero % 60).ToString();
                                 }
-                                for (int i = 1; i < differenza1; i++)
+                                oreOrdinarie = oreOrdinarie + stringaFinale + ";";
+                                lastDate = dayRegs.Key.Value;
+                            }
+                            if (dayDictionarys.Last().Key.Value != endOfMonth)
+                            {
+                                int differenza1 = endOfMonth.Day - dayDictionarys.Last().Key.Value.Day;
+                                for (int i = 1; i <= differenza1; i++)
                                 {
                                     oreOrdinarie = oreOrdinarie + "0000;";
                                 }
                             }
-                            int totaleGiornaliero = 0;
-                            foreach (Reg_V reg in dayRegs)
-                            {
-                                if (reg.Durata_Fig != null)
-                                {
-                                    totaleGiornaliero = totaleGiornaliero + reg.Durata_Fig.Value;
-                                }
-                                else
-                                {
-                                    totaleGiornaliero = totaleGiornaliero + reg.Durata_Fis.Value;
-                                }
-                            }
-                            string stringaFinale = "";
-                            if (totaleGiornaliero / 60 < 10)
-                            {
-                                stringaFinale = stringaFinale + "0" + totaleGiornaliero / 60;
-                            }
-                            else
-                            {
-                                stringaFinale = stringaFinale + totaleGiornaliero / 60;
-                            }
-                            if (ToCent(totaleGiornaliero % 60) < 10)
-                            {
-                                stringaFinale = stringaFinale + "0" + ToCent(totaleGiornaliero % 60).ToString();
-                            }
-                            else
-                            {
-                                stringaFinale = stringaFinale + "" + ToCent(totaleGiornaliero % 60).ToString();
-                            }
-                            oreOrdinarie = oreOrdinarie + stringaFinale + ";";
-                            lastDate = dayRegs.Key.Value;
+                            #endregion
                         }
-                        if (dayDictionarys.Last().Key.Value != endOfMonth)
+                    }
+                    int differenza = endOfMonth.Day - startOfMonth.Day;
+
+                    #region Giustificativo 1-2
+
+                    if (giustificativo1 == "" && oreGiustificativo1 == "")
+                    {
+                        for (int i = 0; i < endOfMonth.Day; i++)
                         {
-                            int differenza1 = endOfMonth.Day - dayDictionarys.Last().Key.Value.Day;
-                            for (int i = 1; i <= differenza1; i++)
-                            {
-                                oreOrdinarie = oreOrdinarie + "0000;";
-                            }
+                            giustificativo1 = giustificativo1 + "    ;";
+                            oreGiustificativo1 = oreGiustificativo1 + "0000;";
                         }
-                        #endregion
                     }
-                }
-                int differenza = endOfMonth.Day - startOfMonth.Day;
-
-                #region Giustificativo 1-2
-
-                if (giustificativo1 == "" && oreGiustificativo1 == "")
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    if (giustificativo2 == "" && oreGiustificativo2 == "")
                     {
-                        giustificativo1 = giustificativo1 + "    ;";
-                        oreGiustificativo1 = oreGiustificativo1 + "0000;";
+                        for (int i = 0; i < endOfMonth.Day; i++)
+                        {
+                            giustificativo2 = giustificativo2 + "    ;";
+                            oreGiustificativo2 = oreGiustificativo2 + "0000;";
+                        }
                     }
-                }
-                if (giustificativo2 == "" && oreGiustificativo2 == "")
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    #endregion
+                    #region Giustificativo 3 - 4
+                    if (giustificativo3 == "" && oreGiustificativo3 == "")
                     {
-                        giustificativo2 = giustificativo2 + "    ;";
-                        oreGiustificativo2 = oreGiustificativo2 + "0000;";
+                        for (int i = 0; i < endOfMonth.Day; i++)
+                        {
+                            giustificativo3 = giustificativo3 + "    ;";
+                            oreGiustificativo3 = oreGiustificativo3 + "0000;";
+                        }
                     }
-                }
-                #endregion
-                #region Giustificativo 3 - 4
-                if (giustificativo3 == "" && oreGiustificativo3 == "")
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    if (giustificativo4 == "" && oreGiustificativo4 == "")
                     {
-                        giustificativo3 = giustificativo3 + "    ;";
-                        oreGiustificativo3 = oreGiustificativo3 + "0000;";
+                        for (int i = 0; i < endOfMonth.Day; i++)
+                        {
+                            giustificativo4 = giustificativo4 + "    ;";
+                            oreGiustificativo4 = oreGiustificativo4 + "0000;";
+                        }
                     }
-                }
-                if (giustificativo4 == "" && oreGiustificativo4 == "")
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    #endregion
+                    if (giustificativo5 == "" && oreGiustificativo5 == "")
                     {
-                        giustificativo4 = giustificativo4 + "    ;";
-                        oreGiustificativo4 = oreGiustificativo4 + "0000;";
+                        for (int i = 0; i < endOfMonth.Day; i++)
+                        {
+                            giustificativo5 = giustificativo5 + "    ;";
+                            oreGiustificativo5 = oreGiustificativo5 + "0000;";
+                        }
                     }
-                }
-                #endregion
-                if (giustificativo5 == "" && oreGiustificativo5 == "")
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    if (giustificativo6 == "" && oreGiustificativo6 == "")
                     {
-                        giustificativo5 = giustificativo5 + "    ;";
-                        oreGiustificativo5 = oreGiustificativo5 + "0000;";
+                        for (int i = 0; i < endOfMonth.Day; i++)
+                        {
+                            giustificativo6 = giustificativo6 + "    ;";
+                            oreGiustificativo6 = oreGiustificativo6 + "0000;";
+                        }
                     }
-                }
-                if (giustificativo6 == "" && oreGiustificativo6 == "")
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    string[] oreOrd = oreOrdinarie.Split(';');
+                    string[] giust1 = giustificativo1.Split(';');
+                    string[] giust2 = giustificativo2.Split(';');
+                    string[] giust3 = giustificativo3.Split(';');
+                    string[] giust4 = giustificativo4.Split(';');
+                    string[] giust5 = giustificativo5.Split(';');
+                    string[] giust6 = giustificativo6.Split(';');
+                    string[] oreGiust1 = oreGiustificativo1.Split(';');
+                    string[] oreGiust2 = oreGiustificativo2.Split(';');
+                    string[] oreGiust3 = oreGiustificativo3.Split(';');
+                    string[] oreGiust4 = oreGiustificativo4.Split(';');
+                    string[] oreGiust5 = oreGiustificativo5.Split(';');
+                    string[] oreGiust6 = oreGiustificativo6.Split(';');
+                    if (endOfMonth.Day == 31)
                     {
-                        giustificativo6 = giustificativo6 + "    ;";
-                        oreGiustificativo6 = oreGiustificativo6 + "0000;";
+                        for (int i = 0; i < 31; i++)
+                        {
+                            exportData = exportData + oreOrd[i] + "" + giust1[i] + "" + oreGiust1[i] + "" + giust2[i] + "" + oreGiust2[i] + "" + giust3[i] + "" + oreGiust3[i] + "" + giust4[i] + "" + oreGiust4[i] + "" + giust5[i] + "" + oreGiust5[i] + "" + giust6[i] + "" + oreGiust6[i];
+                        }
                     }
-                }
-                string[] oreOrd = oreOrdinarie.Split(';');
-                string[] giust1 = giustificativo1.Split(';');
-                string[] giust2 = giustificativo2.Split(';');
-                string[] giust3 = giustificativo3.Split(';');
-                string[] giust4 = giustificativo4.Split(';');
-                string[] giust5 = giustificativo5.Split(';');
-                string[] giust6 = giustificativo6.Split(';');
-                string[] oreGiust1 = oreGiustificativo1.Split(';');
-                string[] oreGiust2 = oreGiustificativo2.Split(';');
-                string[] oreGiust3 = oreGiustificativo3.Split(';');
-                string[] oreGiust4 = oreGiustificativo4.Split(';');
-                string[] oreGiust5 = oreGiustificativo5.Split(';');
-                string[] oreGiust6 = oreGiustificativo6.Split(';');
-                if (endOfMonth.Day == 31)
-                {
-                    for (int i = 0; i < 31; i++) 
-                    { 
-                        exportData = exportData + oreOrd[i] + "" + giust1[i] + "" + oreGiust1[i] + "" + giust2[i] + "" + oreGiust2[i] + "" + giust3[i] + "" + oreGiust3[i] + "" + giust4[i] + "" + oreGiust4[i] + "" + giust5[i] + "" + oreGiust5[i] + "" + giust6[i] + "" + oreGiust6[i];
-                    }
-                }
-                else 
-                {
-                    for (int i = 0; i < endOfMonth.Day; i++)
+                    else
                     {
-                        exportData = exportData + oreOrd[i] + "" + giust1[i] + "" + oreGiust1[i] + "" + giust2[i] + "" + oreGiust2[i] + "" + giust3[i] + "" + oreGiust3[i] + "" + giust4[i] + "" + oreGiust4[i] + "" + giust5[i] + "" + oreGiust5[i] + "" + giust6[i] + "" + oreGiust6[i];
+                        for (int i = 0; i < endOfMonth.Day; i++)
+                        {
+                            exportData = exportData + oreOrd[i] + "" + giust1[i] + "" + oreGiust1[i] + "" + giust2[i] + "" + oreGiust2[i] + "" + giust3[i] + "" + oreGiust3[i] + "" + giust4[i] + "" + oreGiust4[i] + "" + giust5[i] + "" + oreGiust5[i] + "" + giust6[i] + "" + oreGiust6[i];
+                        }
+                        int differenza1 = 31 - endOfMonth.Day;
+                        for (int i = 0; i < differenza1; i++)
+                        {
+                            exportData = exportData + "0000    0000    0000    0000    0000    0000    0000";
+                        }
                     }
-                    int differenza1 = 31 - endOfMonth.Day;
-                    for (int i = 0; i < differenza1; i++)
-                    {
-                        exportData = exportData + "0000    0000    0000    0000    0000    0000    0000";
-                    }
+                    TxtLines.Add(exportData);
                 }
-                TxtLines.Add(exportData);
             }
         }
 

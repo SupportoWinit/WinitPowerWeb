@@ -928,6 +928,7 @@ namespace Business.RegFileCreators
                         }
                         else if (fluReg.CantiereSel != null && fluReg.CantiereSel != "")
                         {
+                            Fru matricolaCant = RepoManager.FruRepo.FirstOrDefault(fru => fru.Codice_Fru == fluReg.CantiereSel);
                             #region Reg senza coordinate
                             string regRow = "";
                             string verso = "";
@@ -940,17 +941,48 @@ namespace Business.RegFileCreators
                             {
                                 fluReg.Motivazione = "";
                             }
-                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
-                                fluReg.CantiereSel,
-                                fluReg.CodicePru,
-                                fluReg.Data.Year,
-                                fluReg.Data.Month.ToString("00"),
-                                fluReg.Data.Day.ToString("00"),
-                                fluReg.Data.Hour.ToString("00"),
-                                fluReg.Data.Minute.ToString("00"),
-                                verso,
-                                fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
-                            );
+                            if (matricolaCant != null)
+                            {
+                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                                    fluReg.CantiereSel,
+                                    fluReg.CodicePru,
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    verso,
+                                    fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                                );
+                            }
+                            else 
+                            {
+                                string matr = fluReg.CantiereSel;
+                                int matrId = Int32.Parse(matr);
+                                Cant cantiere = RepoManager.CantRepo.FirstOrDefault(can => can.Cant_Id == matrId);
+                                if (cantiere != default)
+                                {
+                                    int cantId = cantiere.Cant_Id;
+                                    List<Fru_Cant> assoc = RepoManager.Fru_CantRepo.GetAllQueryable(fru => fru.Cant_Id == cantId).OrderBy(ass => ass.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                    if (assoc != default)
+                                    {
+                                        int fruId = assoc.Last().Fru_Id;
+                                        Fru fru = RepoManager.FruRepo.FirstOrDefault(f => f.Fru_Id == fruId);
+                                        matr = fru.Codice_Fru;
+                                    }
+                                }
+                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                                        matr,
+                                        fluReg.CodicePru,
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        verso,
+                                        fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                                        );
+                            }
                             regsToWrite.Add(regRow);
                             var noteLine = FlutterAppStringFormatter.CreateNoteLines(fluReg.CodiceFru, "", fluReg.Data, fluReg.Note);
                             if (noteLine != "")

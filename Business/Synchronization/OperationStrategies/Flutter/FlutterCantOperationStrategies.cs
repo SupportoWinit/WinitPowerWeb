@@ -37,7 +37,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 JObject entity = new JObject();
                 entity.Add("idCliente", IdCliente);
                 entity.Add("codice", cant.Codice_Cantiere);
-                entity.Add("descrizione", cant.Descrizione_Can);
+                entity.Add("descrizione", cant.Codice_Cantiere + " - " + cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 entity.Add("Latitudine", cant.LatitudineGps_Can);
                 entity.Add("Longitudine", cant.LongitudineGps_Can);
@@ -79,7 +79,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 JObject entity = new JObject();
                 entity.Add("idCliente", IdCliente);
                 entity.Add("codice", cant.Codice_Cantiere);
-                entity.Add("descrizione", cant.Descrizione_Can);
+                entity.Add("descrizione", cant.Codice_Cantiere + " - " + cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 entity.Add("Latitudine", cant.LatitudineGps_Can);
                 entity.Add("Longitudine", cant.LongitudineGps_Can);
@@ -122,7 +122,7 @@ namespace Business.Synchronization.OperationStrategies.Flutter
                 JObject entity = new JObject();
                 entity.Add("idCliente", IdCliente);
                 entity.Add("codice", cant.Codice_Cantiere);
-                entity.Add("descrizione", cant.Descrizione_Can);
+                entity.Add("descrizione", cant.Codice_Cantiere + " - " + cant.Descrizione_Can);
                 entity.Add("UnitaFissa", cant.Cant_Id);
                 entity.Add("Latitudine", cant.LatitudineGps_Can);
                 entity.Add("Longitudine", cant.LongitudineGps_Can);

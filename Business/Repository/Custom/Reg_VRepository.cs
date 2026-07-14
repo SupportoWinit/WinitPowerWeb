@@ -5205,20 +5205,24 @@ namespace Business.Repository.Custom
                 int tolleranza = 15;
                 if (regE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < midDay)
                 {
-                    if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Mattina.HasValue)
+                    if (RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata.HasValue)
                     {
-                        tolleranza = (int)RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Mattina.Value.TotalMinutes;
+                        tolleranza = (int)RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata.Value.TotalMinutes;
                     }
                 }
                 else
                 {
-                    if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Pomeriggio.HasValue)
+                    if (RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata_Pomeriggio.HasValue)
                     {
-                        tolleranza = (int)RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Pomeriggio.Value.TotalMinutes;
+                        tolleranza = (int)RepoManager.ParamRepo.ParametersRow.Tolleranza_Limite_Entrata_Pomeriggio.Value.TotalMinutes;
                     }
                 }
                 //recupero l'orario del cantiere
-                List<Tab_Orari> orario = RepoManager.Tab_OrariRepo.GetAll().Where(orr => orr.Tab_Orari_Tipo_Id == cant.Tab_Orari_Tipo_Id).ToList();
+                List<Tab_Orari> orario = RepoManager.Tab_OrariRepo.GetAll().Where(orr => orr.Tab_Orari_Tipo_Id == col.Tab_Orari_Tipo_Id).ToList();
+                if (orario.Count() == 0) 
+                {
+                    RepoManager.Tab_OrariRepo.GetAll().Where(orr => orr.Tab_Orari_Tipo_Id == cant.Tab_Orari_Tipo_Id).ToList();
+                } 
                 //Creo degli orari che siano 15 minuti prima e dopo le due timbrature
                 DateTime beforeE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, -tolleranza, 0));
                 DateTime afterE = regE.Registrazione_Data_Ora_Fig_Reg.Value.Add(new TimeSpan(0, tolleranza, 0));
@@ -8295,8 +8299,8 @@ namespace Business.Repository.Custom
                     if (!tripEnd)
                     {
                         // Imposto come ora di inizio viaggio il minuto precedente la regv
-                        timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
-                        timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
+                        timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
 
                         timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
                         timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
@@ -8306,21 +8310,26 @@ namespace Business.Repository.Custom
                         newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
 
                         // Imposto come ora di fine viaggio l'ora di entrata nel prossimo cantiere
-                        newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
-                        newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
-                        newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+                        newRegU.Registrazione_Data_Ora_Orig_Reg = regE.Data_Ora_Fis_E;
+                        newRegU.Registrazione_Data_Ora_Fis_Reg = regE.Data_Ora_Fis_E;
+                        newRegU.Registrazione_Data_Ora_Fig_Reg = regE.Data_Ora_Fig_E;
                     }
                     else
                     {
-                        timeDiffFig = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fig_U.Value : regE.Data_Ora_Fig_E.Value;
-                        timeDiffFis = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fis_U.Value : regE.Data_Ora_Fis_E;
+                        timeDiffFig = regE.Data_Ora_Fig_U.Value.Add(new TimeSpan(0, distRow.Minuti_Tab_Dist, 0));
+                        timeDiffFis = regE.Data_Ora_Fis_U.Value.Add(new TimeSpan(0, distRow.Minuti_Tab_Dist, 0));
 
                         timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
                         timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
 
-                        newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
-                        newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
-                        newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+                        var tripUFisDateTime = new DateTime(regE.Data_Ora_Fis_U.Value.Year, regE.Data_Ora_Fis_U.Value.Month, regE.Data_Ora_Fis_U.Value.Day, regE.Data_Ora_Fis_U.Value.Hour, regE.Data_Ora_Fis_U.Value.Minute, 59);
+                        var tripUFigDateTime = regE.Data_Ora_Fig_U;
+                        if (tripUFigDateTime.HasValue)
+                            tripUFigDateTime = new DateTime(regE.Data_Ora_Fis_U.Value.Year, regE.Data_Ora_Fis_U.Value.Month, regE.Data_Ora_Fis_U.Value.Day, regE.Data_Ora_Fig_U.Value.Hour, regE.Data_Ora_Fig_U.Value.Minute, 59);
+
+                        newRegE.Registrazione_Data_Ora_Orig_Reg = tripUFisDateTime;
+                        newRegE.Registrazione_Data_Ora_Fis_Reg = tripUFisDateTime;
+                        newRegE.Registrazione_Data_Ora_Fig_Reg = tripUFigDateTime;
 
                         newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
                         newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
@@ -8421,7 +8430,7 @@ namespace Business.Repository.Custom
                         {
                             regE = orderedCurrentTripsByColByDate.ElementAt(1);
                             firstCant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == regE.Cant_Id, true);
-                        }
+                        } 
                     }
 
                     else
@@ -13258,7 +13267,29 @@ namespace Business.Repository.Custom
 
                     DateTime currentDate = groupedRow.Key.Data.Date;
 
-                    if (groupedRow.Key.Data.DayOfWeek == DayOfWeek.Monday) workedWeekly = 0;      //se lunedì viene resettato il contatore settimanale
+                    if (groupedRow.Key.Data.DayOfWeek == DayOfWeek.Monday) 
+                    {
+                        if (workedWeekly > 0 && workedWeekly < totSettimMinutes) 
+                        {
+                            DateTime tmpData = groupedRow.Key.Data.AddDays(-1);
+                            int ore1 = (int)((totSettimMinutes - workedWeekly) / 60);
+                            int minuti1 = (int)((totSettimMinutes - workedWeekly) % 60);
+                            var movimento = new Business.XmlExportsData.Manalu.Movimento()
+                            {
+                                CodGiustificativoRilPres = "RL",
+                                CodGiustificativoUfficiale = "RL",
+                                Data = previousDate.Value.ToString("yyyy-MM-dd"),
+                                NumOre = ore1.ToString(),
+                                NumMinuti = minuti1.ToString(),
+                                NumMinutiInCentesimi = "0",
+                                GiornoDiRiposo = giornoDiRiposo,
+                                GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
+                            };
+
+                            colDoc.Masters.Master.Add(movimento);
+                        }
+                        workedWeekly = 0;      //se lunedì viene resettato il contatore settimanale 
+                    } 
 
                     if (previousDate.HasValue)
                     {
@@ -13409,25 +13440,6 @@ namespace Business.Repository.Custom
 
                         if (motiv != default)
                             lastJust = motiv.Chiave_Tab;
-                    }
-
-                    if(groupedRow.Key.Data.DayOfWeek == DayOfWeek.Sunday && workedWeekly < totSettimMinutes) 
-                    {
-                        ore = (int)((totSettimMinutes - workedWeekly) / 60);
-                        minuti = (int)((totSettimMinutes - workedWeekly) % 60);
-                        var movimento = new Business.XmlExportsData.Manalu.Movimento()
-                        {
-                            CodGiustificativoRilPres = "RL",
-                            CodGiustificativoUfficiale = "RL",
-                            Data = groupedRow.Key.Data.ToString("yyyy-MM-dd"),
-                            NumOre = ore.ToString(),
-                            NumMinuti = minuti.ToString(),
-                            NumMinutiInCentesimi = "0",
-                            GiornoDiRiposo = giornoDiRiposo,
-                            GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
-                        };
-
-                        colDoc.Masters.Master.Add(movimento);
                     }
 
                     if(excessUnder40 > 0)

@@ -3322,7 +3322,7 @@ namespace Business.BusinessExtension
                 List<Reg_V> workedRegVs = new List<Reg_V>();
 
                 TimeSpan oraIn_Nott = nocturnStartHour.Value;
-                TimeSpan oraOut_Nott = nocturnEndHour.Value > nocturnStartHour.Value ? nocturnEndHour.Value : nocturnEndHour.Value.Add(new TimeSpan(1, 0, 0, 0));
+                TimeSpan oraOut_Nott = nocturnEndHour.Value;//nocturnEndHour.Value > nocturnStartHour.Value ? nocturnEndHour.Value : nocturnEndHour.Value.Add(new TimeSpan(1, 0, 0, 0));
 
                 List<Reg_V> toAddNoct = new List<Reg_V>();
 
@@ -3426,6 +3426,27 @@ namespace Business.BusinessExtension
                             // se la reg_v finisce nella fascia di notturno, per il calcolo delle ore del cartellino la si fa finire all'inizio del notturno
                             if ((regv.Data_Ora_Fig_U.Value.TimeOfDay >= nocturnStartHourModify || regv.Data_Ora_Fig_U.Value.TimeOfDay <= nocturnEndHour) && !regVEdited)
                             {
+                                Reg_V newRegV1 = default(Reg_V);
+                                newRegV1 = RepoManager.Reg_VRepo.Init();
+                                Reg_V newRegVnott = RepoManager.Reg_VRepo.Init();
+                                // genero la nuova registrazione del giorno che parte dalla fine del notturno e arriva alla chiusura della stessa
+                                CommonService.DuplicateEntity(regv, newRegVnott);
+
+                                newRegVnott.RegE = 0;
+                                newRegVnott.Data_Ora_Fig_U = newRegV1.TmpDataOraFigU;
+                                newRegVnott.Durata_Fig = newRegV1.TmpDurataFigU;
+
+                                newRegVnott.TmpDataOraFigE = newRegV1.Data_Ora_Fig_E;
+                                newRegVnott.TmpDurataFigU = newRegV1.Durata_Fig;
+
+                                newRegVnott.Data_Ora_Fig_E = new DateTime(regv.Data_Ora_Fig_E.Value.Year,
+                                    regv.Data_Ora_Fig_E.Value.Month, regv.Data_Ora_Fig_E.Value.Day,
+                                    nocturnStartHour.Value.Hours,
+                                    nocturnStartHour.Value.Minutes,
+                                    nocturnStartHour.Value.Seconds);
+
+                                newRegVnott.Data_Ora_Fig_U = regv.Data_Ora_Fig_U;
+                                toAddNoct.Add(newRegVnott);
                                 // salvo l'attuale data figurativa in una extension, così da poterla poi recuperare
                                 // (in quanto le liste hanno puntatori agli oggetti la lista successiva avrà i valori modificati e non originali)
                                 regv.TmpDataOraFigU = regv.Data_Ora_Fig_U;
@@ -4362,11 +4383,24 @@ namespace Business.BusinessExtension
             // inizializzazione del valore di ritorno del metodo
             var returnList = new List<TimesheetModuleItem>();
 
+            var routeNote = regVsToSplit.Select(regv => regv.Note_Reg).Distinct().ToList();
+
             // recupero tutti gli id cantiere presenti all'interno della lista passata come parametro
             var cantIdList = regVsToSplit.Select(regv => regv.Cant_Id).Distinct().ToList();
             if (timesheetJustification == "Rettifiche Manu." || timesheetJustification == "Rettifiche Auto.")
             {
                 cantIdList = cantList.Cast<int?>().ToList();
+            }
+            if (timesheetJustification != BusinessService.GetLocalizedString(PowerWebResources.LBL_VIAGGI)) 
+            {
+                // per ogni id cantiere presente nella lista
+                foreach (var route in routeNote)
+                {
+                    if (route != null) 
+                    {
+                        returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Note_Reg == route).ToList(), route, firstMonthDate, lastMonthDate, timesheetOrder, 0, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                    }
+                }
             }
             // per ogni id cantiere presente nella lista
             foreach (var listCantId in cantIdList)
@@ -4699,7 +4733,7 @@ namespace Business.BusinessExtension
                         else
                         {
                             // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            //returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                         }
                     }
                     else 
@@ -7996,6 +8030,7 @@ namespace Business.BusinessExtension
             * del mese precedente e successivo */
 
             CentroDiCosto cdc = RepoManager.CentroDiCostoRepo.FirstOrDefault(cd => cd.Descrizione.ToUpper() == "COMUNE DI LIMONE");
+            Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
 
             // se è richiesto il piano per la gestione di orari settimanali, la data di inizio è l'inizio del mese e la data di inizio non è un lunedì
             // allora si modifica la data di inizio periodo l'ultimo lunedì del mese precedente
@@ -8027,7 +8062,7 @@ namespace Business.BusinessExtension
                 // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
                 return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == null
                     && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
-                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel" && regv.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id), true);
             }
             else if (centroId == cdc.CentroDiCosto_Id) 
             {
@@ -8105,6 +8140,11 @@ namespace Business.BusinessExtension
                                                 {
                                                     var tmpE = reg.Data_Ora_Fis_E;
                                                     var tmpU = reg.Data_Ora_Fis_U;
+                                                    DateTime? end = reg.Data_Ora_Fis_U;
+                                                    if (end == null)
+                                                    {
+                                                        end = reg.Data_Ora_Fis_E;
+                                                    }
                                                     Reg_V returnReg = reg;
                                                     returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
                                                     returnReg.Data_Ora_Fis_U = lastDate;
@@ -8138,11 +8178,16 @@ namespace Business.BusinessExtension
                                                 {
                                                     var tmpE = reg.Data_Ora_Fis_E;
                                                     var tmpU = reg.Data_Ora_Fis_U;
+                                                    DateTime? end = reg.Data_Ora_Fis_U;
+                                                    if (end == null) 
+                                                    { 
+                                                        end = reg.Data_Ora_Fis_E;
+                                                    }
                                                     Reg_V returnReg = reg;
                                                     returnReg.Data_Ora_Fis_E = start.Data_Ora_Fis_E;
                                                     returnReg.Data_Ora_Fis_U = reg.Data_Ora_Fis_U;
-                                                    returnReg.Durata_Fig = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
-                                                    returnReg.Durata_Fis = (int)(reg.Data_Ora_Fis_U - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Durata_Fig = (int)(end - start.Data_Ora_Fis_E).Value.TotalMinutes;
+                                                    returnReg.Durata_Fis = (int)(end - start.Data_Ora_Fis_E).Value.TotalMinutes;
                                                     returnReg.Data_Reg = dayRegs.Key;
                                                     returnReg.Note_Reg = att.Campo1_Tab;
                                                     arrotRegs.Add(returnReg);
@@ -8230,7 +8275,14 @@ namespace Business.BusinessExtension
                                         }
                                     }
                                 }
-                                lastDate = reg.Data_Ora_Fis_U.Value;
+                                if (reg.Data_Ora_Fis_U != null)
+                                {
+                                    lastDate = reg.Data_Ora_Fis_U.Value;
+                                }
+                                else 
+                                {
+                                    lastDate = reg.Data_Ora_Fis_E;
+                                }
                             }
                         }
                     }
@@ -8242,7 +8294,7 @@ namespace Business.BusinessExtension
                 // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
                 return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
                     && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
-                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can == "Pulizie Civile" || regv.Codice_Commessa_Can == "PULIZIE CIVILE"), true);
+                    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel" && regv.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id), true);
             }
         }
 

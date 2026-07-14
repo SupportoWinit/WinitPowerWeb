@@ -748,7 +748,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 else 
                 {
-                    descrizioneCliente = "COMUNE LIMONE";
+                    if (prova.descrizioneCant.Contains("LIMONE"))
+                    {
+                        descrizioneCliente = "COMUNE LIMONE";
+                    }
+                    else
+                    {
+                        descrizioneCliente = "COMUNE DI MALCESINE";
+                    }
                 }
                 CellInsertValue(1, 1, rowIndex, descrizioneCliente + " ", ExcelInsertTypeEnum.Content);
                 RangeSetBorders(1, 1, rowIndex, 1, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
