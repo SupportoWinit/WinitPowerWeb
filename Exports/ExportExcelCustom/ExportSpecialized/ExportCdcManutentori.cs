@@ -70,6 +70,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
             var collaboratori = new List<Col>();
             List<Reg_V> exportRegs = new List<Reg_V>();
+            List<Reg_V> exportRegsHotel = new List<Reg_V>();
             List<Col> manutentori = RepoManager.ColRepo.GetAllQueryable(c => c.Qualifica_Col == "0").ToList();
 
             //foreach (Col collaboratore in manutentori) 
@@ -109,8 +110,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             //}
             Cli cliente = RepoManager.CliRepo.FirstOrDefault(cl => cl.Cognome_Cli == "COMUNE LIMONE");
             int cliId = cliente.Cli_Id;
-            List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
+            //List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
             exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can != "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            exportRegsHotel.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 8 || r.Registrazione_Tipo_Reg == 10)).ToList());
+            var exportRegVsHotel = exportRegsHotel.GroupBy(c => c.Col_Id);
             var exportRegVsLimone = exportRegs.Where(r => r.CentroDiCosto_Id == 6 && r.Registrazione_Tipo_Reg == 0);
             exportRegs = exportRegs.Where(r => r.CentroDiCosto_Id != 6).ToList();
             var exportRegVs = exportRegs.GroupBy(c => c.Col_Id); 
@@ -462,6 +465,41 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                 }
 
+                foreach (var exportReg in exportRegVsHotel)
+                {
+                    Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);
+                    if (!collaboratori.Contains(collaboratore)) 
+                    {
+                        collaboratori.Add(collaboratore);
+                    }
+                    for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1))
+                    {
+                        //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
+                        List<Dictionary<string, Dictionary<string, int>>> listaAttivita = new List<Dictionary<string, Dictionary<string, int>>>();
+                        //vado a fare un foreach
+                        var list = exportReg.Where(r => r.Data_Reg.Value == cond);
+                        foreach (var reg in list)
+                        {
+                            if (reg.Cant_Id != null)
+                            {
+                                List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                                if (cants.Count > 0)
+                                {
+                                    var newRounding = new Reg_V();
+                                    newRounding.Col_Id = exportReg.Key;
+                                    newRounding.Cant_Id = reg.Cant_Id;
+                                    newRounding.Durata_Fig = reg.Durata_Fig;
+                                    newRounding.Durata_Fis = reg.Durata_Fis;
+                                    newRounding.Data_Reg = cond;
+                                    newRounding.Note_Reg = cants.First().Descrizione_Can;
+                                    regVs.Add(newRounding);
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+
                 exportRegVs = exportRegVsLimone.GroupBy(c => c.Col_Id);
                 List<Reg_V> returnRegs = new List<Reg_V>();
 
@@ -681,7 +719,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (Col col in collaboratori)
             {
                 if (col != null) 
-                { 
+                {
                     IEnumerable<int> lis = new List<int>();
                     lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
                     if (regVs.Where(r => r.Col_Id == col.Col_Id).Count() > 0 /*|| RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1*/)
@@ -879,6 +917,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 if (RepoManager.Tab_DecodRepo.ExistParametrized("DECOD_TAB", "MOTIVAZIONI", justificationDec))
                     justificationDec = RepoManager.Tab_DecodRepo.SearchKeyInTable("DECOD_TAB", "MOTIVAZIONI", justificationDec).Decodifica_Tab;
 
+                justificationDec = justificationDec.Replace(" ","");
                 justificationDec = justificationDec.ToUpper();
 
                 CellInsertValue(worksheetIndex, 3, rowIndex, justificationDec, ExcelInsertTypeEnum.Content);

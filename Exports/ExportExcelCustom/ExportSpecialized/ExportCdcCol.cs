@@ -114,7 +114,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
             }
             List<string> motivId = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Campo1_Tab == "PULIZIE CIVILI" || td.Campo1_Tab == "CONDOMINIO").Select(td => td.Chiave_Tab).ToList();
-            List<int> cantToExclude = RepoManager.CantRepo.GetAllQueryable(c => motivId.Contains(c.Tipo_Interv_Can)).Select(c => c.Cant_Id).ToList();
+            //faccio la lista vuota come da richiesta del 29/07/2026 per esportare tutti i cantieri
+            List<int> cantToExclude = new List<int>();//RepoManager.CantRepo.GetAllQueryable(c => motivId.Contains(c.Tipo_Interv_Can)).Select(c => c.Cant_Id).ToList();
             List<Reg_V> regVs = reg_Vs.Where(r => !(cantToExclude.Contains(r.Cant_Id.Value)) && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Codice_Commessa_Can != "Hotel" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id && r.Registrazione_Stato_Reg != 0).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = regVs.GroupBy(c => c.Data_Reg);

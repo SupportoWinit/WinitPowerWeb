@@ -95,7 +95,7 @@ namespace Domain
             {
                 var currentValue = DateTime.MinValue;
                 if (Durata_Fig.HasValue)
-                    currentValue = CommonService.GetDateTimeFromMinutes(Durata_Fig.Value, true);
+                    currentValue = CommonService.GetDateTimeFromMinutes(Durata_Fig.Value);
                 return currentValue;
             }
         }

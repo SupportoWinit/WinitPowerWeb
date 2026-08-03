@@ -51,13 +51,16 @@ namespace Business.DataClasses.FlutterAppDTOs
         [JsonProperty("CantiereSelezionato")]
         public String CantiereSel { get; set; }
 
+        [JsonProperty("TagTimb")]
+        public string TagTimb { get; set; }
+
         [JsonProperty("Dataord")]
         public String Dataord { get; set; }
 
         [JsonProperty("Tecnologia")]
         public String Tecnologia { get; set; }
 
-        public FlutterOrderedReg(string Fru,string Pru,DateTime data,string verso,string motivazione,double latitudine, double longitudine, string attivita,string squadra, string cantiere,string nfcGps, String dataord, string tecnologia,string note, string chiave, string cantiereSel) {
+        public FlutterOrderedReg(string Fru,string Pru,DateTime data,string verso,string motivazione,double latitudine, double longitudine, string attivita,string squadra, string cantiere,string nfcGps, String dataord, string tecnologia,string note, string chiave, string cantiereSel,string tagTimb) {
             CodiceFru = Fru;
             CodicePru = Pru;
             Data = data;
@@ -74,6 +77,7 @@ namespace Business.DataClasses.FlutterAppDTOs
             Note = note != null ? note : "";
             Chiave = chiave != null ? chiave : "";
             CantiereSel = cantiereSel != null ? cantiereSel : "";
+            TagTimb = tagTimb != null ? tagTimb : "";
         }
     }
 }

@@ -83,6 +83,9 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("CantiereSelezionato")]
         public string CantiereSel { get; set; }
+
+        [JsonProperty("TagTimb")]
+        public string TagTimb { get; set; }
     }
 
     public class IdsResponse

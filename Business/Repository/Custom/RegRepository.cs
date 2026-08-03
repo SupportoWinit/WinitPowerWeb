@@ -777,7 +777,7 @@ namespace Business.Repository.Custom
                                 var tripsRegvs = RepoManager.Reg_VRepo.Find(regv => regv.Data_Ora_Fis_E >= fromDate && regv.Data_Ora_Fis_U <= toDate &&
                                                     regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip);
 
-                                //roundingRegVs.AddRange(tripsRegvs);
+                                roundingRegVs.AddRange(tripsRegvs);
                                 // dalle registrazioni che si stanno processando si eliminano gli arrotondamenti per durata
                                 //RepoManager.Reg_VRepo.DeleteDurationRounding(regs);
                                 // applicazione degli arrotondamenti per durata

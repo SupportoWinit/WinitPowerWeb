@@ -21,7 +21,7 @@ namespace Data
         public PowerWebEntities(string connectionString)
             : base(connectionString)
         {
-
+            Database.CommandTimeout = 120;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

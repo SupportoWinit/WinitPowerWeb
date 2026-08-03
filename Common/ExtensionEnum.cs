@@ -237,7 +237,8 @@ namespace Common
         NoCalculateTripOverX,
         RimozionePausaOnce,
         TripFromSameCant,
-        ArrotondamentoSuOrario
+        ArrotondamentoSuOrario,
+        IgnorePausaPranzo
     }
     
     public enum ClockAppsOperationEnum

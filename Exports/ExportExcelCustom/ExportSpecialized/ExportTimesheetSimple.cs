@@ -470,6 +470,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
         private void WriteColTimesheet(Dictionary<string, List<TimesheetModuleItem>> cartellini)
         {
+            int totalArrot = 0;
             foreach (var justification in cartellini["justification"])
             {
                 var justificationDec = justification.Justification;

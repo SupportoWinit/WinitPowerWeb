@@ -61,7 +61,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<string> decodIds = RepoManager.Tab_DecodRepo.GetAllQueryable(d => d.Campo1_Tab == "PULIZIE CIVILI").Select(d => d.Chiave_Tab).ToList();
             List<int> cantIds = RepoManager.CantRepo.GetAllQueryable(c => decodIds.Contains(c.Tipo_Interv_Can) && c.DisAbilitazione_Can == false).Select(c => c.Cant_Id).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.CentroDiCosto_Id == 1 && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) && (r.Data_Reg.Value.Month == maxDate.Month && r.Data_Reg.Value.Year == maxDate.Year)).ToList();
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => cantIds.Contains(r.Cant_Id.Value) && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) && (r.Data_Reg.Value.Month == maxDate.Month && r.Data_Reg.Value.Year == maxDate.Year)).ToList();
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => cantIds.Contains(r.Cant_Id.Value) && r.Qualifica_Col != "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10 || r.Registrazione_Tipo_Reg == 4) && (r.Data_Reg.Value.Month == maxDate.Month && r.Data_Reg.Value.Year == maxDate.Year)).ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             var exportCliRegVs = regVs.GroupBy(c => c.Cli_Id);
             ExcelWorkbookGenerateNew(ExcelModelFilePath);

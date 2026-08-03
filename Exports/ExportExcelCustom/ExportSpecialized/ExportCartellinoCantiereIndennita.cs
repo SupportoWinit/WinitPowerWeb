@@ -156,7 +156,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             CellInsertValue(worksheetIndex, columnIndex, rowIndex, "TOT.", Common.ExcelInsertTypeEnum.Content);
             RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-            ColumnsSetWidth(worksheetIndex, columnIndex, columnIndex, 5);
+            ColumnsSetWidth(worksheetIndex, columnIndex, columnIndex, 6);
 
             columnIndex++;  
 
@@ -298,8 +298,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 //Conta solamente i numeri della riga, quindi i giorni diversi da "M" o "F" o "---"
                                 string contaFormula = $"=COUNT({rangeFormula})";
 
+                                var totale = cartRow.TotalMinutes;
+                                string totaleFormatted = FromTotalMinutesToFormattedTypeVirgola((int)totale);
+
                                 RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                                CellInsertValue(worksheetIndex, columnIndex, rowIndex, formula, Common.ExcelInsertTypeEnum.Formula);
+                                CellInsertValue(worksheetIndex, columnIndex, rowIndex, totaleFormatted, Common.ExcelInsertTypeEnum.Content);
                                 columnIndex++;
                                 //RangeSetBorders(worksheetIndex, columnIndex, rowIndex, columnIndex, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                                 //CellInsertValue(worksheetIndex, columnIndex, rowIndex, contaFormula, Common.ExcelInsertTypeEnum.Formula);

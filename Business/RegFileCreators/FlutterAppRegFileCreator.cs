@@ -12,6 +12,7 @@ using Business.Repository;
 using Domain;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using Business.Profile;
+using Common;
 
 namespace Business.RegFileCreators
 {
@@ -59,11 +60,11 @@ namespace Business.RegFileCreators
                     if (regs.Value != null) {
                         if (regs.Value.First().CodicePru != "")
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
+                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
                         }
                         else
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
+                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
                         }
 
                         regsToOrder.Add(var);
@@ -77,11 +78,11 @@ namespace Business.RegFileCreators
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
                     }
 
                     regsToOrder.Add(var);
@@ -94,11 +95,11 @@ namespace Business.RegFileCreators
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
                     }
 
                     regsToOrder.Add(var);
@@ -116,11 +117,8 @@ namespace Business.RegFileCreators
             string lastLongitudeTxt = "";
             string lastCodiceFru = "";
             string lastAtt = "";
-            double lastLatitude = 0.0;
-            double lastLongitude = 0.0;
-            FlutterOrderedReg tmpLastReg = null;
             DateTime lastData = new DateTime(1900,01,01);
-              foreach (var regs in regsByCol)
+            foreach (var regs in regsByCol)
             {
                 foreach (var regsByDate in regs.GroupBy(reg => reg.Data)) {
                     foreach (var fluReg in regsByDate) {
@@ -955,7 +953,7 @@ namespace Business.RegFileCreators
                                     fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
                                 );
                             }
-                            else 
+                            else
                             {
                                 string matr = fluReg.CantiereSel;
                                 int matrId = Int32.Parse(matr);
@@ -989,6 +987,39 @@ namespace Business.RegFileCreators
                             {
                                 regsToWrite.Add(noteLine);
                             }
+                            #endregion
+                        }
+                        else if (fluReg.TagTimb != null && fluReg.TagTimb != "")
+                        {
+                            #region Reg senza coordinate
+                            string verso = "";
+                            string regRow = "";
+                            if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                            {
+                                verso = fluReg.Motivazione;
+                                fluReg.Motivazione = "";
+                            }
+                            else
+                            {
+                                verso = fluReg.Verso;
+                            }
+                            if (fluReg.Motivazione == "none")
+                            {
+                                fluReg.Motivazione = "";
+                            }
+                            regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                                fluReg.TagTimb,
+                                fluReg.CodicePru,
+                                fluReg.Data.Year,
+                                fluReg.Data.Month.ToString("00"),
+                                fluReg.Data.Day.ToString("00"),
+                                fluReg.Data.Hour.ToString("00"),
+                                fluReg.Data.Minute.ToString("00"),
+                                fluReg.Data.Second.ToString("00"),
+                                verso,
+                                fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                            );
+                            regsToWrite.Add(regRow);
                             #endregion
                         }
                         else
@@ -1105,32 +1136,93 @@ namespace Business.RegFileCreators
                             else if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
                             {
                                 #region Reg senza coordinate
-                                string verso = "";
-                                if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.IgnorePausaPranzo) == 1)
                                 {
-                                    verso = fluReg.Motivazione;
-                                    fluReg.Motivazione = "";
+                                    bool generatePausa = true;
+                                    string[] eccezioni = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.IgnorePausaPranzo, "Matricole").Split(',');
+                                    if (fluReg.CodicePru == "PAUSA00001")
+                                    {
+                                        string codice = fluReg.CodiceFru;
+                                        for (int i = 0; i < eccezioni.Length; i++)
+                                        {
+                                            if (eccezioni[i] == codice)
+                                            {
+                                                generatePausa = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else if (fluReg.CodiceFru == "PAUSA00001")
+                                    {
+                                        string codice = fluReg.CodicePru;
+                                        for (int i = 0; i < eccezioni.Length; i++)
+                                        {
+                                            if (eccezioni[i] == codice)
+                                            {
+                                                generatePausa = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (generatePausa)
+                                    {
+                                        string verso = "";
+                                        if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                                        {
+                                            verso = fluReg.Motivazione;
+                                            fluReg.Motivazione = "";
+                                        }
+                                        else
+                                        {
+                                            verso = fluReg.Verso;
+                                        }
+                                        if (fluReg.Motivazione == "none")
+                                        {
+                                            fluReg.Motivazione = "";
+                                        }
+                                        regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                                            fluReg.CodiceFru,
+                                            fluReg.CodicePru,
+                                            fluReg.Data.Year,
+                                            fluReg.Data.Month.ToString("00"),
+                                            fluReg.Data.Day.ToString("00"),
+                                            fluReg.Data.Hour.ToString("00"),
+                                            fluReg.Data.Minute.ToString("00"),
+                                            fluReg.Data.Second.ToString("00"),
+                                            verso,
+                                            fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                                        );
+                                    }
                                 }
                                 else
                                 {
-                                    verso = fluReg.Verso;
+                                    string verso = "";
+                                    if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                                    {
+                                        verso = fluReg.Motivazione;
+                                        fluReg.Motivazione = "";
+                                    }
+                                    else
+                                    {
+                                        verso = fluReg.Verso;
+                                    }
+                                    if (fluReg.Motivazione == "none")
+                                    {
+                                        fluReg.Motivazione = "";
+                                    }
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                                        fluReg.CodiceFru,
+                                        fluReg.CodicePru,
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
+                                        verso,
+                                        fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                                    );
                                 }
-                                if (fluReg.Motivazione == "none")
-                                {
-                                    fluReg.Motivazione = "";
-                                }
-                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
-                                    fluReg.CodiceFru,
-                                    fluReg.CodicePru,
-                                    fluReg.Data.Year,
-                                    fluReg.Data.Month.ToString("00"),
-                                    fluReg.Data.Day.ToString("00"),
-                                    fluReg.Data.Hour.ToString("00"),
-                                    fluReg.Data.Minute.ToString("00"),
-                                    fluReg.Data.Second.ToString("00"),
-                                    verso,
-                                    fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
-                                );
                                 #endregion
                             }
                             else if (string.IsNullOrEmpty(fluReg.CodicePru) && fluReg.Latitudine == 0 && fluReg.Longitudine == 0)
@@ -1186,7 +1278,7 @@ namespace Business.RegFileCreators
                             {
                                 attivitaFinale = "";
                             }
-                            if (fluReg.Verso == "U" && attivitaFinale == "") 
+                            if (fluReg.Verso == "U" && attivitaFinale == "")
                             {
                                 Fru fru_id = RepoManager.FruRepo.FirstOrDefault(f => f.Codice_Fru == fluReg.CodicePru);
 
@@ -1206,7 +1298,7 @@ namespace Business.RegFileCreators
                                             Fru_Cant lastFru = default(Fru_Cant);
                                             foreach (Fru_Cant assoc in fru_Cants)
                                             {
-                                                if (oggi >= assoc.Abilitazione_Data_Inizio_Fru_Can) 
+                                                if (oggi >= assoc.Abilitazione_Data_Inizio_Fru_Can)
                                                 {
                                                     //se la data di oggi è maggiore della data di associazione controllo se l'ultima data è default
                                                     if (lastDate == default(DateTime))
@@ -1216,14 +1308,14 @@ namespace Business.RegFileCreators
                                                             //se è l'ultima della lista associo l'elemento corrente alla variabile finale
                                                             currentFruCant = assoc;
                                                         }
-                                                        else 
+                                                        else
                                                         {
                                                             //se è default vuol dire che è la prima associazione, associo all'ultima data la prima data d'associazione
                                                             lastDate = assoc.Abilitazione_Data_Inizio_Fru_Can;
                                                             lastFru = assoc;
-                                                        }       
+                                                        }
                                                     }
-                                                    else 
+                                                    else
                                                     {
                                                         //se non è default vuol dire che la data di oggi è più grande dell'associazione precedente
                                                         if (oggi >= assoc.Abilitazione_Data_Inizio_Fru_Can)
@@ -1234,14 +1326,14 @@ namespace Business.RegFileCreators
                                                                 //se è l'ultima della lista associo l'elemento corrente alla variabile finale
                                                                 currentFruCant = assoc;
                                                             }
-                                                            else 
+                                                            else
                                                             {
                                                                 //se non è l'ultimo elemento aggiorno le variabili temporanee
                                                                 lastDate = assoc.Abilitazione_Data_Inizio_Fru_Can;
                                                                 lastFru = assoc;
-                                                            }   
+                                                            }
                                                         }
-                                                        else 
+                                                        else
                                                         {
                                                             //se non è maggiore della data dell'associazione attuale metto nella associazione quella preedente
                                                             currentFruCant = lastFru;
@@ -1249,7 +1341,7 @@ namespace Business.RegFileCreators
                                                     }
                                                 }
                                             }
-                                            if (currentFruCant != null) 
+                                            if (currentFruCant != null)
                                             {
                                                 //currentFruCant = fru_Cants.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault();
                                                 Cant cantiere = RepoManager.CantRepo.FirstOrDefault(can => can.Cant_Id == currentFruCant.Cant_Id);
@@ -1257,7 +1349,7 @@ namespace Business.RegFileCreators
                                                 if (cantNote.Count > 0)
                                                 {
                                                     Cant_Note cnt = getLastAtt(cantNote, oggi);
-                                                    if (cnt != null) 
+                                                    if (cnt != null)
                                                     {
                                                         //Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note && !can.DisAbilitazione_Can);
                                                         //List<Fru_Cant> fru_Atts = RepoManager.Fru_CantRepo.GetAllQueryable(fr => fr.Cant_Id == att.Cant_Id).OrderBy(fr => fr.Abilitazione_Data_Inizio_Fru_Can).ToList();
@@ -1265,19 +1357,19 @@ namespace Business.RegFileCreators
                                                     }
                                                 }
                                             }
-                                            
+
                                         }
-                                        else 
+                                        else
                                         {
                                             currentFruCant = fru_Cants.OrderByDescending(fr => fr.Abilitazione_Data_Inizio_Fru_Can).FirstOrDefault();
-                                            if (oggi >= currentFruCant.Abilitazione_Data_Inizio_Fru_Can) 
+                                            if (oggi >= currentFruCant.Abilitazione_Data_Inizio_Fru_Can)
                                             {
                                                 Cant cantiere = RepoManager.CantRepo.FirstOrDefault(can => can.Cant_Id == currentFruCant.Cant_Id);
                                                 List<Cant_Note> cantNote = RepoManager.Cant_NoteRepo.GetAllQueryable(cn => cn.Cant_Id == cantiere.Cant_Id).OrderBy(cn => cn.Data_Nota_Can_Note).ToList();
                                                 if (cantNote.Count > 0)
                                                 {
-                                                    Cant_Note cnt = getLastAtt(cantNote,oggi);
-                                                    if (cnt != null) 
+                                                    Cant_Note cnt = getLastAtt(cantNote, oggi);
+                                                    if (cnt != null)
                                                     {
                                                         //Cant att = RepoManager.CantRepo.FirstOrDefault(can => can.Descrizione_Can == cnt.Nota_Can_Note);
                                                         //List<Fru_Cant> fru_Atts = RepoManager.Fru_CantRepo.GetAllQueryable(fr => fr.Cant_Id == att.Cant_Id).OrderBy(fr => fr.Abilitazione_Data_Inizio_Fru_Can).ToList();
@@ -1285,7 +1377,7 @@ namespace Business.RegFileCreators
                                                     }
                                                 }
                                             }
-                                        }  
+                                        }
                                     }
                                 }
                             }
@@ -1315,7 +1407,6 @@ namespace Business.RegFileCreators
                     }
                 }
             }
-
             File.WriteAllLines(fileNamePatter, regsToWrite.ToArray());
         }
 

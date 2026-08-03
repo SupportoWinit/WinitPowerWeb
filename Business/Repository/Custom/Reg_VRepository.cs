@@ -5271,36 +5271,47 @@ namespace Business.Repository.Custom
                         }
                         if (valido)
                         {
-                            //se siamo in un giorno con orario vado a crearmi le ore in base agli orari
-                            DateTime orarioE = new DateTime(afterE.Year, afterE.Month, afterE.Day, or.Ora_E.Value.Hours, or.Ora_E.Value.Minutes, or.Ora_E.Value.Seconds);
-                            DateTime orarioU = new DateTime(afterU.Year, afterU.Month, afterU.Day, or.Ora_U.Value.Hours, or.Ora_U.Value.Minutes, or.Ora_U.Value.Seconds);
-                            if (orarioE > beforeE && orarioE < afterE)
+                            if (or.Ora_E.HasValue) 
                             {
-                                double tmpDiffE = (orarioE - regE.Registrazione_Data_Ora_Fig_Reg.Value).TotalMinutes;
-                                //tmpDiffE = (orarioE - beforeE).TotalMinutes;
-                                double tmpDiffU = (orarioU - afterU).TotalMinutes;
-                                tmpDiffU = (orarioU - beforeU).TotalMinutes;
-                                if (tmpDiffE < 0)
+                                //se siamo in un giorno con orario vado a crearmi le ore in base agli orari
+                                DateTime orarioE = new DateTime(afterE.Year, afterE.Month, afterE.Day, or.Ora_E.Value.Hours, or.Ora_E.Value.Minutes, or.Ora_E.Value.Seconds);
+                                DateTime orarioU = new DateTime(afterU.Year, afterU.Month, afterU.Day, or.Ora_U.Value.Hours, or.Ora_U.Value.Minutes, or.Ora_U.Value.Seconds);
+                                if (orarioE > beforeE && orarioE < afterE)
                                 {
-                                    tmpDiffE = tmpDiffE * -1;
-                                }
-                                if (/*tmpDiffU <= diffU &&*/ tmpDiffE <= diffE)
-                                {
-                                    diffU = Math.Abs(tmpDiffU);
-                                    diffE = Math.Abs(tmpDiffE);
-                                    tempE = or.Ora_E.Value;
-                                    tempU = or.Ora_U.Value;
+                                    double tmpDiffE = (orarioE - regE.Registrazione_Data_Ora_Fig_Reg.Value).TotalMinutes;
+                                    //tmpDiffE = (orarioE - beforeE).TotalMinutes;
+                                    double tmpDiffU = (orarioU - afterU).TotalMinutes;
+                                    tmpDiffU = (orarioU - beforeU).TotalMinutes;
+                                    if (tmpDiffE < 0)
+                                    {
+                                        tmpDiffE = tmpDiffE * -1;
+                                    }
+                                    if (/*tmpDiffU <= diffU &&*/ tmpDiffE <= diffE)
+                                    {
+                                        diffU = Math.Abs(tmpDiffU);
+                                        diffE = Math.Abs(tmpDiffE);
+                                        tempE = or.Ora_E.Value;
+                                        tempU = or.Ora_U.Value;
+                                    }
                                 }
                             }
                         }
                     }
-                    if (tempE < midDay)
+                    if (beforeE.TimeOfDay < midDay)
                     {
                         morningEntryLimit = tempE;
+                        if (morningEntryLimit == default(TimeSpan) && col.Limite_Entrata_Mattina_Col.HasValue) 
+                        { 
+                            morningEntryLimit = col.Limite_Entrata_Mattina_Col;
+                        }
                     }
                     else
                     {
                         afternoonEntryLimit = tempE;
+                        if (afternoonEntryLimit == default(TimeSpan) && col.Limite_Entrata_Pomeriggio_Col.HasValue)
+                        {
+                            afternoonEntryLimit = col.Limite_Entrata_Pomeriggio_Col;
+                        }
                     }
                 }
                 else {
@@ -8299,8 +8310,11 @@ namespace Business.Repository.Custom
                     if (!tripEnd)
                     {
                         // Imposto come ora di inizio viaggio il minuto precedente la regv
-                        timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
-                        timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        //timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        //timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+
+                        timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
+                        timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
 
                         timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
                         timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
@@ -8310,26 +8324,18 @@ namespace Business.Repository.Custom
                         newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
 
                         // Imposto come ora di fine viaggio l'ora di entrata nel prossimo cantiere
-                        newRegU.Registrazione_Data_Ora_Orig_Reg = regE.Data_Ora_Fis_E;
-                        newRegU.Registrazione_Data_Ora_Fis_Reg = regE.Data_Ora_Fis_E;
-                        newRegU.Registrazione_Data_Ora_Fig_Reg = regE.Data_Ora_Fig_E;
+                        newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                        newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                        newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
                     }
                     else
                     {
-                        timeDiffFig = regE.Data_Ora_Fig_U.Value.Add(new TimeSpan(0, distRow.Minuti_Tab_Dist, 0));
-                        timeDiffFis = regE.Data_Ora_Fis_U.Value.Add(new TimeSpan(0, distRow.Minuti_Tab_Dist, 0));
+                        timeDiffFig = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fig_U.Value : regE.Data_Ora_Fig_E.Value;
+                        timeDiffFis = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fis_U.Value : regE.Data_Ora_Fis_E;
 
-                        timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
-                        timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
-
-                        var tripUFisDateTime = new DateTime(regE.Data_Ora_Fis_U.Value.Year, regE.Data_Ora_Fis_U.Value.Month, regE.Data_Ora_Fis_U.Value.Day, regE.Data_Ora_Fis_U.Value.Hour, regE.Data_Ora_Fis_U.Value.Minute, 59);
-                        var tripUFigDateTime = regE.Data_Ora_Fig_U;
-                        if (tripUFigDateTime.HasValue)
-                            tripUFigDateTime = new DateTime(regE.Data_Ora_Fis_U.Value.Year, regE.Data_Ora_Fis_U.Value.Month, regE.Data_Ora_Fis_U.Value.Day, regE.Data_Ora_Fig_U.Value.Hour, regE.Data_Ora_Fig_U.Value.Minute, 59);
-
-                        newRegE.Registrazione_Data_Ora_Orig_Reg = tripUFisDateTime;
-                        newRegE.Registrazione_Data_Ora_Fis_Reg = tripUFisDateTime;
-                        newRegE.Registrazione_Data_Ora_Fig_Reg = tripUFigDateTime;
+                        newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                        newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                        newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
 
                         newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
                         newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
@@ -8385,7 +8391,312 @@ namespace Business.Repository.Custom
                     }
                 }
             }
-            return trip;
+            else 
+            {
+                //altrimenti genero il viaggio da GIS (solo se il flag gis è attivo)
+                if (distRow == null)
+                {
+                    //inizializzo le variabili di inizio e fine viaggio
+
+                    Coordinate newStartRequest = new Coordinate();
+                    Coordinate newEndRequest = new Coordinate();
+
+                    if (CommonService.Nz(sede.LatitudineGps_Can, 0) == 0 || CommonService.Nz(sede.LongitudineGps_Can, 0) == 0)
+                    //Se Il Cantiere di INIZIO VIAGGIO (ENTRATA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
+                    // e approfitta per aggiornarle anche in Anagrafica CANT
+                    {
+                        RepoManager.CantRepo.UpdateGeoLocation(sede);
+                    }
+
+                    newStartRequest.Latitude = sede.LatitudineGps_Can;
+                    newStartRequest.Longitude = sede.LongitudineGps_Can;
+
+                    if (CommonService.Nz(cant.LatitudineGps_Can, 0) == 0 || CommonService.Nz(cant.LongitudineGps_Can, 0) == 0)
+                    //Se Il Cantiere di FINE VIAGGIO (USCITA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
+                    // e approfitta per aggiornarle anche in Anagrafica CANT
+                    {
+                        RepoManager.CantRepo.UpdateGeoLocation(cant);
+                    }
+
+                    newEndRequest.Latitude = cant.LatitudineGps_Can;
+                    newEndRequest.Longitude = cant.LongitudineGps_Can;
+
+                    //Se sono disponibili LAT/LONG sia del Cantiere di Inizio Viaggio (Entrata) sia del Cantiere di Fine Viaggio (Uscita)
+                    //Allora calcola con BING il Percorso fra il Cantiere di Inizio Viaggio e quello di Fine Viaggio ottenenedone i KM e la Durata da BING
+                    if (CommonService.Nz(sede.LatitudineGps_Can, 0) != 0 &&
+                        CommonService.Nz(sede.LongitudineGps_Can, 0) != 0 &&
+                        CommonService.Nz(cant.LatitudineGps_Can, 0) != 0 &&
+                        CommonService.Nz(cant.LongitudineGps_Can, 0) != 0)
+                    {
+                        // se il cantiere ha impostato la latitudine e la longitudine ma non ha un indirizzo, un cap e un luogo
+                        // allora non si genera il record in tab distanze
+                        if (CommonService.Nz(sede.Indirizzo_Can, String.Empty) != String.Empty &&
+                            CommonService.Nz(sede.Cap_Can, String.Empty) != String.Empty &&
+                            CommonService.Nz(sede.Luogo_Can, String.Empty) != String.Empty &&
+                            CommonService.Nz(cant.Indirizzo_Can, String.Empty) != String.Empty &&
+                            CommonService.Nz(cant.Cap_Can, String.Empty) != String.Empty &&
+                            CommonService.Nz(cant.Luogo_Can, String.Empty) != String.Empty)
+                        {
+                            var service = new CalcoloPercorsoService();
+                            var result = Task.Run(() => service.CalcolaPercorsoAsync(newStartRequest.Latitude, newStartRequest.Longitude, newEndRequest.Latitude, newEndRequest.Longitude)).Result;
+                            //Calcolo rotta tra i due punti
+                            Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
+
+                            if (result.DistanzaKm > 0)
+                            //Se è riuscito a Calcolare con BING i KM e la Durata del Viaggio allora crea il REcord della TAB_DISTANZA con Tipo = "G"
+                            {
+
+                                Tab_Decod tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab.ToUpper() == "TIPO_DISTANZA" && td.Chiave_Tab.ToUpper() == "G");
+
+                                if (tabDecod != null)
+                                {
+                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DurationTrip) == 1)
+                                    {
+                                        List<Cant> cantiereU = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cant.Cant_Id).ToList();
+                                        List<Cant> cantiereE = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == sede.Cant_Id).ToList();
+                                        int minuti = 0;
+                                        if (cantiereU.First().Note_Can == "1.5" || cantiereE.First().Note_Can == "1.5")
+                                        {
+                                            minuti = (int)result.DurataMinuti;
+                                            minuti = (int)(minuti * 1.5);
+                                            distRow = new Tab_Dist()
+                                            {
+                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", sede.Luogo_Can, sede.Indirizzo_Can, sede.Cap_Can),
+                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cant.Luogo_Can, cant.Indirizzo_Can, cant.Cap_Can),
+                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                Minuti_Tab_Dist = minuti,
+                                            };
+                                        }
+                                        else if (cantiereU.First().Note_Can == "2" || cantiereE.First().Note_Can == "2")
+                                        {
+                                            minuti = (int)result.DurataMinuti;
+                                            minuti = (int)(minuti * 2);
+                                            distRow = new Tab_Dist()
+                                            {
+                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", sede.Luogo_Can, sede.Indirizzo_Can, sede.Cap_Can),
+                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cant.Luogo_Can, cant.Indirizzo_Can, cant.Cap_Can),
+                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                Minuti_Tab_Dist = minuti,
+                                            };
+                                        }
+                                        else
+                                        {
+                                            minuti = (int)result.DurataMinuti;
+                                            distRow = new Tab_Dist()
+                                            {
+                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", sede.Luogo_Can, sede.Indirizzo_Can, sede.Cap_Can),
+                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cant.Luogo_Can, cant.Indirizzo_Can, cant.Cap_Can),
+                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                Minuti_Tab_Dist = minuti,
+                                            };
+                                        }
+                                    }
+                                    else
+                                    {
+                                        distRow = new Tab_Dist()
+                                        {
+                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", sede.Luogo_Can, sede.Indirizzo_Can, sede.Cap_Can),
+                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cant.Luogo_Can, cant.Indirizzo_Can, cant.Cap_Can),
+                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
+                                        };
+                                    }
+                                    var errorTab_DistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
+                                    if (!errorTab_DistRepo.Any())
+                                    {
+                                        try
+                                        {
+                                            RepoManager.Tab_DistRepo.Add(distRow, true);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            _log.ErrorFormat("Errore durante l'inserimento nella tab. distanze di un nuovo record a causa dell exception {0}", ex.InnerException);
+                                        }
+
+                                    }
+
+                                    else
+                                    {
+                                        BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
+
+                                        List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
+                                        foreach (var item in errorTab_DistRepo)
+                                            errRouteCalculate.Add(new KeyValuePair<string, string>(item.Key, String.Format("{0}", item.Value)));
+                                        RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
+                                    }
+                                }
+                            }
+                            else
+                            //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
+                            {
+                                var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                                string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
+
+                                string cantEMessageDesc = String.Format("{0} - {1}", sede.Codice_Cantiere, sede.Descrizione_Can);
+                                string cantUMessageDesc = String.Format("{0} - {1}", cant.Codice_Cantiere, cant.Descrizione_Can);
+
+                                List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
+                                errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore))); 
+
+                                trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                                if (trip.RegU != null)
+                                    trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                                if (errRouteCalculate.Any())
+                                    BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
+
+                            }
+                        }
+                        else
+                        {
+                            // in caso sia presente la latitudine e la longitudine ma non siano presenti nei cantieri dati di ubicazione validi,
+                            // allora il tutto viene segnalato con un messaggio
+                            var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                            string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
+
+                            string cantEMessageDesc = String.Format("{0} - {1}", sede.Codice_Cantiere, sede.Descrizione_Can);
+                            string cantUMessageDesc = String.Format("{0} - {1}", cant.Codice_Cantiere, cant.Descrizione_Can);
+
+                            List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
+                            errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
+                            RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
+                            trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                            if (trip.RegU != null)
+                                trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                            if (errRouteCalculate.Any())
+                                BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
+
+                        }
+                    }
+                    else
+                    //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
+                    {
+                        var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                        string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
+
+                        string cantEMessageDesc = String.Format("{0} - {1}", sede.Codice_Cantiere, sede.Descrizione_Can);
+                        string cantUMessageDesc = String.Format("{0} - {1}", cant.Codice_Cantiere, cant.Descrizione_Can);
+
+                        List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
+                        errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
+                        RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
+                        trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+                        if (trip.RegU != null)
+                            trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                        if (errRouteCalculate.Any())
+                            BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
+
+                    }
+                }
+
+                // viene generato il viaggio solamente se non ci sono impedimenti dalle personalizzazioni per i viaggi nello stesso comune
+                if (!IsTripSameMunicipalityToDelete(distRow))
+                {
+                    var from = regE.Data_Reg.Value.Add(threshold);
+                    var to = from.Date.AddDays(1);
+                    if (threshold > DateTime.Now.Date.TimeOfDay)
+                        to = to.Add(threshold);
+
+                    Reg newRegE = RepoManager.RegRepo.Init();
+                    Reg newRegU = RepoManager.RegRepo.Init();
+                    newRegU.ParentReg = newRegE;
+
+                    DateTime timeDiffFig;
+                    DateTime timeDiffFis;
+
+                    if (!tripEnd)
+                    {
+                        // Imposto come ora di inizio viaggio il minuto precedente la regv
+                        //timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        //timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+
+                        timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
+                        timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
+
+                        timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
+                        timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
+
+                        newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                        newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                        newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+
+                        // Imposto come ora di fine viaggio l'ora di entrata nel prossimo cantiere
+                        newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                        newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                        newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+                    }
+                    else
+                    {
+                        timeDiffFig = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fig_U.Value : regE.Data_Ora_Fig_E.Value;
+                        timeDiffFis = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fis_U.Value : regE.Data_Ora_Fis_E;
+
+                        newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                        newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                        newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+
+                        newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                        newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                        newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+                    }
+
+                    if (newRegE.Registrazione_Data_Ora_Fis_Reg > from && newRegU.Registrazione_Data_Ora_Fis_Reg < to)
+                    {
+                        if (!tripEnd)
+                        {
+                            newRegE.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                            newRegE.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                            newRegE.Col_Id = regE.Col_Id;
+                            //Se sto elaborando il viaggio di inizio giornata, parte dalla sede
+                            newRegE.Cant_Id = sede.Cant_Id;
+                            newRegE.Att_Id = newRegE.Cant_Id;
+
+                            newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                            newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                            newRegU.Col_Id = regE.Col_Id;
+                            //Se sto elaborando il viaggio di inizio giornata, arriva al primo cantiere lavorativo
+                            newRegU.Cant_Id = cant.Cant_Id;
+                            newRegU.Att_Id = newRegU.Cant_Id;
+                        }
+
+                        else
+                        {
+                            newRegE.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                            newRegE.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                            newRegE.Col_Id = regE.Col_Id;
+                            //Se sto elaborando il viaggio di fine giornata, parte dall'ultimo cantiere lavorativo
+                            newRegE.Cant_Id = cant.Cant_Id;
+                            newRegE.Att_Id = newRegE.Cant_Id;
+
+                            newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                            newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                            newRegU.Col_Id = regE.Col_Id;
+                            //Se sto elaborando il viaggio di fine giornata, arriva alla sede
+                            newRegU.Cant_Id = sede.Cant_Id;
+                            newRegU.Att_Id = newRegU.Cant_Id;
+                        }
+
+                        if (distRow.KM_Tab_Dist > default(decimal))
+                            newRegE.KM_Reg = distRow.KM_Tab_Dist;
+                        else
+                            newRegE.KM_Reg = 0;
+
+                        int coupleNumber = CommonService.GetRandomNumber();
+                        newRegE.RiferimentoRRN_Att = coupleNumber;
+                        newRegU.RiferimentoRRN_Att = coupleNumber;
+
+                        trip = new Trip { RegE = newRegE, RegU = newRegU };
+                    }
+                }
+            }
+                return trip;
         }
 
         private List<Trip> ElaborateStartEndTrips(IOrderedEnumerable<Reg_V> orderedCurrentTripsByColByDate, Col currentCol, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application)
