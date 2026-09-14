@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Business.DataClasses.WebApiDataClasses;
+using Business.Profile;
+using Business.Repository;
+using Domain;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using Business.Profile;
-using Business.Repository;
-using Domain;
-using Newtonsoft.Json.Linq;
 
 namespace PowerWeb.Api
 {
@@ -89,7 +90,7 @@ namespace PowerWeb.Api
         /// <value>
         /// Il valore utilizzato nella api di komplett.
         /// </value>
-        public int ColId { get; set; }
+        public string ColId { get; set; }
 
         /// <summary>
         /// Recupera o imposta l'id del cantiere di cui cercare le timbrature.
@@ -130,6 +131,14 @@ namespace PowerWeb.Api
         /// La stringa con la motivazione.
         /// </value>
         public double Durata { get; set; }
+
+        /// <summary>
+        /// Recupera o imposta l'ora di fine dei possibili permessi richiesti.
+        /// </summary>
+        /// <value>
+        /// L'ora di fine.
+        /// </value>
+        protected DateTime Date { get; set; }
 
         #endregion
 
@@ -200,7 +209,7 @@ namespace PowerWeb.Api
         /// <param name="matricola">La matricola del collaboratore.</param>
         /// <param name="justification">La motivazione inserita.</param>
         /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
-        public string Get(DateTime from, DateTime to, int matricola, string justification)
+        public string Get(DateTime from, DateTime to, string matricola, string justification)
         {
             // si procede con l'elaborazione solamente se l'utente è stato trovato
             if (InitializeApiUser())
@@ -235,7 +244,7 @@ namespace PowerWeb.Api
         /// <param name="matricola">La matricola del collaboratore.</param>
         /// <param name="justification">La motivazione inserita.</param>
         /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
-        public string Get(DateTime from, int matricola, string justification, TimeSpan start, TimeSpan end)
+        public string Get(DateTime from, string matricola, string justification, TimeSpan start, TimeSpan end)
         {
             // si procede con l'elaborazione solamente se l'utente è stato trovato
             if (InitializeApiUser())
@@ -265,7 +274,7 @@ namespace PowerWeb.Api
         /// <param name="matricola">La matricola del collaboratore.</param>
         /// <param name="justification">La motivazione inserita.</param>
         /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
-        public string Get(DateTime from, int matricola, string justification, double durata)
+        public string Get(DateTime from, string matricola, string justification, double durata)
         {
             // si procede con l'elaborazione solamente se l'utente è stato trovato
             if (InitializeApiUser())
@@ -292,7 +301,7 @@ namespace PowerWeb.Api
         /// <param name="from">La data di inizio elaborazione.</param>
         /// <param name="to">La data di fine elaborazione.</param>
         /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
-        public string Get(DateTime date, int colId, int cantId)
+        public string Get(DateTime date, string colId, int cantId)
         {
             // si procede con l'elaborazione solamente se l'utente è stato trovato
             if (InitializeApiUser())
@@ -303,6 +312,31 @@ namespace PowerWeb.Api
                 CantId = cantId;
 
                 // si procede all'elaborazione solamente se le date sono coerenti
+                ExecuteOperation();
+            }
+            else
+                AddUserError();
+
+            // ritorno degli errori eventualmente recuperati nell'elaborazione
+            return ParseJsonrForReturnValue();
+        }
+
+        /// <summary>
+        /// Funzione di get della api corrente; utilizza il template pattern per l'operazione da eseguire.
+        /// L'operazione per questo overload di get richiede un from e un to.
+        /// </summary>
+        /// <param name="from">La data di inizio elaborazione.</param>
+        /// <param name="to">La data di fine elaborazione.</param>
+        /// <param name="matricola">La matricola del collaboratore.</param>
+        /// <param name="justification">La motivazione inserita.</param>
+        /// <returns>L'elenco degli errori riscontrati durante l'esecuzione dell'operazione.</returns>
+        public string Get(DateTime data)
+        {
+            // si procede con l'elaborazione solamente se l'utente è stato trovato
+            if (InitializeApiUser())
+            {
+                // inserimento dei parametri nell'oggetto
+                Date = data;
                 ExecuteOperation();
             }
             else
@@ -376,6 +410,7 @@ namespace PowerWeb.Api
             // inizializzazione del valore di ritorno del metodo
             bool userInitialized = false;
 
+            ReturnValues values = new ReturnValues();
             // calcolo dell'utente con cui eseguire le operazioni
             Utenti apiUser = RepoManager.UtentiRepo.FirstOrDefault(ut => ut.Codice_Utente == Common.Properties.Settings.Default.APIUserName);
 
@@ -389,7 +424,19 @@ namespace PowerWeb.Api
             // se l'inizializzazione è andata a buon fine allora verifico che anche
             // il modulo della schedulazione sia abilitato
             if (userInitialized)
+            {
                 userInitialized = RepoManager.ParamRepo.ParametersRow.Abilita_Schedulatore;
+                if (!userInitialized) 
+                {
+                    values.Status = false;
+                    values.Message = "Modulo della schedulazione non abilitato";
+                }
+            }  
+            else 
+            {
+                values.Status = false;
+                values.Message = "Utente APIUSER errato o inesistente";
+            }
 
             // ritorno del valore calcolato dal metodo
             return userInitialized;

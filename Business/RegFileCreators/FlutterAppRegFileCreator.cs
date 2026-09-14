@@ -1008,8 +1008,8 @@ namespace Business.RegFileCreators
                                 fluReg.Motivazione = "";
                             }
                             regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
-                                fluReg.TagTimb,
                                 fluReg.CodicePru,
+                                fluReg.TagTimb,
                                 fluReg.Data.Year,
                                 fluReg.Data.Month.ToString("00"),
                                 fluReg.Data.Day.ToString("00"),

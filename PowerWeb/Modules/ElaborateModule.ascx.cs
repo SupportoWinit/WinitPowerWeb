@@ -741,8 +741,7 @@ namespace PowerWeb.Modules
                 }
                 catch (Exception ex)
                 {
-                    _log.Error("Elaborazione viaggi terminata son errore" + ex.InnerException);
-                    _log.Error("Elaborazione viaggi terminata son errore" + ex.Message);
+                    _log.Error("Elaborazione viaggi terminata son errore " + ex.Message);
                 }
             }
         }       
@@ -981,7 +980,9 @@ namespace PowerWeb.Modules
                             case RegExportToXmlEnum.Manalu:
                                 outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToManalu(regVsToProcess, durataExtraByCol,outputPath, to);
                                 break;
-
+                            case RegExportToXmlEnum.Update:
+                                outputFilePath = RepoManager.Reg_VRepo.PrepareXmlExportToUpdate(regVsToProcess, durataExtraByCol, outputPath, to);
+                                break;
                         }
 
                         // se non ci sono stati errori nel processo
@@ -1012,6 +1013,10 @@ namespace PowerWeb.Modules
                                     else if((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Manalu)
                                     {
                                         response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}-{2}", "Attachment", "Manalu", Path.GetFileName(outputFilePath)));
+                                    }
+                                    else if ((RegExportToXmlEnum)customizationVersion == RegExportToXmlEnum.Update)
+                                    {
+                                        response.AddHeader("Content-Disposition", String.Format("{0}; filename={1}", "Attachment", Path.GetFileName(outputFilePath)));
                                     }
                                     else
                                     {

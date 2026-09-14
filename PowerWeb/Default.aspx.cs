@@ -1,10 +1,11 @@
-﻿using System;
-using System.IO;
-using Business;
+﻿using Business;
 using Business.Repository;
 using Common;
 using Domain;
 using log4net;
+using System;
+using System.Globalization;
+using System.IO;
 
 namespace PowerWeb
 {
@@ -22,26 +23,52 @@ namespace PowerWeb
                 {
                     if (PowerWebContext.Current.User.Codice_Utente != "APIUSER")
                     {
+                        var paramsRow = RepoManager.ParamRepo.ParametersRow;
+
+                        if (paramsRow.ActivationDate.Length > 19)
+                        {
+                            BusinessService.CheckFirstTimeInitializeLicence();
+
+                            BusinessService.CheckFirstTimeIntializeModulesActivation();
+
+                            BusinessService.CheckFirstTimeIntializeWinitPasswordUpdate();
+
+                            expiryDate = BusinessService.GetExpirationDate(paramsRow);
+                        }
+                        else
+                        {
+                            DateTime data = DateTime.ParseExact(
+                                paramsRow.ActivationDate,
+                                "dd/MM/yyyy HH:mm:ss",
+                                CultureInfo.InvariantCulture
+                            );
+                            expiryDate = data;
+                        }
+                    }
+                }
+                else 
+                {
+                    var paramsRow = RepoManager.ParamRepo.ParametersRow;
+
+                    if (paramsRow.ActivationDate.Length > 19)
+                    {
                         BusinessService.CheckFirstTimeInitializeLicence();
 
                         BusinessService.CheckFirstTimeIntializeModulesActivation();
 
                         BusinessService.CheckFirstTimeIntializeWinitPasswordUpdate();
 
-                        var paramsRow = RepoManager.ParamRepo.ParametersRow;
                         expiryDate = BusinessService.GetExpirationDate(paramsRow);
                     }
-                }
-                else 
-                {
-                    BusinessService.CheckFirstTimeInitializeLicence();
-                    
-                    BusinessService.CheckFirstTimeIntializeModulesActivation();
-                    
-                    BusinessService.CheckFirstTimeIntializeWinitPasswordUpdate();
-                    
-                    var paramsRow = RepoManager.ParamRepo.ParametersRow;
-                    expiryDate = BusinessService.GetExpirationDate(paramsRow);
+                    else 
+                    {
+                        DateTime data = DateTime.ParseExact(
+                            paramsRow.ActivationDate,
+                            "dd/MM/yyyy HH:mm:ss",
+                            CultureInfo.InvariantCulture
+                        );
+                        expiryDate = data;
+                    }   
                 }
             }
             else

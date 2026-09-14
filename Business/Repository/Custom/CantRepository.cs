@@ -2113,7 +2113,7 @@ namespace Business.Repository.Custom
                                     cantiere.Fru_Cant.Add(fru_cant);
                                 }
                                 if (comune != "" && via != "" && provincia != "" && cap.Length == 5) {
-                                    string indirizzo = String.Format("{0} {1} {2} {3}", via, cap, comune, provincia);
+                                    string indirizzo = BusinessService.FormatGeocodeAddress(via, comune, cap, provincia);
                                     Location geocode = BusinessService.GetGeocode(indirizzo);
                                     if (geocode != null)
                                     {
@@ -2234,7 +2234,7 @@ namespace Business.Repository.Custom
                                 }
                                 if (comune != "" && via != "" && provincia != "" && cap.Length == 5)
                                 {
-                                    string indirizzo = String.Format("{0} {1} {2} {3}", via, cap, comune, provincia);
+                                    string indirizzo = BusinessService.FormatGeocodeAddress(via, comune, cap, provincia);
                                     Location geocode = BusinessService.GetGeocode(indirizzo);
                                     if (geocode != null)
                                     {
@@ -2956,7 +2956,7 @@ namespace Business.Repository.Custom
                                 }
                                 if (comune != "" && via != "" && provincia != "" && cap.Length == 5)
                                 {
-                                    string indirizzo = String.Format("{0} {1} {2} {3}", via, cap, comune, provincia);
+                                    string indirizzo = BusinessService.FormatGeocodeAddress(via, comune, cap, provincia);
                                     Location geocode = BusinessService.GetGeocode(indirizzo);
                                     if (geocode != null)
                                     {

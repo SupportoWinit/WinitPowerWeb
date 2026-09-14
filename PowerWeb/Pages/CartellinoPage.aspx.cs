@@ -2082,7 +2082,7 @@ namespace PowerWeb.Pages
             }
             RepoManager.ColRepo.SaveChanges();
 
-            response.Add("exportedDatesCols", exportedColsDates);
+            response.Add("exportedDatesCols", "Test"/*exportedColsDates*/);
 
             #endregion
 

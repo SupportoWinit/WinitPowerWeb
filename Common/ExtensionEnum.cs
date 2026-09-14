@@ -238,7 +238,8 @@ namespace Common
         RimozionePausaOnce,
         TripFromSameCant,
         ArrotondamentoSuOrario,
-        IgnorePausaPranzo
+        IgnorePausaPranzo,
+        EccezioniViaggi
     }
     
     public enum ClockAppsOperationEnum
@@ -669,7 +670,8 @@ namespace Common
         Perfetto = 1,
         Scs = 2,
         Orlando = 3,
-        Manalu = 4
+        Manalu = 4,
+        Update = 5
     }
 
     /// <summary>

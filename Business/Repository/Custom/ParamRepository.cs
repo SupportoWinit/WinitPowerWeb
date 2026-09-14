@@ -679,6 +679,35 @@ namespace Business.Repository.Custom
             }
         }
 
+        public bool UpdateExpirationDate(DateTime expiration)
+        {
+            bool result = true;
+            try
+            {
+                var ecsbuilder = new EntityConnectionStringBuilder
+                {
+                    Provider = "System.Data.SqlClient",
+                    ProviderConnectionString = PowerWebConfig.ConnectionString,
+                    Metadata = string.Format(@"res://*/{0}.csdl|res://*/{0}.ssdl|res://*/{0}.msl", "PowerWebModel")
+                };
+
+                using (var context = new PowerWebEntities(ecsbuilder.ToString()))
+                {
+                    _log.InfoFormat("Impostazione a true del semaforo");
+                    context.Param.First().ActivationDate = expiration.ToString();
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Errore durante la fase di unlocking dell'elaborazione: {0}", ex.Message);
+                result = false;
+            }
+
+            return result;
+        }
+
         public void SaveGeoBadgeRegIndex(int index)
         {
             try

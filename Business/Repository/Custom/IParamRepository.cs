@@ -85,6 +85,8 @@ namespace Business.Repository.Custom
         /// </summary>
         void UnLockElaboration();
 
+        bool UpdateExpirationDate(DateTime expiration);
+
         bool IsCurrentUserCustomizationEnabled(CustomizationEnum customization, string parameterName);
 
         /// <summary>

@@ -4,6 +4,7 @@ using Business.XmlExportsData.Manalu;
 using Business.XmlExportsData.Orlando;
 using Business.XmlExportsData.Perfetto;
 using Business.XmlExportsData.Scs;
+using Business.XmlExportsData.Update;
 using Common;
 using Data;
 using DevExpress.Data.Linq;
@@ -3749,7 +3750,6 @@ namespace Business.Repository.Custom
                                         tmpList.Add(regE); 
                                         regsToUpdate.Add(regE);
                                         regs = tmpList.ToList();
-                                        //RepoManager.RegRepo.Update(regE, true);
                                     }
                                 }
                             }
@@ -3759,13 +3759,6 @@ namespace Business.Repository.Custom
                 // se al termine del ciclo sono state generate delle rettifiche allora si procede alla loro scrittura nel database
                 if (regsToUpdate.Any())
                 {
-                    // salvataggio nel database delle rettifiche
-                    //RepoManager.RegRepo.Update(regsToUpdate, true);
-                    //foreach (Reg reg in regsToUpdate) 
-                    //{
-                    //    regs.Remove(reg);
-                    //    regs.Add(reg);
-                    //}
                     regs.AddRange(regsToUpdate);
                 }
 
@@ -3824,6 +3817,7 @@ namespace Business.Repository.Custom
                             foreach (var colDateGroup in regsByColDate)
                             {
                                 int tmpcantId = 0;
+                                int limite = 240;
                                 double arrot = 100;
                                 int durata = 0;
                                 bool valida = true;
@@ -3921,18 +3915,85 @@ namespace Business.Repository.Custom
                                         }
                                     }
                                 }
-                                if (durata >= 240)
+                                List<Cant> canti = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == tmpcantId).ToList();
+                                if (canti.Count > 0) 
                                 {
-                                    string[] eccezioni = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RimozionePausaHotel, "Eccezioni").Split(',');
+                                    if (canti.First().Importo9 != null) 
+                                    { 
+                                        limite = (int)canti.First().Importo9.Value;
+                                    }
+                                }
+                                if (durata >= limite)
+                                {
                                     bool applicaPausa = false;
-                                    for (int i = 0; i < eccezioni.Length; i++)
+                                    var prova = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.RimozionePausaHotel, "" + tmpcantId);
+                                    if (prova != "") 
                                     {
-                                        if (Int32.Parse(eccezioni[i]) == tmpcantId)
+                                        string[] eccezioni = prova.Split(',');
+                                        if (eccezioni.Length == 7)
                                         {
                                             applicaPausa = true;
-                                            break;
                                         }
+                                        else 
+                                        {
+                                            Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == tmpcantId);
+                                            DayOfWeek dayToCheck = default;
+                                            for (int i = 0; i < eccezioni.Length; i++)
+                                            {
+                                                switch (Int32.Parse(eccezioni[i]))
+                                                {
+                                                    case 1:
+                                                        dayToCheck = DayOfWeek.Monday;
+                                                        break;
+                                                    case 2:
+                                                        dayToCheck = DayOfWeek.Tuesday;
+                                                        break;
+                                                    case 3:
+                                                        dayToCheck = DayOfWeek.Wednesday;
+                                                        break;
+                                                    case 4:
+                                                        dayToCheck = DayOfWeek.Thursday;
+                                                        break;
+                                                    case 5:
+                                                        dayToCheck = DayOfWeek.Friday;
+                                                        break;
+                                                    case 6:
+                                                        dayToCheck = DayOfWeek.Saturday;
+                                                        break;
+                                                    case 7:
+                                                        dayToCheck = DayOfWeek.Sunday;
+                                                        break;
+                                                }
+                                                if (cantiere.Codice_Commessa_Can == "Hotel")
+                                                {
+                                                    if (tmpTurno == "")
+                                                    {
+                                                        applicaPausa = true;
+                                                        break;
+                                                    }
+                                                    else 
+                                                    {
+                                                        if (colDateGroup.Key.Value.DayOfWeek == dayToCheck)
+                                                        {
+                                                            applicaPausa = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    if (colDateGroup.Key.Value.DayOfWeek == dayToCheck)
+                                                    {
+                                                        applicaPausa = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                
+                                            }
+                                        }  
                                     }
+                                    
                                     if (tmpTurno == "" || applicaPausa)
                                     {
                                         // creo la registrazione con durata negativa in base al parametro presente nel cantiere
@@ -7093,225 +7154,268 @@ namespace Business.Repository.Custom
 
                     Tab_Dist distRow = null;
 
-                    //Se in PARAM c'è il Tipo Assegnazione KM/Minuti = FIND (1) 
-                    if (paramTripAssignement == TripAssignmentTypeEnum.Find || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
+                    bool calculateDistance = true;
 
-                    //i Dati vengono cercati per Codice Cantiere 
-                    //se non trovato per Codice Cantiere allora la ricerca viene effettuata anche per CAP)
-                    //se NON trovato per CAP allora la ricerca viene effettuata anche per Luogo)
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1) 
                     {
-                        //vengono estratti i codici cantiere
-                        var cantEValue = cantE.Cant_Id.ToString();
-                        var cantUValue = cantU.Cant_Id.ToString();
-
-                        #region 1.RICERCA PER CODICE CANTIERE 
-
-                        //ricerco per codice cantiere nella tabella diatanze partendo dal cantiere di inizio a quello di fine
-                        distRow = FindInTab_Dist("C", cantEValue, cantUValue);
-                        //se non viene trovato il valore allore si procede alla ricera partendo dal cantire di fine a quello di inizio
-                        if (distRow == null)
-                            distRow = FindInTab_Dist("C", cantUValue, cantEValue);
-                        #endregion
-
-                        #region 2.RICERCA PER CAP
-                        //se la ricera per codice cantiere non è andata a buon fine si ricerca per CAP
-                        if (distRow == null)
-                        {
-                            //viene estratto il CAP dai cantieri
-                            cantEValue = cantE.Cap_Can;
-                            cantUValue = cantU.Cap_Can;
-
-                            //ricerca mediante il CAP tra cantiere iniziale e finale
-                            distRow = FindInTab_Dist("K", cantEValue, cantUValue);
-                            if (distRow == null)
-                                //ricerca per cantiere finale e iniziale
-                                distRow = FindInTab_Dist("K", cantUValue, cantEValue);
-                            #endregion
-
-                            #region 3.RICERCA PER LUOGO
-                            //se la ricerca per CAP non ha dato risultati viene ricercato il tutto per luogo
-                            if (distRow == null)
-                            {
-                                //viene estratto il luogo dei cantieri
-                                cantEValue = cantE.Luogo_Can;
-                                cantUValue = cantU.Luogo_Can;
-
-                                //viene ricercato per luogo cantiere iniziale e luogo cantiere finale
-                                distRow = FindInTab_Dist("P", cantEValue, cantUValue);
-                                if (distRow == null)
-                                    //viene ricarcato per luogo cantiere fianle e cantiere iniziale
-                                    distRow = FindInTab_Dist("P", cantUValue, cantEValue);
-                            }
-
+                        string tipiCant = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "Tipologia");
+                        if (!tipiCant.Contains(cantE.Codice_Commessa_Can)) 
+                        { 
+                            calculateDistance = false;
                         }
-                        #endregion
-
+                        if (!tipiCant.Contains(cantU.Codice_Commessa_Can))
+                        {
+                            calculateDistance = false;
+                        }
                     }
 
-                    //se nella scheda param ho Tipo_Assegnazione_KMMinuti=2
-                    if (paramTripAssignement == TripAssignmentTypeEnum.Calculate || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
+                    if (calculateDistance) 
                     {
-                        //Viene controllato nella tab decod se è presente la gestione mediante GIS
-                        var tdCant = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
+                        //Se in PARAM c'è il Tipo Assegnazione KM/Minuti = FIND (1) 
+                        if (paramTripAssignement == TripAssignmentTypeEnum.Find || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
 
-                        //se ho la gestione mediante GIS
-                        if (tdCant != null)
+                        //i Dati vengono cercati per Codice Cantiere 
+                        //se non trovato per Codice Cantiere allora la ricerca viene effettuata anche per CAP)
+                        //se NON trovato per CAP allora la ricerca viene effettuata anche per Luogo)
                         {
-                            //viene creato l'indirizzo del cantiere di partenza e di fine compatibile con le richieste di GIS
-                            string cantEAddress = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can);
-                            string cantUAddress = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can);
+                            //vengono estratti i codici cantiere
+                            var cantEValue = cantE.Cant_Id.ToString();
+                            var cantUValue = cantU.Cant_Id.ToString();
 
-                            #region RICERCA DEL VIAGGIO NELLA TAB DISTANZE
+                            #region 1.RICERCA PER CODICE CANTIERE 
 
-                            //cerco il viaggio da cantiereE a cantiereU nella tabella distanze
-                            distRow = RepoManager.Tab_DistRepo.FirstOrDefault(d => d.Tab_Decod_Id == tdCant.Tab_Decod_Id && d.Partenza_Tab_Dist.ToUpper() == cantEAddress.ToUpper() && d.Arrivo_Tab_Dist.ToUpper() == cantUAddress.ToUpper());
-
-                            //se non ho trovato il viaggio da cantiereE a cantiereU, provo da cantiereU a cantiereE
-                            if (distRow == default(Tab_Dist))
-                                distRow = RepoManager.Tab_DistRepo.FirstOrDefault(d => d.Tab_Decod_Id == tdCant.Tab_Decod_Id && d.Partenza_Tab_Dist.ToUpper() == cantUAddress.ToUpper() && d.Arrivo_Tab_Dist.ToUpper() == cantEAddress.ToUpper());
-
+                            //ricerco per codice cantiere nella tabella diatanze partendo dal cantiere di inizio a quello di fine
+                            distRow = FindInTab_Dist("C", cantEValue, cantUValue);
+                            //se non viene trovato il valore allore si procede alla ricera partendo dal cantire di fine a quello di inizio
+                            if (distRow == null)
+                                distRow = FindInTab_Dist("C", cantUValue, cantEValue);
                             #endregion
 
-                            #region GENERAZIONE VIAGGIO DA GIS
-
-                            //altrimenti genero il viaggio da GIS (solo se il flag gis è attivo)
-                            if (distRow == default(Tab_Dist) && RepoManager.ParamRepo.ParametersRow.Flag_GPS != 0)
+                            #region 2.RICERCA PER CAP
+                            //se la ricera per codice cantiere non è andata a buon fine si ricerca per CAP
+                            if (distRow == null)
                             {
-                                //inizializzo le variabili di inizio e fine viaggio
+                                //viene estratto il CAP dai cantieri
+                                cantEValue = cantE.Cap_Can;
+                                cantUValue = cantU.Cap_Can;
 
-                                Coordinate newStartRequest = new Coordinate();
-                                Coordinate newEndRequest = new Coordinate();
+                                //ricerca mediante il CAP tra cantiere iniziale e finale
+                                distRow = FindInTab_Dist("K", cantEValue, cantUValue);
+                                if (distRow == null)
+                                    //ricerca per cantiere finale e iniziale
+                                    distRow = FindInTab_Dist("K", cantUValue, cantEValue);
+                                #endregion
 
-                                if (CommonService.Nz(cantE.LatitudineGps_Can, 0) == 0 || CommonService.Nz(cantE.LongitudineGps_Can, 0) == 0)
-                                //Se Il Cantiere di INIZIO VIAGGIO (ENTRATA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
-                                // e approfitta per aggiornarle anche in Anagrafica CANT
+                                #region 3.RICERCA PER LUOGO
+                                //se la ricerca per CAP non ha dato risultati viene ricercato il tutto per luogo
+                                if (distRow == null)
                                 {
-                                    RepoManager.CantRepo.UpdateGeoLocation(cantE);
+                                    //viene estratto il luogo dei cantieri
+                                    cantEValue = cantE.Luogo_Can;
+                                    cantUValue = cantU.Luogo_Can;
+
+                                    //viene ricercato per luogo cantiere iniziale e luogo cantiere finale
+                                    distRow = FindInTab_Dist("P", cantEValue, cantUValue);
+                                    if (distRow == null)
+                                        //viene ricarcato per luogo cantiere fianle e cantiere iniziale
+                                        distRow = FindInTab_Dist("P", cantUValue, cantEValue);
                                 }
 
-                                newStartRequest.Latitude = cantE.LatitudineGps_Can;
-                                newStartRequest.Longitude = cantE.LongitudineGps_Can;
+                            }
+                            #endregion
 
-                                if (CommonService.Nz(cantU.LatitudineGps_Can, 0) == 0 || CommonService.Nz(cantU.LongitudineGps_Can, 0) == 0)
-                                //Se Il Cantiere di FINE VIAGGIO (USCITA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
-                                // e approfitta per aggiornarle anche in Anagrafica CANT
+                        }
+
+                        //se nella scheda param ho Tipo_Assegnazione_KMMinuti=2
+                        if (paramTripAssignement == TripAssignmentTypeEnum.Calculate || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
+                        {
+                            //Viene controllato nella tab decod se è presente la gestione mediante GIS
+                            var tdCant = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
+
+                            //se ho la gestione mediante GIS
+                            if (tdCant != null)
+                            {
+                                //viene creato l'indirizzo del cantiere di partenza e di fine compatibile con le richieste di GIS
+                                string cantEAddress = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can);
+                                string cantUAddress = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can);
+
+                                #region RICERCA DEL VIAGGIO NELLA TAB DISTANZE
+
+                                //cerco il viaggio da cantiereE a cantiereU nella tabella distanze
+                                distRow = RepoManager.Tab_DistRepo.FirstOrDefault(d => d.Tab_Decod_Id == tdCant.Tab_Decod_Id && d.Partenza_Tab_Dist.ToUpper() == cantEAddress.ToUpper() && d.Arrivo_Tab_Dist.ToUpper() == cantUAddress.ToUpper());
+
+                                //se non ho trovato il viaggio da cantiereE a cantiereU, provo da cantiereU a cantiereE
+                                if (distRow == default(Tab_Dist))
+                                    distRow = RepoManager.Tab_DistRepo.FirstOrDefault(d => d.Tab_Decod_Id == tdCant.Tab_Decod_Id && d.Partenza_Tab_Dist.ToUpper() == cantUAddress.ToUpper() && d.Arrivo_Tab_Dist.ToUpper() == cantEAddress.ToUpper());
+
+                                #endregion
+
+                                #region GENERAZIONE VIAGGIO DA GIS
+
+                                //altrimenti genero il viaggio da GIS (solo se il flag gis è attivo)
+                                if (distRow == default(Tab_Dist) && RepoManager.ParamRepo.ParametersRow.Flag_GPS != 0)
                                 {
-                                    RepoManager.CantRepo.UpdateGeoLocation(cantU);
-                                }
+                                    //inizializzo le variabili di inizio e fine viaggio
 
-                                newEndRequest.Latitude = cantU.LatitudineGps_Can;
-                                newEndRequest.Longitude = cantU.LongitudineGps_Can;
+                                    Coordinate newStartRequest = new Coordinate();
+                                    Coordinate newEndRequest = new Coordinate();
 
-                                //Se sono disponibili LAT/LONG sia del Cantiere di Inizio Viaggio (Entrata) sia del Cantiere di Fine Viaggio (Uscita)
-                                //Allora calcola con BING il Percorso fra il Cantiere di Inizio Viaggio e quello di Fine Viaggio ottenenedone i KM e la Durata da BING
-                                if (CommonService.Nz(cantE.LatitudineGps_Can, 0) != 0 &&
-                                    CommonService.Nz(cantE.LongitudineGps_Can, 0) != 0 &&
-                                    CommonService.Nz(cantU.LatitudineGps_Can, 0) != 0 &&
-                                    CommonService.Nz(cantU.LongitudineGps_Can, 0) != 0)
-                                {
-                                    // se il cantiere ha impostato la latitudine e la longitudine ma non ha un indirizzo, un cap e un luogo
-                                    // allora non si genera il record in tab distanze
-                                    if (CommonService.Nz(cantE.Indirizzo_Can, String.Empty) != String.Empty &&
-                                        CommonService.Nz(cantE.Cap_Can, String.Empty) != String.Empty &&
-                                        CommonService.Nz(cantE.Luogo_Can, String.Empty) != String.Empty &&
-                                        CommonService.Nz(cantU.Indirizzo_Can, String.Empty) != String.Empty &&
-                                        CommonService.Nz(cantU.Cap_Can, String.Empty) != String.Empty &&
-                                        CommonService.Nz(cantU.Luogo_Can, String.Empty) != String.Empty)
+                                    if (CommonService.Nz(cantE.LatitudineGps_Can, 0) == 0 || CommonService.Nz(cantE.LongitudineGps_Can, 0) == 0)
+                                    //Se Il Cantiere di INIZIO VIAGGIO (ENTRATA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
+                                    // e approfitta per aggiornarle anche in Anagrafica CANT
                                     {
-                                        var service = new CalcoloPercorsoService();
-                                        var result = Task.Run(() => service.CalcolaPercorsoAsync(newStartRequest.Latitude, newStartRequest.Longitude, newEndRequest.Latitude, newEndRequest.Longitude)).Result;
-                                        //Calcolo rotta tra i due punti
-                                        Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
+                                        RepoManager.CantRepo.UpdateGeoLocation(cantE);
+                                    }
 
-                                        if (result.DistanzaKm > 0)
-                                        //Se è riuscito a Calcolare con BING i KM e la Durata del Viaggio allora crea il REcord della TAB_DISTANZA con Tipo = "G"
+                                    newStartRequest.Latitude = cantE.LatitudineGps_Can;
+                                    newStartRequest.Longitude = cantE.LongitudineGps_Can;
+
+                                    if (CommonService.Nz(cantU.LatitudineGps_Can, 0) == 0 || CommonService.Nz(cantU.LongitudineGps_Can, 0) == 0)
+                                    //Se Il Cantiere di FINE VIAGGIO (USCITA) NON ha la LATITUDINE o la LONGITUDINE la cerca in base ai dati di ubicazione con BING
+                                    // e approfitta per aggiornarle anche in Anagrafica CANT
+                                    {
+                                        RepoManager.CantRepo.UpdateGeoLocation(cantU);
+                                    }
+
+                                    newEndRequest.Latitude = cantU.LatitudineGps_Can;
+                                    newEndRequest.Longitude = cantU.LongitudineGps_Can;
+
+                                    //Se sono disponibili LAT/LONG sia del Cantiere di Inizio Viaggio (Entrata) sia del Cantiere di Fine Viaggio (Uscita)
+                                    //Allora calcola con BING il Percorso fra il Cantiere di Inizio Viaggio e quello di Fine Viaggio ottenenedone i KM e la Durata da BING
+                                    if (CommonService.Nz(cantE.LatitudineGps_Can, 0) != 0 &&
+                                        CommonService.Nz(cantE.LongitudineGps_Can, 0) != 0 &&
+                                        CommonService.Nz(cantU.LatitudineGps_Can, 0) != 0 &&
+                                        CommonService.Nz(cantU.LongitudineGps_Can, 0) != 0)
+                                    {
+                                        // se il cantiere ha impostato la latitudine e la longitudine ma non ha un indirizzo, un cap e un luogo
+                                        // allora non si genera il record in tab distanze
+                                        if (CommonService.Nz(cantE.Indirizzo_Can, String.Empty) != String.Empty &&
+                                            CommonService.Nz(cantE.Cap_Can, String.Empty) != String.Empty &&
+                                            CommonService.Nz(cantE.Luogo_Can, String.Empty) != String.Empty &&
+                                            CommonService.Nz(cantU.Indirizzo_Can, String.Empty) != String.Empty &&
+                                            CommonService.Nz(cantU.Cap_Can, String.Empty) != String.Empty &&
+                                            CommonService.Nz(cantU.Luogo_Can, String.Empty) != String.Empty)
                                         {
+                                            var service = new CalcoloPercorsoService();
+                                            var result = Task.Run(() => service.CalcolaPercorsoAsync(newStartRequest.Latitude, newStartRequest.Longitude, newEndRequest.Latitude, newEndRequest.Longitude)).Result;
+                                            //Calcolo rotta tra i due punti
+                                            Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
 
-                                            Tab_Decod tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab.ToUpper() == "TIPO_DISTANZA" && td.Chiave_Tab.ToUpper() == "G");
-
-                                            if (tabDecod != null)
+                                            if (result.DistanzaKm > 0)
+                                            //Se è riuscito a Calcolare con BING i KM e la Durata del Viaggio allora crea il REcord della TAB_DISTANZA con Tipo = "G"
                                             {
-                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DurationTrip) == 1)
+
+                                                Tab_Decod tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab.ToUpper() == "TIPO_DISTANZA" && td.Chiave_Tab.ToUpper() == "G");
+
+                                                if (tabDecod != null)
                                                 {
-                                                    List<Cant> cantiereU = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantU.Cant_Id).ToList();
-                                                    List<Cant> cantiereE = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantE.Cant_Id).ToList();
-                                                    int minuti = 0;
-                                                    if (cantiereU.First().Note_Can == "1.5" || cantiereE.First().Note_Can == "1.5")
+                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DurationTrip) == 1)
                                                     {
-                                                        minuti = (int)result.DurataMinuti;
-                                                        minuti = (int)(minuti * 1.5);
+                                                        List<Cant> cantiereU = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantU.Cant_Id).ToList();
+                                                        List<Cant> cantiereE = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == cantE.Cant_Id).ToList();
+                                                        int minuti = 0;
+                                                        if (cantiereU.First().Note_Can == "1.5" || cantiereE.First().Note_Can == "1.5")
+                                                        {
+                                                            minuti = (int)result.DurataMinuti;
+                                                            minuti = (int)(minuti * 1.5);
+                                                            distRow = new Tab_Dist()
+                                                            {
+                                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                Minuti_Tab_Dist = minuti,
+                                                            };
+                                                        }
+                                                        else if (cantiereU.First().Note_Can == "2" || cantiereE.First().Note_Can == "2")
+                                                        {
+                                                            minuti = (int)result.DurataMinuti;
+                                                            minuti = (int)(minuti * 2);
+                                                            distRow = new Tab_Dist()
+                                                            {
+                                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                Minuti_Tab_Dist = minuti,
+                                                            };
+                                                        }
+                                                        else
+                                                        {
+                                                            minuti = (int)result.DurataMinuti;
+                                                            distRow = new Tab_Dist()
+                                                            {
+                                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                Minuti_Tab_Dist = minuti,
+                                                            };
+                                                        }
+                                                    }
+                                                    else
+                                                    {
                                                         distRow = new Tab_Dist()
                                                         {
                                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                             Tab_Decod_Id = tabDecod.Tab_Decod_Id,
                                                             KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = minuti,
+                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
                                                         };
                                                     }
-                                                    else if (cantiereU.First().Note_Can == "2" || cantiereE.First().Note_Can == "2")
+                                                    var errorTab_DistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
+                                                    if (!errorTab_DistRepo.Any())
                                                     {
-                                                        minuti = (int)result.DurataMinuti;
-                                                        minuti = (int)(minuti * 2);
-                                                        distRow = new Tab_Dist()
+                                                        try
                                                         {
-                                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = minuti,
-                                                        };
-                                                    }
-                                                    else {
-                                                        minuti = (int)result.DurataMinuti;
-                                                        distRow = new Tab_Dist()
+                                                            RepoManager.Tab_DistRepo.Add(distRow, true);
+                                                        }
+                                                        catch (Exception ex)
                                                         {
-                                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = minuti,
-                                                        };
-                                                    }
-                                                }
-                                                else {
-                                                    distRow = new Tab_Dist()
-                                                    {
-                                                        Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                        Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                        Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                        KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                        Minuti_Tab_Dist = (int)result.DurataMinuti,
-                                                    };
-                                                }
-                                                var errorTab_DistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
-                                                if (!errorTab_DistRepo.Any())
-                                                {
-                                                    try
-                                                    {
-                                                        RepoManager.Tab_DistRepo.Add(distRow, true);
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        _log.ErrorFormat("Errore durante l'inserimento nella tab. distanze di un nuovo record a causa dell exception {0}", ex.InnerException);
+                                                            _log.ErrorFormat("Errore durante l'inserimento nella tab. distanze di un nuovo record a causa dell exception {0}", ex.InnerException);
+                                                        }
+
                                                     }
 
-                                                }
+                                                    else
+                                                    {
+                                                        BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
 
-                                                else
-                                                {
+                                                        List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
+                                                        foreach (var item in errorTab_DistRepo)
+                                                            errRouteCalculate.Add(new KeyValuePair<string, string>(item.Key, String.Format("{0}", item.Value)));
+                                                        RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
+                                            {
+                                                var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                                                string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
+
+                                                string cantEMessageDesc = String.Format("{0} - {1}", cantE.Codice_Cantiere, cantE.Descrizione_Can);
+                                                string cantUMessageDesc = String.Format("{0} - {1}", cantU.Codice_Cantiere, cantU.Descrizione_Can);
+
+                                                List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
+                                                errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
+                                                RepoManager.Tab_MessaggiRepo.InsertMessages(errors, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
+
+                                                trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                                                if (trip.RegU != null)
+                                                    trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
+
+                                                if (errRouteCalculate.Any())
                                                     BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
 
-                                                    List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
-                                                    foreach (var item in errorTab_DistRepo)
-                                                        errRouteCalculate.Add(new KeyValuePair<string, string>(item.Key, String.Format("{0}", item.Value)));
-                                                    RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
-                                                }
                                             }
                                         }
                                         else
-                                        //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
                                         {
+                                            // in caso sia presente la latitudine e la longitudine ma non siano presenti nei cantieri dati di ubicazione validi,
+                                            // allora il tutto viene segnalato con un messaggio
                                             var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
                                             string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
 
@@ -7320,8 +7424,7 @@ namespace Business.Repository.Custom
 
                                             List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
                                             errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
-                                            RepoManager.Tab_MessaggiRepo.InsertMessages(errors, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
-
+                                            RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
                                             trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
 
                                             if (trip.RegU != null)
@@ -7333,9 +7436,8 @@ namespace Business.Repository.Custom
                                         }
                                     }
                                     else
+                                    //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
                                     {
-                                        // in caso sia presente la latitudine e la longitudine ma non siano presenti nei cantieri dati di ubicazione validi,
-                                        // allora il tutto viene segnalato con un messaggio
                                         var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
                                         string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
 
@@ -7346,7 +7448,6 @@ namespace Business.Repository.Custom
                                         errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
                                         RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
                                         trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-
                                         if (trip.RegU != null)
                                             trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
 
@@ -7355,89 +7456,70 @@ namespace Business.Repository.Custom
 
                                     }
                                 }
-                                else
-                                //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
-                                {
-                                    var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
-                                    string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
-
-                                    string cantEMessageDesc = String.Format("{0} - {1}", cantE.Codice_Cantiere, cantE.Descrizione_Can);
-                                    string cantUMessageDesc = String.Format("{0} - {1}", cantU.Codice_Cantiere, cantU.Descrizione_Can);
-
-                                    List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
-                                    errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
-                                    RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
-                                    trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-                                    if (trip.RegU != null)
-                                        trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-
-                                    if (errRouteCalculate.Any())
-                                        BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
-
-                                }
+                                #endregion
                             }
-                            #endregion
                         }
-                    }
 
-                    //ho un viaggio con distanza non nulla
-                    if (distRow != null)
-                    {
-                        // se è attiva la personalizzazione che prevede la non generazione dei viaggi nello stesso comune se inferiori e il kilometraggio espresso
-                        // nella tabella distanze è inferiore a tale cifra, allora si provvede a marcare il viaggio che si sta generando per la cancellazione
+                        //ho un viaggio con distanza non nulla
+                        if (distRow != null)
+                        {
+                            // se è attiva la personalizzazione che prevede la non generazione dei viaggi nello stesso comune se inferiori e il kilometraggio espresso
+                            // nella tabella distanze è inferiore a tale cifra, allora si provvede a marcare il viaggio che si sta generando per la cancellazione
 
-                        // se il viaggio che si sta generando parte e arriva nello stesso comune, è attiva la personalizzazione del controllo di km in viaggi per stesso comune e i km
-                        // assegnati alla tab distanze sono inferiori alla soglia, allora si procede a marcare il viaggio per la cancellazione; in caso contrario si procede alla sua generazione
-                        if (IsTripSameMunicipalityToDelete(distRow))
-                        {
-                            trip.RegE.Codice_Accoppiamento = "1";
-                            tripsToDelete.Add(trip);
-                        }
-                        else
-                        {
-                            // si calcola la durata dei viaggi utilizzando la tab distanze solamente se
-                            // espresso dal livelli di personalizzazione
-                            int customizationEnum = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalculateTripDataEnum);
-                            if (customizationEnum != (int)CalculateTripDataEnum.OnlyKm || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
-                            {
-                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
-                                {
-                                    trip.RegE.Note_Reg = "Fatta con personalizzazione";
-                                }
-                                else {
-                                    if (trip.TripDuration.TotalMinutes > distRow.Minuti_Tab_Dist)
-                                    {
-                                        trip.RegU.Registrazione_Data_Ora_Fig_Reg = trip.RegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(distRow.Minuti_Tab_Dist);
-                                        trip.RegU.Registrazione_Data_Ora_Fis_Reg = trip.RegE.Registrazione_Data_Ora_Fis_Reg.AddMinutes(distRow.Minuti_Tab_Dist);
-                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RouteOnRegTrip) != 1) 
-                                        {
-                                            trip.RegE.Note_Reg = "Durata viaggio presa da tabella distanze";
-                                        }
-                                    }
-                                }
-                                
-                            }
-
-                            // si procede alla verifica e all'inserimento dei km solamente se
-                            // la destinazione non è un cantiere ore non lavorate
-                            if (distRow.KM_Tab_Dist > default(decimal) && !trip.IsToOnl)
-                                trip.RegE.KM_Reg = distRow.KM_Tab_Dist;
-                            else
-                                trip.RegE.KM_Reg = 0;
-                        }
-                    }
-                    else
-                    {
-                        // se sto utilizzando il gis nel calcolo dei viaggi
-                        if (paramTripAssignement == TripAssignmentTypeEnum.Calculate)
-                        {
-                            // se è attivata la personalizzaziontre per la non creazione dei viaggi con calcolo gis senza riga in tabella distanze
-                            // allora marco per la cancellazione il viaggio in elaborazione
-                            int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoCreateTripsWithoutTabDistRowEnum);
-                            if (customizationVersion == (int)NoCreateTripsWithoutTabDistRowEnum.DoNotCreate)
+                            // se il viaggio che si sta generando parte e arriva nello stesso comune, è attiva la personalizzazione del controllo di km in viaggi per stesso comune e i km
+                            // assegnati alla tab distanze sono inferiori alla soglia, allora si procede a marcare il viaggio per la cancellazione; in caso contrario si procede alla sua generazione
+                            if (IsTripSameMunicipalityToDelete(distRow))
                             {
                                 trip.RegE.Codice_Accoppiamento = "1";
                                 tripsToDelete.Add(trip);
+                            }
+                            else
+                            {
+                                // si calcola la durata dei viaggi utilizzando la tab distanze solamente se
+                                // espresso dal livelli di personalizzazione
+                                int customizationEnum = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CalculateTripDataEnum);
+                                if (customizationEnum != (int)CalculateTripDataEnum.OnlyKm || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
+                                {
+                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ViewKilometers) == 1)
+                                    {
+                                        trip.RegE.Note_Reg = "Fatta con personalizzazione";
+                                    }
+                                    else
+                                    {
+                                        if (trip.TripDuration.TotalMinutes > distRow.Minuti_Tab_Dist)
+                                        {
+                                            trip.RegU.Registrazione_Data_Ora_Fig_Reg = trip.RegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(distRow.Minuti_Tab_Dist);
+                                            trip.RegU.Registrazione_Data_Ora_Fis_Reg = trip.RegE.Registrazione_Data_Ora_Fis_Reg.AddMinutes(distRow.Minuti_Tab_Dist);
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.RouteOnRegTrip) != 1)
+                                            {
+                                                trip.RegE.Note_Reg = "Durata viaggio presa da tabella distanze";
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                                // si procede alla verifica e all'inserimento dei km solamente se
+                                // la destinazione non è un cantiere ore non lavorate
+                                if (distRow.KM_Tab_Dist > default(decimal) && !trip.IsToOnl)
+                                    trip.RegE.KM_Reg = distRow.KM_Tab_Dist;
+                                else
+                                    trip.RegE.KM_Reg = 0;
+                            }
+                        }
+                        else
+                        {
+                            // se sto utilizzando il gis nel calcolo dei viaggi
+                            if (paramTripAssignement == TripAssignmentTypeEnum.Calculate)
+                            {
+                                // se è attivata la personalizzaziontre per la non creazione dei viaggi con calcolo gis senza riga in tabella distanze
+                                // allora marco per la cancellazione il viaggio in elaborazione
+                                int customizationVersion = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoCreateTripsWithoutTabDistRowEnum);
+                                if (customizationVersion == (int)NoCreateTripsWithoutTabDistRowEnum.DoNotCreate)
+                                {
+                                    trip.RegE.Codice_Accoppiamento = "1";
+                                    tripsToDelete.Add(trip);
+                                }
                             }
                         }
                     }
@@ -8086,7 +8168,6 @@ namespace Business.Repository.Custom
                                     // calcolo del percorso tra partenza e arrivo da Bing
                                     Route routeResult = BusinessService.GetRoute(new Coordinate[] { startGeocodeResult, endGeocodeResult });
 
-
                                     // se bing è riuscito a calcolare i Km e la durate del viaggio allora si crea il corrispettivo record nella tabella distanze con tipo "G"
                                     if (routeResult != null)
                                     {
@@ -8096,8 +8177,8 @@ namespace Business.Repository.Custom
                                             Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", sedeCant.Luogo_Can, sedeCant.Indirizzo_Can, sedeCant.Cap_Can),
                                             Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cant.Luogo_Can, cant.Indirizzo_Can, cant.Cap_Can),
                                             Tab_Decod_Id = tdCant.Tab_Decod_Id,
-                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                            Minuti_Tab_Dist = Convert.ToInt32(result.DurataMinuti),
+                                            KM_Tab_Dist = (decimal)0,//(decimal)result.DistanzaKm,
+                                            Minuti_Tab_Dist = 0,//Convert.ToInt32(result.DurataMinuti),
                                         };
 
                                         var errorTabDistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
@@ -8310,18 +8391,33 @@ namespace Business.Repository.Custom
                     if (!tripEnd)
                     {
                         // Imposto come ora di inizio viaggio il minuto precedente la regv
-                        //timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
-                        //timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
-
                         timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
                         timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
 
                         timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
                         timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
 
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
+                        {
+                            timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
+                            timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
+
+                            timeDiffFig = timeDiffFig.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                            timeDiffFis = timeDiffFis.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        }
+
                         newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
                         newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
                         newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
+                        {
+                            timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
+                            timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
+
+                            timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
+                            timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
+                        }
 
                         // Imposto come ora di fine viaggio l'ora di entrata nel prossimo cantiere
                         newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
@@ -8336,6 +8432,12 @@ namespace Business.Repository.Custom
                         newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
                         newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
                         newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
+                        {
+                            timeDiffFig = regE.Data_Ora_Fig_U.Value.Add(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                            timeDiffFis = regE.Data_Ora_Fis_U.Value.Add(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        }
 
                         newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
                         newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
@@ -8439,6 +8541,8 @@ namespace Business.Repository.Custom
                         {
                             var service = new CalcoloPercorsoService();
                             var result = Task.Run(() => service.CalcolaPercorsoAsync(newStartRequest.Latitude, newStartRequest.Longitude, newEndRequest.Latitude, newEndRequest.Longitude)).Result;
+
+                            //var result = Task.Run(() => service.CalcolaPercorsoAsync(startGeocodeResult.Latitude, startGeocodeResult.Longitude, endGeocodeResult.Latitude, endGeocodeResult.Longitude)).Result;
                             //Calcolo rotta tra i due punti
                             Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
 
@@ -8578,18 +8682,15 @@ namespace Business.Repository.Custom
                     else
                     //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
                     {
-                        var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                        var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == regE.Col_Id);
                         string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
 
                         string cantEMessageDesc = String.Format("{0} - {1}", sede.Codice_Cantiere, sede.Descrizione_Can);
                         string cantUMessageDesc = String.Format("{0} - {1}", cant.Codice_Cantiere, cant.Descrizione_Can);
 
                         List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
-                        errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
+                        errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, regE.Data_Ora_Fis_E.ToString("dd/MM/yyyy"), regE.Data_Ora_Fis_E.ToString("hh:mm"), descrizioneCollaboratore)));
                         RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
-                        trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-                        if (trip.RegU != null)
-                            trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
 
                         if (errRouteCalculate.Any())
                             BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
@@ -8732,62 +8833,96 @@ namespace Business.Repository.Custom
                 {
                     /* --- GESTIONE VIAGGIO INIZIO GIORNATA --- */
 
-                    //Se la prima timbratura di giornata è stata fatta nella sede, prendo come primo cantiere quello della seconda regv di giornata
-                    if (firstCant.Tipo_Cantiere_Can == "SEDE")
+                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
                     {
-                        sede = firstCant;
-                        //Se ho più di una regv, vado a prendere la seconda
-                        if (orderedCurrentTripsByColByDate.Count() > 1)
+                        string tipoCant = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "Tipologia");
+                        int cantId = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "CantSede"));
+                        Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == cantId);
+                        //Se non mi trovo in sede (quindi la prima o la seconda timbratura non sono state fatte in sede), calcolo il viaggio di inizio giornata
+                        if (firstCant.Codice_Commessa_Can == tipoCant && firstCant != default(Cant))
                         {
-                            regE = orderedCurrentTripsByColByDate.ElementAt(1);
-                            firstCant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == regE.Cant_Id, true);
-                        } 
-                    }
-
-                    else
-                    {
-                        //Recupero il cantiere marcato come sede. PUO' ESSERE SOLO UNO PER CLIENTE!
-                        var headquartiers = RepoManager.CantRepo.Find(c => c.Tipo_Cantiere_Can == "SEDE");
-                        if (headquartiers.Count() == 1)
-                        {
-                            sede = headquartiers.ElementAt(0);
+                            if (firstCant.LatitudineGps_Can != 0 && firstCant.LongitudineGps_Can != 0 && (firstCant.Indirizzo_Can != "" && firstCant.Indirizzo_Can != null)) 
+                            {
+                                var firstTrip = generateStartEndTripToHeadQuarter(cantiere, firstCant, regE, threshold, elaborateUserId, elaborateDateTime, application);
+                                if (firstTrip != null)
+                                {
+                                    tripList.Add(firstTrip);
+                                }
+                            }
                         }
+
+                        //Se non mi trovo in sede (quindi l'ultima o la penultima timbratura non sono state fatte in sede), calcolo il viaggio di fine giornata
+                        if (lastCant.Codice_Commessa_Can == tipoCant && lastCant != default(Cant))
+                        {
+                            if (lastCant.LatitudineGps_Can != 0 && lastCant.LongitudineGps_Can != 0 && (lastCant.Indirizzo_Can != "" && lastCant.Indirizzo_Can != null)) 
+                            {
+                                var lastTrip = generateStartEndTripToHeadQuarter(cantiere, lastCant, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
+                                if (lastTrip != null)
+                                {
+                                    tripList.Add(lastTrip);
+                                }
+                            } 
+                        }
+                    }
+                    else 
+                    {
+                        //Se la prima timbratura di giornata è stata fatta nella sede, prendo come primo cantiere quello della seconda regv di giornata
+                        if (firstCant.Tipo_Cantiere_Can == "SEDE")
+                        {
+                            sede = firstCant;
+                            //Se ho più di una regv, vado a prendere la seconda
+                            if (orderedCurrentTripsByColByDate.Count() > 1)
+                            {
+                                regE = orderedCurrentTripsByColByDate.ElementAt(1);
+                                firstCant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == regE.Cant_Id, true);
+                            }
+                        }
+
                         else
                         {
-                            _log.Error("Durante la generazione dei viaggi sono stati trovati più cantieri marcati come SEDE");
+                            //Recupero il cantiere marcato come sede. PUO' ESSERE SOLO UNO PER CLIENTE!
+                            var headquartiers = RepoManager.CantRepo.Find(c => c.Tipo_Cantiere_Can == "SEDE");
+                            if (headquartiers.Count() == 1)
+                            {
+                                sede = headquartiers.ElementAt(0);
+                            }
+                            else
+                            {
+                                _log.Error("Durante la generazione dei viaggi sono stati trovati più cantieri marcati come SEDE");
+                            }
                         }
-                    }
 
-                    //Se non mi trovo in sede (quindi la prima o la seconda timbratura non sono state fatte in sede), calcolo il viaggio di inizio giornata
-                    if (firstCant.Tipo_Cantiere_Can != "SEDE" && firstCant != default(Cant))
-                    {
-                        var firstTrip = generateStartEndTripToHeadQuarter(sede, firstCant, regE, threshold, elaborateUserId, elaborateDateTime, application);
-                        if (firstTrip != null)
+                        //Se non mi trovo in sede (quindi la prima o la seconda timbratura non sono state fatte in sede), calcolo il viaggio di inizio giornata
+                        if (firstCant.Tipo_Cantiere_Can != "SEDE" && firstCant != default(Cant))
                         {
-                            tripList.Add(firstTrip);
+                            var firstTrip = generateStartEndTripToHeadQuarter(sede, firstCant, regE, threshold, elaborateUserId, elaborateDateTime, application);
+                            if (firstTrip != null)
+                            {
+                                tripList.Add(firstTrip);
+                            }
                         }
-                    }
 
 
-                    /* --- GESTIONE VIAGGIO FINE GIORNATA --- */
-                    //Se l'ultima timbratura di giornata è stata fatta nella sede, prendo come ultimo cantiere quello della penultima regv di giornata
-                    if (lastCant.Tipo_Cantiere_Can == "SEDE")
-                    {
-                        //Se ho più di una regv, vado a prendere la penultima
-                        if (orderedCurrentTripsByColByDate.Count() > 1)
+                        /* --- GESTIONE VIAGGIO FINE GIORNATA --- */
+                        //Se l'ultima timbratura di giornata è stata fatta nella sede, prendo come ultimo cantiere quello della penultima regv di giornata
+                        if (lastCant.Tipo_Cantiere_Can == "SEDE")
                         {
-                            regU = orderedCurrentTripsByColByDate.ElementAt(orderedCurrentTripsByColByDate.Count() - 2);
-                            lastCant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == regU.Cant_Id, true);
+                            //Se ho più di una regv, vado a prendere la penultima
+                            if (orderedCurrentTripsByColByDate.Count() > 1)
+                            {
+                                regU = orderedCurrentTripsByColByDate.ElementAt(orderedCurrentTripsByColByDate.Count() - 2);
+                                lastCant = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == regU.Cant_Id, true);
+                            }
                         }
-                    }
 
-                    //Se non mi trovo in sede (quindi l'ultima o la penultima timbratura non sono state fatte in sede), calcolo il viaggio di fine giornata
-                    if (lastCant.Tipo_Cantiere_Can != "SEDE" && lastCant != default(Cant))
-                    {
-                        var lastTrip = generateStartEndTripToHeadQuarter(sede, lastCant, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
-                        if (lastTrip != null)
+                        //Se non mi trovo in sede (quindi l'ultima o la penultima timbratura non sono state fatte in sede), calcolo il viaggio di fine giornata
+                        if (lastCant.Tipo_Cantiere_Can != "SEDE" && lastCant != default(Cant))
                         {
-                            tripList.Add(lastTrip);
+                            var lastTrip = generateStartEndTripToHeadQuarter(sede, lastCant, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
+                            if (lastTrip != null)
+                            {
+                                tripList.Add(lastTrip);
+                            }
                         }
                     }
                 }
@@ -9616,7 +9751,6 @@ namespace Business.Repository.Custom
 
                 mailTo = string.Join(";", mailList);
             }
-            mailTo = "dtezzon@winitsrl.it";
             //Invia le mail
             errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Comunicazione ritardi " + today.ToString("d MMMM yyyy"), mailBody, "newsletter@winit.it", "PowerWeb - Comunicazione ritardi", new string[] { });
 
@@ -13459,6 +13593,384 @@ namespace Business.Repository.Custom
                 }
             }
 
+            return returnFileName;
+        }
+
+        /// <summary>
+        /// Esportazione Xml per programma di paghe Update
+        /// </summary>
+        /// <param name="regVsToProcess">Registrazioni da esportarenell'Xml</param>
+        /// <param name="filesOutputFolder">Cartella in cui salvare i dati preparati nell'export</param>
+        /// <returns>
+        /// Ritorna il percorso del file da ritornare al browser con i dati esportati
+        /// </returns>
+        public string PrepareXmlExportToUpdate(IQueryable<Reg_V> regVsToProcess, Dictionary<int, int> durataByCol, string filesOutputFolder, DateTime fine)
+        {
+            string returnFileName = string.Empty;
+
+            //Se non sono contenute registrazioni viene terminato il processo
+            if (!regVsToProcess.Any())
+                return returnFileName;
+
+            IEnumerable<ExportedData> exportedDatesAndColIds = ReadProcessedDatesAndCols(filesOutputFolder);
+            string folderpath = Path.Combine(filesOutputFolder, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"));
+            var reportsFileName = new List<string>();
+
+            //Vengono prelevate tutte le reg che hanno il collaboratore, la data e il cantiere
+            var regVs = regVsToProcess
+                .Where(regv => regv.Col_Id.HasValue && regv.Data_Reg.HasValue && regv.Cant_Id.HasValue)
+                .ToList();
+
+            if (!regVs.Any())
+                return returnFileName;
+
+            if (!Directory.Exists(folderpath))
+                Directory.CreateDirectory(folderpath);
+
+            var document = new Business.XmlExportsData.Update.Fornitura();
+
+            //Vengono scorse le reg raggruppate tramite collaboratore
+            foreach (var regvRowsByCol in regVs.GroupBy(regv => regv.Col_Id.Value).ToList())
+            {
+
+                var colDoc = new Business.XmlExportsData.Update.XmlDocuments();
+
+                Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == regvRowsByCol.Key);
+                if (collaboratore == null)
+                    continue;
+
+                //Viene prelevato il codice azienda a partire dal file di customization XML
+                string codiceAzienda = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.CodiceAziendaEnum, "CodiceAzienda");
+
+                //if (!string.IsNullOrWhiteSpace(collaboratore.Note_Col))
+                //    codiceAzienda = CommonService.AggiungiZeriASinistra(collaboratore.Note_Col.Trim(), 6);
+
+                string matricola = collaboratore.Matricola_Col ?? regvRowsByCol.Key.ToString();
+                colDoc.CodAziendaUfficiale = CommonService.AggiungiZeriASinistra(codiceAzienda, 6);
+                colDoc.CodDipendenteUfficiale = CommonService.AggiungiZeriASinistra(matricola, 7);
+                colDoc.CodDipendenteRilPres = CommonService.AggiungiZeriASinistra(matricola, 6);
+
+                //viene prelevata una settimana da lunedì a domenica per prelevare la durata settimanale
+                DateTime today = DateTime.Today;
+                int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
+
+                DateTime startOfWeek = today.AddDays(-diff).Date;   // Lunedi
+                DateTime endOfWeek = startOfWeek.AddDays(6).Date;   // Domenica
+
+                //viene prelevato un Dictionary contenente l'orario del collaboratore
+                var settCol = RepoManager.Tab_OrariRepo.GetPlanMinutes(regvRowsByCol.Key, startOfWeek, endOfWeek, startOfWeek, endOfWeek,
+                    out bool isFromFreeTimesheet, out int freeTimesheetId, false);
+
+                double totSettimMinutes = -1;
+
+                //se l'orario è presente viene calcolato il totale in minuti di una settimana
+                if (!settCol.IsEmpty())
+                {
+                    totSettimMinutes = 0;
+                    for (DateTime start = startOfWeek; start <= endOfWeek; start = start.AddDays(1))
+                    {
+                        totSettimMinutes += settCol[0][start].Item1;
+                    }
+                }
+
+                var aggregatedRows = regvRowsByCol
+                    .GroupBy(regv => new
+                    {
+                        Data = regv.Data_Reg.Value.Date,
+                        Motivazione = regv.Motivazione_Reg_Cod ?? "01"
+                    })
+                    .OrderBy(group => group.Key.Data)
+                    .ThenBy(group => group.Key.Motivazione)
+                    .ToList();
+
+                double workedWeekly = 0;  //Totale lavorato durante la settimana
+
+                //viene verificato se il collaboratore ha lavorato extra settimanale da periodo precedente
+                bool hasExtra = durataByCol.TryGetValue(regvRowsByCol.Key, out int workedExtra);
+                if (hasExtra && workedExtra > 0) workedWeekly = workedExtra;
+
+                int riposoFinestra = 2;         //Giorni di riposo da fare all'interno della finestra prestabilita
+                int finestraGiorni = 14;        //Finestra di riferimento per il controllo del riposo
+                int finestraAttuale = 0;        //contatore dell'arco intercorso
+                int daysRiposoAttuale = 0;      //giorni di riposo effettuati
+
+                DateTime? previousDate = null;  //variabile per identificare quando è presente l'infortunio o altre motivazioni simili
+                string lastJust = "";
+
+                foreach (var groupedRow in aggregatedRows)
+                {
+
+                    String giornoDiRiposo = "N";
+
+                    double olNormali = 0;                   //variabile per parte lavorativa ordinaria
+                    double excessUnder40 = 0;               //variabile per parte lavorativa contenente gli straordinari sotto 40h
+                    double excessOver40 = 0;                //variabile per parte lavorativa contenente gli straordinari oltre 40h
+                    Tab_Decod motiv = default(Tab_Decod);   //variabile per prelevare la decodifica della motivazione
+
+
+                    String motivazione = groupedRow.Key.Motivazione;
+
+                    DateTime currentDate = groupedRow.Key.Data.Date;
+
+                    if (previousDate.HasValue)
+                    {
+                        if (previousDate.Value.AddDays(1) < currentDate)
+                        {
+                            DateTime gapStart = previousDate.Value.AddDays(1);
+                            DateTime gapEnd = currentDate.AddDays(-1);
+
+                            //vengono scorsi i giorni di gap
+                            for (DateTime d = gapStart; d <= gapEnd; d = d.AddDays(1))
+                            {
+                                String flagRiposo = "N";
+
+                                if (d.DayOfWeek == DayOfWeek.Monday) workedWeekly = 0;    //se lunedì viene resettato il contatore settimanale
+
+                                //se sono stati fatti meno di due giorni di riposo, si è ancora dentro la finestra desiderata e non è festività nazionale viene assegnato il riposo
+                                if (daysRiposoAttuale < riposoFinestra && !CommonService.IsFestivitaNazionale(d) && finestraAttuale <= finestraGiorni)
+                                {
+                                    daysRiposoAttuale++;
+                                    flagRiposo = "S";
+                                }
+
+                                //creazione del nodo di fill
+                                var fillNode = Business.XmlExportsData.Update.Movimento.getFillNode(flagRiposo, d);
+                                colDoc.Masters.Master.Add(fillNode);
+
+                                //viene incrementato il contatore della finestra del riposo, se supera la soglia vengono resettati
+                                finestraAttuale++;
+                                if (finestraAttuale > finestraGiorni)
+                                {
+                                    finestraAttuale = 0;
+                                    daysRiposoAttuale = 0;
+                                }
+                            }
+
+                        }
+                    }
+
+                    previousDate = currentDate;
+                    int totalMinutes = groupedRow.Sum(regv => regv.Durata_Fig ?? 0);
+
+                    int ore = totalMinutes / 60;
+                    int minuti = totalMinutes % 60;
+
+                    //Gestione delle fasce di straordinari se sono presenti ore lavorate 
+                    if (motivazione.Equals("01") && totalMinutes > 0)
+                    {
+                        //Se domenica è da fare il giorno di riposo successivamente e la motivazione è SF
+                        if (groupedRow.Key.Data.DayOfWeek == DayOfWeek.Sunday || CommonService.IsFestivitaNazionale(groupedRow.Key.Data))
+                        {
+                            motivazione = "SF";
+                            double olLeft = Math.Max(0, totSettimMinutes - workedWeekly);
+                            //Quantitativo ore ordinarie
+                            olNormali = Math.Min(totalMinutes, olLeft
+                                );
+
+                            if (olNormali > 0)
+                            {
+                                ore = (int)olNormali / 60;
+                                minuti = (int)olNormali % 60;
+                            }
+
+                            //Quantitativo ore straordinarie sotto 40h
+                            excessUnder40 = Math.Min((totalMinutes - olNormali),
+                                Math.Max(0, 2400 - (workedWeekly + olNormali)));
+
+                            //Quantitativo ore straordinarie oltre 40h settimanali
+                            excessOver40 = totalMinutes - olNormali - excessUnder40;
+
+                            //contatore ore lavorate settimanale
+                            workedWeekly += totalMinutes;
+                        }
+                        else
+                        {
+                            double olLeft = Math.Max(0, totSettimMinutes - workedWeekly);
+                            //Quantitativo ore ordinarie
+                            olNormali = Math.Min(totalMinutes, olLeft
+                                );
+
+                            if (olNormali > 0)
+                            {
+                                ore = (int)olNormali / 60;
+                                minuti = (int)olNormali % 60;
+                            }
+
+                            //Quantitativo ore straordinarie sotto 40h
+                            excessUnder40 = Math.Min((totalMinutes - olNormali),
+                                Math.Max(0, 2400 - (workedWeekly + olNormali)));
+
+                            //Quantitativo ore straordinarie oltre 40h settimanali
+                            excessOver40 = totalMinutes - olNormali - excessUnder40;
+
+                            //contatore ore lavorate settimanale
+                            workedWeekly += totalMinutes;
+                        }
+                    }
+                    else if (totalMinutes > 0)
+                    {
+                        double olLeft = Math.Max(0, totSettimMinutes - workedWeekly);
+                        //Quantitativo ore ordinarie
+                        olNormali = Math.Min(totalMinutes, olLeft
+                            );
+
+                        if (olNormali > 0)
+                        {
+                            ore = (int)olNormali / 60;
+                            minuti = (int)olNormali % 60;
+                        }
+
+                        //Quantitativo ore straordinarie sotto 40h
+                        excessUnder40 = Math.Min((totalMinutes - olNormali),
+                            Math.Max(0, 2400 - (workedWeekly + olNormali)));
+
+                        //Quantitativo ore straordinarie oltre 40h settimanali
+                        excessOver40 = totalMinutes - olNormali - excessUnder40;
+
+                        //contatore ore lavorate settimanale
+                        workedWeekly += totalMinutes;
+                    }
+
+                    //Caso in cui è presente una motivaizone 
+                    if (motivazione != "01" || olNormali > 0)
+                    {
+                        if (!giornoDiRiposo.Equals("S") && motivazione != "01")
+                        {
+                            motiv = RepoManager.Tab_DecodRepo.FirstOrDefault(m => m.Chiave_Tab == motivazione);
+                            if (motiv.Campo1_Tab != null)
+                            {
+                                if (motivazione != lastJust)
+                                {
+                                    motivazione = motiv.Campo1_Tab;
+                                }
+                            }
+                        }
+                        var movimento = new Business.XmlExportsData.Update.Movimento()
+                        {
+                            CodGiustificativoRilPres = (!giornoDiRiposo.Equals("S")) ? motivazione : "",
+                            CodGiustificativoUfficiale = (!giornoDiRiposo.Equals("S")) ? motivazione : "",
+                            Data = groupedRow.Key.Data.ToString("yyyy-MM-dd"),
+                            NumOre = ore.ToString(),
+                            NumMinuti = minuti.ToString(),
+                            NumMinutiInCentesimi = "0",
+                            GiornoDiRiposo = giornoDiRiposo,
+                            GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
+                        };
+
+                        colDoc.Masters.Master.Add(movimento);
+
+                        if (motiv != default)
+                            lastJust = motiv.Chiave_Tab;
+                    }
+
+                    if (excessUnder40 > 0)
+                    {
+                        var movimento = new Business.XmlExportsData.Update.Movimento()
+                        {
+                            CodGiustificativoRilPres = "LS",
+                            CodGiustificativoUfficiale = "LS",
+                            Data = groupedRow.Key.Data.ToString("yyyy-MM-dd"),
+                            NumOre = ((int)(excessUnder40 / 60)).ToString(),
+                            NumMinuti = ((int)(excessUnder40 % 60)).ToString(),
+                            NumMinutiInCentesimi = "0",
+                            GiornoDiRiposo = "N",
+                            GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
+                        };
+
+                        colDoc.Masters.Master.Add(movimento);
+                    }
+
+                    if (excessOver40 > 0)
+                    {
+                        var movimento = new Business.XmlExportsData.Update.Movimento()
+                        {
+                            CodGiustificativoRilPres = "ST",
+                            CodGiustificativoUfficiale = "ST",
+                            Data = groupedRow.Key.Data.ToString("yyyy-MM-dd"),
+                            NumOre = ((int)(excessOver40 / 60)).ToString(),
+                            NumMinuti = ((int)(excessOver40 % 60)).ToString(),
+                            NumMinutiInCentesimi = "0",
+                            GiornoDiRiposo = "N",
+                            GiornoChiusuraStraordinari = (groupedRow.Key.Data.DayOfWeek.Equals(DayOfWeek.Sunday)) ? "S" : "N"
+                        };
+
+                        colDoc.Masters.Master.Add(movimento);
+                    }
+
+                    //viene incrementato il contatore della finestra del riposo, se supera la soglia vengono resettati
+                    finestraAttuale++;
+                    if (finestraAttuale > finestraGiorni)
+                    {
+                        finestraAttuale = 0;
+                        daysRiposoAttuale = 0;
+                    }
+                }
+
+                if (!colDoc.Masters.Master.Any())
+                    continue;
+
+                //string currentFileName = string.Format(
+                //    "{0}{1}",
+                //    CommonService.AggiungiZeriASinistra(matricola, 7),
+                //    XmlToPerfettoConstants.ReturnXmlExtension);
+
+                //var serializer = new XmlSerializer(typeof(Business.XmlExportsData.Manalu.Fornitura));
+                //var xsn = new XmlSerializerNamespaces();
+                //xsn.Add(string.Empty, string.Empty);
+
+                //string currentFilePath = Path.Combine(folderpath, currentFileName);
+                //using (TextWriter textWriter = new StreamWriter(currentFilePath))
+                //using (var writer = new Business.XmlExportsData.Manalu.ManaluWriter(textWriter))
+                //{
+                //    writer.Formatting = Formatting.Indented;
+                //    serializer.Serialize(writer, document, xsn);
+                //    writer.Close();
+                //    textWriter.Close();
+                //}
+
+                //reportsFileName.Add(currentFilePath);
+                document.Dipendente.Add(colDoc);
+            }
+
+            string currentFileName = string.Format(
+                "{0}{1}",
+                XmlUpdateConstants.UpdateFileName + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss"),
+                XmlUpdateConstants.UpdateXmlExtension);
+
+            var serializer = new XmlSerializer(typeof(Business.XmlExportsData.Update.Fornitura));
+            var xsn = new XmlSerializerNamespaces();
+            xsn.Add(string.Empty, string.Empty);
+
+            string currentFilePath = Path.Combine(folderpath, currentFileName);
+
+            using (TextWriter textWriter = new StreamWriter(currentFilePath))
+            using (var writer = new Business.XmlExportsData.Update.UpdateWriter(textWriter))
+            {
+                writer.Formatting = Formatting.Indented;
+                serializer.Serialize(writer, document, xsn);
+                //writer.Close();
+                //textWriter.Close();
+            }
+
+            reportsFileName.Add(currentFilePath);
+
+
+
+            if (!reportsFileName.Any())
+                return returnFileName;
+
+            try
+            {
+                string zipFileName = string.Format("Update-{0}{1}", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"), XmlToPerfettoConstants.ReturnZipExtension);
+                returnFileName = Path.Combine(folderpath, zipFileName);
+                CommonService.ZipFilesList(reportsFileName, returnFileName);
+            }
+            catch (Exception)
+            {
+                returnFileName = string.Empty;
+            }
+
+            SaveProcessedDateAndCols(regVs, exportedDatesAndColIds.ToList(), filesOutputFolder);
             return returnFileName;
         }
 

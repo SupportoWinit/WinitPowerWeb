@@ -1482,7 +1482,8 @@ namespace Business.Repository.Custom
             col.LatitudineGps_Col = col.LongitudineGps_Col = 0;
             try
             {
-                Location point = BusinessService.GetGeocode(col.GeocodeAddress);
+                var indirizzo = BusinessService.FormatGeocodeAddress(col.Domicilio_Indirizzo_Col, col.Domicilio_Luogo_Col, col.Domicilio_Cap_Col, col.Domicilio_Provincia_Col);
+                Location point = BusinessService.GetGeocode(indirizzo);
 
                 if (point != null)
                 {
@@ -1724,8 +1725,17 @@ namespace Business.Repository.Custom
 
                                 #endregion 
 
-                                colsToAdd.Add(newCol);
+                                Col existingCol = RepoManager.ColRepo.SingleOrDefault(col => col.Codice_Collaboratore == newCol.Codice_Collaboratore);
 
+                                if (existingCol == default(Col))
+                                {
+                                    existingCol = colsToAdd.SingleOrDefault(col => col.Codice_Collaboratore == newCol.Codice_Collaboratore);
+                                    if (existingCol != default(Col)) 
+                                    {
+                                        colsToAdd.Remove(existingCol);
+                                    }
+                                    colsToAdd.Add(newCol);
+                                } 
                             }
                             else
                             {

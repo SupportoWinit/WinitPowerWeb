@@ -7683,7 +7683,7 @@ namespace Business.BusinessExtension
 
                             string tipoCantiere = currCant != null ? currCant.Tipo_Cantiere_Can : String.Empty;
 
-                            return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && /*!regv.Motivazione_Reg_Id.HasValue &&*/ tipoCantiere != "ONL";
+                            return (regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.None || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.ArrotDur || regv.Registrazione_Tipo_Reg == (int)RegTypeEnum.Trip) && regv.Registrazione_Stato_Reg != (int)RegStateEnum.None && /*!regv.Motivazione_Reg_Id.HasValue &&*/ tipoCantiere != "ONL";
                         }).ToList();
                     }
                     else
@@ -8029,6 +8029,22 @@ namespace Business.BusinessExtension
             * l'inizio e la fine del mese; in questo caso, se necessario si aggiornano le date per comprendere l'inizio e la fine della settimana
             * del mese precedente e successivo */
 
+            var currentCdc = RepoManager.CentroDiCostoRepo.FirstOrDefault(cd => cd.CentroDiCosto_Id == centroId);
+            List<int> cantIds = new List<int>();
+            if (currentCdc != null)
+            {
+                var lista = currentCdc.Cant_CentroDiCosto;
+                cantIds = lista.Select(c => c.Cant_Id).ToList();
+            }
+            else
+            {
+                var cdcs = RepoManager.CentroDiCostoRepo.GetAllQueryable().ToList();
+                foreach (var cd in cdcs) 
+                {
+                    var lista = cd.Cant_CentroDiCosto;
+                    cantIds.AddRange(lista.Select(c => c.Cant_Id).ToList());
+                }
+            }
             CentroDiCosto cdc = RepoManager.CentroDiCostoRepo.FirstOrDefault(cd => cd.Descrizione.ToUpper() == "COMUNE DI LIMONE");
             Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
 
@@ -8060,7 +8076,7 @@ namespace Business.BusinessExtension
             if (centroId == -999)
             {
                 // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
-                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == null
+                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && !(cantIds.Contains(regv.Cant_Id.Value))
                     && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
                     && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel" && regv.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id), true);
             }
@@ -8292,7 +8308,10 @@ namespace Business.BusinessExtension
             else
             {
                 // ritorno delle registrazioni calcolate con i parametri spassati come parametro che siano associate, non attività
-                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
+                //return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && regv.CentroDiCosto_Id == centroId
+                //    && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
+                //    && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel" && regv.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id), true);
+                return RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == colToSearch.Col_Id && cantIds.Contains(regv.Cant_Id.Value)
                     && (regv.Data_Reg >= newFirstMonthDate && regv.Data_Reg <= newLastMonthDate)
                     && regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att && (regv.Codice_Commessa_Can != "Hotel" && regv.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id), true);
             }

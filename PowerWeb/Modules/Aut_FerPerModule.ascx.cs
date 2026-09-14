@@ -13,6 +13,7 @@ using DevExpress.Web.ASPxTitleIndex.Internal;
 using DevExpress.Web.Data;
 using DevExpress.XtraPivotGrid.Data;
 using Domain;
+using log4net;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ namespace PowerWeb.Modules
         const String KEYFIELDNAME = "RegE;TmpNewId";
 
         private string _callBackParameter = string.Empty;
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Aut_FerPerModule));
 
         private Type _entityType = typeof(Reg_V);
         const Reg_V _regVStub = null;
@@ -258,31 +261,48 @@ namespace PowerWeb.Modules
                                     //controllo se la data è uguale alla variabile 'primoGiorno', in quel caso non è un periodo e si può lasciare la reg base
                                     if (reg.Data_Reg.Value != primoGiorno)
                                     {
-                                        //se non sono consecutive faccio un ulteriore controllo, ovvero se il giorno precedente è un venerdì o sabato
-                                        if ((lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday || lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday) && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday)
+                                        //se sono consecutive e non è l'ultima incremento solo la viariabile periodo che mi serve per il controllo
+                                        if ((reg.Data_Reg.Value - primoGiorno) == TimeSpan.FromDays(periodo))
                                         {
                                             Reg_V newRegV = tmpRegV;
                                             string noteReg = "";
                                             var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
-                                            var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                            var dataReg = primoGiorno.AddDays(periodo).ToString().Split(' ');
                                             noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
                                             newRegV.Note_Reg = noteReg;
                                             groupReg.Add(newRegV);
+                                            periodo = 1;
+                                            primoGiorno = reg.Data_Reg.Value;
+                                            tmpRegV = reg;
                                         }
-                                        else
+                                        else 
                                         {
-                                            string noteReg = "";
-                                            Reg_V newRegV = reg;
-                                            var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
-                                            noteReg = dataReg[0];
-                                            newRegV.Note_Reg = noteReg;
-                                            groupReg.Add(newRegV);
-                                            noteReg = "";
-                                            newRegV = lastRegV;
-                                            dataReg = lastRegV.Data_Reg.Value.ToString().Split(' ');
-                                            noteReg = dataReg[0];
-                                            newRegV.Note_Reg = noteReg;
-                                            groupReg.Add(newRegV);
+                                            //se non sono consecutive faccio un ulteriore controllo, ovvero se il giorno precedente è un venerdì o sabato
+                                            if ((lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday || lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday) && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday)
+                                            {
+                                                Reg_V newRegV = tmpRegV;
+                                                string noteReg = "";
+                                                var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                                var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                                noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                                newRegV.Note_Reg = noteReg;
+                                                groupReg.Add(newRegV);
+                                            }
+                                            else
+                                            {
+                                                string noteReg = "";
+                                                Reg_V newRegV = reg;
+                                                var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                                noteReg = dataReg[0];
+                                                newRegV.Note_Reg = noteReg;
+                                                groupReg.Add(newRegV);
+                                                noteReg = "";
+                                                newRegV = lastRegV;
+                                                dataReg = lastRegV.Data_Reg.Value.ToString().Split(' ');
+                                                noteReg = dataReg[0];
+                                                newRegV.Note_Reg = noteReg;
+                                                groupReg.Add(newRegV);
+                                            }
                                         }
                                     }
                                     else
@@ -297,7 +317,40 @@ namespace PowerWeb.Modules
                                 }
                                 else
                                 {
-                                    if ((reg.Data_Reg.Value - primoGiorno) == TimeSpan.FromDays(periodo))
+                                    if (lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday) 
+                                    {
+                                        DateTime dateConf = lastRegV.Data_Reg.Value.AddDays(3);
+                                        if (reg.Data_Reg.Value == dateConf)
+                                        {
+                                            Reg_V newRegV = tmpRegV;
+                                            string noteReg = "";
+                                            var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                            var dataReg = reg.Data_Reg.Value.ToString().Split(' ');
+                                            noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                            newRegV.Note_Reg = noteReg;
+                                            groupReg.Add(newRegV);
+                                            periodo = 1;
+                                            primoGiorno = reg.Data_Reg.Value;
+                                            tmpRegV = reg;
+                                        }
+                                        else 
+                                        {
+                                            periodo--;
+                                            Reg_V newRegV = tmpRegV;
+                                            string noteReg = "";
+                                            var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                            var dataReg = primoGiorno.AddDays(periodo).ToString().Split(' ');
+                                            noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                            newRegV.Note_Reg = noteReg;
+                                            groupReg.Add(newRegV);
+                                            newRegV = reg;
+                                            var dataUltimaTimb = reg.Data_Reg.Value.ToString().Split(' ');
+                                            noteReg = "" + dataUltimaTimb[0];
+                                            newRegV.Note_Reg = noteReg;
+                                            groupReg.Add(newRegV);
+                                        }
+                                    }
+                                    else if ((reg.Data_Reg.Value - primoGiorno) == TimeSpan.FromDays(periodo))
                                     {
                                         Reg_V newRegV = tmpRegV;
                                         string noteReg = "";
@@ -341,7 +394,29 @@ namespace PowerWeb.Modules
                                 else
                                 {
                                     //se non sono consecutive faccio un ulteriore controllo, ovvero se il giorno precedente è un venerdì o sabato
-                                    if ((lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday || lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday) && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday)
+                                    if (lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Friday && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday)
+                                    {
+                                        DateTime dateConf = lastRegV.Data_Reg.Value.AddDays(3);
+                                        if (reg.Data_Reg.Value == dateConf)
+                                        {
+                                            periodo = periodo + (reg.Data_Reg.Value.DayOfYear - lastRegV.Data_Reg.Value.DayOfYear);
+                                        }
+                                        else
+                                        {
+                                            Reg_V newRegV = tmpRegV;
+                                            string noteReg = "";
+                                            var dataPrimoGiorno = primoGiorno.ToString().Split(' ');
+                                            var dataReg = lastRegV.Data_Reg.Value.ToString().Split(' ');
+                                            noteReg = "" + dataPrimoGiorno[0] + "-" + dataReg[0];
+                                            newRegV.Note_Reg = noteReg;
+                                            groupReg.Add(newRegV);
+                                            periodo = 1;
+                                            primoGiorno = reg.Data_Reg.Value;
+                                            tmpRegV = reg;
+                                        }
+
+                                    } 
+                                    else if (lastRegV.Data_Reg.Value.DayOfWeek == DayOfWeek.Saturday && reg.Data_Reg.Value.DayOfWeek == DayOfWeek.Monday) 
                                     {
                                         DateTime dateConf = lastRegV.Data_Reg.Value.AddDays(2);
                                         if (reg.Data_Reg.Value == dateConf)
@@ -361,7 +436,6 @@ namespace PowerWeb.Modules
                                             primoGiorno = reg.Data_Reg.Value;
                                             tmpRegV = reg;
                                         }
-
                                     }
                                     else
                                     {
@@ -549,6 +623,27 @@ namespace PowerWeb.Modules
             SetGridEditType();
         }
 
+        public ICollection<MetaFieldDescriptor> MetaFieldDescriptors
+        {
+            get
+            {
+                ICollection<MetaFieldDescriptor> metaFieldDescriptors = PowerWebContext.GetFromSession<ICollection<MetaFieldDescriptor>>("MetaFieldDescriptors_" + GridView.ID);
+                if (metaFieldDescriptors == null)
+                {
+                    var metaDescriptor = RepoManager.MetaDescriptorRepo.Find(md => md.EntityType == "AutPer", md => md.MetaFieldDescriptor, true).ToList().First();
+                    List<MetaFieldDescriptor> mtdR = RepoManager.MetaFieldDescriptorRepo.Find(m => m.MetaDescriptorId == metaDescriptor.MetaDescriptorId, true).ToList();
+
+                    if (metaDescriptor != null)
+                    {
+                        metaFieldDescriptors = mtdR.OrderBy(mfd => mfd.VisibleIndex).ToList();
+                        PowerWebContext.SetToSession<ICollection<MetaFieldDescriptor>>("MetaFieldDescriptors_" + GridView.ID, metaFieldDescriptors);
+                    }
+                }
+                return metaFieldDescriptors;
+            }
+
+        }
+
         protected void Page_Init(object sender, EventArgs e)
         {
             if (!Page.IsCallback && !Page.IsPostBack)
@@ -567,6 +662,8 @@ namespace PowerWeb.Modules
             LocalizeElements();
 
             SetGridEditType();
+
+            PowerWebService.GenerateGridColumns(GridView, MetaFieldDescriptors);
 
             // inizializzazione dei campi data per la preselezione (dal 1° del mese precedente ad oggi);
             // se la data così calcolata è inferiore o uguale alla data blocco, la stessa viene riportata alla data blocco + 1 giorno
@@ -1661,46 +1758,879 @@ namespace PowerWeb.Modules
                 BindGrid();
             else if (e.Parameters.StartsWith("accept")) // se si tratta dell'elaborazione su db e si è in ON
             {
-                //Dictionary<string, string> errors = new Dictionary<string, string>();
-                var splitter = e.Parameters.Split(new char[] { '|' });
+                try { 
+                    _log.InfoFormat("Inizio a controllare la timbratura da accettare");
+                    //Dictionary<string, string> errors = new Dictionary<string, string>();
+                    var splitter = e.Parameters.Split(new char[] { '|' });
 
-                int currentRegId = Convert.ToInt32(splitter[1]);
+                    int currentRegId = Convert.ToInt32(splitter[1]);
 
-                //viene stratta la registrazione che ho premuto l'edit multiplo
-                Reg currentReg = RepoManager.RegRepo.Single(reg => reg.Reg_Id == currentRegId);
+                    //viene stratta la registrazione che ho premuto l'edit multiplo
+                    Reg currentReg = RepoManager.RegRepo.Single(reg => reg.Reg_Id == currentRegId);
 
-                // per prima cosa nell'elaborate viene effettuato il bind della griglia di modo da ricevere i dati aggiornati
-                BindGrid();
+                    // per prima cosa nell'elaborate viene effettuato il bind della griglia di modo da ricevere i dati aggiornati
+                    BindGrid();
 
-                // generazione del dizionario che viualizzerà gli errori di update
-                var errorByColId = new Dictionary<string, IList<Dictionary<string, string>>>();
+                    // generazione del dizionario che viualizzerà gli errori di update
+                    var errorByColId = new Dictionary<string, IList<Dictionary<string, string>>>();
 
-                // elenco delle date con cui costruire il periodo di rielaborazione
-                var toElaborateDates = new HashSet<DateTime>();
+                    // elenco delle date con cui costruire il periodo di rielaborazione
+                    var toElaborateDates = new HashSet<DateTime>();
 
-                // inizializzazione delle liste che conterranno le reg da modificare e le reg da cancellare
-                var toUpdateRegs = new List<Reg>();
-                var toDeleteRegs = new List<Reg>();
+                    // inizializzazione delle liste che conterranno le reg da modificare e le reg da cancellare
+                    var toUpdateRegs = new List<Reg>();
+                    var toDeleteRegs = new List<Reg>();
 
-                Reg_V tmpReg_V = RepoManager.Reg_VRepo.Single(regv => regv.RegE == currentRegId);
+                    Reg_V tmpReg_V = RepoManager.Reg_VRepo.Single(regv => regv.RegE == currentRegId);
 
-                // inizializzazione della lista dei collaboratori inclusi nel processo di elaborazione
-                var colIds = new List<int>();
+                    // inizializzazione della lista dei collaboratori inclusi nel processo di elaborazione
+                    var colIds = new List<int>();
 
-                // per ogni regv modificata vado a controllare quale motivazione è stata impostata
-                var regVsToCheck = RegVsToUpdate;
+                    // per ogni regv modificata vado a controllare quale motivazione è stata impostata
+                    var regVsToCheck = RegVsToUpdate;
 
-                // alla lista per l'elaborazione di update vanno tolti tutti i record marcati per la cancellazione
-                regVsToCheck = regVsToCheck.Where(regV => !RegVsToDelete.Select(dRegV => dRegV.TmpNewId).Where(tmpNewId => tmpNewId != String.Empty).Contains(regV.TmpNewId)).ToList();
+                    // alla lista per l'elaborazione di update vanno tolti tutti i record marcati per la cancellazione
+                    regVsToCheck = regVsToCheck.Where(regV => !RegVsToDelete.Select(dRegV => dRegV.TmpNewId).Where(tmpNewId => tmpNewId != String.Empty).Contains(regV.TmpNewId)).ToList();
 
-                if (!tmpReg_V.Note_Reg.Contains("-"))
-                {
-                    regVsToCheck.Add(tmpReg_V);
-                    int conferma = 0;
-
-                    foreach (var regv in regVsToCheck)
+                    if (!tmpReg_V.Note_Reg.Contains("-"))
                     {
-                        if (regv.Registrazione_Tipo_Reg == 8)
+                        _log.InfoFormat("Processo la timbratura singola da accettare");
+                        regVsToCheck.Add(tmpReg_V);
+                        int conferma = 0;
+                        Col collab = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
+                        Tab_Decod tmpMot1 = new Tab_Decod();
+                        int motNew = 0;
+
+                        foreach (var regv in regVsToCheck)
+                        {
+                            if (regv.Registrazione_Tipo_Reg == 8)
+                            {
+                                _log.InfoFormat("Rilevata registrazione di sola durata");
+                                Dictionary<string, string> validationErrors = new Dictionary<string, string>();
+
+                                #region Check RegE
+
+                                // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
+                                int regEId = 0;
+                                DateTime origDateE = DateTime.MinValue;
+
+                                // generazione della reg in entrata utilizzata per la modifica e della reg attuale nel repository
+                                Reg newRegE = RepoManager.RegRepo.Init();
+
+                                // recupero la vecchia reg solamente se non si tratta di un nuovo inserimento
+                                Reg oldRegE = null;
+                                if (regv.RegE != 0)
+                                {
+                                    oldRegE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegE);
+
+                                    // viene verificato se la reg nel repository ha una data, eventualmente utilizzata per una rielaborazione anche di quel giorno
+                                    if (oldRegE.Registrazione_Data_Ora_Fis_Reg != null)
+                                        toElaborateDates.Add(oldRegE.Registrazione_Data_Ora_Fis_Reg.Date);
+
+                                    regEId = regv.RegE;
+                                    origDateE = oldRegE.Registrazione_Data_Ora_Orig_Reg;
+                                }
+                                else
+                                {
+                                    // se si tratta di un nuovo record allora do in pasto all'elaborate la data e ora d'entrata.
+                                    toElaborateDates.Add(regv.Data_Ora_Fis_E.Date);
+                                }
+
+
+                                // se la reg in elaborazione ha una data ora di entrata valida, viene impostata sulla nova reg in entrata di appoggio
+                                if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_E != null &&
+                                    regv.Data_Ora_Fis_E != DateTime.MinValue)
+                                {
+                                    newRegE.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
+                                        regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_E.Hour,
+                                        regv.Data_Ora_Fis_E.Minute, regv.Data_Ora_Fis_E.Second);
+                                }
+
+                                // impostazioni dei dati della registrazione in entrata utilizzata per la modifica
+                                newRegE.Cant_Id = regv.Cant_Id;
+                                newRegE.Col_Id = regv.Col_Id;
+                                newRegE.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
+                                newRegE.Registrazione_Data_Ora_Fig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                newRegE.Fru_Id = regv.Fru_Id;
+                                newRegE.Pru_Id = regv.Pru_Id;
+                                newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
+                                newRegE.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
+                                newRegE.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
+                                newRegE.Rettifica_Durata = Convert.ToInt32(oldRegE.Rettifica_Durata);
+
+                                // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
+                                if (oldRegE != null)
+                                    RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
+
+                                // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
+                                newRegE.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                                // alla reg_v viene appiccicato il relativo flag di entrata/uscita
+                                newRegE.Flag_EU_Reg = regv.EntrataEU;
+
+                                // se si tratta di una registrazione nuova allora:
+                                // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
+                                // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
+                                if (newRegE.Reg_Id == 0)
+                                {
+                                    newRegE.Registrazione_Data_Ora_Fis_Reg = regv.Data_Ora_Fis_E;
+                                    newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                }
+
+                                #endregion
+
+                                #region Check RegU
+
+                                // generazione della reg in uscita di appoggio
+                                Reg newRegU = RepoManager.RegRepo.Init();
+                                Reg oldRegU = null;
+
+                                // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
+                                int regUId = 0;
+                                DateTime origDateU = DateTime.MinValue;
+
+                                // se la regv in elaborazione ha una data e ora di uscita valida
+                                if (regv.Data_Ora_Fis_U != null && regv.Data_Ora_Fis_U != DateTime.MinValue)
+                                {
+
+                                    // se non si tratta di una nuova reg allora viene recuperata dal repository la reg in uscita con lo stesso codice
+                                    if (regv.RegU != null)
+                                    {
+                                        oldRegU = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegU);
+
+                                        // se la reg in uscita presa dal repository ha una data in uscita valida allora la si aggiunge all'elenco di date da rielaborare
+                                        if (oldRegU.Registrazione_Data_Ora_Fis_Reg != null)
+                                            toElaborateDates.Add(oldRegU.Registrazione_Data_Ora_Fis_Reg.Date);
+
+                                        regUId = oldRegU.Reg_Id;
+
+                                        origDateU = oldRegU.Registrazione_Data_Ora_Orig_Reg;
+                                    }
+
+
+                                    // se la regv in elaborazione ha una data/ora di uscita valida viene impostata sulla nuova reg in uscita utilizzata per la modifica
+                                    if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_U != null &&
+                                        regv.Data_Ora_Fis_U != DateTime.MinValue)
+                                    {
+                                        newRegU.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
+                                            regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_U.Value.Hour,
+                                            regv.Data_Ora_Fis_U.Value.Minute, regv.Data_Ora_Fis_U.Value.Second);
+                                    }
+
+                                    // inserimento dei valori nella nuova reg in uscita
+                                    newRegU.Cant_Id = regv.Cant_Id;
+                                    newRegU.Col_Id = regv.Col_Id;
+                                    newRegU.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
+                                    newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                    if (oldRegU != null)
+                                    {
+                                        newRegU.Fru_Id = oldRegU.Fru_Id;
+                                        newRegU.Pru_Id = oldRegU.Pru_Id;
+                                        newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
+
+                                        // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
+                                        if (oldRegU != null)
+                                            RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegU, oldRegU);
+                                    }
+                                    else
+                                    {
+                                        newRegU.Fru_Id = null;
+                                        newRegU.Pru_Id = null;
+                                    }
+
+                                    // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
+                                    newRegU.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                                    // alla reg_v viene appiccicato il relativo flag di entrata/uscita
+                                    newRegU.Flag_EU_Reg = regv.UscitaEU;
+
+                                    // se si tratta di una registrazione nuova allora:
+                                    // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
+                                    // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
+                                    if (newRegU.Reg_Id == 0)
+                                    {
+                                        newRegU.Registrazione_Data_Ora_Fis_Reg = Convert.ToDateTime(regv.Data_Ora_Fis_U);
+                                        newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                    }
+
+                                    // se è impostato il notturno e la data/ora fisica d'uscita è inferirore a quella in entrata si verifica la variabile
+                                    // di stesso giorno e caso mai si aggiunge un giorno
+                                    if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno &&
+                                        RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.None && RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.Disabled)
+                                    {
+                                        if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
+                                            regv.Data_Ora_Fis_U.Value.TimeOfDay > regv.Data_Reg.Value.TimeOfDay)
+                                            // viene aggiunto un giorno solamente se non si è all'interno dello stesso giorno
+                                            if (regv.IsUTimeSameDayE)
+                                            {
+                                                newRegU.Registrazione_Data_Ora_Fis_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg.AddDays(1);
+                                                // se si tratta di una nuova registrazione viene reimpostata anche la data/ora originale
+                                                if (newRegU.Reg_Id == 0)
+                                                    newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                            }
+                                    }
+
+                                    // assegnazione alla reg in uscita del relative record number della reg in entrata
+                                    newRegU.ParentReg = newRegE;
+
+                                    newRegU.DisAbilitazione_Reg = false;
+                                    newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                }
+                                else
+                                {
+                                    // se la regv non ha una valida data/ora d'uscita allora
+                                    // viene recuperata la vecchia reg in uscita
+                                    oldRegU = RepoManager.RegRepo.SingleOrDefault(rv => rv.Reg_Id == regv.RegU);
+
+                                    // e se presente viene marcata per la cancellazione
+                                    if (oldRegU != null)
+                                        toDeleteRegs.Add(oldRegU);
+
+                                    // in caso non abbia una reg in uscita anche la nuova regu va impostata a null per non essere aggiunta
+                                    newRegU = null;
+                                }
+
+                                #endregion
+
+                                #region Check RegV
+
+                                // se la regv in elaborazione ha un codice collaboratore non già inserito in lista, lo si aggiunge per gestione dell'elaborate 
+                                if (regv.Col_Id != 0 && regv.Col_Id != null && !colIds.Contains(regv.Col_Id.Value))
+                                    colIds.Add(regv.Col_Id.Value);
+
+                                // sono forzate sulla regv da checcare l'ora di entrata e uscita fisica così da evitare
+                                // mancati controlli per la presenza di min value precedentemente inseriti
+                                regv.Data_Ora_Fis_E = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                if (newRegU != null)
+                                    regv.Data_Ora_Fis_U = newRegU.Registrazione_Data_Ora_Fis_Reg;
+
+                                #endregion
+
+                                #region Manage Regs orig date
+
+                                // è calcolato il fatto che si sta elaborando un'uscita nello stesso giorno
+                                bool isSameDay = true;
+                                // se non c'è il notturno è sicuramente true
+                                if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
+                                    isSameDay = regv.IsUTimeSameDayE;
+
+                                // gestione della data/ora originale delle reg 
+                                RepoManager.RegRepo.ManageOrigDates(newRegE, regEId, origDateE, newRegU, regUId, origDateU, isSameDay);
+
+                                #endregion
+
+                                #region Manage Blocking regs
+
+                                // gestione del codice di accoppiamento per le reg bloccate
+                                RepoManager.RegRepo.PerformBlockedRegsCouple(newRegE, newRegU, regv.RegE);
+
+                                #endregion
+
+                                int newMet = 0;
+                                Tab_Decod motRichiesta = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == oldRegE.Motivazione_Reg_Id);
+                                string codNuovaRichiesta = "";
+                                var tmpRich = motRichiesta.Decodifica_Tab.Split(' ');
+                                if (motRichiesta.Campo1_Tab != null)
+                                {
+                                    newMet = 1;
+                                    int nuovaMotId = Int32.Parse(motRichiesta.Campo1_Tab);
+                                    Tab_Decod motAcc = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == nuovaMotId);
+                                    codNuovaRichiesta = motAcc.Decodifica_Tab;
+                                }
+                                else 
+                                {
+                                    for (int i = 1; i < tmpRich.Length; i++)
+                                    {
+                                        if (i != 1)
+                                        {
+                                            codNuovaRichiesta = codNuovaRichiesta + " " + tmpRich[i];
+                                        }
+                                        else
+                                        {
+                                            codNuovaRichiesta += tmpRich[i];
+                                        }
+                                    }
+                                }
+                                
+                                if (!codNuovaRichiesta.Contains("Ferie"))
+                                    conferma = 1;
+
+                                Tab_Decod mot = default(Tab_Decod);
+                                if (newMet == 0)
+                                {
+                                    mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == codNuovaRichiesta);
+                                }
+                                else 
+                                {
+                                    var tmpMot = codNuovaRichiesta.Split('-');
+                                    mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == tmpMot[0]);
+                                }
+
+                                newRegE.Motivazione_Reg_Id = mot.Tab_Decod_Id;
+                                Col cols = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
+                                bool isOrario = true;
+                                if (cols.Tab_Orari_Tipo_Id != null)
+                                {
+                                    Tab_Orari orarioFinale = new Tab_Orari();
+                                    Tab_Orari_Tipo tipoOr = RepoManager.Tab_OrariTipoRepo.FirstOrDefault(td => td.Tab_Orari_Tipo_Id == cols.Tab_Orari_Tipo_Id);
+                                    var orari = RepoManager.Tab_OrariRepo.GetAllQueryable(o => o.Tab_Orari_Tipo_Id == tipoOr.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).ToList();
+                                    if (orari.Count > 0)
+                                    {
+                                        foreach (var singoloOrario in orari.Last())
+                                        {
+                                            switch (newRegE.Registrazione_Data_Ora_Fis_Reg.DayOfWeek)
+                                            {
+                                                case DayOfWeek.Monday:
+                                                    if (singoloOrario.G1)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Tuesday:
+                                                    if (singoloOrario.G2)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Wednesday:
+                                                    if (singoloOrario.G3)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Thursday:
+                                                    if (singoloOrario.G4)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Friday:
+                                                    if (singoloOrario.G5)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Saturday:
+                                                    if (singoloOrario.G6)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Sunday:
+                                                    if (singoloOrario.G7)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                        if (orarioFinale != null)
+                                        {
+                                            var durataOrario = orarioFinale.Durata_Minuti;
+                                            double durataRegistrazione = 0;
+                                            if (newRegU != null)
+                                            {
+                                                durataRegistrazione = (newRegU.Registrazione_Data_Ora_Fis_Reg - newRegE.Registrazione_Data_Ora_Fis_Reg).TotalMinutes;
+                                            }
+                                            else
+                                            {
+                                                durataRegistrazione = newRegE.Rettifica_Durata.Value;
+                                            }
+                                            if (durataRegistrazione > durataOrario)
+                                            {
+                                                isOrario = false;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (newRegU != null)
+                                    newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
+
+                                if (isOrario)
+                                {
+                                    #region Add Checked Regs To updates list
+                                    // controllo se nella timbratura è stata impostata la motivazione ferie o permesso, in questo caso provedo a processarle
+                                    toUpdateRegs.Add(newRegE);
+
+                                    // aggiunta la nuova reg in uscita tra quelle da aggiungere (solo se valorizzata)
+                                    if (newRegU != null)
+                                        toUpdateRegs.Add(newRegU);
+
+                                    if (oldRegE != null)
+                                        toDeleteRegs.Add(oldRegE);
+
+                                    // se la vecchia reg in uscita è valorizzata allora viene impostata come reg da cancellare
+                                    if (oldRegU != null)
+                                        toDeleteRegs.Add(oldRegU);
+
+                                    #endregion
+                                    Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
+                                    
+                                }
+                                else
+                                {
+                                    validationErrors.AddOrAppend("RegV", "Richiesta autorizzata maggiore dell'orario del collaboratore");
+                                    SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                                    EditErrorMessage = "Richiesta autorizzata maggiore dell'orario del collaboratore";
+                                }
+                            }
+                            else 
+                            {
+                                _log.InfoFormat("Trovata registrazione con ora d'entrata e di uscita");
+                                Dictionary<string, string> validationErrors;
+
+                                #region spostamento data uscita RegV se entrata non presente
+
+                                // se la data entrata è non valorizzata
+                                if (regv.Data_Ora_Fis_E.TimeOfDay == TimeSpan.Zero)
+                                {
+                                    // se la data di uscita è valorizzata
+                                    if (regv.Data_Ora_Fis_U.HasValue)
+                                    {
+                                        // si sposta la data di uscita su quella di entrata e si marca per la cancellazione
+                                        // la vecchia reg in entrata
+                                        if (regv.RegE != 0)
+                                            toDeleteRegs.Add(RepoManager.RegRepo.FirstOrDefault(reg => reg.Reg_Id == regv.RegE));
+                                        regv.Data_Ora_Fis_E = regv.Data_Ora_Fis_U.Value;
+                                        regv.Data_Ora_Fis_U = null;
+                                        regv.RegE = Convert.ToInt32(regv.RegU);
+                                        regv.RegU = null;
+                                    }
+                                    else// in caso non siano valorizzate date, si passa al record successivo, prima cancellando la reg in entrata
+                                    {
+                                        // solamente se non si tratta di nuovi inserimenti
+                                        if (regv.RegE != 0)
+                                        {
+                                            //RiferimentoRRN_Reg
+                                            var regToDelete = RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == regv.RegE);
+                                            regToDelete.RiferimentoRRN_Reg = null;
+                                            toDeleteRegs.Add(regToDelete);
+                                            if (regv.RegU != null)
+                                            {
+                                                toDeleteRegs.Add(RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == regv.RegU));
+                                            }
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                #endregion
+
+                                #region Check RegE
+
+                                // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
+                                int regEId = 0;
+                                DateTime origDateE = DateTime.MinValue;
+
+                                // generazione della reg in entrata utilizzata per la modifica e della reg attuale nel repository
+                                Reg newRegE = RepoManager.RegRepo.Init();
+
+                                // recupero la vecchia reg solamente se non si tratta di un nuovo inserimento
+                                Reg oldRegE = null;
+                                if (regv.RegE != 0)
+                                {
+                                    oldRegE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegE);
+
+                                    // viene verificato se la reg nel repository ha una data, eventualmente utilizzata per una rielaborazione anche di quel giorno
+                                    if (oldRegE.Registrazione_Data_Ora_Fis_Reg != null)
+                                        toElaborateDates.Add(oldRegE.Registrazione_Data_Ora_Fis_Reg.Date);
+
+                                    regEId = regv.RegE;
+                                    origDateE = oldRegE.Registrazione_Data_Ora_Orig_Reg;
+                                }
+                                else
+                                {
+                                    // se si tratta di un nuovo record allora do in pasto all'elaborate la data e ora d'entrata.
+                                    toElaborateDates.Add(regv.Data_Ora_Fis_E.Date);
+                                }
+
+
+                                // se la reg in elaborazione ha una data ora di entrata valida, viene impostata sulla nova reg in entrata di appoggio
+                                if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_E != null &&
+                                    regv.Data_Ora_Fis_E != DateTime.MinValue)
+                                {
+                                    newRegE.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
+                                        regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_E.Hour,
+                                        regv.Data_Ora_Fis_E.Minute, regv.Data_Ora_Fis_E.Second);
+                                }
+
+                                // impostazioni dei dati della registrazione in entrata utilizzata per la modifica
+                                newRegE.Cant_Id = regv.Cant_Id;
+                                newRegE.Col_Id = regv.Col_Id;
+                                newRegE.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
+                                newRegE.Registrazione_Data_Ora_Fig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                newRegE.Fru_Id = regv.Fru_Id;
+                                newRegE.Pru_Id = regv.Pru_Id;
+                                newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
+
+                                // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
+                                if (oldRegE != null)
+                                    RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
+
+                                // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
+                                newRegE.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                                // alla reg_v viene appiccicato il relativo flag di entrata/uscita
+                                newRegE.Flag_EU_Reg = regv.EntrataEU;
+
+                                // se si tratta di una registrazione nuova allora:
+                                // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
+                                // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
+                                if (newRegE.Reg_Id == 0)
+                                {
+                                    newRegE.Registrazione_Data_Ora_Fis_Reg = regv.Data_Ora_Fis_E;
+                                    newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                }
+
+                                // viene effettuata la check sulla reg, indicando se si tratta di un nuovo inserimento
+                                validationErrors = regv.RegE == 0 ? RepoManager.RegRepo.Check(newRegE, true) : RepoManager.RegRepo.Check(newRegE, false);
+
+                                // se ci sono stati errori si interrompe l'elaborazione
+                                if (validationErrors.Count > 0)
+                                {
+                                    SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                                    continue;
+                                }
+
+                                #endregion
+
+                                #region Check RegU
+
+                                // generazione della reg in uscita di appoggio
+                                Reg newRegU = RepoManager.RegRepo.Init();
+                                Reg oldRegU = null;
+
+                                // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
+                                int regUId = 0;
+                                DateTime origDateU = DateTime.MinValue;
+
+                                // se la regv in elaborazione ha una data e ora di uscita valida
+                                if (regv.Data_Ora_Fis_U != null && regv.Data_Ora_Fis_U != DateTime.MinValue)
+                                {
+
+                                    // se non si tratta di una nuova reg allora viene recuperata dal repository la reg in uscita con lo stesso codice
+                                    if (regv.RegU != null)
+                                    {
+                                        oldRegU = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegU);
+
+                                        // se la reg in uscita presa dal repository ha una data in uscita valida allora la si aggiunge all'elenco di date da rielaborare
+                                        if (oldRegU.Registrazione_Data_Ora_Fis_Reg != null)
+                                            toElaborateDates.Add(oldRegU.Registrazione_Data_Ora_Fis_Reg.Date);
+
+                                        regUId = oldRegU.Reg_Id;
+
+                                        origDateU = oldRegU.Registrazione_Data_Ora_Orig_Reg;
+                                    }
+
+
+                                    // se la regv in elaborazione ha una data/ora di uscita valida viene impostata sulla nuova reg in uscita utilizzata per la modifica
+                                    if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_U != null &&
+                                        regv.Data_Ora_Fis_U != DateTime.MinValue)
+                                    {
+                                        newRegU.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
+                                            regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_U.Value.Hour,
+                                            regv.Data_Ora_Fis_U.Value.Minute, regv.Data_Ora_Fis_U.Value.Second);
+                                    }
+
+                                    // inserimento dei valori nella nuova reg in uscita
+                                    newRegU.Cant_Id = regv.Cant_Id;
+                                    newRegU.Col_Id = regv.Col_Id;
+                                    newRegU.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
+                                    newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                    if (oldRegU != null)
+                                    {
+                                        newRegU.Fru_Id = oldRegU.Fru_Id;
+                                        newRegU.Pru_Id = oldRegU.Pru_Id;
+                                        newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
+
+                                        // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
+                                        if (oldRegU != null)
+                                            RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegU, oldRegU);
+                                    }
+                                    else
+                                    {
+                                        newRegU.Fru_Id = null;
+                                        newRegU.Pru_Id = null;
+                                    }
+
+                                    // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
+                                    newRegU.Registrazione_Bloccata = regv.Registrazione_Bloccata;
+
+                                    // alla reg_v viene appiccicato il relativo flag di entrata/uscita
+                                    newRegU.Flag_EU_Reg = regv.UscitaEU;
+
+                                    // se si tratta di una registrazione nuova allora:
+                                    // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
+                                    // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
+                                    if (newRegU.Reg_Id == 0)
+                                    {
+                                        newRegU.Registrazione_Data_Ora_Fis_Reg = Convert.ToDateTime(regv.Data_Ora_Fis_U);
+                                        newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                    }
+
+                                    // se è impostato il notturno e la data/ora fisica d'uscita è inferirore a quella in entrata si verifica la variabile
+                                    // di stesso giorno e caso mai si aggiunge un giorno
+                                    if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno &&
+                                        RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.None && RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.Disabled)
+                                    {
+                                        if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
+                                            regv.Data_Ora_Fis_U.Value.TimeOfDay > regv.Data_Reg.Value.TimeOfDay)
+                                            // viene aggiunto un giorno solamente se non si è all'interno dello stesso giorno
+                                            if (regv.IsUTimeSameDayE)
+                                            {
+                                                newRegU.Registrazione_Data_Ora_Fis_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg.AddDays(1);
+                                                // se si tratta di una nuova registrazione viene reimpostata anche la data/ora originale
+                                                if (newRegU.Reg_Id == 0)
+                                                    newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+                                            }
+                                    }
+
+                                    // assegnazione alla reg in uscita del relative record number della reg in entrata
+                                    newRegU.ParentReg = newRegE;
+
+                                    newRegU.DisAbilitazione_Reg = false;
+                                    newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
+
+                                    // effettuazione della check per la registrazione in uscita indicando se nuova o variata
+                                    validationErrors = regv.RegU == null ? RepoManager.RegRepo.Check(newRegU, true) : RepoManager.RegRepo.Check(newRegU, false);
+
+                                    // se ci sono stati errori in validazione, allora si interrompe l'elaborazione
+                                    if (validationErrors.Count > 0)
+                                    {
+                                        SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    // se la regv non ha una valida data/ora d'uscita allora
+                                    // viene recuperata la vecchia reg in uscita
+                                    oldRegU = RepoManager.RegRepo.SingleOrDefault(rv => rv.Reg_Id == regv.RegU);
+
+                                    // e se presente viene marcata per la cancellazione
+                                    if (oldRegU != null)
+                                        toDeleteRegs.Add(oldRegU);
+
+                                    // in caso non abbia una reg in uscita anche la nuova regu va impostata a null per non essere aggiunta
+                                    newRegU = null;
+                                }
+
+                                #endregion
+
+                                #region Check RegV
+
+                                // se la regv in elaborazione ha un codice collaboratore non già inserito in lista, lo si aggiunge per gestione dell'elaborate 
+                                if (regv.Col_Id != 0 && regv.Col_Id != null && !colIds.Contains(regv.Col_Id.Value))
+                                    colIds.Add(regv.Col_Id.Value);
+
+                                // sono forzate sulla regv da checcare l'ora di entrata e uscita fisica così da evitare
+                                // mancati controlli per la presenza di min value precedentemente inseriti
+                                regv.Data_Ora_Fis_E = newRegE.Registrazione_Data_Ora_Fis_Reg;
+                                if (newRegU != null)
+                                    regv.Data_Ora_Fis_U = newRegU.Registrazione_Data_Ora_Fis_Reg;
+
+                                // effettuazione della check della regV (se si tratta di una regv inserita in sessione allora si passa il parametro new, altrimenti il contrario)
+                                validationErrors = RepoManager.Reg_VRepo.Check(regv, regv.RegE == 0 ? true : false);
+
+                                // se ci sono stati errori si interrompe l'elaborazione
+                                if (validationErrors.Count > 0)
+                                {
+                                    SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                                    continue;
+                                }
+
+                                #endregion
+
+                                #region Manage Regs orig date
+
+                                // è calcolato il fatto che si sta elaborando un'uscita nello stesso giorno
+                                bool isSameDay = true;
+                                // se non c'è il notturno è sicuramente true
+                                if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
+                                    isSameDay = regv.IsUTimeSameDayE;
+
+                                // gestione della data/ora originale delle reg 
+                                RepoManager.RegRepo.ManageOrigDates(newRegE, regEId, origDateE, newRegU, regUId, origDateU, isSameDay);
+
+                                #endregion
+
+                                #region Manage Blocking regs
+
+                                // gestione del codice di accoppiamento per le reg bloccate
+                                RepoManager.RegRepo.PerformBlockedRegsCouple(newRegE, newRegU, regv.RegE);
+
+                                #endregion
+
+                                int newMet = 0;
+                                Tab_Decod motRichiesta = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == oldRegE.Motivazione_Reg_Id);
+                                string codNuovaRichiesta = "";
+                                var tmpRich = motRichiesta.Decodifica_Tab.Split(' ');
+                                if (motRichiesta.Campo1_Tab != null)
+                                {
+                                    newMet = 1;
+                                    int nuovaMotId = Int32.Parse(motRichiesta.Campo1_Tab);
+                                    Tab_Decod motAcc = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == nuovaMotId);
+                                    codNuovaRichiesta = motAcc.Decodifica_Tab;
+                                }
+                                else 
+                                {
+                                    for (int i = 1; i < tmpRich.Length; i++)
+                                    {
+                                        if (i != 1)
+                                        {
+                                            codNuovaRichiesta = codNuovaRichiesta + " " + tmpRich[i];
+                                        }
+                                        else
+                                        {
+                                            codNuovaRichiesta += tmpRich[i];
+                                        }
+                                    }
+                                }
+
+                                Tab_Decod mot = default(Tab_Decod);
+                                if (newMet == 0)
+                                {
+                                    mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == codNuovaRichiesta);
+                                }
+                                else
+                                {
+                                    var tmpMot = codNuovaRichiesta.Split('-');
+                                    mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == tmpMot[0]);
+                                }
+                                tmpMot1 = mot;
+                                motNew = newMet;
+                                newRegE.Motivazione_Reg_Id = mot.Tab_Decod_Id;
+                                newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
+
+                                Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
+                                bool isOrario = true;
+                                if (col.Tab_Orari_Tipo_Id != null)
+                                {
+                                    Tab_Orari orarioFinale = new Tab_Orari();
+                                    Tab_Orari_Tipo tipoOr = RepoManager.Tab_OrariTipoRepo.FirstOrDefault(td => td.Tab_Orari_Tipo_Id == col.Tab_Orari_Tipo_Id);
+                                    var orari = RepoManager.Tab_OrariRepo.GetAllQueryable(o => o.Tab_Orari_Tipo_Id == tipoOr.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).ToList();
+                                    if (orari.Count > 0)
+                                    {
+                                        foreach (var singoloOrario in orari.Last())
+                                        {
+                                            switch (newRegE.Registrazione_Data_Ora_Fis_Reg.DayOfWeek)
+                                            {
+                                                case DayOfWeek.Monday:
+                                                    if (singoloOrario.G1)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Tuesday:
+                                                    if (singoloOrario.G2)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Wednesday:
+                                                    if (singoloOrario.G3)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Thursday:
+                                                    if (singoloOrario.G4)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Friday:
+                                                    if (singoloOrario.G5)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Saturday:
+                                                    if (singoloOrario.G6)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                                case DayOfWeek.Sunday:
+                                                    if (singoloOrario.G7)
+                                                    {
+                                                        orarioFinale = singoloOrario;
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                        if (orarioFinale != null)
+                                        {
+                                            var durataOrario = orarioFinale.Durata_Minuti;
+                                            double durataRegistrazione = 0;
+                                            if (newRegU != null)
+                                            {
+                                                durataRegistrazione = (newRegU.Registrazione_Data_Ora_Fis_Reg - newRegE.Registrazione_Data_Ora_Fis_Reg).TotalMinutes;
+                                            }
+                                            else
+                                            {
+                                                durataRegistrazione = newRegE.Rettifica_Durata.Value;
+                                            }
+                                            if (durataRegistrazione > durataOrario)
+                                            {
+                                                isOrario = false;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (isOrario)
+                                {
+                                    InviaConferma(conferma, col, tmpReg_V.Data_Reg.Value, tmpReg_V.Data_Reg.Value,newMet,mot);
+
+                                    #region Add Checked Regs To updates list
+
+                                    // controllo se nella timbratura è stata impostata la motivazione ferie o permesso, in questo caso provedo a processarle
+                                    toUpdateRegs.Add(newRegE);
+
+                                    // aggiunta la nuova reg in uscita tra quelle da aggiungere (solo se valorizzata)
+                                    if (newRegU != null)
+                                        toUpdateRegs.Add(newRegU);
+
+                                    if (oldRegE != null)
+                                        toDeleteRegs.Add(oldRegE);
+
+                                    // se la vecchia reg in uscita è valorizzata allora viene impostata come reg da cancellare
+                                    if (oldRegU != null)
+                                        toDeleteRegs.Add(oldRegU);
+
+                                    #endregion
+                                }
+                                else
+                                {
+                                    //SetErrorMessageDictionary(regv, errorByColId, validationErrors);
+                                    IList<Dictionary<string, string>> currentValidationErrorsList = new List<Dictionary<string, string>>();
+                                    currentValidationErrorsList.Add(validationErrors);
+                                    EditErrorMessage = "Richiesta autorizzata maggiore dell'orario del collaboratore";
+                                    errorByColId.Add(EditErrorMessage, currentValidationErrorsList);
+                                
+                                }
+                            }
+                        }
+
+                        InviaConferma(conferma, collab, regVsToCheck.First().Data_Reg.Value, regVsToCheck.Last().Data_Reg.Value, motNew, tmpMot1);
+                    }
+                    else {
+                        _log.InfoFormat("Trovato un periodo da autorizzare");
+                        var dates = tmpReg_V.Note_Reg.Split('-');
+                        DateTime from = DateTime.Parse(dates[0] + " 00:00:00");
+                        DateTime to = DateTime.Parse(dates[1] + " 23:59:59");
+                        List<Reg_V> tmpRegvs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Motivazione_Reg_Id == tmpReg_V.Motivazione_Reg_Id && r.Col_Id == tmpReg_V.Col_Id && (r.Data_Reg.Value >= from && r.Data_Reg.Value <= to)).ToList();
+                        regVsToCheck.AddRange(tmpRegvs);
+                        int conferma = 0;
+                        Col col1 = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
+                        Tab_Decod tmpMot1 = new Tab_Decod();
+                        int motNew = 0;
+
+                        foreach (var regv in regVsToCheck)
                         {
                             Dictionary<string, string> validationErrors = new Dictionary<string, string>();
 
@@ -1923,21 +2853,33 @@ namespace PowerWeb.Modules
 
                             #endregion
 
+                            int newMet = 0;
                             Tab_Decod motRichiesta = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == oldRegE.Motivazione_Reg_Id);
                             string codNuovaRichiesta = "";
                             var tmpRich = motRichiesta.Decodifica_Tab.Split(' ');
-                            for (int i = 1; i < tmpRich.Length; i++)
+                            if (motRichiesta.Campo1_Tab != null)
                             {
-                                if (i != 1)
-                                {
-                                    codNuovaRichiesta = codNuovaRichiesta + " " + tmpRich[i];
-                                }
-                                else
-                                {
-                                    codNuovaRichiesta += tmpRich[i];
-                                }
-
+                                newMet = 1;
+                                int nuovaMotId = Int32.Parse(motRichiesta.Campo1_Tab);
+                                Tab_Decod motAcc = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == nuovaMotId);
+                                codNuovaRichiesta = motAcc.Decodifica_Tab;
                             }
+                            else 
+                            {
+                                for (int i = 1; i < tmpRich.Length; i++)
+                                {
+                                    if (i != 1)
+                                    {
+                                        codNuovaRichiesta = codNuovaRichiesta + " " + tmpRich[i];
+                                    }
+                                    else
+                                    {
+                                        codNuovaRichiesta += tmpRich[i];
+                                    }
+
+                                }
+                            }
+                            
                             if (!codNuovaRichiesta.Contains("Ferie"))
                                 conferma = 1;
 
@@ -2009,10 +2951,11 @@ namespace PowerWeb.Modules
                                         {
                                             durataRegistrazione = (newRegU.Registrazione_Data_Ora_Fis_Reg - newRegE.Registrazione_Data_Ora_Fis_Reg).TotalMinutes;
                                         }
-                                        else
+                                        else 
                                         {
                                             durataRegistrazione = newRegE.Rettifica_Durata.Value;
                                         }
+
                                         if (durataRegistrazione > durataOrario)
                                         {
                                             isOrario = false;
@@ -2024,7 +2967,7 @@ namespace PowerWeb.Modules
                             if (newRegU != null)
                                 newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
 
-                            if (isOrario)
+                            if (isOrario) 
                             {
                                 #region Add Checked Regs To updates list
                                 // controllo se nella timbratura è stata impostata la motivazione ferie o permesso, in questo caso provedo a processarle
@@ -2042,421 +2985,10 @@ namespace PowerWeb.Modules
                                     toDeleteRegs.Add(oldRegU);
 
                                 #endregion
+                                motNew = newMet;
+                                tmpMot1 = mot;
                                 Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
-                                InviaConferma(1, col, regv.Data_Reg.Value, regv.Data_Reg.Value);
-                            }
-                            else
-                            {
-                                validationErrors.AddOrAppend("RegV", "Richiesta autorizzata maggiore dell'orario del collaboratore");
-                                SetErrorMessageDictionary(regv, errorByColId, validationErrors);
-                                EditErrorMessage = "Richiesta autorizzata maggiore dell'orario del collaboratore";
-                            }
-                        }
-                        else 
-                        {
-                            Dictionary<string, string> validationErrors;
-
-                            #region spostamento data uscita RegV se entrata non presente
-
-                            // se la data entrata è non valorizzata
-                            if (regv.Data_Ora_Fis_E.TimeOfDay == TimeSpan.Zero)
-                            {
-                                // se la data di uscita è valorizzata
-                                if (regv.Data_Ora_Fis_U.HasValue)
-                                {
-                                    // si sposta la data di uscita su quella di entrata e si marca per la cancellazione
-                                    // la vecchia reg in entrata
-                                    if (regv.RegE != 0)
-                                        toDeleteRegs.Add(RepoManager.RegRepo.FirstOrDefault(reg => reg.Reg_Id == regv.RegE));
-                                    regv.Data_Ora_Fis_E = regv.Data_Ora_Fis_U.Value;
-                                    regv.Data_Ora_Fis_U = null;
-                                    regv.RegE = Convert.ToInt32(regv.RegU);
-                                    regv.RegU = null;
-                                }
-                                else// in caso non siano valorizzate date, si passa al record successivo, prima cancellando la reg in entrata
-                                {
-                                    // solamente se non si tratta di nuovi inserimenti
-                                    if (regv.RegE != 0)
-                                    {
-                                        //RiferimentoRRN_Reg
-                                        var regToDelete = RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == regv.RegE);
-                                        regToDelete.RiferimentoRRN_Reg = null;
-                                        toDeleteRegs.Add(regToDelete);
-                                        if (regv.RegU != null)
-                                        {
-                                            toDeleteRegs.Add(RepoManager.RegRepo.SingleOrDefault(reg => reg.Reg_Id == regv.RegU));
-                                        }
-                                        continue;
-                                    }
-                                }
-                            }
-
-                            #endregion
-
-                            #region Check RegE
-
-                            // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
-                            int regEId = 0;
-                            DateTime origDateE = DateTime.MinValue;
-
-                            // generazione della reg in entrata utilizzata per la modifica e della reg attuale nel repository
-                            Reg newRegE = RepoManager.RegRepo.Init();
-
-                            // recupero la vecchia reg solamente se non si tratta di un nuovo inserimento
-                            Reg oldRegE = null;
-                            if (regv.RegE != 0)
-                            {
-                                oldRegE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegE);
-
-                                // viene verificato se la reg nel repository ha una data, eventualmente utilizzata per una rielaborazione anche di quel giorno
-                                if (oldRegE.Registrazione_Data_Ora_Fis_Reg != null)
-                                    toElaborateDates.Add(oldRegE.Registrazione_Data_Ora_Fis_Reg.Date);
-
-                                regEId = regv.RegE;
-                                origDateE = oldRegE.Registrazione_Data_Ora_Orig_Reg;
-                            }
-                            else
-                            {
-                                // se si tratta di un nuovo record allora do in pasto all'elaborate la data e ora d'entrata.
-                                toElaborateDates.Add(regv.Data_Ora_Fis_E.Date);
-                            }
-
-
-                            // se la reg in elaborazione ha una data ora di entrata valida, viene impostata sulla nova reg in entrata di appoggio
-                            if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_E != null &&
-                                regv.Data_Ora_Fis_E != DateTime.MinValue)
-                            {
-                                newRegE.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
-                                    regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_E.Hour,
-                                    regv.Data_Ora_Fis_E.Minute, regv.Data_Ora_Fis_E.Second);
-                            }
-
-                            // impostazioni dei dati della registrazione in entrata utilizzata per la modifica
-                            newRegE.Cant_Id = regv.Cant_Id;
-                            newRegE.Col_Id = regv.Col_Id;
-                            newRegE.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
-                            newRegE.Registrazione_Data_Ora_Fig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                            newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                            newRegE.Fru_Id = regv.Fru_Id;
-                            newRegE.Pru_Id = regv.Pru_Id;
-                            newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
-
-                            // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
-                            if (oldRegE != null)
-                                RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
-
-                            // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
-                            newRegE.Registrazione_Bloccata = regv.Registrazione_Bloccata;
-
-                            // alla reg_v viene appiccicato il relativo flag di entrata/uscita
-                            newRegE.Flag_EU_Reg = regv.EntrataEU;
-
-                            // se si tratta di una registrazione nuova allora:
-                            // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
-                            // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
-                            if (newRegE.Reg_Id == 0)
-                            {
-                                newRegE.Registrazione_Data_Ora_Fis_Reg = regv.Data_Ora_Fis_E;
-                                newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                            }
-
-                            // viene effettuata la check sulla reg, indicando se si tratta di un nuovo inserimento
-                            validationErrors = regv.RegE == 0 ? RepoManager.RegRepo.Check(newRegE, true) : RepoManager.RegRepo.Check(newRegE, false);
-
-                            // se ci sono stati errori si interrompe l'elaborazione
-                            if (validationErrors.Count > 0)
-                            {
-                                SetErrorMessageDictionary(regv, errorByColId, validationErrors);
-                                continue;
-                            }
-
-                            #endregion
-
-                            #region Check RegU
-
-                            // generazione della reg in uscita di appoggio
-                            Reg newRegU = RepoManager.RegRepo.Init();
-                            Reg oldRegU = null;
-
-                            // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
-                            int regUId = 0;
-                            DateTime origDateU = DateTime.MinValue;
-
-                            // se la regv in elaborazione ha una data e ora di uscita valida
-                            if (regv.Data_Ora_Fis_U != null && regv.Data_Ora_Fis_U != DateTime.MinValue)
-                            {
-
-                                // se non si tratta di una nuova reg allora viene recuperata dal repository la reg in uscita con lo stesso codice
-                                if (regv.RegU != null)
-                                {
-                                    oldRegU = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegU);
-
-                                    // se la reg in uscita presa dal repository ha una data in uscita valida allora la si aggiunge all'elenco di date da rielaborare
-                                    if (oldRegU.Registrazione_Data_Ora_Fis_Reg != null)
-                                        toElaborateDates.Add(oldRegU.Registrazione_Data_Ora_Fis_Reg.Date);
-
-                                    regUId = oldRegU.Reg_Id;
-
-                                    origDateU = oldRegU.Registrazione_Data_Ora_Orig_Reg;
-                                }
-
-
-                                // se la regv in elaborazione ha una data/ora di uscita valida viene impostata sulla nuova reg in uscita utilizzata per la modifica
-                                if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_U != null &&
-                                    regv.Data_Ora_Fis_U != DateTime.MinValue)
-                                {
-                                    newRegU.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
-                                        regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_U.Value.Hour,
-                                        regv.Data_Ora_Fis_U.Value.Minute, regv.Data_Ora_Fis_U.Value.Second);
-                                }
-
-                                // inserimento dei valori nella nuova reg in uscita
-                                newRegU.Cant_Id = regv.Cant_Id;
-                                newRegU.Col_Id = regv.Col_Id;
-                                newRegU.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
-                                newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                                if (oldRegU != null)
-                                {
-                                    newRegU.Fru_Id = oldRegU.Fru_Id;
-                                    newRegU.Pru_Id = oldRegU.Pru_Id;
-                                    newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
-
-                                    // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
-                                    if (oldRegU != null)
-                                        RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegU, oldRegU);
-                                }
-                                else
-                                {
-                                    newRegU.Fru_Id = null;
-                                    newRegU.Pru_Id = null;
-                                }
-
-                                // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
-                                newRegU.Registrazione_Bloccata = regv.Registrazione_Bloccata;
-
-                                // alla reg_v viene appiccicato il relativo flag di entrata/uscita
-                                newRegU.Flag_EU_Reg = regv.UscitaEU;
-
-                                // se si tratta di una registrazione nuova allora:
-                                // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
-                                // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
-                                if (newRegU.Reg_Id == 0)
-                                {
-                                    newRegU.Registrazione_Data_Ora_Fis_Reg = Convert.ToDateTime(regv.Data_Ora_Fis_U);
-                                    newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                                }
-
-                                // se è impostato il notturno e la data/ora fisica d'uscita è inferirore a quella in entrata si verifica la variabile
-                                // di stesso giorno e caso mai si aggiunge un giorno
-                                if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno &&
-                                    RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.None && RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.Disabled)
-                                {
-                                    if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
-                                        regv.Data_Ora_Fis_U.Value.TimeOfDay > regv.Data_Reg.Value.TimeOfDay)
-                                        // viene aggiunto un giorno solamente se non si è all'interno dello stesso giorno
-                                        if (regv.IsUTimeSameDayE)
-                                        {
-                                            newRegU.Registrazione_Data_Ora_Fis_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg.AddDays(1);
-                                            // se si tratta di una nuova registrazione viene reimpostata anche la data/ora originale
-                                            if (newRegU.Reg_Id == 0)
-                                                newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                                        }
-                                }
-
-                                // assegnazione alla reg in uscita del relative record number della reg in entrata
-                                newRegU.ParentReg = newRegE;
-
-                                newRegU.DisAbilitazione_Reg = false;
-                                newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-
-                                // effettuazione della check per la registrazione in uscita indicando se nuova o variata
-                                validationErrors = regv.RegU == null ? RepoManager.RegRepo.Check(newRegU, true) : RepoManager.RegRepo.Check(newRegU, false);
-
-                                // se ci sono stati errori in validazione, allora si interrompe l'elaborazione
-                                if (validationErrors.Count > 0)
-                                {
-                                    SetErrorMessageDictionary(regv, errorByColId, validationErrors);
-                                    continue;
-                                }
-                            }
-                            else
-                            {
-                                // se la regv non ha una valida data/ora d'uscita allora
-                                // viene recuperata la vecchia reg in uscita
-                                oldRegU = RepoManager.RegRepo.SingleOrDefault(rv => rv.Reg_Id == regv.RegU);
-
-                                // e se presente viene marcata per la cancellazione
-                                if (oldRegU != null)
-                                    toDeleteRegs.Add(oldRegU);
-
-                                // in caso non abbia una reg in uscita anche la nuova regu va impostata a null per non essere aggiunta
-                                newRegU = null;
-                            }
-
-                            #endregion
-
-                            #region Check RegV
-
-                            // se la regv in elaborazione ha un codice collaboratore non già inserito in lista, lo si aggiunge per gestione dell'elaborate 
-                            if (regv.Col_Id != 0 && regv.Col_Id != null && !colIds.Contains(regv.Col_Id.Value))
-                                colIds.Add(regv.Col_Id.Value);
-
-                            // sono forzate sulla regv da checcare l'ora di entrata e uscita fisica così da evitare
-                            // mancati controlli per la presenza di min value precedentemente inseriti
-                            regv.Data_Ora_Fis_E = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                            if (newRegU != null)
-                                regv.Data_Ora_Fis_U = newRegU.Registrazione_Data_Ora_Fis_Reg;
-
-                            // effettuazione della check della regV (se si tratta di una regv inserita in sessione allora si passa il parametro new, altrimenti il contrario)
-                            validationErrors = RepoManager.Reg_VRepo.Check(regv, regv.RegE == 0 ? true : false);
-
-                            // se ci sono stati errori si interrompe l'elaborazione
-                            if (validationErrors.Count > 0)
-                            {
-                                SetErrorMessageDictionary(regv, errorByColId, validationErrors);
-                                continue;
-                            }
-
-                            #endregion
-
-                            #region Manage Regs orig date
-
-                            // è calcolato il fatto che si sta elaborando un'uscita nello stesso giorno
-                            bool isSameDay = true;
-                            // se non c'è il notturno è sicuramente true
-                            if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
-                                isSameDay = regv.IsUTimeSameDayE;
-
-                            // gestione della data/ora originale delle reg 
-                            RepoManager.RegRepo.ManageOrigDates(newRegE, regEId, origDateE, newRegU, regUId, origDateU, isSameDay);
-
-                            #endregion
-
-                            #region Manage Blocking regs
-
-                            // gestione del codice di accoppiamento per le reg bloccate
-                            RepoManager.RegRepo.PerformBlockedRegsCouple(newRegE, newRegU, regv.RegE);
-
-                            #endregion
-
-                            Tab_Decod motRichiesta = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == oldRegE.Motivazione_Reg_Id);
-                            string codNuovaRichiesta = "";
-                            var tmpRich = motRichiesta.Decodifica_Tab.Split(' ');
-                            for (int i = 1; i < tmpRich.Length; i++)
-                            {
-                                if (i != 1)
-                                {
-                                    codNuovaRichiesta = codNuovaRichiesta + " " + tmpRich[i];
-                                }
-                                else
-                                {
-                                    codNuovaRichiesta += tmpRich[i];
-                                }
-
-                            }
-                            Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == codNuovaRichiesta);
-
-                            newRegE.Motivazione_Reg_Id = mot.Tab_Decod_Id;
-                            newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
-
-                            Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
-                            bool isOrario = true;
-                            if (col.Tab_Orari_Tipo_Id != null)
-                            {
-                                Tab_Orari orarioFinale = new Tab_Orari();
-                                Tab_Orari_Tipo tipoOr = RepoManager.Tab_OrariTipoRepo.FirstOrDefault(td => td.Tab_Orari_Tipo_Id == col.Tab_Orari_Tipo_Id);
-                                var orari = RepoManager.Tab_OrariRepo.GetAllQueryable(o => o.Tab_Orari_Tipo_Id == tipoOr.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).ToList();
-                                if (orari.Count > 0)
-                                {
-                                    foreach (var singoloOrario in orari.Last())
-                                    {
-                                        switch (newRegE.Registrazione_Data_Ora_Fis_Reg.DayOfWeek)
-                                        {
-                                            case DayOfWeek.Monday:
-                                                if (singoloOrario.G1)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                            case DayOfWeek.Tuesday:
-                                                if (singoloOrario.G2)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                            case DayOfWeek.Wednesday:
-                                                if (singoloOrario.G3)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                            case DayOfWeek.Thursday:
-                                                if (singoloOrario.G4)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                            case DayOfWeek.Friday:
-                                                if (singoloOrario.G5)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                            case DayOfWeek.Saturday:
-                                                if (singoloOrario.G6)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                            case DayOfWeek.Sunday:
-                                                if (singoloOrario.G7)
-                                                {
-                                                    orarioFinale = singoloOrario;
-                                                }
-                                                break;
-                                        }
-                                    }
-                                    if (orarioFinale != null)
-                                    {
-                                        var durataOrario = orarioFinale.Durata_Minuti;
-                                        double durataRegistrazione = 0;
-                                        if (newRegU != null)
-                                        {
-                                            durataRegistrazione = (newRegU.Registrazione_Data_Ora_Fis_Reg - newRegE.Registrazione_Data_Ora_Fis_Reg).TotalMinutes;
-                                        }
-                                        else
-                                        {
-                                            durataRegistrazione = newRegE.Rettifica_Durata.Value;
-                                        }
-                                        if (durataRegistrazione > durataOrario)
-                                        {
-                                            isOrario = false;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (isOrario)
-                            {
-                                InviaConferma(conferma, col, tmpReg_V.Data_Reg.Value, tmpReg_V.Data_Reg.Value);
-
-                                #region Add Checked Regs To updates list
-
-                                // controllo se nella timbratura è stata impostata la motivazione ferie o permesso, in questo caso provedo a processarle
-                                toUpdateRegs.Add(newRegE);
-
-                                // aggiunta la nuova reg in uscita tra quelle da aggiungere (solo se valorizzata)
-                                if (newRegU != null)
-                                    toUpdateRegs.Add(newRegU);
-
-                                if (oldRegE != null)
-                                    toDeleteRegs.Add(oldRegE);
-
-                                // se la vecchia reg in uscita è valorizzata allora viene impostata come reg da cancellare
-                                if (oldRegU != null)
-                                    toDeleteRegs.Add(oldRegU);
-
-                                #endregion
+                                
                             }
                             else
                             {
@@ -2464,440 +2996,82 @@ namespace PowerWeb.Modules
                                 IList<Dictionary<string, string>> currentValidationErrorsList = new List<Dictionary<string, string>>();
                                 currentValidationErrorsList.Add(validationErrors);
                                 EditErrorMessage = "Richiesta autorizzata maggiore dell'orario del collaboratore";
-                                errorByColId.Add(EditErrorMessage, currentValidationErrorsList);
-                                
-                            }
-                        }
-                    }
-                }
-                else {
-                    var dates = tmpReg_V.Note_Reg.Split('-');
-                    DateTime from = DateTime.Parse(dates[0] + " 00:00:00");
-                    DateTime to = DateTime.Parse(dates[1] + " 23:59:59");
-                    List<Reg_V> tmpRegvs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Motivazione_Reg_Id == tmpReg_V.Motivazione_Reg_Id && r.Col_Id == tmpReg_V.Col_Id && (r.Data_Reg.Value >= from && r.Data_Reg.Value <= to)).ToList();
-                    regVsToCheck.AddRange(tmpRegvs);
-                    int conferma = 0;
-
-                    foreach (var regv in regVsToCheck)
-                    {
-                        Dictionary<string, string> validationErrors = new Dictionary<string, string>();
-
-                        #region Check RegE
-
-                        // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
-                        int regEId = 0;
-                        DateTime origDateE = DateTime.MinValue;
-
-                        // generazione della reg in entrata utilizzata per la modifica e della reg attuale nel repository
-                        Reg newRegE = RepoManager.RegRepo.Init();
-
-                        // recupero la vecchia reg solamente se non si tratta di un nuovo inserimento
-                        Reg oldRegE = null;
-                        if (regv.RegE != 0)
-                        {
-                            oldRegE = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegE);
-
-                            // viene verificato se la reg nel repository ha una data, eventualmente utilizzata per una rielaborazione anche di quel giorno
-                            if (oldRegE.Registrazione_Data_Ora_Fis_Reg != null)
-                                toElaborateDates.Add(oldRegE.Registrazione_Data_Ora_Fis_Reg.Date);
-
-                            regEId = regv.RegE;
-                            origDateE = oldRegE.Registrazione_Data_Ora_Orig_Reg;
-                        }
-                        else
-                        {
-                            // se si tratta di un nuovo record allora do in pasto all'elaborate la data e ora d'entrata.
-                            toElaborateDates.Add(regv.Data_Ora_Fis_E.Date);
-                        }
-
-
-                        // se la reg in elaborazione ha una data ora di entrata valida, viene impostata sulla nova reg in entrata di appoggio
-                        if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_E != null &&
-                            regv.Data_Ora_Fis_E != DateTime.MinValue)
-                        {
-                            newRegE.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
-                                regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_E.Hour,
-                                regv.Data_Ora_Fis_E.Minute, regv.Data_Ora_Fis_E.Second);
-                        }
-
-                        // impostazioni dei dati della registrazione in entrata utilizzata per la modifica
-                        newRegE.Cant_Id = regv.Cant_Id;
-                        newRegE.Col_Id = regv.Col_Id;
-                        newRegE.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
-                        newRegE.Registrazione_Data_Ora_Fig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                        newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                        newRegE.Fru_Id = regv.Fru_Id;
-                        newRegE.Pru_Id = regv.Pru_Id;
-                        newRegE.Custom_Data_Reg = oldRegE != null ? oldRegE.Custom_Data_Reg : null;
-                        newRegE.Registrazione_Stato_Reg = (int)RegStateEnum.Ass;
-                        newRegE.Registrazione_Tipo_Reg = (int)RegTypeEnum.Duration;
-                        newRegE.Rettifica_Durata = Convert.ToInt32(oldRegE.Rettifica_Durata);
-
-                        // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
-                        if (oldRegE != null)
-                            RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegE, oldRegE);
-
-                        // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
-                        newRegE.Registrazione_Bloccata = regv.Registrazione_Bloccata;
-
-                        // alla reg_v viene appiccicato il relativo flag di entrata/uscita
-                        newRegE.Flag_EU_Reg = regv.EntrataEU;
-
-                        // se si tratta di una registrazione nuova allora:
-                        // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
-                        // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
-                        if (newRegE.Reg_Id == 0)
-                        {
-                            newRegE.Registrazione_Data_Ora_Fis_Reg = regv.Data_Ora_Fis_E;
-                            newRegE.Registrazione_Data_Ora_Orig_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                        }
-
-                        #endregion
-
-                        #region Check RegU
-
-                        // generazione della reg in uscita di appoggio
-                        Reg newRegU = RepoManager.RegRepo.Init();
-                        Reg oldRegU = null;
-
-                        // inizializzazione delle variabili utilizzate nella valutazione delle date/ore origine
-                        int regUId = 0;
-                        DateTime origDateU = DateTime.MinValue;
-
-                        // se la regv in elaborazione ha una data e ora di uscita valida
-                        if (regv.Data_Ora_Fis_U != null && regv.Data_Ora_Fis_U != DateTime.MinValue)
-                        {
-
-                            // se non si tratta di una nuova reg allora viene recuperata dal repository la reg in uscita con lo stesso codice
-                            if (regv.RegU != null)
-                            {
-                                oldRegU = RepoManager.RegRepo.Single(reg => reg.Reg_Id == regv.RegU);
-
-                                // se la reg in uscita presa dal repository ha una data in uscita valida allora la si aggiunge all'elenco di date da rielaborare
-                                if (oldRegU.Registrazione_Data_Ora_Fis_Reg != null)
-                                    toElaborateDates.Add(oldRegU.Registrazione_Data_Ora_Fis_Reg.Date);
-
-                                regUId = oldRegU.Reg_Id;
-
-                                origDateU = oldRegU.Registrazione_Data_Ora_Orig_Reg;
-                            }
-
-
-                            // se la regv in elaborazione ha una data/ora di uscita valida viene impostata sulla nuova reg in uscita utilizzata per la modifica
-                            if (regv.Data_Reg != null && regv.Data_Reg != DateTime.MinValue && regv.Data_Ora_Fis_U != null &&
-                                regv.Data_Ora_Fis_U != DateTime.MinValue)
-                            {
-                                newRegU.Registrazione_Data_Ora_Fis_Reg = new DateTime(regv.Data_Reg.Value.Year,
-                                    regv.Data_Reg.Value.Month, regv.Data_Reg.Value.Day, regv.Data_Ora_Fis_U.Value.Hour,
-                                    regv.Data_Ora_Fis_U.Value.Minute, regv.Data_Ora_Fis_U.Value.Second);
-                            }
-
-                            // inserimento dei valori nella nuova reg in uscita
-                            newRegU.Cant_Id = regv.Cant_Id;
-                            newRegU.Col_Id = regv.Col_Id;
-                            newRegU.Motivazione_Reg_Id = regv.Motivazione_Reg_Id;
-                            newRegU.Registrazione_Data_Ora_Fig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                            if (oldRegU != null)
-                            {
-                                newRegU.Fru_Id = oldRegU.Fru_Id;
-                                newRegU.Pru_Id = oldRegU.Pru_Id;
-                                newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
-
-                                // se è stato modificato il cantiere della registrazione allora si svuota anche la matricola unità fissa
-                                if (oldRegU != null)
-                                    RepoManager.RegRepo.ManageCantColChangesBeforeUpdate(newRegU, oldRegU);
-                            }
-                            else
-                            {
-                                newRegU.Fru_Id = null;
-                                newRegU.Pru_Id = null;
-                            }
-
-                            // alla reg viene impostato il fatto se è stata bloccata o meno dalla reg_v
-                            newRegU.Registrazione_Bloccata = regv.Registrazione_Bloccata;
-
-                            // alla reg_v viene appiccicato il relativo flag di entrata/uscita
-                            newRegU.Flag_EU_Reg = regv.UscitaEU;
-
-                            // se si tratta di una registrazione nuova allora:
-                            // 1. viene impostata la data/ora di registrazione fisica con quella presente nella regv
-                            // 2. viene forzata la data/ora originale uguale alla data e ora fisica.
-                            if (newRegU.Reg_Id == 0)
-                            {
-                                newRegU.Registrazione_Data_Ora_Fis_Reg = Convert.ToDateTime(regv.Data_Ora_Fis_U);
-                                newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                            }
-
-                            // se è impostato il notturno e la data/ora fisica d'uscita è inferirore a quella in entrata si verifica la variabile
-                            // di stesso giorno e caso mai si aggiunge un giorno
-                            if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno &&
-                                RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.None && RepoManager.ParamRepo.ParametersRow.TipoNotturno != (int)NocturneTypeEnum.Disabled)
-                            {
-                                if (regv.Data_Ora_Fis_U < regv.Data_Ora_Fis_E &&
-                                    regv.Data_Ora_Fis_U.Value.TimeOfDay > regv.Data_Reg.Value.TimeOfDay)
-                                    // viene aggiunto un giorno solamente se non si è all'interno dello stesso giorno
-                                    if (regv.IsUTimeSameDayE)
-                                    {
-                                        newRegU.Registrazione_Data_Ora_Fis_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg.AddDays(1);
-                                        // se si tratta di una nuova registrazione viene reimpostata anche la data/ora originale
-                                        if (newRegU.Reg_Id == 0)
-                                            newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                                    }
-                            }
-
-                            // assegnazione alla reg in uscita del relative record number della reg in entrata
-                            newRegU.ParentReg = newRegE;
-
-                            newRegU.DisAbilitazione_Reg = false;
-                            newRegU.Registrazione_Data_Ora_Orig_Reg = newRegU.Registrazione_Data_Ora_Fis_Reg;
-                        }
-                        else
-                        {
-                            // se la regv non ha una valida data/ora d'uscita allora
-                            // viene recuperata la vecchia reg in uscita
-                            oldRegU = RepoManager.RegRepo.SingleOrDefault(rv => rv.Reg_Id == regv.RegU);
-
-                            // e se presente viene marcata per la cancellazione
-                            if (oldRegU != null)
-                                toDeleteRegs.Add(oldRegU);
-
-                            // in caso non abbia una reg in uscita anche la nuova regu va impostata a null per non essere aggiunta
-                            newRegU = null;
-                        }
-
-                        #endregion
-
-                        #region Check RegV
-
-                        // se la regv in elaborazione ha un codice collaboratore non già inserito in lista, lo si aggiunge per gestione dell'elaborate 
-                        if (regv.Col_Id != 0 && regv.Col_Id != null && !colIds.Contains(regv.Col_Id.Value))
-                            colIds.Add(regv.Col_Id.Value);
-
-                        // sono forzate sulla regv da checcare l'ora di entrata e uscita fisica così da evitare
-                        // mancati controlli per la presenza di min value precedentemente inseriti
-                        regv.Data_Ora_Fis_E = newRegE.Registrazione_Data_Ora_Fis_Reg;
-                        if (newRegU != null)
-                            regv.Data_Ora_Fis_U = newRegU.Registrazione_Data_Ora_Fis_Reg;
-
-                        #endregion
-
-                        #region Manage Regs orig date
-
-                        // è calcolato il fatto che si sta elaborando un'uscita nello stesso giorno
-                        bool isSameDay = true;
-                        // se non c'è il notturno è sicuramente true
-                        if (RepoManager.ParamRepo.ParametersRow.Abilita_Notturno && (RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.OverMidnight || RepoManager.ParamRepo.ParametersRow.TipoNotturno == (int)NocturneTypeEnum.Duration))
-                            isSameDay = regv.IsUTimeSameDayE;
-
-                        // gestione della data/ora originale delle reg 
-                        RepoManager.RegRepo.ManageOrigDates(newRegE, regEId, origDateE, newRegU, regUId, origDateU, isSameDay);
-
-                        #endregion
-
-                        #region Manage Blocking regs
-
-                        // gestione del codice di accoppiamento per le reg bloccate
-                        RepoManager.RegRepo.PerformBlockedRegsCouple(newRegE, newRegU, regv.RegE);
-
-                        #endregion
-
-                        Tab_Decod motRichiesta = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == oldRegE.Motivazione_Reg_Id);
-                        string codNuovaRichiesta = "";
-                        var tmpRich = motRichiesta.Decodifica_Tab.Split(' ');
-                        for (int i = 1; i < tmpRich.Length; i++)
-                        {
-                            if (i != 1)
-                            {
-                                codNuovaRichiesta = codNuovaRichiesta + " " + tmpRich[i];
-                            }
-                            else
-                            {
-                                codNuovaRichiesta += tmpRich[i];
-                            }
-
-                        }
-                        if (!codNuovaRichiesta.Contains("Ferie"))
-                            conferma = 1;
-
-                        Tab_Decod mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == codNuovaRichiesta);
-
-                        newRegE.Motivazione_Reg_Id = mot.Tab_Decod_Id;
-                        Col cols = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
-                        bool isOrario = true;
-                        if (cols.Tab_Orari_Tipo_Id != null)
-                        {
-                            Tab_Orari orarioFinale = new Tab_Orari();
-                            Tab_Orari_Tipo tipoOr = RepoManager.Tab_OrariTipoRepo.FirstOrDefault(td => td.Tab_Orari_Tipo_Id == cols.Tab_Orari_Tipo_Id);
-                            var orari = RepoManager.Tab_OrariRepo.GetAllQueryable(o => o.Tab_Orari_Tipo_Id == tipoOr.Tab_Orari_Tipo_Id).GroupBy(or => or.Data_Inizio).ToList();
-                            if (orari.Count > 0)
-                            {
-                                foreach (var singoloOrario in orari.Last())
+                                if (errorByColId.Count == 0) 
                                 {
-                                    switch (newRegE.Registrazione_Data_Ora_Fis_Reg.DayOfWeek)
-                                    {
-                                        case DayOfWeek.Monday:
-                                            if (singoloOrario.G1)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                        case DayOfWeek.Tuesday:
-                                            if (singoloOrario.G2)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                        case DayOfWeek.Wednesday:
-                                            if (singoloOrario.G3)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                        case DayOfWeek.Thursday:
-                                            if (singoloOrario.G4)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                        case DayOfWeek.Friday:
-                                            if (singoloOrario.G5)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                        case DayOfWeek.Saturday:
-                                            if (singoloOrario.G6)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                        case DayOfWeek.Sunday:
-                                            if (singoloOrario.G7)
-                                            {
-                                                orarioFinale = singoloOrario;
-                                            }
-                                            break;
-                                    }
-                                }
-                                if (orarioFinale != null)
-                                {
-                                    var durataOrario = orarioFinale.Durata_Minuti;
-                                    double durataRegistrazione = 0;
-                                    if (newRegU != null)
-                                    {
-                                        durataRegistrazione = (newRegU.Registrazione_Data_Ora_Fis_Reg - newRegE.Registrazione_Data_Ora_Fis_Reg).TotalMinutes;
-                                    }
-                                    else 
-                                    {
-                                        durataRegistrazione = newRegE.Rettifica_Durata.Value;
-                                    }
-
-                                    if (durataRegistrazione > durataOrario)
-                                    {
-                                        isOrario = false;
-                                    }
+                                    errorByColId.Add(EditErrorMessage, currentValidationErrorsList);
                                 }
                             }
                         }
 
-                        if (newRegU != null)
-                            newRegU.Motivazione_Reg_Id = mot.Tab_Decod_Id;
-
-                        if (isOrario) 
-                        {
-                            #region Add Checked Regs To updates list
-                            // controllo se nella timbratura è stata impostata la motivazione ferie o permesso, in questo caso provedo a processarle
-                            toUpdateRegs.Add(newRegE);
-
-                            // aggiunta la nuova reg in uscita tra quelle da aggiungere (solo se valorizzata)
-                            if (newRegU != null)
-                                toUpdateRegs.Add(newRegU);
-
-                            if (oldRegE != null)
-                                toDeleteRegs.Add(oldRegE);
-
-                            // se la vecchia reg in uscita è valorizzata allora viene impostata come reg da cancellare
-                            if (oldRegU != null)
-                                toDeleteRegs.Add(oldRegU);
-
-                            #endregion
-                            Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
-                            InviaConferma(conferma, col, from, to);
-                        }
-                        else
-                        {
-                            //SetErrorMessageDictionary(regv, errorByColId, validationErrors);
-                            IList<Dictionary<string, string>> currentValidationErrorsList = new List<Dictionary<string, string>>();
-                            currentValidationErrorsList.Add(validationErrors);
-                            EditErrorMessage = "Richiesta autorizzata maggiore dell'orario del collaboratore";
-                            if (errorByColId.Count == 0) 
-                            {
-                                errorByColId.Add(EditErrorMessage, currentValidationErrorsList);
-                            }
-                        }
+                        InviaConferma(conferma, col1, from, to, motNew, tmpMot1);
                     }
-                }
 
-                #region Elaborate all modified regs
+                    #region Elaborate all modified regs
 
-                // se non ci sono stati errori nell'elaborazione
-                if (errorByColId.Count == 0)
-                {
-                    // cancellazione di tutte le reg da cancellare
-                    RepoManager.RegRepo.Delete(toDeleteRegs, true);
-
-                    // aggiunta di tutte le reg da aggiungere                   
-                    RepoManager.RegRepo.Add(toUpdateRegs, true);
-
-                    // inizializzazione delle date di inizio e fine elaborate
-                    DateTime startElabDate = DateTime.MinValue;
-                    DateTime endElabDate = DateTime.MinValue;
-
-                    // ciclo di elaborazione delle date da rielaborare (gestendo solo i valori univoci
-                    foreach (var currentDate in toElaborateDates.Distinct())
+                    // se non ci sono stati errori nell'elaborazione
+                    if (errorByColId.Count == 0)
                     {
-                        //-----------------Lettura delle REG del Gruppo NEW e del GRuppo OLD da rielaborare (Union delle due) --------------------
+                        // cancellazione di tutte le reg da cancellare
+                        RepoManager.RegRepo.Delete(toDeleteRegs, true);
 
-                        //Le Ore dei Campi Date vengono sempre inizializzate a ZERO dal sistema
-                        //Occorre quindi selezionare SEMPRE x DATA MINORE della DATA con ORE ZERO del GG Successivo
-                        //Così vengono prese tutte le REG DEL GIORNO (per non mettere <= 23.59.59)  
-                        //Normalmente bastano quelle del Giorno (per cui i GG in più sono 1 per via dell'Ora 00:00:00)
-                        startElabDate = currentDate;
-                        endElabDate = currentDate.AddDays(1);
+                        // aggiunta di tutte le reg da aggiungere                   
+                        RepoManager.RegRepo.Add(toUpdateRegs, true);
 
-                        // gestione delle date di inizio/fine periodo in base alla configurazione del notturno
-                        BusinessService.ManageNocturneStartEndDate(ref startElabDate, ref endElabDate);
+                        // inizializzazione delle date di inizio e fine elaborate
+                        DateTime startElabDate = DateTime.MinValue;
+                        DateTime endElabDate = DateTime.MinValue;
 
-                        //leggo Tutte le REG NEW Necessarie alla Successiva ELABORATE
-                        List<Reg> toElaborateRegs = RepoManager.RegRepo.Find(reg => reg.Col_Id.HasValue && colIds.Contains(reg.Col_Id.Value) &&
-                                                            (reg.Registrazione_Data_Ora_Fis_Reg >= startElabDate &&
-                                                             reg.Registrazione_Data_Ora_Fis_Reg < endElabDate)).ToList();
+                        // ciclo di elaborazione delle date da rielaborare (gestendo solo i valori univoci
+                        foreach (var currentDate in toElaborateDates.Distinct())
+                        {
+                            //-----------------Lettura delle REG del Gruppo NEW e del GRuppo OLD da rielaborare (Union delle due) --------------------
+
+                            //Le Ore dei Campi Date vengono sempre inizializzate a ZERO dal sistema
+                            //Occorre quindi selezionare SEMPRE x DATA MINORE della DATA con ORE ZERO del GG Successivo
+                            //Così vengono prese tutte le REG DEL GIORNO (per non mettere <= 23.59.59)  
+                            //Normalmente bastano quelle del Giorno (per cui i GG in più sono 1 per via dell'Ora 00:00:00)
+                            startElabDate = currentDate;
+                            endElabDate = currentDate.AddDays(1);
+
+                            // gestione delle date di inizio/fine periodo in base alla configurazione del notturno
+                            BusinessService.ManageNocturneStartEndDate(ref startElabDate, ref endElabDate);
+
+                            //leggo Tutte le REG NEW Necessarie alla Successiva ELABORATE
+                            List<Reg> toElaborateRegs = RepoManager.RegRepo.Find(reg => reg.Col_Id.HasValue && colIds.Contains(reg.Col_Id.Value) &&
+                                                                (reg.Registrazione_Data_Ora_Fis_Reg >= startElabDate &&
+                                                                 reg.Registrazione_Data_Ora_Fis_Reg < endElabDate)).ToList();
 
 
-                        // elaborazione delle registrazioni recuperate
-                        if (toElaborateRegs.Any())
-                            RepoManager.RegRepo.Elaborate(toElaborateRegs, startElabDate, endElabDate, true, false);
+                            // elaborazione delle registrazioni recuperate
+                            if (toElaborateRegs.Any())
+                                RepoManager.RegRepo.Elaborate(toElaborateRegs, startElabDate, endElabDate, true, false);
+                        }
                     }
-                }
 
-                // se si sono verificati degli errori, vengono visualizzati a video
-                if (errorByColId.Count > 0)
-                    //EditErrorMessage = StringFromDictionary(validationErrors);
-                    EditErrorMessage = GetErrorMessageFromDictionary(errorByColId);
-                else
+                    // se si sono verificati degli errori, vengono visualizzati a video
+                    if (errorByColId.Count > 0)
+                        //EditErrorMessage = StringFromDictionary(validationErrors);
+                        EditErrorMessage = GetErrorMessageFromDictionary(errorByColId);
+                    else
+                    {
+                        // se non ci sono stati errori nel salvataggio allora segnalo che il primo salvataggio è avvenuto
+                        PrimoSalvataggio = true;
+
+                        // se l'elaborazione si è conclusa senza errori allora si imposta a null la proprietà che
+                        // ne permette la visualizzazione sulla griglia
+                        EditErrorMessage = null;
+
+                        // al termine delle operazioni resetto i data source
+                        ResetDataSourceAndBind(true);
+                    }
+
+                    #endregion
+
+                }
+                catch (Exception ex)
                 {
-                    // se non ci sono stati errori nel salvataggio allora segnalo che il primo salvataggio è avvenuto
-                    PrimoSalvataggio = true;
-
-                    // se l'elaborazione si è conclusa senza errori allora si imposta a null la proprietà che
-                    // ne permette la visualizzazione sulla griglia
-                    EditErrorMessage = null;
-
-                    // al termine delle operazioni resetto i data source
-                    ResetDataSourceAndBind(true);
+                    _log.ErrorFormat("Errore nell'accettazione della richiesta {0}", ex.Message);
                 }
-
-                #endregion
 
             } else if (e.Parameters.StartsWith("deleteRequest")) {
                 //Dictionary<string, string> errors = new Dictionary<string, string>();
@@ -2934,7 +3108,21 @@ namespace PowerWeb.Modules
 
                 if (!tmpReg_V.Note_Reg.Contains("-"))
                 {
+                    int newMet = 0;
+                    int conferma = 3;
                     regVsToCheck.Add(tmpReg_V);
+                    Tab_Decod reqMot = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Tab_Decod_Id == tmpReg_V.Motivazione_Reg_Id);
+                    Tab_Decod mot = default(Tab_Decod);
+                    if (reqMot.Campo1_Tab != null)
+                    {
+                        newMet = 1;
+                        int nuovaMotId = Int32.Parse(reqMot.Campo1_Tab);
+                        Tab_Decod motAcc = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == nuovaMotId);
+                        string codNuovaRichiesta = motAcc.Decodifica_Tab;
+                        var tmpMot = codNuovaRichiesta.Split('-');
+                        mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == tmpMot[0]);
+                        conferma = 1;
+                    }
 
                     Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
 
@@ -2954,16 +3142,30 @@ namespace PowerWeb.Modules
 
                         #endregion
                     }
-                    InviaConferma(3, col, tmpReg_V.Data_Reg.Value, tmpReg_V.Data_Reg.Value);
+                    InviaConferma(conferma, col, tmpReg_V.Data_Reg.Value, tmpReg_V.Data_Reg.Value, newMet,mot);
                 }
                 else
                 {
+                    int newMet = 0;
+                    int conferma = 2;
                     var dates = tmpReg_V.Note_Reg.Split('-');
                     DateTime from = DateTime.Parse(dates[0] + " 00:00:00");
                     DateTime to = DateTime.Parse(dates[1] + " 23:59:59");
                     Col col = RepoManager.ColRepo.Single(c => c.Col_Id == tmpReg_V.Col_Id);
                     List<Reg_V> tmpRegvs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Motivazione_Reg_Id == tmpReg_V.Motivazione_Reg_Id && r.Col_Id == tmpReg_V.Col_Id && (r.Data_Reg.Value >= from && r.Data_Reg.Value <= to)).ToList();
                     regVsToCheck.AddRange(tmpRegvs);
+                    Tab_Decod reqMot = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Tab_Decod_Id == tmpReg_V.Motivazione_Reg_Id);
+                    Tab_Decod mot = default(Tab_Decod);
+                    if (reqMot.Campo1_Tab != null)
+                    {
+                        newMet = 1;
+                        int nuovaMotId = Int32.Parse(reqMot.Campo1_Tab);
+                        Tab_Decod motAcc = RepoManager.Tab_DecodRepo.Single(td => td.Tab_Decod_Id == nuovaMotId);
+                        string codNuovaRichiesta = motAcc.Decodifica_Tab;
+                        var tmpMot = codNuovaRichiesta.Split('-');
+                        mot = RepoManager.Tab_DecodRepo.Single(td => td.Decodifica_Tab == tmpMot[0]);
+                        conferma = 1;
+                    }
 
                     foreach (var regv in regVsToCheck)
                     {
@@ -2982,7 +3184,7 @@ namespace PowerWeb.Modules
 
                         #endregion
                     }
-                    InviaConferma(2,col,from,to);
+                    InviaConferma(conferma,col,from,to, newMet,mot);
                 }
 
                 #region Elaborate all modified regs
@@ -3054,7 +3256,7 @@ namespace PowerWeb.Modules
         //@param
         //esito: in base al valore vado a impostare il titolo e il testo della mail
         //0: Ferie accettate    1: Permesso accettato   2: Ferie riufiutate   3: Permesso riufiutato    4: Periodo di ferie accettato   5: Periodo di permessoa accettato
-        public string InviaConferma(int esito, Col cols, DateTime from, DateTime to)
+        public string InviaConferma(int esito, Col cols, DateTime from, DateTime to, int nuovoMet, Tab_Decod mot)
         {
             string titoloMail = "";
             string mailTo = RepoManager.ParamRepo.ParametersRow.CompanyEmail;
@@ -3062,27 +3264,63 @@ namespace PowerWeb.Modules
             //Prepara il body della mail caricando il css
             string mailBody = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; \">",
                    errorMessage = "";
-            switch (esito)
+            if (nuovoMet == 1)
             {
-                case 0:
-                    titoloMail = "PowerWeb - Ferie accettate";
-                    mailBody += "<p>Le ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-"+to.ToString("dddd d MMMM yyyy")+" richieste dal collaboratore " + cols.CognomeNome_Col + " sono state accettate</p>";
-                    break;
-                case 1:
-                    titoloMail = "PowerWeb - Permesso accettato";
-                    mailBody += "<p>Il permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato accettato </p>";
-                    break;
-                case 2:
-                    titoloMail = "PowerWeb - Ferie rifiutate";
-                    mailBody += "<p>Le ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono state rifiutate</p>";
-                    break;
-                case 3:
-                    titoloMail = "PowerWeb - Permesso rifiutato";
-                    mailBody += "<p>Il permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato rifiutato </p>";
-                    break;
-                default:
-                    break;
+                string desc = mot.Decodifica_Tab;
+                string[] splitDesc = mot.Decodifica_Tab.Split('-');
+                switch (esito)
+                {
+                    case 0:
+                        titoloMail = "PowerWeb - Richiesta accettata";
+                        if (splitDesc[1] == "P")
+                        {
+                            mailBody += "<p>La richiesta di " + splitDesc[0] + " per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono state accettate</p>";
+                        }
+                        else 
+                        {
+                            mailBody += "<p>La richiesta di " + splitDesc[0] + " per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato accettato </p>";
+                        } 
+                        break;
+                    case 1:
+                        titoloMail = "PowerWeb - Richiesta rifiutata";
+                        if (splitDesc[1] == "P")
+                        {
+                            mailBody += "<p>La richiesta di " + splitDesc[0] + " per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " è stata rifiutata</p>";
+                        }
+                        else
+                        {
+                            mailBody += "<p>La richiesta di " + splitDesc[0] + " per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stata rifiutata </p>";
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+            else 
+            {
+                switch (esito)
+                {
+                    case 0:
+                        titoloMail = "PowerWeb - Ferie accettate";
+                        mailBody += "<p>Le ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono state accettate</p>";
+                        break;
+                    case 1:
+                        titoloMail = "PowerWeb - Permesso accettato";
+                        mailBody += "<p>Il permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato accettato </p>";
+                        break;
+                    case 2:
+                        titoloMail = "PowerWeb - Ferie rifiutate";
+                        mailBody += "<p>Le ferie per il periodo " + from.ToString("dddd d MMMM yyyy") + "-" + to.ToString("dddd d MMMM yyyy") + " richieste dal collaboratore " + cols.CognomeNome_Col + " sono state rifiutate</p>";
+                        break;
+                    case 3:
+                        titoloMail = "PowerWeb - Permesso rifiutato";
+                        mailBody += "<p>Il permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato rifiutato </p>";
+                        break;
+                    default:
+                        break;
+                }
+            }
+                
 
             mailBody += "</div>";
 

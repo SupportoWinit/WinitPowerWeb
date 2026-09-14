@@ -217,6 +217,7 @@
     <Compile Include="DataClasses\FlutterAppDTOs\FlutterAppReg.cs" />
     <Compile Include="DataClasses\FlutterAppDTOs\FlutterAppRegOld.cs" />
     <Compile Include="DataClasses\GeoBadgeDTOs\GeoBadgeReg.cs" />
+    <Compile Include="DataClasses\SupportClasses\ExportColCantDur.cs" />
     <Compile Include="DataClasses\SupportClasses\ExportColCant.cs" />
     <Compile Include="DataClasses\SupportClasses\ExportColCantInt.cs" />
     <Compile Include="DataClasses\SupportClasses\RegsByDay.cs" />
@@ -524,6 +525,10 @@
     <Compile Include="Synchronization\SynchronizatioManager\ISynchronizationManager.cs" />
     <Compile Include="Synchronization\Interfaces\ISynchronizator.cs" />
     <Compile Include="Synchronization\Synchronizators\Synchronizator.cs" />
+    <Compile Include="XmlExportsData\Update\ContentClasses.cs" />
+    <Compile Include="XmlExportsData\Update\Document.cs" />
+    <Compile Include="XmlExportsData\Update\UpdateWriter.cs" />
+    <Compile Include="XmlExportsData\Update\XmlUpdateConstants.cs" />
     <Compile Include="XmlExportsData\Manalu\XmlManaluConstants.cs" />
     <Compile Include="XmlExportsData\Perfetto\ContentClasses.cs" />
     <Compile Include="XmlExportsData\Perfetto\Envelope.cs" />

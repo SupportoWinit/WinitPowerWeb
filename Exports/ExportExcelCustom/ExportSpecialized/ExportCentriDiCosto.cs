@@ -168,9 +168,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     {
                         if (col.Qualifica_Col != "0")
                         {
+                            Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
                             var regs = RepoManager.Reg_VRepo.GetAllQueryable(regv => regv.Col_Id == col.Col_Id
                             && (regv.Data_Reg >= startMonth && regv.Data_Reg <= endMonth)
-                            && regv.Registrazione_Tipo_Reg == 0 && (regv.Codice_Commessa_Can != "Hotel"), true);
+                            && regv.Registrazione_Tipo_Reg == 0 && (regv.Codice_Commessa_Can != "Hotel" && regv.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id), true);
                             if (regs.Count() > 0)
                             {
                                 cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCentroDiCosto(ExportDate,
@@ -430,7 +431,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     }
                     double tmpBaseDuration = baseDuration;
                     double tmpPrint = print;
-                    baseDuration = baseDuration * 60;
+                    //baseDuration = baseDuration * 60;
                     print = print * 60;
                     double finale = 0.0;
                     string valueToPrint = "";
@@ -452,61 +453,184 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         {
                             if (ieri * 60 > 0)
                             {
-                                finale = tmpIeri + tmpPrint;
-                                if (finale % 1 > 0.9)
+                                //finale = tmpIeri + tmpPrint;
+                                //if (finale % 1 > 0.9)
+                                //{
+                                //    double tmp = 1 - finale % 1;
+                                //    finale += tmp;
+                                //}
+                                //else if (finale % 1 > 0.7)
+                                //{
+                                //    double tmp = 0.75 - finale % 1;
+                                //    finale += tmp;
+                                //}
+                                //else if (finale % 1 > 0.4)
+                                //{
+                                //    double tmp = 0.5 - finale % 1;
+                                //    finale += tmp;
+                                //}
+                                //else if (finale % 1 > 0.2)
+                                //{
+                                //    double tmp = 0.25 - finale % 1;
+                                //      += tmp;
+                                //}
+                                double totaleGiornaliero = baseDuration;
+                                if (totaleGiornaliero % 1 > 0.9)
                                 {
-                                    double tmp = 1 - finale % 1;
-                                    finale += tmp;
+                                    double tmp = 1 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
                                 }
-                                else if (finale % 1 > 0.7)
+                                else if (totaleGiornaliero % 1 > 0.75)
                                 {
-                                    double tmp = 0.75 - finale % 1;
-                                    finale += tmp;
+                                    double tmp = totaleGiornaliero % 1 - 0.75;
+                                    totaleGiornaliero -= tmp;
                                 }
-                                else if (finale % 1 > 0.4)
+                                else if (totaleGiornaliero % 1 > 0.65)
                                 {
-                                    double tmp = 0.5 - finale % 1;
-                                    finale += tmp;
+                                    double tmp = 0.75 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
                                 }
-                                else if (finale % 1 > 0.2)
+                                else if (totaleGiornaliero % 1 > 0.5)
                                 {
-                                    double tmp = 0.25 - finale % 1;
-                                    finale += tmp;
+                                    double tmp = totaleGiornaliero % 1 - 0.5;
+                                    totaleGiornaliero -= tmp;
                                 }
-                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(finale * 60));
+                                else if (totaleGiornaliero % 1 > 0.4)
+                                {
+                                    double tmp = 0.5 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
+                                }
+                                else if (totaleGiornaliero % 1 > 0.25)
+                                {
+                                    double tmp = totaleGiornaliero % 1 - 0.25;
+                                    totaleGiornaliero -= tmp;
+                                }
+                                else if (totaleGiornaliero % 1 > 0.15)
+                                {
+                                    double tmp = 0.25 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
+                                }
+                                else if (totaleGiornaliero % 1 > 0.0)
+                                {
+                                    double tmp = totaleGiornaliero % 1;
+                                    totaleGiornaliero -= tmp;
+                                }
+                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(totaleGiornaliero * 60));
                             }
                         }
                         else {
                             if (ieri * 60 > 0)
                             {
-                                finale = tmpIeri - tmpPrint;
-                                if (finale % 1 > 0.9)
+                                //finale = tmpIeri - tmpPrint;
+                                //if (finale % 1 > 0.9)
+                                //{
+                                //    double tmp = 1 - finale % 1;
+                                //    finale -= tmp;
+                                //}
+                                //else if (finale % 1 > 0.7)
+                                //{
+                                //    double tmp = 0.75 - finale % 1;
+                                //    finale -= tmp;
+                                //}
+                                //else if (finale % 1 > 0.4)
+                                //{
+                                //    double tmp = 0.5 - finale % 1;
+                                //    finale -= tmp;
+                                //}
+                                //else if (finale % 1 > 0.2)
+                                //{
+                                //    double tmp = 0.25 - finale % 1;
+                                //    finale -= tmp;
+                                //}
+                                double totaleGiornaliero = baseDuration;
+                                if (totaleGiornaliero % 1 > 0.9)
                                 {
-                                    double tmp = 1 - finale % 1;
-                                    finale -= tmp;
+                                    double tmp = 1 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
                                 }
-                                else if (finale % 1 > 0.7)
+                                else if (totaleGiornaliero % 1 > 0.75)
                                 {
-                                    double tmp = 0.75 - finale % 1;
-                                    finale -= tmp;
+                                    double tmp = totaleGiornaliero % 1 - 0.75;
+                                    totaleGiornaliero -= tmp;
                                 }
-                                else if (finale % 1 > 0.4)
+                                else if (totaleGiornaliero % 1 > 0.65)
                                 {
-                                    double tmp = 0.5 - finale % 1;
-                                    finale -= tmp;
+                                    double tmp = 0.75 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
                                 }
-                                else if (finale % 1 > 0.2)
+                                else if (totaleGiornaliero % 1 > 0.5)
                                 {
-                                    double tmp = 0.25 - finale % 1;
-                                    finale -= tmp;
+                                    double tmp = totaleGiornaliero % 1 - 0.5;
+                                    totaleGiornaliero -= tmp;
                                 }
-                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(finale * 60));
+                                else if (totaleGiornaliero % 1 > 0.4)
+                                {
+                                    double tmp = 0.5 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
+                                }
+                                else if (totaleGiornaliero % 1 > 0.25)
+                                {
+                                    double tmp = totaleGiornaliero % 1 - 0.25;
+                                    totaleGiornaliero -= tmp;
+                                }
+                                else if (totaleGiornaliero % 1 > 0.15)
+                                {
+                                    double tmp = 0.25 - totaleGiornaliero % 1;
+                                    totaleGiornaliero += tmp;
+                                }
+                                else if (totaleGiornaliero % 1 > 0.0)
+                                {
+                                    double tmp = totaleGiornaliero % 1;
+                                    totaleGiornaliero -= tmp;
+                                }
+                                valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(totaleGiornaliero * 60));
                             }
                         }
                     }
                     else
                     {
-                        valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)baseDuration);
+                        double totaleGiornaliero = baseDuration;
+                        if (totaleGiornaliero % 1 > 0.9)
+                        {
+                            double tmp = 1 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.75)
+                        {
+                            double tmp = totaleGiornaliero % 1 - 0.75;
+                            totaleGiornaliero -= tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.65)
+                        {
+                            double tmp = 0.75 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.5)
+                        {
+                            double tmp = totaleGiornaliero % 1 - 0.5;
+                            totaleGiornaliero -= tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.4)
+                        {
+                            double tmp = 0.5 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.25)
+                        {
+                            double tmp = totaleGiornaliero % 1 - 0.25;
+                            totaleGiornaliero -= tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.15)
+                        {
+                            double tmp = 0.25 - totaleGiornaliero % 1;
+                            totaleGiornaliero += tmp;
+                        }
+                        else if (totaleGiornaliero % 1 > 0.0)
+                        {
+                            double tmp = totaleGiornaliero % 1;
+                            totaleGiornaliero -= tmp;
+                        }
+                        valueToPrint = FromTotalMinutesToFormattedTypeKomplett((int)(totaleGiornaliero * 60));
                         if (baseDuration == 0)
                         {
                             valueToPrint = "";

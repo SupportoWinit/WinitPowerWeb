@@ -280,8 +280,8 @@ namespace Business.Repository.Custom
             {
                 if (regUToProcessId == 0)
                 {
-                    regUToProcess.Pru_Id = null;
-                    regUToProcess.Fru_Id = null;
+                    regUToProcess.Pru_Id = regEToProcess.Pru_Id;// null;
+                    regUToProcess.Fru_Id = regEToProcess.Fru_Id;// null;
                     regUToProcess.Registrazione_Data_Ora_Orig_Reg = regEToProcess.Registrazione_Data_Ora_Fis_Reg.AddSeconds(-1);
                 }
             }
@@ -8129,8 +8129,7 @@ namespace Business.Repository.Custom
 
 
                                         // nelle registrazioni da gps la fru id è sempre a null
-                                        newReg.Fru_Id = null;
-
+                                        //newReg.Fru_Id = null;
                                         // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
                                         // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:
                                         // - sarà la matricola del dispositivo in caso il tipo di assegnazione configurata sia Cant o non imposta
@@ -8567,7 +8566,7 @@ namespace Business.Repository.Custom
                                         newReg.Stato_Attivita = 0;
 
                                         // nelle registrazioni da gps la fru id è sempre a null
-                                        newReg.Fru_Id = null;
+                                        //newReg.Fru_Id = null;
 
                                         // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
                                         // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:
@@ -8795,7 +8794,7 @@ namespace Business.Repository.Custom
 
 
                         // nelle registrazioni da gps la fru id è sempre a null
-                        newReg.Fru_Id = null;
+                        //newReg.Fru_Id = null;
 
                         // l'unità portatile è data dal dispositivo in caso di timbratura solo GPS;
                         // in caso invece di timbratura tag e GPS il dato dipende dalla configurazione:

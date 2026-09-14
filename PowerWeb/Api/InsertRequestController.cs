@@ -60,7 +60,14 @@ namespace PowerWeb.Api
                 try
                 {
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
-                    pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    if (ColId.Length == 10)
+                    {
+                        pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "" + ColId);
+                    }
+                    else
+                    {
+                        pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    }
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
                     var codicePru = "     " + ColId.ToString(); // o la proprietà giusta
 
@@ -166,7 +173,14 @@ namespace PowerWeb.Api
                 try
                 {
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
-                    pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    if (ColId.Length == 10)
+                    {
+                        pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "" + ColId);
+                    }
+                    else
+                    {
+                        pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    }
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
                     var codicePru = "     " + ColId.ToString(); // o la proprietà giusta
 
@@ -266,7 +280,14 @@ namespace PowerWeb.Api
                 try
                 {
                     //in base ai dati ricevuti tramite parmetro recupero le matricole e i relativi cantieri e collaboratori associati
-                    pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    if (ColId.Length == 10)
+                    {
+                        pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "" + ColId);
+                    }
+                    else 
+                    {
+                        pru = RepoManager.PruRepo.Single(p => p.Codice_Pru == "     " + ColId);
+                    }  
                     fru = RepoManager.FruRepo.Single(f => f.Codice_Fru == "MOTIV00001");
                     var codicePru = "     " + ColId.ToString(); // o la proprietà giusta
 

@@ -105,7 +105,15 @@ namespace Business.Repository.Custom
         /// <param name="filesOutputFolder">La cartella in cui salvare i dati preparati nell'export xml</param>
         /// <returns>Ritorna il percorso del file da ritornare al browser con i dati esportati</returns>
         string PrepareXmlExportToOrlando(IQueryable<Reg_V> regVsToProcess, string filesOutputFolder, DateTime fine);
-        
+
+        /// <summary>
+        /// Effettua l'esportazione xml delle registrazioni passate come parametro verso il programma di paghe update, restituendo per il download un file zip con i dati generati.
+        /// </summary>
+        /// <param name="regVsToProcess">Le Reg_V da processare nell'esportazione Xml.</param>
+        /// <param name="filesOutputFolder">La cartella in cui salvare i dati preparati nell'export xml</param>
+        /// <returns>Ritorna il percorso del file da ritornare al browser con i dati esportati</returns>
+        string PrepareXmlExportToUpdate(IQueryable<Reg_V> regVsToProcess, Dictionary<int, int> durataByCol, string filesOutputFolder, DateTime fine);
+
         /// <summary>
         /// Effettua l'esportazione xml delle registrazioni passate come parametro verso Manalu, restituendo per il download un file zip con i dati generati.
         /// </summary>

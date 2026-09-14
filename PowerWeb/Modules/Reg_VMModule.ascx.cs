@@ -901,9 +901,11 @@ namespace PowerWeb.Modules
             if (GridView.FilterExpression != "") 
             { 
                 currentDataGrid = RepoManager.Tab_DataGridRepo.GetAllQueryable(grid => grid.Layout_DataGrid.Contains(GridView.FilterExpression)).ToList().GroupBy(r => r.Nome_Layout);
-            } 
+            }
 
-            var listReg = currQueryable.ToList().OrderBy(r => r.Data_Reg);
+            var listReg = currQueryable
+            .OrderBy(r => r.Data_Reg)
+            .ToList();
             DateTime firstDate = DateTime.MinValue;
             DateTime lastReg = DateTime.MaxValue;
             if (listReg.Count() > 0) 
@@ -1066,6 +1068,14 @@ namespace PowerWeb.Modules
             if (cantRegE != default(Cant) && cantRegE.Tipologia_Can != "ATT")
                 currentRegENew.Activity_Evaluation = null;
 
+            var fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegENew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
+            int fruId = fruCants.Last().Fru_Id;
+            var fru = RepoManager.FruRepo.SingleOrDefault(f => f.Fru_Id == fruId);
+            currentRegENew.Fru_Id = fruId;
+            var pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegENew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
+            int pruId = pruCols.Last().Pru_Id;
+            var pru = RepoManager.PruRepo.SingleOrDefault(f => f.Pru_Id == pruId);
+            currentRegENew.Pru_Id = pruId;
             currentRegENew.Stato_Attivita = 1;
             //Aggiungo la REGE fra le REg da Trattare
             toAddRegsNew.Add(currentRegENew);
@@ -1138,7 +1148,9 @@ namespace PowerWeb.Modules
 
             // inizializzazione delle variabili che conterranno le date originali da salvare e riportare nelle reg nuove
             DateTime origDateE = DateTime.MinValue;
+            DateTime origFisE = DateTime.MinValue;
             DateTime origDateU = DateTime.MinValue;
+            DateTime origFisU = DateTime.MinValue;
 
             //Recupero gli ID delle REG di Entrata e Uscita (quello di Uscita la recupero da quella dell'entrate e potrebbe non esserci)
             var currentRegEId = Convert.ToInt32(e.Keys[KEYFIELDNAME]);
@@ -1152,6 +1164,8 @@ namespace PowerWeb.Modules
 
                 // se la reg u è presente allora viene salvata la sua data ora fisica originale
                 origDateU = currentRegUOld.Registrazione_Data_Ora_Orig_Reg;
+
+                origFisU = currentRegUOld.Registrazione_Data_Ora_Fis_Reg;
             }
 
             //Recupero la Data  della Registrazione 
@@ -1173,6 +1187,7 @@ namespace PowerWeb.Modules
 
             // viene salvata la data ora fisica originale della reg in entrata
             origDateE = currentRegEOld.Registrazione_Data_Ora_Orig_Reg;
+            origFisE = currentRegEOld.Registrazione_Data_Ora_Fis_Reg;
 
             if (currentRegUId != 0)
             {
@@ -1227,6 +1242,11 @@ namespace PowerWeb.Modules
             {
                 currentRegUNew = RepoManager.RegRepo.GetRegUFromNewValuesCoordinates(e.NewValues, currentRegUOld, currentRegUOld != null);
             }
+            DateTime tmpDate = new DateTime(origFisE.Year, origFisE.Month, origFisE.Day, origFisE.Hour, origFisE.Minute,0);
+            if (tmpDate == currentRegENew.Registrazione_Data_Ora_Fis_Reg) 
+            { 
+                currentRegENew.Registrazione_Data_Ora_Fis_Reg = origFisE;
+            }
             // gestione delle date origine sulle reg da processare
             RepoManager.RegRepo.ManageOrigDates(currentRegENew, currentRegEId, origDateE, currentRegUNew, currentRegUId, origDateU, isSameDay);
 
@@ -1266,7 +1286,14 @@ namespace PowerWeb.Modules
             if (cantRegE != default(Cant) && cantRegE.Tipologia_Can != "ATT")
                 currentRegENew.Activity_Evaluation = null;
 
-            currentRegENew.Stato_Attivita = 1;
+            if (currentRegENew.Registrazione_Data_Ora_Fis_Reg != currentRegEOld.Registrazione_Data_Ora_Fis_Reg || currentRegENew.Fru_Id != currentRegEOld.Fru_Id || currentRegENew.Pru_Id != currentRegEOld.Pru_Id)
+            {
+                currentRegENew.Stato_Attivita = 2;
+            }
+            else 
+                currentRegENew.Stato_Attivita = 0;
+            
+
             //Aggiungo la REGE fra le REg da Trattare
             toAddRegsNew.Add(currentRegENew);
 
@@ -1302,7 +1329,24 @@ namespace PowerWeb.Modules
                 if (cantRegU != default(Cant) && cantRegU.Tipologia_Can != "ATT")
                     currentRegUNew.Activity_Evaluation = null;
 
-                currentRegUNew.Stato_Attivita = 1;
+                if (currentRegUOld == null)
+                {
+                    currentRegUNew.Stato_Attivita = 1;
+                }
+                else 
+                {
+                    DateTime tmpDateU = new DateTime(origFisU.Year, origFisU.Month, origFisU.Day, origFisU.Hour, origFisU.Minute, 0);
+                    if (tmpDateU == currentRegUNew.Registrazione_Data_Ora_Fis_Reg)
+                    {
+                        currentRegUNew.Registrazione_Data_Ora_Fis_Reg = origFisU;
+                        currentRegUNew.Stato_Attivita = 0;
+                    }
+                    if (currentRegUNew.Registrazione_Data_Ora_Fis_Reg != currentRegUNew.Registrazione_Data_Ora_Fis_Reg || currentRegUNew.Fru_Id != currentRegUNew.Fru_Id || currentRegUNew.Pru_Id != currentRegUNew.Pru_Id)
+                    {
+                        currentRegUNew.Stato_Attivita = 2;
+                    }
+                }
+
                 //aggiungo la REGU nelle Reg da Trattare
                 toAddRegsNew.Add(currentRegUNew);
             }
@@ -2098,8 +2142,8 @@ namespace PowerWeb.Modules
                                 }
                                 else
                                 {
-                                    newRegU.Fru_Id = null;
-                                    newRegU.Pru_Id = null;
+                                    newRegU.Fru_Id = newRegE.Fru_Id;
+                                    newRegU.Pru_Id = newRegE.Pru_Id;
                                 }
 
                                 newRegU.ParentReg = newRegE;

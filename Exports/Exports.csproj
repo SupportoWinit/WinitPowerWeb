@@ -107,6 +107,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCantieri.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoCantiereIndennita.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCartellinoCantiere.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportAnalitica.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCdc.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCdcCol.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportCdcManutentori.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetItieffe.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetLampo.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleHalfHour.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleAmb.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleNoRegs.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimple.cs" />

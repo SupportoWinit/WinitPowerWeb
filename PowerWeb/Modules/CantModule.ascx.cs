@@ -15,6 +15,7 @@ using log4net;
 using Reports;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -375,7 +376,7 @@ namespace PowerWeb.Modules
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
-                    string indirizzo = initCant.Indirizzo_Can + "," + initCant.Luogo_Can + "," + initCant.Cap_Can;
+                    string indirizzo = BusinessService.FormatGeocodeAddress(initCant.Indirizzo_Can, initCant.Luogo_Can, initCant.Cap_Can, initCant.Provincia_Can);
                     Location geocode = BusinessService.GetGeocode(indirizzo);
                     if (geocode != null)
                     {
@@ -645,7 +646,7 @@ namespace PowerWeb.Modules
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
-                    string indirizzo = currentCant.Indirizzo_Can + "," + currentCant.Luogo_Can + "," + currentCant.Cap_Can;
+                    string indirizzo = BusinessService.FormatGeocodeAddress(currentCant.Indirizzo_Can, currentCant.Luogo_Can, currentCant.Cap_Can, currentCant.Provincia_Can);
                     Location geocode = BusinessService.GetGeocode(indirizzo);
                     if (geocode != null)
                     {
@@ -1042,6 +1043,36 @@ namespace PowerWeb.Modules
             {
                 var status = BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User];
                 e.Result = String.Format("{0}|{1}", status.Key, status.Value);
+            }
+        }
+
+        protected void cbGeocodeCant_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
+        {
+            try
+            {
+                var parameters = (e.Parameter ?? String.Empty).Split('|');
+                var indirizzo = parameters.Length > 0 ? Uri.UnescapeDataString(parameters[0]) : String.Empty;
+                var luogo = parameters.Length > 1 ? Uri.UnescapeDataString(parameters[1]) : String.Empty;
+                var cap = parameters.Length > 2 ? Uri.UnescapeDataString(parameters[2]) : String.Empty;
+
+                var address = BusinessService.FormatGeocodeAddress(indirizzo, luogo, cap);
+                var geocode = BusinessService.GetGeocode(address);
+
+                if (geocode == null)
+                {
+                    e.Result = "ERROR|" + Uri.EscapeDataString("Coordinate non trovate per l'indirizzo indicato.");
+                    return;
+                }
+
+                e.Result = String.Format(
+                    CultureInfo.InvariantCulture,
+                    "OK|{0}|{1}",
+                    geocode.Latitudine,
+                    geocode.Longitudine);
+            }
+            catch (Exception ex)
+            {
+                e.Result = "ERROR|" + Uri.EscapeDataString(ex.Message);
             }
         }
 

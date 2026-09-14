@@ -415,6 +415,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             }
             else
             {
+
                 foreach (var exportReg in exportRegVs)
                 {
                     Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);

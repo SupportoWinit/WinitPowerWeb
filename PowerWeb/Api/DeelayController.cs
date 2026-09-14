@@ -180,8 +180,15 @@ namespace PowerWeb.Api
                                 }
                                 else 
                                 {
-                                    var newOr = lastOr.Last().First(or => or.Ora_E > new TimeSpan(12, 0, 0));
-                                    oraLimite = newOr.Ora_E.Value;
+                                    var newOr = lastOr.Last().FirstOrDefault(or => or.Ora_E > new TimeSpan(12, 0, 0));
+                                    if (newOr != default)
+                                    {
+                                        oraLimite = newOr.Ora_E.Value;
+                                    }
+                                    else 
+                                    {
+                                        oraLimite = new TimeSpan(0, 0, 0);
+                                    }
                                 }
                                 if (cantiere.Tolleranza_Limite_Entrata_Cant != null)
                                 {

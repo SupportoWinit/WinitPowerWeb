@@ -84,6 +84,39 @@
     var map;
     var marker;
 
+    function recalculateCoordinatesAndInitMap() {
+        var currentGrid = ASPxClientGridView.Cast(grid);
+        var currentAddress = currentGrid.GetEditValue("Indirizzo_Can") || "";
+        var currentPlace = currentGrid.GetEditValue("Luogo_Can") || "";
+        var currentZip = currentGrid.GetEditValue("Cap_Can") || "";
+
+        if (!currentAddress && !currentPlace && !currentZip) {
+            newinitMap();
+            return;
+        }
+
+        var callbackParameter = [
+            encodeURIComponent(currentAddress),
+            encodeURIComponent(currentPlace),
+            encodeURIComponent(currentZip)
+        ].join("|");
+
+        cbGeocodeCant.PerformCallback(callbackParameter);
+    }
+
+    function cbGeocodeCant_OnCallbackComplete(s, e) {
+        if (e.result) {
+            var result = e.result.split("|");
+            if (result[0] == "OK") {
+                updateCoordinates(parseFloat(result[1]), parseFloat(result[2]));
+            } else if (result[0] == "ERROR" && result.length > 1) {
+                console.warn(decodeURIComponent(result[1]));
+            }
+        }
+
+        newinitMap();
+    }
+
     function newinitMap() {
         // Distruggi mappa precedente se esiste
         if (typeof map !== "undefined" && map.remove) {
@@ -1000,7 +1033,7 @@
 </dx:ASPxFormLayout>
 
 <dx:ASPxPopupControl ID="pcShowMap" runat="server" Height="400px"
-    Width="600px" HeaderText="Map popup" ClientSideEvents-Shown="newinitMap" PopupElementID="btnShowMap" CloseAction="OuterMouseClick" ShowCloseButton="false">
+    Width="600px" HeaderText="Map popup" ClientSideEvents-Shown="recalculateCoordinatesAndInitMap" PopupElementID="btnShowMap" CloseAction="OuterMouseClick" ShowCloseButton="false">
     <ContentCollection>
         <dx:PopupControlContentControl>
             <div id='bingMap' style="position: relative; width: 100%; height: 400px;"></div>
@@ -1016,6 +1049,9 @@
     </dx:ASPxCallback>
     <dx:ASPxCallback ID="cUplImportPing" ClientInstanceName="cUplImportPing" runat="server" OnCallback="cUplImportPing_Callback">
         <ClientSideEvents CallbackComplete="cUplImportPing_OnCallbackComplete" />
+    </dx:ASPxCallback>
+    <dx:ASPxCallback ID="cbGeocodeCant" ClientInstanceName="cbGeocodeCant" runat="server" OnCallback="cbGeocodeCant_Callback">
+        <ClientSideEvents CallbackComplete="cbGeocodeCant_OnCallbackComplete" />
     </dx:ASPxCallback>
     <dx:ASPxTimer ID="tUplImportPing" ClientInstanceName="tUplImportPing" runat="server" Enabled="false" Interval="1000">
         <ClientSideEvents Tick="tUplImportPing_OnTick" />

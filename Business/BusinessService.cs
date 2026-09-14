@@ -954,8 +954,9 @@ namespace Business
         //restituisce LAT/Long partendo da un Indirizzo (CAP/COMUNE/INDIRIZZO)
         {
             Location location = null;
+            address = NormalizeGeocodeAddress(address);
 
-            if (address != "  ") 
+            if (!String.IsNullOrWhiteSpace(address)) 
             {
                 try
                 {
@@ -974,7 +975,6 @@ namespace Business
                     //{
                     var geo = new ReverseGeocodeService("a442f14174a945dd9aff62023727b914");
                     location = Task.Run(() => geo.OttieniLocationDaIndirizzoAsync(address)).Result;
-
                     //}
                 }
                 catch (Exception ex)
@@ -984,6 +984,127 @@ namespace Business
             }
 
             return location;
+        }
+
+        public static string FormatGeocodeAddress(string street, string city, string postcode, string province = null)
+        {
+            var normalizedStreet = NormalizeGeocodePart(street);
+            var normalizedCity = NormalizeGeocodePart(city);
+            var normalizedPostcode = NormalizeGeocodePart(postcode);
+            var normalizedProvince = NormalizeGeocodePart(province);
+
+            if (IsGeocodeCountry(normalizedPostcode))
+                normalizedPostcode = String.Empty;
+
+            var postcodeMatch = Regex.Match(normalizedCity, @"\b\d{5}\b");
+            if (postcodeMatch.Success)
+            {
+                normalizedPostcode = postcodeMatch.Value;
+                var cityRemainder = Regex.Replace(normalizedCity, @"\b" + Regex.Escape(normalizedPostcode) + @"\b", String.Empty).Trim();
+
+                if (IsGeocodeHouseNumber(cityRemainder))
+                {
+                    if (!HasGeocodeHouseNumber(normalizedStreet))
+                        normalizedStreet = String.Format("{0} {1}", normalizedStreet, cityRemainder).Trim();
+                    normalizedCity = String.Empty;
+                }
+                else
+                {
+                    normalizedCity = cityRemainder;
+                }
+            }
+
+            FillGeocodeCityFromPostcode(ref normalizedCity, ref normalizedProvince, normalizedPostcode);
+
+            var postcodeAndCity = String.Join(" ", new[] { normalizedPostcode, normalizedCity }.Where(value => !String.IsNullOrWhiteSpace(value)));
+
+            return String.Join(", ", new[] { normalizedStreet, postcodeAndCity, normalizedProvince, "Italia" }.Where(value => !String.IsNullOrWhiteSpace(value)));
+        }
+
+        private static void FillGeocodeCityFromPostcode(ref string city, ref string province, string postcode)
+        {
+            if (!String.IsNullOrWhiteSpace(city) || String.IsNullOrWhiteSpace(postcode))
+                return;
+
+            try
+            {
+                var comune = RepoManager.Tab_ComuniRepo.FirstOrDefault(x => x.Cap_Tab_Comuni == postcode);
+
+                if (comune == null)
+                    return;
+
+                city = NormalizeGeocodePart(comune.Luogo_Tab_Comuni);
+
+                if (String.IsNullOrWhiteSpace(province))
+                    province = NormalizeGeocodePart(comune.Codice_Prov_Tab_Comuni);
+            }
+            catch (Exception ex)
+            {
+                _log.Warn(String.Format("Impossibile recuperare il comune dal CAP {0} per il geocode: {1}", postcode, ex.Message));
+            }
+        }
+
+        private static string NormalizeGeocodeAddress(string address)
+        {
+            if (String.IsNullOrWhiteSpace(address))
+                return String.Empty;
+
+            var parts = address.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim()).ToArray();
+            var postcodeMatch = Regex.Match(address, @"\b\d{5}\b");
+            var postcode = postcodeMatch.Success ? postcodeMatch.Value : String.Empty;
+
+            if (parts.Length >= 3)
+            {
+                var street = parts[0];
+                var secondPart = parts[1];
+                var thirdPart = parts[2];
+
+                if (Regex.IsMatch(thirdPart, @"^\d{5}$"))
+                    return FormatGeocodeAddress(street, secondPart, thirdPart, parts.Length > 3 ? parts[3] : null);
+
+                if (!String.IsNullOrWhiteSpace(postcode) && secondPart.Contains(postcode))
+                {
+                    var cityOrHouseNumber = Regex.Replace(secondPart, @"\b" + Regex.Escape(postcode) + @"\b", String.Empty).Trim();
+
+                    if (IsGeocodeHouseNumber(cityOrHouseNumber))
+                    {
+                        var streetWithHouseNumber = HasGeocodeHouseNumber(street) ? street : String.Format("{0} {1}", street, cityOrHouseNumber);
+                        return FormatGeocodeAddress(streetWithHouseNumber, String.Empty, postcode);
+                    }
+
+                    return FormatGeocodeAddress(street, cityOrHouseNumber, postcode);
+                }
+
+                return FormatGeocodeAddress(street, secondPart, postcode);
+            }
+
+            if (parts.Length == 2 && !String.IsNullOrWhiteSpace(postcode))
+            {
+                var city = Regex.Replace(parts[1], @"\b" + Regex.Escape(postcode) + @"\b", String.Empty).Trim();
+                return FormatGeocodeAddress(parts[0], city, postcode);
+            }
+
+            return Regex.Replace(address, @"\s+", " ").Trim();
+        }
+
+        private static string NormalizeGeocodePart(string value)
+        {
+            return String.IsNullOrWhiteSpace(value) ? String.Empty : Regex.Replace(value, @"\s+", " ").Trim();
+        }
+
+        private static bool IsGeocodeCountry(string value)
+        {
+            return String.Equals(value, "italia", StringComparison.OrdinalIgnoreCase) || String.Equals(value, "italy", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsGeocodeHouseNumber(string value)
+        {
+            return !String.IsNullOrWhiteSpace(value) && Regex.IsMatch(value.Trim(), @"^\d+[a-zA-Z]?(?:\s*[-/]\s*(?:\d+[a-zA-Z]?|[a-zA-Z]))?$");
+        }
+
+        private static bool HasGeocodeHouseNumber(string value)
+        {
+            return !String.IsNullOrWhiteSpace(value) && Regex.IsMatch(value, @"\b\d+[a-zA-Z]?(?:\s*[-/]\s*(?:\d+[a-zA-Z]?|[a-zA-Z]))?\b");
         }
 
         /// <summary>
