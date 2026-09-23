@@ -3826,6 +3826,7 @@ namespace Business.Repository.Custom
                                 string tmpTurno = "";
                                 string currentTurno = "";
                                 DateTime tmpDate = new DateTime(1999, 12, 31);
+                                bool doppioTurno = false;
                                 foreach (var regvs in colDateGroup.GroupBy(r => r.Cant_Id))
                                 {
                                     int tmpDurata = 0;
@@ -3938,59 +3939,129 @@ namespace Business.Repository.Custom
                                         {
                                             Cant cantiere = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == tmpcantId);
                                             DayOfWeek dayToCheck = default;
-                                            for (int i = 0; i < eccezioni.Length; i++)
+                                            bool exceptionDay = false;
+                                            int indexDay = 0;
+                                            switch (colDateGroup.Key.Value.DayOfWeek)
                                             {
-                                                switch (Int32.Parse(eccezioni[i]))
-                                                {
-                                                    case 1:
-                                                        dayToCheck = DayOfWeek.Monday;
-                                                        break;
-                                                    case 2:
-                                                        dayToCheck = DayOfWeek.Tuesday;
-                                                        break;
-                                                    case 3:
-                                                        dayToCheck = DayOfWeek.Wednesday;
-                                                        break;
-                                                    case 4:
-                                                        dayToCheck = DayOfWeek.Thursday;
-                                                        break;
-                                                    case 5:
-                                                        dayToCheck = DayOfWeek.Friday;
-                                                        break;
-                                                    case 6:
-                                                        dayToCheck = DayOfWeek.Saturday;
-                                                        break;
-                                                    case 7:
-                                                        dayToCheck = DayOfWeek.Sunday;
-                                                        break;
-                                                }
+                                                case DayOfWeek.Monday:
+                                                    indexDay = 1;
+                                                    break;
+                                                case DayOfWeek.Tuesday:
+                                                    indexDay = 2;
+                                                    break;
+                                                case DayOfWeek.Wednesday:
+                                                    indexDay = 3;
+                                                    break;
+                                                case DayOfWeek.Thursday:
+                                                    indexDay = 4;
+                                                    break;
+                                                case DayOfWeek.Friday:
+                                                    indexDay = 5;
+                                                    break;
+                                                case DayOfWeek.Saturday:
+                                                    indexDay = 6;
+                                                    break;
+                                                case DayOfWeek.Sunday:
+                                                    indexDay = 7;
+                                                    break;
+                                            }
+                                            if (prova.Contains(indexDay.ToString())) 
+                                            {
+                                                exceptionDay = true;
+                                            }
+                                            if (exceptionDay)
+                                            {
                                                 if (cantiere.Codice_Commessa_Can == "Hotel")
                                                 {
                                                     if (tmpTurno == "")
                                                     {
                                                         applicaPausa = true;
-                                                        break;
-                                                    }
-                                                    else 
-                                                    {
-                                                        if (colDateGroup.Key.Value.DayOfWeek == dayToCheck)
+                                                        if (colDateGroup.Count() > 1)
                                                         {
-                                                            applicaPausa = true;
-                                                            break;
+                                                            doppioTurno = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        applicaPausa = true;
+                                                        if (colDateGroup.Count() > 1)
+                                                        {
+                                                            doppioTurno = true;
                                                         }
                                                     }
                                                 }
-                                                else 
+                                                else
                                                 {
-                                                    if (colDateGroup.Key.Value.DayOfWeek == dayToCheck)
-                                                    {
-                                                        applicaPausa = true;
-                                                        break;
-                                                    }
+                                                    applicaPausa = true;
                                                 }
-
-                                                
                                             }
+                                            else 
+                                            {
+                                                if (cantiere.Codice_Commessa_Can == "Hotel")
+                                                {
+                                                    applicaPausa = true;
+                                                }
+                                            }
+                                            //for (int i = 0; i < eccezioni.Length; i++)
+                                            //{
+                                            //    switch (Int32.Parse(eccezioni[i]))
+                                            //    {
+                                            //        case 1:
+                                            //            dayToCheck = DayOfWeek.Monday;
+                                            //            break;
+                                            //        case 2:
+                                            //            dayToCheck = DayOfWeek.Tuesday;
+                                            //            break;
+                                            //        case 3:
+                                            //            dayToCheck = DayOfWeek.Wednesday;
+                                            //            break;
+                                            //        case 4:
+                                            //            dayToCheck = DayOfWeek.Thursday;
+                                            //            break;
+                                            //        case 5:
+                                            //            dayToCheck = DayOfWeek.Friday;
+                                            //            break;
+                                            //        case 6:
+                                            //            dayToCheck = DayOfWeek.Saturday;
+                                            //            break;
+                                            //        case 7:
+                                            //            dayToCheck = DayOfWeek.Sunday;
+                                            //            break;
+                                            //    }
+                                            //    if (cantiere.Codice_Commessa_Can == "Hotel")
+                                            //    {
+                                            //        if (tmpTurno == "")
+                                            //        {
+                                            //            applicaPausa = true;
+                                            //            if (colDateGroup.Key.Value.DayOfWeek == dayToCheck && colDateGroup.Count() > 1)
+                                            //            {
+                                            //                doppioTurno = true;
+                                            //            }
+                                            //            break;
+                                            //        }
+                                            //        else
+                                            //        {
+                                            //            if (colDateGroup.Key.Value.DayOfWeek == dayToCheck)
+                                            //            {
+                                            //                applicaPausa = true;
+                                            //                if (colDateGroup.Count() > 1)
+                                            //                {
+                                            //                    doppioTurno = true;
+                                            //                }
+                                            //                break;
+                                            //            }
+                                            //        }
+                                            //
+                                            //    }
+                                            //    else
+                                            //    {
+                                            //        if (colDateGroup.Key.Value.DayOfWeek == dayToCheck)
+                                            //        {
+                                            //            applicaPausa = true;
+                                            //            break;
+                                            //        }
+                                            //    }
+                                            //}
                                         }  
                                     }
                                     
@@ -4002,6 +4073,24 @@ namespace Business.Repository.Custom
                                         if (tmp.Col_Id != null)
                                         {
                                             regsToAdd.Add(tmp);
+                                        }
+                                        if (doppioTurno) 
+                                        {
+                                            if (tmpTurno == "")
+                                            {
+                                                tmpTurno = "Coperture Serali";
+                                            }
+                                            else 
+                                            {
+                                                tmpTurno = "";
+                                            }
+                                            // creo la registrazione con durata negativa in base al parametro presente nel cantiere
+                                            roundingTime = new TimeSpan(0, 0, 0);
+                                            tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                            if (tmp.Col_Id != null)
+                                            {
+                                                regsToAdd.Add(tmp);
+                                            }
                                         }
                                     }
                                 }
@@ -6847,27 +6936,55 @@ namespace Business.Repository.Custom
 
                             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripOnlyGpsReg) == 0 || (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripOnlyGpsReg) == 1 && (currentRegV.Registrazione_Lat_Orig_E != null && currentRegV.Registrazione_Long_Orig_E != null && (lastRegV.Registrazione_Lat_Orig_E != null && lastRegV.Registrazione_Long_Orig_E != null)) || (currentRegV.Registrazione_Lat_Orig_U != null && currentRegV.Registrazione_Long_Orig_U != null && lastRegV.Registrazione_Lat_Orig_U != null && lastRegV.Registrazione_Long_Orig_U != null))) 
                             {
-                                //se nella personalizzazione si è scelto di saltare il controllo sulla durata max e minima del viaggio 
-                                if (customizationEnum == (int)NoTripsMaxMinDurationControlONLCantEnum.SkipControl || isFromOnl)
+                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 0)
                                 {
-                                    //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
-                                    tripList.Add(new Trip
+                                    //se nella personalizzazione si è scelto di saltare il controllo sulla durata max e minima del viaggio 
+                                    if (customizationEnum == (int)NoTripsMaxMinDurationControlONLCantEnum.SkipControl || isFromOnl)
                                     {
-                                        RegE = newRegE,
-                                        RegU = newRegU,
-                                        cantIdStart = fromCantId,
-                                        IsFromOnl = isFromOnl,
-                                        IsToOnl = isToOnl
-                                    });
-                                }
+                                        //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
+                                        tripList.Add(new Trip
+                                        {
+                                            RegE = newRegE,
+                                            RegU = newRegU,
+                                            cantIdStart = fromCantId,
+                                            IsFromOnl = isFromOnl,
+                                            IsToOnl = isToOnl
+                                        });
+                                    }
 
-                                //Controllo della personalizzazione che controlla la durata per viaggi che iniziano su un cantiere ONL
-                                else if (customizationEnum == (int)NoTripsMaxMinDurationControlONLCantEnum.DoControl)
-                                {
-                                    //viene controllato se i valori della massima durata e minima sono valorizzati
-                                    if ((paramMaxTripTime != TimeSpan.Zero || paramMinTripTime != TimeSpan.Zero))
+                                    //Controllo della personalizzazione che controlla la durata per viaggi che iniziano su un cantiere ONL
+                                    else if (customizationEnum == (int)NoTripsMaxMinDurationControlONLCantEnum.DoControl)
                                     {
-                                        //viene calcolata la durata del viaggio tra cantiere ONL(A) e cantiere normale(B)
+                                        //viene controllato se i valori della massima durata e minima sono valorizzati
+                                        if ((paramMaxTripTime != TimeSpan.Zero || paramMinTripTime != TimeSpan.Zero))
+                                        {
+                                            //viene calcolata la durata del viaggio tra cantiere ONL(A) e cantiere normale(B)
+                                            DateTime partenza = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fig_U.Value : lastRegV.Data_Ora_Fis_E;
+                                            TimeSpan tripDuration = new TimeSpan(0, 0, 0);
+                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1)
+                                                tripDuration = currentRegV.Data_Ora_Fig_E.Value.Subtract(partenza);
+                                            else
+                                                tripDuration = currentRegV.Data_Ora_Fis_E.Subtract(partenza);
+
+                                            //se la durata rientra nel range tra durata minima e massima allora vengono create le registrazioni di viaggio
+                                            if (tripDuration >= paramMinTripTime && (tripDuration <= paramMaxTripTime || paramMaxTripTime == TimeSpan.Zero))
+                                            {
+                                                //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
+                                                tripList.Add(new Trip
+                                                {
+                                                    RegE = newRegE,
+                                                    RegU = newRegU,
+                                                    cantIdStart = fromCantId,
+                                                    IsFromOnl = isFromOnl,
+                                                    IsToOnl = isToOnl
+                                                });
+                                            }
+                                        }
+                                    }
+                                    //se è attiva la personalizzazione che va a troncare il viaggio al valore di durata massima viaggi
+                                    else if (customizationEnum == (int)NoTripsMaxMinDurationControlONLCantEnum.TruncateToMax)
+                                    {
+                                        //viene calcolata la durata del viaggio
                                         DateTime partenza = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fig_U.Value : lastRegV.Data_Ora_Fis_E;
                                         TimeSpan tripDuration = new TimeSpan(0, 0, 0);
                                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1)
@@ -6875,9 +6992,24 @@ namespace Business.Repository.Custom
                                         else
                                             tripDuration = currentRegV.Data_Ora_Fis_E.Subtract(partenza);
 
-                                        //se la durata rientra nel range tra durata minima e massima allora vengono create le registrazioni di viaggio
-                                        if (tripDuration >= paramMinTripTime && (tripDuration <= paramMaxTripTime || paramMaxTripTime == TimeSpan.Zero))
+                                        //se la durata del viaggio è minore della durata massimo
+                                        if (tripDuration <= paramMaxTripTime)
                                         {
+                                            //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
+                                            tripList.Add(new Trip
+                                            {
+                                                RegE = newRegE,
+                                                RegU = newRegU,
+                                                cantIdStart = fromCantId,
+                                                IsFromOnl = isFromOnl,
+                                                IsToOnl = isToOnl
+                                            });
+                                        }
+                                        else
+                                        {
+                                            //se ladurata del viaggio supera la durata massima allora come durata del viaggio viene impostata la durata massima
+                                            newRegU.Registrazione_Data_Ora_Fis_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg.Add(paramMaxTripTime);
+
                                             //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
                                             tripList.Add(new Trip
                                             {
@@ -6890,45 +7022,16 @@ namespace Business.Repository.Custom
                                         }
                                     }
                                 }
-                                //se è attiva la personalizzazione che va a troncare il viaggio al valore di durata massima viaggi
-                                else if (customizationEnum == (int)NoTripsMaxMinDurationControlONLCantEnum.TruncateToMax)
+                                else 
                                 {
-                                    //viene calcolata la durata del viaggio
-                                    DateTime partenza = lastRegV.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? lastRegV.Data_Ora_Fig_U.Value : lastRegV.Data_Ora_Fis_E;
-                                    TimeSpan tripDuration = new TimeSpan(0,0,0);
-                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TripFigHours) == 1)
-                                        tripDuration = currentRegV.Data_Ora_Fig_E.Value.Subtract(partenza);
-                                    else
-                                        tripDuration = currentRegV.Data_Ora_Fis_E.Subtract(partenza);
-
-                                    //se la durata del viaggio è minore della durata massimo
-                                    if (tripDuration <= paramMaxTripTime)
+                                    tripList.Add(new Trip
                                     {
-                                        //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
-                                        tripList.Add(new Trip
-                                        {
-                                            RegE = newRegE,
-                                            RegU = newRegU,
-                                            cantIdStart = fromCantId,
-                                            IsFromOnl = isFromOnl,
-                                            IsToOnl = isToOnl
-                                        });
-                                    }
-                                    else
-                                    {
-                                        //se ladurata del viaggio supera la durata massima allora come durata del viaggio viene impostata la durata massima
-                                        newRegU.Registrazione_Data_Ora_Fis_Reg = newRegE.Registrazione_Data_Ora_Fis_Reg.Add(paramMaxTripTime);
-
-                                        //Carica le 2 nuove registrazioni del Viaggio con la Durata Calcolata
-                                        tripList.Add(new Trip
-                                        {
-                                            RegE = newRegE,
-                                            RegU = newRegU,
-                                            cantIdStart = fromCantId,
-                                            IsFromOnl = isFromOnl,
-                                            IsToOnl = isToOnl
-                                        });
-                                    }
+                                        RegE = newRegE,
+                                        RegU = newRegU,
+                                        cantIdStart = fromCantId,
+                                        IsFromOnl = isFromOnl,
+                                        IsToOnl = isToOnl
+                                    });
                                 }
                             } 
                         }
@@ -7301,7 +7404,7 @@ namespace Business.Repository.Custom
                                             //Calcolo rotta tra i due punti
                                             Route routeResult = BusinessService.GetRoute(new Coordinate[] { newStartRequest, newEndRequest });
 
-                                            if (result.DistanzaKm > 0)
+                                            if (result.DistanzaKm >= 0)
                                             //Se è riuscito a Calcolare con BING i KM e la Durata del Viaggio allora crea il REcord della TAB_DISTANZA con Tipo = "G"
                                             {
 
@@ -7560,9 +7663,22 @@ namespace Business.Repository.Custom
             List<Reg> trips = new List<Reg>();
 
             // mi creo una lista di viaggi da elaborare poi
-            foreach (var trip in tripList)
-                trips.AddRange(trip.Regs);
-
+            foreach (var trip in tripList) 
+            {
+                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
+                {
+                    var duration = trip.RegU.Registrazione_Data_Ora_Fis_Reg - trip.RegE.Registrazione_Data_Ora_Fis_Reg;
+                    if (duration <= paramMaxTripTime) 
+                    {
+                        trips.AddRange(trip.Regs);
+                    }
+                }
+                else 
+                {
+                    trips.AddRange(trip.Regs);
+                }
+                    
+            }
             return trips;
         }
 
@@ -8637,20 +8753,14 @@ namespace Business.Repository.Custom
                             else
                             //Se NON è risucito a Calcolare il Percorso con Bing allora scrive un messaggio di errore nella TAB_MESSAGGI con Riferimento RouteCalculate
                             {
-                                var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                                var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == regE.Col_Id);
                                 string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
 
                                 string cantEMessageDesc = String.Format("{0} - {1}", sede.Codice_Cantiere, sede.Descrizione_Can);
                                 string cantUMessageDesc = String.Format("{0} - {1}", cant.Codice_Cantiere, cant.Descrizione_Can);
 
                                 List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
-                                errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore))); 
-
-                                trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-
-                                if (trip.RegU != null)
-                                    trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-
+                                errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, regE.Data_Ora_Fis_E.ToString("dd/MM/yyyy"), regE.Data_Ora_Fis_E.ToString("hh:mm"), descrizioneCollaboratore))); 
                                 if (errRouteCalculate.Any())
                                     BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
 
@@ -8660,19 +8770,15 @@ namespace Business.Repository.Custom
                         {
                             // in caso sia presente la latitudine e la longitudine ma non siano presenti nei cantieri dati di ubicazione validi,
                             // allora il tutto viene segnalato con un messaggio
-                            var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == trip.RegE.Col_Id);
+                            var colToShow = RepoManager.ColRepo.FirstOrDefault(col => col.Col_Id == regE.Col_Id);
                             string descrizioneCollaboratore = String.Format("{0} - {1}", colToShow.Codice_Collaboratore, colToShow.CognomeNome_Col);
 
                             string cantEMessageDesc = String.Format("{0} - {1}", sede.Codice_Cantiere, sede.Descrizione_Can);
                             string cantUMessageDesc = String.Format("{0} - {1}", cant.Codice_Cantiere, cant.Descrizione_Can);
 
                             List<KeyValuePair<String, String>> errRouteCalculate = new List<KeyValuePair<String, String>>();
-                            errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore)));
+                            errRouteCalculate.Add(new KeyValuePair<String, String>("_", BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, regE.Data_Ora_Fis_E.ToString("dd/MM/yyyy"), regE.Data_Ora_Fis_E.ToString("hh:mm"), descrizioneCollaboratore)));
                             RepoManager.Tab_MessaggiRepo.InsertMessages(errRouteCalculate, application, FunctionMessageEnum.RouteCalculate, elaborateUserId, elaborateDateTime);
-                            trip.RegE.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
-
-                            if (trip.RegU != null)
-                                trip.RegU.Note_Reg = BusinessService.GetLocalizedStringStrParam(PowerWebResources.ERR_PERCORSO_VIAGGIO_DA_X_A_Y_IN_DATA_Z_ORA_W_COL_V_NON_CALCOLABILE_DA_MAPPA, cantEMessageDesc, cantUMessageDesc, trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("dd/MM/yyyy"), trip.RegE.Registrazione_Data_Ora_Fis_Reg.ToString("hh:mm"), descrizioneCollaboratore);
 
                             if (errRouteCalculate.Any())
                                 BusinessService.ElaborateTripsHasErrors[PowerWebContext.Current.User] = true;
@@ -8699,101 +8805,104 @@ namespace Business.Repository.Custom
                 }
 
                 // viene generato il viaggio solamente se non ci sono impedimenti dalle personalizzazioni per i viaggi nello stesso comune
-                if (!IsTripSameMunicipalityToDelete(distRow))
+                if (distRow != null) 
                 {
-                    var from = regE.Data_Reg.Value.Add(threshold);
-                    var to = from.Date.AddDays(1);
-                    if (threshold > DateTime.Now.Date.TimeOfDay)
-                        to = to.Add(threshold);
-
-                    Reg newRegE = RepoManager.RegRepo.Init();
-                    Reg newRegU = RepoManager.RegRepo.Init();
-                    newRegU.ParentReg = newRegE;
-
-                    DateTime timeDiffFig;
-                    DateTime timeDiffFis;
-
-                    if (!tripEnd)
+                    if (!IsTripSameMunicipalityToDelete(distRow))
                     {
-                        // Imposto come ora di inizio viaggio il minuto precedente la regv
-                        //timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
-                        //timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                        var from = regE.Data_Reg.Value.Add(threshold);
+                        var to = from.Date.AddDays(1);
+                        if (threshold > DateTime.Now.Date.TimeOfDay)
+                            to = to.Add(threshold);
 
-                        timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
-                        timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
+                        Reg newRegE = RepoManager.RegRepo.Init();
+                        Reg newRegU = RepoManager.RegRepo.Init();
+                        newRegU.ParentReg = newRegE;
 
-                        timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
-                        timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
+                        DateTime timeDiffFig;
+                        DateTime timeDiffFis;
 
-                        newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
-                        newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
-                        newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
-
-                        // Imposto come ora di fine viaggio l'ora di entrata nel prossimo cantiere
-                        newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
-                        newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
-                        newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
-                    }
-                    else
-                    {
-                        timeDiffFig = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fig_U.Value : regE.Data_Ora_Fig_E.Value;
-                        timeDiffFis = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fis_U.Value : regE.Data_Ora_Fis_E;
-
-                        newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
-                        newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
-                        newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
-
-                        newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
-                        newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
-                        newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
-                    }
-
-                    if (newRegE.Registrazione_Data_Ora_Fis_Reg > from && newRegU.Registrazione_Data_Ora_Fis_Reg < to)
-                    {
                         if (!tripEnd)
                         {
-                            newRegE.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
-                            newRegE.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
-                            newRegE.Col_Id = regE.Col_Id;
-                            //Se sto elaborando il viaggio di inizio giornata, parte dalla sede
-                            newRegE.Cant_Id = sede.Cant_Id;
-                            newRegE.Att_Id = newRegE.Cant_Id;
+                            // Imposto come ora di inizio viaggio il minuto precedente la regv
+                            //timeDiffFig = regE.Data_Ora_Fig_E.Value.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
+                            //timeDiffFis = regE.Data_Ora_Fis_E.Subtract(new TimeSpan(0, (int)distRow.Minuti_Tab_Dist, 0));
 
-                            newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
-                            newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
-                            newRegU.Col_Id = regE.Col_Id;
-                            //Se sto elaborando il viaggio di inizio giornata, arriva al primo cantiere lavorativo
-                            newRegU.Cant_Id = cant.Cant_Id;
-                            newRegU.Att_Id = newRegU.Cant_Id;
+                            timeDiffFig = regE.Data_Ora_Fig_E.Value.AddMinutes(-1);
+                            timeDiffFis = regE.Data_Ora_Fis_E.AddMinutes(-1);
+
+                            timeDiffFig = new DateTime(timeDiffFig.Year, timeDiffFig.Month, timeDiffFig.Day, timeDiffFig.Hour, timeDiffFig.Minute, 59);
+                            timeDiffFis = new DateTime(timeDiffFis.Year, timeDiffFis.Month, timeDiffFis.Day, timeDiffFis.Hour, timeDiffFis.Minute, 59);
+
+                            newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                            newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                            newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+
+                            // Imposto come ora di fine viaggio l'ora di entrata nel prossimo cantiere
+                            newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                            newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                            newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
                         }
-
                         else
                         {
-                            newRegE.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
-                            newRegE.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
-                            newRegE.Col_Id = regE.Col_Id;
-                            //Se sto elaborando il viaggio di fine giornata, parte dall'ultimo cantiere lavorativo
-                            newRegE.Cant_Id = cant.Cant_Id;
-                            newRegE.Att_Id = newRegE.Cant_Id;
+                            timeDiffFig = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fig_U.Value : regE.Data_Ora_Fig_E.Value;
+                            timeDiffFis = regE.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass ? regE.Data_Ora_Fis_U.Value : regE.Data_Ora_Fis_E;
 
-                            newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
-                            newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
-                            newRegU.Col_Id = regE.Col_Id;
-                            //Se sto elaborando il viaggio di fine giornata, arriva alla sede
-                            newRegU.Cant_Id = sede.Cant_Id;
-                            newRegU.Att_Id = newRegU.Cant_Id;
+                            newRegE.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                            newRegE.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                            newRegE.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
+
+                            newRegU.Registrazione_Data_Ora_Orig_Reg = timeDiffFis;
+                            newRegU.Registrazione_Data_Ora_Fis_Reg = timeDiffFis;
+                            newRegU.Registrazione_Data_Ora_Fig_Reg = timeDiffFig;
                         }
 
-                        if (distRow.KM_Tab_Dist > default(decimal))
-                            newRegE.KM_Reg = distRow.KM_Tab_Dist;
-                        else
-                            newRegE.KM_Reg = 0;
+                        if (newRegE.Registrazione_Data_Ora_Fis_Reg > from && newRegU.Registrazione_Data_Ora_Fis_Reg < to)
+                        {
+                            if (!tripEnd)
+                            {
+                                newRegE.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                                newRegE.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                                newRegE.Col_Id = regE.Col_Id;
+                                //Se sto elaborando il viaggio di inizio giornata, parte dalla sede
+                                newRegE.Cant_Id = sede.Cant_Id;
+                                newRegE.Att_Id = newRegE.Cant_Id;
 
-                        int coupleNumber = CommonService.GetRandomNumber();
-                        newRegE.RiferimentoRRN_Att = coupleNumber;
-                        newRegU.RiferimentoRRN_Att = coupleNumber;
+                                newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                                newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                                newRegU.Col_Id = regE.Col_Id;
+                                //Se sto elaborando il viaggio di inizio giornata, arriva al primo cantiere lavorativo
+                                newRegU.Cant_Id = cant.Cant_Id;
+                                newRegU.Att_Id = newRegU.Cant_Id;
+                            }
 
-                        trip = new Trip { RegE = newRegE, RegU = newRegU };
+                            else
+                            {
+                                newRegE.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                                newRegE.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                                newRegE.Col_Id = regE.Col_Id;
+                                //Se sto elaborando il viaggio di fine giornata, parte dall'ultimo cantiere lavorativo
+                                newRegE.Cant_Id = cant.Cant_Id;
+                                newRegE.Att_Id = newRegE.Cant_Id;
+
+                                newRegU.Registrazione_Tipo_RegEnum = RegTypeEnum.Trip;
+                                newRegU.Registrazione_Stato_RegEnum = RegStateEnum.Ass;
+                                newRegU.Col_Id = regE.Col_Id;
+                                //Se sto elaborando il viaggio di fine giornata, arriva alla sede
+                                newRegU.Cant_Id = sede.Cant_Id;
+                                newRegU.Att_Id = newRegU.Cant_Id;
+                            }
+
+                            if (distRow.KM_Tab_Dist > default(decimal))
+                                newRegE.KM_Reg = distRow.KM_Tab_Dist;
+                            else
+                                newRegE.KM_Reg = 0;
+
+                            int coupleNumber = CommonService.GetRandomNumber();
+                            newRegE.RiferimentoRRN_Att = coupleNumber;
+                            newRegU.RiferimentoRRN_Att = coupleNumber;
+
+                            trip = new Trip { RegE = newRegE, RegU = newRegU };
+                        }
                     }
                 }
             }

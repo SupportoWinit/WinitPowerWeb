@@ -82,8 +82,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             Cli cliente = RepoManager.CliRepo.FirstOrDefault(cl => cl.Cognome_Cli == "COMUNE LIMONE");
             int cliId = cliente.Cli_Id;
             //List<Reg_V> regVs2 = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && r.Qualifica_Col == "0" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList();
-            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can != "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
-            exportRegsHotel.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 8 || r.Registrazione_Tipo_Reg == 10)).ToList());
+            exportRegs.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can != "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 /*|| r.Registrazione_Tipo_Reg == 4*/ || r.Registrazione_Tipo_Reg == 10) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id).ToList());
+            exportRegsHotel.AddRange(RepoManager.Reg_VRepo.GetAllQueryable(r => r.Codice_Commessa_Can == "Hotel" && r.Data_Reg >= startMonth && r.Data_Reg <= endMonth && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2/* || r.Registrazione_Tipo_Reg == 4*/ || r.Registrazione_Tipo_Reg == 8 || r.Registrazione_Tipo_Reg == 10)).ToList());
             var exportRegVsHotel = exportRegsHotel.GroupBy(c => c.Col_Id);
             var exportRegVsLimone = exportRegs.Where(r => r.CentroDiCosto_Id == 6 && r.Registrazione_Tipo_Reg == 0);
             exportRegs = exportRegs.Where(r => r.CentroDiCosto_Id != 6).ToList();
@@ -487,13 +487,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (var entities in groupedEntities) 
             {
                 int startRowIndex = rowIndex;
+                rowIndex++;
                 foreach (var entity in entities) 
                 {
                     RangeSetBorders(1,1, rowIndex,9, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                     RangeSetBorders(1,8, rowIndex,8, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyleThick);
-                    CellInsertValue(1,1,rowIndex,entity.cognomeCol,ExcelInsertTypeEnum.Content);
-                    CellInsertValue(1,2,rowIndex,entity.nomeCol,ExcelInsertTypeEnum.Content);
-                    CellInsertValue(1,3,rowIndex,entity.descrizioneCant, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1, 1, rowIndex, entity.descrizioneCant, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1,2,rowIndex,entity.cognomeCol,ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1,3,rowIndex,entity.nomeCol,ExcelInsertTypeEnum.Content);
                     TimeSpan durata = TimeSpan.FromMinutes(entity.durata);
                     int minuti = 00;
                     //switch (durata.Minutes)
@@ -527,6 +528,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 }
                 RangeSetBorders(1, 1, startRowIndex, 7, startRowIndex, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
                 RangeSetBorders(1, 8, startRowIndex, 8, startRowIndex, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyleThick);
+                RangeSetBackgroundColor(1, 1, startRowIndex, 9, startRowIndex, Color.Black, ExcelFillStyle.Solid);
             }
 
             RangeSetBorders(1, 1, rowIndex - 1, 7, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle);

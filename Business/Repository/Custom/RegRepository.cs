@@ -421,6 +421,8 @@ namespace Business.Repository.Custom
 
                 CoupleHourRegsAndManagePassages(regs, errors);
 
+                //CoupleHourRegsAndManagePassages(regs.Where(r => r.Motivazione_Reg_Id != null), errors);
+
                 _log.Info("Timbrature associate.");
 
                 #region 9. Salvataggio dei dati modificati a database e cancellazione viaggi
@@ -2527,58 +2529,125 @@ namespace Business.Repository.Custom
                 foreach (Reg reg in regs.Where(rg => rg.Fru_Id != null || rg.Pru_Id != null || rg.Cant_Id != null).ToList())
                 {
                     try {
-                        // se la registrazione da processare ha collegata un'unità portatile
-                        if (reg.Pru_Id != null)
+                        if (reg.Stato_Attivita == 0) 
                         {
-                            #region Associazione del collaboratore
-                            // in ogni caso si reinizializza sulla registrazione il collaboratore
-                            reg.Col_Id = null;
-
-                            // inizializzazione della variaibile di appoggio dell'associazione pru_col da impostare
-                            Pru_Col currentPruCol = null;
-
-                            // se nel dizionario con l'elenco delle unità portatili è presente l'unità portatile della registrazione
-                            // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
-                            if (pruColDic.ContainsKey(reg.Pru_Id.Value))
-                                currentPruCol = pruColDic[reg.Pru_Id.Value].FirstOrDefault(pruCol => pruCol.Abilitazione_Data_Inizio_Pru_Col <= reg.Registrazione_Data_Ora_Fis_Reg);
-
-                            // se è stata trovata l'associazione a un'unità portatile allora si imposta il collaboratore sulla registrazione;
-                            // altrimenti si scrive l'errore
-                            if (currentPruCol != null)
-                                reg.Col_Id = currentPruCol.Col_Id;
-                            else
+                            // se la registrazione da processare ha collegata un'unità portatile
+                            if (reg.Pru_Id != null)
                             {
-                                string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Pru == null
-                                    ? Convert.ToInt32(reg.Pru_Id).ToString()
-                                    : reg.Pru.Codice_Pru);
-                                errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
+                                #region Associazione del collaboratore
+                                // in ogni caso si reinizializza sulla registrazione il collaboratore
+                                reg.Col_Id = null;
+
+                                // inizializzazione della variaibile di appoggio dell'associazione pru_col da impostare
+                                Pru_Col currentPruCol = null;
+
+                                // se nel dizionario con l'elenco delle unità portatili è presente l'unità portatile della registrazione
+                                // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
+                                if (pruColDic.ContainsKey(reg.Pru_Id.Value))
+                                    currentPruCol = pruColDic[reg.Pru_Id.Value].FirstOrDefault(pruCol => pruCol.Abilitazione_Data_Inizio_Pru_Col <= reg.Registrazione_Data_Ora_Fis_Reg);
+
+                                // se è stata trovata l'associazione a un'unità portatile allora si imposta il collaboratore sulla registrazione;
+                                // altrimenti si scrive l'errore
+                                if (currentPruCol != null)
+                                    reg.Col_Id = currentPruCol.Col_Id;
+                                else
+                                {
+                                    string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Pru == null
+                                        ? Convert.ToInt32(reg.Pru_Id).ToString()
+                                        : reg.Pru.Codice_Pru);
+                                    errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
+                                }
+                                #endregion
+
                             }
-                            #endregion
 
-                        }
-
-                        // se la registrazione da processare ha collegata un'unità fissa
-                        if (reg.Fru_Id != null)
-                        {
-
-                            #region Associazione del cantiere
-
-                            // in ogni caso si reinizializza sulla registrazione il cantiere
-                            //reg.Cant_Id = null;
-
-                            // inizializzazione della variabile di appoggio dell'associazione cant_fru da impostare
-                            Fru_Cant currentFruCant = null;
-
-                            // se nel dizionario con l'elenco delle unità fisse è presente l'unità fissa della registrazione
-                            // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
-                            if (fruCantDic.ContainsKey(reg.Fru_Id.Value))
-                                currentFruCant = fruCantDic[reg.Fru_Id.Value].FirstOrDefault(fruCant => fruCant.Abilitazione_Data_Inizio_Fru_Can <= reg.Registrazione_Data_Ora_Fis_Reg);
-
-                            // se è stata trovata l'associazione a un'unità fissa allora si imposta il cantiere sulla registrazione;
-                            // altrimenti si scrive l'errore
-                            if (currentFruCant != null)
+                            // se la registrazione da processare ha collegata un'unità fissa
+                            if (reg.Fru_Id != null)
                             {
-                                reg.Cant_Id = currentFruCant.Cant_Id;
+
+                                #region Associazione del cantiere
+
+                                // in ogni caso si reinizializza sulla registrazione il cantiere
+                                //reg.Cant_Id = null;
+
+                                // inizializzazione della variabile di appoggio dell'associazione cant_fru da impostare
+                                Fru_Cant currentFruCant = null;
+
+                                // se nel dizionario con l'elenco delle unità fisse è presente l'unità fissa della registrazione
+                                // allora si procede a ricercare la prima anagrafica con data assegnazione inferiore o uguale alla data ora fisica della timbratura
+                                if (fruCantDic.ContainsKey(reg.Fru_Id.Value))
+                                    currentFruCant = fruCantDic[reg.Fru_Id.Value].FirstOrDefault(fruCant => fruCant.Abilitazione_Data_Inizio_Fru_Can <= reg.Registrazione_Data_Ora_Fis_Reg);
+
+                                // se è stata trovata l'associazione a un'unità fissa allora si imposta il cantiere sulla registrazione;
+                                // altrimenti si scrive l'errore
+                                if (currentFruCant != null)
+                                {
+                                    reg.Cant_Id = currentFruCant.Cant_Id;
+                                    var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
+                                    if (allCdc.Count() > 0)
+                                    {
+                                        bool centro = false;
+                                        int cid = 0;
+                                        foreach (var tmp in allCdc)
+                                        {
+                                            if (centro == false)
+                                            {
+                                                var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == currentFruCant.Cant_Id);
+                                                foreach (var test1 in test)
+                                                {
+                                                    if (test1.Cant_Id == currentFruCant.Cant_Id)
+                                                    {
+                                                        centro = true;
+                                                        cid = test1.CentroDiCosto_Id;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        var temp = allCdc.First().Cant_CentroDiCosto;
+                                        var cdc = temp.Where(c => c.Cant_Id == currentFruCant.Cant_Id);
+                                        if (centro)
+                                        {
+                                            reg.CentroDiCosto_Id = cid;
+                                        }
+                                        else
+                                        {
+                                            reg.CentroDiCosto_Id = null;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Fru == null
+                                        ? Convert.ToInt32(reg.Pru_Id).ToString()
+                                        : reg.Fru.Codice_Fru);
+                                    errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
+                                }
+
+                                #endregion
+
+                            }
+
+                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 0)
+                            {
+                                //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
+                                if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
+                                {
+
+                                    #region Associazione del cantiere
+                                    int cantId = 0;
+                                    cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
+                                    //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
+                                    if (cantId != 0 && cantId != reg.Cant_Id.Value)
+                                    {
+                                        reg.Cant_Id = cantId;
+                                    }
+                                    #endregion
+
+                                }
+                            }
+
+                            if (reg.Cant_Id != null)
+                            {
                                 var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
                                 if (allCdc.Count() > 0)
                                 {
@@ -2588,10 +2657,10 @@ namespace Business.Repository.Custom
                                     {
                                         if (centro == false)
                                         {
-                                            var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == currentFruCant.Cant_Id);
+                                            var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == reg.Cant_Id);
                                             foreach (var test1 in test)
                                             {
-                                                if (test1.Cant_Id == currentFruCant.Cant_Id)
+                                                if (test1.Cant_Id == reg.Cant_Id)
                                                 {
                                                     centro = true;
                                                     cid = test1.CentroDiCosto_Id;
@@ -2600,7 +2669,7 @@ namespace Business.Repository.Custom
                                         }
                                     }
                                     var temp = allCdc.First().Cant_CentroDiCosto;
-                                    var cdc = temp.Where(c => c.Cant_Id == currentFruCant.Cant_Id);
+                                    var cdc = temp.Where(c => c.Cant_Id == reg.Cant_Id);
                                     if (centro)
                                     {
                                         reg.CentroDiCosto_Id = cid;
@@ -2609,70 +2678,6 @@ namespace Business.Repository.Custom
                                     {
                                         reg.CentroDiCosto_Id = null;
                                     }
-                                }
-                            }
-                            else
-                            {
-                                string errorUserString = String.Format("Reg: {0} Matricola: {1} non associata", reg.Reg_Id, reg.Fru == null
-                                    ? Convert.ToInt32(reg.Pru_Id).ToString()
-                                    : reg.Fru.Codice_Fru);
-                                errors.Add(new KeyValuePair<string, string>(FunctionMessageEnum.Elaborate.ToString(), errorUserString));
-                            }
-
-                            #endregion
-
-                        }
-
-                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.MantainCoordinateModifiedRegs) == 0)
-                        {
-                            //se la registrazione è gps andiamo a controllare se con i nuovi parametri il cantiere più vicino rimane lo stesso
-                            if ((reg.Registrazione_Lat_Orig != null && reg.Registrazione_Long_Orig != null && reg.Registrazione_Lat_Orig != 0 && reg.Registrazione_Long_Orig != 0) && reg.Fru_Id == null)
-                            {
-
-                                #region Associazione del cantiere
-                                int cantId = 0;
-                                cantId = GetGpsCantId(reg.Registrazione_Lat_Orig.Value, reg.Registrazione_Long_Orig.Value);
-                                //in caso il cantiere sia cambiato o non ce ne sia uno vicino andiamo ad assocciare il nuovo cantiere
-                                if (cantId != 0 && cantId != reg.Cant_Id.Value)
-                                {
-                                    reg.Cant_Id = cantId;
-                                }
-                                #endregion
-
-                            }
-                        }
-
-                        if (reg.Cant_Id != null)
-                        {
-                            var allCdc = RepoManager.CentroDiCostoRepo.GetAll().ToList();//.Select(r => r.Cant_CentroDiCosto.Where(c => c.Cant_Id == currentFruCant.Cant_Id)).ToList();
-                            if (allCdc.Count() > 0)
-                            {
-                                bool centro = false;
-                                int cid = 0;
-                                foreach (var tmp in allCdc)
-                                {
-                                    if (centro == false)
-                                    {
-                                        var test = tmp.Cant_CentroDiCosto.Where(t => t.Cant_Id == reg.Cant_Id);
-                                        foreach (var test1 in test)
-                                        {
-                                            if (test1.Cant_Id == reg.Cant_Id)
-                                            {
-                                                centro = true;
-                                                cid = test1.CentroDiCosto_Id;
-                                            }
-                                        }
-                                    }
-                                }
-                                var temp = allCdc.First().Cant_CentroDiCosto;
-                                var cdc = temp.Where(c => c.Cant_Id == reg.Cant_Id);
-                                if (centro)
-                                {
-                                    reg.CentroDiCosto_Id = cid;
-                                }
-                                else
-                                {
-                                    reg.CentroDiCosto_Id = null;
                                 }
                             }
                         }

@@ -717,13 +717,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 regVs.AddRange(returnRegs);
             }
 
+            var colIds = regVs
+                .Select(g => g.Col_Id)
+                .Concat(regVs.Select(g => g.Col_Id))
+                .Distinct()
+                .ToList();
+
             foreach (Col col in collaboratori)
             {
                 if (col != null) 
                 {
-                    IEnumerable<int> lis = new List<int>();
-                    lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
-                    if (regVs.Where(r => r.Col_Id == col.Col_Id).Count() > 0 /*|| RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1*/)
+                    if (colIds.Contains(col.Col_Id))
                     {
                         cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCartellinoCentri(ExportDate,
                                                        col,

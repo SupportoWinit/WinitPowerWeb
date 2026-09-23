@@ -1069,13 +1069,41 @@ namespace PowerWeb.Modules
                 currentRegENew.Activity_Evaluation = null;
 
             var fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegENew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
-            int fruId = fruCants.Last().Fru_Id;
-            var fru = RepoManager.FruRepo.SingleOrDefault(f => f.Fru_Id == fruId);
-            currentRegENew.Fru_Id = fruId;
+            if (fruCants.Count() > 0) 
+            {
+                int fruId = 0;// fruCants.Last().Fru_Id;
+                foreach (var fruCant in fruCants.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can)) 
+                {
+                    if (fruId == 0) 
+                    {
+                        int tmpFruId = fruCant.Fru_Id;
+                        var otherFruCant = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Fru_Id == tmpFruId && c.Abilitazione_Data_Inizio_Fru_Can > fruCant.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                        if (otherFruCant.Count() == 0)
+                        {
+                            fruId = fruCant.Fru_Id;
+                        }
+                    }
+                }
+                currentRegENew.Fru_Id = fruId;
+            }
             var pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegENew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
-            int pruId = pruCols.Last().Pru_Id;
-            var pru = RepoManager.PruRepo.SingleOrDefault(f => f.Pru_Id == pruId);
-            currentRegENew.Pru_Id = pruId;
+            if (pruCols.Count() > 0) 
+            {
+                int pruId = 0;// pruCols.Last().Pru_Id;
+                foreach (var pruCol in pruCols.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Pru_Col))
+                {
+                    if (pruId == 0)
+                    {
+                        int tmpPruId = pruCol.Pru_Id;
+                        var otherPruCol = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Pru_Id == tmpPruId && c.Abilitazione_Data_Inizio_Pru_Col > pruCol.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                        if (otherPruCol.Count() == 0)
+                        {
+                            pruId = pruCol.Pru_Id;
+                        }
+                    }
+                }
+                currentRegENew.Pru_Id = pruId;
+            }
             currentRegENew.Stato_Attivita = 1;
             //Aggiungo la REGE fra le REg da Trattare
             toAddRegsNew.Add(currentRegENew);
@@ -1100,11 +1128,26 @@ namespace PowerWeb.Modules
                     currentRegUNew.Registrazione_Data_Ora_Fis_Reg = currentRegUNew.Registrazione_Data_Ora_Fis_Reg.AddDays(1);
 
                 //viene estratto il cantiere della registrazione di uscita
-                Cant cantRegU = RepoManager.CantRepo.FirstOrDefault(z => z.Cant_Id == currentRegENew.Cant_Id);
+                Cant cantRegU = RepoManager.CantRepo.FirstOrDefault(z => z.Cant_Id == currentRegUNew.Cant_Id);
 
                 //se la registrazione di uscita è diverso da un attività , la valutazione viene impostata  a NULL
                 if (cantRegU != default(Cant) && cantRegU.Tipologia_Can != "ATT")
                     currentRegUNew.Activity_Evaluation = null;
+
+                fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegUNew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                if (fruCants.Count() > 0)
+                {
+                    int fruId = fruCants.Last().Fru_Id;
+                    var fru = RepoManager.FruRepo.SingleOrDefault(f => f.Fru_Id == fruId);
+                    currentRegUNew.Fru_Id = fruId;
+                }
+                pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegUNew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                if (pruCols.Count() > 0)
+                {
+                    int pruId = pruCols.Last().Pru_Id;
+                    var pru = RepoManager.PruRepo.SingleOrDefault(f => f.Pru_Id == pruId);
+                    currentRegUNew.Pru_Id = pruId;
+                }
 
                 //aggiungo la REGU nelle Reg da Trattare
                 toAddRegsNew.Add(currentRegUNew);
@@ -1866,6 +1909,54 @@ namespace PowerWeb.Modules
                             break;
 
                         newRegE.Stato_Attivita = 1;
+                        if (newRegE.Fru_Id == null) 
+                        {
+                            if (newRegE.Cant_Id != null) 
+                            {
+                                var fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == newRegE.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                if (fruCants.Count() > 0)
+                                {
+                                    int fruId = 0;// fruCants.Last().Fru_Id;
+                                    foreach (var fruCant in fruCants.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can))
+                                    {
+                                        if (fruId == 0)
+                                        {
+                                            int tmpFruId = fruCant.Fru_Id;
+                                            var otherFruCant = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Fru_Id == tmpFruId && c.Abilitazione_Data_Inizio_Fru_Can > fruCant.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                            if (otherFruCant.Count() == 0)
+                                            {
+                                                fruId = fruCant.Fru_Id;
+                                            }
+                                        }
+                                    }
+                                    newRegE.Fru_Id = fruId;
+                                }
+                            }
+                        }
+                        if (newRegE.Pru_Id == null) 
+                        {
+                            if (newRegE.Col_Id != null) 
+                            {
+                                var pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == newRegE.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                                if (pruCols.Count() > 0)
+                                {
+                                    int pruId = 0;// pruCols.Last().Pru_Id;
+                                    foreach (var pruCol in pruCols.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Pru_Col))
+                                    {
+                                        if (pruId == 0)
+                                        {
+                                            int tmpPruId = pruCol.Pru_Id;
+                                            var otherPruCol = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Pru_Id == tmpPruId && c.Abilitazione_Data_Inizio_Pru_Col > pruCol.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                                            if (otherPruCol.Count() == 0)
+                                            {
+                                                pruId = pruCol.Pru_Id;
+                                            }
+                                        }
+                                    }
+                                    newRegE.Pru_Id = pruId;
+                                }
+                            }
+                        }
                         toAddRegs.Add(newRegE);
 
                         Reg newRegU = null;
@@ -1901,6 +1992,54 @@ namespace PowerWeb.Modules
                                 break;
 
                             newRegU.Stato_Attivita = 1;
+                            if (newRegU.Fru_Id == null)
+                            {
+                                if (newRegU.Cant_Id != null)
+                                {
+                                    var fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == newRegU.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                    if (fruCants.Count() > 0)
+                                    {
+                                        int fruId = 0;// fruCants.Last().Fru_Id;
+                                        foreach (var fruCant in fruCants.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can))
+                                        {
+                                            if (fruId == 0)
+                                            {
+                                                int tmpFruId = fruCant.Fru_Id;
+                                                var otherFruCant = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Fru_Id == tmpFruId && c.Abilitazione_Data_Inizio_Fru_Can > fruCant.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                                                if (otherFruCant.Count() == 0)
+                                                {
+                                                    fruId = fruCant.Fru_Id;
+                                                }
+                                            }
+                                        }
+                                        newRegU.Fru_Id = fruId;
+                                    }
+                                }
+                            }
+                            if (newRegU.Pru_Id == null)
+                            {
+                                if (newRegU.Col_Id != null)
+                                {
+                                    var pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == newRegU.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                                    if (pruCols.Count() > 0)
+                                    {
+                                        int pruId = 0;// pruCols.Last().Pru_Id;
+                                        foreach (var pruCol in pruCols.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Pru_Col))
+                                        {
+                                            if (pruId == 0)
+                                            {
+                                                int tmpPruId = pruCol.Pru_Id;
+                                                var otherPruCol = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Pru_Id == tmpPruId && c.Abilitazione_Data_Inizio_Pru_Col > pruCol.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                                                if (otherPruCol.Count() == 0)
+                                                {
+                                                    pruId = pruCol.Pru_Id;
+                                                }
+                                            }
+                                        }
+                                        newRegU.Pru_Id = pruId;
+                                    }
+                                }
+                            }
                             toAddRegs.Add(newRegU);
                         }
 

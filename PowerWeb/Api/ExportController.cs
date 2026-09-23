@@ -87,7 +87,8 @@ namespace PowerWeb.Api
                         col = collaboratore.First().CognomeNome_Col;
                     }
                     if (collaboratore.First().Qualifica_Col != "0") {
-                        foreach (Reg_V regv in regs.OrderBy(r => r.Cant_Id).ThenBy(r => r.Turno))
+                        var regVs1 = regs.OrderBy(r => r.Cant_Id).ThenBy(r => r.Turno);
+                        foreach (Reg_V regv in regVs1)
                         {
                             if (!(regv.Col_Id == 5262 && regv.Registrazione_Tipo_Reg == 4))
                             {
@@ -160,6 +161,10 @@ namespace PowerWeb.Api
                                             if (regv.Turno == "Coperture Serali")
                                             {
                                                 tmpSerale = 1;
+                                            }
+                                            else 
+                                            {
+                                                tmpSerale = 0;
                                             }
                                         }
                                         dayTimb++;

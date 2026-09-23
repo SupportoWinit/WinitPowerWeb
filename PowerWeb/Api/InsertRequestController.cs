@@ -143,13 +143,13 @@ namespace PowerWeb.Api
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
                         _log.Info("Inizio ad inserire la richiesta di ferie o permesso");
-                        InviaConferma(1, col, From, To);
+                        InviaConferma(1, col, From, To, Start, End,0);
                     }
                     else {
                         _log.Info("Richiesta gia presente a sistema");
                         values.Status = true;
                         values.Message = "Richiesta già presente a sistema";
-                        InviaConferma(3, col, From, To);
+                        InviaConferma(3, col, From, To, Start, End, 0);
                     }
 
                     JsonData = JsonConvert.SerializeObject(values);
@@ -249,14 +249,14 @@ namespace PowerWeb.Api
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
                         _log.Info("Inizio ad inserire la richiesta di ferie o permesso");
-                        InviaConferma(1, col, From, To);
+                        InviaConferma(1, col, From, To, default(TimeSpan), default(TimeSpan), Durata);
                     }
                     else
                     {
                         _log.Info("Richiesta gia presente a sistema");
                         values.Status = true;
                         values.Message = "Richiesta già presente a sistema";
-                        InviaConferma(3, col, From, To);
+                        InviaConferma(3, col, From, To, default(TimeSpan), default(TimeSpan), Durata);
                     }
 
                     JsonData = JsonConvert.SerializeObject(values);
@@ -461,14 +461,14 @@ namespace PowerWeb.Api
                         RepoManager.RegRepo.Add(regsToAdd, true);
                         values.Status = true;
                         values.Message = "Richiesta inserita correttamente";
-                        InviaConferma(0, col, From, To);
+                        InviaConferma(0, col, From, To, default(TimeSpan), default(TimeSpan), 0);
                     }
                     else
                     {
                         _log.Info("Richiesta gia presente a sistema");
                         values.Status = true;
                         values.Message = "Richiesta già presente a sistema";
-                        InviaConferma(2, col, From, To);
+                        InviaConferma(2, col, From, To, default(TimeSpan), default(TimeSpan), 0);
                     }
                     JsonData = JsonConvert.SerializeObject(values);
                 }
@@ -490,7 +490,7 @@ namespace PowerWeb.Api
             return ((minutes / 60.0) * 100).ToString("00");
         }
 
-        public string InviaConferma(int esito, Col cols, DateTime from, DateTime to)
+        public string InviaConferma(int esito, Col cols, DateTime from, DateTime to, TimeSpan start, TimeSpan end, double durata)
         {
             string titoloMail = "";
             string mailTo = RepoManager.ParamRepo.ParametersRow.CompanyEmail;
@@ -506,7 +506,15 @@ namespace PowerWeb.Api
                     break;
                 case 1:
                     titoloMail = "PowerWeb - Richiesta di permesso inserita correttamente";
-                    mailBody += "<p>la richiesta di permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato inserito </p>";
+                    if (durata > 0)
+                    {
+                        TimeSpan totalDuration = TimeSpan.FromMinutes(durata);
+                        mailBody += "<p>la richiesta di permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " di "+ totalDuration.ToString("hh\\:mm") + " ore richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato inserito </p>";
+                    }
+                    else 
+                    {
+                        mailBody += "<p>la richiesta di permesso per il giorno " + from.ToString("dddd d MMMM yyyy") + " dalle " + start.ToString("hh\\:mm") + " alle "+end.ToString("hh\\:mm")+" richiesto dal collaboratore " + cols.CognomeNome_Col + " è stato inserito </p>";
+                    }
                     break;
                 case 2:
                     titoloMail = "PowerWeb - Richiesta di ferie già presente";

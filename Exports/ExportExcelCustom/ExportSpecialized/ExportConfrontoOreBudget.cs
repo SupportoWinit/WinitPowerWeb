@@ -1184,8 +1184,11 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 int confDurationPartial = Convert.ToInt32(cObject.ConfrontationDuration.HasValue ? cObject.ConfrontationDuration.Value.TotalMinutes : TimeSpan.Zero.TotalMinutes);
                                 if (!String.IsNullOrEmpty(cObject.ConfrontationDurationNumberFormat))
                                     confDurationPartial = confDurationPartial * -1;
-                                totalConfrontationDuration += confDurationPartial;
 
+                                //if (!cObject.ExecutionEntityDes.Contains("(")) 
+                                //{
+                                    totalConfrontationDuration += confDurationPartial;
+                                //}
                             }
 
                             //viene controllata se la personalizzazione sul numero di interventi è attiva
@@ -2255,6 +2258,15 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
                     // calcolo della descrizione dell'entità opposta a quella in elaborazione
                     string otherEntityDes = otherEntityId != 0 ? GetOtherEntityDescription(dayRegV) : String.Empty;
+
+                    if (dayRegV.Motivazione_Reg_Id != null) 
+                    {
+                        Tab_Decod mot = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Tab_Decod_Id == dayRegV.Motivazione_Reg_Id.Value);
+                        if (mot != default) 
+                        { 
+                            otherEntityDes = otherEntityDes + " (" + mot.Decodifica_Tab + ")";
+                        }
+                    }
 
                     // creazione di un nuovo oggetto di confronto per la durata
                     var newConfObject = ConfrontationObject.NewConfrontationObjectForDuration(otherEntityDes, dateToConfront);
