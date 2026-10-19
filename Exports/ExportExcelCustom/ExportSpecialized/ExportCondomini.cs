@@ -85,7 +85,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             List<string> codCond = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Campo1_Tab == "CONDOMINIO").Select(td => td.Chiave_Tab).ToList();
             List<int> cantIds = RepoManager.CantRepo.GetAllQueryable(c => c.DisAbilitazione_Can == false && codCond.Contains(c.Tipo_Interv_Can)).Select(c => c.Cant_Id).ToList();
             List<DateTime> monthDays = CommonService.GetDatesFromPeriod(CommonService.GetFirstMonthDay(ExportPeriod), CommonService.GetLastMonthDay(ExportPeriod));
-            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => cantIds.Contains(r.Cant_Id.Value) && r.Qualifica_Col != "0" && r.Data_Ora_Fis_E >= minDate && r.Data_Ora_Fis_E <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10) ).OrderBy(reg => reg.Cant_Desc).ToList();
+            List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => cantIds.Contains(r.Cant_Id.Value) && r.Qualifica_Col != "0" && r.Data_Ora_Fis_E >= minDate && r.Data_Ora_Fis_E <= maxDate && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 10 || r.Registrazione_Tipo_Reg == 8) ).OrderBy(reg => reg.Cant_Desc).ToList();
             var exportRegVs = regVs.GroupBy(c => c.Cant_Id);
             var exportCliRegVs = regVs.GroupBy(c => c.Cli_Id);
             //ordino le ore in base alla ora della registrazione e le reggruppo per i cantieri

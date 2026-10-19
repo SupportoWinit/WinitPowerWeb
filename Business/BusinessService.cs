@@ -1011,9 +1011,8 @@ namespace Business
                 else
                 {
                     normalizedCity = cityRemainder;
-                }
+                }               
             }
-
             FillGeocodeCityFromPostcode(ref normalizedCity, ref normalizedProvince, normalizedPostcode);
 
             var postcodeAndCity = String.Join(" ", new[] { normalizedPostcode, normalizedCity }.Where(value => !String.IsNullOrWhiteSpace(value)));
@@ -3285,6 +3284,89 @@ namespace Business
             }
 
             result = result.OrderBy(act => act.RegAAAA).ThenBy(act => act.RegMM).ThenBy(act => act.RegGG).ThenBy(act => act.RegHHMMSSInizio).ThenBy(act => act.RegHHMMSSFine).ToList();
+
+            return result;
+        }
+
+        public static List<TripsItem> PopulateTripsList(List<Reg_V> regvs)
+        {
+            List<TripsItem> result = new List<TripsItem>();
+
+            regvs = regvs.Where(regv => !regv.Registrazione_Bloccata).ToList();
+
+            var sadCustomization = RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.SadCpExport);
+            Fil castanoFil = RepoManager.FilRepo.FirstOrDefault(c => c.Codice_Fil == "SAD CP");
+
+
+            var cants = RepoManager.CantRepo.GetAll(true).ToList();
+            var colVars = RepoManager.Col_VarRepo.GetAll(true).ToList();
+            var cantVars = RepoManager.Cant_VarRepo.GetAll(true).ToList();
+            var fils = RepoManager.FilRepo.GetAll(true).ToList();
+            var resps = RepoManager.RespRepo.GetAll(true).ToList();
+            var clis = RepoManager.CliRepo.GetAll(true).ToList();
+
+            regvs =
+                regvs.Where(
+                    regv =>
+                    regv.Cant_Id.HasValue && regv.Col_Id.HasValue && regv.RegU != null && regv.Codice_Commessa_Can == "Pulizie Civile" &&
+                    regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att &&
+                    regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Pass).ToList();
+
+            regvs = regvs.OrderBy(regv => regv.Col_Id).ThenBy(regv => regv.Data_Reg).ThenBy(regv => regv.Data_Ora_Fis_E).ToList();
+
+            Reg_V lastReg_V = default(Reg_V);
+
+            for (int i = 0; i < regvs.Count; i++)
+            {
+                var regv = regvs[i];
+
+                Reg_V nextReg_V = i < regvs.Count - 1
+                    ? regvs[i + 1]
+                    : null;
+
+                Col currentCol = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == regv.Col_Id);
+                Cant currentCant = RepoManager.CantRepo.FirstOrDefault(c => c.Cant_Id == regv.Cant_Id);
+                TimeSpan durataTeorica = default(TimeSpan);
+                if (regv.Registrazione_Tipo_Reg == 4) 
+                {
+                    if (nextReg_V != null) 
+                    {
+                        if (regv.Data_Reg == nextReg_V.Data_Reg) 
+                        {
+                            TimeSpan confrontoU = new TimeSpan(nextReg_V.Data_Ora_Fis_E.Hour, nextReg_V.Data_Ora_Fis_E.Minute, 0);
+                            TimeSpan confrontoE = new TimeSpan(regv.Data_Ora_Fis_E.Hour, regv.Data_Ora_Fis_E.Minute, 0);
+                            if (confrontoE < confrontoU)
+                            {
+                                durataTeorica = confrontoU - confrontoE;
+                            }
+                        }
+                    }
+                }
+
+                TimeSpan durataReale = regv.Durata_Fis.HasValue ? TimeSpan.FromMinutes(regv.Durata_Fis.Value) : default(TimeSpan);
+                string kmReg = regv.KM_Reg.HasValue ? regv.KM_Reg.Value.ToString() : "0";
+                if (regv.Registrazione_Tipo_Reg != 4) 
+                {
+                    kmReg = "";
+                }
+                var currentActivity = new TripsItem
+                {
+                    CantDesc = currentCant != default ? currentCant.Descrizione_Can : string.Empty,
+                    DataReg = regv.Data_Reg.Value.ToString("yyyy-MM-dd"),
+                    OraE = regv.Data_Ora_Fis_E.ToString("HH:mm:ss"),
+                    OraU = regv.Data_Ora_Fis_U.Value.ToString("HH:mm:ss"),
+                    ColDesc = currentCol != default ? currentCol.Cognome_Col + " " + currentCol.Nome_Col : string.Empty,
+                    TipoRegistrazione = regv.Registrazione_Tipo_Reg.ToString(),
+                    KMReg = kmReg,
+                    DurataReale = durataReale != default ? durataReale.ToString("hh\\:mm\\:ss") : "00:00:00",
+                    DurataTeorica = durataTeorica != default ? durataTeorica.ToString("hh\\:mm\\:ss") : string.Empty
+                };
+
+                result.Add(currentActivity);
+                lastReg_V = regv;
+            }
+
+            result = result.OrderBy(act => act.ColDesc).ThenBy(act => act.DataReg).ThenBy(act => act.OraE).ThenBy(act => act.OraU).ToList();
 
             return result;
         }

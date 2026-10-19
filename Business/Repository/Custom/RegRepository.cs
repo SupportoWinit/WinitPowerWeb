@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Contexts;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Xml.Linq;
@@ -280,8 +281,8 @@ namespace Business.Repository.Custom
             {
                 if (regUToProcessId == 0)
                 {
-                    regUToProcess.Pru_Id = regEToProcess.Pru_Id;// null;
-                    regUToProcess.Fru_Id = regEToProcess.Fru_Id;// null;
+                    regUToProcess.Pru_Id = null;
+                    regUToProcess.Fru_Id = null;
                     regUToProcess.Registrazione_Data_Ora_Orig_Reg = regEToProcess.Registrazione_Data_Ora_Fis_Reg.AddSeconds(-1);
                 }
             }
@@ -871,6 +872,89 @@ namespace Business.Repository.Custom
                             var roundingRegVs1 = regVs.ToList();
                             errors.AddRange(NewPausaPranzo(roundingRegVs1, ref regs));
                             UpdateData(regs);
+                        }
+                        #endregion
+
+                        #region 11.10 Modifica timbrature di Trasferta
+
+                        //in caso ci siano timbrature di trasferta e la personalizzazione attiva le rendo sola durata di 8 ore
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.GiornoDiTrasferta) == 1) 
+                        {
+                            Tab_Decod trasferta = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Chiave_Tab == "TRA" && td.Nome_Tab == "MOTIVAZIONI");
+                            List<Reg> reg = RepoManager.RegRepo.GetAllQueryable(r => r.Registrazione_Tipo_Reg == 0 && r.Motivazione_Reg_Id == trasferta.Tab_Decod_Id).ToList();
+                            errors.AddRange(Trasferta(ref regs, reg));
+                        }
+                        #endregion
+
+                        #region 11.11 Rendo le giornate con passaggi se necessario
+
+                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.GiornoPassaggi) == 1) 
+                        {
+                            int cantId = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.GiornoPassaggi, "CantSede"));
+                            var regsByCol = regs.Where(r => r.Registrazione_Stato_Reg == 0).GroupBy(r => r.Col_Id).ToList();
+                            Tab_Decod trasferta = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Chiave_Tab == "TRA" && td.Nome_Tab == "MOTIVAZIONI");
+                            List<Reg> regtoElaborate = new List<Reg>();
+                            foreach (var colRegs in regsByCol) 
+                            { 
+                                var regsByColDate = colRegs.GroupBy(r => r.Registrazione_Data_Ora_Fis_Reg.DayOfYear).ToList();
+                                foreach (var colDateRegs in regsByColDate) 
+                                {
+                                    bool dayElaborate = true;
+                                    bool daySede = true;
+                                    foreach (var reg in colDateRegs) 
+                                    {
+                                        if (dayElaborate) 
+                                        {
+                                            if (reg.Motivazione_Reg_Id == trasferta.Tab_Decod_Id)
+                                            {
+                                                dayElaborate = false;
+                                            }
+                                            else 
+                                            {
+                                                if (daySede) 
+                                                {
+                                                    if (reg.Cant_Id != null) 
+                                                    {
+                                                        if (reg.Cant_Id != cantId) 
+                                                        { 
+                                                            daySede = false;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (dayElaborate && !daySede) 
+                                    {
+                                        if (colDateRegs.Count() <= 4)
+                                        {
+                                            regtoElaborate.AddRange(colDateRegs);
+                                        }
+                                        else 
+                                        {
+                                            regtoElaborate.Add(colDateRegs.ElementAt(0));
+                                            regtoElaborate.Add(colDateRegs.ElementAt(1));
+                                            regtoElaborate.Add(colDateRegs.ElementAt(colDateRegs.Count() - 1));
+                                            regtoElaborate.Add(colDateRegs.ElementAt(colDateRegs.Count() - 2));
+                                        }
+                                    }
+                                }
+                            }
+                            errors.AddRange(Passaggi(ref regs, regtoElaborate));
+                            // sono rilette le registrazioni per interecettare eventuali modifiche di arrotondamento 
+                            // o altro interevenute precedentemente
+                            regVs = GetRegVsToPostProcess(regs);
+                            _log.Info("Registrazioni raccolte " + regVs.Count());
+                            tripRegVs = regVs;
+                            //se ci sono delle registrazioni lette da database si richiama l'elaborazione dei viaggi
+                            if (regVs.Any())
+                            {
+                                _log.Info("Inizio elaborazione viaggi");
+
+                                errors.AddRange(RepoManager.Reg_VRepo.ElaborateTrips(regVs));
+
+                                _log.Info("Elaborazione viaggi terminata");
+                            }
                         }
                         #endregion
 
@@ -4314,6 +4398,97 @@ namespace Business.Repository.Custom
 
         }
 
+        public List<KeyValuePair<String, String>> Passaggi(ref ICollection<Reg> regs, List<Reg> regPassaggi)
+        {
+            // Lista che conterrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà le timbrature da aggiornare a db
+            List<Reg> regsToUpdate = new List<Reg>();
+            // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
+            if (regPassaggi.Count() > 0)
+            {
+                foreach (Reg reg in regPassaggi)
+                {
+                    Reg tmpReg = RepoManager.RegRepo.SingleOrDefault(r => r.Reg_Id == reg.Reg_Id);
+                    var tmpList = regs.ToList();
+                    tmpList.Remove(tmpReg);
+                    tmpReg.Registrazione_Tipo_Reg = 1;
+                    tmpReg.Registrazione_Stato_Reg = 1;
+                    tmpList.Add(tmpReg);
+                    regs = tmpList.ToList();
+                    regsToUpdate.Add(tmpReg);
+                }
+                // se al termine del ciclo sono state generate delle rettifiche allora si procede alla loro scrittura nel database
+                if (regsToUpdate.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    foreach (var regsToUpd in regsToUpdate.GroupBy(r => r.Col_Id))
+                    {
+                        try
+                        {
+                            BulkUpdate(regsToUpd.ToList());
+                        }
+                        catch (Exception)
+                        {
+                            _log.ErrorFormat("Rilevato errore con update regs col {0}", regsToUpd.Key);
+                        }
+                        //regs.Remove(reg);
+                        //regs.Add(reg);
+                    }
+                }
+
+                //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+                //BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+            }
+            return errors;
+        }
+
+        public List<KeyValuePair<String, String>> Trasferta(ref ICollection<Reg> regs, List<Reg> regTrasferta)
+        {
+            // Lista che conterrà gli errori di elaborazione
+            List<KeyValuePair<String, String>> errors = new List<KeyValuePair<String, String>>();
+            // Lista che conterrà le timbrature da aggiornare a db
+            List<Reg> regsToUpdate = new List<Reg>();
+            // Controllo che mi siano state passate delle regv e che nei parametri sia attivato l'arrotondamento per durata
+            if (regTrasferta.Count() > 0)
+            {
+                foreach (Reg reg in regTrasferta) 
+                { 
+                    Reg tmpReg = RepoManager.RegRepo.SingleOrDefault(r => r.Reg_Id == reg.Reg_Id);
+                    var tmpList = regs.ToList();
+                    tmpList.Remove(tmpReg);
+                    tmpReg.Registrazione_Tipo_Reg = 8;
+                    tmpReg.Registrazione_Stato_Reg = 1;
+                    tmpReg.Rettifica_Durata = 480;
+                    tmpList.Add(tmpReg);
+                    regs = tmpList.ToList();
+                    regsToUpdate.Add(tmpReg);
+                }
+                // se al termine del ciclo sono state generate delle rettifiche allora si procede alla loro scrittura nel database
+                if (regsToUpdate.Any())
+                {
+                    // salvataggio nel database delle rettifiche
+                    foreach (var regsToUpd in regsToUpdate.GroupBy(r => r.Col_Id))
+                    {
+                        try
+                        {
+                            BulkUpdate(regsToUpd.ToList());
+                        }
+                        catch (Exception)
+                        {
+                            _log.ErrorFormat("Rilevato errore con update regs col {0}", regsToUpd.Key);
+                        }
+                        //regs.Remove(reg);
+                        //regs.Add(reg);
+                    }
+                }
+
+                //BusinessService.ElaborateStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+                //BusinessService.ImportDataStatusDictionary[PowerWebContext.Current.User] = new KeyValuePair<double, string>(100, "Elaborazione terminata");
+            }
+            return errors;
+        }
+
         public List<KeyValuePair<String, String>> NewPausaPranzo(IEnumerable<Reg_V> regVs, ref ICollection<Reg> regs)
         {
             // Lista che conterrà gli errori di elaborazione
@@ -4561,7 +4736,7 @@ namespace Business.Repository.Custom
                                             {
                                                 // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                                 TimeSpan roundingTime = new TimeSpan(0, 0, 0);
-                                                Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), cantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                                Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), cantId, 0, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
                                                 string confronto = "Pausa Di " + arrot + " minuti";
                                                 if (regE.Note_Reg != confronto)
                                                 {
@@ -5549,8 +5724,8 @@ namespace Business.Repository.Custom
                     Reg newRegU = this.Init();
                     newRegU.Col_Id = newRegE.Col_Id;
                     newRegU.Cant_Id = newRegE.Cant_Id;
-                    newRegU.Fru_Id = newRegE.Fru_Id;
-                    newRegU.Pru_Id = newRegE.Pru_Id;
+                    //newRegU.Fru_Id = newRegE.Fru_Id;
+                    //newRegU.Pru_Id = newRegE.Pru_Id;
                     newRegU.Motivazione_Reg_Id = newRegE.Motivazione_Reg_Id;
                     // LE MOTIVAZIONI VG* di ACCESS DIVENTANO MOTIVAZIONI=BLANKS + TIPO_REGISTRAZIONE = 8 (TRIP)
                     // LE ALTRE MOTIVAZIONI VENGONO VERIFICA NELLA TAB_DECOD e NE VIENE RECUPERATO il relativo ID della Motivazione
@@ -6708,7 +6883,7 @@ namespace Business.Repository.Custom
             return newRounding;
         }
 
-        public Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration, string turno)
+        public Reg GeneratePausaPranzo(int colId, int cantId, int cdcId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration, string turno)
         {
             // inizializzazione del valore di ritorno del metodo
             var newRounding = Init();
@@ -6778,7 +6953,7 @@ namespace Business.Repository.Custom
                     // popolamento dei dati della registrazione
                     newRounding.Col_Id = colId;
                     newRounding.Cant_Id = cantId;
-                    //newRounding.CentroDiCosto_Id = centroDiCostoId;
+                    //newRounding.CentroDiCosto_Id = cdcId;
                     newRounding.Registrazione_Data_Ora_Fis_Reg = roundingDate;
                     newRounding.Registrazione_Data_Ora_Orig_Reg = roundingDate;
                     newRounding.Registrazione_Data_Ora_Fig_Reg = roundingDate;
@@ -6938,21 +7113,21 @@ namespace Business.Repository.Custom
                 if (newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)] != null)
                     currentRegE.Fru_Id = Convert.ToInt32(newValues[CommonService.GetPropertyName(() => regVStub.Fru_Id)]);
 
-                if (currentRegE.Pru_Id != null && currentRegE.Col_Id == null) 
-                {
-                    int pruId = currentRegE.Pru_Id.Value;
-                    var pruCol = RepoManager.Pru_ColRepo.GetAllQueryable(pc => pc.Pru_Id == pruId).OrderBy(pc => pc.Abilitazione_Data_Inizio_Pru_Col).ToList();
-                    int colId = pruCol.Last().Col_Id;
-                    currentRegE.Col_Id = colId;
-                }
-
-                if (currentRegE.Fru_Id != null && currentRegE.Cant_Id.Value == 0)
-                {
-                    int fruId = currentRegE.Fru_Id.Value;
-                    var fruCant = RepoManager.Fru_CantRepo.GetAllQueryable(pc => pc.Fru_Id == fruId).OrderBy(pc => pc.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                    int cantId = fruCant.Last().Cant_Id;
-                    currentRegE.Cant_Id = cantId;
-                }
+                //if (currentRegE.Pru_Id != null && currentRegE.Col_Id == null) 
+                //{
+                //    int pruId = currentRegE.Pru_Id.Value;
+                //    var pruCol = RepoManager.Pru_ColRepo.GetAllQueryable(pc => pc.Pru_Id == pruId).OrderBy(pc => pc.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                //    int colId = pruCol.Last().Col_Id;
+                //    currentRegE.Col_Id = colId;
+                //}
+                //
+                //if (currentRegE.Fru_Id != null && currentRegE.Cant_Id.Value == 0)
+                //{
+                //    int fruId = currentRegE.Fru_Id.Value;
+                //    var fruCant = RepoManager.Fru_CantRepo.GetAllQueryable(pc => pc.Fru_Id == fruId).OrderBy(pc => pc.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                //    int cantId = fruCant.Last().Cant_Id;
+                //    currentRegE.Cant_Id = cantId;
+                //}
             }
 
             return currentRegE;

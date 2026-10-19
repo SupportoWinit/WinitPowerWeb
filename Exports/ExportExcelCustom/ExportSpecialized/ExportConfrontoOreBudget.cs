@@ -262,6 +262,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             // si procede all'elaborazione solamente se sono presenti dei dati
             if (entitiesToExport.Any())
             {
+                entitiesToExport = entitiesToExport.Where(regv => regv.Motivazione_Reg_Id == null);
                 // dalle reg_v da processare sono estratte tutte le registrazioni raggruppate per entitià di riferimento (collaboratore/cantiere)
                 // in un dizionario
                 Dictionary<int, List<Reg_V>> groupedRegVs = GetRegVsGroupedByEntity(entitiesToExport);
@@ -740,8 +741,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 int? executionUColumn = null;
                 int? executionDurationColumn = null;
                 int? numeroInterventiColum = null;
+                int? motivazioneColumn = null;
                 CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
-                    ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColum);
+                    ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColum, ref motivazioneColumn);
 
                 // valori effettivi timbratura
                 CellInsertValue(worksheetName, 3, firstTableHeaderRow, BusinessService.GetLocalizedString(PowerWebResources.STR_ESEGUITO).ToUpper(), ExcelInsertTypeEnum.Content);
@@ -948,9 +950,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             int? executionDurationColumn = null;
             int? numeroInterventiColum = null;
             int lastExecutionColumn = 4;
+            int? motivazioneColumn = null;
 
             CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
-                    ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColum);
+                    ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColum, ref motivazioneColumn);
 
             // inserisco la colonna note
             RangeSetBorders(worksheetName, 2, secondTableHeaderRow, 2, secondTableHeaderRow, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium, Color.Black, ExcelBorderStyle.Medium);
@@ -1029,8 +1032,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         int? executionUColumn = null;
                         int? executionDurationColumn = null;
                         int? numeroInterventiColumn = null;
+                        int? motivazioneColumn = null;
+
                         CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
-                            ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn);
+                            ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn, ref motivazioneColumn);
 
                         // salvataggio della linea di scrittura originale
                         int originalRowIndex = rowIndex;
@@ -1205,6 +1210,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 }
                             }
 
+                            if (motivazioneColumn != null) 
+                            {
+                                CellInsertValue(worksheetName, motivazioneColumn.Value, rowIndex, cObject.EntityMotivation, ExcelInsertTypeEnum.Content);
+                            }
 
                             // dopo l'inserimento di una riga si procede con l'incremento dell'indice di riga stesso
                             rowIndex++;
@@ -1368,8 +1377,10 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         int? executionUColumn = null;
                         int? executionDurationColumn = null;
                         int? numeroInterventiColumn = null;
+                        int? motivazioneColumn = null;
+
                         CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
-                            ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn);
+                            ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn, ref motivazioneColumn);
 
                         // calcolo delle prime e ultime colonne di ogni sessione
                         const int firstExecutionColumn = 3;
@@ -1563,8 +1574,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     int? executionUColumn = null;
                     int? executionDurationColumn = null;
                     int? numeroInterventiColumn = null;
+                    int? motivazioneColumn = null;
                     CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
-                        ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn);
+                        ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn, ref motivazioneColumn);
 
                     // calcolo delle prime e ultime colonne di ogni sessione
                     const int firstExecutionColumn = 3;
@@ -1866,8 +1878,9 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     int? executionUColumn = null;
                     int? executionDurationColumn = null;
                     int? numeroInterventiColumn = null;
+                    int? motivazioneColumn = null;
                     CalculateExportColumns(ref executionDurationColumn, ref previsionalDurationColumn, ref confrontationDurationColumn, ref executionEColumn, ref executionUColumn,
-                        ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn);
+                        ref previsionalEColumn, ref previsionalUColumn, ref previsionalEntityDesColumn, ref confrontationEColumn, ref confrontationUColumn, ref numeroInterventiColumn, ref motivazioneColumn);
 
                     // calcolo delle prime e ultime colonne di ogni sessione
                     const int firstExecutionColumn = 3;
@@ -2140,7 +2153,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         /// <param name="confrontationEColumn">La colonna che contiene l'ora di entrata confrontata.</param>
         /// <param name="confrontationUColumn">La colonna che contiene l'ora di uscita confrontata.</param>
         private void CalculateExportColumns(ref int? executionDurationColumn, ref int? previsionalDurationColumn, ref int? confrontationDurationColumn, ref int? executionEColumn,
-            ref int? executionUColumn, ref int? previsionalEColumn, ref int? previsionalUColumn, ref int? previsionalEntityDesColumn, ref int? confrontationEColumn, ref int? confrontationUColumn, ref int? numeroInterventi)
+            ref int? executionUColumn, ref int? previsionalEColumn, ref int? previsionalUColumn, ref int? previsionalEntityDesColumn, ref int? confrontationEColumn, ref int? confrontationUColumn, ref int? numeroInterventi, ref int? motivazioneColumn)
         {
             if (UseHourType)
             {
@@ -2152,6 +2165,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         confrontationDurationColumn = 6;
                         if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.InserimentoNumeroInterventi) == (int)InserimentoNumeroInterventi.Includi)
                             numeroInterventi = 7;
+
+                        if(numeroInterventi.HasValue)
+                            motivazioneColumn = 8;
+                        else
+                            motivazioneColumn = 7;
+
                         break;
                     case ExportRegVHourTypeEnum.Eu:
                         executionEColumn = 4;
@@ -2275,6 +2294,12 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                     numeroInterventi++;
 
                     newConfObject.NumeroInterventi = numeroInterventi;
+
+                    if (dayRegV.Motivazione_Reg_Id != null) 
+                    { 
+                        var decod = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Tab_Decod_Id == dayRegV.Motivazione_Reg_Id.Value);
+                        //newConfObject.EntityMotivation = decod != default ? decod.Chiave_Tab : String.Empty;
+                    }
 
                     // aggiunta al dizionario del nuovo oggetto generato
                     confrontationsByOtherEntity.Add(otherEntityId, newConfObject);
@@ -3009,6 +3034,8 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         /// The numero interventi.
         /// </value>
         public int NumeroInterventi { get; set; }
+
+        public string EntityMotivation { get; set; }
 
         #endregion
 

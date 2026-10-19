@@ -3566,7 +3566,7 @@ namespace Business.Repository.Custom
                                     {
                                         // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                         TimeSpan roundingTime = new TimeSpan(0, 0, 0);
-                                        Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                        Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.GetValueOrDefault(), tmpcantId, 0,colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
                                         if (tmp.Col_Id != null)
                                         {
                                             regsToAdd.Add(tmp);
@@ -3818,6 +3818,8 @@ namespace Business.Repository.Custom
                             {
                                 int tmpcantId = 0;
                                 int limite = 240;
+                                int tmpcdcId = 0;
+                                int cdcId = 0;
                                 double arrot = 100;
                                 int durata = 0;
                                 bool valida = true;
@@ -3840,7 +3842,7 @@ namespace Business.Repository.Custom
                                                 {
                                                     // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                                     TimeSpan roundingTime = new TimeSpan(0, 0, 0);
-                                                    Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, regv.Cant_Id.Value, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, regv.Turno);
+                                                    Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, regv.Cant_Id.Value, 0, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, regv.Turno);
                                                     if (tmp.Col_Id != null)
                                                     {
                                                         regsToAdd.Add(tmp);
@@ -3908,6 +3910,7 @@ namespace Business.Repository.Custom
                                             //{
                                             //arrot = cantieri.First().Importo1.Value;
                                             tmpcantId = cantieri.First().Cant_Id;
+                                            cdcId = tmpcdcId;
                                             if (tmpTurno == "")
                                             {
                                                 tmpTurno = currentTurno;
@@ -4069,7 +4072,7 @@ namespace Business.Repository.Custom
                                     {
                                         // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                         TimeSpan roundingTime = new TimeSpan(0, 0, 0);
-                                        Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                        Reg tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, tmpcantId, cdcId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
                                         if (tmp.Col_Id != null)
                                         {
                                             regsToAdd.Add(tmp);
@@ -4086,7 +4089,7 @@ namespace Business.Repository.Custom
                                             }
                                             // creo la registrazione con durata negativa in base al parametro presente nel cantiere
                                             roundingTime = new TimeSpan(0, 0, 0);
-                                            tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, tmpcantId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
+                                            tmp = RepoManager.RegRepo.GeneratePausaPranzo(currColId.Value, tmpcantId, cdcId, colDateGroup.Key.Value, RoundingTypeEnum.RoundingMinus, roundingTime, tmpTurno);
                                             if (tmp.Col_Id != null)
                                             {
                                                 regsToAdd.Add(tmp);
@@ -6437,7 +6440,7 @@ namespace Business.Repository.Custom
                 _elaborateUserId = elaborateUserId ?? PowerWebContext.Current.User.Utenti_Id;
                 _elaborateDateTime = elaborateDateTime ?? DateTime.Now;
 
-                regvsList = regvsList.Where(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).ToList();
+                regvsList = regvsList.Where(regv => regv.Registrazione_Tipo_Reg != (int)RegTypeEnum.Att).OrderBy(regv => regv.Data_Ora_Fis_E).ToList();
 
 
 
@@ -6450,7 +6453,7 @@ namespace Business.Repository.Custom
                 {
                     from = regvsList.Min(r => r.Data_Ora_Fis_E);
                     //se l'ultima timbratura di giornata è un passaggio (non ha RegU), prendo l'entrata.
-                    to = regvsList.Max(r => r.Data_Ora_Fis_U) ?? regvsList.Max(r => r.Data_Ora_Fis_E);
+                    to = regvsList.Last().Data_Ora_Fis_U ?? regvsList.Last().Data_Ora_Fis_E;
                 }
 
                 var colIds = regvsList.Select(regv => regv.Col_Id).Distinct().ToList();
@@ -7421,51 +7424,108 @@ namespace Business.Repository.Custom
                                                         {
                                                             minuti = (int)result.DurataMinuti;
                                                             minuti = (int)(minuti * 1.5);
-                                                            distRow = new Tab_Dist()
+                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseCoordinatesTabDist) == 1)
                                                             {
-                                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                                Minuti_Tab_Dist = minuti,
-                                                            };
+                                                                distRow = new Tab_Dist()
+                                                                {
+                                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can, cantE.LatitudineGps_Can, cantE.LongitudineGps_Can),
+                                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can, cantU.LatitudineGps_Can, cantU.LongitudineGps_Can),
+                                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                    KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                    Minuti_Tab_Dist = minuti,
+                                                                };
+                                                            }
+                                                            else 
+                                                            {
+                                                                distRow = new Tab_Dist()
+                                                                {
+                                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                    KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                    Minuti_Tab_Dist = minuti,
+                                                                };
+                                                            }    
                                                         }
                                                         else if (cantiereU.First().Note_Can == "2" || cantiereE.First().Note_Can == "2")
                                                         {
                                                             minuti = (int)result.DurataMinuti;
                                                             minuti = (int)(minuti * 2);
-                                                            distRow = new Tab_Dist()
+                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseCoordinatesTabDist) == 1)
                                                             {
-                                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                                Minuti_Tab_Dist = minuti,
-                                                            };
+                                                                distRow = new Tab_Dist()
+                                                                {
+                                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can, cantE.LatitudineGps_Can, cantE.LongitudineGps_Can),
+                                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can, cantU.LatitudineGps_Can, cantU.LongitudineGps_Can),
+                                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                    KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                    Minuti_Tab_Dist = minuti,
+                                                                };
+                                                            }
+                                                            else 
+                                                            {
+                                                                distRow = new Tab_Dist()
+                                                                {
+                                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                    KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                    Minuti_Tab_Dist = minuti,
+                                                                };
+                                                            } 
                                                         }
                                                         else
                                                         {
                                                             minuti = (int)result.DurataMinuti;
+                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseCoordinatesTabDist) == 1)
+                                                            {
+                                                                distRow = new Tab_Dist()
+                                                                {
+                                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can, cantE.LatitudineGps_Can, cantE.LongitudineGps_Can),
+                                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can, cantU.LatitudineGps_Can, cantU.LongitudineGps_Can),
+                                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                    KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                    Minuti_Tab_Dist = minuti,
+                                                                };
+                                                            }
+                                                            else 
+                                                            {
+                                                                distRow = new Tab_Dist()
+                                                                {
+                                                                    Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
+                                                                    Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
+                                                                    Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                    KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                    Minuti_Tab_Dist = minuti,
+                                                                };
+                                                            }
+                                                                
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseCoordinatesTabDist) == 1)
+                                                        {
+                                                            distRow = new Tab_Dist()
+                                                            {
+                                                                Partenza_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can, cantE.LatitudineGps_Can, cantE.LongitudineGps_Can),
+                                                                Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}|{3}|{4}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can, cantU.LatitudineGps_Can, cantU.LongitudineGps_Can),
+                                                                Tab_Decod_Id = tabDecod.Tab_Decod_Id,
+                                                                KM_Tab_Dist = (decimal)result.DistanzaKm,
+                                                                Minuti_Tab_Dist = (int)result.DurataMinuti,
+                                                            };
+                                                        }
+                                                        else 
+                                                        {
                                                             distRow = new Tab_Dist()
                                                             {
                                                                 Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
                                                                 Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
                                                                 Tab_Decod_Id = tabDecod.Tab_Decod_Id,
                                                                 KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                                Minuti_Tab_Dist = minuti,
+                                                                Minuti_Tab_Dist = (int)result.DurataMinuti,
                                                             };
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        distRow = new Tab_Dist()
-                                                        {
-                                                            Partenza_Tab_Dist = string.Format("{0}|{1}|{2}", cantE.Luogo_Can, cantE.Indirizzo_Can, cantE.Cap_Can),
-                                                            Arrivo_Tab_Dist = string.Format("{0}|{1}|{2}", cantU.Luogo_Can, cantU.Indirizzo_Can, cantU.Cap_Can),
-                                                            Tab_Decod_Id = tabDecod.Tab_Decod_Id,
-                                                            KM_Tab_Dist = (decimal)result.DistanzaKm,
-                                                            Minuti_Tab_Dist = (int)result.DurataMinuti,
-                                                        };
+                                                        }     
                                                     }
                                                     var errorTab_DistRepo = RepoManager.Tab_DistRepo.Check(distRow, true);
                                                     if (!errorTab_DistRepo.Any())
@@ -7662,18 +7722,29 @@ namespace Business.Repository.Custom
 
             List<Reg> trips = new List<Reg>();
 
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.GiornoPassaggi) == 1)
+            {
+                List<Trip> tmpTrips = new List<Trip>();
+                if (tripList.Count > 0) 
+                {
+                    tmpTrips.Add(tripList.ElementAt(0));
+                    tmpTrips.Add(tripList.ElementAt(tripList.Count() - 1));
+                    tripList = tmpTrips;
+                }
+            }
+
             // mi creo una lista di viaggi da elaborare poi
             foreach (var trip in tripList) 
             {
                 if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
                 {
                     var duration = trip.RegU.Registrazione_Data_Ora_Fis_Reg - trip.RegE.Registrazione_Data_Ora_Fis_Reg;
-                    if (duration <= paramMaxTripTime) 
+                    if (duration <= paramMaxTripTime)
                     {
                         trips.AddRange(trip.Regs);
                     }
                 }
-                else 
+                else
                 {
                     trips.AddRange(trip.Regs);
                 }
@@ -8944,33 +9015,56 @@ namespace Business.Repository.Custom
 
                     if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.EccezioniViaggi) == 1)
                     {
-                        string tipoCant = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "Tipologia");
-                        int cantId = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "CantSede"));
-                        Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == cantId);
-                        //Se non mi trovo in sede (quindi la prima o la seconda timbratura non sono state fatte in sede), calcolo il viaggio di inizio giornata
-                        if (firstCant.Codice_Commessa_Can == tipoCant && firstCant != default(Cant))
+                        bool multiCants = false;
+                        List<int> cants = new List<int>();
+                        foreach (Reg_V regv in orderedCurrentTripsByColByDate) 
                         {
-                            if (firstCant.LatitudineGps_Can != 0 && firstCant.LongitudineGps_Can != 0 && (firstCant.Indirizzo_Can != "" && firstCant.Indirizzo_Can != null)) 
+                            if (regv.Cant_Id != null) 
                             {
-                                var firstTrip = generateStartEndTripToHeadQuarter(cantiere, firstCant, regE, threshold, elaborateUserId, elaborateDateTime, application);
-                                if (firstTrip != null)
+                                if (cants.Count == 0)
+                                { 
+                                    cants.Add(regv.Cant_Id.Value);
+                                }
+                                else
                                 {
-                                    tripList.Add(firstTrip);
+                                    if (!cants.Contains(regv.Cant_Id.Value)) 
+                                    {
+                                        multiCants = true;
+                                        cants.Add(regv.Cant_Id.Value);
+                                    }
                                 }
                             }
                         }
-
-                        //Se non mi trovo in sede (quindi l'ultima o la penultima timbratura non sono state fatte in sede), calcolo il viaggio di fine giornata
-                        if (lastCant.Codice_Commessa_Can == tipoCant && lastCant != default(Cant))
+                        if (multiCants) 
                         {
-                            if (lastCant.LatitudineGps_Can != 0 && lastCant.LongitudineGps_Can != 0 && (lastCant.Indirizzo_Can != "" && lastCant.Indirizzo_Can != null)) 
+                            string tipoCant = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "Tipologia");
+                            int cantId = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.EccezioniViaggi, "CantSede"));
+                            Cant cantiere = RepoManager.CantRepo.SingleOrDefault(c => c.Cant_Id == cantId);
+                            //Se non mi trovo in sede (quindi la prima o la seconda timbratura non sono state fatte in sede), calcolo il viaggio di inizio giornata
+                            if (firstCant.Codice_Commessa_Can == tipoCant && firstCant != default(Cant))
                             {
-                                var lastTrip = generateStartEndTripToHeadQuarter(cantiere, lastCant, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
-                                if (lastTrip != null)
+                                if (firstCant.LatitudineGps_Can != 0 && firstCant.LongitudineGps_Can != 0 && (firstCant.Indirizzo_Can != "" && firstCant.Indirizzo_Can != null))
                                 {
-                                    tripList.Add(lastTrip);
+                                    var firstTrip = generateStartEndTripToHeadQuarter(firstCant, cantiere, regE, threshold, elaborateUserId, elaborateDateTime, application);
+                                    if (firstTrip != null)
+                                    {
+                                        tripList.Add(firstTrip);
+                                    }
                                 }
-                            } 
+                            }
+
+                            //Se non mi trovo in sede (quindi l'ultima o la penultima timbratura non sono state fatte in sede), calcolo il viaggio di fine giornata
+                            if (lastCant.Codice_Commessa_Can == tipoCant && lastCant != default(Cant))
+                            {
+                                if (lastCant.LatitudineGps_Can != 0 && lastCant.LongitudineGps_Can != 0 && (lastCant.Indirizzo_Can != "" && lastCant.Indirizzo_Can != null))
+                                {
+                                    var lastTrip = generateStartEndTripToHeadQuarter(lastCant, cantiere, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
+                                    if (lastTrip != null)
+                                    {
+                                        tripList.Add(lastTrip);
+                                    }
+                                }
+                            }
                         }
                     }
                     else 

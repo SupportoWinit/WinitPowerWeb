@@ -148,6 +148,7 @@
     <Compile Include="Extensions\Fil.cs" />
     <Compile Include="Extensions\Tab_Orari_Tipo.cs" />
     <Compile Include="Extensions\Timesheet.cs" />
+    <Compile Include="Extensions\TripsItem.cs" />
     <Compile Include="Extensions\Utenti_Resp.cs" />
     <Compile Include="Extensions\Utenti_Fil.cs" />
     <Compile Include="Extensions\Tab_Comuni.cs" />

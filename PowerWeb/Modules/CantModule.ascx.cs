@@ -15,6 +15,7 @@ using log4net;
 using Reports;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -371,8 +372,7 @@ namespace PowerWeb.Modules
             if (RepoManager.ParamRepo.ParametersRow.Flag_GPS == 1)
             //Nel caso in cui sia attivata la Gestione GPS in CANT 
             {
-
-                if ((isToCalculateLatLong || initCant.LongitudineGps_Can == 0.0d || initCant.LatitudineGps_Can == 0.0d))
+                if ((isToCalculateLatLong || initCant.LongitudineGps_Can == 0.0d || initCant.LatitudineGps_Can == 0.0d) && (initCant.Indirizzo_Can != null && initCant.Luogo_Can != null && initCant.Cap_Can != null && initCant.Provincia_Can != null))
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
@@ -572,8 +572,9 @@ namespace PowerWeb.Modules
                 RepoManager.Cant_VarRepo.Add(cantVar);
             }
 
-            
-
+            var changes = RepoManager.CantRepo.Context.ChangeTracker
+                .Entries<Reg>()
+                .Where(t => t.State != EntityState.Unchanged && t.Entity.Registrazione_Tipo_Reg == 0).ToList();
 
             #region Gestione GPS
             bool isToCalculateLatLong = false;
@@ -642,7 +643,7 @@ namespace PowerWeb.Modules
                 #endregion
 
 
-                if (!valuesEmpty && (isToCalculateLatLong || currentCant.LongitudineGps_Can == 0.0d || currentCant.LatitudineGps_Can == 0.0d))
+                if (!valuesEmpty && (isToCalculateLatLong && currentCant.LongitudineGps_Can == 0.0d && currentCant.LatitudineGps_Can == 0.0d))
                 //Se è cambiato  l'Indirizzo e/o il Cap e/o il Comune oppure la Lat= 0 oppure la Long = 0
                 //Ricalcola la LAT/LONG usando BING 
                 {
@@ -692,7 +693,10 @@ namespace PowerWeb.Modules
                         cantAddress = string.Format("{0} | {1} | {2}", currentCant.Luogo_Can, currentCant.Indirizzo_Can, currentCant.Cap_Can);
                         var tabDecod = RepoManager.Tab_DecodRepo.SingleOrDefault(td => td.Nome_Tab == "TIPO_DISTANZA" && td.Chiave_Tab == "G");
                         var toBeDeletedDistances = RepoManager.Tab_DistRepo.Find(td => td.Tab_Decod_Id == tabDecod.Tab_Decod_Id && (td.Arrivo_Tab_Dist == cantAddress || td.Partenza_Tab_Dist == cantAddress));
-                        RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
+                        if (toBeDeletedDistances.Count() > 0) 
+                        {
+                            RepoManager.Tab_DistRepo.Delete(toBeDeletedDistances, true);
+                        }
                     }
                 }
             }
@@ -779,6 +783,9 @@ namespace PowerWeb.Modules
                 {
                     try
                     {
+                        changes = RepoManager.CantRepo.Context.ChangeTracker
+                           .Entries<Reg>()
+                           .Where(t => t.State != EntityState.Unchanged && t.Entity.Registrazione_Tipo_Reg == 0).ToList();
                         RepoManager.CantRepo.SaveChanges();
                     }
                     catch (Exception ex)
@@ -1048,27 +1055,44 @@ namespace PowerWeb.Modules
 
         protected void cbGeocodeCant_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
         {
+            _log.Info(String.Format("CANT-Row Geocode by {0}", PowerWebContext.Current.User.Codice_Utente));
             try
             {
                 var parameters = (e.Parameter ?? String.Empty).Split('|');
                 var indirizzo = parameters.Length > 0 ? Uri.UnescapeDataString(parameters[0]) : String.Empty;
                 var luogo = parameters.Length > 1 ? Uri.UnescapeDataString(parameters[1]) : String.Empty;
                 var cap = parameters.Length > 2 ? Uri.UnescapeDataString(parameters[2]) : String.Empty;
-
-                var address = BusinessService.FormatGeocodeAddress(indirizzo, luogo, cap);
-                var geocode = BusinessService.GetGeocode(address);
-
-                if (geocode == null)
+                var lat = parameters.Length > 3 ? Uri.UnescapeDataString(parameters[3]) : String.Empty;
+                var longi = parameters.Length > 4 ? Uri.UnescapeDataString(parameters[4]) : String.Empty;
+                if (lat != "" && longi != "" && lat != "0" && longi != "0")
                 {
-                    e.Result = "ERROR|" + Uri.EscapeDataString("Coordinate non trovate per l'indirizzo indicato.");
-                    return;
+                    double latDouble = double.Parse(lat, CultureInfo.GetCultureInfo("it-IT")); ;
+                    double longDouble = double.Parse(longi, CultureInfo.GetCultureInfo("it-IT"));
+                
+                    e.Result = String.Format(
+                       CultureInfo.InvariantCulture,
+                       "OK|{0}|{1}",
+                       latDouble,
+                       longDouble);
                 }
+                else 
+                {
+                    var address = BusinessService.FormatGeocodeAddress(indirizzo, luogo, cap);
+                    var geocode = BusinessService.GetGeocode(address);
 
-                e.Result = String.Format(
-                    CultureInfo.InvariantCulture,
-                    "OK|{0}|{1}",
-                    geocode.Latitudine,
-                    geocode.Longitudine);
+                    if (geocode == null)
+                    {
+                        e.Result = "ERROR|" + Uri.EscapeDataString("Coordinate non trovate per l'indirizzo indicato.");
+                        return;
+                    }
+
+                
+                    e.Result = String.Format(
+                       CultureInfo.InvariantCulture,
+                       "OK|{0}|{1}",
+                       geocode.Latitudine,
+                       geocode.Longitudine);
+                }
             }
             catch (Exception ex)
             {

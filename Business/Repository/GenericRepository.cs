@@ -229,7 +229,7 @@ namespace Business.Repository
             _context.Configuration.AutoDetectChangesEnabled = true;
 
             if (saveChanges)
-                _context.SaveChanges();
+                _context.SaveChanges();          
         }
 
         public virtual void DeleteFromQuery(Expression<Func<TEntity, bool>> expression)

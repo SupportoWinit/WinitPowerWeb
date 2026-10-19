@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using Business.DataClasses.WebApiDataClasses;
 using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 using DevExpress.Web.ASPxTitleIndex.Internal;
+using DevExpress.Charts.Native;
 
 namespace PowerWeb.Api
 {
@@ -83,10 +84,20 @@ namespace PowerWeb.Api
                     int dayTimb = 1;
                     List<Col> collaboratore = RepoManager.ColRepo.GetAllQueryable(c => c.Col_Id == regs.Key).ToList();
                     string col = collaboratore.First().Matricola_Col;
-                    if (col == null) {
+                    if (col == null)
+                    {
                         col = collaboratore.First().CognomeNome_Col;
                     }
-                    if (collaboratore.First().Qualifica_Col != "0") {
+                    else 
+                    {
+                        if (col.Contains('-')) 
+                        {
+                            string[] matricole = col.Split('-');
+                            col = matricole[0];
+                        }
+                    }
+                    if (collaboratore.First().Qualifica_Col != "0")
+                    {
                         var regVs1 = regs.OrderBy(r => r.Cant_Id).ThenBy(r => r.Turno);
                         foreach (Reg_V regv in regVs1)
                         {
@@ -162,7 +173,7 @@ namespace PowerWeb.Api
                                             {
                                                 tmpSerale = 1;
                                             }
-                                            else 
+                                            else
                                             {
                                                 tmpSerale = 0;
                                             }
@@ -286,7 +297,8 @@ namespace PowerWeb.Api
                                     _log.ErrorFormat("Rilevato errore con la timbratura del collaboratore {0}, in data {1}", regv.Col_Desc, regv.Data_Ora_Fis_E);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 dayTimb++;
                             }
                         }

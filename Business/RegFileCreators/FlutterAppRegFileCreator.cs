@@ -60,11 +60,11 @@ namespace Business.RegFileCreators
                     if (regs.Value != null) {
                         if (regs.Value.First().CodicePru != "")
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
+                            var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                         }
                         else
                         {
-                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
+                            var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                         }
 
                         regsToOrder.Add(var);
@@ -78,11 +78,11 @@ namespace Business.RegFileCreators
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                     }
 
                     regsToOrder.Add(var);
@@ -95,11 +95,11 @@ namespace Business.RegFileCreators
                     FlutterOrderedReg var = null;
                     if (regs.Value.First().CodicePru != "")
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
+                        var = new FlutterOrderedReg(regs.CodiceFru, regs.Value.First().CodicePru, regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                     }
                     else
                     {
-                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb);
+                        var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                     }
 
                     regsToOrder.Add(var);
@@ -1021,6 +1021,108 @@ namespace Business.RegFileCreators
                             );
                             regsToWrite.Add(regRow);
                             #endregion
+                        }
+                        else if (fluReg.Matricola != null && fluReg.Matricola != "") 
+                        {
+                            if (fluReg.CodicePru != "" && !string.IsNullOrEmpty(fluReg.CodicePru))
+                            {
+                                #region Reg senza coordinate
+                                string verso = "";
+                                string regRow = "";
+                                if (fluReg.Motivazione == "E" || fluReg.Motivazione == "U")
+                                {
+                                    verso = fluReg.Motivazione;
+                                    fluReg.Motivazione = "";
+                                }
+                                else
+                                {
+                                    verso = fluReg.Verso;
+                                }
+                                if (fluReg.Motivazione == "none")
+                                {
+                                    fluReg.Motivazione = "";
+                                }
+                                regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                                    fluReg.Matricola,
+                                    fluReg.CodicePru,
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
+                                    verso,
+                                    fluReg.Motivazione != "" ? "[Motivazione]=" + fluReg.Motivazione : null
+                                );
+                                regsToWrite.Add(regRow);
+                                #endregion
+                            }
+                            else 
+                            {
+                                string regRow = "";
+                                #region Reg con coordinate
+                                if (fluReg.Latitudine < 0 && fluReg.Longitudine < 0)
+                                {
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
+                                    fluReg.Matricola,
+                                    AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(3, 1), 10),
+                                    fluReg.Data.Year,
+                                    fluReg.Data.Month.ToString("00"),
+                                    fluReg.Data.Day.ToString("00"),
+                                    fluReg.Data.Hour.ToString("00"),
+                                    fluReg.Data.Minute.ToString("00"),
+                                    fluReg.Data.Second.ToString("00"),
+                                    NO_TAG_REFERENCE,
+                                    MARKER_LATITUDINE,
+                                    "N"
+                                    );
+                                    regsToWrite.Add(regRow);
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
+                                        fluReg.Matricola,
+                                        AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(3, 1), 10),
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
+                                        NO_TAG_REFERENCE,
+                                        MARKER_LONGITUDINE,
+                                        "E"
+                                    );
+                                }
+                                else
+                                {
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
+                                        fluReg.Matricola,
+                                        AggiungiZeriASinistra(fluReg.Latitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
+                                        NO_TAG_REFERENCE,
+                                        MARKER_LATITUDINE,
+                                        "N"
+                                    );
+                                    regsToWrite.Add(regRow);
+                                    regRow = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};;",
+                                        fluReg.Matricola,
+                                        AggiungiZeriASinistra(fluReg.Longitudine.ToString("00.0000000").Remove(2, 1), 10),
+                                        fluReg.Data.Year,
+                                        fluReg.Data.Month.ToString("00"),
+                                        fluReg.Data.Day.ToString("00"),
+                                        fluReg.Data.Hour.ToString("00"),
+                                        fluReg.Data.Minute.ToString("00"),
+                                        fluReg.Data.Second.ToString("00"),
+                                        NO_TAG_REFERENCE,
+                                        MARKER_LONGITUDINE,
+                                        "E"
+                                    );
+                                }
+                                #endregion
+                            }
                         }
                         else
                         {

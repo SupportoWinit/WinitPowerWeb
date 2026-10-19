@@ -239,7 +239,10 @@ namespace Common
         TripFromSameCant,
         ArrotondamentoSuOrario,
         IgnorePausaPranzo,
-        EccezioniViaggi
+        EccezioniViaggi,
+        UseCoordinatesTabDist,
+        GiornoDiTrasferta,
+        GiornoPassaggi
     }
     
     public enum ClockAppsOperationEnum

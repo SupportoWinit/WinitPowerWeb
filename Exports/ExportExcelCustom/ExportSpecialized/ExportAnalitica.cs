@@ -92,6 +92,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (var exportReg in exportRegVs)
             {
                 Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);
+                string matricolaCol = collaboratore.CognomeNome_Col;
+                if (collaboratore.Matricola_Col != null)
+                {
+                    matricolaCol = collaboratore.Matricola_Col;
+                    if (matricolaCol.Contains('-')) 
+                    { 
+                        string[] matricolaSplit = matricolaCol.Split('-');
+                        matricolaCol = matricolaSplit[1];
+                    }
+                    
+                }
                 collaboratori.Add(collaboratore);
                 for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1))
                 {
@@ -104,6 +115,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (reg.Cant_Id != null && reg.Durata_Fig != null)
                         {
                             List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                            string codiceCdc = cants.First().Importo8.ToString();
                             if (cants.First().Tipo_Interv_Can != null)
                             {
                                 string tipoInt = cants.First().Tipo_Interv_Can;
@@ -114,19 +126,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     {
                                         if (dataToExport.Count == 0)
                                         {
-                                            ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab,collaboratore.Cognome_Col,collaboratore.Nome_Col,reg.Durata_Fig.Value);
+                                            ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab,collaboratore.Cognome_Col,collaboratore.Nome_Col,reg.Durata_Fig.Value, matricolaCol, codiceCdc);
                                             dataToExport.Add(oggToAdd);
                                         }
                                         else 
                                         {
-                                            ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col);
+                                            ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col && d.codiceCdc == codiceCdc);
                                             if (oggToFind != default(ExportColCantDur))
                                             {
                                                 oggToFind.durata += reg.Durata_Fig.Value;
                                             }
                                             else 
                                             {
-                                                ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                                ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, codiceCdc);
                                                 dataToExport.Add(oggToAdd);
                                             }
                                         }
@@ -135,19 +147,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                     {
                                         if (dataToExport.Count == 0)
                                         {
-                                            ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                            ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, codiceCdc);
                                             dataToExport.Add(oggToAdd);
                                         }
                                         else
                                         {
-                                            ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col);
+                                            ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col && d.codiceCdc == codiceCdc);
                                             if (oggToFind != default(ExportColCantDur))
                                             {
                                                 oggToFind.durata += reg.Durata_Fig.Value;
                                             }
                                             else
                                             {
-                                                ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                                ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, codiceCdc);
                                                 dataToExport.Add(oggToAdd);
                                             }
                                         }
@@ -166,6 +178,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 {
                     collaboratori.Add(collaboratore);
                 }
+                string matricolaCol = collaboratore.CognomeNome_Col;
+                if (collaboratore.Matricola_Col != null)
+                {
+                    matricolaCol = collaboratore.Matricola_Col;
+                    if (matricolaCol.Contains('-'))
+                    {
+                        string[] matricolaSplit = matricolaCol.Split('-');
+                        matricolaCol = matricolaSplit[1];
+                    }
+
+                }
                 for (DateTime cond = startMonth; cond.Month <= endMonth.Month && cond.Year == endMonth.Year; cond = cond.AddDays(1))
                 {
                     //creo un dictionary per immagazzinare le ore, la prima key sara la descrizione del cantiere, la seconda l'attivita e l'intero il totale delle ore
@@ -177,23 +200,24 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         if (reg.Cant_Id != null && reg.Durata_Fig != null)
                         {
                             List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
+                            string codiceCdc = cants.First().Importo8.ToString();
                             if (cants.Count > 0)
                             {
                                 if (dataToExport.Count == 0)
                                 {
-                                    ExportColCantDur oggToAdd = new ExportColCantDur(cants.First().Descrizione_Can, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                    ExportColCantDur oggToAdd = new ExportColCantDur(cants.First().Descrizione_Can, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, codiceCdc);
                                     dataToExport.Add(oggToAdd);
                                 }
                                 else
                                 {
-                                    ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == cants.First().Descrizione_Can && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col);
+                                    ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == cants.First().Descrizione_Can && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col && d.codiceCdc == codiceCdc);
                                     if (oggToFind != default(ExportColCantDur))
                                     {
                                         oggToFind.durata += reg.Durata_Fig.Value;
                                     }
                                     else
                                     {
-                                        ExportColCantDur oggToAdd = new ExportColCantDur(cants.First().Descrizione_Can, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                        ExportColCantDur oggToAdd = new ExportColCantDur(cants.First().Descrizione_Can, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, codiceCdc);
                                         dataToExport.Add(oggToAdd);
                                     }
                                 }
@@ -209,6 +233,17 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             foreach (var exportReg in exportRegVs)
             {
                 Col collaboratore = RepoManager.ColRepo.FirstOrDefault(c => c.Col_Id == exportReg.Key);
+                string matricolaCol = collaboratore.CognomeNome_Col;
+                if (collaboratore.Matricola_Col != null)
+                {
+                    matricolaCol = collaboratore.Matricola_Col;
+                    if (matricolaCol.Contains('-'))
+                    {
+                        string[] matricolaSplit = matricolaCol.Split('-');
+                        matricolaCol = matricolaSplit[1];
+                    }
+
+                }
                 var colregs = exportReg.GroupBy(r => r.Data_Reg.Value.Date);
                 List<Reg_V> arrotRegs = new List<Reg_V>();
                 List<Reg> arrotReg = new List<Reg>();
@@ -250,19 +285,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                         }
                                         if (dataToExport.Count == 0)
                                         {
-                                            ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                            ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, "0552");
                                             dataToExport.Add(oggToAdd);
                                         }
                                         else
                                         {
-                                            ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col);
+                                            ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col && d.codiceCdc == "0552");
                                             if (oggToFind != default(ExportColCantDur))
                                             {
                                                 oggToFind.durata += reg.Durata_Fig.Value;
                                             }
                                             else
                                             {
-                                                ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value);
+                                                ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, reg.Durata_Fig.Value, matricolaCol, "0552");
                                                 dataToExport.Add(oggToAdd);
                                             }
                                         }
@@ -301,19 +336,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 }
                                                 if (dataToExport.Count == 0)
                                                 {
-                                                    ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value);
+                                                    ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value, matricolaCol, "0552");
                                                     dataToExport.Add(oggToAdd);
                                                 }
                                                 else
                                                 {
-                                                    ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col);
+                                                    ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col && d.codiceCdc == "0552");
                                                     if (oggToFind != default(ExportColCantDur))
                                                     {
                                                         oggToFind.durata += reg.Durata_Fig.Value;
                                                     }
                                                     else
                                                     {
-                                                        ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value);
+                                                        ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value, matricolaCol, "0552");
                                                         dataToExport.Add(oggToAdd);
                                                     }
                                                 }
@@ -356,19 +391,19 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 }
                                                 if (dataToExport.Count == 0)
                                                 {
-                                                    ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value);
+                                                    ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value, matricolaCol, "0552");
                                                     dataToExport.Add(oggToAdd);
                                                 }
                                                 else
                                                 {
-                                                    ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col);
+                                                    ExportColCantDur oggToFind = dataToExport.FirstOrDefault(d => d.descrizioneCant == att.Campo1_Tab && d.cognomeCol == collaboratore.Cognome_Col && d.nomeCol == collaboratore.Nome_Col && d.codiceCdc == "0552");
                                                     if (oggToFind != default(ExportColCantDur))
                                                     {
                                                         oggToFind.durata += reg.Durata_Fig.Value;
                                                     }
                                                     else
                                                     {
-                                                        ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value);
+                                                        ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value, matricolaCol, "0552");
                                                         dataToExport.Add(oggToAdd);
                                                     }
                                                 }
@@ -442,7 +477,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                 }
                                                 if (dataToExport.Count == 0)
                                                 {
-                                                    ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value);
+                                                    ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value, matricolaCol, "0552");
                                                     dataToExport.Add(oggToAdd);
                                                 }
                                                 else
@@ -454,7 +489,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                                     }
                                                     else
                                                     {
-                                                        ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value);
+                                                        ExportColCantDur oggToAdd = new ExportColCantDur(att.Campo1_Tab, collaboratore.Cognome_Col, collaboratore.Nome_Col, returnReg.Durata_Fig.Value, matricolaCol, "0552");
                                                         dataToExport.Add(oggToAdd);
                                                     }
                                                 }
@@ -490,11 +525,14 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                 rowIndex++;
                 foreach (var entity in entities) 
                 {
-                    RangeSetBorders(1,1, rowIndex,9, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                    RangeSetBorders(1,8, rowIndex,8, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyleThick);
+                    string codice = entity.codiceCdc.PadLeft(4, '0');
+                    RangeSetBorders(1,1, rowIndex,11, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                    RangeSetBorders(1,10, rowIndex,10, rowIndex, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyleThick);
                     CellInsertValue(1, 1, rowIndex, entity.descrizioneCant, ExcelInsertTypeEnum.Content);
-                    CellInsertValue(1,2,rowIndex,entity.cognomeCol,ExcelInsertTypeEnum.Content);
-                    CellInsertValue(1,3,rowIndex,entity.nomeCol,ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1, 2, rowIndex, "" + codice, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1, 3, rowIndex, entity.matricolaCol, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1,4,rowIndex,entity.cognomeCol,ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1,5,rowIndex,entity.nomeCol,ExcelInsertTypeEnum.Content);
                     TimeSpan durata = TimeSpan.FromMinutes(entity.durata);
                     int minuti = 00;
                     //switch (durata.Minutes)
@@ -523,16 +561,16 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         minuti = 75;
                     }
                     string totale = String.Format("{0},{1}", (durata.Days * 24) + durata.Hours, minuti.ToString("00"));
-                    CellInsertValue(1,4,rowIndex, totale, ExcelInsertTypeEnum.Content);
+                    CellInsertValue(1,5,rowIndex, totale, ExcelInsertTypeEnum.Content);
                     rowIndex++;
                 }
-                RangeSetBorders(1, 1, startRowIndex, 7, startRowIndex, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
-                RangeSetBorders(1, 8, startRowIndex, 8, startRowIndex, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyleThick);
-                RangeSetBackgroundColor(1, 1, startRowIndex, 9, startRowIndex, Color.Black, ExcelFillStyle.Solid);
+                RangeSetBorders(1, 1, startRowIndex, 9, startRowIndex, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyle);
+                RangeSetBorders(1, 10, startRowIndex, 10, startRowIndex, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle, borderColor, borderStyleThick);
+                RangeSetBackgroundColor(1, 1, startRowIndex, 11, startRowIndex, Color.Black, ExcelFillStyle.Solid);
             }
 
-            RangeSetBorders(1, 1, rowIndex - 1, 7, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle);
-            RangeSetBorders(1, 8, rowIndex - 1, 8, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyleThick);
+            RangeSetBorders(1, 1, rowIndex - 1, 9, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyle);
+            RangeSetBorders(1, 9, rowIndex - 1, 10, rowIndex - 1, borderColor, borderStyle, borderColor, borderStyleThick, borderColor, borderStyle, borderColor, borderStyleThick);
 
             ExcelWorkbookSaveToResponse(HttpContext.Current.Response, System.IO.Path.GetFileName(ExcelModelFilePath), true);
 

@@ -272,7 +272,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             Tab_Decod motivazionePausa = RepoManager.Tab_DecodRepo.Single(d => d.Chiave_Tab == "Pausa");
             List<string> motivId = RepoManager.Tab_DecodRepo.GetAllQueryable(td => td.Campo1_Tab == "PULIZIE CIVILI" || td.Campo1_Tab == "CONDOMINIO" || td.Campo1_Tab == "DISINFESTAZIONI" || td.Campo1_Tab == "MANUTENZIONI").Select(td => td.Chiave_Tab).ToList();
             List<int> cantToExclude = RepoManager.CantRepo.GetAllQueryable(c => motivId.Contains(c.Tipo_Interv_Can)).Select(c => c.Cant_Id).ToList();
-            List<Reg_V> regVs = reg_Vs.Where(r => !(cantToExclude.Contains(r.Cant_Id.Value)) && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Codice_Commessa_Can != "Hotel" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4) && r.Motivazione_Reg_Id != motivazionePausa.Tab_Decod_Id && r.Registrazione_Stato_Reg != 0).ToList();
+            List<Reg_V> regVs = reg_Vs.Where(r => !(cantToExclude.Contains(r.Cant_Id.Value)) && r.Data_Reg >= minDate && r.Data_Reg <= maxDate && r.Codice_Commessa_Can != "Hotel" && (r.Registrazione_Tipo_Reg == 0 || r.Registrazione_Tipo_Reg == 2 || r.Registrazione_Tipo_Reg == 4 || r.Registrazione_Tipo_Reg == 8) && r.Registrazione_Stato_Reg != 0).ToList();
             //List<Reg_V> regVs = RepoManager.Reg_VRepo.GetAllQueryable(r => r.Data_Reg > minDate && r.Data_Reg < maxDate && r.Qualifica_Col == "0").ToList();
             var exportRegVs = regVs.GroupBy(c => c.Data_Reg);
             regVs = new List<Reg_V>();

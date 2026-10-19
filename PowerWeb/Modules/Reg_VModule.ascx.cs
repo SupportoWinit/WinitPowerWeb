@@ -1032,7 +1032,7 @@ namespace PowerWeb.Modules
                     ExportExcelEngine.Export(currentSpecialized, regs, model, out path, visibleFields);
                 }
 
-                if (currentType == typeof(ExportExcelSpecializedActivity))
+                if (currentType == typeof(ExportExcelSpecializedTrips))
                 {
                     var list = BusinessService.PopulateActivityList(regs);
 

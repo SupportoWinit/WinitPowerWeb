@@ -141,6 +141,7 @@
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetCant.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetItieffe.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetLampo.cs" />
+    <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetVicopad.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleHalfHour.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleAmb.cs" />
     <Compile Include="ExportExcelCustom\ExportSpecialized\ExportTimesheetSimpleNoRegs.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="ExportExcelSpecialized\TimeSheetCol\ExportExcelSpecializedTimeSheetColFormatter.cs">
       <DependentUpon>ExportExcelSpecializedTimeSheetCol.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExportExcelSpecialized\Trips\ExportExcelSpecializedTrips.cs" />
     <Compile Include="ExportTxtCustom\ExportBlueLine.cs" />
     <Compile Include="ExportTxtCustom\ExportPagheLombarda.cs" />
     <Compile Include="ExportTxtCustom\ExportTxtCG2.cs" />

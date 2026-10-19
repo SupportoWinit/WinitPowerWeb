@@ -78,5 +78,8 @@ namespace Business.DataClasses.FlutterAppDTOs
 
         [JsonProperty("TagTimb")]
         public string TagTimb { get; set; }
+
+        [JsonProperty("Matricola")]
+        public string Matricola { get; set; }
     }
 }

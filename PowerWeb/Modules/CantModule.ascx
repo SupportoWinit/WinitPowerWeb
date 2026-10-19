@@ -89,6 +89,8 @@
         var currentAddress = currentGrid.GetEditValue("Indirizzo_Can") || "";
         var currentPlace = currentGrid.GetEditValue("Luogo_Can") || "";
         var currentZip = currentGrid.GetEditValue("Cap_Can") || "";
+        var currentLat = currentGrid.GetEditValue("LatitudineGps_Can") || "";
+        var currentLong = currentGrid.GetEditValue("LongitudineGps_Can") || "";
 
         if (!currentAddress && !currentPlace && !currentZip) {
             newinitMap();
@@ -98,7 +100,9 @@
         var callbackParameter = [
             encodeURIComponent(currentAddress),
             encodeURIComponent(currentPlace),
-            encodeURIComponent(currentZip)
+            encodeURIComponent(currentZip),
+            encodeURIComponent(currentLat),
+            encodeURIComponent(currentLong)
         ].join("|");
 
         cbGeocodeCant.PerformCallback(callbackParameter);

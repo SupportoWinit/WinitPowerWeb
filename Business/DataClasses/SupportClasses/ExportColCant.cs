@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Business.DataClasses.SupportClasses
 {
-    public class ExportColCantDur
+    public class ExportColCant
     {
         public string descrizioneCant { get; set; }
 
-        public string cognomeCol { get; set; }
+        public string descrizioneCol { get; set; }
 
-        public string nomeCol { get; set; }
+        public string descrizioneAtt { get; set; }
 
-        public int durata { get; set; }
+        public TimeSpan durata { get; set; }
 
-        public ExportColCantDur(string descrizioneCant, string cognomeCol, string nomeCol, int durata)
+        public ExportColCant(string descrizioneCant, string descrizioneCol, string descrizioneAtt, TimeSpan durata)
         {
             this.descrizioneCant = descrizioneCant;
-            this.cognomeCol = cognomeCol;
-            this.nomeCol = nomeCol;
+            this.descrizioneCol = descrizioneCol;
+            this.descrizioneAtt = descrizioneAtt;
             this.durata = durata;
         }
     }

@@ -109,7 +109,7 @@ namespace Business.Repository.Custom
         /// <returns>
         /// La registrazione contenente la pausa passata come parametro.
         /// </returns>
-        Reg GeneratePausaPranzo(int colId, int cantId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration, string turno);
+        Reg GeneratePausaPranzo(int colId, int cantId, int cdcId, DateTime roundingDate, RoundingTypeEnum roundingType, TimeSpan roundingDuration, string turno);
 
         /// <summary>
         /// Genera e restituisce una nuova reg di tipo durata utilizzando i dati passati come parametro.

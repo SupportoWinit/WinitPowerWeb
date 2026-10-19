@@ -1068,42 +1068,42 @@ namespace PowerWeb.Modules
             if (cantRegE != default(Cant) && cantRegE.Tipologia_Can != "ATT")
                 currentRegENew.Activity_Evaluation = null;
 
-            var fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegENew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
-            if (fruCants.Count() > 0) 
-            {
-                int fruId = 0;// fruCants.Last().Fru_Id;
-                foreach (var fruCant in fruCants.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can)) 
-                {
-                    if (fruId == 0) 
-                    {
-                        int tmpFruId = fruCant.Fru_Id;
-                        var otherFruCant = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Fru_Id == tmpFruId && c.Abilitazione_Data_Inizio_Fru_Can > fruCant.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                        if (otherFruCant.Count() == 0)
-                        {
-                            fruId = fruCant.Fru_Id;
-                        }
-                    }
-                }
-                currentRegENew.Fru_Id = fruId;
-            }
-            var pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegENew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
-            if (pruCols.Count() > 0) 
-            {
-                int pruId = 0;// pruCols.Last().Pru_Id;
-                foreach (var pruCol in pruCols.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Pru_Col))
-                {
-                    if (pruId == 0)
-                    {
-                        int tmpPruId = pruCol.Pru_Id;
-                        var otherPruCol = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Pru_Id == tmpPruId && c.Abilitazione_Data_Inizio_Pru_Col > pruCol.Abilitazione_Data_Inizio_Pru_Col).ToList();
-                        if (otherPruCol.Count() == 0)
-                        {
-                            pruId = pruCol.Pru_Id;
-                        }
-                    }
-                }
-                currentRegENew.Pru_Id = pruId;
-            }
+            //var fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegENew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
+            //if (fruCants.Count() > 0) 
+            //{
+            //    int fruId = 0;// fruCants.Last().Fru_Id;
+            //    foreach (var fruCant in fruCants.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Fru_Can)) 
+            //    {
+            //        if (fruId == 0) 
+            //        {
+            //            int tmpFruId = fruCant.Fru_Id;
+            //            var otherFruCant = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Fru_Id == tmpFruId && c.Abilitazione_Data_Inizio_Fru_Can > fruCant.Abilitazione_Data_Inizio_Fru_Can).ToList();
+            //            if (otherFruCant.Count() == 0)
+            //            {
+            //                fruId = fruCant.Fru_Id;
+            //            }
+            //        }
+            //    }
+            //    currentRegENew.Fru_Id = fruId;
+            //}
+            //var pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegENew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
+            //if (pruCols.Count() > 0) 
+            //{
+            //    int pruId = 0;// pruCols.Last().Pru_Id;
+            //    foreach (var pruCol in pruCols.OrderByDescending(fc => fc.Abilitazione_Data_Inizio_Pru_Col))
+            //    {
+            //        if (pruId == 0)
+            //        {
+            //            int tmpPruId = pruCol.Pru_Id;
+            //            var otherPruCol = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Pru_Id == tmpPruId && c.Abilitazione_Data_Inizio_Pru_Col > pruCol.Abilitazione_Data_Inizio_Pru_Col).ToList();
+            //            if (otherPruCol.Count() == 0)
+            //            {
+            //                pruId = pruCol.Pru_Id;
+            //            }
+            //        }
+            //    }
+            //    currentRegENew.Pru_Id = pruId;
+            //}
             currentRegENew.Stato_Attivita = 1;
             //Aggiungo la REGE fra le REg da Trattare
             toAddRegsNew.Add(currentRegENew);
@@ -1134,20 +1134,20 @@ namespace PowerWeb.Modules
                 if (cantRegU != default(Cant) && cantRegU.Tipologia_Can != "ATT")
                     currentRegUNew.Activity_Evaluation = null;
 
-                fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegUNew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
-                if (fruCants.Count() > 0)
-                {
-                    int fruId = fruCants.Last().Fru_Id;
-                    var fru = RepoManager.FruRepo.SingleOrDefault(f => f.Fru_Id == fruId);
-                    currentRegUNew.Fru_Id = fruId;
-                }
-                pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegUNew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
-                if (pruCols.Count() > 0)
-                {
-                    int pruId = pruCols.Last().Pru_Id;
-                    var pru = RepoManager.PruRepo.SingleOrDefault(f => f.Pru_Id == pruId);
-                    currentRegUNew.Pru_Id = pruId;
-                }
+                //fruCants = RepoManager.Fru_CantRepo.GetAllQueryable(c => c.Cant_Id == currentRegUNew.Cant_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Fru_Can).ToList();
+                //if (fruCants.Count() > 0)
+                //{
+                //    int fruId = fruCants.Last().Fru_Id;
+                //    var fru = RepoManager.FruRepo.SingleOrDefault(f => f.Fru_Id == fruId);
+                //    currentRegUNew.Fru_Id = fruId;
+                //}
+                //pruCols = RepoManager.Pru_ColRepo.GetAllQueryable(c => c.Col_Id == currentRegUNew.Col_Id).OrderBy(c => c.Abilitazione_Data_Inizio_Pru_Col).ToList();
+                //if (pruCols.Count() > 0)
+                //{
+                //    int pruId = pruCols.Last().Pru_Id;
+                //    var pru = RepoManager.PruRepo.SingleOrDefault(f => f.Pru_Id == pruId);
+                //    currentRegUNew.Pru_Id = pruId;
+                //}
 
                 //aggiungo la REGU nelle Reg da Trattare
                 toAddRegsNew.Add(currentRegUNew);
@@ -2268,8 +2268,8 @@ namespace PowerWeb.Modules
 
                                 if (oldRegU != null)
                                 {
-                                    newRegU.Fru_Id = oldRegU.Fru_Id;
-                                    newRegU.Pru_Id = oldRegU.Pru_Id;
+                                    //newRegU.Fru_Id = oldRegU.Fru_Id;
+                                    //newRegU.Pru_Id = oldRegU.Pru_Id;
                                     //newRegU.Custom_Data_Reg = oldRegU.Custom_Data_Reg;
 
                                     newRegU.Tipo_Attivita = oldRegU.Tipo_Attivita;
@@ -2281,8 +2281,8 @@ namespace PowerWeb.Modules
                                 }
                                 else
                                 {
-                                    newRegU.Fru_Id = newRegE.Fru_Id;
-                                    newRegU.Pru_Id = newRegE.Pru_Id;
+                                    //newRegU.Fru_Id = newRegE.Fru_Id;
+                                    //newRegU.Pru_Id = newRegE.Pru_Id;
                                 }
 
                                 newRegU.ParentReg = newRegE;
@@ -2920,7 +2920,6 @@ namespace PowerWeb.Modules
 
             if (currentType != null)
             {
-
                 if (currentType == typeof(ExportTxtZucchettiSolaris))
                 {
                     var export = new ExportTxtZucchettiSolaris(regs.Min(reg => reg.Data_Ora_Fis_E), (DateTime)(regs.Max(reg => reg.Data_Ora_Fis_U) ?? regs.Min(reg => reg.Data_Ora_Fis_E)));
@@ -2928,6 +2927,7 @@ namespace PowerWeb.Modules
                     BusinessService.IsToCloseLoadingPanel[PowerWebContext.Current.User] = true;
                     export.ExportToResponse();
                 }
+
                 if (currentType == typeof(ExportExcelSpecializedExtendedReg_V))
                 {
                     var currentSpecialized = (IExportExcelSpecialized<Reg_V>)Activator.CreateInstance(currentType);
@@ -2952,6 +2952,14 @@ namespace PowerWeb.Modules
                     var list = BusinessService.PopulateActivityList(regs);
 
                     var currentSpecialized = (IExportExcelSpecialized<ActivityItem>)Activator.CreateInstance(currentType);
+                    ExportExcelEngine.Export(currentSpecialized, list, model, out path);
+                }
+
+                if (currentType == typeof(ExportExcelSpecializedTrips))
+                {
+                    var list = BusinessService.PopulateTripsList(regs);
+
+                    var currentSpecialized = (IExportExcelSpecialized<TripsItem>)Activator.CreateInstance(currentType);
                     ExportExcelEngine.Export(currentSpecialized, list, model, out path);
                 }
 
