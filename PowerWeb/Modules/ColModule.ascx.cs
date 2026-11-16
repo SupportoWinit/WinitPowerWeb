@@ -516,7 +516,7 @@ namespace PowerWeb.Modules
                 }
             }
 
-            if (currentCol.GeocodeAddress != null) 
+            if (currentCol.GeocodeAddress != null && (currentCol.LatitudineGps_Col == 0.0 && currentCol.LongitudineGps_Col == 0.0)) 
             {
                 string indirizzo = BusinessService.FormatGeocodeAddress(currentCol.Domicilio_Indirizzo_Col, currentCol.Domicilio_Luogo_Col, currentCol.Domicilio_Cap_Col, currentCol.Domicilio_Provincia_Col);
                 Location geocode = BusinessService.GetGeocode(indirizzo);
@@ -1255,6 +1255,53 @@ namespace PowerWeb.Modules
 
             e.Properties["cpVisibleRowCount"] = grid.VisibleRowCount;
 
+        }
+
+        protected void cbGeocodeCol_Callback(object source, DevExpress.Web.ASPxCallback.CallbackEventArgs e)
+        {
+            _log.Info(String.Format("COL-Row Geocode by {0}", PowerWebContext.Current.User.Codice_Utente));
+            try
+            {
+                var parameters = (e.Parameter ?? String.Empty).Split('|');
+                var indirizzo = parameters.Length > 0 ? Uri.UnescapeDataString(parameters[0]) : String.Empty;
+                var luogo = parameters.Length > 1 ? Uri.UnescapeDataString(parameters[1]) : String.Empty;
+                var cap = parameters.Length > 2 ? Uri.UnescapeDataString(parameters[2]) : String.Empty;
+                var lat = parameters.Length > 3 ? Uri.UnescapeDataString(parameters[3]) : String.Empty;
+                var longi = parameters.Length > 4 ? Uri.UnescapeDataString(parameters[4]) : String.Empty;
+                if (lat != "" && longi != "" && lat != "0" && longi != "0")
+                {
+                    double latDouble = double.Parse(lat, CultureInfo.GetCultureInfo("it-IT")); ;
+                    double longDouble = double.Parse(longi, CultureInfo.GetCultureInfo("it-IT"));
+
+                    e.Result = String.Format(
+                       CultureInfo.InvariantCulture,
+                       "OK|{0}|{1}",
+                       latDouble,
+                       longDouble);
+                }
+                else
+                {
+                    var address = BusinessService.FormatGeocodeAddress(indirizzo, luogo, cap);
+                    var geocode = BusinessService.GetGeocode(address);
+
+                    if (geocode == null)
+                    {
+                        e.Result = "ERROR|" + Uri.EscapeDataString("Coordinate non trovate per l'indirizzo indicato.");
+                        return;
+                    }
+
+
+                    e.Result = String.Format(
+                       CultureInfo.InvariantCulture,
+                       "OK|{0}|{1}",
+                       geocode.Latitudine,
+                       geocode.Longitudine);
+                }
+            }
+            catch (Exception ex)
+            {
+                e.Result = "ERROR|" + Uri.EscapeDataString(ex.Message);
+            }
         }
 
         protected void gvCol_OnPageIndexChanged(object sender, EventArgs e)

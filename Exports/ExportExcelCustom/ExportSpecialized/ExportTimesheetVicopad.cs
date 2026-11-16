@@ -62,9 +62,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
 
             List<Col> collaboratori = RepoManager.ColRepo.Find(c => SelectedIds.Contains(c.Col_Id), true).ToList();
             bool settimanali = false;
-            if (parameters.Cartellino_Visualizza_Totali_Settimanali == 1) {
-                settimanali = true;
-            }
 
             //viene estratto l'ide dello user che ha fatto l'accesso a Powerweb
             int userId = PowerWebContext.Current.User.Utenti_Id;
@@ -89,23 +86,96 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
             }
 
             List<Reg_V> regvs = RepoManager.Reg_VRepo.Find(r => SelectedIds.Contains(r.Col_Id.Value) && r.Data_Ora_Fig_E >= startMonth && r.Data_Ora_Fig_E <= endMonth, true).ToList();
+            int cantId = Int32.Parse(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.GiornoPassaggi, "CantSede"));
+            Tab_Decod trasferta = RepoManager.Tab_DecodRepo.FirstOrDefault(td => td.Chiave_Tab == "TRA" && td.Nome_Tab == "MOTIVAZIONI");
 
             foreach (Col col in collaboratori) {
                 IEnumerable<int> lis = new List<int>();
                 List<Reg_V> regToExport = new List<Reg_V>();
-                List<Reg_V> colRegs = regvs.Where(r => r.Col_Id == col.Col_Id).ToList();
-                foreach (Reg_V reg in colRegs) 
+                List<Reg_V> colRegs = regvs.Where(r => r.Col_Id == col.Col_Id && r.Registrazione_Tipo_Reg != 4).ToList();
+                List<Reg_V> tripColRegs = regvs.Where(r => r.Col_Id == col.Col_Id && r.Registrazione_Tipo_Reg == 4).ToList();
+                var colRegsByDate = colRegs.GroupBy(r => r.Data_Reg).ToList();
+                foreach (var regs in colRegsByDate)
                 {
-                    
-                }
+                    List<Reg> regtoElaborate = new List<Reg>();
+                    bool giornoTrasferta = regs.Any(r => r.Motivazione_Reg_Id == trasferta.Tab_Decod_Id);
+                    if (giornoTrasferta)
+                    {
+                        //nel caso in cui la giornata sia di trasferta creo una timbratura di 8 ore
+                        var newReg = new Reg_V();
+                        newReg.Col_Id = col.Col_Id;
+                        newReg.Cant_Id = cantId;
+                        newReg.Durata_Fig = 480;
+                        newReg.Durata_Fis = 480;
+                        newReg.Data_Reg = regs.Key;
+                        regToExport.Add(newReg);
+                    }
+                    else 
+                    {
+                        //nel caso in cui la giornata non sia di trasferta faccio altri controlli
+                        bool notGiornoSede = regs.Any(r => r.Cant_Id.Value != cantId);
+                        if (notGiornoSede)
+                        {
+                            //se la giornata non è stata in sede faccio il calcolo
+                            List<Reg_V> orderedRegs = regs.OrderBy(r => r.Data_Ora_Fis_E).ToList();
+                            if (orderedRegs.Count >= 4) 
+                            {
+                                if (orderedRegs.First().Registrazione_Tipo_Reg == 1)
+                                {
+                                    orderedRegs.RemoveAt(0);
+                                }
+                                if (orderedRegs.Last().Registrazione_Tipo_Reg == 1)
+                                {
+                                    orderedRegs.RemoveAt(orderedRegs.Count - 1);
+                                }
+                            }
+                            TimeSpan durataTime = default(TimeSpan);
+                            if (orderedRegs.Last().Data_Ora_Fis_U == null)
+                            {
+                                durataTime = orderedRegs.Last().Data_Ora_Fis_E - orderedRegs.First().Data_Ora_Fis_E;
+                            }
+                            else 
+                            {
+                                durataTime = orderedRegs.Last().Data_Ora_Fis_U.Value - orderedRegs.First().Data_Ora_Fis_E;
+                            }
+                            double durataArrot = 0;
+                            durataTime = durataTime + TimeSpan.FromMinutes((double)tripColRegs.Where(r => r.Data_Reg == regs.Key).Sum(r => r.Durata_Fis));
+                            var min = durataTime.TotalMinutes % 15;
+                            durataArrot = durataTime.TotalMinutes - min;
+
+                            var newReg = new Reg_V();
+                            newReg.Col_Id = col.Col_Id;
+                            newReg.Cant_Id = cantId;
+                            if (durataArrot > 360)
+                            {
+                                newReg.Durata_Fig = (int)durataArrot - 60;
+                                newReg.Durata_Fis = (int)durataArrot - 60;
+                            }
+                            else 
+                            {
+                                newReg.Durata_Fig = (int)durataArrot;
+                                newReg.Durata_Fis = (int)durataArrot;
+                            }
+                            newReg.Data_Reg = regs.Key;
+                            regToExport.Add(newReg);
+                            //regToExport.AddRange(tripColRegsc.ToList());
+                        }
+                        else 
+                        {
+                            //se la giornata è stata in sede passo le timbrature effettuate
+                            regToExport.AddRange(regs);
+                        }
+                    }
+                }   
                 lis = RepoManager.RegRepo.GetRegsIdByDateRangeByColNotBlocked(startMonth, endMonth, col.Col_Id);
                 if (regToExport.Count() > 0 || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.CollabNoHours) == 1)
                 {
-                     cartellini.Add(col, TimesheetModuleItem.GenerateCartellino(ExportDate,
+                     cartellini.Add(col, TimesheetModuleItem.GenerateCartellinoCartellinoCentri(ExportDate,
                                                  col,
+                                                 regToExport,
                                                  false,
                                                  settimanali,
-                                                 true,
+                                                 false,
                                                  true,
                                                  parameters.Cartellino_Visualizza_Ore,
                                                  parameters.Cartellino_Visualizza_Motivazioni,
@@ -219,17 +289,6 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                         WriteColTimesheet(col.Value);
 
                         rowIndex += 2;
-
-                        if (parameters.Cartellino_Usa_Cartellino_Modificabile)
-                        {
-                            WriteStrTimesheetTitle();
-
-                            WriteTimesheetColHeader();
-
-                            WriteStrTimesheet(col.Value);
-
-                            rowIndex += 2;
-                        }
 
                         if (_multiPagedExport)
                         {

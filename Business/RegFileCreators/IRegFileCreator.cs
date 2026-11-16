@@ -10,5 +10,6 @@ namespace Business.RegFileCreators
     public interface IRegFileCreator<T> where T : class
     {
         void WriteToFile(IEnumerable<T> unEncodedRegs, IEnumerable<FlutterAppRegOld> unEncodedRegsOld, IEnumerable<T> unEncodedRegs2);
+        void WriteToFile(IEnumerable<T> unEncodedRegs);
     }
 }

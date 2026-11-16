@@ -4391,7 +4391,7 @@ namespace Business.BusinessExtension
             {
                 cantIdList = cantList.Cast<int?>().ToList();
             }
-            if (timesheetJustification != BusinessService.GetLocalizedString(PowerWebResources.LBL_VIAGGI)) 
+            if (timesheetJustification != BusinessService.GetLocalizedString(PowerWebResources.LBL_VIAGGI) && RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ExportStr) == 0) 
             {
                 // per ogni id cantiere presente nella lista
                 foreach (var route in routeNote)
@@ -4747,7 +4747,7 @@ namespace Business.BusinessExtension
                         else 
                         {
                             // aggiungo il timesheet specifico del cantiere alla list di ritorno
-                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), cantiere.First().Descrizione_Can, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
+                            returnList.Add(GenerateNewRegTimesheet(col.Col_Id, isDecimalHours, regVsToSplit.Where(regv => regv.Cant_Id == listCantId).ToList(), timesheetJustification, firstMonthDate, lastMonthDate, timesheetOrder, currentCantId, requestedForWeeklyTotals, usaFisiche: usaFisiche));
                         }
                     }           
                 }

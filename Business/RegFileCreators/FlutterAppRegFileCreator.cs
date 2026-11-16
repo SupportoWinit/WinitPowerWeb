@@ -40,7 +40,7 @@ namespace Business.RegFileCreators
                 DateTime.Now.Day.ToString("00"),
                 DateTime.Now.Hour.ToString("00"),
                 DateTime.Now.Minute.ToString("00"),
-                 DateTime.Now.Second.ToString("00")
+                DateTime.Now.Second.ToString("00")
                 );
         }
 
@@ -66,7 +66,6 @@ namespace Business.RegFileCreators
                         {
                             var = new FlutterOrderedReg(regs.CodiceFru, "", regs.Value.First().Registrazione_Data_Ora_Orig, regs.Value.First().verso, regs.Value.First().motivazione, regs.Value.First().Latitudine, regs.Value.First().Longitudine, regs.Value.First().Attivita, regs.Value.First().Squadra, regs.Value.First().Cantiere, regs.Value.First().NfcGps, regs.CreateDateTime, regs.hotspotTipo, regs.Value.First().Note, regs.Value.First().Chiave, regs.Value.First().CantiereSel, regs.Value.First().TagTimb, regs.Value.First().Matricola);
                         }
-
                         regsToOrder.Add(var);
                     } 
                 }
@@ -1636,6 +1635,11 @@ namespace Business.RegFileCreators
                 #endregion
             }
             return translated;
+        }
+
+        public void WriteToFile(IEnumerable<FlutterAppReg> unEncodedRegs)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
         private DateTime startMonth;
         private DateTime endMonth;
 
-        private bool _multiPagedExport = Convert.ToBoolean(RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.TimesheetMultiPagedExport));
+        private bool _multiPagedExport = true;
 
         #endregion
 

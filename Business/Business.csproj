@@ -212,6 +212,7 @@
     <Compile Include="BusinessServices\RegWriterService\Service\RegWriterService.cs" />
     <Compile Include="BusinessServices\UserService\IUserService.cs" />
     <Compile Include="BusinessServices\UserService\Service\UserService.cs" />
+    <Compile Include="DataClasses\BackendNewDTOs\BackendNewReg.cs" />
     <Compile Include="DataClasses\FlutterAppDTOs\CountReg.cs" />
     <Compile Include="DataClasses\FlutterAppDTOs\FlutterOrderedReg.cs" />
     <Compile Include="DataClasses\FlutterAppDTOs\FlutterAppReg.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="ExternalImport\ExternalImportFactory.cs" />
     <Compile Include="ExternalImport\ExternalImportManager.cs" />
     <Compile Include="ExternalImport\IExternalImport.cs" />
+    <Compile Include="ExternalImport\Implementations\BackendLinuxExternalImport.cs" />
     <Compile Include="ExternalImport\Implementations\FlutterAppExternalImport.cs" />
     <Compile Include="HttpHub\FlutterAppHttpModule.cs" />
     <Compile Include="HttpHub\FlutterAppHttpModuleOld.cs" />
@@ -297,6 +299,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RegFileCreators\BackendLinuxRegFileCreator.cs" />
     <Compile Include="RegFileCreators\FlutterAppRegFileCreator.cs" />
     <Compile Include="RegFileCreators\IRegFileCreator.cs" />
     <Compile Include="Repository\Custom\Aut_StrRepository.cs">

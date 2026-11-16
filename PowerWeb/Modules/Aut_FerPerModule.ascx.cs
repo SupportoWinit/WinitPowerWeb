@@ -2584,7 +2584,7 @@ namespace PowerWeb.Modules
 
                                 if (isOrario)
                                 {
-                                    InviaConferma(conferma, col, tmpReg_V.Data_Reg.Value, tmpReg_V.Data_Reg.Value,newMet,mot);
+                                    //InviaConferma(conferma, col, tmpReg_V.Data_Reg.Value, tmpReg_V.Data_Reg.Value,newMet,mot);
 
                                     #region Add Checked Regs To updates list
 

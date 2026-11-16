@@ -553,12 +553,41 @@ namespace PowerWeb.Modules
             return errorMessage;
         }
 
+        protected string inviaMailConfermaModifica(string mailTo, Cant cantiere)
+        {
+            //Prepara il body della mail caricando il css
+            string mailBody = "<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; \">",
+                   errorMessage = "";
+
+            string interventoValue = cantiere.Tipo_Interv_Can;
+            Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == interventoValue && td.Nome_Tab == "TIPO_INTERVENTO");
+
+            DateTime today = DateTime.Now;
+            mailBody += "<p>Il giorno <b>" + today.ToString("dddd d MMMM yyyy") + "</b> è stato modificato il seguente cantiere :</p>";
+            mailBody += "<p>";
+            mailBody += "<b>Cantiere:</b> " + cantiere.Codice_Cantiere + " " + cantiere.Descrizione_Can + "<br/>";
+            mailBody += "<b>Attività:</b> " + tIntervento.Campo1_Tab + "<br/>";
+            mailBody += "<b>Sotto Attività:</b> " + tIntervento.Decodifica_Tab;
+            mailBody += "</p>";
+            mailBody += "</div>";
+            //Invia le mail
+            errorMessage = CommonService.sendMail(mailTo, "PowerWeb - Modifica cantiere " + cantiere.Codice_Cantiere, mailBody, "newsletter@winit.it", "PowerWeb - Modifica cantiere", new string[] { });
+
+            return errorMessage;
+        }
+
         protected void gvCant_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
         {
             _log.Info(String.Format("CANT-Row Updating by {0}", PowerWebContext.Current.User.Codice_Utente));
             var currentId = Convert.ToInt32(e.Keys[gvCant.KeyFieldName]);
 
             Cant currentCant = RepoManager.CantRepo.Single(u => u.Cant_Id == currentId);
+
+            var tipoInterventoPropertyName = CommonService.GetPropertyName(() => _cantStub.Tipo_Interv_Can);
+            var clienteIdPropertyName = CommonService.GetPropertyName(() => _cantStub.Cli_Id);
+            var descrizioneCantierePropertyName = CommonService.GetPropertyName(() => _cantStub.Descrizione_Can);
+            string interventoValueOld = (string)e.NewValues[tipoInterventoPropertyName];
+            int cliIdValueOld = (int)e.NewValues[clienteIdPropertyName];
 
             PowerWebService.FillEntityProperties(currentCant, e.NewValues);
             RepoManager.CantRepo.SetEntityBeforeAddOrUpdate(currentCant);
@@ -570,6 +599,51 @@ namespace PowerWeb.Modules
                 Cant_Var cantVar = new Cant_Var();
                 CommonService.DuplicateEntity(currentCant, cantVar);
                 RepoManager.Cant_VarRepo.Add(cantVar);
+            }
+
+            
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.AutoCodiceCantiere) == 1)
+            {
+                string descrizioneCantiereValue = (string)e.NewValues[descrizioneCantierePropertyName]; 
+                if (interventoValueOld != null && cliIdValueOld != null)
+                {
+                    string[] split = descrizioneCantiereValue.Split('-');
+                    Tab_Decod sottoAtt = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "TIPO_INTERVENTO" && t.Chiave_Tab == interventoValueOld);
+                    Tab_Decod att = RepoManager.Tab_DecodRepo.FirstOrDefault(t => t.Nome_Tab == "ATTIVITA" && t.Decodifica_Tab == sottoAtt.Campo1_Tab);
+                    if (sottoAtt != null)
+                    {
+                        string[] codiceSottoAtt = sottoAtt.Chiave_Tab.Split('-');
+                        Cli cliente = RepoManager.CliRepo.FirstOrDefault(c => c.Cli_Id == cliIdValueOld);
+                        string codiceCantiere = cliente.Codice_Cliente + "-" + att.Chiave_Tab + "-" + codiceSottoAtt[1];
+                        string tmpCos = codiceCantiere.Replace(" ", "");
+                        codiceCantiere = tmpCos + "_001";
+                        codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
+                        List<Cant> exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                        if (exist.Count > 0)
+                        {
+                            bool newCant = false;
+                            int endCod = 2;
+                            while (!newCant)
+                            {
+                                tmpCos = codiceCantiere.Replace(" ", "");
+                                string[] cod = tmpCos.Split('_');
+                                codiceCantiere = cod[0] + "_00" + endCod;
+                                codiceCantiere = CommonService.CompletaASinistra(codiceCantiere, 20);
+                                exist = RepoManager.CantRepo.Find(c => c.Codice_Cantiere == codiceCantiere).ToList();
+                                if (exist.Count == 0)
+                                {
+                                    newCant = true;
+                                }
+                                else
+                                {
+                                    endCod++;
+                                }
+                            }
+                        }
+                        currentCant.Codice_Cantiere = codiceCantiere;
+                    }
+                }
             }
 
             var changes = RepoManager.CantRepo.Context.ChangeTracker
@@ -792,6 +866,26 @@ namespace PowerWeb.Modules
                     {
                         _log.Error(String.Format("Errore durante l'update di un cantiere (Row-Updating) {0}", ex.Message));
                     }
+                }
+            }
+
+            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ConfermaInserimentoCantiere) == 1)
+            {
+                string confronto = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ConfermaInserimentoCantiere, "controllo");
+                bool sendMail = false;
+                if (e.NewValues[tipoInterventoPropertyName] != null)
+                {
+                    string interventoValue = (string)e.NewValues[tipoInterventoPropertyName];
+                    Tab_Decod tIntervento = RepoManager.Tab_DecodRepo.First(td => td.Chiave_Tab == interventoValue && td.Nome_Tab == "TIPO_INTERVENTO");
+                    if (tIntervento != null)
+                    {
+                        sendMail = true;
+                    }
+                }
+            
+                if (sendMail)
+                {
+                    inviaMailConfermaModifica(RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ConfermaInserimentoCantiere, "email"), currentCant);
                 }
             }
 

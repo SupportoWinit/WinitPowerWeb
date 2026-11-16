@@ -486,15 +486,28 @@ namespace Exports.ExportExcelCustom.ExportSpecialized
                                 List<Cant> cants = RepoManager.CantRepo.GetAllQueryable(c => c.Cant_Id == reg.Cant_Id).ToList();
                                 if (cants.Count > 0)
                                 {
-                                    var newRounding = new Reg_V();
-                                    newRounding.Col_Id = exportReg.Key;
-                                    newRounding.Cant_Id = reg.Cant_Id;
-                                    newRounding.Durata_Fig = reg.Durata_Fig;
-                                    newRounding.Durata_Fis = reg.Durata_Fis;
-                                    newRounding.Data_Reg = cond;
-                                    newRounding.Note_Reg = cants.First().Descrizione_Can;
-                                    regVs.Add(newRounding);
-                                    
+                                    if (reg.Turno != null && reg.Turno != "")
+                                    {
+                                        var newRounding = new Reg_V();
+                                        newRounding.Col_Id = exportReg.Key;
+                                        newRounding.Cant_Id = reg.Cant_Id;
+                                        newRounding.Durata_Fig = reg.Durata_Fig;
+                                        newRounding.Durata_Fis = reg.Durata_Fis;
+                                        newRounding.Data_Reg = cond;
+                                        newRounding.Note_Reg = cants.First().Descrizione_Can + " - COPERTURE SERALI";
+                                        regVs.Add(newRounding);
+                                    }
+                                    else 
+                                    {
+                                        var newRounding = new Reg_V();
+                                        newRounding.Col_Id = exportReg.Key;
+                                        newRounding.Cant_Id = reg.Cant_Id;
+                                        newRounding.Durata_Fig = reg.Durata_Fig;
+                                        newRounding.Durata_Fis = reg.Durata_Fis;
+                                        newRounding.Data_Reg = cond;
+                                        newRounding.Note_Reg = cants.First().Descrizione_Can;
+                                        regVs.Add(newRounding);
+                                    }
                                 }
                             }
                         }

@@ -10,6 +10,7 @@ using Data;
 using DevExpress.Data.Linq;
 using DevExpress.Data.PLinq.Helpers;
 using DevExpress.Office.Utils;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraPrinting.XamlExport;
 using DevExpress.XtraRichEdit.Import.Html;
@@ -365,433 +366,154 @@ namespace Business.Repository.Custom
                                                 //se si è nel caso di arrotondamento sull'entrata ed uscita
                                                 if ((roundingEnum == RoundingMethodEnum.StartEnd && !currentCant.Raggruppamento1_Can.Equals("5")) || RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 1)
                                                 {
-                                                        //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 1) {
-                                                        //    if (roundingEnum != RoundingMethodEnum.StartEnd) {
-                                                        //        thresholdStart = -1;
-                                                        //        thresholdEnd = -1;
-                                                        //    }
-                                                        //}
-                                                        #region 1.Arrotondo la Registrazione di Entrata
+                                                    //if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.UseEUDurationRounding) == 1) {
+                                                    //    if (roundingEnum != RoundingMethodEnum.StartEnd) {
+                                                    //        thresholdStart = -1;
+                                                    //        thresholdEnd = -1;
+                                                    //    }
+                                                    //}
+                                                    #region 1.Arrotondo la Registrazione di Entrata
 
-                                                        //vengono estratti i minuti della corrente registrazione di entrata
-                                                        int currentRegEMin = currentRegE.Registrazione_Data_Ora_Fis_Reg.Minute;
+                                                    //vengono estratti i minuti della corrente registrazione di entrata
+                                                    int currentRegEMin = currentRegE.Registrazione_Data_Ora_Fis_Reg.Minute;
 
-                                                        //creo una nuova variabile che rappresenterà il modulo dei minuti
-                                                        int moduleRegEMin = currentRegEMin;
+                                                    //creo una nuova variabile che rappresenterà il modulo dei minuti
+                                                    int moduleRegEMin = currentRegEMin;
 
-                                                        //viene controllato se i minuti di start inseriti sono maggiori di 0 (minuti arrotondamento entrata)
-                                                        if (minutesStart > 0)
-                                                            //viene calcolato il valore come resto della divisione tra i minuti reali e il valore dei parametri
-                                                            moduleRegEMin = currentRegEMin % minutesStart;
+                                                    //viene controllato se i minuti di start inseriti sono maggiori di 0 (minuti arrotondamento entrata)
+                                                    if (minutesStart > 0)
+                                                        //viene calcolato il valore come resto della divisione tra i minuti reali e il valore dei parametri
+                                                        moduleRegEMin = currentRegEMin % minutesStart;
 
-                                                        //se si è in presenza di un valore della soglia sull'entrata valido(Soglia di entrata) 
-                                                        //se la soglia è uguale a zero si arrotonda sempre al limite successivo
-                                                        if (thresholdStart >= 0)
+                                                    //se si è in presenza di un valore della soglia sull'entrata valido(Soglia di entrata) 
+                                                    //se la soglia è uguale a zero si arrotonda sempre al limite successivo
+                                                    if (thresholdStart >= 0)
+                                                    {
+                                                        //se il modulo dei minuti è maggiore della soglia di entrata impostata nei parametri
+                                                        if (moduleRegEMin > thresholdStart)
+                                                            //i nuovi minuti della registrazione figurativa di entrata sono uguali alla differenza tra minutesStart - moduleRegEMin
+                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(minutesStart - moduleRegEMin);
+                                                        else
+                                                            //altrimenti i minuti della registrazione figurativa di entrata sono uguali al modulo * -1
+                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegEMin * -1);
+                                                    }
+                                                    else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotondamentiIntermedi) == 1) 
+                                                    {
+                                                        string[] intervalli = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ArrotondamentiIntermedi, "Intervalli").Split(',');
+                                                        var interi = intervalli.Select(valore => int.Parse(valore)).ToArray();
+                                                        if (interi[0] < currentRegEMin && interi[1] > currentRegEMin)
                                                         {
-                                                            //se il modulo dei minuti è maggiore della soglia di entrata impostata nei parametri
-                                                            if (moduleRegEMin > thresholdStart)
-                                                                //i nuovi minuti della registrazione figurativa di entrata sono uguali alla differenza tra minutesStart - moduleRegEMin
-                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(minutesStart - moduleRegEMin);
-                                                            else
-                                                                //altrimenti i minuti della registrazione figurativa di entrata sono uguali al modulo * -1
-                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegEMin * -1);
+                                                            var tmpCalc = (interi[1] - interi[0]) / 2;
+                                                            var diff = (interi[0] + tmpCalc) - currentRegEMin;
+                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
                                                         }
-
-                                                        #endregion
-
-                                                        #region 2.Arrotondo la Registrazione di Uscita
-
-                                                        //se sono in presenza di una registrazione di uscita
-                                                        if (currentRegU != null)
+                                                        else if (interi[1] < currentRegEMin && interi[2] > currentRegEMin)
                                                         {
-                                                            //vengono estratti i minuti della registrazione di uscita
-                                                            int currentRegUMin = currentRegU.Registrazione_Data_Ora_Fis_Reg.Minute;
-                                                            int moduleRegUMin = currentRegUMin;
-
-                                                            // viene controllato se i minuti di start inseriti sono maggiori di 0
-                                                            if (minutesEnd > 0)
-                                                                //viene calcolato il valore come resto della divisione tra i minuti reali e il valore dei parametri
-                                                                moduleRegUMin = currentRegUMin % minutesEnd;
-
-                                                            //se la soglia di uscita è valorizzata
-                                                            if (thresholdEnd >= 0)
-                                                            {
-                                                                //se il modulo dei minuti è maggiore della soglia di uscita impostata nei parametri
-                                                                if (moduleRegUMin > thresholdEnd)
-                                                                    //i nuovi minuti della registrazione figurativa di uscita sono uguali alla differenza tra minutesStart - moduleRegEMin
-                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(minutesEnd - moduleRegUMin);
-                                                                else
-                                                                    //altrimenti i minuti della registrazione figurativa di entrata sono uguali al modulo * -1
-                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegUMin * -1);
-                                                            }
+                                                            var tmpCalc = (interi[2] - interi[1]) / 2;
+                                                            var diff = (interi[1] + tmpCalc) - currentRegEMin;
+                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
                                                         }
-
-                                                        #endregion
-
-                                                        #region 3.Gestione del limite d'entrata
-                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiSuTipologie) == 1)
+                                                        else if (interi[2] < currentRegEMin && interi[3] > currentRegEMin)
                                                         {
-                                                            if (!RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiSuTipologie, "Tipologie").Contains(currentCant.Codice_Commessa_Can) ) 
-                                                            {
-                                                                #region Modifica per non arrotondare le ore modificate
-                                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1)
-                                                                {
-                                                                    if ((currentRegV.Tipo_Modifica == 0 || currentRegV.Tipo_Modifica == 1 || currentRegV.Tipo_Modifica == 2) /*&& currentCol.Qualifica_Col != "0"*/ && currentCol.Raggruppamento2_Col != "1")
-                                                                    {
-                                                                        // calcolo dei dati di limite d'entrata riguardo la registrazione che si sta processando
-                                                                        Dictionary<EntryLimitTypeEnum, EntryLimitData> entryLimitConfig = null;
-                                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiDaTurni) == 1)
-                                                                        {
-                                                                            entryLimitConfig = GetEntryLimitConifgOrario(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay, currentRegE, currentRegU);
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            entryLimitConfig = GetEntryLimitConifg(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay);
-                                                                        }
-
-                                                                        //primo limite della mattina, se non si è valorizzato il campo del limite resituisce mezzogiorno
-                                                                        TimeSpan fistMorningLimit = new TimeSpan(12, 0, 0);
-                                                                        TimeSpan tmpMidDay = midDay;
-
-                                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
-                                                                        {
-                                                                            if (currentCant.Telefono_1_Can != null)
-                                                                            {
-                                                                                midDay = TimeSpan.Parse(currentCant.Telefono_2_Can);
-                                                                                string[] Coperture = currentCant.Telefono_1_Can.Split(',');
-                                                                                TimeSpan beforeE = TimeSpan.Parse(Coperture[1]).Subtract(new TimeSpan(0, 30, 0));
-                                                                                TimeSpan afterE = TimeSpan.Parse(Coperture[1]).Add(new TimeSpan(0, 30, 0));
-                                                                                TimeSpan beforeU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Subtract(new TimeSpan(0, 30, 0));
-                                                                                TimeSpan afterU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Add(new TimeSpan(0, 30, 0));
-                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeE/*&& (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeU && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < afterU)*/)
-                                                                                {
-                                                                                    entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(Coperture[1]);
-                                                                                    currentRegE.Turno = "Coperture Serali";
-                                                                                }
-                                                                                else if (currentRegE.Turno == "Coperture Serali")
-                                                                                {
-                                                                                    entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(Coperture[0]);
-                                                                                }
-                                                                            }
-                                                                        }
-
-                                                                        // se è configurata la gestione del limite d'entrata (valorizzata o per la mattina, per il pomeriggio o per orario) e se la registrazione 
-                                                                        // risulta abbinata allora si procede (se la registrazione d'entrata risulta presente) come segue:
-                                                                        // - in caso di registrazione mattutina (ante metà giornata configurata) allora si verifica che, se configurato il limite d'entrata mattutino,
-                                                                        //   la registrazione sia antecedente a tale ora; in questo caso l'ora figurativa dell'entrata viene spostata al limite d'entrata.
-                                                                        // - in caso non si tratti di una registrazione mattutina (post metà giornata configurata) allora si verifica che, 
-                                                                        //   se configurato il limite d'entrata pomeridiano e la registrazione abbinata sia a cavallo del limite e nella tolleranza esplicitata 
-                                                                        //   (se non configurata si è sicuramente fuori tolleranza) allora si procede allo spostamento dell'ora figurativa d'entrata al limite d'entrata
-                                                                        // al termine dell'operazione in ogni caso, se l'uscita risulta inferiore all'entrata, si procede al suo spostamento per far coincidere il dato.
-
-                                                                        // se la registrazione risulta abbinata e ci sono dei limiti d'entrata configurati ed esiste una registrazione d'entrata
-                                                                        if (currentRegV.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && entryLimitConfig.Any(kvp => kvp.Value.IsConfigured) && currentRegE != null)
-                                                                        {
-                                                                            // se la registrazione risulta essere mattutina ed è configurato il limite d'entrata mattutino,
-                                                                            // altrimenti se la registrazione risulta essere pomeridiana e risulta configurato n limite d'entrata pomeridiano
-                                                                            if (currentRegV.Data_Ora_Fis_E.TimeOfDay < midDay && entryLimitConfig[EntryLimitTypeEnum.Morning].IsConfigured)
-                                                                            {
-                                                                                //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
-                                                                                if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
-                                                                                    fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
-
-                                                                                // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                                                if (delayMorningTollerance != null && currentCant.Importo4 == null && currentCol.Trattenuta_Vitto_Col == null)
-                                                                                {
-                                                                                    if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                            0);
-
-                                                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
-                                                                                    {
-                                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                                0);
-                                                                                    }
-                                                                                }
-                                                                                else if (currentCol.Trattenuta_Vitto_Col != null)
-                                                                                {
-                                                                                    int tolleranzaPre = 180;
-                                                                                    if (currentCol.Trattenuta_Vitto_Col != null)
-                                                                                    {
-                                                                                        if (currentCol.Trattenuta_Vitto_Col.Value > 0)
-                                                                                            tolleranzaPre = (int)currentCol.Trattenuta_Vitto_Col.Value;
-                                                                                    }
-                                                                                    if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(new TimeSpan(0, tolleranzaPre, 0)))
-                                                                                    {
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                        currentCol.Limite_Entrata_Mattina_Col.Value.Hours,
-                                                                                        currentCol.Limite_Entrata_Mattina_Col.Value.Minutes,
-                                                                                        0);
-                                                                                    }
-                                                                                }
-                                                                                else if (currentCant.Importo4 != null)
-                                                                                {
-                                                                                    int tolleranzaPre = 180;
-                                                                                    if (currentCant.Importo4 != null)
-                                                                                    {
-                                                                                        if (currentCant.Importo4.Value > 0)
-                                                                                            tolleranzaPre = (int)currentCant.Importo4.Value;
-                                                                                    }
-                                                                                    if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(new TimeSpan(0, tolleranzaPre, 0)))
-                                                                                    {
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                        currentCant.Limite_Entrata_Mattina_Cant.Value.Hours,
-                                                                                        currentCant.Limite_Entrata_Mattina_Cant.Value.Minutes,
-                                                                                        0);
-                                                                                    }
-                                                                                }
-                                                                                else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
-                                                                                {
-                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                            0);
-                                                                                }
-                                                                            }
-                                                                            else if (currentRegV.Data_Ora_Fis_E.TimeOfDay >= midDay && entryLimitConfig[EntryLimitTypeEnum.Afternoon].IsConfigured)
-                                                                            {
-                                                                                //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
-                                                                                if (entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime != null)
-                                                                                    fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value;
-
-                                                                                // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                                                if (delayAfternoonTollerance != null)
-                                                                                {
-                                                                                    if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(delayAfternoonTollerance))
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
-                                                                                            0);
-
-                                                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
-                                                                                    {
-                                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(delayAfternoonTollerance))
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
-                                                                                                0);
-                                                                                    }
-                                                                                }
-                                                                                else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value)
-                                                                                {
-                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
-                                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
-                                                                                            0);
-                                                                                }
-
-                                                                                //limite d'entrata su cant
-                                                                                if (currentCant.Limite_Entrata_Mattina_Cant != null || currentCol.Limite_Entrata_Mattina_Col != null)
-                                                                                {
-                                                                                    TimeSpan entryLimit = new TimeSpan();
-
-                                                                                    if (currentCol.Limite_Entrata_Mattina_Col != null)
-                                                                                    {
-                                                                                        List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
-                                                                                        if (currentCol.Tolleranza_Limite_Entrata_Col != null)
-                                                                                        {
-                                                                                            entryLimit = currentCol.Limite_Entrata_Pomeriggio_Col.Value.Add((TimeSpan)currentCol.Tolleranza_Limite_Entrata_Col);
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            entryLimit = currentCol.Limite_Entrata_Pomeriggio_Col.Value.Add(parametri.First().Tolleranza_Limite_Entrata_Pomeriggio.Value);
-                                                                                        }
-
-                                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimit)
-                                                                                        {
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                            currentCol.Limite_Entrata_Pomeriggio_Col.Value.Hours,
-                                                                                            currentCol.Limite_Entrata_Pomeriggio_Col.Value.Minutes,
-                                                                                            0);
-                                                                                        }
-                                                                                    }
-                                                                                    else if (currentCant.Limite_Entrata_Pomeriggio_Cant != null)
-                                                                                    {
-                                                                                        entryLimit = currentCant.Limite_Entrata_Pomeriggio_Cant.Value.Add((TimeSpan)currentCant.Tolleranza_Limite_Entrata_Cant);
-
-                                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimit)
-                                                                                        {
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                            currentCant.Limite_Entrata_Pomeriggio_Cant.Value.Hours,
-                                                                                            currentCant.Limite_Entrata_Pomeriggio_Cant.Value.Minutes,
-                                                                                            0);
-                                                                                        }
-                                                                                    }
-
-                                                                                }
-                                                                            }
-
-                                                                            // in ogni caso, al termine dell'operazione, se è presente una registrazione d'uscita
-                                                                            // e l'ora figurativa di questa è inferiore all'ora figurativa dell'entrata allora 
-                                                                            // si porta l'ora d'uscita all'ora d'entrata (a patto che si trovino nella stessa data - questione degli arrotondamenti a 00:00)
-                                                                            if (currentRegU != null)
-                                                                                if (currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay
-                                                                                    && currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Date == currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Date)
-                                                                                    currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg;
-
-                                                                            midDay = tmpMidDay;
-                                                                        }
-                                                                    }
-
-                                                                }
-                                                                #endregion
-                                                                else
-                                                                {
-                                                                    // calcolo dei dati di limite d'entrata riguardo la registrazione che si sta processando
-                                                                    Dictionary<EntryLimitTypeEnum, EntryLimitData> entryLimitConfig = null;
-
-                                                                    midDay = RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio ?? new TimeSpan(12, 0, 0);
-                                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiDaTurni) == 1)
-                                                                    {
-                                                                        entryLimitConfig = GetEntryLimitConifgOrario(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay, currentRegE, currentRegU);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        entryLimitConfig = GetEntryLimitConifg(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay);
-                                                                    }
-
-                                                                    //primo limite della mattina, se non si è valorizzato il campo del limite resituisce mezzogiorno
-                                                                    TimeSpan fistMorningLimit = new TimeSpan(12, 0, 0);
-
-                                                                    //if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Usa_Orario || RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Usa_Orario) {
-                                                                    //    TimeSpan tmp = entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(5));
-                                                                    //    midDay = tmp;
-                                                                    //}
-
-                                                                    // se è configurata la gestione del limite d'entrata (valorizzata o per la mattina, per il pomeriggio o per orario) e se la registrazione 
-                                                                    // risulta abbinata allora si procede (se la registrazione d'entrata risulta presente) come segue:
-                                                                    // - in caso di registrazione mattutina (ante metà giornata configurata) allora si verifica che, se configurato il limite d'entrata mattutino,
-                                                                    //   la registrazione sia antecedente a tale ora; in questo caso l'ora figurativa dell'entrata viene spostata al limite d'entrata.
-                                                                    // - in caso non si tratti di una registrazione mattutina (post metà giornata configurata) allora si verifica che, 
-                                                                    //   se configurato il limite d'entrata pomeridiano e la registrazione abbinata sia a cavallo del limite e nella tolleranza esplicitata 
-                                                                    //   (se non configurata si è sicuramente fuori tolleranza) allora si procede allo spostamento dell'ora figurativa d'entrata al limite d'entrata
-                                                                    // al termine dell'operazione in ogni caso, se l'uscita risulta inferiore all'entrata, si procede al suo spostamento per far coincidere il dato.
-
-                                                                    // se la registrazione risulta abbinata e ci sono dei limiti d'entrata configurati ed esiste una registrazione d'entrata
-                                                                    if (currentRegV.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && entryLimitConfig.Any(kvp => kvp.Value.IsConfigured) && currentRegE != null)
-                                                                    {
-                                                                        // se la registrazione risulta essere mattutina ed è configurato il limite d'entrata mattutino,
-                                                                        // altrimenti se la registrazione risulta essere pomeridiana e risulta configurato n limite d'entrata pomeridiano
-                                                                        if (currentRegV.Data_Ora_Fis_E.TimeOfDay < midDay && entryLimitConfig[EntryLimitTypeEnum.Morning].IsConfigured)
-                                                                        {
-                                                                            //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
-                                                                            if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
-                                                                                fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
-
-                                                                            // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                                            if (delayMorningTollerance != null && delayMorningTollerance > new TimeSpan(0, 0, 0))
-                                                                            {
-                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
-                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                        0);
-                                                                                //utilizzo la tolleranza anche dentro all'orario lavorativo
-                                                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
-                                                                                {
-                                                                                    if (currentCant.Turno4_Can.HasValue)
-                                                                                    {
-                                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Add(currentCant.Turno4_Can.Value))
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                                0);
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
-                                                                            {
-                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                        0);
-                                                                            }
-                                                                        }
-                                                                        else if (currentRegV.Data_Ora_Fis_E.TimeOfDay >= midDay && entryLimitConfig[EntryLimitTypeEnum.Afternoon].IsConfigured)
-                                                                        {
-                                                                            //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
-                                                                            if (entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime != null)
-                                                                                fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value;
-
-                                                                            // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
-                                                                            if (delayAfternoonTollerance != new TimeSpan(0, 0, 0))
-                                                                            {
-                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(delayAfternoonTollerance))
-                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
-                                                                                        0);
-
-                                                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
-                                                                                {
-                                                                                    if (currentCant.Turno4_Can.HasValue)
-                                                                                    {
-                                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Add(currentCant.Turno4_Can.Value))
-                                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
-                                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
-                                                                                                0);
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value)
-                                                                            {
-                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
-                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
-                                                                                        entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
-                                                                                        0);
-                                                                            }
-                                                                        }
-
-                                                                        // in ogni caso, al termine dell'operazione, se è presente una registrazione d'uscita
-                                                                        // e l'ora figurativa di questa è inferiore all'ora figurativa dell'entrata allora 
-                                                                        // si porta l'ora d'uscita all'ora d'entrata (a patto che si trovino nella stessa data - questione degli arrotondamenti a 00:00)
-                                                                        if (currentRegU != null)
-                                                                            if (currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay
-                                                                                && currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Date == currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Date)
-                                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg;
-                                                                    }
-                                                                }
-                                                            }
+                                                            var tmpCalc = (interi[3] - interi[2]) / 2;
+                                                            var diff = (interi[2] + tmpCalc) - currentRegEMin;
+                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
                                                         }
                                                         else 
+                                                        {
+                                                            if (interi[3] > interi[0]) 
+                                                            {
+                                                                if (interi[3] < currentRegEMin && currentRegEMin <= 59)
+                                                                {
+                                                                    var diff = 60 - currentRegEMin;
+                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+                                                                }
+                                                                else if (currentRegEMin < interi[0] && currentRegEMin >= 1)
+                                                                {
+                                                                    var diff = 0 - currentRegEMin;
+                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+                                                                }
+                                                                
+                                                            }
+                                                        }
+                                                    }
+
+                                                    #endregion
+
+                                                    #region 2.Arrotondo la Registrazione di Uscita
+
+                                                    //se sono in presenza di una registrazione di uscita
+                                                    if (currentRegU != null)
+                                                    {
+                                                        //vengono estratti i minuti della registrazione di uscita
+                                                        int currentRegUMin = currentRegU.Registrazione_Data_Ora_Fis_Reg.Minute;
+                                                        int moduleRegUMin = currentRegUMin;
+
+                                                        // viene controllato se i minuti di start inseriti sono maggiori di 0
+                                                        if (minutesEnd > 0)
+                                                            //viene calcolato il valore come resto della divisione tra i minuti reali e il valore dei parametri
+                                                            moduleRegUMin = currentRegUMin % minutesEnd;
+
+                                                        //se la soglia di uscita è valorizzata
+                                                        if (thresholdEnd >= 0)
+                                                        {
+                                                            //se il modulo dei minuti è maggiore della soglia di uscita impostata nei parametri
+                                                            if (moduleRegUMin > thresholdEnd)
+                                                                //i nuovi minuti della registrazione figurativa di uscita sono uguali alla differenza tra minutesStart - moduleRegEMin
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(minutesEnd - moduleRegUMin);
+                                                            else
+                                                                //altrimenti i minuti della registrazione figurativa di entrata sono uguali al modulo * -1
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(moduleRegUMin * -1);
+                                                        }
+                                                        else if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.ArrotondamentiIntermedi) == 1)
+                                                        {
+                                                            string[] intervalli = RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.ArrotondamentiIntermedi, "Intervalli").Split(',');
+                                                            var interi = intervalli.Select(valore => int.Parse(valore)).ToArray();
+                                                            if (interi[0] < currentRegUMin && interi[1] > currentRegUMin)
+                                                            {
+                                                                var tmpCalc = (interi[1] - interi[0]) / 2;
+                                                                var diff = (interi[0] + tmpCalc) - currentRegUMin;
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+
+                                                            }
+                                                            else if (interi[1] < currentRegUMin && interi[2] > currentRegUMin)
+                                                            {
+                                                                var tmpCalc = (interi[2] - interi[1]) / 2;
+                                                                var diff = (interi[1] + tmpCalc) - currentRegUMin;
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+                                                            }
+                                                            else if (interi[2] < currentRegUMin && interi[3] > currentRegUMin)
+                                                            {
+                                                                var tmpCalc = (interi[3] - interi[2]) / 2;
+                                                                var diff = (interi[2] + tmpCalc) - currentRegUMin;
+                                                                currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+                                                            }
+                                                            else
+                                                            {
+                                                                if (interi[3] > interi[0])
+                                                                {
+                                                                    if (interi[3] < currentRegUMin && currentRegUMin <= 59)
+                                                                    {
+                                                                        var diff = 60 - currentRegUMin;
+                                                                        currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+                                                                    }
+                                                                    else if (currentRegUMin < interi[0] && currentRegUMin >= 1)
+                                                                    {
+                                                                        var diff = 0 - currentRegUMin;
+                                                                        currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.AddMinutes(diff);
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    #endregion
+
+                                                    #region 3.Gestione del limite d'entrata
+                                                    if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiSuTipologie) == 1)
+                                                    {
+                                                        if (!RepoManager.ParamRepo.GetCustomizationParamFromEnum(CustomizationEnum.LimitiSuTipologie, "Tipologie").Contains(currentCant.Codice_Commessa_Can))
                                                         {
                                                             #region Modifica per non arrotondare le ore modificate
                                                             if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1)
@@ -1150,6 +872,366 @@ namespace Business.Repository.Custom
                                                                 }
                                                             }
                                                         }
+                                                    }
+                                                    else
+                                                    {
+                                                        #region Modifica per non arrotondare le ore modificate
+                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.NoArrotondamentoOreModificate) == 1)
+                                                        {
+                                                            if ((currentRegV.Tipo_Modifica == 0 || currentRegV.Tipo_Modifica == 1 || currentRegV.Tipo_Modifica == 2) /*&& currentCol.Qualifica_Col != "0"*/ && currentCol.Raggruppamento2_Col != "1")
+                                                            {
+                                                                // calcolo dei dati di limite d'entrata riguardo la registrazione che si sta processando
+                                                                Dictionary<EntryLimitTypeEnum, EntryLimitData> entryLimitConfig = null;
+                                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiDaTurni) == 1)
+                                                                {
+                                                                    entryLimitConfig = GetEntryLimitConifgOrario(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay, currentRegE, currentRegU);
+                                                                }
+                                                                else
+                                                                {
+                                                                    entryLimitConfig = GetEntryLimitConifg(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay);
+                                                                }
+
+                                                                //primo limite della mattina, se non si è valorizzato il campo del limite resituisce mezzogiorno
+                                                                TimeSpan fistMorningLimit = new TimeSpan(12, 0, 0);
+                                                                TimeSpan tmpMidDay = midDay;
+
+                                                                if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiXCol) == 1)
+                                                                {
+                                                                    if (currentCant.Telefono_1_Can != null)
+                                                                    {
+                                                                        midDay = TimeSpan.Parse(currentCant.Telefono_2_Can);
+                                                                        string[] Coperture = currentCant.Telefono_1_Can.Split(',');
+                                                                        TimeSpan beforeE = TimeSpan.Parse(Coperture[1]).Subtract(new TimeSpan(0, 30, 0));
+                                                                        TimeSpan afterE = TimeSpan.Parse(Coperture[1]).Add(new TimeSpan(0, 30, 0));
+                                                                        TimeSpan beforeU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Subtract(new TimeSpan(0, 30, 0));
+                                                                        TimeSpan afterU = TimeSpan.Parse(currentCant.Telefono_1_Rif_Can).Add(new TimeSpan(0, 30, 0));
+                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeE/*&& (currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > beforeU && currentRegU.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < afterU)*/)
+                                                                        {
+                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(Coperture[1]);
+                                                                            currentRegE.Turno = "Coperture Serali";
+                                                                        }
+                                                                        else if (currentRegE.Turno == "Coperture Serali")
+                                                                        {
+                                                                            entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime = TimeSpan.Parse(Coperture[0]);
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // se è configurata la gestione del limite d'entrata (valorizzata o per la mattina, per il pomeriggio o per orario) e se la registrazione 
+                                                                // risulta abbinata allora si procede (se la registrazione d'entrata risulta presente) come segue:
+                                                                // - in caso di registrazione mattutina (ante metà giornata configurata) allora si verifica che, se configurato il limite d'entrata mattutino,
+                                                                //   la registrazione sia antecedente a tale ora; in questo caso l'ora figurativa dell'entrata viene spostata al limite d'entrata.
+                                                                // - in caso non si tratti di una registrazione mattutina (post metà giornata configurata) allora si verifica che, 
+                                                                //   se configurato il limite d'entrata pomeridiano e la registrazione abbinata sia a cavallo del limite e nella tolleranza esplicitata 
+                                                                //   (se non configurata si è sicuramente fuori tolleranza) allora si procede allo spostamento dell'ora figurativa d'entrata al limite d'entrata
+                                                                // al termine dell'operazione in ogni caso, se l'uscita risulta inferiore all'entrata, si procede al suo spostamento per far coincidere il dato.
+
+                                                                // se la registrazione risulta abbinata e ci sono dei limiti d'entrata configurati ed esiste una registrazione d'entrata
+                                                                if (currentRegV.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && entryLimitConfig.Any(kvp => kvp.Value.IsConfigured) && currentRegE != null)
+                                                                {
+                                                                    // se la registrazione risulta essere mattutina ed è configurato il limite d'entrata mattutino,
+                                                                    // altrimenti se la registrazione risulta essere pomeridiana e risulta configurato n limite d'entrata pomeridiano
+                                                                    if (currentRegV.Data_Ora_Fis_E.TimeOfDay < midDay && entryLimitConfig[EntryLimitTypeEnum.Morning].IsConfigured)
+                                                                    {
+                                                                        //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
+                                                                        if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
+                                                                            fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
+
+                                                                        // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
+                                                                        if (delayMorningTollerance != null && currentCant.Importo4 == null && currentCol.Trattenuta_Vitto_Col == null)
+                                                                        {
+                                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                    0);
+
+                                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
+                                                                            {
+                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                        0);
+                                                                            }
+                                                                        }
+                                                                        else if (currentCol.Trattenuta_Vitto_Col != null)
+                                                                        {
+                                                                            int tolleranzaPre = 180;
+                                                                            if (currentCol.Trattenuta_Vitto_Col != null)
+                                                                            {
+                                                                                if (currentCol.Trattenuta_Vitto_Col.Value > 0)
+                                                                                    tolleranzaPre = (int)currentCol.Trattenuta_Vitto_Col.Value;
+                                                                            }
+                                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(new TimeSpan(0, tolleranzaPre, 0)))
+                                                                            {
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                currentCol.Limite_Entrata_Mattina_Col.Value.Hours,
+                                                                                currentCol.Limite_Entrata_Mattina_Col.Value.Minutes,
+                                                                                0);
+                                                                            }
+                                                                        }
+                                                                        else if (currentCant.Importo4 != null)
+                                                                        {
+                                                                            int tolleranzaPre = 180;
+                                                                            if (currentCant.Importo4 != null)
+                                                                            {
+                                                                                if (currentCant.Importo4.Value > 0)
+                                                                                    tolleranzaPre = (int)currentCant.Importo4.Value;
+                                                                            }
+                                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(new TimeSpan(0, tolleranzaPre, 0)))
+                                                                            {
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                currentCant.Limite_Entrata_Mattina_Cant.Value.Hours,
+                                                                                currentCant.Limite_Entrata_Mattina_Cant.Value.Minutes,
+                                                                                0);
+                                                                            }
+                                                                        }
+                                                                        else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
+                                                                        {
+                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                    0);
+                                                                        }
+                                                                    }
+                                                                    else if (currentRegV.Data_Ora_Fis_E.TimeOfDay >= midDay && entryLimitConfig[EntryLimitTypeEnum.Afternoon].IsConfigured)
+                                                                    {
+                                                                        //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
+                                                                        if (entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime != null)
+                                                                            fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value;
+
+                                                                        // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
+                                                                        if (delayAfternoonTollerance != null)
+                                                                        {
+                                                                            if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(delayAfternoonTollerance))
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
+                                                                                    0);
+
+                                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
+                                                                            {
+                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(delayAfternoonTollerance))
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
+                                                                                        0);
+                                                                            }
+                                                                        }
+                                                                        else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value)
+                                                                        {
+                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
+                                                                                    entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
+                                                                                    0);
+                                                                        }
+
+                                                                        //limite d'entrata su cant
+                                                                        if (currentCant.Limite_Entrata_Mattina_Cant != null || currentCol.Limite_Entrata_Mattina_Col != null)
+                                                                        {
+                                                                            TimeSpan entryLimit = new TimeSpan();
+
+                                                                            if (currentCol.Limite_Entrata_Mattina_Col != null)
+                                                                            {
+                                                                                List<Param> parametri = RepoManager.ParamRepo.GetAll().ToList();
+                                                                                if (currentCol.Tolleranza_Limite_Entrata_Col != null)
+                                                                                {
+                                                                                    entryLimit = currentCol.Limite_Entrata_Pomeriggio_Col.Value.Add((TimeSpan)currentCol.Tolleranza_Limite_Entrata_Col);
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    entryLimit = currentCol.Limite_Entrata_Pomeriggio_Col.Value.Add(parametri.First().Tolleranza_Limite_Entrata_Pomeriggio.Value);
+                                                                                }
+
+                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimit)
+                                                                                {
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                    currentCol.Limite_Entrata_Pomeriggio_Col.Value.Hours,
+                                                                                    currentCol.Limite_Entrata_Pomeriggio_Col.Value.Minutes,
+                                                                                    0);
+                                                                                }
+                                                                            }
+                                                                            else if (currentCant.Limite_Entrata_Pomeriggio_Cant != null)
+                                                                            {
+                                                                                entryLimit = currentCant.Limite_Entrata_Pomeriggio_Cant.Value.Add((TimeSpan)currentCant.Tolleranza_Limite_Entrata_Cant);
+
+                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimit)
+                                                                                {
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                    currentCant.Limite_Entrata_Pomeriggio_Cant.Value.Hours,
+                                                                                    currentCant.Limite_Entrata_Pomeriggio_Cant.Value.Minutes,
+                                                                                    0);
+                                                                                }
+                                                                            }
+
+                                                                        }
+                                                                    }
+
+                                                                    // in ogni caso, al termine dell'operazione, se è presente una registrazione d'uscita
+                                                                    // e l'ora figurativa di questa è inferiore all'ora figurativa dell'entrata allora 
+                                                                    // si porta l'ora d'uscita all'ora d'entrata (a patto che si trovino nella stessa data - questione degli arrotondamenti a 00:00)
+                                                                    if (currentRegU != null)
+                                                                        if (currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay
+                                                                            && currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Date == currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Date)
+                                                                            currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg;
+
+                                                                    midDay = tmpMidDay;
+                                                                }
+                                                            }
+
+                                                        }
+                                                        #endregion
+                                                        else
+                                                        {
+                                                            // calcolo dei dati di limite d'entrata riguardo la registrazione che si sta processando
+                                                            Dictionary<EntryLimitTypeEnum, EntryLimitData> entryLimitConfig = null;
+
+                                                            midDay = RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Inizio_Pomeriggio ?? new TimeSpan(12, 0, 0);
+                                                            if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.LimitiDaTurni) == 1)
+                                                            {
+                                                                entryLimitConfig = GetEntryLimitConifgOrario(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay, currentRegE, currentRegU);
+                                                            }
+                                                            else
+                                                            {
+                                                                entryLimitConfig = GetEntryLimitConifg(currentCant, currentCol, currentRegV.Data_Reg.Value, midDay);
+                                                            }
+
+                                                            //primo limite della mattina, se non si è valorizzato il campo del limite resituisce mezzogiorno
+                                                            TimeSpan fistMorningLimit = new TimeSpan(12, 0, 0);
+
+                                                            //if (RepoManager.ParamRepo.ParametersRow.Limite_Entrata_Usa_Orario || RepoManager.ParamRepo.ParametersRow.Limite_Uscita_Usa_Orario) {
+                                                            //    TimeSpan tmp = entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(TimeSpan.FromMinutes(5));
+                                                            //    midDay = tmp;
+                                                            //}
+
+                                                            // se è configurata la gestione del limite d'entrata (valorizzata o per la mattina, per il pomeriggio o per orario) e se la registrazione 
+                                                            // risulta abbinata allora si procede (se la registrazione d'entrata risulta presente) come segue:
+                                                            // - in caso di registrazione mattutina (ante metà giornata configurata) allora si verifica che, se configurato il limite d'entrata mattutino,
+                                                            //   la registrazione sia antecedente a tale ora; in questo caso l'ora figurativa dell'entrata viene spostata al limite d'entrata.
+                                                            // - in caso non si tratti di una registrazione mattutina (post metà giornata configurata) allora si verifica che, 
+                                                            //   se configurato il limite d'entrata pomeridiano e la registrazione abbinata sia a cavallo del limite e nella tolleranza esplicitata 
+                                                            //   (se non configurata si è sicuramente fuori tolleranza) allora si procede allo spostamento dell'ora figurativa d'entrata al limite d'entrata
+                                                            // al termine dell'operazione in ogni caso, se l'uscita risulta inferiore all'entrata, si procede al suo spostamento per far coincidere il dato.
+
+                                                            // se la registrazione risulta abbinata e ci sono dei limiti d'entrata configurati ed esiste una registrazione d'entrata
+                                                            if (currentRegV.Registrazione_Stato_Reg == (int)RegStateEnum.Ass && entryLimitConfig.Any(kvp => kvp.Value.IsConfigured) && currentRegE != null)
+                                                            {
+                                                                // se la registrazione risulta essere mattutina ed è configurato il limite d'entrata mattutino,
+                                                                // altrimenti se la registrazione risulta essere pomeridiana e risulta configurato n limite d'entrata pomeridiano
+                                                                if (currentRegV.Data_Ora_Fis_E.TimeOfDay < midDay && entryLimitConfig[EntryLimitTypeEnum.Morning].IsConfigured)
+                                                                {
+                                                                    //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
+                                                                    if (entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime != null)
+                                                                        fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value;
+
+                                                                    // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
+                                                                    if (delayMorningTollerance != null && delayMorningTollerance > new TimeSpan(0, 0, 0))
+                                                                    {
+                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Subtract(delayMorningTollerance))
+                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                0);
+                                                                        //utilizzo la tolleranza anche dentro all'orario lavorativo
+                                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
+                                                                        {
+                                                                            if (currentCant.Turno4_Can.HasValue)
+                                                                            {
+                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Add(currentCant.Turno4_Can.Value))
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                        0);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value)
+                                                                    {
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                0);
+                                                                    }
+                                                                }
+                                                                else if (currentRegV.Data_Ora_Fis_E.TimeOfDay >= midDay && entryLimitConfig[EntryLimitTypeEnum.Afternoon].IsConfigured)
+                                                                {
+                                                                    //se si ha il limite d'entrata configurato viene impostato come limite mattutino il limite d'entrata
+                                                                    if (entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime != null)
+                                                                        fistMorningLimit = entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value;
+
+                                                                    // se l'ora figurativa dell'entrata è inferiore al limite d'entrata allora viene spostata al limite d'entrata;
+                                                                    if (delayAfternoonTollerance != new TimeSpan(0, 0, 0))
+                                                                    {
+                                                                        if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Subtract(delayAfternoonTollerance))
+                                                                            currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
+                                                                                0);
+
+                                                                        if (RepoManager.ParamRepo.GetCustomizationFromEnum(CustomizationEnum.DelayAfter) == 1)
+                                                                        {
+                                                                            if (currentCant.Turno4_Can.HasValue)
+                                                                            {
+                                                                                if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay > entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value && currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Add(currentCant.Turno4_Can.Value))
+                                                                                    currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Hours,
+                                                                                        entryLimitConfig[EntryLimitTypeEnum.Morning].EntryLimitTime.Value.Minutes,
+                                                                                        0);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else if (currentRegE.Registrazione_Data_Ora_Fis_Reg.TimeOfDay < entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value)
+                                                                    {
+                                                                        currentRegE.Registrazione_Data_Ora_Fig_Reg = new DateTime(currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Year,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Month,
+                                                                                currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Day,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Hours,
+                                                                                entryLimitConfig[EntryLimitTypeEnum.Afternoon].EntryLimitTime.Value.Minutes,
+                                                                                0);
+                                                                    }
+                                                                }
+
+                                                                // in ogni caso, al termine dell'operazione, se è presente una registrazione d'uscita
+                                                                // e l'ora figurativa di questa è inferiore all'ora figurativa dell'entrata allora 
+                                                                // si porta l'ora d'uscita all'ora d'entrata (a patto che si trovino nella stessa data - questione degli arrotondamenti a 00:00)
+                                                                if (currentRegU != null)
+                                                                    if (currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay < currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.TimeOfDay
+                                                                        && currentRegU.Registrazione_Data_Ora_Fig_Reg.Value.Date == currentRegE.Registrazione_Data_Ora_Fig_Reg.Value.Date)
+                                                                        currentRegU.Registrazione_Data_Ora_Fig_Reg = currentRegE.Registrazione_Data_Ora_Fig_Reg;
+                                                            }
+                                                        }
+                                                    }
 
                                                         #endregion
 
@@ -7354,6 +7436,11 @@ namespace Business.Repository.Custom
                                 if (distRow == default(Tab_Dist))
                                     distRow = RepoManager.Tab_DistRepo.FirstOrDefault(d => d.Tab_Decod_Id == tdCant.Tab_Decod_Id && d.Partenza_Tab_Dist.ToUpper() == cantUAddress.ToUpper() && d.Arrivo_Tab_Dist.ToUpper() == cantEAddress.ToUpper());
 
+                                if (distRow == default(Tab_Dist)) 
+                                {
+                                    distRow = RepoManager.Tab_DistRepo.FirstOrDefault(d => d.Tab_Decod_Id == tdCant.Tab_Decod_Id && d.Partenza_Tab_Dist.ToUpper().Contains(cantUAddress.ToUpper()) && d.Arrivo_Tab_Dist.ToUpper() == cantEAddress.ToUpper());
+                                }
+
                                 #endregion
 
                                 #region GENERAZIONE VIAGGIO DA GIS
@@ -7532,7 +7619,7 @@ namespace Business.Repository.Custom
                                                     {
                                                         try
                                                         {
-                                                            RepoManager.Tab_DistRepo.Add(distRow, true);
+                                                             RepoManager.Tab_DistRepo.Add(distRow, false);
                                                         }
                                                         catch (Exception ex)
                                                         {
@@ -7695,6 +7782,14 @@ namespace Business.Repository.Custom
 
             }
             #endregion
+
+            try 
+            {
+                RepoManager.Tab_DistRepo.SaveChanges();
+            }
+            catch (Exception e) 
+            { }
+            
 
             #region Gestione Viaggi Inizio/Fine Giornata
 
@@ -8062,7 +8157,7 @@ namespace Business.Repository.Custom
 
 
                                     // se bing è riuscito a calcolare i Km e la durate del viaggio allora si crea il corrispettivo record nella tabella distanze con tipo "G"
-                                    if (result.DistanzaKm > 0)
+                                    if (result.DistanzaKm >= 0)
                                     {
                                         distRow = new Tab_Dist()
                                         {
@@ -8980,6 +9075,30 @@ namespace Business.Repository.Custom
                 return trip;
         }
 
+        public static double DistanzaGpsMetri(
+            double lat1, double lon1,
+            double lat2, double lon2)
+        {
+            const double raggioTerra = 6_371_000; // metri
+            const double gradiInRadianti = Math.PI / 180;
+
+            double phi1 = lat1 * gradiInRadianti;
+            double phi2 = lat2 * gradiInRadianti;
+            double deltaLat = (lat2 - lat1) * gradiInRadianti;
+            double deltaLon = (lon2 - lon1) * gradiInRadianti;
+
+            double a =
+                Math.Pow(Math.Sin(deltaLat / 2), 2) +
+                Math.Cos(phi1) * Math.Cos(phi2) *
+                Math.Pow(Math.Sin(deltaLon / 2), 2);
+
+            // Evita errori di arrotondamento ai limiti dell'intervallo.
+            a = Math.Max(0, Math.Min(1, a));
+
+            return raggioTerra * 2 *
+                Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        }
+
         private List<Trip> ElaborateStartEndTrips(IOrderedEnumerable<Reg_V> orderedCurrentTripsByColByDate, Col currentCol, int? elaborateUserId, DateTime? elaborateDateTime, ApplicationMessageEnum application)
         //Elabora i Viaggi di Inizio/Fine Giornata (in base ai FLAG_ORE_VIAGGI_INIZIO_FINE di PARAM e al FLAG_ORE_VIAGGI_COL_INIZIO_FINE)
         {
@@ -9043,12 +9162,36 @@ namespace Business.Repository.Custom
                             //Se non mi trovo in sede (quindi la prima o la seconda timbratura non sono state fatte in sede), calcolo il viaggio di inizio giornata
                             if (firstCant.Codice_Commessa_Can == tipoCant && firstCant != default(Cant))
                             {
-                                if (firstCant.LatitudineGps_Can != 0 && firstCant.LongitudineGps_Can != 0 && (firstCant.Indirizzo_Can != "" && firstCant.Indirizzo_Can != null))
-                                {
-                                    var firstTrip = generateStartEndTripToHeadQuarter(firstCant, cantiere, regE, threshold, elaborateUserId, elaborateDateTime, application);
-                                    if (firstTrip != null)
+                                if (currentCol.LatitudineGps_Col != 0 && currentCol.LongitudineGps_Col != 0 && currentCol.Domicilio_Indirizzo_Col != null) 
+                                { 
+                                    double distanzaCol = DistanzaGpsMetri(currentCol.LatitudineGps_Col, currentCol.LongitudineGps_Col, firstCant.LatitudineGps_Can, firstCant.LongitudineGps_Can);
+                                    double distanzaCant = DistanzaGpsMetri(cantiere.LatitudineGps_Can, cantiere.LongitudineGps_Can, firstCant.LatitudineGps_Can, firstCant.LongitudineGps_Can);
+                                    if (distanzaCol < distanzaCant) 
                                     {
-                                        tripList.Add(firstTrip);
+                                        var firstTrip = generateStartEndTrip(firstCant, currentCol, regE, threshold, elaborateUserId, elaborateDateTime, application);
+                                        //firstTrip.Regs.First().Cant_Id = cantiere.Cant_Id;
+                                        //firstTrip.Regs.Last().Cant_Id = cantiere.Cant_Id;
+                                        if (firstTrip != null)
+                                            tripList.Add(firstTrip);
+                                    }
+                                    else 
+                                    {
+                                        var firstTrip = generateStartEndTripToHeadQuarter(cantiere, firstCant, regE, threshold, elaborateUserId, elaborateDateTime, application);
+                                        if (firstTrip != null)
+                                        {
+                                            tripList.Add(firstTrip);
+                                        }
+                                    }
+                                }
+                                else 
+                                {
+                                    if (firstCant.LatitudineGps_Can != 0 && firstCant.LongitudineGps_Can != 0 && (firstCant.Indirizzo_Can != "" && firstCant.Indirizzo_Can != null))
+                                    {
+                                        var firstTrip = generateStartEndTripToHeadQuarter(firstCant, cantiere, regE, threshold, elaborateUserId, elaborateDateTime, application);
+                                        if (firstTrip != null)
+                                        {
+                                            tripList.Add(firstTrip);
+                                        }
                                     }
                                 }
                             }
@@ -9058,11 +9201,33 @@ namespace Business.Repository.Custom
                             {
                                 if (lastCant.LatitudineGps_Can != 0 && lastCant.LongitudineGps_Can != 0 && (lastCant.Indirizzo_Can != "" && lastCant.Indirizzo_Can != null))
                                 {
-                                    var lastTrip = generateStartEndTripToHeadQuarter(lastCant, cantiere, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
-                                    if (lastTrip != null)
+                                    if (currentCol.LatitudineGps_Col != 0 && currentCol.LongitudineGps_Col != 0 && currentCol.Domicilio_Indirizzo_Col != null)
                                     {
-                                        tripList.Add(lastTrip);
+                                        double distanzaCol = DistanzaGpsMetri(currentCol.LatitudineGps_Col, currentCol.LongitudineGps_Col, lastCant.LatitudineGps_Can, lastCant.LongitudineGps_Can);
+                                        double distanzaCant = DistanzaGpsMetri(cantiere.LatitudineGps_Can, cantiere.LongitudineGps_Can, lastCant.LatitudineGps_Can, lastCant.LongitudineGps_Can);
+                                        if(distanzaCol < distanzaCant)
+                                        {
+                                            var lastTrip = generateStartEndTrip(lastCant, currentCol, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
+                                            if (lastTrip != null)
+                                                tripList.Add(lastTrip);
+                                        }
+                                        else
+                                        {
+                                            var lastTrip = generateStartEndTripToHeadQuarter(lastCant, cantiere, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
+                                            if (lastTrip != null)
+                                            {
+                                                tripList.Add(lastTrip);
+                                            }
+                                        }
                                     }
+                                    else 
+                                    {
+                                        var lastTrip = generateStartEndTripToHeadQuarter(lastCant, cantiere, regU, threshold, elaborateUserId, elaborateDateTime, application, true);
+                                        if (lastTrip != null)
+                                        {
+                                            tripList.Add(lastTrip);
+                                        }
+                                    }  
                                 }
                             }
                         }

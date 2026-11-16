@@ -242,7 +242,8 @@ namespace Common
         EccezioniViaggi,
         UseCoordinatesTabDist,
         GiornoDiTrasferta,
-        GiornoPassaggi
+        GiornoPassaggi,
+        ArrotondamentiIntermedi
     }
     
     public enum ClockAppsOperationEnum

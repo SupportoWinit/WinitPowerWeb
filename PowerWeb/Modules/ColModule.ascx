@@ -147,6 +147,43 @@
         }
     }
 
+    function recalculateCoordinatesAndInitMap() {
+        var currentGrid = ASPxClientGridView.Cast(grid);
+        var currentAddress = currentGrid.GetEditValue("Domicilio_Indirizzo_Col") || "";
+        var currentPlace = currentGrid.GetEditValue("Domicilio_Luogo_Col") || "";
+        var currentZip = currentGrid.GetEditValue("Domicilio_Cap_Col") || "";
+        var currentLat = currentGrid.GetEditValue("LatitudineGps_Col") || "";
+        var currentLong = currentGrid.GetEditValue("LongitudineGps_Col") || "";
+
+        if (!currentAddress && !currentPlace && !currentZip) {
+            newinitMap();
+            return;
+        }
+
+        var callbackParameter = [
+            encodeURIComponent(currentAddress),
+            encodeURIComponent(currentPlace),
+            encodeURIComponent(currentZip),
+            encodeURIComponent(currentLat),
+            encodeURIComponent(currentLong)
+        ].join("|");
+
+        cbGeocodeCol.PerformCallback(callbackParameter);
+    }
+
+    function cbGeocodeCol_OnCallbackComplete(s, e) {
+        if (e.result) {
+            var result = e.result.split("|");
+            if (result[0] == "OK") {
+                updateCoordinates(parseFloat(result[1]), parseFloat(result[2]));
+            } else if (result[0] == "ERROR" && result.length > 1) {
+                console.warn(decodeURIComponent(result[1]));
+            }
+        }
+
+        newinitMap();
+    }
+
     //#endregion
 
     //#region -----------Gestione Combobox di selezione righe da elaborare ------------------------------------------------
@@ -547,8 +584,8 @@
         var lonString = lon.toString().replace(".", ",");
 
         var currentGrid = ASPxClientGridView.Cast(grid); // Assicurati che 'grid' sia il nome corretto
-        currentGrid.SetEditValue("LatitudineGps_Can", latString);
-        currentGrid.SetEditValue("LongitudineGps_Can", lonString);
+        currentGrid.SetEditValue("LatitudineGps_Col", latString);
+        currentGrid.SetEditValue("LongitudineGps_Col", lonString);
     }
 
     function loadMap() {
@@ -1420,7 +1457,7 @@
 </div>
 
 <dx:ASPxPopupControl ID="pcShowMap" runat="server" Height="400px" LoadContentViaCallback="OnPageLoad"
-    Width="600px" HeaderText="Map popup" ClientSideEvents-Shown="newinitMap" PopupElementID="btnShowMap" CloseAction="OuterMouseClick" ShowCloseButton="false">
+    Width="600px" HeaderText="Map popup" ClientSideEvents-Shown="recalculateCoordinatesAndInitMap" PopupElementID="btnShowMap" CloseAction="OuterMouseClick" ShowCloseButton="false">
     <ContentCollection>
         <dx:PopupControlContentControl>
             <div id='bingMap' style="position: relative; width: 640px; height: 400px;"></div>
@@ -1434,6 +1471,9 @@
     </dx:ASPxCallback>
     <dx:ASPxCallback ID="cUplImportPing" ClientInstanceName="cUplImportPing" runat="server" OnCallback="cUplImportPing_Callback">
         <ClientSideEvents CallbackComplete="cUplImportPing_OnCallbackComplete" />
+    </dx:ASPxCallback>
+        <dx:ASPxCallback ID="cbGeocodeCol" ClientInstanceName="cbGeocodeCol" runat="server" OnCallback="cbGeocodeCol_Callback">
+        <ClientSideEvents CallbackComplete="cbGeocodeCol_OnCallbackComplete" />
     </dx:ASPxCallback>
     <dx:ASPxTimer ID="tUplImportPing" ClientInstanceName="tUplImportPing" runat="server" Enabled="false" Interval="1000">
         <ClientSideEvents Tick="tUplImportPing_OnTick" />
