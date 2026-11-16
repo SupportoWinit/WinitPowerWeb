@@ -200,7 +200,7 @@ namespace Business.Repository.Custom
                         else
                         {
                             var partenzaSplitted = entity.Partenza_Tab_Dist.Split('|');
-                            if (partenzaSplitted.Count() != 3)
+                            if (partenzaSplitted.Count() != 3 && partenzaSplitted.Count() != 5)
                                 result.AddOrAppend(CommonService.GetPropertyName(() => entity.Partenza_Tab_Dist), BusinessService.GetLocalizedString(PowerWebResources.ERR_TAB_DIST_G_DATI_PARTENZA_INCOMPLETI));
 
                             else if (partenzaSplitted.Any(s => s.Length == 0))
@@ -215,7 +215,7 @@ namespace Business.Repository.Custom
                         else
                         {
                             var arrivoSplitted = entity.Arrivo_Tab_Dist.Split('|');
-                            if (arrivoSplitted.Count() != 3)
+                            if (arrivoSplitted.Count() != 3 && arrivoSplitted.Count() != 5)
                                 result.AddOrAppend(CommonService.GetPropertyName(() => entity.Arrivo_Tab_Dist), BusinessService.GetLocalizedString(PowerWebResources.ERR_TAB_DIST_G_DATI_ARRIVO_INCOMPLETI));
 
                             else if (arrivoSplitted.Any(s => s.Length == 0))
